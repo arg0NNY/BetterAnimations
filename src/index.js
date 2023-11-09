@@ -1,12 +1,22 @@
+import { DOM, Patcher } from '@/BdApi'
+import forceAppUpdate from '@/helpers/forceAppUpdate'
+import patchAppView from '@/patches/patchAppView'
+import style from './style.css'
 
 export default function (meta) {
 
   return {
     start () {
-      console.log('Hello, BD!')
+      DOM.addStyle('BA-test', style)
+
+      patchAppView()
+      forceAppUpdate()
     },
     stop () {
-      console.log('Bye, BD!')
+      Patcher.unpatchAll()
+      DOM.removeStyle('BA-test')
+
+      forceAppUpdate()
     }
   }
 }
