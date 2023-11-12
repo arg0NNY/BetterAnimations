@@ -1,0 +1,94 @@
+{
+  "name": "Example animation",
+  "settings": {
+    "duration": {
+      "from": 0,
+      "to": 5000,
+      "step": 500
+    },
+    "easing": true,
+    "variant": [
+      {
+        "key": "up",
+        "name": "Up"
+      },
+      {
+        "key": "down",
+        "name": "Down"
+      },
+      {
+        "key": "left",
+        "name": "Left"
+      },
+      {
+        "key": "right",
+        "name": "Right"
+      }
+    ]
+  },
+  "animate": {
+    "hast": [
+      {
+        "type": "element",
+        "tagName": "div",
+        "properties": {
+          "className": "el"
+        }
+      },
+      {
+        "type": "element",
+        "tagName": "div",
+        "properties": {
+          "className": "el"
+        }
+      }
+    ],
+    "css": {
+      ".el": {
+        "inset": 0
+      },
+      ".el:first-child": {
+        "background": "#1e1f22"
+      },
+      ".el:nth-child(2)": {
+        "background": "#5662f6"
+      }
+    },
+    "anime": [
+      {
+        "inject": "Object.assign",
+        "target": {
+          "targets": [".el", { "inject": "node" }],
+          "delay": {
+            "inject": "anime.stagger",
+            "value": 80,
+            "options": {
+              "inject": "type",
+              "enter": {},
+              "exit": { "direction": "reverse" }
+            }
+          },
+          "duration": { "inject": "duration" },
+          "easing": { "inject": "easing" }
+        },
+        "source": {
+          "inject": "type",
+          "enter": {
+            "inject": "variant",
+            "up": { "translateY": ["100%", 0] },
+            "down": { "translateY": ["-100%", 0] },
+            "left": { "translateX": ["100%", 0] },
+            "right": { "translateX": ["-100%", 0] }
+          },
+          "exit": {
+            "inject": "variant",
+            "up": { "translateY": [0, "-100%"] },
+            "down": { "translateY": [0, "100%"] },
+            "left": { "translateX": [0, "-100%"] },
+            "right": { "translateX": [0, "100%"] }
+          }
+        }
+      }
+    ]
+  }
+}

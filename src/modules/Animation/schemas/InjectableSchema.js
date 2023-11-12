@@ -1,0 +1,66 @@
+import { z } from 'zod'
+import { Literal } from '@/helpers/schemas'
+import {
+  NodeInjectSchema,
+  ObjectAssignInjectSchema,
+  TypeInjectSchema
+} from '@/modules/Animation/schemas/injects/common'
+import {
+  AnimeStaggerInjectSchema,
+  AnimeTimelineInjectSchema
+} from '@/modules/Animation/schemas/injects/anime'
+import {
+  DurationInjectSchema,
+  EasingInjectSchema,
+  VariantInjectSchema
+} from '@/modules/Animation/schemas/injects/settings'
+
+const injectSchemas = {
+  'node': NodeInjectSchema,
+  'anime.stagger': AnimeStaggerInjectSchema,
+  'anime.timeline': AnimeTimelineInjectSchema,
+  'duration': DurationInjectSchema,
+  'easing': EasingInjectSchema,
+  'variant': VariantInjectSchema,
+  'type': TypeInjectSchema,
+  'Object.assign': ObjectAssignInjectSchema
+}
+
+const InjectableSchema = (context, allowedInjects) => {
+  const schema = z.lazy(
+    () => z.union([
+      Literal,
+      z.array(schema),
+      z.record(schema)
+    ]).transform((value, ctx) => {
+      if (value?.inject === undefined) return value
+
+      const formatInjectTypes = arr => arr.map(i => `'${i}'`).join(', ')
+
+      if (allowedInjects?.length && !allowedInjects.includes(value.inject)) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject type '${value.inject}' is not allowed here. Only injects of these types can be used here: ${formatInjectTypes(allowedInjects)}` })
+        return z.NEVER
+      }
+
+      const schema = injectSchemas[value.inject]
+      if (!schema) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Unknown inject type '${value.inject}'. Available injects: ${formatInjectTypes(Object.keys(injectSchemas))}` })
+        return z.NEVER
+      }
+
+      const { success, data, error } = (
+        typeof schema === 'function' ? schema(context) : schema
+      ).safeParse(value)
+
+      if (!success) {
+        error.issues.forEach(i => ctx.addIssue(i))
+        return z.NEVER
+      }
+      return data
+    })
+  )
+
+  return schema
+}
+
+export default InjectableSchema

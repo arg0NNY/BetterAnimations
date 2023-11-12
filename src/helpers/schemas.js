@@ -1,0 +1,22 @@
+import { z } from 'zod'
+
+export const Literal = z.union([z.string(), z.number(), z.boolean(), z.null()])
+export const Defined = z.any().refine(v => v !== undefined, { message: 'Must be defined' })
+
+export const hasInSettings = (name, has) => (value, ctx) => {
+  if (!has) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Used '${name}' inject while it is not defined in the animation\'s settings` })
+    return z.NEVER
+  }
+  return value
+}
+
+export const matchesSchema = schema => (value, ctx) => {
+  const { success, data, error } = schema.safeParse(value)
+
+  if (!success) {
+    error.issues.forEach(i => ctx.addIssue(i))
+    return z.NEVER
+  }
+  return data
+}
