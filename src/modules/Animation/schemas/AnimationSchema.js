@@ -4,17 +4,25 @@ import { matchesSchema } from '@/helpers/schemas'
 
 const safeInjects = ['variant', 'type', 'Object.assign']
 
-const AnimateSchema = context => z.object({
-  hast: InjectableSchema(context, safeInjects).optional()
-    .transform(matchesSchema(
-      z.union([z.record(z.any()), z.record(z.any()).array()])
-    )),
-  css: InjectableSchema(context, safeInjects).optional()
-    .transform(matchesSchema(
-      z.record(z.record(z.any()))
-    )),
-  anime: InjectableSchema(context),
-})
+const AnimateSchema = (context, injectOptions = {}) => {
+  const restrictedInjectOptions = Object.assign({ allowed: safeInjects }, injectOptions)
+
+  // TODO: Make hast and css optional
+  return z.object({
+    hast: InjectableSchema(context, restrictedInjectOptions)
+      .transform(matchesSchema(
+        z.union([z.record(z.any()), z.record(z.any()).array()])
+      )),
+    css: InjectableSchema(context, restrictedInjectOptions)
+      .transform(matchesSchema(
+        z.record(z.record(z.any()))
+      )),
+    anime: InjectableSchema(context, injectOptions)
+      .transform(matchesSchema(
+        z.union([z.record(z.any()), z.record(z.any()).array()])
+      ))
+  })
+}
 
 const AnimationSchema = context => z.object({
   name: z.string().trim(),
@@ -31,8 +39,8 @@ const AnimationSchema = context => z.object({
     }).array()
   }).partial().optional(),
   animate: AnimateSchema(context).optional(),
-  enter: AnimateSchema(context).optional(),
-  exit: AnimateSchema(context).optional(),
+  enter: AnimateSchema(context, { disallowed: ['type'] }).optional(),
+  exit: AnimateSchema(context, { disallowed: ['type'] }).optional(),
 }).strict().refine(
   v => v.animate ? !(v.enter || v.exit) : (v.enter && v.exit),
   { message: `Animation definition is required and must be either inside a single 'animate' property or inside 'enter' and 'exit' properties` }

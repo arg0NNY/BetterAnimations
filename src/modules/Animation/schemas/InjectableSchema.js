@@ -25,8 +25,9 @@ const injectSchemas = {
   'type': TypeInjectSchema,
   'Object.assign': ObjectAssignInjectSchema
 }
+const injectTypes = Object.keys(injectSchemas)
 
-const InjectableSchema = (context, allowedInjects) => {
+const InjectableSchema = (context, { allowed, disallowed } = {}) => {
   const schema = z.lazy(
     () => z.union([
       Literal,
@@ -37,8 +38,11 @@ const InjectableSchema = (context, allowedInjects) => {
 
       const formatInjectTypes = arr => arr.map(i => `'${i}'`).join(', ')
 
-      if (allowedInjects?.length && !allowedInjects.includes(value.inject)) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject type '${value.inject}' is not allowed here. Only injects of these types can be used here: ${formatInjectTypes(allowedInjects)}` })
+      if (
+        (disallowed?.length && disallowed.includes(value.inject))
+        || (allowed?.length && !allowed.includes(value.inject))
+      ) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject type '${value.inject}' is not allowed here. Only injects of these types can be used here: ${formatInjectTypes(injectTypes.filter(i => !disallowed?.includes(i) && (!allowed || allowed.includes(i))))}` })
         return z.NEVER
       }
 

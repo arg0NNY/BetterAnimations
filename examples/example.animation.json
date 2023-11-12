@@ -44,14 +44,22 @@
       }
     ],
     "css": {
-      ".el": {
-        "inset": 0
-      },
-      ".el:first-child": {
-        "background": "#1e1f22"
-      },
-      ".el:nth-child(2)": {
-        "background": "#5662f6"
+      "children": {
+        ".el": {
+          "attributes": {
+            "inset": 0
+          }
+        },
+        ".el:first-child": {
+          "attributes": {
+            "background": "#1e1f22"
+          }
+        },
+        ".el:nth-child(2)": {
+          "attributes": {
+            "background": "#5662f6"
+          }
+        }
       }
     },
     "anime": [

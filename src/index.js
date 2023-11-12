@@ -2,26 +2,29 @@ import { DOM, Patcher } from '@/BdApi'
 import forceAppUpdate from '@/helpers/forceAppUpdate'
 import patchAppView from '@/patches/patchAppView'
 import style from './style.css'
-import AnimationSchema from '@/modules/Animation/schemas/AnimationSchema'
 import animation from '../examples/example.animation.json'
 import { fromZodError } from 'zod-validation-error'
+import { buildAnimationAssets, parseAnimationData } from '@/modules/Animation/parser'
+import { z } from 'zod'
 
 export default function (meta) {
-  const parsed = AnimationSchema({
-    node: 'NODE!',
-    type: 'enter',
-    variant: 'up',
-    availableVariants: animation.settings?.variant?.map(v => v.key),
-    hasDuration: !!animation.settings?.duration,
-    duration: 500,
-    hasEasing: !!animation.settings?.easing,
-    easing: 'easeInOutQuad'
-  })
-    .safeParse(animation)
-  console.log(
-    parsed?.data,
-    parsed.error && fromZodError(parsed.error).message
-  )
+  try {
+    const data = parseAnimationData(animation, {
+      node: document.createElement('div'),
+      type: 'enter',
+      variant: 'up',
+      duration: 500,
+      easing: 'easeInOutQuad'
+    })
+    console.log(data)
+
+    const assets = buildAnimationAssets(data.enter ?? data.animate)
+    console.log(assets)
+  }
+  catch (e) {
+    if (e instanceof z.ZodError) console.error('Failed to load animation: ' + fromZodError(e).message)
+    else console.error('Failed to load animation: ' + e.message)
+  }
 
   return {
     start () {

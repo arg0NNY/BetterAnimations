@@ -14,7 +14,7 @@ export const AnimeTimelineInjectSchema = InjectSchema('anime.timeline').extend({
     parameters: Defined,
     offset: Defined.optional()
   }).array().optional()
-}).transform(params => {
+}).transform(params => () => {
   const tl = anime.timeline(params.parameters)
   params.children?.forEach(p => tl.add(p.parameters, p.offset))
   return tl
