@@ -3,7 +3,7 @@ import { Literal } from '@/helpers/schemas'
 import {
   NodeInjectSchema,
   ObjectAssignInjectSchema,
-  TypeInjectSchema
+  TypeInjectSchema, WaitInjectSchema
 } from '@/modules/Animation/schemas/injects/common'
 import {
   AnimeStaggerInjectSchema,
@@ -23,7 +23,8 @@ const injectSchemas = {
   'easing': EasingInjectSchema,
   'variant': VariantInjectSchema,
   'type': TypeInjectSchema,
-  'Object.assign': ObjectAssignInjectSchema
+  'Object.assign': ObjectAssignInjectSchema,
+  'wait': WaitInjectSchema
 }
 const injectTypes = Object.keys(injectSchemas)
 

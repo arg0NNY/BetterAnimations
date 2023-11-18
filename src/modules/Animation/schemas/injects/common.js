@@ -26,3 +26,11 @@ export const ObjectAssignInjectSchema = InjectSchema('Object.assign').extend({
   target: z.record(z.any()),
   source: z.union([z.record(z.any()), z.record(z.any()).array()])
 }).transform(params => Object.assign(params.target, ...[].concat(params.source)))
+
+export const WaitInjectSchema = InjectSchema('wait').extend({
+  duration: z.number().positive()
+}).transform(params => ({
+  targets: { inject: 'node' },
+  translateY: [0, 0],
+  duration: params.duration
+}))

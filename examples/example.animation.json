@@ -26,8 +26,22 @@
       }
     ]
   },
-  "animate": {
+  "enter": {
     "hast": [
+      {
+        "type": "element",
+        "tagName": "div",
+        "properties": {
+          "className": "el"
+        }
+      },
+      {
+        "type": "element",
+        "tagName": "div",
+        "properties": {
+          "className": "el"
+        }
+      },
       {
         "type": "element",
         "tagName": "div",
@@ -44,22 +58,18 @@
       }
     ],
     "css": {
-      "children": {
-        ".el": {
-          "attributes": {
-            "inset": 0
-          }
-        },
-        ".el:first-child": {
-          "attributes": {
-            "background": "#1e1f22"
-          }
-        },
-        ".el:nth-child(2)": {
-          "attributes": {
-            "background": "#5662f6"
-          }
-        }
+      ".el": {
+        "inset": 0,
+        "z-index": 20
+      },
+      "{node}": {
+        "z-index": 20
+      },
+      ".el:nth-child(odd)": {
+        "background": "#fff"
+      },
+      ".el:nth-child(even)": {
+        "background": "#5662f6"
       }
     },
     "anime": [
@@ -69,34 +79,25 @@
           "targets": [".el", { "inject": "node" }],
           "delay": {
             "inject": "anime.stagger",
-            "value": 80,
-            "options": {
-              "inject": "type",
-              "enter": {},
-              "exit": { "direction": "reverse" }
-            }
+            "value": 80
           },
           "duration": { "inject": "duration" },
           "easing": { "inject": "easing" }
         },
         "source": {
-          "inject": "type",
-          "enter": {
-            "inject": "variant",
-            "up": { "translateY": ["100%", 0] },
-            "down": { "translateY": ["-100%", 0] },
-            "left": { "translateX": ["100%", 0] },
-            "right": { "translateX": ["-100%", 0] }
-          },
-          "exit": {
-            "inject": "variant",
-            "up": { "translateY": [0, "-100%"] },
-            "down": { "translateY": [0, "100%"] },
-            "left": { "translateX": [0, "-100%"] },
-            "right": { "translateX": [0, "100%"] }
-          }
+          "inject": "variant",
+          "up": { "translateY": ["100%", 0] },
+          "down": { "translateY": ["-100%", 0] },
+          "left": { "translateX": ["100%", 0] },
+          "right": { "translateX": ["-100%", 0] }
         }
       }
     ]
+  },
+  "exit": {
+    "anime": {
+      "inject": "wait",
+      "duration": 920
+    }
   }
 }

@@ -4,27 +4,27 @@ import { matchesSchema } from '@/helpers/schemas'
 
 const safeInjects = ['variant', 'type', 'Object.assign']
 
-const AnimateSchema = (context, injectOptions = {}) => {
+export const AnimateSchema = (context = null, injectOptions = {}) => {
   const restrictedInjectOptions = Object.assign({ allowed: safeInjects }, injectOptions)
 
   // TODO: Make hast and css optional
   return z.object({
-    hast: InjectableSchema(context, restrictedInjectOptions)
-      .transform(matchesSchema(
-        z.union([z.record(z.any()), z.record(z.any()).array()])
-      )),
-    css: InjectableSchema(context, restrictedInjectOptions)
-      .transform(matchesSchema(
-        z.record(z.record(z.any()))
-      )),
-    anime: InjectableSchema(context, injectOptions)
-      .transform(matchesSchema(
-        z.union([z.record(z.any()), z.record(z.any()).array()])
+    hast: z.union([z.record(z.any()), z.record(z.any()).array()])
+      .transform(!context ? v => v : matchesSchema(
+        InjectableSchema(context, restrictedInjectOptions)
+      )).optional(),
+    css: z.record(z.record(z.any()))
+      .transform(!context ? v => v : matchesSchema(
+        InjectableSchema(context, restrictedInjectOptions)
+      )).optional(),
+    anime: z.union([z.record(z.any()), z.record(z.any()).array()])
+      .transform(!context ? v => v : matchesSchema(
+        InjectableSchema(context, injectOptions)
       ))
   })
 }
 
-const AnimationSchema = context => z.object({
+const AnimationSchema = (context = null) => z.object({
   name: z.string().trim(),
   settings: z.object({
     duration: z.object({

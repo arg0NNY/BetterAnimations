@@ -2,4 +2,9 @@
 [data-cloned] {
     position: absolute !important;
     inset: 0;
+    isolation: isolate;
+}
+
+[data-animation] > * {
+    position: absolute;
 }

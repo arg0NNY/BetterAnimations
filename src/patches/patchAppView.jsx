@@ -4,6 +4,19 @@ import findInReactTree from '@/helpers/findInReactTree'
 import CloneTransition from '@/components/CloneTransition'
 import useLocationKey from '@/hooks/useLocationKey'
 import { shouldSwitchBase, shouldSwitchContent } from '@/helpers/locations'
+import animation from '../../examples/example.animation.json'
+import { parseAnimationData } from '@/modules/Animation/parser'
+import { z } from 'zod'
+import { fromZodError } from 'zod-validation-error'
+
+let tempAnimationData
+try {
+  tempAnimationData = parseAnimationData(animation)
+}
+catch (e) {
+  e = e instanceof z.ZodError ? fromZodError(e).message : e
+  console.error('Failed to load animation:', e)
+}
 
 function BaseView ({ children }) {
   const key = useLocationKey(shouldSwitchBase)
@@ -12,11 +25,7 @@ function BaseView ({ children }) {
     <TransitionGroup component={null}>
       <CloneTransition
         key={key}
-        animate={{
-          enter: { transform: ['translateY(100%)', 'translateY(0)'] },
-          exit: { transform: ['translateY(0)', 'translateY(-100%)'] }
-        }}
-        options={{ duration: 1000, easing: 'ease' }}
+        animation={tempAnimationData}
       >
         <div className="base__3e6af">
           {children}
@@ -39,11 +48,7 @@ function ContentView ({ children }) {
     >
       <CloneTransition
         key={key}
-        animate={{
-          enter: { transform: ['translateY(100%)', 'translateY(0)'] },
-          exit: { transform: ['translateY(0)', 'translateY(-100%)'] }
-        }}
-        options={{ duration: 1000, easing: 'ease' }}
+        animation={tempAnimationData}
       >
         <div className="content__4bf10">
           <Router.Switch location={location}>

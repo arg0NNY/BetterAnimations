@@ -2,42 +2,72 @@ import { React, ReactDOM } from '@/BdApi'
 import { Transition } from '@/modules/DiscordModules'
 import HTMLNode from '@/components/HTMLNode'
 import { getScrolls } from '@/helpers/scrollers'
+import { buildAnimateAssets } from '@/modules/Animation/parser'
+import { z } from 'zod'
+import { fromZodError } from 'zod-validation-error'
 
-function normalizeAnimation (animation, options, type) {
-  if (typeof animation === 'object')
-    return node => node.animate(
-      animation,
-      Object.assign(options, type === 'exit' ? { fill: 'forwards' } : {})
-    )
-
-  return animation
-}
+// TODO: Add some basic math injects
+// FIXME: Switching from Nitro to server animates as channel switch
+// FIXME: Process enter and exit animations overlapping
+// TODO: Test some broken json for hast, css, and maybe anime
 
 class CloneTransition extends React.Component {
   doneCallback = React.createRef()
-  animation = React.createRef()
   clonedNode = React.createRef()
   scrolls = React.createRef()
 
-  render () {
-    const { animate, children, options, ...props } = this.props
+  onAnimate (type) {
+    return (node, ...args) => {
+      node = this.clonedNode.current ?? node
 
-    animate.enter = normalizeAnimation(animate.enter, options, 'enter')
-    animate.exit = normalizeAnimation(animate.exit, options, 'exit')
+      if (node) {
+        try {
+          const { animation } = this.props
 
-    const onAnimate = (type) => (node, ...args) => {
-      if (node || this.clonedNode.current) {
-        this.animation.current?.cancel?.()
-        this.animation.current = animate[type](this.clonedNode.current ?? node, ...args)
-        this.animation.current.finished
-          .then(() => this.doneCallback.current?.())
-          .catch(() => {})
-          .finally(() => this.animation.current = null)
+          const assets = buildAnimateAssets(animation[type] ?? animation.animate, {
+            node: this.clonedNode.current ?? node,
+            type,
+            variant: 'right',
+            duration: 600,
+            easing: 'easeInOutQuad',
+            settings: animation.settings
+          })
+          console.log(assets)
+
+          if (assets.node) node.before(assets.node)
+
+          requestAnimationFrame(() => {
+            assets.execute()
+              .then(() => {
+                console.log('finished', type)
+              })
+              .catch(e => console.error(`Failed to execute '${type}' animation:`, e))
+              .finally(() => this.finish(() => assets.node?.remove()))
+          })
+        }
+        catch (e) {
+          e = e instanceof z.ZodError ? fromZodError(e).message : e
+          console.error(`Failed to load '${type}' animation:`, e)
+          this.finish()
+        }
       }
 
-      if (type === 'enter') props.onEntering?.(node, ...args)
-      else if (type === 'exit') props.onExiting?.(node, ...args)
+      if (type === 'enter') this.props.onEntering?.(node, ...args)
+      else if (type === 'exit') this.props.onExiting?.(node, ...args)
     }
+  }
+
+  finish (callback = () => {}) {
+    this.clonedNode.current = null
+    this.scrolls.current = null
+    setTimeout(() => {
+      this.doneCallback.current?.()
+      setTimeout(() => callback())
+    })
+  }
+
+  render () {
+    const { animation, children, ...props } = this.props
 
     if (props.in === false) {
       const node = ReactDOM.findDOMNode(this)
@@ -46,20 +76,14 @@ class CloneTransition extends React.Component {
         this.scrolls.current = getScrolls(node)
       }
     }
-    const onExited = (...args) => {
-      this.clonedNode.current = null
-      this.scrolls.current = null
-      props.onExited?.(...args)
-    }
 
     return (
       <Transition
         {...props}
         mountOnEnter
         unmountOnExit
-        onEntering={onAnimate('enter')}
-        onExiting={onAnimate('exit')}
-        onExited={onExited}
+        onEntering={this.onAnimate('enter')}
+        onExiting={this.onAnimate('exit')}
         addEndListener={(_, done) => this.doneCallback.current = done}
       >
         {state => {
