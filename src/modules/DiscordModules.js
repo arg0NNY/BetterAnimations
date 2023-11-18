@@ -11,3 +11,10 @@ export const { CSSTransition, TransitionGroup } = Webpack.getByKeys('CSSTransiti
 export const Constants = Webpack.getByKeys('Permissions', 'ActivityTypes', 'StatusTypes')
 export const { Routes } = Constants
 export const { StaticChannelRoute } = Webpack.getByKeys('StaticChannelRoute')
+export const ContextMenu = Webpack.getModule(m => Filters.byStrings('getContextMenu', 'isOpen')(m?.default))
+export const Flux = Webpack.getByKeys('useStateFromStores')
+export const { useStateFromStores } = Flux
+export const MenuSubmenuItem = Webpack.getByKeys('MenuSubmenuItem')
+export const MenuSubmenuListItem = Webpack.getByKeys('MenuSubmenuListItem')
+export const { updateTheme } = Webpack.getByKeys('updateTheme')
+export const ThemeStore = Webpack.getStore('ThemeStore')

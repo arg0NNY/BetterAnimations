@@ -1,0 +1,29 @@
+{
+  "name": "Reveal",
+  "animate": {
+    "css": {
+      "{node}": {
+        "transform-origin": "top left"
+      }
+    },
+    "anime": {
+      "inject": "Object.assign",
+      "target": {
+        "targets": { "inject": "node" },
+        "duration": 200,
+        "easing": "easeInOutQuad"
+      },
+      "source": {
+        "inject": "type",
+        "enter": {
+          "opacity": [0, 1],
+          "scale": [0.9, 1]
+        },
+        "exit": {
+          "opacity": [1, 0],
+          "scale": [1, 0.9]
+        }
+      }
+    }
+  }
+}

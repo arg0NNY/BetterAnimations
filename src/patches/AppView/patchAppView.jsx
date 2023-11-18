@@ -4,7 +4,7 @@ import findInReactTree from '@/helpers/findInReactTree'
 import CloneTransition from '@/components/CloneTransition'
 import useLocationKey from '@/hooks/useLocationKey'
 import { shouldSwitchBase, shouldSwitchContent } from '@/helpers/locations'
-import animation from '../../examples/example.animation.json'
+import animation from '../../../examples/example.animation.json'
 import { parseAnimationData } from '@/modules/Animation/parser'
 import { z } from 'zod'
 import { fromZodError } from 'zod-validation-error'
@@ -61,7 +61,7 @@ function ContentView ({ children }) {
 }
 
 function patchAppView () {
-  Patcher.after(AppView, 'default', (self, props, value) => {
+  Patcher.after(AppView, 'default', (self, args, value) => {
     // console.log(self, props, value)
 
     const base = findInReactTree(value, m => m?.props?.className === 'base__3e6af')

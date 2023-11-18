@@ -8,8 +8,11 @@ import { fromZodError } from 'zod-validation-error'
 
 // TODO: Add some basic math injects
 // FIXME: Switching from Nitro to server animates as channel switch
-// FIXME: Process enter and exit animations overlapping
+// FIXME: Process enter and exit animations overlapping (most likely it happens because enter doesn't forced to stop when exit animation starts)
 // TODO: Test some broken json for hast, css, and maybe anime
+// TODO: Add "anime.random" inject
+
+// TODO: Allow animation authors to restrict their animations to certain modules (so that their animation can be only enabled for channel switching and nothing else, for example)
 
 class CloneTransition extends React.Component {
   doneCallback = React.createRef()
@@ -67,9 +70,9 @@ class CloneTransition extends React.Component {
   }
 
   render () {
-    const { animation, children, ...props } = this.props
+    const { animation, children, clone = true, ...props } = this.props
 
-    if (props.in === false) {
+    if (clone && props.in === false) {
       const node = ReactDOM.findDOMNode(this)
       if (node) {
         this.clonedNode.current = node.cloneNode(true)
@@ -90,7 +93,7 @@ class CloneTransition extends React.Component {
           if (['exiting', 'exited'].includes(state) && this.clonedNode.current)
             return <HTMLNode ref={this.clonedNode} scrolls={this.scrolls.current} />
 
-          return React.Children.only(children)
+          return children && React.Children.only(children)
         }}
       </Transition>
     )
