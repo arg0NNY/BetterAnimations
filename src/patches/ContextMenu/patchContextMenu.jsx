@@ -7,6 +7,7 @@ import { z } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 import { clearContainingStyles } from '@/helpers/style'
 import patchContextSubmenu from '@/patches/ContextMenu/patchContextSubmenu'
+import ensureOnce from '@/helpers/ensureOnce'
 
 export let tempAnimationData
 try {
@@ -17,10 +18,12 @@ catch (e) {
   console.error('Failed to load animation:', e)
 }
 
+const once = ensureOnce()
+
 function patchContextMenu () {
   Patcher.after(ContextMenu, 'default', (self, args, value) => {
 
-    if (!value.type.prototype.render.__originalFunction) // TODO: Make this a helper fn, considering this can be also patched by another plugin
+    once(() =>
       Patcher.after(value.type.prototype, 'render', (self, args, value) => {
         return (
           <CloneTransition
@@ -34,12 +37,13 @@ function patchContextMenu () {
           </CloneTransition>
         )
       })
+    )
 
     return (
       <TransitionGroup component={null}>
         {
-          value.props.isOpen
-          && <CloneTransition
+          value.props.isOpen &&
+          <CloneTransition
             key={value.key}
             clone={false}
             enter={false}

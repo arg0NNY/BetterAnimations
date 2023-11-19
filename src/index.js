@@ -3,6 +3,7 @@ import { DOM, Patcher } from '@/BdApi'
 import { forceAppUpdate } from '@/helpers/forceUpdate'
 import patchAppView from '@/patches/AppView/patchAppView'
 import patchContextMenu from '@/patches/ContextMenu/patchContextMenu'
+import patchBasePopout from '@/patches/BasePopout/patchBasePopout'
 
 export default function (meta) {
 
@@ -12,6 +13,7 @@ export default function (meta) {
 
       patchAppView()
       patchContextMenu()
+      patchBasePopout()
 
       forceAppUpdate()
     },

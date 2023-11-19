@@ -3,7 +3,7 @@
   "animate": {
     "css": {
       "{node}": {
-        "transform-origin": "top left"
+        "transform-origin": "top center"
       }
     },
     "anime": {
