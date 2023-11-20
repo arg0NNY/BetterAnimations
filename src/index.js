@@ -4,6 +4,7 @@ import { forceAppUpdate } from '@/helpers/forceUpdate'
 import patchAppView from '@/patches/AppView/patchAppView'
 import patchContextMenu from '@/patches/ContextMenu/patchContextMenu'
 import patchBasePopout from '@/patches/BasePopout/patchBasePopout'
+import patchTooltip from '@/patches/Tooltip/patchTooltip'
 
 export default function (meta) {
 
@@ -14,6 +15,7 @@ export default function (meta) {
       patchAppView()
       patchContextMenu()
       patchBasePopout()
+      patchTooltip()
 
       forceAppUpdate()
     },
