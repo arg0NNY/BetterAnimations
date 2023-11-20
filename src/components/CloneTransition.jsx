@@ -8,7 +8,6 @@ import { fromZodError } from 'zod-validation-error'
 
 // TODO: Add some basic math injects
 // FIXME: Switching from Nitro to server animates as channel switch
-// FIXME: Process enter and exit animations overlapping (most likely it happens because enter doesn't forced to stop when exit animation starts, and opposite way also)
 // TODO: Test some broken json for hast, css, and maybe anime
 // TODO: Add "anime.random" inject
 
@@ -19,9 +18,12 @@ class CloneTransition extends React.Component {
   doneCallback = React.createRef()
   clonedNode = React.createRef()
   scrolls = React.createRef()
+  cancelAnimation = React.createRef()
 
   onAnimate (type) {
     return (node, ...args) => {
+      this.cancelAnimation.current?.()
+
       node = this.clonedNode.current ?? node
 
       if (node) {
@@ -41,18 +43,25 @@ class CloneTransition extends React.Component {
           if (assets.node) node.before(assets.node)
 
           requestAnimationFrame(() => {
-            assets.execute()
-              .then(() => {
-                console.log('finished', type)
-              })
+            const { finished, pause } = assets.execute()
+
+            this.cancelAnimation.current = () => {
+              pause()
+              this.finish(() => assets.node?.remove())
+              this.cancelAnimation.current = null
+              console.log('finished', type)
+            }
+
+            finished
+              .then(() => {})
               .catch(e => console.error(`Failed to execute '${type}' animation:`, e))
-              .finally(() => this.finish(() => assets.node?.remove()))
+              .finally(this.cancelAnimation.current.bind(this))
           })
         }
         catch (e) {
           e = e instanceof z.ZodError ? fromZodError(e).message : e
           console.error(`Failed to load '${type}' animation:`, e)
-          this.finish()
+          this.finish(() => {}, true)
         }
       }
 
@@ -61,13 +70,15 @@ class CloneTransition extends React.Component {
     }
   }
 
-  finish (callback = () => {}) {
+  finish (callback = () => {}, immediate = false) {
     this.clonedNode.current = null
     this.scrolls.current = null
-    setTimeout(() => {
+    const done = () => {
       this.doneCallback.current?.()
       setTimeout(() => callback())
-    })
+    }
+    if (immediate) setTimeout(done.bind(this))
+    else done()
   }
 
   render () {

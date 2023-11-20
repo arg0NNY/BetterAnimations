@@ -55,14 +55,20 @@ export function buildAnimateAssets (data, context) {
 
   return {
     node: wrapper,
-    execute: () => Promise.all(
-      [].concat(data.anime).map(
+    execute: () => {
+      const instances = [].concat(data.anime).map(
         a => (
           typeof a === 'function'
             ? a(wrapper)
             : anime(transformAnimeConfig(a, wrapper))
-        ).finished
+        )
       )
-    )
+
+      return {
+        instances,
+        finished: Promise.all(instances.map(i => i.finished)),
+        pause: () => instances.forEach(i => i.pause())
+      }
+    }
   }
 }
