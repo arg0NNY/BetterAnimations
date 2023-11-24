@@ -2,12 +2,11 @@ import { z } from 'zod'
 import InjectableSchema from '@/modules/Animation/schemas/InjectableSchema'
 import { matchesSchema } from '@/helpers/schemas'
 
-const safeInjects = ['variant', 'type', 'Object.assign']
+const safeInjects = ['variant', 'type', 'position', 'Object.assign']
 
 export const AnimateSchema = (context = null, injectOptions = {}) => {
   const restrictedInjectOptions = Object.assign({ allowed: safeInjects }, injectOptions)
 
-  // TODO: Make hast and css optional
   return z.object({
     hast: z.union([z.record(z.any()), z.record(z.any()).array()])
       .transform(!context ? v => v : matchesSchema(
@@ -36,8 +35,9 @@ const AnimationSchema = (context = null) => z.object({
     variant: z.object({
       key: z.string(),
       name: z.string()
-    }).array()
-  }).partial().optional(),
+    }).array(),
+    position: z.literal(true)
+  }).partial().strict().optional(),
   animate: AnimateSchema(context).optional(),
   enter: AnimateSchema(context, { disallowed: ['type'] }).optional(),
   exit: AnimateSchema(context, { disallowed: ['type'] }).optional(),

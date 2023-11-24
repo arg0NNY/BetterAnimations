@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { Defined } from '@/helpers/schemas'
+import { buildSwitchSchema } from '@/helpers/schemas'
 import { InjectSchema } from '@/modules/Animation/schemas/injects/InjectSchema'
 
 export const NodeInjectSchema = ({ node }) => InjectSchema('node')
@@ -17,10 +17,9 @@ export const NodeInjectSchema = ({ node }) => InjectSchema('node')
     return node
   })
 
-export const TypeInjectSchema = ({ type }) => InjectSchema('type').extend({
-  enter: Defined,
-  exit: Defined
-}).transform(params => params[type])
+export const TypeInjectSchema = ({ type }) => InjectSchema('type')
+  .extend(buildSwitchSchema(['enter', 'exit']))
+  .transform(params => params[type])
 
 export const ObjectAssignInjectSchema = InjectSchema('Object.assign').extend({
   target: z.record(z.any()),

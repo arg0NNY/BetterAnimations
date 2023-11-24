@@ -18,7 +18,9 @@ export function parseAnimationData (data) {
  *     type,
  *     variant,
  *     duration,
- *     easing
+ *     easing,
+ *     position,
+ *     align
  * }}
  */
 export function buildAnimateAssets (data, context) {

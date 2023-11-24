@@ -1,4 +1,8 @@
 
+.appMount_fae9dd {
+    overflow: clip;
+}
+
 [data-cloned] {
     position: absolute !important;
     inset: 0;
@@ -7,4 +11,8 @@
 
 [data-animation] > * {
     position: absolute;
+}
+
+[data-animation-type="exit"] {
+    pointer-events: none;
 }

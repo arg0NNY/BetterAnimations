@@ -1,17 +1,25 @@
 {
   "name": "Reveal",
+  "settings": {
+    "position": true,
+    "duration": {
+      "from": 0,
+      "to": 5000,
+      "step": 500
+    }
+  },
   "animate": {
     "css": {
       "{node}": {
-        "transform-origin": "top center"
+        "transform-origin": { "inject": "position" }
       }
     },
     "anime": {
       "inject": "Object.assign",
       "target": {
         "targets": { "inject": "node" },
-        "duration": 200,
-        "easing": "easeInOutQuad"
+        "duration": { "inject": "duration" },
+        "easing": "easeOutBack"
       },
       "source": {
         "inject": "type",

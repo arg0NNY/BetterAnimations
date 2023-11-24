@@ -2,6 +2,7 @@ import { Patcher } from '@/BdApi'
 import { SpringTransitionPhases, Tooltip, TooltipLayer } from '@/modules/DiscordModules'
 import CloneTransition from '@/components/CloneTransition'
 import { tempAnimationData } from '@/patches/ContextMenu/patchContextMenu'
+import { directChild } from '@/helpers/transition'
 
 function TooltipTransition (props) {
   const { isVisible, onAnimationRest, ...rest } = props
@@ -21,7 +22,13 @@ function TooltipTransition (props) {
     <CloneTransition
       in={isVisible}
       clone={false}
+      targetNode={directChild}
       animation={tempAnimationData}
+      context={{
+        position: props.position,
+        align: props.align,
+        duration: 100
+      }}
       onEntered={onRest(true)}
       onExited={onRest(false)}
     >
@@ -33,7 +40,6 @@ function TooltipTransition (props) {
 function patchTooltip () {
   Patcher.after(Tooltip.prototype, 'renderTooltip', (self, args, value) => {
     value.type = TooltipTransition
-    // self.props.onAnimationRest = (...args) => console.log('rest', args)
   })
 }
 
