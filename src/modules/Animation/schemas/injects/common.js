@@ -33,3 +33,11 @@ export const WaitInjectSchema = InjectSchema('wait').extend({
   translateY: [0, 0],
   duration: params.duration
 }))
+
+export const StringTemplateSchema = InjectSchema('string.template').extend({
+  template: z.string(),
+  values: z.union([z.record(z.string()), z.string().array()])
+}).transform(({ template, values }) => template.replaceAll(
+  /\${([^\${}\s]+)}/g,
+  (_, key) => values[Array.isArray(values) ? +key : key] ?? ''
+))

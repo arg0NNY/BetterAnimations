@@ -3,13 +3,16 @@ import { formatValuesList, Literal } from '@/helpers/schemas'
 import {
   NodeInjectSchema,
   ObjectAssignInjectSchema,
-  TypeInjectSchema, WaitInjectSchema
+  StringTemplateSchema,
+  TypeInjectSchema,
+  WaitInjectSchema
 } from '@/modules/Animation/schemas/injects/common'
 import {
   AnimeStaggerInjectSchema,
   AnimeTimelineInjectSchema
 } from '@/modules/Animation/schemas/injects/anime'
 import {
+  AlignInjectSchema,
   DurationInjectSchema,
   EasingInjectSchema,
   PositionInjectSchema,
@@ -24,9 +27,11 @@ const injectSchemas = {
   'easing': EasingInjectSchema,
   'variant': VariantInjectSchema,
   'position': PositionInjectSchema,
+  'align': AlignInjectSchema,
   'type': TypeInjectSchema,
   'Object.assign': ObjectAssignInjectSchema,
-  'wait': WaitInjectSchema
+  'wait': WaitInjectSchema,
+  'string.template': StringTemplateSchema
 }
 const injectTypes = Object.keys(injectSchemas)
 

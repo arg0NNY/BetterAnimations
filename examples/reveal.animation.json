@@ -2,6 +2,7 @@
   "name": "Reveal",
   "settings": {
     "position": true,
+    "align": true,
     "duration": {
       "from": 0,
       "to": 5000,
@@ -11,7 +12,14 @@
   "animate": {
     "css": {
       "{node}": {
-        "transform-origin": { "inject": "position" }
+        "transform-origin": {
+          "inject": "string.template",
+          "template": "${position} ${align}",
+          "values": {
+            "position": { "inject": "position" },
+            "align": { "inject": "align" }
+          }
+        }
       }
     },
     "anime": {

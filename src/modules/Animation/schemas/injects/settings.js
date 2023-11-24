@@ -19,6 +19,7 @@ export const VariantInjectSchema = ({ variant, settings }) => {
     .transform(params => params[variant])
 }
 
+// TODO: Combine position and align injects into helper function
 export const PositionInjectSchema = ({ position, settings }) => {
   const keys = ['top', 'bottom', 'left', 'right', 'center']
   const reverse = key => {
@@ -45,6 +46,25 @@ export const PositionInjectSchema = ({ position, settings }) => {
           return z.NEVER
         }
       else return position
+    })
+}
+
+export const AlignInjectSchema = ({ align, settings }) => {
+  const keys = ['top', 'bottom', 'left', 'right', 'center']
+
+  return InjectSchema('align')
+    .extend(buildSwitchSchema(keys, Defined.optional()))
+    .transform(hasInSettings('align', !!settings?.align))
+    .transform((params, ctx) => {
+      if (!keys.includes(align)) align = 'center'
+
+      if (keys.some(k => k in params))
+        if (keys.every(k => k in params)) return params[align]
+        else {
+          ctx.addIssue({ code: z.ZodIssueCode.custom, message: `All of the possible values must be defined in the 'align' inject when using switch mode. Missing keys: ${formatValuesList(keys.filter(k => !(k in params)))}` })
+          return z.NEVER
+        }
+      else return align
     })
 }
 

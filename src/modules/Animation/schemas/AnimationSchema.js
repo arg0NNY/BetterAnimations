@@ -2,7 +2,7 @@ import { z } from 'zod'
 import InjectableSchema from '@/modules/Animation/schemas/InjectableSchema'
 import { matchesSchema } from '@/helpers/schemas'
 
-const safeInjects = ['variant', 'type', 'position', 'Object.assign']
+const safeInjects = ['variant', 'type', 'position', 'align', 'Object.assign', 'string.template']
 
 export const AnimateSchema = (context = null, injectOptions = {}) => {
   const restrictedInjectOptions = Object.assign({ allowed: safeInjects }, injectOptions)
@@ -36,7 +36,8 @@ const AnimationSchema = (context = null) => z.object({
       key: z.string(),
       name: z.string()
     }).array(),
-    position: z.literal(true)
+    position: z.literal(true),
+    align: z.literal(true)
   }).partial().strict().optional(),
   animate: AnimateSchema(context).optional(),
   enter: AnimateSchema(context, { disallowed: ['type'] }).optional(),

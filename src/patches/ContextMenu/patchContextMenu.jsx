@@ -24,6 +24,8 @@ function patchContextMenu () {
   Patcher.after(ContextMenu, 'default', (self, args, value) => {
 
     const context = {
+      position: 'bottom',
+      align: 'left',
       duration: 200
     }
 

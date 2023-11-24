@@ -9,6 +9,8 @@ function patchContextSubmenu () {
     const value = original(Object.assign({}, props, { isFocused: true }))
 
     const context = {
+      position: 'bottom',
+      align: 'left',
       duration: 200
     }
 
