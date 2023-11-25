@@ -22,8 +22,10 @@ export function parseAnimationData (data) {
  *     position,
  *     align
  * }}
+ * @param options
  */
-export function buildAnimateAssets (data, context) {
+export function buildAnimateAssets (data, context, options = {}) {
+  const { before, after } = options
   data = AnimateSchema(context).parse(data)
 
   let wrapper
@@ -65,11 +67,27 @@ export function buildAnimateAssets (data, context) {
             : anime(transformAnimeConfig(a, wrapper))
         )
       )
+      const pause = () => instances.forEach(i => i.pause())
+      const finished = () => Promise.all(instances.map(i => i.finished))
+
+      if (before && context.type === 'enter') {
+        pause()
+        const instance = before(context)
+        instance.finished.then(() => instances.slice(1).forEach(i => i.play()))
+        instances.unshift(instance)
+      }
+
+      if (after && context.type === 'exit') {
+        const instance = after(context)
+        instance.pause()
+        finished().then(() => instance.play())
+        instances.push(instance)
+      }
 
       return {
         instances,
-        finished: Promise.all(instances.map(i => i.finished)),
-        pause: () => instances.forEach(i => i.pause())
+        finished: finished(),
+        pause
       }
     }
   }

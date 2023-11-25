@@ -28,3 +28,4 @@ export const { Tooltip, TooltipLayer } = Webpack.getModule(m => Filters.byKeys('
 export const { SpringTransitionPhases } = Webpack.getByKeys('SpringTransitionPhases')
 export const { Layer } = Webpack.getByKeys('Layer', 'LayerProvider')
 export const { appLayerContext } = Webpack.getByKeys('appLayerContext')
+export const ChannelMessageList = Webpack.getModule(m => Filters.byStrings('channel', 'messageDisplayCompact')(m?.type))

@@ -41,7 +41,7 @@ class CloneTransition extends React.Component {
 
       if (node) {
         try {
-          const { animation, context } = this.props
+          const { animation, context = {}, options = {} } = this.props
 
           const assets = buildAnimateAssets(
             animation[type] ?? animation.animate,
@@ -51,13 +51,14 @@ class CloneTransition extends React.Component {
                 duration: 600,
                 easing: 'easeInOutQuad',
               },
-              context ?? {},
+              context,
               {
                 node,
                 type,
                 settings: animation.settings
               }
-            )
+            ),
+            options
           )
           console.log(assets)
 

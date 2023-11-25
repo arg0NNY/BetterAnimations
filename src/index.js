@@ -5,6 +5,11 @@ import patchAppView from '@/patches/AppView/patchAppView'
 import patchContextMenu from '@/patches/ContextMenu/patchContextMenu'
 import patchBasePopout from '@/patches/BasePopout/patchBasePopout'
 import patchTooltip from '@/patches/Tooltip/patchTooltip'
+import patchChannelMessageList from '@/patches/ChannelMessageList/patchChannelMessageList'
+import Dispatcher from '@/modules/Dispatcher'
+import anime from 'animejs'
+
+anime.suspendWhenDocumentHidden = false
 
 export default function (meta) {
 
@@ -16,12 +21,15 @@ export default function (meta) {
       patchContextMenu()
       patchBasePopout()
       patchTooltip()
+      patchChannelMessageList()
 
       forceAppUpdate()
     },
     stop () {
-      Patcher.unpatchAll()
       DOM.removeStyle('BA-test')
+
+      Patcher.unpatchAll()
+      Dispatcher.unsubscribeAll()
 
       forceAppUpdate()
     }
