@@ -1,10 +1,18 @@
 import { Webpack } from '@/BdApi'
 
-const Selectors = {
-  ThreadSidebar: Webpack.getByKeys('chatLayerWrapper', 'chatTarget')
+// TODO: Add support for lazy loaded modules
+const Classes = {
+  ThreadSidebar: Webpack.getByKeys('chatLayerWrapper', 'chatTarget'),
+  StandardSidebarView: () => Webpack.getByKeys('standardSidebarView', 'contentRegion')
 }
 
-export default new Proxy(Selectors, {
+// export const DiscordClasses = new Proxy(Classes, {
+//   get (obj, prop) {
+//
+//   }
+// })
+
+export const DiscordSelectors = new Proxy(Classes, {
   get (obj, prop) {
     return obj[prop] && new Proxy(obj[prop], {
       get (obj, prop) {

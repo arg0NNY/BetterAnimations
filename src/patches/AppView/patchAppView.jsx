@@ -8,8 +8,9 @@ import animation from '../../../examples/example.animation.json'
 import { parseAnimationData } from '@/modules/Animation/parser'
 import { z } from 'zod'
 import { fromZodError } from 'zod-validation-error'
+import { clearContainingStyles } from '@/helpers/transition'
 
-let tempAnimationData
+export let tempAnimationData
 try {
   tempAnimationData = parseAnimationData(animation)
 }
@@ -26,6 +27,10 @@ function BaseView ({ children }) {
       <CloneTransition
         key={key}
         animation={tempAnimationData}
+        options={{
+          type: 'switch'
+        }}
+        onEntered={clearContainingStyles}
       >
         <div className="base__3e6af">
           {children}
@@ -39,16 +44,14 @@ function ContentView ({ children }) {
   const key = useLocationKey(shouldSwitchContent)
 
   return (
-    <TransitionGroup
-      className="content__4bf10"
-      style={{
-        position: 'relative',
-        overflow: 'clip', // Make this applied only when animation is in progress
-      }}
-    >
+    <TransitionGroup className="content__4bf10">
       <CloneTransition
         key={key}
         animation={tempAnimationData}
+        options={{
+          type: 'switch'
+        }}
+        onEntered={clearContainingStyles}
       >
         <div className="content__4bf10">
           <Router.Switch location={location}>
@@ -62,16 +65,9 @@ function ContentView ({ children }) {
 
 function patchAppView () {
   Patcher.after(AppView, 'default', (self, args, value) => {
-    // console.log(self, props, value)
-
     const base = findInReactTree(value, m => m?.props?.className === 'base__3e6af')
     if (!base) return
 
-    // console.log(base.props.children)
-    base.props.style = {
-      position: 'relative',
-      overflow: 'clip', // Make this applied only when animation is in progress
-    }
     base.props.children = <BaseView>{base.props.children}</BaseView>
 
     const content = findInReactTree(base, m => m?.props?.className === 'content__4bf10')

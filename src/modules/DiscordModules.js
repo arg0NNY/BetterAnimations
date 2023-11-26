@@ -10,9 +10,9 @@ export const LocaleStore = Webpack.getModule(m => m.Messages?.IMAGE)
 export const Dispatcher = Webpack.getByKeys('dispatch', 'subscribe')
 export const AppView = Webpack.getModule(m => Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY')(m?.default))
 export const Router = Webpack.getByKeys('BrowserRouter')
-export const Transition = Webpack.getByKeys('ENTERING', 'EXITING')
+export const Transition = Webpack.getByKeys('ENTERING', 'EXITING', 'contextType')
 export const { CSSTransition, TransitionGroup } = Webpack.getByKeys('CSSTransition', 'TransitionGroup')
-export const TransitionGroupContext = new Transition({ children: React.createElement('div') }).render().type._context
+export const TransitionGroupContext = new Transition({ children: React.createElement('div') }, {}).render().type._context
 export const Constants = Webpack.getByKeys('Permissions', 'ActivityTypes', 'StatusTypes')
 export const { Routes } = Constants
 export const { StaticChannelRoute } = Webpack.getByKeys('StaticChannelRoute')
@@ -32,3 +32,4 @@ export const { appLayerContext } = Webpack.getByKeys('appLayerContext')
 export const ChannelMessageList = Webpack.getModule(m => Filters.byStrings('channel', 'messageDisplayCompact')(m?.type))
 export const ChannelView = Webpack.getModule(m => Filters.byStrings('providedChannel')(m?.type))
 export const PropTypes = Webpack.getByKeys('PropTypes')
+export const StandardSidebarView = Webpack.waitForModule(Filters.byKeys('SectionTypes', 'ContentTypes'))

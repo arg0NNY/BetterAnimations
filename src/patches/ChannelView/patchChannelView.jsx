@@ -4,7 +4,7 @@ import ensureOnce from '@/helpers/ensureOnce'
 import CloneTransition from '@/components/CloneTransition'
 import SwitchTransition from '@/components/SwitchTransition'
 import anime from 'animejs'
-import DiscordSelectors from '@/modules/DiscordSelectors'
+import { DiscordSelectors } from '@/modules/DiscordSelectors'
 
 const once = ensureOnce()
 

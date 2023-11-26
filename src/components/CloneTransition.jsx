@@ -68,11 +68,15 @@ class CloneTransition extends React.Component {
             const { finished, pause } = assets.execute()
 
             node.setAttribute('data-animation-type', type)
+            if (options.type) node.setAttribute(`data-animation-${options.type}`, '')
 
             this.cancelAnimation = () => {
               pause()
               this.finish(() => assets.node?.remove())
-              node.removeAttribute('data-animation-type')
+
+              if (type === 'enter') [].filter.call(node.attributes, a => a.name?.startsWith('data-animation'))
+                .forEach(a => node.removeAttribute(a.name))
+
               this.cancelAnimation = null
               console.log('finished', type)
             }

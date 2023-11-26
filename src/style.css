@@ -3,16 +3,25 @@
     overflow: clip;
 }
 
-[data-cloned] {
-    position: absolute !important;
-    inset: 0;
-    isolation: isolate;
-}
-
 [data-animation] > * {
     position: absolute;
 }
 
 [data-animation-type="exit"] {
     pointer-events: none;
+}
+
+[data-animation-switch][data-animation-type="exit"] {
+    position: absolute !important;
+    inset: 0;
+    isolation: isolate;
+}
+
+:is(.content__4bf10, .base__3e6af, .contentRegion__0bec1):is(:has(> [data-animation-type]), :has(> [data-animation])) {
+    position: relative;
+    overflow: clip;
+}
+
+.contentRegion__0bec1 > .contentRegion__0bec1 {
+    height: 100%;
 }
