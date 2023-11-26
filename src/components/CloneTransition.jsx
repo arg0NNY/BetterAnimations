@@ -41,7 +41,7 @@ class CloneTransition extends React.Component {
 
       if (node) {
         try {
-          const { animation, context = {}, options = {} } = this.props
+          const { animation = {}, context = {}, options = {} } = this.props
 
           const assets = buildAnimateAssets(
             animation[type] ?? animation.animate,

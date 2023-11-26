@@ -1,4 +1,4 @@
-import { Webpack } from '@/BdApi'
+import { React, Webpack } from '@/BdApi'
 
 const { Filters } = Webpack
 
@@ -12,6 +12,7 @@ export const AppView = Webpack.getModule(m => Filters.byStrings('CHANNEL_THREAD_
 export const Router = Webpack.getByKeys('BrowserRouter')
 export const Transition = Webpack.getByKeys('ENTERING', 'EXITING')
 export const { CSSTransition, TransitionGroup } = Webpack.getByKeys('CSSTransition', 'TransitionGroup')
+export const TransitionGroupContext = new Transition({ children: React.createElement('div') }).render().type._context
 export const Constants = Webpack.getByKeys('Permissions', 'ActivityTypes', 'StatusTypes')
 export const { Routes } = Constants
 export const { StaticChannelRoute } = Webpack.getByKeys('StaticChannelRoute')
@@ -29,3 +30,5 @@ export const { SpringTransitionPhases } = Webpack.getByKeys('SpringTransitionPha
 export const { Layer } = Webpack.getByKeys('Layer', 'LayerProvider')
 export const { appLayerContext } = Webpack.getByKeys('appLayerContext')
 export const ChannelMessageList = Webpack.getModule(m => Filters.byStrings('channel', 'messageDisplayCompact')(m?.type))
+export const ChannelView = Webpack.getModule(m => Filters.byStrings('providedChannel')(m?.type))
+export const PropTypes = Webpack.getByKeys('PropTypes')

@@ -24,9 +24,9 @@ export function parseAnimationData (data) {
  * }}
  * @param options
  */
-export function buildAnimateAssets (data, context, options = {}) {
+export function buildAnimateAssets (data = null, context = {}, options = {}) {
   const { before, after } = options
-  data = AnimateSchema(context).parse(data)
+  data = data ? AnimateSchema(context).parse(data) : {}
 
   let wrapper
   if (data.hast || data.css) {
@@ -60,7 +60,7 @@ export function buildAnimateAssets (data, context, options = {}) {
   return {
     node: wrapper,
     execute: () => {
-      const instances = [].concat(data.anime).map(
+      const instances = [].concat(data.anime ?? []).map(
         a => (
           typeof a === 'function'
             ? a(wrapper)
