@@ -1,7 +1,7 @@
 import { Patcher } from '@/BdApi'
 import { Modals, TransitionGroup } from '@/modules/DiscordModules'
 import patchModalRoot from '@/patches/Modals/patchModalRoot'
-import CloneTransition from '@/components/CloneTransition'
+import AnimeTransition from '@/components/AnimeTransition'
 import { clearContainingStyles } from '@/helpers/transition'
 import PassThrough from '@/components/PassThrough'
 import patchModalBackdrop from '@/patches/Modals/patchModalBackdrop'
@@ -16,13 +16,12 @@ function patchModals () {
           value.props.children[1].map(modal => (
             <PassThrough>
               {props => (
-                <CloneTransition
+                <AnimeTransition
                   {...props}
                   in={modal.props.isTopModal && props.in}
                   key={modal.props.modalKey}
                   mountOnEnter={false}
                   unmountOnExit={false}
-                  clone={false}
                   targetNode={node => node?.querySelector(DiscordSelectors.Modal.root)}
                   animation={tempAnimationData}
                   enter={!modal.props.instant}
@@ -33,7 +32,7 @@ function patchModals () {
                   onEntered={clearContainingStyles}
                 >
                   {modal}
-                </CloneTransition>
+                </AnimeTransition>
               )}
             </PassThrough>
           ))

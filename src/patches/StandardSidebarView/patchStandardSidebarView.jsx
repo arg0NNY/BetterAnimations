@@ -1,7 +1,7 @@
 import { Patcher } from '@/BdApi'
 import { StandardSidebarView, TransitionGroup } from '@/modules/DiscordModules'
 import findInReactTree from '@/helpers/findInReactTree'
-import CloneTransition from '@/components/CloneTransition'
+import AnimeTransition from '@/components/AnimeTransition'
 import { tempAnimationData } from '@/patches/AppView/patchAppView'
 import { clearContainingStyles } from '@/helpers/transition'
 
@@ -18,9 +18,8 @@ async function patchStandardSidebarView () {
 
     standardSidebarView.children[i] = (
       <TransitionGroup className="contentRegion__0bec1">
-        <CloneTransition
+        <AnimeTransition
           key={props.section}
-          clone={false}
           animation={tempAnimationData}
           options={{
             type: 'switch'
@@ -28,7 +27,7 @@ async function patchStandardSidebarView () {
           onEntered={clearContainingStyles}
         >
           {contentRegion}
-        </CloneTransition>
+        </AnimeTransition>
       </TransitionGroup>
     )
   })

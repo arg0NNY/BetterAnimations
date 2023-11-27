@@ -1,6 +1,6 @@
 import { Patcher } from '@/BdApi'
 import { SpringTransitionPhases, Tooltip, TooltipLayer } from '@/modules/DiscordModules'
-import CloneTransition from '@/components/CloneTransition'
+import AnimeTransition from '@/components/AnimeTransition'
 import { tempAnimationData } from '@/patches/ContextMenu/patchContextMenu'
 import { directChild } from '@/helpers/transition'
 
@@ -19,9 +19,8 @@ function TooltipTransition (props) {
   )
 
   return (
-    <CloneTransition
+    <AnimeTransition
       in={isVisible}
-      clone={false}
       targetNode={directChild}
       animation={tempAnimationData}
       context={{
@@ -33,7 +32,7 @@ function TooltipTransition (props) {
       onExited={onRest(false)}
     >
       <TooltipLayer {...rest} />
-    </CloneTransition>
+    </AnimeTransition>
   )
 }
 

@@ -1,6 +1,6 @@
 import { Patcher } from '@/BdApi'
 import { appLayerContext, Layer, MenuSubmenuItem, MenuSubmenuListItem } from '@/modules/DiscordModules'
-import CloneTransition from '@/components/CloneTransition'
+import AnimeTransition from '@/components/AnimeTransition'
 import { tempAnimationData } from '@/patches/ContextMenu/patchContextMenu'
 import { clearContainingStyles } from '@/helpers/transition'
 
@@ -17,15 +17,14 @@ function patchContextSubmenu () {
     const i = value.props.children.length - 1
     value.props.children[i] = (
       <Layer layerContext={appLayerContext}>
-        <CloneTransition
+        <AnimeTransition
           in={props.isFocused}
-          clone={false}
           animation={tempAnimationData}
           context={context}
           onEntered={clearContainingStyles}
         >
           {value.props.children[i]}
-        </CloneTransition>
+        </AnimeTransition>
       </Layer>
     )
 

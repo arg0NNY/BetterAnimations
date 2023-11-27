@@ -15,7 +15,7 @@ import { fromZodError } from 'zod-validation-error'
 // TODO: Allow animation authors to restrict their animations to certain modules (so that their animation can be only enabled for channel switching and nothing else, for example)
 // TODO: Prompt users to enable hardware acceleration
 
-class CloneTransition extends React.Component {
+class AnimeTransition extends React.Component {
   doneCallback = React.createRef()
   clonedNode = React.createRef()
   scrolls = React.createRef()
@@ -111,7 +111,7 @@ class CloneTransition extends React.Component {
   }
 
   render () {
-    const { animation, children, clone = true, mountOnEnter = true, unmountOnExit = true, ...props } = this.props
+    const { animation, children, clone = false, mountOnEnter = true, unmountOnExit = true, ...props } = this.props
 
     if (clone && props.in === false) {
       const node = ReactDOM.findDOMNode(this)
@@ -143,4 +143,4 @@ class CloneTransition extends React.Component {
   }
 }
 
-export default CloneTransition
+export default AnimeTransition

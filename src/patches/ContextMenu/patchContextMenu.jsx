@@ -1,6 +1,6 @@
 import { Patcher } from '@/BdApi'
 import { ContextMenu, TransitionGroup } from '@/modules/DiscordModules'
-import CloneTransition from '@/components/CloneTransition'
+import AnimeTransition from '@/components/AnimeTransition'
 import { parseAnimationData } from '@/modules/Animation/parser'
 import animation from '../../../examples/reveal.animation.json'
 import { z } from 'zod'
@@ -32,9 +32,8 @@ function patchContextMenu () {
     once(() =>
       Patcher.after(value.type.prototype, 'render', (self, args, value) => {
         return (
-          <CloneTransition
+          <AnimeTransition
             in={!!value}
-            clone={false}
             targetNode={directChild}
             exit={false}
             animation={tempAnimationData}
@@ -42,7 +41,7 @@ function patchContextMenu () {
             onEntered={clearContainingStyles}
           >
             {value}
-          </CloneTransition>
+          </AnimeTransition>
         )
       })
     )
@@ -51,16 +50,15 @@ function patchContextMenu () {
       <TransitionGroup component={null}>
         {
           value.props.isOpen &&
-          <CloneTransition
+          <AnimeTransition
             key={value.key}
-            clone={false}
             targetNode={directChild}
             enter={false}
             animation={tempAnimationData}
             context={context}
           >
             {value}
-          </CloneTransition>
+          </AnimeTransition>
         }
       </TransitionGroup>
     )

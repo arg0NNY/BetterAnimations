@@ -1,7 +1,7 @@
 import { Patcher, React } from '@/BdApi'
 import { AppView, Router, TransitionGroup } from '@/modules/DiscordModules'
 import findInReactTree from '@/helpers/findInReactTree'
-import CloneTransition from '@/components/CloneTransition'
+import AnimeTransition from '@/components/AnimeTransition'
 import useLocationKey from '@/hooks/useLocationKey'
 import { shouldSwitchBase, shouldSwitchContent } from '@/helpers/locations'
 import animation from '../../../examples/example.animation.json'
@@ -24,8 +24,9 @@ function BaseView ({ children }) {
 
   return (
     <TransitionGroup component={null}>
-      <CloneTransition
+      <AnimeTransition
         key={key}
+        clone={true}
         animation={tempAnimationData}
         options={{
           type: 'switch'
@@ -35,7 +36,7 @@ function BaseView ({ children }) {
         <div className="base__3e6af">
           {children}
         </div>
-      </CloneTransition>
+      </AnimeTransition>
     </TransitionGroup>
   )
 }
@@ -45,8 +46,9 @@ function ContentView ({ children }) {
 
   return (
     <TransitionGroup className="content__4bf10">
-      <CloneTransition
+      <AnimeTransition
         key={key}
+        clone={true}
         animation={tempAnimationData}
         options={{
           type: 'switch'
@@ -58,7 +60,7 @@ function ContentView ({ children }) {
             {children}
           </Router.Switch>
         </div>
-      </CloneTransition>
+      </AnimeTransition>
     </TransitionGroup>
   )
 }

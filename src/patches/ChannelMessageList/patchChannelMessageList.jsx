@@ -1,7 +1,7 @@
 import { Patcher, React } from '@/BdApi'
 import { ChannelMessageList, TransitionGroup, useStateFromStores } from '@/modules/DiscordModules'
 import findInReactTree from '@/helpers/findInReactTree'
-import CloneTransition from '@/components/CloneTransition'
+import AnimeTransition from '@/components/AnimeTransition'
 import { tempAnimationData } from '@/patches/ContextMenu/patchContextMenu'
 import { clearContainingStyles } from '@/helpers/transition'
 import ensureOnce from '@/helpers/ensureOnce'
@@ -54,9 +54,8 @@ function patchChannelMessageList () {
                 if (message) item.key = getMessageKey(message)
 
                 return (
-                  <CloneTransition
+                  <AnimeTransition
                     key={item.key}
-                    clone={false}
                     enter={toEnter.has(message ? item.key : getMessageKey(arr[index + 1]?.props?.message))}
                     exit={false}
                     animation={tempAnimationData}
@@ -67,7 +66,7 @@ function patchChannelMessageList () {
                     onEntered={clearContainingStyles}
                   >
                     {item}
-                  </CloneTransition>
+                  </AnimeTransition>
                 )
               })
             }

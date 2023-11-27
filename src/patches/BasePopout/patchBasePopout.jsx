@@ -1,6 +1,6 @@
 import { Patcher, React, ReactDOM } from '@/BdApi'
 import { BasePopoutModule, TransitionGroup } from '@/modules/DiscordModules'
-import CloneTransition from '@/components/CloneTransition'
+import AnimeTransition from '@/components/AnimeTransition'
 import { tempAnimationData } from '@/patches/ContextMenu/patchContextMenu'
 import { clearContainingStyles, directChild } from '@/helpers/transition'
 import patchPopoutCSSAnimator from '@/patches/BasePopout/patchPopoutCSSAnimator'
@@ -34,9 +34,8 @@ class AnimatedBasePopout extends BasePopoutModule.BasePopout {
       <TransitionGroup component={null}>
         {
           this.shouldShow(this) &&
-          <CloneTransition
+          <AnimeTransition
             key={+this.state.isLoading}
-            clone={false}
             targetNode={directChild}
             animation={tempAnimationData}
             context={{
@@ -47,7 +46,7 @@ class AnimatedBasePopout extends BasePopoutModule.BasePopout {
             onEntered={clearContainingStyles}
           >
             {value}
-          </CloneTransition>
+          </AnimeTransition>
         }
       </TransitionGroup>
     )

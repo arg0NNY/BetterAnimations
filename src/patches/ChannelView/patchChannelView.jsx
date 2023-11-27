@@ -1,7 +1,7 @@
 import { Patcher } from '@/BdApi'
 import { ChannelView } from '@/modules/DiscordModules'
 import ensureOnce from '@/helpers/ensureOnce'
-import CloneTransition from '@/components/CloneTransition'
+import AnimeTransition from '@/components/AnimeTransition'
 import SwitchTransition from '@/components/SwitchTransition'
 import anime from 'animejs'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
@@ -27,16 +27,15 @@ function patchChannelView () {
 
             return (
               <SwitchTransition>
-                <CloneTransition
+                <AnimeTransition
                   key={self.props.section}
-                  clone={false}
                   options={{
                     before: modifier('before'),
                     after: modifier('after')
                   }}
                 >
                   {value}
-                </CloneTransition>
+                </AnimeTransition>
               </SwitchTransition>
             )
           })
@@ -51,9 +50,8 @@ function patchChannelView () {
 
             return (
               <SwitchTransition>
-                <CloneTransition
+                <AnimeTransition
                   key={self.props.section + JSON.stringify(self.props.channelSidebarState)}
-                  clone={false}
                   targetNode={() => document.querySelector(`${DiscordSelectors.ThreadSidebar.chatLayerWrapper}, ${DiscordSelectors.ThreadSidebar.container}:not(${DiscordSelectors.ThreadSidebar.chatTarget})`)}
                   options={{
                     before: modifier('before'),
@@ -61,7 +59,7 @@ function patchChannelView () {
                   }}
                 >
                   {value}
-                </CloneTransition>
+                </AnimeTransition>
               </SwitchTransition>
             )
           })
