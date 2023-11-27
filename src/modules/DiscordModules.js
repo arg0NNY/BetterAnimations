@@ -8,7 +8,7 @@ function avoidCommon (module) {
 
 export const LocaleStore = Webpack.getModule(m => m.Messages?.IMAGE)
 export const Dispatcher = Webpack.getByKeys('dispatch', 'subscribe')
-export const AppView = Webpack.getModule(m => Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY')(m?.default))
+export const AppView = Webpack.getModule(Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'), { defaultExport: false })
 export const Router = Webpack.getByKeys('BrowserRouter')
 export const Transition = Webpack.getByKeys('ENTERING', 'EXITING', 'contextType')
 export const { CSSTransition, TransitionGroup } = Webpack.getByKeys('CSSTransition', 'TransitionGroup')
@@ -16,7 +16,7 @@ export const TransitionGroupContext = new Transition({ children: React.createEle
 export const Constants = Webpack.getByKeys('Permissions', 'ActivityTypes', 'StatusTypes')
 export const { Routes } = Constants
 export const { StaticChannelRoute } = Webpack.getByKeys('StaticChannelRoute')
-export const ContextMenu = Webpack.getModule(m => Filters.byStrings('getContextMenu', 'isOpen')(m?.default))
+export const ContextMenu = Webpack.getModule(Filters.byStrings('getContextMenu', 'isOpen'), { defaultExport: false })
 export const Flux = Webpack.getByKeys('useStateFromStores')
 export const { useStateFromStores } = Flux
 export const MenuSubmenuItem = Webpack.getByKeys('MenuSubmenuItem')
@@ -33,3 +33,7 @@ export const ChannelMessageList = Webpack.getModule(m => Filters.byStrings('chan
 export const ChannelView = Webpack.getModule(m => Filters.byStrings('providedChannel')(m?.type))
 export const PropTypes = Webpack.getByKeys('PropTypes')
 export const StandardSidebarView = Webpack.waitForModule(Filters.byKeys('SectionTypes', 'ContentTypes'))
+export const Modals = Webpack.getModule(m => Filters.byKeys('Modals')(m) && avoidCommon(m))
+export const ModalComponents = Webpack.getModule(m => m?.ModalRoot && !m?.Modal)
+export const ModalBackdrop = Webpack.getByKeys('BackdropStyles')
+export const ReactSpring = Webpack.getModule(m => m?.Spring && !m?.animated)

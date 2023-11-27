@@ -10,6 +10,7 @@ import patchTooltip from '@/patches/Tooltip/patchTooltip'
 import patchChannelMessageList from '@/patches/ChannelMessageList/patchChannelMessageList'
 import patchChannelView from '@/patches/ChannelView/patchChannelView'
 import patchStandardSidebarView from '@/patches/StandardSidebarView/patchStandardSidebarView'
+import patchModals from '@/patches/Modals/patchModals'
 
 anime.suspendWhenDocumentHidden = false
 
@@ -26,6 +27,7 @@ export default function (meta) {
       patchChannelMessageList()
       patchChannelView()
       patchStandardSidebarView()
+      patchModals()
 
       forceAppUpdate()
     },

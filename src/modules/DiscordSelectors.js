@@ -3,7 +3,8 @@ import { Webpack } from '@/BdApi'
 // TODO: Add support for lazy loaded modules
 const Classes = {
   ThreadSidebar: Webpack.getByKeys('chatLayerWrapper', 'chatTarget'),
-  StandardSidebarView: () => Webpack.getByKeys('standardSidebarView', 'contentRegion')
+  StandardSidebarView: () => Webpack.getByKeys('standardSidebarView', 'contentRegion'),
+  Modal: Webpack.getByKeys('root', 'rootWithShadow')
 }
 
 // export const DiscordClasses = new Proxy(Classes, {

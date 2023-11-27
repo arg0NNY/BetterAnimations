@@ -111,7 +111,7 @@ class CloneTransition extends React.Component {
   }
 
   render () {
-    const { animation, children, clone = true, ...props } = this.props
+    const { animation, children, clone = true, mountOnEnter = true, unmountOnExit = true, ...props } = this.props
 
     if (clone && props.in === false) {
       const node = ReactDOM.findDOMNode(this)
@@ -124,8 +124,8 @@ class CloneTransition extends React.Component {
     return (
       <Transition
         {...props}
-        mountOnEnter
-        unmountOnExit
+        mountOnEnter={mountOnEnter}
+        unmountOnExit={unmountOnExit}
         onEntering={this.onAnimate('enter')}
         onExiting={this.onAnimate('exit')}
         onEntered={(node, ...args) => props.onEntered?.(this.getTargetNode(node), ...args)}

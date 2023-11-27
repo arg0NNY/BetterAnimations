@@ -17,11 +17,18 @@
     isolation: isolate;
 }
 
+/* channel, server, settings */
 :is(.content__4bf10, .base__3e6af, .contentRegion__0bec1):is(:has(> [data-animation-type]), :has(> [data-animation])) {
     position: relative;
     overflow: clip;
 }
 
+/* modal */
+.focusLock__10aa5:is(:has(> [data-animation-type]), :has(> [data-animation])) {
+    position: relative;
+}
+
+/* settings */
 .contentRegion__0bec1 > .contentRegion__0bec1 {
     height: 100%;
 }
