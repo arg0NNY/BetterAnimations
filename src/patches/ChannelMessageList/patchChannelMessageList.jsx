@@ -11,6 +11,7 @@ import anime from 'animejs'
 
 const once = ensureOnce()
 
+// FIXME: Doesn't work after plugin restart
 // TODO: Disallow adding custom html for messages animations (and other animations with no proper wrapper)
 function patchChannelMessageList () {
   Patcher.after(ChannelMessageList, 'type', (self, args, value) => {
@@ -59,6 +60,9 @@ function patchChannelMessageList () {
                     enter={toEnter.has(message ? item.key : getMessageKey(arr[index + 1]?.props?.message))}
                     exit={false}
                     animation={tempAnimationData}
+                    context={{
+                      position: 'right'
+                    }}
                     options={{
                       before: modifier('before'),
                       after: modifier('after')
