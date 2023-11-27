@@ -37,3 +37,4 @@ export const Modals = Webpack.getModule(m => Filters.byKeys('Modals')(m) && avoi
 export const ModalComponents = Webpack.getModule(m => m?.ModalRoot && !m?.Modal)
 export const ModalBackdrop = Webpack.getByKeys('BackdropStyles')
 export const ReactSpring = Webpack.getModule(m => m?.Spring && !m?.animated)
+export const Layers = Webpack.getModule(Filters.byStrings('hasFullScreenLayer'), { defaultExport: false })

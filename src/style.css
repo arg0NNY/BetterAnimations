@@ -11,10 +11,12 @@
     pointer-events: none;
 }
 
-[data-animation-switch][data-animation-type="exit"] {
+[data-animation-switch] {
+    isolation: isolate;
+}
+[data-animation-switch][data-animation-type="exit"]:not(.layer__2efaa) {
     position: absolute !important;
     inset: 0;
-    isolation: isolate;
 }
 
 /* channel, server, settings */
