@@ -25,3 +25,8 @@ export const AnimeTimelineInjectSchema = InjectSchema('anime.timeline').extend({
   ))
   return tl
 })
+
+export const AnimeRandomInjectSchema = InjectSchema('anime.random').extend({
+  min: z.number(),
+  max: z.number()
+}).transform(params => anime.random(params.min, params.max))

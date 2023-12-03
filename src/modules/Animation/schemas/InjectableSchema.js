@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { formatValuesList, Literal } from '@/helpers/schemas'
 import {
+  MathInjectSchema,
   NodeInjectSchema,
   ObjectAssignInjectSchema,
   StringTemplateSchema,
@@ -8,6 +9,7 @@ import {
   WaitInjectSchema
 } from '@/modules/Animation/schemas/injects/common'
 import {
+  AnimeRandomInjectSchema,
   AnimeStaggerInjectSchema,
   AnimeTimelineInjectSchema
 } from '@/modules/Animation/schemas/injects/anime'
@@ -31,7 +33,9 @@ const injectSchemas = {
   'type': TypeInjectSchema,
   'Object.assign': ObjectAssignInjectSchema,
   'wait': WaitInjectSchema,
-  'string.template': StringTemplateSchema
+  'string.template': StringTemplateSchema,
+  'math': MathInjectSchema,
+  'anime.random': AnimeRandomInjectSchema
 }
 const injectTypes = Object.keys(injectSchemas)
 

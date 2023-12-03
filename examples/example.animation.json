@@ -97,7 +97,16 @@
   "exit": {
     "anime": {
       "inject": "wait",
-      "duration": 920
+      "duration": {
+        "inject": "math",
+        "expression": {
+          "inject": "string.template",
+          "template": "${duration} + (80 * 4)",
+          "values": {
+            "duration": { "inject": "duration" }
+          }
+        }
+      }
     }
   }
 }

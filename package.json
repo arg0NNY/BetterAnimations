@@ -19,6 +19,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@emmetio/math-expression": "^1.0.5",
     "animejs": "^3.2.1",
     "deepmerge": "^4.3.1",
     "hast-util-sanitize": "^5.0.1",

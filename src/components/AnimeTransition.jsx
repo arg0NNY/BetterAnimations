@@ -6,11 +6,8 @@ import { buildAnimateAssets } from '@/modules/Animation/parser'
 import { z } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 
-// TODO: Add some basic math injects
 // FIXME: Switching from Nitro to server animates as channel switch
 // TODO: Test some broken json for hast, css, and maybe anime
-// TODO: Add "anime.random" inject
-// TODO: Allow animations to be side-dependent (position, align injects)
 
 // TODO: Allow animation authors to restrict their animations to certain modules (so that their animation can be only enabled for channel switching and nothing else, for example)
 // TODO: Prompt users to enable hardware acceleration

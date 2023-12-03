@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { buildSwitchSchema } from '@/helpers/schemas'
 import { InjectSchema } from '@/modules/Animation/schemas/injects/InjectSchema'
+import evaluate from '@emmetio/math-expression'
 
 export const NodeInjectSchema = ({ node }) => InjectSchema('node')
   .extend({
@@ -36,8 +37,18 @@ export const WaitInjectSchema = InjectSchema('wait').extend({
 
 export const StringTemplateSchema = InjectSchema('string.template').extend({
   template: z.string(),
-  values: z.union([z.record(z.string()), z.string().array()])
+  values: z.union([z.record(z.any()), z.any().array()])
 }).transform(({ template, values }) => template.replaceAll(
   /\${([^\${}\s]+)}/g,
-  (_, key) => values[Array.isArray(values) ? +key : key] ?? ''
+  (_, key) => String(values[Array.isArray(values) ? +key : key]) ?? ''
 ))
+
+export const MathInjectSchema = InjectSchema('math').extend({
+  expression: z.string()
+}).transform(({ expression }, ctx) => {
+  try { return evaluate(expression) }
+  catch (e) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, message: e.message + ` "${expression}"` })
+    return z.NEVER
+  }
+})
