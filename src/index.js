@@ -22,7 +22,7 @@ export default function (meta) {
     start () {
       DOM.addStyle('BA-test', style)
 
-      // patchAppView()
+      patchAppView()
       patchContextMenu()
       patchBasePopout()
       patchTooltip()

@@ -15,18 +15,21 @@ function matchChannelRoutes (...locations) {
 
 export function shouldSwitchBase (next, prev) {
   const [nextChannel, prevChannel] = matchChannelRoutes(next, prev)
-  if (nextChannel && prevChannel && nextChannel.params.guildId !== prevChannel.params.guildId)
-    return true
 
   const nextOrPrev = (fn, n = next, p = prev) => fn(n) || fn(p)
   if (
     nextOrPrev(l => l.pathname.startsWith(Routes.GUILD_MEMBER_VERIFICATION('')))
     || nextOrPrev(l => l.pathname.startsWith(Routes.GUILD_MEMBER_VERIFICATION_FOR_HUB('')))
-    || nextOrPrev(l => matchExact(l.pathname, Routes.GUILD_BOOSTING_MARKETING(":guildId")))
+    || nextOrPrev(l => matchExact(l.pathname, Routes.GUILD_BOOSTING_MARKETING(':guildId')))
     || nextOrPrev(l => matchExact(l.pathname, Routes.COLLECTIBLES_SHOP_FULLSCREEN))
     || nextOrPrev(l => matchExact(l.pathname, Routes.GUILD_DISCOVERY))
     || nextOrPrev(l => l?.params?.channelId === StaticChannelRoute.GUILD_ONBOARDING, nextChannel, prevChannel)
   ) return true
+
+  if (nextChannel && prevChannel)
+    return nextChannel.params.guildId !== prevChannel.params.guildId
+  if (nextChannel || prevChannel)
+    return (nextChannel ?? prevChannel).params.guildId !== '@me'
 
   return false
 }
