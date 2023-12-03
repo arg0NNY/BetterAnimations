@@ -8,6 +8,8 @@ import { fromZodError } from 'zod-validation-error'
 import { clearContainingStyles, directChild } from '@/helpers/transition'
 import patchContextSubmenu from '@/patches/ContextMenu/patchContextSubmenu'
 import ensureOnce from '@/helpers/ensureOnce'
+import Position from '@/enums/Position'
+import Align from '@/enums/Align'
 
 export let tempAnimationData
 try {
@@ -24,8 +26,8 @@ function patchContextMenu () {
   Patcher.after(ContextMenu, 'default', (self, args, value) => {
 
     const context = {
-      position: 'bottom',
-      align: 'left',
+      position: Position.Bottom,
+      align: Align.Left,
       duration: 200
     }
 

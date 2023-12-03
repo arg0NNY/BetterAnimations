@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { formatValuesList, Literal } from '@/helpers/schemas'
+import Inject from '@/enums/Inject'
 import {
   MathInjectSchema,
   NodeInjectSchema,
@@ -22,20 +23,20 @@ import {
 } from '@/modules/Animation/schemas/injects/settings'
 
 const injectSchemas = {
-  'node': NodeInjectSchema,
-  'anime.stagger': AnimeStaggerInjectSchema,
-  'anime.timeline': AnimeTimelineInjectSchema,
-  'duration': DurationInjectSchema,
-  'easing': EasingInjectSchema,
-  'variant': VariantInjectSchema,
-  'position': PositionInjectSchema,
-  'align': AlignInjectSchema,
-  'type': TypeInjectSchema,
-  'Object.assign': ObjectAssignInjectSchema,
-  'wait': WaitInjectSchema,
-  'string.template': StringTemplateSchema,
-  'math': MathInjectSchema,
-  'anime.random': AnimeRandomInjectSchema
+  [Inject.Node]: NodeInjectSchema,
+  [Inject.AnimeStagger]: AnimeStaggerInjectSchema,
+  [Inject.AnimeTimeline]: AnimeTimelineInjectSchema,
+  [Inject.Duration]: DurationInjectSchema,
+  [Inject.Easing]: EasingInjectSchema,
+  [Inject.Variant]: VariantInjectSchema,
+  [Inject.Position]: PositionInjectSchema,
+  [Inject.Align]: AlignInjectSchema,
+  [Inject.Type]: TypeInjectSchema,
+  [Inject.ObjectAssign]: ObjectAssignInjectSchema,
+  [Inject.Wait]: WaitInjectSchema,
+  [Inject.StringTemplate]: StringTemplateSchema,
+  [Inject.Math]: MathInjectSchema,
+  [Inject.AnimeRandom]: AnimeRandomInjectSchema
 }
 const injectTypes = Object.keys(injectSchemas)
 

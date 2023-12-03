@@ -3,13 +3,14 @@ import { InjectSchema } from '@/modules/Animation/schemas/injects/InjectSchema'
 import anime from 'animejs'
 import { z } from 'zod'
 import { transformAnimeConfig } from '@/modules/Animation/helpers'
+import Inject from '@/enums/Inject'
 
-export const AnimeStaggerInjectSchema = InjectSchema('anime.stagger').extend({
+export const AnimeStaggerInjectSchema = InjectSchema(Inject.AnimeStagger).extend({
   value: Defined,
   options: Defined.optional()
 }).transform(params => anime.stagger(params.value, params.options))
 
-export const AnimeTimelineInjectSchema = InjectSchema('anime.timeline').extend({
+export const AnimeTimelineInjectSchema = InjectSchema(Inject.AnimeTimeline).extend({
   parameters: Defined.optional(),
   children: z.object({
     parameters: Defined,
@@ -26,7 +27,7 @@ export const AnimeTimelineInjectSchema = InjectSchema('anime.timeline').extend({
   return tl
 })
 
-export const AnimeRandomInjectSchema = InjectSchema('anime.random').extend({
+export const AnimeRandomInjectSchema = InjectSchema(Inject.AnimeRandom).extend({
   min: z.number(),
   max: z.number()
 }).transform(params => anime.random(params.min, params.max))
