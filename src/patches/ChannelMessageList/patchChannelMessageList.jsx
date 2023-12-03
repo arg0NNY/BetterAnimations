@@ -8,11 +8,10 @@ import ensureOnce from '@/helpers/ensureOnce'
 import { getMessageKey } from '@/patches/ChannelMessageList/helpers'
 import MessageStackStore from '@/patches/ChannelMessageList/MessageStackStore'
 
-const once = ensureOnce()
-
-// FIXME: Doesn't work after plugin restart
 // TODO: Disallow adding custom html for messages animations (and other animations with no proper wrapper)
 function patchChannelMessageList () {
+  const once = ensureOnce()
+
   Patcher.after(ChannelMessageList, 'type', (self, args, value) => {
     once(() =>
       Patcher.after(value.props.children.type, 'type', (self, args, value) => {

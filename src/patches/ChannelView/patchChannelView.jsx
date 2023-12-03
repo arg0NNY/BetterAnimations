@@ -6,9 +6,9 @@ import SwitchTransition from '@/components/SwitchTransition'
 import anime from 'animejs'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
 
-const once = ensureOnce()
-
 function patchChannelView () {
+  const once = ensureOnce()
+
   Patcher.after(ChannelView, 'type', (self, args, value) => {
     Patcher.after(value.type, 'render', (self, args, value) => {
       Patcher.after(value.props, 'children', (self, args, value) => {

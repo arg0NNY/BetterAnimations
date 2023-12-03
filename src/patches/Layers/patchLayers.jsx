@@ -6,9 +6,9 @@ import AnimeTransition from '@/components/AnimeTransition'
 import { tempAnimationData } from '@/patches/AppView/patchAppView'
 import { clearContainingStyles } from '@/helpers/transition'
 
-const once = ensureOnce()
-
 function patchLayers () {
+  const once = ensureOnce()
+
   Patcher.after(Layers, 'default', (self, args, value) => {
     once(
       () => Patcher.after(value.type.prototype, 'renderLayers', (self, args, value) => {

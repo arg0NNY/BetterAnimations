@@ -18,9 +18,9 @@ catch (e) {
   console.error('Failed to load animation:', e)
 }
 
-const once = ensureOnce()
-
 function patchContextMenu () {
+  const once = ensureOnce()
+
   Patcher.after(ContextMenu, 'default', (self, args, value) => {
 
     const context = {
