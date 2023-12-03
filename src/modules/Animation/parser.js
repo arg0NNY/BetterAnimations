@@ -37,10 +37,16 @@ export function buildAnimateAssets (data = null, context = {}, options = {}) {
     let nodes, style
 
     if (data.hast) {
-      nodes = [].concat(data.hast).map(node => toDom(sanitize(
-        node,
-        deepmerge(defaultSchema, { attributes: {'*': ['className']} })
-      )))
+      nodes = [].concat(data.hast).map((node, i) => {
+        const sanitized = sanitize(
+          node,
+          deepmerge(defaultSchema, { attributes: {'*': ['className']} })
+        )
+        if (sanitized.type === 'root')
+          throw new Error(`Failed to parse hast node at "hast.${i}"`)
+
+        return toDom(sanitized)
+      })
     }
 
     if (data.css) {
