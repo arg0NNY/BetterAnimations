@@ -1,0 +1,78 @@
+import { Patcher, React } from '@/BdApi'
+import { ListThin, TransitionGroup, useStateFromStores } from '@/modules/DiscordModules'
+import findInReactTree from '@/helpers/findInReactTree'
+import AnimeTransition from '@/components/AnimeTransition'
+import { tempAnimationData } from '@/patches/ContextMenu/patchContextMenu'
+import { clearContainingStyles, heightModifier } from '@/helpers/transition'
+import ChannelStackStore from '@/patches/ListThin/ChannelStackStore'
+import PassThrough from '@/components/PassThrough'
+
+function patchListThin () {
+  Patcher.after(ListThin, 'render', (self, [props], value) => {
+    const isChannelList = props.id?.includes('channels')
+
+    const channelsToAnimate = isChannelList && useStateFromStores([ChannelStackStore], () => ChannelStackStore.getChannelsAwaitingTransition())
+
+    const focusRingScope = findInReactTree(value, m => m?.containerRef)
+    if (!focusRingScope || !Array.isArray(focusRingScope.children)) return
+
+    const shouldAnimate = item => {
+      if (isChannelList) {
+        const { channel } = findInReactTree(item, m => m?.channel) ?? {}
+        if (channel) return channelsToAnimate.channels.has(channel.id) || channelsToAnimate.guilds.has(channel.guild_id)
+      }
+
+      return false
+    }
+
+    const childFactory = e => {
+      if (e) e.props.exit = e.props.items.some(i => shouldAnimate(i))
+      return e
+    }
+
+    focusRingScope.children = (
+      <TransitionGroup
+        component={null}
+        childFactory={childFactory}
+      >
+        {
+          focusRingScope.children.map(item => {
+            if (!item) return item
+
+            const items = [].concat(
+              item.type === React.Fragment
+                ? item.props.children
+                : item
+            ).filter(i => !!i)
+
+            return (
+              <PassThrough
+                key={item.key}
+                enter={shouldAnimate(item)}
+                exit={false} // Managed in childFactory
+                animation={tempAnimationData}
+                context={{
+                  duration: 200,
+                  position: 'right'
+                }}
+                options={heightModifier()}
+                onEntered={clearContainingStyles}
+                items={items}
+              >
+                {props => (
+                  props.items.map(item => (
+                    <AnimeTransition {...props}>
+                      {item}
+                    </AnimeTransition>
+                  ))
+                )}
+              </PassThrough>
+            )
+          })
+        }
+      </TransitionGroup>
+    )
+  })
+}
+
+export default patchListThin

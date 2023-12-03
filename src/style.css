@@ -34,3 +34,8 @@
 .contentRegion__0bec1 > .contentRegion__0bec1 {
     height: 100%;
 }
+
+/* lists */
+[data-animation-type]:is(.containerDefault__3187b, .containerDragBefore_fe91aa, .containerUserOver__8b873, .containerDragAfter__437c5) {
+    transition: none;
+}

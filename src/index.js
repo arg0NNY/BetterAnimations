@@ -12,6 +12,7 @@ import patchChannelView from '@/patches/ChannelView/patchChannelView'
 import patchStandardSidebarView from '@/patches/StandardSidebarView/patchStandardSidebarView'
 import patchModals from '@/patches/Modals/patchModals'
 import patchLayers from '@/patches/Layers/patchLayers'
+import patchListThin from '@/patches/ListThin/patchListThin'
 
 anime.suspendWhenDocumentHidden = false
 
@@ -21,7 +22,7 @@ export default function (meta) {
     start () {
       DOM.addStyle('BA-test', style)
 
-      patchAppView()
+      // patchAppView()
       patchContextMenu()
       patchBasePopout()
       patchTooltip()
@@ -30,6 +31,7 @@ export default function (meta) {
       patchStandardSidebarView()
       patchModals()
       patchLayers()
+      patchListThin()
 
       forceAppUpdate()
     },

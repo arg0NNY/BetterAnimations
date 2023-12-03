@@ -3,11 +3,10 @@ import { ChannelMessageList, TransitionGroup, useStateFromStores } from '@/modul
 import findInReactTree from '@/helpers/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
 import { tempAnimationData } from '@/patches/ContextMenu/patchContextMenu'
-import { clearContainingStyles } from '@/helpers/transition'
+import { clearContainingStyles, heightModifier } from '@/helpers/transition'
 import ensureOnce from '@/helpers/ensureOnce'
 import { getMessageKey } from '@/patches/ChannelMessageList/helpers'
 import MessageStackStore from '@/patches/ChannelMessageList/MessageStackStore'
-import anime from 'animejs'
 
 const once = ensureOnce()
 
@@ -31,18 +30,6 @@ function patchChannelMessageList () {
           e.props.exit = toExit.has(message?.id)
           return e
         }
-        const modifier = type => ({ node }) => {
-          node.style.overflow = 'hidden'
-          return anime({
-            targets: node,
-            height: type === 'after' ? 0 : [0, node.clientHeight],
-            marginTop: type === 'after' ? 0 : [0, anime.get(node, 'marginTop')],
-            marginBottom: type === 'after' ? 0 : [0, anime.get(node, 'marginBottom')],
-            easing: 'cubicBezier(0.42, 0, 0.58, 1.0)', // easeInOut
-            duration: 250,
-            complete: type === 'after' ? undefined : () => ['overflow', 'height', 'margin-top', 'margin-bottom'].forEach(p => node.style.removeProperty(p))
-          })
-        }
 
         list.props.children[i] = (
           <TransitionGroup
@@ -58,15 +45,12 @@ function patchChannelMessageList () {
                   <AnimeTransition
                     key={item.key}
                     enter={toEnter.has(message ? item.key : getMessageKey(arr[index + 1]?.props?.message))}
-                    exit={false}
+                    exit={false} // Managed in childFactory
                     animation={tempAnimationData}
                     context={{
                       position: 'right'
                     }}
-                    options={{
-                      before: modifier('before'),
-                      after: modifier('after')
-                    }}
+                    options={heightModifier({ duration: 250 })}
                     onEntered={clearContainingStyles}
                   >
                     {item}
