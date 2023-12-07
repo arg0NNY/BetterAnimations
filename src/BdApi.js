@@ -8,7 +8,8 @@ export const {
   Utils,
   DOM,
   React,
-  ReactDOM
+  ReactDOM,
+  Data
 } = bdApi
 
 export default bdApi
