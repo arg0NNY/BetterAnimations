@@ -7,24 +7,7 @@
       "step": 500
     },
     "easing": true,
-    "variant": [
-      {
-        "key": "up",
-        "name": "Up"
-      },
-      {
-        "key": "down",
-        "name": "Down"
-      },
-      {
-        "key": "left",
-        "name": "Left"
-      },
-      {
-        "key": "right",
-        "name": "Right"
-      }
-    ]
+    "direction": true
   },
   "enter": {
     "hast": [
@@ -85,7 +68,7 @@
           "easing": { "inject": "easing" }
         },
         "source": {
-          "inject": "variant",
+          "inject": "direction",
           "up": { "translateY": ["100%", 0] },
           "down": { "translateY": ["-100%", 0] },
           "left": { "translateX": ["100%", 0] },
@@ -96,16 +79,27 @@
   },
   "exit": {
     "anime": {
-      "inject": "wait",
-      "duration": {
-        "inject": "math",
-        "expression": {
-          "inject": "string.template",
-          "template": "${duration} + (80 * 4)",
-          "values": {
-            "duration": { "inject": "duration" }
+      "inject": "Object.assign",
+      "target": {
+        "targets": { "inject": "node" },
+        "duration": {
+          "inject": "math",
+          "expression": {
+            "inject": "string.template",
+            "template": "${duration} + (80 * 4)",
+            "values": {
+              "duration": { "inject": "duration" }
+            }
           }
-        }
+        },
+        "easing": { "inject": "easing" }
+      },
+      "source": {
+        "inject": "direction",
+        "up": { "translateY": "-30%" },
+        "down": { "translateY": "30%" },
+        "left": { "translateX": "-30%" },
+        "right": { "translateX": "30%" }
       }
     }
   }

@@ -16,6 +16,7 @@ import {
 } from '@/modules/Animation/schemas/injects/anime'
 import {
   AlignInjectSchema,
+  DirectionInjectSchema,
   DurationInjectSchema,
   EasingInjectSchema,
   PositionInjectSchema,
@@ -36,7 +37,8 @@ const injectSchemas = {
   [Inject.Wait]: WaitInjectSchema,
   [Inject.StringTemplate]: StringTemplateSchema,
   [Inject.Math]: MathInjectSchema,
-  [Inject.AnimeRandom]: AnimeRandomInjectSchema
+  [Inject.AnimeRandom]: AnimeRandomInjectSchema,
+  [Inject.Direction]: DirectionInjectSchema
 }
 const injectTypes = Object.keys(injectSchemas)
 

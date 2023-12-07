@@ -1,15 +1,14 @@
 import { Router } from '@/modules/DiscordModules'
 import { React } from '@/BdApi'
+import usePrevious from '@/hooks/usePrevious'
 
 function useLocationKey (shouldChange, location = Router.useLocation()) {
-  const prevLocation = React.useRef(location)
+  const prevLocation = usePrevious(location)
   const key = React.useRef(0)
 
-  if (!Object.is(prevLocation.current, location)) {
-    if (prevLocation.current && shouldChange(location, prevLocation.current))
+  if (!Object.is(prevLocation, location)) {
+    if (prevLocation && shouldChange(location, prevLocation))
       key.current += 1
-
-    prevLocation.current = location
   }
 
   return key.current

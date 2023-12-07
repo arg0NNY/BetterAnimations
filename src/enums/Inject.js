@@ -9,6 +9,7 @@ export default Enum({
   Variant: 'variant',
   Position: 'position',
   Align: 'align',
+  Direction: 'direction',
   Type: 'type',
   ObjectAssign: 'Object.assign',
   Wait: 'wait',

@@ -49,7 +49,8 @@ const AnimationSchema = (context = null) => z.object({
       name: z.string()
     }).array(),
     [Setting.Position]: z.literal(true),
-    [Setting.Align]: z.literal(true)
+    [Setting.Align]: z.literal(true),
+    [Setting.Direction]: z.union([z.literal(true), z.string().array()])
   }).partial().strict().optional(),
   animate: AnimateSchema(context).optional(),
   enter: AnimateSchema(context, { disallowed: [Inject.Type] }).optional(),

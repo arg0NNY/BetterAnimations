@@ -13,6 +13,7 @@ export default function Enum (values) {
 
   return Object.freeze(
     Object.assign(
+      {},
       raw,
       {
         keys: () => Object.keys(raw),
