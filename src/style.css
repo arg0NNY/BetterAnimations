@@ -39,3 +39,8 @@
 [data-animation-type]:is(.containerDefault__3187b, .containerDragBefore_fe91aa, .containerUserOver__8b873, .containerDragAfter__437c5) {
     transition: none;
 }
+
+/* for voice chat sidebar */
+.chat__52833 {
+    overflow: clip;
+}
