@@ -9,7 +9,9 @@ export const {
   DOM,
   React,
   ReactDOM,
-  Data
+  Data,
+  Plugins,
+  UI
 } = bdApi
 
 export default bdApi

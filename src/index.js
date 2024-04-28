@@ -13,6 +13,8 @@ import patchStandardSidebarView from '@/patches/StandardSidebarView/patchStandar
 import patchModals from '@/patches/Modals/patchModals'
 import patchLayers from '@/patches/Layers/patchLayers'
 import patchListThin from '@/patches/ListThin/patchListThin'
+import PackManager from '@/modules/PackManager'
+import Logger from '@/modules/Logger'
 
 anime.suspendWhenDocumentHidden = false
 
@@ -21,6 +23,12 @@ export default function (meta) {
   return {
     start () {
       DOM.addStyle('BA-test', style)
+
+      const packErrors = PackManager.initialize()
+      if (packErrors?.length) Logger.error('Startup', 'Failed to load packs:', packErrors)
+
+      console.log(PackManager)
+      window.PackManager = PackManager
 
       patchAppView()
       patchContextMenu()
@@ -37,6 +45,8 @@ export default function (meta) {
     },
     stop () {
       DOM.removeStyle('BA-test')
+
+      PackManager.unwatchAddons()
 
       Patcher.unpatchAll()
       Dispatcher.unsubscribeAll()

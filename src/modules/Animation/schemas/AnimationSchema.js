@@ -36,6 +36,7 @@ export const AnimateSchema = (context = null, injectOptions = {}) => {
 }
 
 const AnimationSchema = (context = null) => z.object({
+  key: z.string().min(1).trim(),
   name: z.string().trim(),
   settings: z.object({
     [Setting.Duration]: z.object({

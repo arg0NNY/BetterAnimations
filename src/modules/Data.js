@@ -6,5 +6,6 @@ export default new Proxy({}, {
   },
   set (_, name, value) {
     Data.save(name, value)
+    return true
   }
 })
