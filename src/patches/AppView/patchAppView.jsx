@@ -10,6 +10,8 @@ import { z } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 import { clearContainingStyles } from '@/helpers/transition'
 
+// TODO: Insert classes dynamically
+
 export let tempAnimationData
 try {
   tempAnimationData = parseAnimationData(animation)
@@ -33,7 +35,7 @@ function BaseView ({ children }) {
         }}
         onEntered={clearContainingStyles}
       >
-        <div className="base__3e6af">
+        <div className="base_c0676e">
           {children}
         </div>
       </AnimeTransition>
@@ -45,7 +47,7 @@ function ContentView ({ children }) {
   const key = useLocationKey(shouldSwitchContent)
 
   return (
-    <TransitionGroup className="content__4bf10">
+    <TransitionGroup className="content__76dcf">
       <AnimeTransition
         key={key}
         clone={true}
@@ -55,7 +57,7 @@ function ContentView ({ children }) {
         }}
         onEntered={clearContainingStyles}
       >
-        <div className="content__4bf10">
+        <div className="content__76dcf">
           <Router.Switch location={location}>
             {children}
           </Router.Switch>
@@ -67,12 +69,12 @@ function ContentView ({ children }) {
 
 function patchAppView () {
   Patcher.after(AppView, 'default', (self, args, value) => {
-    const base = findInReactTree(value, m => m?.props?.className === 'base__3e6af')
+    const base = findInReactTree(value, m => m?.props?.className === 'base_c0676e')
     if (!base) return
 
     base.props.children = <BaseView>{base.props.children}</BaseView>
 
-    const content = findInReactTree(base, m => m?.props?.className === 'content__4bf10')
+    const content = findInReactTree(base, m => m?.props?.className === 'content__76dcf')
     if (!content) return
 
     const view = findInReactTree(content, m => m?.children?.type === Router.Switch)

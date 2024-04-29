@@ -30,7 +30,13 @@ export default class AddonManager {
   get prefix () {return 'addon'}
 
   initialize () {
+    this.ensureAddonFolder()
     return this.loadAllAddons()
+  }
+
+  ensureAddonFolder () {
+    if (!fs.existsSync(this.addonFolder))
+      fs.mkdirSync(this.addonFolder)
   }
 
   // Subclasses should overload this and modify the addon object as needed to fully load it

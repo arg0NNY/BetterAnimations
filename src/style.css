@@ -1,5 +1,5 @@
 
-.appMount_fae9dd {
+.appMount_c99875 {
     overflow: clip;
 }
 
@@ -20,27 +20,27 @@
 }
 
 /* channel, server, settings */
-:is(.content__4bf10, .base__3e6af, .contentRegion__0bec1):is(:has(> [data-animation-type]), :has(> [data-animation])) {
+:is(.content__76dcf, .base_c0676e, .contentRegion__08eba):is(:has(> [data-animation-type]), :has(> [data-animation])) {
     position: relative;
     overflow: clip;
 }
 
 /* modal */
-.focusLock__10aa5:is(:has(> [data-animation-type]), :has(> [data-animation])) {
+.focusLock__28507:is(:has(> [data-animation-type]), :has(> [data-animation])) {
     position: relative;
 }
 
 /* settings */
-.contentRegion__0bec1 > .contentRegion__0bec1 {
+.contentRegion__08eba > .contentRegion__08eba {
     height: 100%;
 }
 
 /* lists */
-[data-animation-type]:is(.containerDefault__3187b, .containerDragBefore_fe91aa, .containerUserOver__8b873, .containerDragAfter__437c5) {
+[data-animation-type]:is(.containerDefault_ae2ea4, .containerDragBefore__1b24b, .containerUserOver__91b97, .containerDragAfter_e03e10) {
     transition: none;
 }
 
 /* for voice chat sidebar */
-.chat__52833 {
+.chat_f8f70f {
     overflow: clip;
 }

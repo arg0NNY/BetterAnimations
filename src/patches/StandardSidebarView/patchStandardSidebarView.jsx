@@ -16,10 +16,10 @@ async function patchStandardSidebarView () {
   })
 
   Patcher.after(await StandardSidebarView, 'default', (self, [props], value) => {
-    const standardSidebarView = findInReactTree(value, m => m?.className?.includes('standardSidebarView__1129a'))
+    const standardSidebarView = findInReactTree(value, m => m?.className?.includes('standardSidebarView__12528'))
     if (!standardSidebarView) return
 
-    const i = standardSidebarView.children.findIndex(i => i?.props?.className?.includes('contentRegion__0bec1'))
+    const i = standardSidebarView.children.findIndex(i => i?.props?.className?.includes('contentRegion__08eba'))
     if (i === -1) return
 
     const contentRegion = standardSidebarView.children[i]
@@ -34,7 +34,7 @@ async function patchStandardSidebarView () {
     }
 
     standardSidebarView.children[i] = (
-      <TransitionGroup className="contentRegion__0bec1" childFactory={childFactory}>
+      <TransitionGroup className="contentRegion__08eba" childFactory={childFactory}>
         <AnimeTransition
           key={props.section}
           animation={tempAnimationData}
