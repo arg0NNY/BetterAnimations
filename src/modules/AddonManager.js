@@ -3,6 +3,7 @@ import Logger from '@/modules/Logger'
 import AddonError from '@/structs/AddonError'
 import Toasts from '@/modules/Toasts'
 import Data from '@/modules/Data'
+import Events from '@/modules/Emitter'
 
 const splitRegex = /[^\S\r\n]*?\r?(?:\r\n|\n)[^\S\r\n]*?\*[^\S\r\n]?/
 const escapedAtRegex = /^\\@/
@@ -28,6 +29,7 @@ export default class AddonManager {
   get addonFolder () {return ''}
   get language () {return ''}
   get prefix () {return 'addon'}
+  emit(event, ...args) {return Events.emit(`${this.prefix}-${event}`, ...args);}
 
   initialize () {
     this.ensureAddonFolder()
@@ -141,7 +143,7 @@ export default class AddonManager {
       if (partialAddon) {
         partialAddon.partial = true
         this.state[partialAddon.id] = false
-        // this.emit('loaded', partialAddon)
+        this.emit('loaded', partialAddon)
       }
       return e
     }
@@ -150,12 +152,12 @@ export default class AddonManager {
     if (error) {
       this.state[addon.id] = false
       addon.partial = true
-      // this.emit('loaded', addon)
+      this.emit('loaded', addon)
       return error
     }
 
     if (shouldToast) Toasts.show(`${addon.name} v${addon.version} was loaded.`)
-    // this.emit('loaded', addon)
+    this.emit('loaded', addon)
 
     if (!this.state[addon.id]) return this.state[addon.id] = false
     return this.startAddon(addon)
@@ -163,12 +165,11 @@ export default class AddonManager {
 
   unloadAddon (idOrFileOrAddon, shouldToast = true, isReload = false) {
     const addon = typeof (idOrFileOrAddon) == 'string' ? this.addonList.find(c => c.id == idOrFileOrAddon || c.filename == idOrFileOrAddon) : idOrFileOrAddon
-    // console.log("watcher", "unloadAddon", idOrFileOrAddon, addon);
     if (!addon) return false
     if (this.state[addon.id]) isReload ? this.stopAddon(addon) : this.disableAddon(addon)
 
     this.addonList.splice(this.addonList.indexOf(addon), 1)
-    // this.emit('unloaded', addon)
+    this.emit('unloaded', addon)
     if (shouldToast) Toasts.show(`${addon.name} was unloaded.`)
     return true
   }
@@ -201,6 +202,7 @@ export default class AddonManager {
     if (!addon || addon.partial) return
     if (this.state[addon.id]) return
     this.state[addon.id] = true
+    this.emit('enabled', addon)
     this.startAddon(addon)
     this.saveState()
   }
@@ -210,6 +212,7 @@ export default class AddonManager {
     if (!addon || addon.partial) return
     if (!this.state[addon.id]) return
     this.state[addon.id] = false
+    this.emit('disabled', addon)
     this.stopAddon(addon)
     this.saveState()
   }
@@ -271,7 +274,6 @@ export default class AddonManager {
 
   deleteAddon (idOrFileOrAddon) {
     const addon = typeof (idOrFileOrAddon) == 'string' ? this.addonList.find(c => c.id == idOrFileOrAddon || c.filename == idOrFileOrAddon) : idOrFileOrAddon
-    // console.log(path.resolve(this.addonFolder, addon.filename), fs.unlinkSync)
     return fs.unlinkSync(path.resolve(this.addonFolder, addon.filename))
   }
 
