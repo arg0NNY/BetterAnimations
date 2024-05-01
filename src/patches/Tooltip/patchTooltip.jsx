@@ -25,7 +25,7 @@ function TooltipTransition (props) {
       animation={tempAnimationData}
       context={{
         position: props.position,
-        align: props.align,
+        // align: props.align,
         duration: 100
       }}
       onEntered={onRest(true)}

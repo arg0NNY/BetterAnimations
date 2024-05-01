@@ -2,13 +2,12 @@ import { z } from 'zod'
 import InjectableSchema from '@/modules/Animation/schemas/InjectableSchema'
 import { matchesSchema } from '@/helpers/schemas'
 import Inject from '@/enums/Inject'
-import Setting from '@/enums/AnimationSetting'
+import SettingsSchema from '@/modules/Animation/schemas/SettingsSchema'
 
 const safeInjects = [
   Inject.Variant,
   Inject.Type,
   Inject.Position,
-  Inject.Align,
   Inject.Direction,
   Inject.ObjectAssign,
   Inject.StringTemplate,
@@ -38,21 +37,7 @@ export const AnimateSchema = (context = null, injectOptions = {}) => {
 const AnimationSchema = (context = null) => z.object({
   key: z.string().min(1).trim(),
   name: z.string().trim(),
-  settings: z.object({
-    [Setting.Duration]: z.object({
-      from: z.number().int().nonnegative(),
-      to: z.number().int().nonnegative(),
-      step: z.number().int().nonnegative(),
-    }),
-    [Setting.Easing]: z.union([z.literal(true), z.string().array()]),
-    [Setting.Variant]: z.object({
-      key: z.string(),
-      name: z.string()
-    }).array(),
-    [Setting.Position]: z.literal(true),
-    [Setting.Align]: z.literal(true),
-    [Setting.Direction]: z.union([z.literal(true), z.string().array()])
-  }).partial().strict().optional(),
+  settings: SettingsSchema.optional(),
   animate: AnimateSchema(context).optional(),
   enter: AnimateSchema(context, { disallowed: [Inject.Type] }).optional(),
   exit: AnimateSchema(context, { disallowed: [Inject.Type] }).optional(),

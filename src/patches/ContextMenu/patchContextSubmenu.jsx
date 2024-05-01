@@ -4,15 +4,13 @@ import AnimeTransition from '@/components/AnimeTransition'
 import { tempAnimationData } from '@/patches/ContextMenu/patchContextMenu'
 import { clearContainingStyles } from '@/helpers/transition'
 import Position from '@/enums/Position'
-import Align from '@/enums/Align'
 
 function patchContextSubmenu () {
   const callback = (self, [props], original) => {
     const value = original(Object.assign({}, props, { isFocused: true }))
 
     const context = {
-      position: Position.Bottom,
-      align: Align.Left,
+      position: Position.BottomLeft,
       duration: 200
     }
 

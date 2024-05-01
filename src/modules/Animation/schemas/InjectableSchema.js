@@ -15,7 +15,6 @@ import {
   AnimeTimelineInjectSchema
 } from '@/modules/Animation/schemas/injects/anime'
 import {
-  AlignInjectSchema,
   DirectionInjectSchema,
   DurationInjectSchema,
   EasingInjectSchema,
@@ -31,7 +30,6 @@ const injectSchemas = {
   [Inject.Easing]: EasingInjectSchema,
   [Inject.Variant]: VariantInjectSchema,
   [Inject.Position]: PositionInjectSchema,
-  [Inject.Align]: AlignInjectSchema,
   [Inject.Type]: TypeInjectSchema,
   [Inject.ObjectAssign]: ObjectAssignInjectSchema,
   [Inject.Wait]: WaitInjectSchema,

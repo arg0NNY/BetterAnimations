@@ -1,5 +1,6 @@
 import { LocaleStore, Dispatcher, updateTheme, ThemeStore } from '@/modules/DiscordModules'
 
+// TODO: Add reason
 export function forceAppUpdate () {
   const locale = LocaleStore.getLocale()
   Dispatcher.dispatch({ type: 'I18N_LOAD_START', locale })

@@ -9,6 +9,8 @@ import { parseAnimationData } from '@/modules/Animation/parser'
 import { z } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 import { clearContainingStyles } from '@/helpers/transition'
+import Modules from '@/modules/Modules'
+import ModuleKey from '@/enums/ModuleKey'
 
 // TODO: Insert classes dynamically
 
@@ -24,15 +26,16 @@ catch (e) {
 function BaseView ({ children }) {
   const key = useLocationKey(shouldSwitchBase)
 
+  const module = Modules.getModule(ModuleKey.Servers)
+  if (!module.isEnabled()) return children
+
   return (
     <TransitionGroup component={null}>
       <AnimeTransition
         key={key}
         clone={true}
-        animation={tempAnimationData}
-        options={{
-          type: 'switch'
-        }}
+        animations={module.getAnimations()}
+        options={{ type: 'switch' }}
         onEntered={clearContainingStyles}
       >
         <div className="base_c0676e">

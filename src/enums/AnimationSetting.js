@@ -5,6 +5,6 @@ export default Enum({
   Easing: 'easing',
   Variant: 'variant',
   Position: 'position',
-  Align: 'align',
-  Direction: 'direction'
+  Direction: 'direction',
+  DirectionAxis: 'directionAxis'
 })

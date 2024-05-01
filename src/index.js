@@ -15,6 +15,7 @@ import patchLayers from '@/patches/Layers/patchLayers'
 import patchListThin from '@/patches/ListThin/patchListThin'
 import PackManager from '@/modules/PackManager'
 import Logger from '@/modules/Logger'
+import Settings from '@/modules/Settings'
 
 anime.suspendWhenDocumentHidden = false
 
@@ -52,6 +53,9 @@ export default function (meta) {
       Dispatcher.unsubscribeAll()
 
       forceAppUpdate()
+    },
+    getSettingsPanel () {
+      return Settings.buildSettingsPanel()
     }
   }
 }

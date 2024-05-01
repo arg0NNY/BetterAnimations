@@ -3,24 +3,21 @@
   "name": "Reveal",
   "settings": {
     "position": true,
-    "align": true,
     "duration": {
       "from": 0,
       "to": 5000,
       "step": 500
+    },
+
+    "defaults": {
+      "position": "center",
+      "duration": 500
     }
   },
   "animate": {
     "css": {
       "{node}": {
-        "transform-origin": {
-          "inject": "string.template",
-          "template": "${position} ${align}",
-          "values": {
-            "position": { "inject": "position" },
-            "align": { "inject": "align" }
-          }
-        }
+        "transform-origin": { "inject": "position" }
       }
     },
     "anime": {

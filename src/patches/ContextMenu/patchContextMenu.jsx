@@ -9,7 +9,6 @@ import { clearContainingStyles, directChild } from '@/helpers/transition'
 import patchContextSubmenu from '@/patches/ContextMenu/patchContextSubmenu'
 import ensureOnce from '@/helpers/ensureOnce'
 import Position from '@/enums/Position'
-import Align from '@/enums/Align'
 
 export let tempAnimationData
 try {
@@ -26,8 +25,7 @@ function patchContextMenu () {
   Patcher.after(ContextMenu, 'default', (self, args, value) => {
 
     const context = {
-      position: Position.Bottom,
-      align: Align.Left,
+      position: Position.BottomLeft,
       duration: 200
     }
 

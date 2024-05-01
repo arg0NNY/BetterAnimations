@@ -5,7 +5,6 @@ import config from '@/config.json'
 import Logger from '@/modules/Logger'
 import AddonError from '@/structs/AddonError'
 import PackSchema from '@/modules/Animation/schemas/PackSchema'
-import Toasts from '@/modules/Toasts'
 import { z } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 
@@ -46,20 +45,11 @@ export default new class PackManager extends AddonManager {
     }
   }
 
-  startAddon (id) {return this.addPack(id)}
-  stopAddon (id) {return this.removePack(id)}
-
-  addPack (idOrAddon) {
-    const addon = typeof (idOrAddon) == 'string' ? this.addonList.find(p => p.id == idOrAddon) : idOrAddon
-    if (!addon) return
-    // DOMManager.injectTheme(addon.slug + '-theme-container', addon.css)
-    Toasts.show(`${addon.name} has been enabled.`)
+  getPack (slug) {
+    return this.addonList.find(p => p.slug === slug)
   }
-
-  removePack (idOrAddon) {
-    const addon = typeof (idOrAddon) == 'string' ? this.addonList.find(p => p.id == idOrAddon) : idOrAddon
-    if (!addon) return
-    // DOMManager.removeTheme(addon.slug + '-theme-container')
-    Toasts.show(`${addon.name} has been disabled.`)
+  getAnimation (packOrSlug, key) {
+    return (typeof packOrSlug === 'string' ? this.getPack(packOrSlug) : packOrSlug)
+      ?.animations.find(a => a.key === key)
   }
 }

@@ -22,14 +22,14 @@ function patchModals () {
                   key={modal.props.modalKey}
                   mountOnEnter={false}
                   unmountOnExit={false}
-                  targetNode={node => node?.querySelector(DiscordSelectors.Modal.root)}
+                  targetNode={node => node?.querySelector(`${DiscordSelectors.Modal.root}, .bd-modal-root`)}
                   animation={tempAnimationData}
                   enter={!modal.props.instant}
                   exit={!modal.props.instant}
                   context={{
                     duration: 200
                   }}
-                  onEntered={clearContainingStyles}
+                  // onEntered={clearContainingStyles}
                 >
                   {modal}
                 </AnimeTransition>

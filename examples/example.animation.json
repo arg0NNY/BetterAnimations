@@ -8,7 +8,13 @@
       "step": 500
     },
     "easing": true,
-    "direction": true
+    "direction": true,
+
+    "defaults": {
+      "duration": 500,
+      "easing": "easeInOutQuad",
+      "direction": "rightwards"
+    }
   },
   "enter": {
     "hast": [
@@ -70,10 +76,10 @@
         },
         "source": {
           "inject": "direction",
-          "up": { "translateY": ["100%", 0] },
-          "down": { "translateY": ["-100%", 0] },
-          "left": { "translateX": ["100%", 0] },
-          "right": { "translateX": ["-100%", 0] }
+          "upwards": { "translateY": ["100%", 0] },
+          "downwards": { "translateY": ["-100%", 0] },
+          "leftwards": { "translateX": ["100%", 0] },
+          "rightwards": { "translateX": ["-100%", 0] }
         }
       }
     ]
@@ -97,10 +103,10 @@
       },
       "source": {
         "inject": "direction",
-        "up": { "translateY": "-30%" },
-        "down": { "translateY": "30%" },
-        "left": { "translateX": "-30%" },
-        "right": { "translateX": "30%" }
+        "upwards": { "translateY": "-30%" },
+        "downwards": { "translateY": "30%" },
+        "leftwards": { "translateX": "-30%" },
+        "rightwards": { "translateX": "30%" }
       }
     }
   }

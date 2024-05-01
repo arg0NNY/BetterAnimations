@@ -4,10 +4,10 @@ import usePrevious from '@/hooks/usePrevious'
 
 function useDirection (list, current) {
   const prev = usePrevious(current)
-  const direction = React.useRef(Direction.Up)
+  const direction = React.useRef(Direction.Upwards)
 
   if (prev !== current)
-    direction.current = list.indexOf(prev) < list.indexOf(current) ? Direction.Up : Direction.Down
+    direction.current = list.indexOf(prev) < list.indexOf(current) ? Direction.Upwards : Direction.Downwards
 
   return direction.current
 }

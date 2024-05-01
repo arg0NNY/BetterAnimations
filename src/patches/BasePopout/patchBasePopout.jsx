@@ -40,7 +40,7 @@ class AnimatedBasePopout extends BasePopoutModule.BasePopout {
             animation={tempAnimationData}
             context={{
               position: this.props.position,
-              align: this.props.align,
+              // align: this.props.align,
               duration: 200
             }}
             onEntered={clearContainingStyles}

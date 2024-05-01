@@ -19,8 +19,7 @@ export function parseAnimationData (data) {
  *     variant,
  *     duration,
  *     easing,
- *     position,
- *     align
+ *     position
  * }}
  * @param options
  */
