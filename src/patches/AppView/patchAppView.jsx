@@ -49,15 +49,20 @@ function BaseView ({ children }) {
 function ContentView ({ children }) {
   const key = useLocationKey(shouldSwitchContent)
 
+  const module = useModule(ModuleKey.Channels)
+  if (!module.isEnabled()) return (
+    <Router.Switch location={location}>
+      {children}
+    </Router.Switch>
+  )
+
   return (
     <TransitionGroup className="content__76dcf">
       <AnimeTransition
         key={key}
         clone={true}
-        animation={tempAnimationData}
-        options={{
-          type: 'switch'
-        }}
+        animations={module.getAnimations()}
+        options={{ type: 'switch' }}
         onEntered={clearContainingStyles}
       >
         <div className="content__76dcf">
