@@ -1,13 +1,12 @@
 import { React } from '@/BdApi'
-import Direction from '@/enums/Direction'
 import usePrevious from '@/hooks/usePrevious'
 
 function useDirection (list, current) {
   const prev = usePrevious(current)
-  const direction = React.useRef(Direction.Upwards)
+  const direction = React.useRef(1)
 
   if (prev !== current)
-    direction.current = list.indexOf(prev) < list.indexOf(current) ? Direction.Upwards : Direction.Downwards
+    direction.current = +(list.indexOf(prev) < list.indexOf(current))
 
   return direction.current
 }

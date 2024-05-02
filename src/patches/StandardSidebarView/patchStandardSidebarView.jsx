@@ -5,6 +5,8 @@ import AnimeTransition from '@/components/AnimeTransition'
 import { tempAnimationData } from '@/patches/AppView/patchAppView'
 import { clearContainingStyles } from '@/helpers/transition'
 import useDirection from '@/hooks/useDirection'
+import useModule from '@/hooks/useModule'
+import ModuleKey from '@/enums/ModuleKey'
 
 // TODO: Insert classes dynamically
 async function patchStandardSidebarView () {
@@ -24,12 +26,14 @@ async function patchStandardSidebarView () {
 
     const contentRegion = standardSidebarView.children[i]
 
-    const context = {
-      direction: useDirection(props.sections, props.section)
-    }
+    const direction = useDirection(props.sections, props.section)
+    const module = useModule(ModuleKey.Settings)
+    if (!module.isEnabled()) return
+
+    const animations = module.getAnimations({ auto: { direction } })
 
     const childFactory = e => {
-      e.props.context = context
+      e.props.animations = animations
       return e
     }
 
@@ -37,11 +41,8 @@ async function patchStandardSidebarView () {
       <TransitionGroup className="contentRegion__08eba" childFactory={childFactory}>
         <AnimeTransition
           key={props.section}
-          animation={tempAnimationData}
-          context={context}
-          options={{
-            type: 'switch'
-          }}
+          animations={animations}
+          options={{ type: 'switch'  }}
           onEntered={clearContainingStyles}
         >
           {contentRegion}

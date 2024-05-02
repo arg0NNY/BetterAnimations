@@ -5,7 +5,7 @@ import Auto from '@/enums/Auto'
 import AnimationSetting from '@/enums/AnimationSetting'
 import Position from '@/enums/Position'
 import Direction from '@/enums/Direction'
-import { getDirectionsByAxis } from '@/helpers/direction'
+import { getDirection, getDirectionsByAxis } from '@/helpers/direction'
 import Axis from '@/enums/Axis'
 
 class Module {
@@ -29,7 +29,7 @@ class Module {
   toggle () { this.settings.enabled = !this.settings.enabled }
   setIsEnabled (value) { this.settings.enabled = value }
 
-  getAnimation (type) {
+  getAnimation (type, options = {}) {
     const config = this.settings[type] ?? {}
     const pack = config.packSlug && PackManager.getPack(config.packSlug)
     const animation = pack && PackManager.getAnimation(pack, config.animationKey)
@@ -42,6 +42,8 @@ class Module {
       )
     ) : {}
 
+    if (options.auto) this.assignAutoValues(animation, settings, options.auto)
+
     return {
       packSlug: config.packSlug ?? null,
       animationKey: config.animationKey ?? null,
@@ -50,10 +52,10 @@ class Module {
       animation
     }
   }
-  getAnimations () {
+  getAnimations (options = {}) {
     return {
-      enter: this.getAnimation('enter'),
-      exit: this.getAnimation('exit')
+      enter: this.getAnimation('enter', options),
+      exit: this.getAnimation('exit', options)
     }
   }
   setAnimation (type, packSlug, animationKey, settings = {}) {
@@ -161,6 +163,16 @@ class Module {
       Object.entries(settings).map(([key, value]) => [key, this.normalizeSetting(animation, key, value, settings)])
         .filter(a => a[1] !== undefined)
     )
+  }
+
+  assignAutoValues (animation, normalizedSettings, values) {
+    const settings = normalizedSettings
+
+    if (settings[AnimationSetting.Direction] === Auto()) {
+      settings[AnimationSetting.Direction] = getDirection(settings.directionAxis, values.direction)
+    }
+
+    return settings
   }
 }
 
