@@ -5,7 +5,7 @@ export const Defined = z.any().refine(v => v !== undefined, { message: 'Must be 
 
 export const buildSwitchSchema = (keys, value = Defined) => Object.fromEntries([].concat(keys).map(k => [k, value]))
 
-export const formatValuesList = arr => arr.map(i => `'${i}'`).join(', ')
+export const formatValuesList = (arr, separator = ', ') => arr.map(i => `'${i}'`).join(separator)
 
 export const hasInSettings = (name, has) => (value, ctx) => {
   if (!has) {
