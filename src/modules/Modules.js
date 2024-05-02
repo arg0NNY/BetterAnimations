@@ -5,6 +5,8 @@ import Auto from '@/enums/Auto'
 import AnimationSetting from '@/enums/AnimationSetting'
 import Position from '@/enums/Position'
 import Direction from '@/enums/Direction'
+import { getDirectionsByAxis } from '@/helpers/direction'
+import Axis from '@/enums/Axis'
 
 class Module {
   constructor (id, name, meta = {}) {
@@ -32,9 +34,12 @@ class Module {
     const pack = config.packSlug && PackManager.getPack(config.packSlug)
     const animation = pack && PackManager.getAnimation(pack, config.animationKey)
 
-    const settings = animation ? Object.assign(
-      this.buildDefaultSettings(animation),
-      config.settings ?? {}
+    const settings = animation ? this.normalizeSettings(
+      animation,
+      Object.assign(
+        this.buildDefaultSettings(animation, false),
+        config.settings ?? {}
+      )
     ) : {}
 
     return {
@@ -58,35 +63,35 @@ class Module {
     this.settings[type].settings = settings
   }
 
-  supportsAutoPosition (animation) {
-    if (!this.meta.settings?.supportsAuto?.[AnimationSetting.Position]) return false
+  supportsAuto (animation, setting) {
+    if (!this.meta.settings?.supportsAuto?.[setting] || !animation.settings?.[setting]) return false
+    if (animation.settings[setting] === true) return true
 
-    return animation.settings[AnimationSetting.Position] === true
-      || [
-        Position.Top,
-        Position.Bottom,
-        Position.Left,
-        Position.Right,
-        Position.Center
-      ].every(v => animation.settings[AnimationSetting.Position].includes(v))
-  }
-  supportsAutoDirection (animation) {
-    if (!this.meta.settings?.supportsAuto?.[AnimationSetting.Direction]) return false
-
-    return animation.settings[AnimationSetting.Direction] === true
-      || [
-        [Direction.Upwards, Direction.Downwards],
-        [Direction.Leftwards, Direction.Rightwards],
-        [Direction.Forwards, Direction.Backwards]
-      ].some(
-        pair => pair.every(v => animation.settings[AnimationSetting.Direction]?.includes(v))
-      )
+    switch (setting) {
+      case AnimationSetting.Position:
+        return [
+          Position.Top,
+          Position.Bottom,
+          Position.Left,
+          Position.Right,
+          Position.Center
+        ].every(v => animation.settings[setting].includes(v))
+      case AnimationSetting.Direction:
+        return [
+          [Direction.Upwards, Direction.Downwards],
+          [Direction.Leftwards, Direction.Rightwards],
+          [Direction.Forwards, Direction.Backwards]
+        ].some(
+          pair => pair.every(v => animation.settings[setting]?.includes(v))
+        )
+      default: return false
+    }
   }
   getAllSettingsSupportingAuto (animation) {
     return [
-      [AnimationSetting.Position, this.supportsAutoPosition(animation)],
-      [AnimationSetting.Direction, this.supportsAutoDirection(animation)]
-    ].filter(a => a[1]).map(a => a[0])
+      AnimationSetting.Position,
+      AnimationSetting.Direction
+    ].filter(s => this.supportsAuto(animation, s))
   }
 
   buildModuleDefaultSettings (animation) {
@@ -94,20 +99,66 @@ class Module {
       Object.entries(this.meta.settings?.defaults ?? {})
         .filter(([key]) => {
           if (key === AnimationSetting.DirectionAxis) key = AnimationSetting.Direction
-          // TODO: CHECK IF ANIMATION SUPPORTS MODULE'S DEFAULT VALUE
-
           return key in (animation.settings ?? {})
         })
     )
   }
-  buildDefaultSettings (animation) {
-    return Object.assign(
+  buildDefaultSettings (animation, normalized = true) {
+    const settings = Object.assign(
       {},
       animation?.settings?.defaults ?? {},
       this.buildModuleDefaultSettings(animation),
       Object.fromEntries(
         this.getAllSettingsSupportingAuto(animation).map(s => [s, Auto()])
       )
+    )
+
+    return normalized ? this.normalizeSettings(animation, settings) : settings
+  }
+
+  normalizeSetting (animation, setting, value, allSettings = {}) {
+    switch (setting) {
+      case AnimationSetting.DirectionAxis: {
+        if (allSettings[AnimationSetting.Direction] !== Auto()) return undefined
+
+        const directions = animation.settings[AnimationSetting.Direction] ?? []
+        if (directions === true) return value
+        if (getDirectionsByAxis(value)?.every(d => directions.includes(d))) return value
+        return [Axis.Y, Axis.Z, Axis.X].find(axis => getDirectionsByAxis(axis).every(d => directions.includes(d)))
+      }
+    }
+
+    if (animation.settings?.[setting] === undefined) return undefined
+
+    switch (setting) {
+      case AnimationSetting.Duration: {
+        const { from, to } = animation.settings[setting]
+        if (value > to) return to
+        if (value < from) return from
+        return value
+      }
+      case AnimationSetting.Variant: {
+        const keys = animation.settings[setting].map(v => v.key)
+        if (!keys.includes(value)) return animation.settings.defaults?.[setting] ?? keys[0]
+        return value
+      }
+      case AnimationSetting.Position:
+      case AnimationSetting.Direction: {
+        const values = animation.settings[setting]
+        if (
+          values === true
+            || (value === Auto() && this.supportsAuto(animation, setting))
+        ) return value
+        if (!values.includes(value)) return animation.settings.defaults?.[setting] ?? values[0]
+        return value
+      }
+      default: return value
+    }
+  }
+  normalizeSettings (animation, settings) {
+    return Object.fromEntries(
+      Object.entries(settings).map(([key, value]) => this.normalizeSetting(animation, key, value, settings))
+        .filter(a => a[1] !== undefined)
     )
   }
 }

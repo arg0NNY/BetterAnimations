@@ -8,8 +8,8 @@ const EnumSchema = values => z.union([z.literal(true), z.enum(values).array()])
 const SettingsSchema = z.object({
   [Setting.Duration]: z.object({
     from: z.number().int().nonnegative(),
-    to: z.number().int().nonnegative(),
-    step: z.number().int().nonnegative(),
+    to: z.number().int().nonnegative(), // TODO: Add max possible value
+    step: z.number().int().nonnegative(), // TODO: Remove step
   }).optional(),
   [Setting.Easing]: z.literal(true).optional(),
   [Setting.Variant]: z.object({

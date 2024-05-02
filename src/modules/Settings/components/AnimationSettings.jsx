@@ -7,8 +7,9 @@ import positions from '@/data/positions'
 import Auto from '@/enums/Auto'
 import directions from '@/data/directions'
 import directionAxes from '@/data/directionAxes'
-import Axis from '@/enums/Axis'
 import Direction from '@/enums/Direction'
+import AnimationSetting from '@/enums/AnimationSetting'
+import { getDirectionsByAxis } from '@/helpers/direction'
 
 function DurationSetting ({ options, value, onChange, ...props }) {
   return (
@@ -64,7 +65,7 @@ function PositionSetting ({ animation, value, onChange, defaultValue }) {
 
   const options = positions.filter(
     p => p.value === Auto()
-      ? module?.supportsAutoPosition(animation)
+      ? module?.supportsAuto(animation, AnimationSetting.Position)
       : (animation.settings.position === true || animation.settings.position.includes(p.value))
   )
 
@@ -86,20 +87,13 @@ function DirectionSetting ({ animation, value, onChange, axis, onAxisChange, def
 
   const options = directions.filter(
     d => d.value === Auto()
-      ? module?.supportsAutoDirection(animation)
+      ? module?.supportsAuto(animation, AnimationSetting.Direction)
       : (animation.settings.direction === true || animation.settings.direction.includes(d.value))
   )
 
-  const getAxisPair = axis => {
-    switch (axis) {
-      case Axis.X: return [Direction.Leftwards, Direction.Rightwards]
-      case Axis.Y: return [Direction.Upwards, Direction.Downwards]
-      case Axis.Z: return [Direction.Forwards, Direction.Backwards]
-    }
-  }
   const axisOptions = directionAxes.filter(
     a => animation.settings.direction === true
-      || getAxisPair(a.value).every(d => animation.settings.direction.includes(d))
+      || getDirectionsByAxis(a.value).every(d => animation.settings.direction.includes(d))
   )
 
   return (
