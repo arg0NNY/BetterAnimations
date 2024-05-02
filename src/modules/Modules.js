@@ -2,11 +2,12 @@ import { settings } from '@/modules/SettingsStorage'
 import PackManager from '@/modules/PackManager'
 import modules from '@/data/modules'
 import Auto from '@/enums/Auto'
-import AnimationSetting from '@/enums/AnimationSetting'
+import Setting from '@/enums/AnimationSetting'
 import Position from '@/enums/Position'
 import Direction from '@/enums/Direction'
 import { getDirection, getDirectionsByAxis } from '@/helpers/direction'
 import Axis from '@/enums/Axis'
+import { getPosition, reversePosition } from '@/helpers/position'
 
 class Module {
   constructor (id, name, meta = {}) {
@@ -71,7 +72,7 @@ class Module {
     if (animation.settings[setting] === true) return true
 
     switch (setting) {
-      case AnimationSetting.Position:
+      case Setting.Position:
         return [
           Position.Top,
           Position.Bottom,
@@ -79,7 +80,7 @@ class Module {
           Position.Right,
           Position.Center
         ].every(v => animation.settings[setting].includes(v))
-      case AnimationSetting.Direction:
+      case Setting.Direction:
         return [
           [Direction.Upwards, Direction.Downwards],
           [Direction.Leftwards, Direction.Rightwards],
@@ -92,8 +93,8 @@ class Module {
   }
   getAllSettingsSupportingAuto (animation) {
     return [
-      AnimationSetting.Position,
-      AnimationSetting.Direction
+      Setting.Position,
+      Setting.Direction
     ].filter(s => this.supportsAuto(animation, s))
   }
 
@@ -101,7 +102,7 @@ class Module {
     return Object.fromEntries(
       Object.entries(this.meta.settings?.defaults ?? {})
         .filter(([key]) => {
-          if (key === AnimationSetting.DirectionAxis) key = AnimationSetting.Direction
+          if (key === Setting.DirectionAxis) key = Setting.Direction
           return key in (animation.settings ?? {})
         })
     )
@@ -121,10 +122,10 @@ class Module {
 
   normalizeSetting (animation, setting, value, allSettings = {}) {
     switch (setting) {
-      case AnimationSetting.DirectionAxis: {
-        if (allSettings[AnimationSetting.Direction] !== Auto()) return undefined
+      case Setting.DirectionAxis: {
+        if (allSettings[Setting.Direction] !== Auto()) return undefined
 
-        const directions = animation.settings[AnimationSetting.Direction] ?? []
+        const directions = animation.settings[Setting.Direction] ?? []
         if (directions === true) return value
         if (getDirectionsByAxis(value)?.every(d => directions.includes(d))) return value
         return [Axis.Y, Axis.Z, Axis.X].find(axis => getDirectionsByAxis(axis).every(d => directions.includes(d)))
@@ -134,19 +135,19 @@ class Module {
     if (animation.settings?.[setting] === undefined) return undefined
 
     switch (setting) {
-      case AnimationSetting.Duration: {
+      case Setting.Duration: {
         const { from, to } = animation.settings[setting]
         if (value > to) return to
         if (value < from) return from
         return value
       }
-      case AnimationSetting.Variant: {
+      case Setting.Variant: {
         const keys = animation.settings[setting].map(v => v.key)
         if (!keys.includes(value)) return animation.settings.defaults?.[setting] ?? keys[0]
         return value
       }
-      case AnimationSetting.Position:
-      case AnimationSetting.Direction: {
+      case Setting.Position:
+      case Setting.Direction: {
         const values = animation.settings[setting]
         if (
           values === true
@@ -168,9 +169,18 @@ class Module {
   assignAutoValues (animation, normalizedSettings, values) {
     const settings = normalizedSettings
 
-    if (settings[AnimationSetting.Direction] === Auto()) {
-      settings[AnimationSetting.Direction] = getDirection(settings.directionAxis, values.direction)
+    if (settings[Setting.Position] === Auto()) {
+      const position = reversePosition(values.position)
+      const mergedPosition = getPosition(position, values.align)
+      const supportedPositions = animation.settings[Setting.Position]
+
+      settings[Setting.Position] = supportedPositions !== true && !supportedPositions.includes(mergedPosition)
+        ? position
+        : mergedPosition
     }
+
+    if (settings[Setting.Direction] === Auto())
+      settings[Setting.Direction] = getDirection(settings.directionAxis, values.direction)
 
     return settings
   }
