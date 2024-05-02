@@ -197,6 +197,7 @@ export default class AddonManager {
     return this.addonList.find(c => c.id == idOrFile || c.filename == idOrFile)
   }
 
+  // TODO: Remove enabled/disabled functionality
   enableAddon (idOrAddon) {
     const addon = typeof (idOrAddon) == 'string' ? this.addonList.find(p => p.id == idOrAddon) : idOrAddon
     if (!addon || addon.partial) return

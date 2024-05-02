@@ -1,5 +1,5 @@
 import { React } from '@/BdApi'
-import Events from '@/modules/Emitter'
+import Emitter from '@/modules/Emitter'
 import PackManager from '@/modules/PackManager'
 import PackItem from '@/modules/Settings/components/PackItem'
 import useForceUpdate from '@/hooks/useForceUpdate'
@@ -12,11 +12,11 @@ export default function AddonList ({ children, getList, prefix }) {
   const forceUpdate = useForceUpdate()
 
   React.useEffect(() => {
-    Events.on(`${prefix}-loaded`, forceUpdate)
-    Events.on(`${prefix}-unloaded`, forceUpdate)
+    Emitter.on(`${prefix}-loaded`, forceUpdate)
+    Emitter.on(`${prefix}-unloaded`, forceUpdate)
     return () => {
-      Events.off(`${prefix}-loaded`, forceUpdate)
-      Events.off(`${prefix}-unloaded`, forceUpdate)
+      Emitter.off(`${prefix}-loaded`, forceUpdate)
+      Emitter.off(`${prefix}-unloaded`, forceUpdate)
     }
   }, [prefix])
 

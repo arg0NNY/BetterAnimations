@@ -59,6 +59,7 @@ class Module {
   setAnimation (type, packSlug, animationKey, settings = {}) {
     this.settings[type] = { packSlug, animationKey, settings }
   }
+  // TODO: Move animation settings to separate config file for pack
   setAnimationSettings (type, settings) {
     this.settings[type].settings = settings
   }

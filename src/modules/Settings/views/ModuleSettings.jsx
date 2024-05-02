@@ -1,27 +1,28 @@
 import { Router, Common } from '@/modules/DiscordModules'
-import Modules from '@/modules/Modules'
 import AnimationSelect from '@/modules/Settings/components/AnimationSelect'
-import useForceUpdate from '@/hooks/useForceUpdate'
 import ModuleContext from '@/modules/Settings/context/ModuleContext'
+import Emitter from '@/modules/Emitter'
+import Events from '@/enums/Events'
+import useModule from '@/hooks/useModule'
 
 export default function ModuleSettings () {
-  const forceUpdate = useForceUpdate()
   const { id } = Router.useParams()
+  const module = useModule(id)
 
-  const module = Modules.getModule(id)
+  const onChange = () => Emitter.emit(Events.ModuleSettingsChanged, id)
 
   const onSelect = (type, pack, animation) => {
     if (!animation) module.setAnimation(type, null, null)
     else module.setAnimation(type, pack.slug, animation.key, {})
-    forceUpdate()
+    onChange()
   }
   const setIsEnabled = value => {
     module.setIsEnabled(value)
-    forceUpdate()
+    onChange()
   }
   const setSettings = (type, value) => {
     module.setAnimationSettings(type, value)
-    forceUpdate()
+    onChange()
   }
 
   return (

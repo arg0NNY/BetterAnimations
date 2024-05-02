@@ -9,8 +9,8 @@ import { parseAnimationData } from '@/modules/Animation/parser'
 import { z } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 import { clearContainingStyles } from '@/helpers/transition'
-import Modules from '@/modules/Modules'
 import ModuleKey from '@/enums/ModuleKey'
+import useModule from '@/hooks/useModule'
 
 // TODO: Insert classes dynamically
 
@@ -26,7 +26,7 @@ catch (e) {
 function BaseView ({ children }) {
   const key = useLocationKey(shouldSwitchBase)
 
-  const module = Modules.getModule(ModuleKey.Servers)
+  const module = useModule(ModuleKey.Servers)
   if (!module.isEnabled()) return children
 
   return (

@@ -1,7 +1,6 @@
 import { DOM, ReactDOM } from '@/BdApi'
 import SettingsPanel from '@/modules/Settings/SettingsPanel'
 import { History } from '@/modules/DiscordModules'
-import { forceAppUpdate } from '@/helpers/forceUpdate'
 import { save } from '@/modules/SettingsStorage'
 
 export default new class Settings {
@@ -14,7 +13,6 @@ export default new class Settings {
     DOM.onRemoved(node, () => {
       ReactDOM.unmountComponentAtNode(node)
       save()
-      setTimeout(forceAppUpdate)
     })
 
     return node
