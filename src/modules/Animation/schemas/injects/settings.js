@@ -15,15 +15,18 @@ export const EasingInjectSchema = ({ easing, settings }) => InjectSchema(Inject.
   .transform(() => easing)
 
 function SwitchSchema (inject, setting, valueList, options = {}) {
-  const { defaultValue, preprocess } = options
+  const { defaultValue, preprocess, isEnum } = options
 
   return context => {
-    const values = typeof valueList === 'function' ? valueList(context) : valueList
+    let values = typeof valueList === 'function' ? valueList(context) : valueList
 
     return InjectSchema(inject)
       .extend(buildSwitchSchema(values, Defined.optional()))
       .transform(hasInSettings(inject, !!context.settings?.[setting]))
       .transform((params, ctx) => {
+        if (isEnum && context.settings[setting] !== true)
+          values = values.filter(v => context.settings[setting].includes(v))
+
         let value = context[setting]
         if (!values.includes(value)) value = defaultValue
         if (preprocess) value = preprocess(value)
@@ -41,8 +44,8 @@ function SwitchSchema (inject, setting, valueList, options = {}) {
 
 export const VariantInjectSchema = SwitchSchema(Inject.Variant, Setting.Variant, ctx => ctx.settings?.[Setting.Variant]?.map(v => v.key))
 
-export const PositionInjectSchema = SwitchSchema(Inject.Position, Setting.Position, Position.values(), { defaultValue: Position.Center })
+export const PositionInjectSchema = SwitchSchema(Inject.Position, Setting.Position, Position.values(), { defaultValue: Position.Center, isEnum: true })
 
-export const DirectionInjectSchema = SwitchSchema(Inject.Direction, Setting.Direction, Direction.values(), { defaultValue: Direction.Right })
+export const DirectionInjectSchema = SwitchSchema(Inject.Direction, Setting.Direction, Direction.values(), { defaultValue: Direction.Right, isEnum: true })
 
 // TODO: Consider custom settings and an inject for getting their value (prototype: add ability to create custom multiple selects inside "variant" settings)
