@@ -2,16 +2,19 @@ import { Patcher, React } from '@/BdApi'
 import { ListThin, TransitionGroup, useStateFromStores } from '@/modules/DiscordModules'
 import findInReactTree from '@/helpers/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
-import { tempAnimationData } from '@/patches/ContextMenu/patchContextMenu'
 import { clearContainingStyles, heightModifier } from '@/helpers/transition'
 import ChannelStackStore from '@/patches/ListThin/ChannelStackStore'
 import PassThrough from '@/components/PassThrough'
+import useModule from '@/hooks/useModule'
+import ModuleKey from '@/enums/ModuleKey'
 
 function patchListThin () {
   Patcher.after(ListThin, 'render', (self, [props], value) => {
     const isChannelList = props.id?.includes('channels')
-
     const channelsToAnimate = isChannelList && useStateFromStores([ChannelStackStore], () => ChannelStackStore.getChannelsAwaitingTransition())
+
+    const module = useModule(ModuleKey.ChannelList)
+    if (!module.isEnabled()) return
 
     const focusRingScope = findInReactTree(value, m => m?.containerRef)
     if (!focusRingScope || !Array.isArray(focusRingScope.children)) return
@@ -24,6 +27,8 @@ function patchListThin () {
 
       return false
     }
+
+    const animations = module.getAnimations()
 
     const childFactory = e => {
       if (e) e.props.exit = e.props.items.some(i => shouldAnimate(i))
@@ -50,11 +55,7 @@ function patchListThin () {
                 key={item.key}
                 enter={shouldAnimate(item)}
                 exit={false} // Managed in childFactory
-                animation={tempAnimationData}
-                context={{
-                  duration: 200,
-                  position: 'right'
-                }}
+                animations={animations}
                 options={heightModifier()}
                 onEntered={clearContainingStyles}
                 items={items}

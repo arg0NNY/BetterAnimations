@@ -74,7 +74,14 @@ const modules = [
   },
   {
     id: ModuleKey.ChannelList,
-    name: 'Channel List'
+    name: 'Channel List',
+    meta: {
+      settings: {
+        defaults: {
+          [AnimationSetting.Position]: Position.Left
+        }
+      }
+    }
   },
   {
     id: ModuleKey.Modals,
