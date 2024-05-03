@@ -1,6 +1,8 @@
 import ModuleKey from '@/enums/ModuleKey'
 import AnimationSetting from '@/enums/AnimationSetting'
 import Axis from '@/enums/Axis'
+import Direction from '@/enums/Direction'
+import Position from '@/enums/Position'
 
 const modules = [
   {
@@ -60,7 +62,15 @@ const modules = [
   },
   {
     id: ModuleKey.Messages,
-    name: 'Messages'
+    name: 'Messages',
+    meta: {
+      settings: {
+        defaults: {
+          [AnimationSetting.Direction]: Direction.Upwards,
+          [AnimationSetting.Position]: Position.Left
+        }
+      }
+    }
   },
   {
     id: ModuleKey.ChannelList,
