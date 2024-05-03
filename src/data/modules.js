@@ -49,7 +49,14 @@ const modules = [
   },
   {
     id: ModuleKey.ContextMenu,
-    name: 'Context Menu'
+    name: 'Context Menu',
+    meta: {
+      settings: {
+        supportsAuto: {
+          [AnimationSetting.Position]: true
+        }
+      }
+    }
   },
   {
     id: ModuleKey.Messages,

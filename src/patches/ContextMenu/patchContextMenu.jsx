@@ -9,6 +9,9 @@ import { clearContainingStyles, directChild } from '@/helpers/transition'
 import patchContextSubmenu from '@/patches/ContextMenu/patchContextSubmenu'
 import ensureOnce from '@/helpers/ensureOnce'
 import Position from '@/enums/Position'
+import useModule, { injectModule } from '@/hooks/useModule'
+import ModuleKey from '@/enums/ModuleKey'
+import Modules from '@/modules/Modules'
 
 export let tempAnimationData
 try {
@@ -19,33 +22,39 @@ catch (e) {
   console.error('Failed to load animation:', e)
 }
 
+export const animationOptions = {
+  auto: {
+    position: Position.Bottom,
+    align: Position.Left
+  }
+}
+
 function patchContextMenu () {
   const once = ensureOnce()
 
   Patcher.after(ContextMenu, 'default', (self, args, value) => {
-
-    const context = {
-      position: Position.BottomLeft,
-      duration: 200
-    }
-
-    once(() =>
+    once(() => {
+      injectModule(value.type, ModuleKey.ContextMenu)
       Patcher.after(value.type.prototype, 'render', (self, args, value) => {
+        const module = Modules.getModule(ModuleKey.ContextMenu)
+        if (!module.isEnabled()) return
+
         return (
           <AnimeTransition
             in={!!value}
             targetNode={directChild}
             exit={false}
-            animation={tempAnimationData}
-            context={context}
+            animations={module.getAnimations(animationOptions)}
             onEntered={clearContainingStyles}
           >
             {value}
           </AnimeTransition>
         )
       })
-    )
+    })
 
+    const module = useModule(ModuleKey.ContextMenu)
+    if (!module.isEnabled()) return
     return (
       <TransitionGroup component={null}>
         {
@@ -54,8 +63,7 @@ function patchContextMenu () {
             key={value.key}
             targetNode={directChild}
             enter={false}
-            animation={tempAnimationData}
-            context={context}
+            animations={module.getAnimations(animationOptions)}
           >
             {value}
           </AnimeTransition>

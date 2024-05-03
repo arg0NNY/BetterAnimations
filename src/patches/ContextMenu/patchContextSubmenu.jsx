@@ -1,26 +1,24 @@
 import { Patcher } from '@/BdApi'
 import { appLayerContext, Layer, MenuSubmenuItem, MenuSubmenuListItem } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
-import { tempAnimationData } from '@/patches/ContextMenu/patchContextMenu'
 import { clearContainingStyles } from '@/helpers/transition'
-import Position from '@/enums/Position'
+import useModule from '@/hooks/useModule'
+import ModuleKey from '@/enums/ModuleKey'
+import { animationOptions } from '@/patches/ContextMenu/patchContextMenu'
 
 function patchContextSubmenu () {
   const callback = (self, [props], original) => {
-    const value = original(Object.assign({}, props, { isFocused: true }))
+    const module = useModule(ModuleKey.ContextMenu)
+    if (!module.isEnabled()) return original(props)
 
-    const context = {
-      position: Position.BottomLeft,
-      duration: 200
-    }
+    const value = original(Object.assign({}, props, { isFocused: true }))
 
     const i = value.props.children.length - 1
     value.props.children[i] = (
       <Layer layerContext={appLayerContext}>
         <AnimeTransition
           in={props.isFocused}
-          animation={tempAnimationData}
-          context={context}
+          animations={module.getAnimations(animationOptions)}
           onEntered={clearContainingStyles}
         >
           {value.props.children[i]}
