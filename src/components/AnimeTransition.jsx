@@ -63,6 +63,7 @@ class AnimeTransition extends React.Component {
           if (assets.node) node.before(assets.node)
 
           requestAnimationFrame(() => {
+            const styleSnapshot = node.getAttribute('style')
             const { finished, pause } = assets.execute()
 
             node.setAttribute('data-animation-type', type)
@@ -70,10 +71,14 @@ class AnimeTransition extends React.Component {
 
             this.cancelAnimation = () => {
               pause()
-              this.finish(() => assets.node?.remove())
+              this.finish(() => {
+                assets.node?.remove()
+                if (type === 'exit') node.setAttribute('style', styleSnapshot)
+              })
 
-              if (type === 'enter') [].filter.call(node.attributes, a => a.name?.startsWith('data-animation'))
-                .forEach(a => node.removeAttribute(a.name))
+              if (options.type !== 'switch' || type !== 'exit')
+                [].filter.call(node.attributes, a => a.name?.startsWith('data-animation'))
+                  .forEach(a => node.removeAttribute(a.name))
 
               this.cancelAnimation = null
               console.log('finished', type)
@@ -98,8 +103,6 @@ class AnimeTransition extends React.Component {
   }
 
   finish (callback = () => {}, immediate = false) {
-    this.clonedNode.current = null
-    this.scrolls.current = null
     const done = () => {
       this.doneCallback.current?.()
       setTimeout(() => callback())
