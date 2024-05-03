@@ -1,23 +1,35 @@
-import { React } from '@/BdApi'
+import { Patcher, React } from '@/BdApi'
 import useForceUpdate from '@/hooks/useForceUpdate'
 import Emitter from '@/modules/Emitter'
 import Events from '@/enums/Events'
 import Modules from '@/modules/Modules'
 
+export function moduleEffect (id, forceUpdate) {
+  const events = [Events.PackLoaded, Events.PackUnloaded, Events.SettingsChanged]
+  const ifSameId = moduleId => moduleId === id && forceUpdate()
+
+  events.forEach(e => Emitter.on(e, forceUpdate))
+  Emitter.on(Events.ModuleSettingsChanged, ifSameId)
+  return () => {
+    events.forEach(e => Emitter.off(e, forceUpdate))
+    Emitter.off(Events.ModuleSettingsChanged, ifSameId)
+  }
+}
+
+// For class components
+export function injectModule (component, id) {
+  Patcher.after(component.prototype, 'componentDidMount', (self) => {
+    self.clearModuleEffect = moduleEffect(id, self.forceUpdate.bind(self))
+  })
+  Patcher.after(component.prototype, 'componentWillUnmount', (self) => {
+    self.clearModuleEffect?.()
+  })
+}
+
 function useModule (id) {
   const forceUpdate = useForceUpdate()
 
-  React.useEffect(() => {
-    const events = [Events.PackLoaded, Events.PackUnloaded, Events.SettingsChanged]
-    const ifSameId = moduleId => moduleId === id && forceUpdate()
-
-    events.forEach(e => Emitter.on(e, forceUpdate))
-    Emitter.on(Events.ModuleSettingsChanged, ifSameId)
-    return () => {
-      events.forEach(e => Emitter.off(e, forceUpdate))
-      Emitter.off(Events.ModuleSettingsChanged, ifSameId)
-    }
-  }, [id])
+  React.useEffect(() => moduleEffect(id, forceUpdate), [id])
 
   return Modules.getModule(id)
 }

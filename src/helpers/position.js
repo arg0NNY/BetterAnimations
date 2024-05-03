@@ -10,7 +10,7 @@ export function reversePosition (position) {
   }
 }
 
-export function getPosition (position, align) {
+export function getPosition (position, align = Position.Center) {
   if (position === Position.Center) return Position.Center
   if (align === Position.Center) return position
 

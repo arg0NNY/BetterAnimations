@@ -1,11 +1,13 @@
 import { Patcher } from '@/BdApi'
 import { SpringTransitionPhases, Tooltip, TooltipLayer } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
-import { tempAnimationData } from '@/patches/ContextMenu/patchContextMenu'
 import { directChild } from '@/helpers/transition'
+import { injectModule } from '@/hooks/useModule'
+import ModuleKey from '@/enums/ModuleKey'
+import Modules from '@/modules/Modules'
 
 function TooltipTransition (props) {
-  const { isVisible, onAnimationRest, ...rest } = props
+  const { module, isVisible, onAnimationRest, ...rest } = props
 
   const onRest = isVisible => () => onAnimationRest?.(
     { value: {}, finished: true },
@@ -18,16 +20,18 @@ function TooltipTransition (props) {
     }
   )
 
+  const animations = module.getAnimations({
+    auto: {
+      position: props.position,
+      align: props.align
+    }
+  })
+
   return (
     <AnimeTransition
       in={isVisible}
       targetNode={directChild}
-      animation={tempAnimationData}
-      context={{
-        position: props.position,
-        // align: props.align,
-        duration: 100
-      }}
+      animations={animations}
       onEntered={onRest(true)}
       onExited={onRest(false)}
     >
@@ -37,7 +41,12 @@ function TooltipTransition (props) {
 }
 
 function patchTooltip () {
+  injectModule(Tooltip, ModuleKey.Tooltips)
   Patcher.after(Tooltip.prototype, 'renderTooltip', (self, args, value) => {
+    const module = Modules.getModule(ModuleKey.Tooltips)
+    if (!module.isEnabled()) return
+
+    value.props.module = module
     value.type = TooltipTransition
   })
 }

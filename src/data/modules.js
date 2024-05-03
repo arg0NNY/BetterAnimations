@@ -38,7 +38,14 @@ const modules = [
   },
   {
     id: ModuleKey.Tooltips,
-    name: 'Tooltips'
+    name: 'Tooltips',
+    meta: {
+      settings: {
+        supportsAuto: {
+          [AnimationSetting.Position]: true
+        }
+      }
+    }
   },
   {
     id: ModuleKey.ContextMenu,
