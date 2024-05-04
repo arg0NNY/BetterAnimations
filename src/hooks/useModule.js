@@ -19,7 +19,7 @@ export function moduleEffect (id, forceUpdate) {
 // For class components
 export function injectModule (component, id) {
   Patcher.after(component.prototype, 'componentDidMount', (self) => {
-    self.clearModuleEffect = moduleEffect(id, self.forceUpdate.bind(self))
+    self.clearModuleEffect = moduleEffect(id, () => self.forceUpdate())
   })
   Patcher.after(component.prototype, 'componentWillUnmount', (self) => {
     self.clearModuleEffect?.()
