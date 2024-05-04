@@ -2,13 +2,9 @@
   "key": "example",
   "name": "Example animation",
   "settings": {
-    "duration": {
-      "from": 0,
-      "to": 5000,
-      "step": 500
-    },
+    "duration": true,
     "easing": true,
-    "direction": true,
+    "direction": ["upwards", "downwards", "leftwards", "rightwards", "forwards", "backwards"],
 
     "defaults": {
       "duration": 500,
@@ -56,7 +52,7 @@
         "z-index": 20
       },
       ".el:nth-child(odd)": {
-        "background": "#fff"
+        "background": "#000"
       },
       ".el:nth-child(even)": {
         "background": "#5662f6"
@@ -79,7 +75,9 @@
           "upwards": { "translateY": ["100%", 0] },
           "downwards": { "translateY": ["-100%", 0] },
           "leftwards": { "translateX": ["100%", 0] },
-          "rightwards": { "translateX": ["-100%", 0] }
+          "rightwards": { "translateX": ["-100%", 0] },
+          "forwards": { "scale": [1.1, 1], "opacity": [0, 1] },
+          "backwards": { "scale": [0.9, 1], "opacity": [0, 1] }
         }
       }
     ]
@@ -106,7 +104,9 @@
         "upwards": { "translateY": "-30%" },
         "downwards": { "translateY": "30%" },
         "leftwards": { "translateX": "-30%" },
-        "rightwards": { "translateX": "30%" }
+        "rightwards": { "translateX": "30%" },
+        "forwards": { "scale": 0.9, "opacity": 0 },
+        "backwards": { "scale": 1.1, "opacity": 0 }
       }
     }
   }

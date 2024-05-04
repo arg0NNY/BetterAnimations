@@ -9,18 +9,14 @@
       "key": "example",
       "name": "Example animation",
       "settings": {
-        "duration": {
-          "from": 0,
-          "to": 2000,
-          "step": 100
-        },
+        "duration": true,
         "easing": true,
-        "direction": true,
+        "direction": ["upwards", "downwards", "leftwards", "rightwards", "forwards", "backwards"],
 
         "defaults": {
           "duration": 500,
           "easing": "easeInOutQuad",
-          "direction": "right"
+          "direction": "rightwards"
         }
       },
       "enter": {
@@ -63,7 +59,7 @@
             "z-index": 20
           },
           ".el:nth-child(odd)": {
-            "background": "#fff"
+            "background": "#000"
           },
           ".el:nth-child(even)": {
             "background": "#5662f6"
@@ -83,10 +79,12 @@
             },
             "source": {
               "inject": "direction",
-              "up": { "translateY": ["100%", 0] },
-              "down": { "translateY": ["-100%", 0] },
-              "left": { "translateX": ["100%", 0] },
-              "right": { "translateX": ["-100%", 0] }
+              "upwards": { "translateY": ["100%", 0] },
+              "downwards": { "translateY": ["-100%", 0] },
+              "leftwards": { "translateX": ["100%", 0] },
+              "rightwards": { "translateX": ["-100%", 0] },
+              "forwards": { "scale": [1.1, 1], "opacity": [0, 1] },
+              "backwards": { "scale": [0.9, 1], "opacity": [0, 1] }
             }
           }
         ]
@@ -110,10 +108,12 @@
           },
           "source": {
             "inject": "direction",
-            "up": { "translateY": "-30%" },
-            "down": { "translateY": "30%" },
-            "left": { "translateX": "-30%" },
-            "right": { "translateX": "30%" }
+            "upwards": { "translateY": "-30%" },
+            "downwards": { "translateY": "30%" },
+            "leftwards": { "translateX": "-30%" },
+            "rightwards": { "translateX": "30%" },
+            "forwards": { "scale": 0.9, "opacity": 0 },
+            "backwards": { "scale": 1.1, "opacity": 0 }
           }
         }
       }
@@ -124,21 +124,26 @@
       "name": "Reveal",
       "settings": {
         "position": true,
-        "duration": {
-          "from": 0,
-          "to": 5000,
-          "step": 500
-        },
+        "duration": true,
+        "easing": true,
+        "direction": ["forwards", "backwards"],
 
         "defaults": {
           "position": "center",
-          "duration": 500
+          "duration": 200,
+          "easing": "easeOutBack",
+          "direction": "backwards"
         }
       },
       "animate": {
         "css": {
           "{node}": {
-            "transform-origin": { "inject": "position" }
+            "transform-origin": { "inject": "position" },
+            "z-index": {
+              "inject": "type",
+              "enter": 10,
+              "exit": 5
+            }
           }
         },
         "anime": {
@@ -146,19 +151,34 @@
           "target": {
             "targets": { "inject": "node" },
             "duration": { "inject": "duration" },
-            "easing": "easeOutBack"
+            "easing": { "inject": "easing" }
           },
-          "source": {
-            "inject": "type",
-            "enter": {
-              "opacity": [0, 1],
-              "scale": [0.9, 1]
+          "source": [
+            {
+              "inject": "type",
+              "enter": {
+                "opacity": [0, 1],
+                "scale": [0.9, 1]
+              },
+              "exit": {
+                "opacity": 0,
+                "scale": 0.9
+              }
             },
-            "exit": {
-              "opacity": 0,
-              "scale": 0.9
+            {
+              "inject": "type",
+              "enter": {
+                "inject": "direction",
+                "forwards": { "scale": [1.1, 1] },
+                "backwards": { "scale": [0.9, 1] }
+              },
+              "exit": {
+                "inject": "direction",
+                "forwards": { "scale": 0.9 },
+                "backwards": { "scale": 1.1 }
+              }
             }
-          }
+          ]
         }
       }
     }
