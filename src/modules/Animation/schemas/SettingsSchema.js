@@ -22,7 +22,7 @@ const SettingsSchema = z.object({
   [Setting.Position]: EnumSchema(Position.values()).optional(),
   [Setting.Direction]: EnumSchema(Direction.values()).optional(), // TODO: Maybe remove forwards and backwards from default value (when this setting is set to "true")
 
-  defaults: z.object({
+  defaults: z.object({ // TODO: Allow to set default settings for enter and exit separately
     [Setting.Duration]: z.number().int().nonnegative(),
     [Setting.Easing]: z.string(),
     [Setting.Variant]: z.string(),

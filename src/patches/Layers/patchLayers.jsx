@@ -8,6 +8,7 @@ import { DiscordClasses } from '@/modules/DiscordSelectors'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
+import usePrevious from '@/hooks/usePrevious'
 
 function LayerContainer ({ baseLayer, children }) {
   return (
@@ -23,6 +24,7 @@ function patchLayers () {
   Patcher.after(Layers, 'default', (self, args, value) => {
     once(
       () => {
+        let prevLength = 0
         injectModule(value.type, ModuleKey.Layers)
         Patcher.after(value.type.prototype, 'renderLayers', (self, args, value) => {
           const module = Modules.getModule(ModuleKey.Layers)
@@ -30,21 +32,32 @@ function patchLayers () {
 
           value.forEach(layer => layer.type = LayerContainer) // Disable Discord's internal animations
 
-          const animations = module.getAnimations()
+          const animations = module.getAnimations({
+            auto: {
+              direction: +(value.length > prevLength)
+            }
+          })
 
+          const childFactory = e => {
+            e.props.animations = animations
+            return e
+          }
+
+          // TODO: Hide layers that are not visible (you can see them in the back with some animations)
+          prevLength = value.length
           return (
-            <TransitionGroup component={null}>
+            <TransitionGroup component={null} childFactory={childFactory}>
               {
                 value.map(layer => (
                   <PassThrough>
                     {props => (
                       <AnimeTransition
+                        animations={animations}
                         {...props}
                         in={layer.props.mode === 'SHOWN' && props.in}
                         key={layer.key}
                         mountOnEnter={false}
                         unmountOnExit={false}
-                        animations={animations}
                         options={{ type: 'switch' }}
                         onEntered={clearContainingStyles}
                       >

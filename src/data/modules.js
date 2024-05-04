@@ -96,7 +96,17 @@ const modules = [
   },
   {
     id: ModuleKey.Layers,
-    name: 'Layers'
+    name: 'Layers',
+    meta: {
+      settings: {
+        supportsAuto: {
+          [AnimationSetting.Direction]: true
+        },
+        defaults: {
+          [AnimationSetting.DirectionAxis]: Axis.Z
+        }
+      }
+    }
   }
 ]
 
