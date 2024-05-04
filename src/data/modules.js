@@ -7,7 +7,17 @@ import Position from '@/enums/Position'
 const modules = [
   {
     id: ModuleKey.Servers,
-    name: 'Servers'
+    name: 'Servers',
+    meta: {
+      settings: {
+        supportsAuto: {
+          [AnimationSetting.Direction]: true
+        },
+        defaults: {
+          [AnimationSetting.DirectionAxis]: Axis.Y
+        }
+      }
+    }
   },
   {
     id: ModuleKey.Channels,

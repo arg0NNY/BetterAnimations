@@ -27,3 +27,10 @@ export const heightModifier = options => ({
   before: _heightModifier('before', options),
   after: _heightModifier('after', options)
 })
+
+export function passAnimations (animations) {
+  return e => {
+    if (e?.props) e.props.animations = animations
+    return e
+  }
+}

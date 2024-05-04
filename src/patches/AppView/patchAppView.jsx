@@ -3,25 +3,27 @@ import { AppView, Router, TransitionGroup } from '@/modules/DiscordModules'
 import findInReactTree from '@/helpers/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
 import useLocationKey from '@/hooks/useLocationKey'
-import { shouldSwitchBase, shouldSwitchContent } from '@/helpers/locations'
-import { clearContainingStyles } from '@/helpers/transition'
+import { getSwitchBaseDirection, shouldSwitchBase, shouldSwitchContent } from '@/helpers/locations'
+import { clearContainingStyles, passAnimations } from '@/helpers/transition'
 import ModuleKey from '@/enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 
 // TODO: Insert classes dynamically
 
 function BaseView ({ children }) {
-  const key = useLocationKey(shouldSwitchBase)
+  const [key, direction] = useLocationKey(shouldSwitchBase, getSwitchBaseDirection)
 
   const module = useModule(ModuleKey.Servers)
   if (!module.isEnabled()) return children
 
+  const animations = module.getAnimations({ auto: { direction } })
+
   return (
-    <TransitionGroup component={null}>
+    <TransitionGroup component={null} childFactory={passAnimations(animations)}>
       <AnimeTransition
         key={key}
         clone={true}
-        animations={module.getAnimations()}
+        animations={animations}
         options={{ type: 'switch' }}
         onEntered={clearContainingStyles}
       >
@@ -34,7 +36,7 @@ function BaseView ({ children }) {
 }
 
 function ContentView ({ children }) {
-  const key = useLocationKey(shouldSwitchContent)
+  const [key] = useLocationKey(shouldSwitchContent)
 
   const module = useModule(ModuleKey.Channels)
   if (!module.isEnabled()) return (

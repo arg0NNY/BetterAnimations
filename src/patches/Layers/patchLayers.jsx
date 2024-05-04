@@ -3,7 +3,7 @@ import { Layers, TransitionGroup } from '@/modules/DiscordModules'
 import ensureOnce from '@/helpers/ensureOnce'
 import PassThrough from '@/components/PassThrough'
 import AnimeTransition from '@/components/AnimeTransition'
-import { clearContainingStyles } from '@/helpers/transition'
+import { clearContainingStyles, passAnimations } from '@/helpers/transition'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
@@ -38,15 +38,10 @@ function patchLayers () {
             }
           })
 
-          const childFactory = e => {
-            e.props.animations = animations
-            return e
-          }
-
           // TODO: Hide layers that are not visible (you can see them in the back with some animations)
           prevLength = value.length
           return (
-            <TransitionGroup component={null} childFactory={childFactory}>
+            <TransitionGroup component={null} childFactory={passAnimations(animations)}>
               {
                 value.map(layer => (
                   <PassThrough>

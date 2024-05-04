@@ -1,4 +1,5 @@
 import { Router, Routes, StaticChannelRoute } from '@/modules/DiscordModules'
+import { getSortedGuildTreeIds } from '@/helpers/guilds'
 
 const CHANNEL_PATH = [
   Routes.CHANNEL_THREAD_VIEW(':guildId', ':channelId', ':threadId'),
@@ -42,4 +43,20 @@ export function shouldSwitchContent (next, prev, isBaseSwitched = shouldSwitchBa
     return false
 
   return true
+}
+
+export function getSwitchBaseDirection (next, prev) {
+  const [nextChannel, prevChannel] = matchChannelRoutes(next, prev)
+
+  if (prevChannel?.params.guildId === '@me') return 1 // If from DMs, further
+  if (nextChannel?.params.guildId === '@me') return 0 // If to DMs, back
+  if (matchExact(prev.pathname, Routes.GUILD_DISCOVERY)) return 0 // If from guild discovery, back
+  if (matchExact(next.pathname, Routes.GUILD_DISCOVERY)) return 1 // If to guild discovery, further
+  if (!nextChannel) return 0 // If from server, back
+  if (!prevChannel) return 1 // If to server, further
+
+  // Otherwise it is from and to guild, compare guild indexes in the sorted tree
+  const sortedGuildIds = getSortedGuildTreeIds()
+  const indexOf = channel => sortedGuildIds.indexOf(channel.params.guildId)
+  return +(indexOf(nextChannel) > indexOf(prevChannel))
 }

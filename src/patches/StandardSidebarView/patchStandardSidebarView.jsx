@@ -2,7 +2,7 @@ import { Patcher } from '@/BdApi'
 import { StandardSidebarView, StandardSidebarViewWrapper, TransitionGroup } from '@/modules/DiscordModules'
 import findInReactTree from '@/helpers/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
-import { clearContainingStyles } from '@/helpers/transition'
+import { clearContainingStyles, passAnimations } from '@/helpers/transition'
 import useDirection from '@/hooks/useDirection'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
@@ -38,13 +38,8 @@ async function patchStandardSidebarView () {
 
     const animations = module.getAnimations({ auto: { direction } })
 
-    const childFactory = e => {
-      e.props.animations = animations
-      return e
-    }
-
     standardSidebarView.children[i] = (
-      <TransitionGroup className="contentRegion__08eba" childFactory={childFactory}>
+      <TransitionGroup className="contentRegion__08eba" childFactory={passAnimations(animations)}>
         <AnimeTransition
           key={props.section}
           animations={animations}
