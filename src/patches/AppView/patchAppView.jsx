@@ -4,24 +4,11 @@ import findInReactTree from '@/helpers/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
 import useLocationKey from '@/hooks/useLocationKey'
 import { shouldSwitchBase, shouldSwitchContent } from '@/helpers/locations'
-import animation from '../../../examples/example.animation.json'
-import { parseAnimationData } from '@/modules/Animation/parser'
-import { z } from 'zod'
-import { fromZodError } from 'zod-validation-error'
 import { clearContainingStyles } from '@/helpers/transition'
 import ModuleKey from '@/enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 
 // TODO: Insert classes dynamically
-
-export let tempAnimationData
-try {
-  tempAnimationData = parseAnimationData(animation)
-}
-catch (e) {
-  e = e instanceof z.ZodError ? fromZodError(e).message : e
-  console.error('Failed to load animation:', e)
-}
 
 function BaseView ({ children }) {
   const key = useLocationKey(shouldSwitchBase)

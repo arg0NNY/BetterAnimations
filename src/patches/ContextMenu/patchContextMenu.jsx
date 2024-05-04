@@ -1,10 +1,6 @@
 import { Patcher } from '@/BdApi'
 import { ContextMenu, TransitionGroup } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
-import { parseAnimationData } from '@/modules/Animation/parser'
-import animation from '../../../examples/reveal.animation.json'
-import { z } from 'zod'
-import { fromZodError } from 'zod-validation-error'
 import { clearContainingStyles, directChild } from '@/helpers/transition'
 import patchContextSubmenu from '@/patches/ContextMenu/patchContextSubmenu'
 import ensureOnce from '@/helpers/ensureOnce'
@@ -12,15 +8,6 @@ import Position from '@/enums/Position'
 import useModule, { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
-
-export let tempAnimationData
-try {
-  tempAnimationData = parseAnimationData(animation)
-}
-catch (e) {
-  e = e instanceof z.ZodError ? fromZodError(e).message : e
-  console.error('Failed to load animation:', e)
-}
 
 export const animationOptions = {
   auto: {

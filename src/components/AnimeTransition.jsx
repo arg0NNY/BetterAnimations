@@ -35,20 +35,15 @@ class AnimeTransition extends React.Component {
 
       if (node) {
         try {
-          const { animations = {}, animation: anim = {}, context = {}, options = {}, unmountOnExit = true } = this.props // TODO: Remove "animation" and "context" from props
+          const { animations = {}, options = {}, unmountOnExit = true } = this.props
 
-          const animationData = animations[type] ?? { animation: anim }
+          const animationData = animations[type]
           const animation = animationData?.animation ?? {}
 
           const assets = buildAnimateAssets(
             animation[type] ?? animation.animate,
             Object.assign(
-              {
-                variant: 'right',
-                duration: 600,
-                easing: 'easeInOutQuad',
-              },
-              context,
+              {},
               animationData.settings ?? {},
               {
                 node,
@@ -112,7 +107,7 @@ class AnimeTransition extends React.Component {
   }
 
   render () {
-    const { animations, animation, children, clone = false, mountOnEnter = true, unmountOnExit = true, enter = true, exit = true, ...props } = this.props
+    const { animations, children, clone = false, mountOnEnter = true, unmountOnExit = true, enter = true, exit = true, ...props } = this.props
 
     if (clone && props.in === false) {
       const node = ReactDOM.findDOMNode(this)
@@ -125,8 +120,8 @@ class AnimeTransition extends React.Component {
     return (
       <Transition
         {...props}
-        enter={!!(animations?.enter?.animation || animation) && enter}
-        exit={!!(animations?.exit?.animation || animation) && exit}
+        enter={!!animations?.enter?.animation && enter}
+        exit={!!animations?.exit?.animation && exit}
         mountOnEnter={mountOnEnter}
         unmountOnExit={unmountOnExit}
         onEntering={this.onAnimate('enter')}
