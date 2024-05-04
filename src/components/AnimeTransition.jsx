@@ -53,7 +53,7 @@ class AnimeTransition extends React.Component {
             ),
             options
           )
-          console.log(assets)
+          // console.log(assets)
 
           if (assets.node) node.before(assets.node)
 
@@ -76,7 +76,7 @@ class AnimeTransition extends React.Component {
                   .forEach(a => node.removeAttribute(a.name))
 
               this.cancelAnimation = null
-              console.log('finished', type)
+              // console.log('finished', type)
             }
 
             finished
