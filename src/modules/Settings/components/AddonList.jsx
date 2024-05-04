@@ -6,7 +6,7 @@ import useForceUpdate from '@/hooks/useForceUpdate'
 
 export default function AddonList ({ children, getList, prefix }) {
   prefix = prefix ?? 'pack'
-  getList = getList ?? (() => PackManager.addonList)
+  getList = getList ?? (() => PackManager.getAllPacks())
   children = children ?? (pack => <PackItem pack={pack} key={pack.slug} />)
 
   const forceUpdate = useForceUpdate()

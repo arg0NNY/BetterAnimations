@@ -37,7 +37,7 @@ export default new class PackManager extends AddonManager {
   /* Overrides */
   initializeAddon (addon) {
     try {
-      PackSchema.parse(addon)
+      Object.assign(addon, PackSchema.parse(addon))
     }
     catch (e) {
       const message = e instanceof z.ZodError ? fromZodError(e).message : e.message
@@ -45,8 +45,11 @@ export default new class PackManager extends AddonManager {
     }
   }
 
+  getAllPacks (includePartial = false) {
+    return this.addonList.filter(p => includePartial || !p.partial)
+  }
   getPack (slug) {
-    return this.addonList.find(p => p.slug === slug)
+    return this.getAllPacks().find(p => p.slug === slug)
   }
   getAnimation (packOrSlug, key) {
     return (typeof packOrSlug === 'string' ? this.getPack(packOrSlug) : packOrSlug)
