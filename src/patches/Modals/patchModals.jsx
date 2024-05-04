@@ -1,19 +1,30 @@
 import { Patcher } from '@/BdApi'
 import { Modals, TransitionGroup } from '@/modules/DiscordModules'
-import patchModalRoot from '@/patches/Modals/patchModalRoot'
 import AnimeTransition from '@/components/AnimeTransition'
-import { clearContainingStyles } from '@/helpers/transition'
 import PassThrough from '@/components/PassThrough'
+import patchModalItem from '@/patches/Modals/patchModalItem'
 import patchModalBackdrop from '@/patches/Modals/patchModalBackdrop'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
-import { tempAnimationData } from '@/patches/ContextMenu/patchContextMenu'
+import useModule from '@/hooks/useModule'
+import ModuleKey from '@/enums/ModuleKey'
+import ensureOnce from '@/helpers/ensureOnce'
 
 function patchModals () {
+  const once = ensureOnce()
+
   Patcher.after(Modals, 'Modals', (self, args, value) => {
+    const modals = value.props.children[1]
+    if (modals?.length) once(() => patchModalItem(modals[0].type))
+
+    const module = useModule(ModuleKey.Modals)
+    if (!module.isEnabled()) return
+
+    const animations = module.getAnimations()
+
     value.props.children[1] = (
       <TransitionGroup component={null}>
         {
-          value.props.children[1].map(modal => (
+          modals.map(modal => (
             <PassThrough>
               {props => (
                 <AnimeTransition
@@ -23,13 +34,9 @@ function patchModals () {
                   mountOnEnter={false}
                   unmountOnExit={false}
                   targetNode={node => node?.querySelector(`${DiscordSelectors.Modal.root}, .bd-modal-root`)}
-                  animation={tempAnimationData}
+                  animations={animations}
                   enter={!modal.props.instant}
                   exit={!modal.props.instant}
-                  context={{
-                    duration: 200
-                  }}
-                  // onEntered={clearContainingStyles}
                 >
                   {modal}
                 </AnimeTransition>
@@ -41,7 +48,6 @@ function patchModals () {
     )
   })
 
-  patchModalRoot()
   patchModalBackdrop()
 }
 

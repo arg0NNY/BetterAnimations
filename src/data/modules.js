@@ -85,7 +85,14 @@ const modules = [
   },
   {
     id: ModuleKey.Modals,
-    name: 'Modals'
+    name: 'Modals',
+    meta: {
+      settings: {
+        defaults: {
+          [AnimationSetting.Position]: Position.Center
+        }
+      }
+    }
   },
   {
     id: ModuleKey.Layers,
