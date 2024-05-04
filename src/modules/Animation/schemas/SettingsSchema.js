@@ -20,7 +20,7 @@ const SettingsSchema = z.object({
     name: z.string()
   }).array().optional(),
   [Setting.Position]: EnumSchema(Position.values()).optional(),
-  [Setting.Direction]: EnumSchema(Direction.values()).optional(),
+  [Setting.Direction]: EnumSchema(Direction.values()).optional(), // TODO: Maybe remove forwards and backwards from default value (when this setting is set to "true")
 
   defaults: z.object({
     [Setting.Duration]: z.number().int().nonnegative(),

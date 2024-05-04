@@ -1,56 +1,63 @@
-import { Patcher } from '@/BdApi'
+import { Patcher, React } from '@/BdApi'
 import { Layers, TransitionGroup } from '@/modules/DiscordModules'
 import ensureOnce from '@/helpers/ensureOnce'
 import PassThrough from '@/components/PassThrough'
 import AnimeTransition from '@/components/AnimeTransition'
-import { tempAnimationData } from '@/patches/AppView/patchAppView'
 import { clearContainingStyles } from '@/helpers/transition'
+import { DiscordClasses } from '@/modules/DiscordSelectors'
+import { injectModule } from '@/hooks/useModule'
+import ModuleKey from '@/enums/ModuleKey'
+import Modules from '@/modules/Modules'
+
+function LayerContainer ({ baseLayer, children }) {
+  return (
+    <div className={`${DiscordClasses.Layer.layer} ${baseLayer ? DiscordClasses.Layer.baseLayer : ''}`}>
+      {children}
+    </div>
+  )
+}
 
 function patchLayers () {
   const once = ensureOnce()
 
   Patcher.after(Layers, 'default', (self, args, value) => {
     once(
-      () => Patcher.after(value.type.prototype, 'renderLayers', (self, args, value) => {
-        once(
-          () => {
-            // Disable Discord's internal layer animations
-            const prototype = value[0].type.prototype
-            Patcher.instead(prototype, 'getAnimatedStyle', () => ({}))
-            Patcher.instead(prototype, 'animateIn', (self, [fn]) => self.animateComplete(fn))
-            Patcher.instead(prototype, 'animateOut', (self, [fn]) => fn())
-            Patcher.instead(prototype, 'animateUnder', (self) => self.animateComplete())
-          },
-          'animate'
-        )
+      () => {
+        injectModule(value.type, ModuleKey.Layers)
+        Patcher.after(value.type.prototype, 'renderLayers', (self, args, value) => {
+          const module = Modules.getModule(ModuleKey.Layers)
+          if (!module.isEnabled()) return
 
-        return (
-          <TransitionGroup component={null}>
-            {
-              value.map(layer => (
-                <PassThrough>
-                  {props => (
-                    <AnimeTransition
-                      {...props}
-                      in={layer.props.mode === 'SHOWN' && props.in}
-                      key={layer.key}
-                      mountOnEnter={false}
-                      unmountOnExit={false}
-                      animation={tempAnimationData}
-                      options={{
-                        type: 'switch'
-                      }}
-                      onEntered={clearContainingStyles}
-                    >
-                      {layer}
-                    </AnimeTransition>
-                  )}
-                </PassThrough>
-              ))
-            }
-          </TransitionGroup>
-        )
-      }),
+          value.forEach(layer => layer.type = LayerContainer) // Disable Discord's internal animations
+
+          const animations = module.getAnimations()
+
+          return (
+            <TransitionGroup component={null}>
+              {
+                value.map(layer => (
+                  <PassThrough>
+                    {props => (
+                      <AnimeTransition
+                        {...props}
+                        in={layer.props.mode === 'SHOWN' && props.in}
+                        key={layer.key}
+                        mountOnEnter={false}
+                        unmountOnExit={false}
+                        animations={animations}
+                        options={{ type: 'switch' }}
+                        onEntered={clearContainingStyles}
+                      >
+                        {layer}
+                      </AnimeTransition>
+                    )}
+                  </PassThrough>
+                ))
+              }
+            </TransitionGroup>
+          )
+        })
+      },
       'renderLayers'
     )
   })

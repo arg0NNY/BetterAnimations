@@ -40,6 +40,11 @@
     transition: none;
 }
 
+/* layers */
+.layers__1c917 > .layer_f7d46a {
+    isolation: isolate;
+}
+
 /* for voice chat sidebar */
 .chat_f8f70f {
     overflow: clip;

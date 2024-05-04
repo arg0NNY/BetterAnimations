@@ -17,6 +17,13 @@ async function patchStandardSidebarView () {
   })
 
   Patcher.after(await StandardSidebarView, 'default', (self, [props], value) => {
+    // Disable Discord's internal animations, for Layers module
+    const animated = findInReactTree(value, m => m?.type?.displayName?.startsWith('Animated'))
+    if (animated) {
+      delete animated.props.style
+      animated.type = 'div'
+    }
+
     const standardSidebarView = findInReactTree(value, m => m?.className?.includes('standardSidebarView__12528'))
     if (!standardSidebarView) return
 

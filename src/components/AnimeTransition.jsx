@@ -35,7 +35,7 @@ class AnimeTransition extends React.Component {
 
       if (node) {
         try {
-          const { animations = {}, animation: anim = {}, context = {}, options = {} } = this.props // TODO: Remove "animation" and "context" from props
+          const { animations = {}, animation: anim = {}, context = {}, options = {}, unmountOnExit = true } = this.props // TODO: Remove "animation" and "context" from props
 
           const animationData = animations[type] ?? { animation: anim }
           const animation = animationData?.animation ?? {}
@@ -76,7 +76,7 @@ class AnimeTransition extends React.Component {
                 if (type === 'exit') node.setAttribute('style', styleSnapshot)
               })
 
-              if (options.type !== 'switch' || type !== 'exit')
+              if (options.type !== 'switch' || type !== 'exit' || !unmountOnExit)
                 [].filter.call(node.attributes, a => a.name?.startsWith('data-animation'))
                   .forEach(a => node.removeAttribute(a.name))
 

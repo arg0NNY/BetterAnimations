@@ -4,7 +4,8 @@ import { Webpack } from '@/BdApi'
 const Classes = {
   ThreadSidebar: Webpack.getByKeys('chatLayerWrapper', 'chatTarget'),
   StandardSidebarView: () => Webpack.getByKeys('standardSidebarView', 'contentRegion'),
-  Modal: Webpack.getByKeys('root', 'rootWithShadow')
+  Modal: Webpack.getByKeys('root', 'rootWithShadow'),
+  Layer: Webpack.getByKeys('layer', 'baseLayer')
 }
 
 export const DiscordClasses = Classes
