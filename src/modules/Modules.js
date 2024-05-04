@@ -67,6 +67,13 @@ class Module {
     this.settings[type].settings = settings
   }
 
+  getGeneralSettings () {
+    return this.settings.settings ?? {}
+  }
+  setGeneralSettings (settings) {
+    this.settings.settings = settings
+  }
+
   supportsAuto (animation, setting) {
     if (!this.meta.settings?.supportsAuto?.[setting] || !animation.settings?.[setting]) return false
     if (animation.settings[setting] === true) return true

@@ -4,6 +4,7 @@ import ModuleContext from '@/modules/Settings/context/ModuleContext'
 import Emitter from '@/modules/Emitter'
 import Events from '@/enums/Events'
 import useModule from '@/hooks/useModule'
+import ModuleGeneralSettings from '@/modules/Settings/components/ModuleGeneralSettings'
 
 export default function ModuleSettings () {
   const { id } = Router.useParams()
@@ -24,18 +25,29 @@ export default function ModuleSettings () {
     module.setAnimationSettings(type, value)
     onChange()
   }
+  const setGeneralSettings = value => {
+    module.setGeneralSettings(value)
+    onChange()
+  }
 
   return (
     <ModuleContext.Provider value={module}>
       <Common.FormTitle tag="h2">{module.name} Animation</Common.FormTitle>
       <Common.FormSwitch value={module.isEnabled()} onChange={setIsEnabled}>Enabled</Common.FormSwitch>
       {module.isEnabled() && (
-        <AnimationSelect
-          module={module}
-          selected={module.getAnimations()}
-          onSelect={onSelect}
-          setSettings={setSettings}
-        />
+        <div>
+          <AnimationSelect
+            module={module}
+            selected={module.getAnimations()}
+            onSelect={onSelect}
+            setSettings={setSettings}
+          />
+          <ModuleGeneralSettings
+            module={module}
+            settings={module.getGeneralSettings()}
+            onChange={setGeneralSettings}
+          />
+        </div>
       )}
     </ModuleContext.Provider>
   )

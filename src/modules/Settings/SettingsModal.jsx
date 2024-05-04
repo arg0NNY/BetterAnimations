@@ -2,14 +2,17 @@ import { Common } from '@/modules/DiscordModules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import SettingsPanel from '@/modules/Settings/SettingsPanel'
 import config from '@/config.json'
-import { save } from '@/modules/SettingsStorage'
+import { load, save } from '@/modules/SettingsStorage'
+import Emitter from '@/modules/Emitter'
+import Events from '@/enums/Events'
 
 function SettingsModal ({ history, ...props }) {
   function onConfirm () {
     save()
   }
   function onCancel () {
-    // TODO: Implement cancelling changes
+    load()
+    Emitter.emit(Events.SettingsChanged)
   }
 
   return (

@@ -2,6 +2,7 @@ import Data from '@/modules/Data'
 import deepmerge from 'deepmerge'
 import Modules from '@/enums/ModuleKey'
 
+// TODO: Finalize default settings
 export const defaults = {
   modules: {
     [Modules.Servers]: {
@@ -17,13 +18,19 @@ export const defaults = {
         settings: {}
       }
     },
+    [Modules.Modals]: {
+      settings: {
+        backdropTransitionDuration: 200
+      }
+    },
   }
 }
 
-export let settings = load(defaults)
+export let settings = {}
+load(defaults)
 
 export function load (defaults) {
-  return deepmerge(defaults, Data.settings ?? {})
+  settings = deepmerge(defaults, Data.settings ?? {})
 }
 
 export function save (value = settings) {
