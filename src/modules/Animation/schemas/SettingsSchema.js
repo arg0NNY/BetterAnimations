@@ -7,11 +7,13 @@ import { formatValuesList } from '@/helpers/schemas'
 const EnumSchema = values => z.union([z.literal(true), z.enum(values).array()])
 
 const SettingsSchema = z.object({
-  [Setting.Duration]: z.object({
-    from: z.number().int().nonnegative(),
-    to: z.number().int().nonnegative(), // TODO: Add max possible value
-    step: z.number().int().nonnegative(), // TODO: Remove step
-  }).optional(),
+  [Setting.Duration]: z.union([
+    z.literal(true),
+    z.object({
+      from: z.number().int().nonnegative().min(100).multipleOf(100),
+      to: z.number().int().nonnegative().max(5000).multipleOf(100)
+    })
+  ]).optional().transform(v => v === true ? { from: 100, to: 2000 } : v),
   [Setting.Easing]: z.literal(true).optional(),
   [Setting.Variant]: z.object({
     key: z.string(),
