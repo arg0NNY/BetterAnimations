@@ -7,6 +7,7 @@ const Classes = {
   Modal: Webpack.getByKeys('root', 'rootWithShadow')
 }
 
+export const DiscordClasses = Classes
 // export const DiscordClasses = new Proxy(Classes, {
 //   get (obj, prop) {
 //

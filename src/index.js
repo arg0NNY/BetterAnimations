@@ -16,6 +16,7 @@ import patchListThin from '@/patches/ListThin/patchListThin'
 import PackManager from '@/modules/PackManager'
 import Logger from '@/modules/Logger'
 import Settings from '@/modules/Settings'
+import { ModalActions } from '@/modules/DiscordModules'
 
 anime.suspendWhenDocumentHidden = false
 
@@ -55,7 +56,10 @@ export default function (meta) {
       forceAppUpdate()
     },
     getSettingsPanel () {
-      return Settings.buildSettingsPanel()
+      requestAnimationFrame(() => {
+        ModalActions.closeAllModals()
+        Settings.openSettingsModal()
+      })
     }
   }
 }

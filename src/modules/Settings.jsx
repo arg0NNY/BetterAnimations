@@ -1,21 +1,20 @@
-import { DOM, ReactDOM } from '@/BdApi'
-import SettingsPanel from '@/modules/Settings/SettingsPanel'
-import { History } from '@/modules/DiscordModules'
-import { save } from '@/modules/SettingsStorage'
+import { History, ModalActions } from '@/modules/DiscordModules'
+import SettingsModal from '@/modules/Settings/SettingsModal'
 
 export default new class Settings {
 
-  buildSettingsPanel () {
-    const node = DOM.createElement('div', { id: 'BA-settings' })
+  constructor () {
+    this.history = History.createMemoryHistory()
+  }
 
-    const history = History.createMemoryHistory()
-    ReactDOM.render(<SettingsPanel history={history} />, node)
-    DOM.onRemoved(node, () => {
-      ReactDOM.unmountComponentAtNode(node)
-      save()
+  openSettingsModal () {
+    this.history.push('/')
+
+    ModalActions.openModal(props => (
+      <SettingsModal {...props} history={this.history} />
+    ), {
+      onCloseRequest: () => {} // Disable dismissing
     })
-
-    return node
   }
 
 }
