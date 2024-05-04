@@ -6,7 +6,7 @@ function ModalsGeneralSettings ({ settings, onChange }) {
   return (
     <DurationControl
       label="Backdrop transition duration"
-      options={{ from: 100, to: 2000 }}
+      options={{ from: 0, to: 2000 }}
       value={settings.backdropTransitionDuration}
       onChange={duration => onChange({ backdropTransitionDuration: duration })}
       defaultValue={200}
