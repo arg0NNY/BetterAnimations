@@ -41,6 +41,9 @@
 }
 
 /* layers */
+.platform-win .layer_f7d46a {
+    top: -22px !important;
+}
 .layers__1c917 > .layer_f7d46a {
     isolation: isolate;
 }
