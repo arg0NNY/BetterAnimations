@@ -3,7 +3,12 @@ import { AppView, Router, TransitionGroup } from '@/modules/DiscordModules'
 import findInReactTree from '@/helpers/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
 import useLocationKey from '@/hooks/useLocationKey'
-import { getSwitchBaseDirection, shouldSwitchBase, shouldSwitchContent } from '@/helpers/locations'
+import {
+  getSwitchBaseDirection,
+  getSwitchContentDirection,
+  shouldSwitchBase,
+  shouldSwitchContent
+} from '@/helpers/locations'
 import { clearContainingStyles, passAnimations } from '@/helpers/transition'
 import ModuleKey from '@/enums/ModuleKey'
 import useModule from '@/hooks/useModule'
@@ -36,7 +41,7 @@ function BaseView ({ children }) {
 }
 
 function ContentView ({ children }) {
-  const [key] = useLocationKey(shouldSwitchContent)
+  const [key, direction] = useLocationKey(shouldSwitchContent, getSwitchContentDirection)
 
   const module = useModule(ModuleKey.Channels)
   if (!module.isEnabled()) return (
@@ -45,12 +50,14 @@ function ContentView ({ children }) {
     </Router.Switch>
   )
 
+  const animations = module.getAnimations({ auto: { direction } })
+
   return (
-    <TransitionGroup className="content__76dcf">
+    <TransitionGroup className="content__76dcf" childFactory={passAnimations(animations)}>
       <AnimeTransition
         key={key}
         clone={true}
-        animations={module.getAnimations()}
+        animations={animations}
         options={{ type: 'switch' }}
         onEntered={clearContainingStyles}
       >

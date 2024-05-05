@@ -1,5 +1,7 @@
-import { Router, Routes, StaticChannelRoute } from '@/modules/DiscordModules'
-import { getSortedGuildTreeIds } from '@/helpers/guilds'
+import { PrivateChannelSortStore, Router, Routes, StaticChannelRoute } from '@/modules/DiscordModules'
+import { getSortedGuildChannelIds, getSortedGuildTreeIds } from '@/helpers/guilds'
+import { communityRowToChannelRoute, getStaticDMRouteIndex } from '@/helpers/routes'
+import { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChannelList'
 
 const CHANNEL_PATH = [
   Routes.CHANNEL_THREAD_VIEW(':guildId', ':channelId', ':threadId'),
@@ -52,11 +54,41 @@ export function getSwitchBaseDirection (next, prev) {
   if (nextChannel?.params.guildId === '@me') return 0 // If to DMs, back
   if (matchExact(prev.pathname, Routes.GUILD_DISCOVERY)) return 0 // If from guild discovery, back
   if (matchExact(next.pathname, Routes.GUILD_DISCOVERY)) return 1 // If to guild discovery, further
-  if (!nextChannel) return 0 // If from server, back
+  if (!nextChannel) return 0 // If from server, back; This condition also covers uncovered cases
   if (!prevChannel) return 1 // If to server, further
 
   // Otherwise it is from and to guild, compare guild indexes in the sorted tree
   const sortedGuildIds = getSortedGuildTreeIds()
   const indexOf = channel => sortedGuildIds.indexOf(channel.params.guildId)
   return +(indexOf(nextChannel) > indexOf(prevChannel))
+}
+
+export function getSwitchContentDirection (next, prev) {
+  const [nextChannel, prevChannel] = matchChannelRoutes(next, prev)
+
+  if (nextChannel && prevChannel && nextChannel.params.guildId !== '@me'
+    && nextChannel.params.guildId === prevChannel.params.guildId) { // If guilds are the same, and it's not DMs, compare channel indexes
+    const { guildId } = nextChannel.params
+
+    const communityChannelIds = (currentGuildChannels?.communitySection?.communityRows ?? [])
+      .map(communityRowToChannelRoute).flat()
+    const sortedChannelIds = communityChannelIds.concat(getSortedGuildChannelIds(guildId))
+
+    const indexOf = channel => sortedChannelIds.indexOf(channel.params.channelId)
+    return +(indexOf(nextChannel) > indexOf(prevChannel))
+  }
+
+  // Otherwise we're inside DMs
+  const [nextDMStaticIndex, prevDMStaticIndex] = [next.pathname, prev.pathname].map(getStaticDMRouteIndex)
+  if (nextDMStaticIndex !== -1 && prevDMStaticIndex !== -1) // If both are static DM routes, compare their indexes
+    return +(nextDMStaticIndex > prevDMStaticIndex)
+  if (nextChannel?.params.channelId && prevChannel?.params.channelId) { // If both are channels, compare their indexes
+    const sortedChannelIds = PrivateChannelSortStore.getPrivateChannelIds()
+    const indexOf = channel => sortedChannelIds.indexOf(channel.params.channelId)
+    return +(indexOf(nextChannel) > indexOf(prevChannel))
+  }
+  if (prevChannel?.params.channelId) return 0 // If from channel, back
+  if (nextChannel?.params.channelId) return 1 // If to channel, further
+
+  return 0 // Fallback, for uncovered cases
 }

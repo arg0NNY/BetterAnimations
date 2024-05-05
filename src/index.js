@@ -13,6 +13,7 @@ import patchStandardSidebarView from '@/patches/StandardSidebarView/patchStandar
 import patchModals from '@/patches/Modals/patchModals'
 import patchLayers from '@/patches/Layers/patchLayers'
 import patchListThin from '@/patches/ListThin/patchListThin'
+import patchGuildChannelList from '@/patches/GuildChannelList/patchGuildChannelList'
 import PackManager from '@/modules/PackManager'
 import Logger from '@/modules/Logger'
 import Settings from '@/modules/Settings'
@@ -42,6 +43,7 @@ export default function (meta) {
       patchModals()
       patchLayers()
       patchListThin()
+      patchGuildChannelList()
 
       forceAppUpdate()
     },

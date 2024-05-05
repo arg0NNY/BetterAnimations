@@ -46,3 +46,7 @@ export const VoiceChannelView = Webpack.getModule(Filters.byStrings('shouldUseVo
 export const History = Webpack.getByKeys('createBrowserHistory', 'createMemoryHistory')
 export const { Easing } = Webpack.getByKeys('Easing')
 export const SortedGuildStore = Webpack.getStore('SortedGuildStore')
+export const GuildChannelList = Webpack.getByKeys('GuildChannelList')
+export const GuildChannelStore = Webpack.getStore('GuildChannelStore')
+export const { ChannelListCommunityRow } = Webpack.getByKeys('ChannelListCommunityRow')
+export const PrivateChannelSortStore = Webpack.getStore('PrivateChannelSortStore')

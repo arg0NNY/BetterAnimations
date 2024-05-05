@@ -21,7 +21,17 @@ const modules = [
   },
   {
     id: ModuleKey.Channels,
-    name: 'Channels'
+    name: 'Channels',
+    meta: {
+      settings: {
+        supportsAuto: {
+          [AnimationSetting.Direction]: true
+        },
+        defaults: {
+          [AnimationSetting.DirectionAxis]: Axis.Y
+        }
+      }
+    }
   },
   {
     id: ModuleKey.Settings,
