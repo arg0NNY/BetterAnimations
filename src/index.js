@@ -14,6 +14,7 @@ import patchModals from '@/patches/Modals/patchModals'
 import patchLayers from '@/patches/Layers/patchLayers'
 import patchListThin from '@/patches/ListThin/patchListThin'
 import patchGuildChannelList from '@/patches/GuildChannelList/patchGuildChannelList'
+import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
 import PackManager from '@/modules/PackManager'
 import Logger from '@/modules/Logger'
 import Settings from '@/modules/Settings'
@@ -44,6 +45,7 @@ export default function (meta) {
       patchLayers()
       patchListThin()
       patchGuildChannelList()
+      patchMessageRequestsRoute()
 
       forceAppUpdate()
     },

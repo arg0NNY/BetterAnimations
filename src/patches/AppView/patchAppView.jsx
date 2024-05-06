@@ -1,5 +1,5 @@
 import { Patcher, React } from '@/BdApi'
-import { AppView, Router, TransitionGroup } from '@/modules/DiscordModules'
+import { AppView, Constants, Router, TransitionGroup } from '@/modules/DiscordModules'
 import findInReactTree from '@/helpers/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
 import useLocationKey from '@/hooks/useLocationKey'
@@ -12,6 +12,7 @@ import {
 import { clearContainingStyles, passAnimations } from '@/helpers/transition'
 import ModuleKey from '@/enums/ModuleKey'
 import useModule from '@/hooks/useModule'
+import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
 
 // TODO: Insert classes dynamically
 
@@ -83,6 +84,9 @@ function patchAppView () {
 
     const view = findInReactTree(content, m => m?.children?.type === Router.Switch)
     const routes = view.children.props.children
+
+    const messageRequestsRoute = routes.find(r => r?.props?.path === Constants.Routes.MESSAGE_REQUESTS)
+    if (messageRequestsRoute) patchMessageRequestsRoute(messageRequestsRoute)
 
     view.children = <ContentView>{routes}</ContentView>
 
