@@ -44,7 +44,7 @@ class AnimeTransition extends React.Component {
             animation[type] ?? animation.animate,
             Object.assign(
               {},
-              animationData.settings ?? {},
+              animationData?.settings ?? {},
               {
                 node,
                 type,
@@ -107,7 +107,7 @@ class AnimeTransition extends React.Component {
   }
 
   render () {
-    const { animations, children, clone = false, mountOnEnter = true, unmountOnExit = true, enter = true, exit = true, ...props } = this.props
+    const { animations, options = {}, children, clone = false, mountOnEnter = true, unmountOnExit = true, enter = true, exit = true, ...props } = this.props
 
     if (clone && props.in === false) {
       const node = ReactDOM.findDOMNode(this)
@@ -120,8 +120,8 @@ class AnimeTransition extends React.Component {
     return (
       <Transition
         {...props}
-        enter={!!animations?.enter?.animation && enter}
-        exit={!!animations?.exit?.animation && exit}
+        enter={(!!animations?.enter?.animation || options.before) && enter}
+        exit={(!!animations?.exit?.animation || options.after) && exit}
         mountOnEnter={mountOnEnter}
         unmountOnExit={unmountOnExit}
         onEntering={this.onAnimate('enter')}
