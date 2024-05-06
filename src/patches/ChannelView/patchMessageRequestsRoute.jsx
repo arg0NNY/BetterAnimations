@@ -12,6 +12,8 @@ import SwitchTransition from '@/components/SwitchTransition'
 import patchUseMessageRequestSidebarState from '@/patches/ChannelView/patchUseMessageRequestSidebarState'
 import MessageRequestSidebarContext from '@/patches/ChannelView/context/MessageRequestSidebarContext'
 import MessageRequestSidebarWrapper from '@/patches/ChannelView/components/MessageRequestSidebarWrapper'
+import useModule from '@/hooks/useModule'
+import ModuleKey from '@/enums/ModuleKey'
 
 let once = () => {}
 
@@ -25,6 +27,9 @@ function patchMessageRequestsRoute (route) {
 
   Patcher.after(route.props, 'render', (self, args, value) => {
     once(() => Patcher.after(value.type, 'render', (self, args, value) => {
+      const module = useModule(ModuleKey.Sidebars)
+      if (!module.isEnabled()) return
+
       Patcher.after(value.props, 'children', (self, args, value) => {
         Patcher.after(value, 'type', (self, [props], value) => {
           const state = useStateFromStores([ChannelSectionStore], () => ChannelSectionStore.getSidebarState(MESSAGE_REQUESTS_BASE_CHANNEL_ID))

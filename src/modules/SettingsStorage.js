@@ -23,6 +23,12 @@ export const defaults = {
         backdropTransitionDuration: 200
       }
     },
+    [Modules.Sidebars]: {
+      settings: {
+        duration: 400,
+        easing: 'easeInOutQuint'
+      }
+    }
   }
 }
 

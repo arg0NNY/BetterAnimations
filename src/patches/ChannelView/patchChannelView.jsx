@@ -6,6 +6,9 @@ import SwitchTransition from '@/components/SwitchTransition'
 import patchVoiceChannelView from '@/patches/ChannelView/patchVoiceChannelView'
 import animate from '@/patches/ChannelView/helpers/animate'
 import ThreadSidebarTransition from '@/patches/ChannelView/components/ThreadSidebarTransition'
+import { injectModule } from '@/hooks/useModule'
+import ModuleKey from '@/enums/ModuleKey'
+import Modules from '@/modules/Modules'
 
 function patchChannelView () {
   const once = ensureOnce()
@@ -15,7 +18,11 @@ function patchChannelView () {
       Patcher.after(value.props, 'children', (self, args, value) => {
 
         once(() => {
+          injectModule(value.type, ModuleKey.Sidebars)
           Patcher.after(value.type.prototype, 'renderSidebar', (self, args, value) => {
+            const module = Modules.getModule(ModuleKey.Sidebars)
+            if (!module.isEnabled()) return value
+
             const modifier = type => ({ node }) => animate(type, node)
 
             return (
@@ -33,6 +40,9 @@ function patchChannelView () {
             )
           })
           Patcher.after(value.type.prototype, 'renderThreadSidebar', (self, args, value) => {
+            const module = Modules.getModule(ModuleKey.Sidebars)
+            if (!module.isEnabled()) return value
+
             return (
               <SwitchTransition>
                 <ThreadSidebarTransition key={self.props.section + JSON.stringify(self.props.channelSidebarState)}>

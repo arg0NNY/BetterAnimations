@@ -127,6 +127,13 @@ const modules = [
         }
       }
     }
+  },
+  {
+    id: ModuleKey.Sidebars,
+    name: 'Sidebars',
+    meta: {
+      disableCustomAnimations: true
+    }
   }
 ]
 

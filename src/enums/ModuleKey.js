@@ -11,4 +11,5 @@ export default Enum({
   ChannelList: 'channelList',
   Modals: 'modals',
   Layers: 'layers',
+  Sidebars: 'sidebars'
 })

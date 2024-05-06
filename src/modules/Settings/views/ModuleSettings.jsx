@@ -36,12 +36,14 @@ export default function ModuleSettings () {
       <Common.FormSwitch value={module.isEnabled()} onChange={setIsEnabled}>Enabled</Common.FormSwitch>
       {module.isEnabled() && (
         <div>
-          <AnimationSelect
-            module={module}
-            selected={module.getAnimations()}
-            onSelect={onSelect}
-            setSettings={setSettings}
-          />
+          {module.meta.disableCustomAnimations || (
+            <AnimationSelect
+              module={module}
+              selected={module.getAnimations()}
+              onSelect={onSelect}
+              setSettings={setSettings}
+            />
+          )}
           <ModuleGeneralSettings
             module={module}
             settings={module.getGeneralSettings()}
