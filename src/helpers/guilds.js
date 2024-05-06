@@ -1,4 +1,4 @@
-import { Constants, GuildChannelStore, SortedGuildStore } from '@/modules/DiscordModules'
+import { ChannelStore, Constants, GuildChannelStore, SortedGuildStore } from '@/modules/DiscordModules'
 
 export function getSortedGuildTreeIds (node = SortedGuildStore.getGuildsTree().root) {
   if (node.children?.length)
@@ -19,7 +19,10 @@ export function getSortedGuildChannelIds (guildId) {
   )
 
   const categorize = (channels, type) => channels.map(
-    ({ channel }) => tree[channel.parent_id ?? 'null']?.[type].push(channel.id)
+    ({ channel }) => tree[channel.parent_id ?? 'null']?.[type].push(...[
+      channel.id,
+      ...ChannelStore.getAllThreadsForParent(channel.id).map(t => t.id)
+    ])
   )
   categorize(textChannels, 'text')
   categorize(voiceChannels, 'voice')
