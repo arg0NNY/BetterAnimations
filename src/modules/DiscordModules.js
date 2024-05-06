@@ -47,7 +47,6 @@ export const History = Webpack.getByKeys('createBrowserHistory', 'createMemoryHi
 export const { Easing } = Webpack.getByKeys('Easing')
 export const SortedGuildStore = Webpack.getStore('SortedGuildStore')
 export const GuildChannelList = Webpack.getByKeys('GuildChannelList')
-export const GuildChannelStore = Webpack.getStore('GuildChannelStore')
 export const { ChannelListCommunityRow } = Webpack.getByKeys('ChannelListCommunityRow')
 export const PrivateChannelSortStore = Webpack.getStore('PrivateChannelSortStore')
 export const { default: ChannelSectionStore, MESSAGE_REQUESTS_BASE_CHANNEL_ID } = Webpack.getModule(m => BdApi.Webpack.Filters.byStoreName('ChannelSectionStore')(m), { defaultExport: false })

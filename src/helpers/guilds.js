@@ -1,4 +1,5 @@
-import { ChannelStore, Constants, GuildChannelStore, SortedGuildStore } from '@/modules/DiscordModules'
+import { SortedGuildStore } from '@/modules/DiscordModules'
+import { communityRowToChannelRoute } from '@/helpers/routes'
 
 export function getSortedGuildTreeIds (node = SortedGuildStore.getGuildsTree().root) {
   if (node.children?.length)
@@ -7,26 +8,12 @@ export function getSortedGuildTreeIds (node = SortedGuildStore.getGuildsTree().r
   return node.id
 }
 
-export function getSortedGuildChannelIds (guildId) {
-  const {
-    [Constants.ChannelTypes.GUILD_CATEGORY]: categories,
-    SELECTABLE: textChannels,
-    VOCAL: voiceChannels
-  } = GuildChannelStore.getChannels(guildId)
-
-  const tree = Object.fromEntries(
-    categories.map(({ channel, comparator }) => [channel.id, { text: [], voice: [], comparator }])
-  )
-
-  const categorize = (channels, type) => channels.map(
-    ({ channel }) => tree[channel.parent_id ?? 'null']?.[type].push(...[
-      channel.id,
-      ...ChannelStore.getAllThreadsForParent(channel.id).map(t => t.id)
-    ])
-  )
-  categorize(textChannels, 'text')
-  categorize(voiceChannels, 'voice')
-
-  return Object.values(tree).sort((a, b) => a.comparator - b.comparator)
-    .map(t => t.text.concat(t.voice)).flat()
+export function getSortedGuildChannelIds (guildChannels) {
+  return [
+    (guildChannels.communitySection?.communityRows ?? [])
+      .map(communityRowToChannelRoute),
+    guildChannels.getSortedCategories().flatMap(c =>
+      (c.shownChannelIds ?? []).flatMap(id => [id, ...c.channels[id].threadIds])
+    )
+  ].flat()
 }

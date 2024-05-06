@@ -1,6 +1,6 @@
 import { PrivateChannelSortStore, Router, Routes, StaticChannelRoute } from '@/modules/DiscordModules'
 import { getSortedGuildChannelIds, getSortedGuildTreeIds } from '@/helpers/guilds'
-import { communityRowToChannelRoute, getStaticDMRouteIndex } from '@/helpers/routes'
+import { getStaticDMRouteIndex } from '@/helpers/routes'
 import { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChannelList'
 
 const CHANNEL_PATH = [
@@ -68,11 +68,7 @@ export function getSwitchContentDirection (next, prev) {
 
   if (nextChannel && prevChannel && nextChannel.params.guildId !== '@me'
     && nextChannel.params.guildId === prevChannel.params.guildId) { // If guilds are the same, and it's not DMs, compare channel indexes
-    const { guildId } = nextChannel.params
-
-    const communityChannelIds = (currentGuildChannels?.communitySection?.communityRows ?? [])
-      .map(communityRowToChannelRoute).flat()
-    const sortedChannelIds = communityChannelIds.concat(getSortedGuildChannelIds(guildId))
+    const sortedChannelIds = currentGuildChannels ? getSortedGuildChannelIds(currentGuildChannels) : []
 
     const indexOf = channel => sortedChannelIds.indexOf(channel.params.channelId)
     return +(indexOf(nextChannel) > indexOf(prevChannel))
