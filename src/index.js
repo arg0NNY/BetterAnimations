@@ -52,7 +52,7 @@ export default function (meta) {
     stop () {
       DOM.removeStyle('BA-test')
 
-      PackManager.unwatchAddons()
+      PackManager.shutdown()
 
       Patcher.unpatchAll()
       Dispatcher.unsubscribeAll()

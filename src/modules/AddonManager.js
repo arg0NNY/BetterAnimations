@@ -273,6 +273,15 @@ export default class AddonManager {
     return errors
   }
 
+  unloadAllAddons () {
+    this.addonList.forEach(addon => this.unloadAddon(addon))
+  }
+
+  shutdown () {
+    this.unloadAllAddons()
+    this.unwatchAddons()
+  }
+
   deleteAddon (idOrFileOrAddon) {
     const addon = typeof (idOrFileOrAddon) == 'string' ? this.addonList.find(c => c.id == idOrFileOrAddon || c.filename == idOrFileOrAddon) : idOrFileOrAddon
     return fs.unlinkSync(path.resolve(this.addonFolder, addon.filename))
