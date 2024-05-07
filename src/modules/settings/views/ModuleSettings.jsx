@@ -21,10 +21,6 @@ export default function ModuleSettings () {
     module.setIsEnabled(value)
     onChange()
   }
-  const setSettings = (type, value) => {
-    module.setAnimationSettings(type, value)
-    onChange()
-  }
   const setGeneralSettings = value => {
     module.setGeneralSettings(value)
     onChange()
@@ -41,7 +37,7 @@ export default function ModuleSettings () {
               module={module}
               selected={module.getAnimations()}
               onSelect={onSelect}
-              setSettings={setSettings}
+              onChange={onChange}
             />
           )}
           <ModuleGeneralSettings

@@ -3,7 +3,7 @@ import ModuleKey from '@/enums/ModuleKey'
 import { Common } from '@/modules/DiscordModules'
 import DurationControl from '@/modules/settings/components/controls/DurationControl'
 import EasingControl from '@/modules/settings/components/controls/EasingControl'
-import { defaults } from '@/modules/SettingsStorage'
+import Config from '@/modules/Config'
 
 function ModalsGeneralSettings ({ settings, onChange }) {
   return (
@@ -12,13 +12,13 @@ function ModalsGeneralSettings ({ settings, onChange }) {
       options={{ from: 0, to: 2000 }}
       value={settings.backdropTransitionDuration}
       onChange={duration => onChange({ backdropTransitionDuration: duration })}
-      defaultValue={defaults.modules[ModuleKey.Modals].settings.backdropTransitionDuration}
+      defaultValue={Config.defaults.modules[ModuleKey.Modals].settings.backdropTransitionDuration}
     />
   )
 }
 
 function SidebarsGeneralSettings ({ settings, onChange }) {
-  const defaultValues = defaults.modules[ModuleKey.Sidebars].settings
+  const defaultValues = Config.defaults.modules[ModuleKey.Sidebars].settings
 
   return (
     <>

@@ -1,11 +1,16 @@
 import { Common } from '@/modules/DiscordModules'
 import AnimationItem from '@/modules/settings/components/AnimationItem'
+import Config from '@/modules/Config'
 
-export default function AnimationList ({ pack, animations, selected, onSelect, setSettings }) {
+export default function AnimationList ({ module, pack, animations, selected, onSelect, onChange }) {
+  const packConfig = Config.pack(pack.slug)
   const isActive = (animation, type) => selected[type].packSlug === pack.slug && selected[type].animationKey === animation.key
 
   const handleSelect = (type, animation) => value => onSelect(type, value && animation)
-  const handleSetSettings = type => value => setSettings(type, value)
+  const handleSetSettings = (animation, type) => value => {
+    packConfig.setAnimationConfig(animation.key, module.id, type, value)
+    onChange()
+  }
 
   return (
     <div>
@@ -20,8 +25,8 @@ export default function AnimationList ({ pack, animations, selected, onSelect, s
             setExit={handleSelect('exit', animation)}
             enterSettings={selected.enter.settings}
             exitSettings={selected.exit.settings}
-            setEnterSettings={handleSetSettings('enter')}
-            setExitSettings={handleSetSettings('exit')}
+            setEnterSettings={handleSetSettings(animation, 'enter')}
+            setExitSettings={handleSetSettings(animation, 'exit')}
           />
         ))}
       </div>

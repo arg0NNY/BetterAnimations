@@ -1,4 +1,3 @@
-import { settings } from '@/modules/SettingsStorage'
 import PackManager from '@/modules/PackManager'
 import modules from '@/data/modules'
 import Auto from '@/enums/Auto'
@@ -8,6 +7,7 @@ import Direction from '@/enums/Direction'
 import { getDirection, getDirectionsByAxis } from '@/helpers/direction'
 import Axis from '@/enums/Axis'
 import { getPosition, reversePosition } from '@/helpers/position'
+import Config from '@/modules/Config'
 
 class Module {
   constructor (id, name, meta = {}) {
@@ -17,8 +17,7 @@ class Module {
   }
 
   get settings () {
-    if (!settings.modules[this.id]) settings.modules[this.id] = {}
-    return settings.modules[this.id]
+    return Config.current.modules[this.id] ??= {}
   }
   getSettings () { return this.settings }
 
@@ -35,23 +34,24 @@ class Module {
     return this.isSupportedBy(animation) ? animation : null
   }
   getAnimation (type, options = {}) {
-    const config = this.settings[type] ?? {}
-    const pack = config.packSlug && PackManager.getPack(config.packSlug)
-    const animation = pack && this.findAnimation(pack, config.animationKey)
+    const pointer = this.settings[type] ?? {}
+    const pack = pointer.packSlug && PackManager.getPack(pointer.packSlug)
+    const animation = pack && this.findAnimation(pack, pointer.animationKey)
+    const config = animation ? Config.pack(pack.slug).getAnimationConfig(animation.key, this.id, type) : {}
 
     const settings = animation ? this.normalizeSettings(
       animation,
       Object.assign(
         this.buildDefaultSettings(animation, false),
-        config.settings ?? {}
+        config
       )
     ) : {}
 
     if (options.auto) this.assignAutoValues(animation, settings, options.auto)
 
     return {
-      packSlug: config.packSlug ?? null,
-      animationKey: config.animationKey ?? null,
+      packSlug: pointer.packSlug ?? null,
+      animationKey: pointer.animationKey ?? null,
       settings,
       pack,
       animation
@@ -63,12 +63,8 @@ class Module {
       exit: this.getAnimation('exit', options)
     }
   }
-  setAnimation (type, packSlug, animationKey, settings = {}) {
-    this.settings[type] = { packSlug, animationKey, settings }
-  }
-  // TODO: Move animation settings to separate config file for pack
-  setAnimationSettings (type, settings) {
-    this.settings[type].settings = settings
+  setAnimation (type, packSlug, animationKey) {
+    this.settings[type] = { packSlug, animationKey }
   }
 
   isSupportedBy (animation) {

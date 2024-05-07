@@ -19,6 +19,7 @@ import PackManager from '@/modules/PackManager'
 import Logger from '@/modules/Logger'
 import Settings from '@/modules/Settings'
 import { ModalActions } from '@/modules/DiscordModules'
+import Config from '@/modules/Config'
 
 anime.suspendWhenDocumentHidden = false
 
@@ -28,6 +29,7 @@ export default function (meta) {
     start () {
       DOM.addStyle('BA-test', style)
 
+      Config.initialize()
       const packErrors = PackManager.initialize()
       if (packErrors?.length) Logger.error('Startup', 'Failed to load packs:', packErrors)
 
@@ -52,6 +54,7 @@ export default function (meta) {
     stop () {
       DOM.removeStyle('BA-test')
 
+      Config.shutdown()
       PackManager.shutdown()
 
       Patcher.unpatchAll()
