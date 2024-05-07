@@ -4,7 +4,7 @@ import { Plugins } from '@/BdApi'
 import config from '@/config.json'
 import Logger from '@/modules/Logger'
 import AddonError from '@/structs/AddonError'
-import PackSchema from '@/modules/Animation/schemas/PackSchema'
+import PackSchema from '@/modules/animation/schemas/PackSchema'
 import { z } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 

@@ -1,10 +1,10 @@
 import { Router, Common } from '@/modules/DiscordModules'
-import AnimationSelect from '@/modules/Settings/components/AnimationSelect'
-import ModuleContext from '@/modules/Settings/context/ModuleContext'
+import AnimationSelect from '@/modules/settings/components/AnimationSelect'
+import ModuleContext from '@/modules/settings/context/ModuleContext'
 import Emitter from '@/modules/Emitter'
 import Events from '@/enums/Events'
 import useModule from '@/hooks/useModule'
-import ModuleGeneralSettings from '@/modules/Settings/components/ModuleGeneralSettings'
+import ModuleGeneralSettings from '@/modules/settings/components/ModuleGeneralSettings'
 
 export default function ModuleSettings () {
   const { id } = Router.useParams()

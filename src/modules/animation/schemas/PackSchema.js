@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import regex from '@/helpers/regex'
-import AnimationSchema from '@/modules/Animation/schemas/AnimationSchema'
+import AnimationSchema from '@/modules/animation/schemas/AnimationSchema'
 
 const PackSchema = z.object({
   name: z.string().trim().min(2).max(255),

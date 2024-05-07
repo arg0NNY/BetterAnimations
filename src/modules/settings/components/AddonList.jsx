@@ -1,7 +1,7 @@
 import { React } from '@/BdApi'
 import Emitter from '@/modules/Emitter'
 import PackManager from '@/modules/PackManager'
-import PackItem from '@/modules/Settings/components/PackItem'
+import PackItem from '@/modules/settings/components/PackItem'
 import useForceUpdate from '@/hooks/useForceUpdate'
 
 export default function AddonList ({ children, getList, prefix }) {

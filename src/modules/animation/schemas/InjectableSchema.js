@@ -8,19 +8,19 @@ import {
   StringTemplateSchema,
   TypeInjectSchema,
   WaitInjectSchema
-} from '@/modules/Animation/schemas/injects/common'
+} from '@/modules/animation/schemas/injects/common'
 import {
   AnimeRandomInjectSchema,
   AnimeStaggerInjectSchema,
   AnimeTimelineInjectSchema
-} from '@/modules/Animation/schemas/injects/anime'
+} from '@/modules/animation/schemas/injects/anime'
 import {
   DirectionInjectSchema,
   DurationInjectSchema,
   EasingInjectSchema,
   PositionInjectSchema,
   VariantInjectSchema
-} from '@/modules/Animation/schemas/injects/settings'
+} from '@/modules/animation/schemas/injects/settings'
 
 const injectSchemas = {
   [Inject.Node]: NodeInjectSchema,

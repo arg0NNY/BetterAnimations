@@ -1,8 +1,8 @@
 import { Defined } from '@/helpers/schemas'
-import { InjectSchema } from '@/modules/Animation/schemas/injects/InjectSchema'
+import { InjectSchema } from '@/modules/animation/schemas/injects/InjectSchema'
 import anime from 'animejs'
 import { z } from 'zod'
-import { transformAnimeConfig } from '@/modules/Animation/helpers'
+import { transformAnimeConfig } from '@/modules/animation/helpers'
 import Inject from '@/enums/Inject'
 
 export const AnimeStaggerInjectSchema = InjectSchema(Inject.AnimeStagger).extend({

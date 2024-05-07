@@ -1,9 +1,9 @@
 import { React } from '@/BdApi'
-import DurationControl from '@/modules/Settings/components/controls/DurationControl'
-import EasingControl from '@/modules/Settings/components/controls/EasingControl'
-import VariantControl from '@/modules/Settings/components/controls/VariantControl'
-import PositionControl from '@/modules/Settings/components/controls/PositionControl'
-import DirectionControl from '@/modules/Settings/components/controls/DirectionControl'
+import DurationControl from '@/modules/settings/components/controls/DurationControl'
+import EasingControl from '@/modules/settings/components/controls/EasingControl'
+import VariantControl from '@/modules/settings/components/controls/VariantControl'
+import PositionControl from '@/modules/settings/components/controls/PositionControl'
+import DirectionControl from '@/modules/settings/components/controls/DirectionControl'
 
 export default function AnimationSettings ({ animation, settings, onChange }) {
   const setSettings = values => onChange(Object.assign({}, settings, values))

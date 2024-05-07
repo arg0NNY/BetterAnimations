@@ -1,5 +1,5 @@
 import { Common } from '@/modules/DiscordModules'
-import AnimationItem from '@/modules/Settings/components/AnimationItem'
+import AnimationItem from '@/modules/settings/components/AnimationItem'
 
 export default function AnimationList ({ pack, animations, selected, onSelect, setSettings }) {
   const isActive = (animation, type) => selected[type].packSlug === pack.slug && selected[type].animationKey === animation.key

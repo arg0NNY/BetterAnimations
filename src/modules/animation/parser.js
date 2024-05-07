@@ -1,9 +1,9 @@
-import AnimationSchema, { AnimateSchema } from '@/modules/Animation/schemas/AnimationSchema'
+import AnimationSchema, { AnimateSchema } from '@/modules/animation/schemas/AnimationSchema'
 import { toDom } from 'hast-util-to-dom'
 import { defaultSchema, sanitize } from 'hast-util-sanitize'
 import deepmerge from 'deepmerge'
 import anime from 'animejs'
-import { buildCSS, transformAnimeConfig } from '@/modules/Animation/helpers'
+import { buildCSS, transformAnimeConfig } from '@/modules/animation/helpers'
 
 export function parseAnimationData (data) {
   data = typeof data === 'string' ? JSON.parse(data) : data

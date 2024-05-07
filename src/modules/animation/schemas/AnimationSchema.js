@@ -1,8 +1,8 @@
 import { z } from 'zod'
-import InjectableSchema from '@/modules/Animation/schemas/InjectableSchema'
+import InjectableSchema from '@/modules/animation/schemas/InjectableSchema'
 import { matchesSchema } from '@/helpers/schemas'
 import Inject from '@/enums/Inject'
-import SettingsSchema from '@/modules/Animation/schemas/SettingsSchema'
+import SettingsSchema from '@/modules/animation/schemas/SettingsSchema'
 
 const safeInjects = [
   Inject.Variant,

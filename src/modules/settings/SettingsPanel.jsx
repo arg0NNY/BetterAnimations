@@ -1,7 +1,7 @@
 import { Common, Router } from '@/modules/DiscordModules'
-import Home from '@/modules/Settings/views/Home'
-import ModuleSettings from '@/modules/Settings/views/ModuleSettings'
-import Library from '@/modules/Settings/views/Library'
+import Home from '@/modules/settings/views/Home'
+import ModuleSettings from '@/modules/settings/views/ModuleSettings'
+import Library from '@/modules/settings/views/Library'
 
 export default function SettingsPanel ({ history }) {
   return (

@@ -1,5 +1,5 @@
 import { History, ModalActions } from '@/modules/DiscordModules'
-import SettingsModal from '@/modules/Settings/SettingsModal'
+import SettingsModal from '@/modules/settings/SettingsModal'
 
 export default new class Settings {
 

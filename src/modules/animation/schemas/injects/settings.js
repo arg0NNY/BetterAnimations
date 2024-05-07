@@ -1,5 +1,5 @@
 import { buildSwitchSchema, Defined, formatValuesList, hasInSettings } from '@/helpers/schemas'
-import { InjectSchema } from '@/modules/Animation/schemas/injects/InjectSchema'
+import { InjectSchema } from '@/modules/animation/schemas/injects/InjectSchema'
 import { z } from 'zod'
 import Position from '@/enums/Position'
 import Inject from '@/enums/Inject'

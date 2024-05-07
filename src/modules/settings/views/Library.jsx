@@ -1,5 +1,5 @@
 import { Common } from '@/modules/DiscordModules'
-import AddonList from '@/modules/Settings/components/AddonList'
+import AddonList from '@/modules/settings/components/AddonList'
 
 export default function Library () {
   return (

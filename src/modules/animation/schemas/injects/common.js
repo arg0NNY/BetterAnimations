@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { buildSwitchSchema } from '@/helpers/schemas'
-import { InjectSchema } from '@/modules/Animation/schemas/injects/InjectSchema'
+import { InjectSchema } from '@/modules/animation/schemas/injects/InjectSchema'
 import evaluate from '@emmetio/math-expression'
 import Inject from '@/enums/Inject'
 

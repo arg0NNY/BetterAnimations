@@ -1,7 +1,7 @@
 import { React } from '@/BdApi'
 import { Common } from '@/modules/DiscordModules'
-import ModuleContext from '@/modules/Settings/context/ModuleContext'
-import AnimationSettings from '@/modules/Settings/components/AnimationSettings'
+import ModuleContext from '@/modules/settings/context/ModuleContext'
+import AnimationSettings from '@/modules/settings/components/AnimationSettings'
 
 export default function AnimationItem ({
   animation,

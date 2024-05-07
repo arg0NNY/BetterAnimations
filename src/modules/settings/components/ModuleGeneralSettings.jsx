@@ -1,8 +1,8 @@
 import { React } from '@/BdApi'
 import ModuleKey from '@/enums/ModuleKey'
 import { Common } from '@/modules/DiscordModules'
-import DurationControl from '@/modules/Settings/components/controls/DurationControl'
-import EasingControl from '@/modules/Settings/components/controls/EasingControl'
+import DurationControl from '@/modules/settings/components/controls/DurationControl'
+import EasingControl from '@/modules/settings/components/controls/EasingControl'
 import { defaults } from '@/modules/SettingsStorage'
 
 function ModalsGeneralSettings ({ settings, onChange }) {

@@ -1,6 +1,6 @@
 import { React } from '@/BdApi'
 import { Transition } from '@/modules/DiscordModules'
-import { buildAnimateAssets } from '@/modules/Animation/parser'
+import { buildAnimateAssets } from '@/modules/animation/parser'
 import { z } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 import { Freeze } from 'react-freeze'
