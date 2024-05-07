@@ -1,18 +1,15 @@
-import { React, ReactDOM } from '@/BdApi'
+import { React } from '@/BdApi'
 import { Transition } from '@/modules/DiscordModules'
-import HTMLNode from '@/components/HTMLNode'
-import { getScrolls } from '@/helpers/scrollers'
 import { buildAnimateAssets } from '@/modules/Animation/parser'
 import { z } from 'zod'
 import { fromZodError } from 'zod-validation-error'
+import { Freeze } from 'react-freeze'
 
 // TODO: Allow animation authors to restrict their animations to certain modules (so that their animation can be only enabled for channel switching and nothing else, for example)
 // TODO: Prompt users to enable hardware acceleration
 
 class AnimeTransition extends React.Component {
   doneCallback = React.createRef()
-  clonedNode = React.createRef()
-  scrolls = React.createRef()
 
   _cancelAnimation = React.createRef()
   get cancelAnimation () {
@@ -24,7 +21,6 @@ class AnimeTransition extends React.Component {
   }
 
   getTargetNode (node) {
-    node = this.clonedNode.current ?? node
     return this.props.targetNode?.(node) ?? node
   }
 
@@ -32,6 +28,7 @@ class AnimeTransition extends React.Component {
     return (node, ...args) => {
       this.cancelAnimation?.()
       node = this.getTargetNode(node)
+      if (node) node.style.display = '' // Removes the 'display: none !important' that is added by Suspense in Freeze
 
       if (node) {
         try {
@@ -107,15 +104,7 @@ class AnimeTransition extends React.Component {
   }
 
   render () {
-    const { animations, options = {}, children, clone = false, mountOnEnter = true, unmountOnExit = true, enter = true, exit = true, ...props } = this.props
-
-    if (clone && props.in === false) {
-      const node = ReactDOM.findDOMNode(this)
-      if (node) {
-        this.clonedNode.current = node.cloneNode(true)
-        this.scrolls.current = getScrolls(node)
-      }
-    }
+    const { animations, options = {}, children, freeze = false, mountOnEnter = true, unmountOnExit = true, enter = true, exit = true, ...props } = this.props
 
     return (
       <Transition
@@ -130,12 +119,9 @@ class AnimeTransition extends React.Component {
         onExited={(node, ...args) => props.onExited?.(this.getTargetNode(node), ...args)}
         addEndListener={(_, done) => this.doneCallback.current = done}
       >
-        {state => {
-          if (['exiting', 'exited'].includes(state) && this.clonedNode.current)
-            return <HTMLNode ref={this.clonedNode} scrolls={this.scrolls.current} />
-
-          return children && React.Children.only(children)
-        }}
+        <Freeze freeze={freeze && props.in === false}>
+          {children && React.Children.only(children)}
+        </Freeze>
       </Transition>
     )
   }

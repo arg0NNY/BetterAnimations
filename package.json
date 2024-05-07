@@ -24,6 +24,7 @@
     "deepmerge": "^4.3.1",
     "hast-util-sanitize": "^5.0.1",
     "hast-util-to-dom": "^4.0.0",
+    "react-freeze": "^1.0.4",
     "zod": "^3.22.4",
     "zod-validation-error": "^2.1.0"
   }

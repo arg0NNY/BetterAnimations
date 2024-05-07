@@ -28,7 +28,7 @@ function BaseView ({ children }) {
     <TransitionGroup component={null} childFactory={passAnimations(animations)}>
       <AnimeTransition
         key={key}
-        clone={true}
+        freeze={true}
         animations={animations}
         options={{ type: 'switch' }}
         onEntered={clearContainingStyles}
@@ -57,7 +57,7 @@ function ContentView ({ children }) {
     <TransitionGroup className="content__76dcf" childFactory={passAnimations(animations)}>
       <AnimeTransition
         key={key}
-        clone={true}
+        freeze={true}
         animations={animations}
         options={{ type: 'switch' }}
         onEntered={clearContainingStyles}
