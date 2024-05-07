@@ -1,5 +1,10 @@
 import Enum from '@/enums/Enum'
 
+export const ModuleKeyAlias = Enum({
+  Switch: 'switch',
+  Reveal: 'reveal'
+})
+
 export default Enum({
   Servers: 'servers',
   Channels: 'channels',

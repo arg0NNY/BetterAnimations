@@ -1,8 +1,25 @@
-import ModuleKey from '@/enums/ModuleKey'
+import ModuleKey, { ModuleKeyAlias } from '@/enums/ModuleKey'
 import AnimationSetting from '@/enums/AnimationSetting'
 import Axis from '@/enums/Axis'
 import Direction from '@/enums/Direction'
 import Position from '@/enums/Position'
+
+export const moduleAliases = {
+  [ModuleKeyAlias.Switch]: [
+    ModuleKey.Servers,
+    ModuleKey.Channels,
+    ModuleKey.Settings,
+    ModuleKey.Layers
+  ],
+  [ModuleKeyAlias.Reveal]: [
+    ModuleKey.Popouts,
+    ModuleKey.Tooltips,
+    ModuleKey.ContextMenu,
+    ModuleKey.Messages,
+    ModuleKey.ChannelList,
+    ModuleKey.Modals
+  ]
+}
 
 const modules = [
   {

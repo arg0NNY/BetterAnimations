@@ -1,8 +1,9 @@
 import { z } from 'zod'
 import InjectableSchema from '@/modules/animation/schemas/InjectableSchema'
-import { matchesSchema } from '@/helpers/schemas'
+import { ArrayOrSingleSchema, matchesSchema } from '@/helpers/schemas'
 import Inject from '@/enums/Inject'
 import SettingsSchema from '@/modules/animation/schemas/SettingsSchema'
+import MetaSchema from '@/modules/animation/schemas/MetaSchema'
 
 const safeInjects = [
   Inject.Variant,
@@ -19,7 +20,7 @@ export const AnimateSchema = (context = null, injectOptions = {}) => {
   const restrictedInjectOptions = Object.assign({ allowed: safeInjects }, injectOptions)
 
   return z.object({
-    hast: z.union([z.record(z.any()), z.record(z.any()).array()])
+    hast: ArrayOrSingleSchema(z.record(z.any()))
       .transform(!context ? v => v : matchesSchema(
         InjectableSchema(context, restrictedInjectOptions)
       )).optional(),
@@ -27,7 +28,7 @@ export const AnimateSchema = (context = null, injectOptions = {}) => {
       .transform(!context ? v => v : matchesSchema(
         InjectableSchema(context, restrictedInjectOptions)
       )).optional(),
-    anime: z.union([z.record(z.any()), z.record(z.any()).array()])
+    anime: ArrayOrSingleSchema(z.record(z.any()))
       .transform(!context ? v => v : matchesSchema(
         InjectableSchema(context, injectOptions)
       ))
@@ -38,6 +39,7 @@ export const AnimateSchema = (context = null, injectOptions = {}) => {
 const AnimationSchema = (context = null) => z.object({
   key: z.string().min(1).trim(),
   name: z.string().trim(),
+  meta: MetaSchema.optional(),
   settings: SettingsSchema.optional(),
   animate: AnimateSchema(context).optional(),
   enter: AnimateSchema(context, { disallowed: [Inject.Type] }).optional(),

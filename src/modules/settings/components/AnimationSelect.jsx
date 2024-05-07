@@ -6,13 +6,18 @@ export default function AnimationSelect ({ module, selected, onSelect, setSettin
 
   return (
     <AddonList>
-      {pack => <AnimationList
-        pack={pack}
-        animations={pack.animations}
-        selected={selected}
-        onSelect={handleSelect(pack)}
-        setSettings={setSettings}
-      />}
+      {pack => {
+        const animations = pack.animations.filter(a => module.isSupportedBy(a))
+        return animations.length && (
+          <AnimationList
+            pack={pack}
+            animations={animations}
+            selected={selected}
+            onSelect={handleSelect(pack)}
+            setSettings={setSettings}
+          />
+        )
+      }}
     </AddonList>
   )
 }

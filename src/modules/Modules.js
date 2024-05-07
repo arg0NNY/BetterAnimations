@@ -30,10 +30,14 @@ class Module {
   toggle () { this.settings.enabled = !this.settings.enabled }
   setIsEnabled (value) { this.settings.enabled = value }
 
+  findAnimation (packOrSlug, key) {
+    const animation = PackManager.getAnimation(packOrSlug, key)
+    return this.isSupportedBy(animation) ? animation : null
+  }
   getAnimation (type, options = {}) {
     const config = this.settings[type] ?? {}
     const pack = config.packSlug && PackManager.getPack(config.packSlug)
-    const animation = pack && PackManager.getAnimation(pack, config.animationKey)
+    const animation = pack && this.findAnimation(pack, config.animationKey)
 
     const settings = animation ? this.normalizeSettings(
       animation,
@@ -65,6 +69,11 @@ class Module {
   // TODO: Move animation settings to separate config file for pack
   setAnimationSettings (type, settings) {
     this.settings[type].settings = settings
+  }
+
+  isSupportedBy (animation) {
+    return !animation.meta?.modules
+      || (animation.meta.modules.has(this.id))
   }
 
   getGeneralSettings () {
