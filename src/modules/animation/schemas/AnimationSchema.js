@@ -35,7 +35,6 @@ export const AnimateSchema = (context = null, injectOptions = {}) => {
   })
 }
 
-// TODO: Allow restricting animations to certain modules
 const AnimationSchema = (context = null) => z.object({
   key: z.string().min(1).trim(),
   name: z.string().trim(),

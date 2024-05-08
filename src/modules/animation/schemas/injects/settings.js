@@ -48,4 +48,4 @@ export const PositionInjectSchema = SwitchSchema(Inject.Position, Setting.Positi
 
 export const DirectionInjectSchema = SwitchSchema(Inject.Direction, Setting.Direction, Direction.values(), { defaultValue: Direction.Right, isEnum: true })
 
-// TODO: Consider custom settings and an inject for getting their value (prototype: add ability to create custom multiple selects inside "variant" settings)
+// TODO: Add custom settings for animations
