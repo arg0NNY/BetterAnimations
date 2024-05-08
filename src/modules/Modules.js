@@ -8,6 +8,7 @@ import { getDirection, getDirectionsByAxis } from '@/helpers/direction'
 import Axis from '@/enums/Axis'
 import { getPosition, reversePosition } from '@/helpers/position'
 import Config from '@/modules/Config'
+import { getAnimationDefaultSettings } from '@/helpers/animations'
 
 class Module {
   constructor (id, name, meta = {}) {
@@ -41,8 +42,9 @@ class Module {
 
     const settings = animation ? this.normalizeSettings(
       animation,
+      type,
       Object.assign(
-        this.buildDefaultSettings(animation, false),
+        this.buildDefaultSettings(animation, type, false),
         config
       )
     ) : {}
@@ -119,20 +121,20 @@ class Module {
         })
     )
   }
-  buildDefaultSettings (animation, normalized = true) {
+  buildDefaultSettings (animation, type, normalized = true) {
     const settings = Object.assign(
       {},
-      animation?.settings?.defaults ?? {},
+      getAnimationDefaultSettings(animation, type),
       this.buildModuleDefaultSettings(animation),
       Object.fromEntries(
         this.getAllSettingsSupportingAuto(animation).map(s => [s, Auto()])
       )
     )
 
-    return normalized ? this.normalizeSettings(animation, settings) : settings
+    return normalized ? this.normalizeSettings(animation, type, settings) : settings
   }
 
-  normalizeSetting (animation, setting, value, allSettings = {}) {
+  normalizeSetting (animation, type, setting, value, allSettings = {}) {
     switch (setting) {
       case Setting.DirectionAxis: {
         if (allSettings[Setting.Direction] !== Auto()) return undefined
@@ -155,7 +157,7 @@ class Module {
       }
       case Setting.Variant: {
         const keys = animation.settings[setting].map(v => v.key)
-        if (!keys.includes(value)) return animation.settings.defaults?.[setting] ?? keys[0]
+        if (!keys.includes(value)) return getAnimationDefaultSettings(animation, type)[setting] ?? keys[0]
         return value
       }
       case Setting.Position:
@@ -165,15 +167,15 @@ class Module {
           values === true
             || (value === Auto() && this.supportsAuto(animation, setting))
         ) return value
-        if (!values.includes(value)) return animation.settings.defaults?.[setting] ?? values[0]
+        if (!values.includes(value)) return getAnimationDefaultSettings(animation, type)[setting] ?? values[0]
         return value
       }
       default: return value
     }
   }
-  normalizeSettings (animation, settings) {
+  normalizeSettings (animation, type, settings) {
     return Object.fromEntries(
-      Object.entries(settings).map(([key, value]) => [key, this.normalizeSetting(animation, key, value, settings)])
+      Object.entries(settings).map(([key, value]) => [key, this.normalizeSetting(animation, type, key, value, settings)])
         .filter(a => a[1] !== undefined)
     )
   }

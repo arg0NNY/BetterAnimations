@@ -3,8 +3,17 @@ import Setting from '@/enums/AnimationSetting'
 import Position from '@/enums/Position'
 import Direction from '@/enums/Direction'
 import { formatValuesList } from '@/helpers/schemas'
+import AnimationType from '@/enums/AnimationType'
 
 const EnumSchema = values => z.union([z.literal(true), z.enum(values).array()])
+
+const DefaultsSchema = z.object({
+  [Setting.Duration]: z.number().int().nonnegative(),
+  [Setting.Easing]: z.string(),
+  [Setting.Variant]: z.string(),
+  [Setting.Position]: z.enum(Position.values()),
+  [Setting.Direction]: z.enum(Direction.values())
+}).strict().partial()
 
 const SettingsSchema = z.object({
   [Setting.Duration]: z.union([
@@ -12,27 +21,32 @@ const SettingsSchema = z.object({
     z.object({
       from: z.number().int().nonnegative().min(100).multipleOf(100),
       to: z.number().int().nonnegative().max(5000).multipleOf(100)
-    })
+    }).strict()
   ]).optional().transform(v => v === true ? { from: 100, to: 2000 } : v),
   [Setting.Easing]: z.literal(true).optional(),
   [Setting.Variant]: z.object({
     key: z.string(),
     name: z.string()
-  }).array().optional(),
+  }).strict().array().optional(),
   [Setting.Position]: EnumSchema(Position.values()).optional(),
   [Setting.Direction]: EnumSchema(Direction.values()).optional()
     .transform(value => value === true ? [Direction.Upwards, Direction.Downwards, Direction.Leftwards, Direction.Rightwards] : value),
 
-  defaults: z.object({ // TODO: Allow to set default settings for enter and exit separately
-    [Setting.Duration]: z.number().int().nonnegative(),
-    [Setting.Easing]: z.string(),
-    [Setting.Variant]: z.string(),
-    [Setting.Position]: z.enum(Position.values()),
-    [Setting.Direction]: z.enum(Direction.values())
-  }).partial()
+  defaults: z.union([
+    z.object({
+      [AnimationType.Enter]: DefaultsSchema,
+      [AnimationType.Exit]: DefaultsSchema
+    }),
+    DefaultsSchema
+  ])
 }).strict()
   .transform((settings, ctx) => {
-    const missingDefaultKeys = Object.keys(settings).filter(k => k !== 'defaults' && !(k in settings.defaults))
+    const defaults = settings.defaults[AnimationType.Enter]
+      ? AnimationType.values().map(t => settings.defaults[t])
+      : [settings.defaults]
+    const missingDefaultKeys = [...new Set(
+      defaults.flatMap(obj => Object.keys(settings).filter(k => k !== 'defaults' && !(k in obj)))
+    )]
     if (!missingDefaultKeys.length) return settings
 
     ctx.addIssue({ code: z.ZodIssueCode.custom, message: `A default value must be specified for all the defined settings. Missing default values for: ${formatValuesList(missingDefaultKeys)}` })

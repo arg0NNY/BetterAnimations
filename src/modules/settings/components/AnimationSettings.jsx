@@ -4,8 +4,10 @@ import EasingControl from '@/modules/settings/components/controls/EasingControl'
 import VariantControl from '@/modules/settings/components/controls/VariantControl'
 import PositionControl from '@/modules/settings/components/controls/PositionControl'
 import DirectionControl from '@/modules/settings/components/controls/DirectionControl'
+import { getAnimationDefaultSettings } from '@/helpers/animations'
 
-export default function AnimationSettings ({ animation, settings, onChange }) {
+export default function AnimationSettings ({ animation, type, settings, onChange }) {
+  const defaults = getAnimationDefaultSettings(animation, type)
   const setSettings = values => onChange(Object.assign({}, settings, values))
 
   return (
@@ -15,14 +17,14 @@ export default function AnimationSettings ({ animation, settings, onChange }) {
           options={animation.settings.duration}
           value={settings.duration}
           onChange={duration => setSettings({ duration })}
-          defaultValue={animation.settings.defaults.duration}
+          defaultValue={defaults.duration}
         />
       )}
       {animation.settings.easing && (
         <EasingControl
           value={settings.easing}
           onChange={easing => setSettings({ easing })}
-          defaultValue={animation.settings.defaults.easing}
+          defaultValue={defaults.easing}
         />
       )}
       {animation.settings.variant && (
@@ -30,7 +32,7 @@ export default function AnimationSettings ({ animation, settings, onChange }) {
           options={animation.settings.variant}
           value={settings.variant}
           onChange={variant => setSettings({ variant })}
-          defaultValue={animation.settings.defaults.variant}
+          defaultValue={defaults.variant}
         />
       )}
       {animation.settings.position && (
@@ -38,7 +40,7 @@ export default function AnimationSettings ({ animation, settings, onChange }) {
           animation={animation}
           value={settings.position}
           onChange={position => setSettings({ position })}
-          defaultValue={animation.settings.defaults.position}
+          defaultValue={defaults.position}
         />
       )}
       {animation.settings.direction && (
@@ -46,7 +48,7 @@ export default function AnimationSettings ({ animation, settings, onChange }) {
           animation={animation}
           value={settings.direction}
           onChange={direction => setSettings({ direction })}
-          defaultValue={animation.settings.defaults.direction}
+          defaultValue={defaults.direction}
           axis={settings.directionAxis}
           onAxisChange={axis => setSettings({ directionAxis: axis })}
         />

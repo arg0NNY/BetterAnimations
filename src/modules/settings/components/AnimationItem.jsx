@@ -2,6 +2,8 @@ import { React } from '@/BdApi'
 import { Common } from '@/modules/DiscordModules'
 import ModuleContext from '@/modules/settings/context/ModuleContext'
 import AnimationSettings from '@/modules/settings/components/AnimationSettings'
+import AnimationType from '@/enums/AnimationType'
+import { getAnimationDefaultSettings } from '@/helpers/animations'
 
 export default function AnimationItem ({
   animation,
@@ -15,7 +17,9 @@ export default function AnimationItem ({
   setExitSettings
 }) {
   const module = React.useContext(ModuleContext)
-  const resetSettings = setSettings => () => setSettings(module?.buildDefaultSettings(animation) ?? animation.settings.defaults)
+  const resetSettings = (setSettings, type) => () => setSettings(
+    module?.buildDefaultSettings(animation, type) ?? getAnimationDefaultSettings(animation, type)
+  )
 
   return (
     <div>
@@ -27,14 +31,14 @@ export default function AnimationItem ({
         </div>
         {enterActive && (
           <Common.Card>
-            <Common.FormText>Enter <Common.Button size={Common.ButtonSizes.SMALL} onClick={resetSettings(setEnterSettings)}>Reset</Common.Button></Common.FormText>
-            <AnimationSettings animation={animation} settings={enterSettings} onChange={setEnterSettings} />
+            <Common.FormText>Enter <Common.Button size={Common.ButtonSizes.SMALL} onClick={resetSettings(setEnterSettings, AnimationType.Enter)}>Reset</Common.Button></Common.FormText>
+            <AnimationSettings animation={animation} type={AnimationType.Enter} settings={enterSettings} onChange={setEnterSettings} />
           </Common.Card>
         )}
         {exitActive && (
           <Common.Card>
-            <Common.FormText>Exit <Common.Button size={Common.ButtonSizes.SMALL} onClick={resetSettings(setExitSettings)}>Reset</Common.Button></Common.FormText>
-            <AnimationSettings animation={animation} settings={exitSettings} onChange={setExitSettings} />
+            <Common.FormText>Exit <Common.Button size={Common.ButtonSizes.SMALL} onClick={resetSettings(setExitSettings, AnimationType.Exit)}>Reset</Common.Button></Common.FormText>
+            <AnimationSettings animation={animation} type={AnimationType.Exit} settings={exitSettings} onChange={setExitSettings} />
           </Common.Card>
         )}
       </div>
