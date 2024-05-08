@@ -4,9 +4,9 @@ import { getStaticDMRouteIndex } from '@/helpers/routes'
 import { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChannelList'
 
 const CHANNEL_PATH = [
-  Routes.CHANNEL_THREAD_VIEW(':guildId', ':channelId', ':threadId'),
+  Routes.CHANNEL_THREAD_VIEW(':guildId', ':channelId', ':threadId', ':messageId?'),
   Routes.CHANNEL(':guildId', ':channelId?', ':messageId?')
-] // TODO: Take paths from Discord's <Route>
+]
 
 function matchExact (pathname, path) {
   return Router.matchPath(pathname, { path, exact: true })
