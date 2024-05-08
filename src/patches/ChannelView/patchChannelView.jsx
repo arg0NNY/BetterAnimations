@@ -45,7 +45,7 @@ function patchChannelView () {
 
             return (
               <SwitchTransition>
-                <ThreadSidebarTransition key={self.props.section + JSON.stringify(self.props.channelSidebarState)}>
+                <ThreadSidebarTransition key={JSON.stringify(self.props.channelSidebarState ?? self.props.guildSidebarState)}>
                   {value}
                 </ThreadSidebarTransition>
               </SwitchTransition>

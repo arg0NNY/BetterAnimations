@@ -6,7 +6,7 @@ function ThreadSidebarTransition (props) {
   const modifier = type => ({ node }) => {
     let width = node.classList.contains(DiscordSelectors.ThreadSidebar.chatLayerWrapper.slice(1))
       ? node.querySelector(`${DiscordSelectors.ThreadSidebar.container}:not(${DiscordSelectors.ThreadSidebar.chatTarget})`)?.clientWidth
-      : node.clientWidth + 8
+      : node.clientWidth + (node.classList.length ? 8 : 0)
 
     return animate(type, node, width)
   }
