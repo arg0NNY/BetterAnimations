@@ -5,7 +5,8 @@ const Classes = {
   ThreadSidebar: Webpack.getByKeys('chatLayerWrapper', 'chatTarget'),
   StandardSidebarView: () => Webpack.getByKeys('standardSidebarView', 'contentRegion'),
   Modal: Webpack.getByKeys('root', 'rootWithShadow'),
-  Layer: Webpack.getByKeys('layer', 'baseLayer')
+  Layer: Webpack.getByKeys('layer', 'baseLayer'),
+  Margins: Webpack.getByKeys('marginTop20'),
 }
 
 export const DiscordClasses = Classes

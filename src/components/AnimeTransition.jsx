@@ -5,9 +5,6 @@ import { z } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 import { Freeze } from 'react-freeze'
 
-// TODO: Allow animation authors to restrict their animations to certain modules (so that their animation can be only enabled for channel switching and nothing else, for example)
-// TODO: Prompt users to enable hardware acceleration
-
 class AnimeTransition extends React.Component {
   doneCallback = React.createRef()
 

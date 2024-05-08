@@ -54,3 +54,4 @@ export const { default: ChatSidebar, ChatSidebarType } = Webpack.getByKeys('Chat
 export const MessageRequestSidebar = Webpack.getByStrings('MESSAGE_REQUESTS_BASE_CHANNEL_ID', 'SIDEBAR')
 export const { SidebarType } = Webpack.getByKeys('SidebarType')
 export const useMessageRequestSidebarState = Webpack.getByKeys('useMessageRequestSidebarState')
+export const App = Webpack.getByKeys('setEnableHardwareAcceleration', 'releaseChannel')

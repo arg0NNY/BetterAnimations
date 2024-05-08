@@ -20,6 +20,7 @@ import Logger from '@/modules/Logger'
 import Settings from '@/modules/Settings'
 import { ModalActions } from '@/modules/DiscordModules'
 import Config from '@/modules/Config'
+import Prompt from '@/modules/Prompt'
 
 anime.suspendWhenDocumentHidden = false
 
@@ -35,6 +36,8 @@ export default function (meta) {
 
       console.log(PackManager)
       window.PackManager = PackManager
+
+      Prompt.onStartup()
 
       patchAppView()
       patchContextMenu()
