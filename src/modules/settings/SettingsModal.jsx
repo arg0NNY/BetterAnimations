@@ -22,7 +22,7 @@ function SettingsModal ({ history, ...props }) {
       cancelText="Cancel"
       confirmText="Save"
       confirmButtonColor={Common.Button.Colors.BRAND}
-      className={DiscordClasses.Modal.large}
+      className={`${DiscordClasses.Modal.large} BA__settingsModal`}
       onConfirm={onConfirm}
       onCancel={onCancel}
     >
