@@ -2,7 +2,6 @@ import anime from 'animejs'
 import style from './style.css'
 import { DOM, Patcher } from '@/BdApi'
 import { forceAppUpdate } from '@/helpers/forceUpdate'
-import Dispatcher from '@/modules/Dispatcher'
 import patchAppView from '@/patches/AppView/patchAppView'
 import patchContextMenu from '@/patches/ContextMenu/patchContextMenu'
 import patchBasePopout from '@/patches/BasePopout/patchBasePopout'
@@ -28,17 +27,21 @@ export default function (meta) {
 
   return {
     start () {
+      Logger.info('Startup', 'Injecting styles...')
       DOM.addStyle('BA-test', style)
 
+      Logger.info('Startup', 'Initializing modules...')
       Config.initialize()
       const packErrors = PackManager.initialize()
       if (packErrors?.length) Logger.error('Startup', 'Failed to load packs:', packErrors)
+      else Logger.info('PackManager', 'Initialized.')
 
       console.log(PackManager)
       window.PackManager = PackManager
 
       Prompt.onStartup()
 
+      Logger.info('Startup', 'Applying patches...')
       patchAppView()
       patchContextMenu()
       patchBasePopout()
@@ -52,18 +55,24 @@ export default function (meta) {
       patchGuildChannelList()
       patchMessageRequestsRoute()
 
+      Logger.info('Startup', 'Forcing app update...')
       forceAppUpdate()
+      Logger.info('Startup', 'Finished.')
     },
     stop () {
+      Logger.info('Shutdown', 'Removing styles...')
       DOM.removeStyle('BA-test')
 
+      Logger.info('Shutdown', 'Shutting down modules...')
       Config.shutdown()
       PackManager.shutdown()
 
+      Logger.info('Shutdown', 'Removing patches...')
       Patcher.unpatchAll()
-      Dispatcher.unsubscribeAll()
 
+      Logger.info('Shutdown', 'Forcing app update...')
       forceAppUpdate()
+      Logger.info('Shutdown', 'Finished.')
     },
     getSettingsPanel () {
       requestAnimationFrame(() => {

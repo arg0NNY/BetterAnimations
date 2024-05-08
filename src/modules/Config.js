@@ -5,6 +5,7 @@ import Emitter from '@/modules/Emitter'
 import Events from '@/enums/Events'
 import { fs, path } from '@/modules/Node'
 import PackManager from '@/modules/PackManager'
+import Logger from '@/modules/Logger'
 
 class PackConfig {
   get filePath () { return path.resolve(PackManager.addonFolder, `${this.slug}.config.json`) }
@@ -56,6 +57,8 @@ export default new class Config {
   initialize () {
     this.load()
     this.listenPackEvents()
+
+    Logger.info('Config', 'Initialized.')
   }
 
   read () {
@@ -92,5 +95,7 @@ export default new class Config {
   shutdown () {
     this.unlistenPackEvents()
     this.packs.clear()
+
+    Logger.info('Config', 'Stopped.')
   }
 }

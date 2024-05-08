@@ -283,6 +283,7 @@ export default class AddonManager {
   shutdown () {
     this.unloadAllAddons()
     this.unwatchAddons()
+    Logger.info(this.name, 'Stopped.')
   }
 
   deleteAddon (idOrFileOrAddon) {
