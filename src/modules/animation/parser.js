@@ -4,6 +4,7 @@ import { defaultSchema, sanitize } from 'hast-util-sanitize'
 import deepmerge from 'deepmerge'
 import anime from 'animejs'
 import { buildCSS, transformAnimeConfig } from '@/modules/animation/helpers'
+import AnimationType from '@/enums/AnimationType'
 
 export function parseAnimationData (data) {
   data = typeof data === 'string' ? JSON.parse(data) : data
@@ -75,14 +76,14 @@ export function buildAnimateAssets (data = null, context = {}, options = {}) {
       const pause = () => instances.forEach(i => i.pause())
       const finished = () => Promise.all(instances.map(i => i.finished))
 
-      if (before && context.type === 'enter') {
+      if (before && context.type === AnimationType.Enter) {
         pause()
         const instance = before(context)
         instance.finished.then(() => instances.slice(1).forEach(i => i.play()))
         instances.unshift(instance)
       }
 
-      if (after && context.type === 'exit') {
+      if (after && context.type === AnimationType.Exit) {
         const instance = after(context)
         instance.pause()
         finished().then(() => instance.play())

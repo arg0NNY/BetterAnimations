@@ -4,6 +4,7 @@ import { buildAnimateAssets } from '@/modules/animation/parser'
 import { z } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 import { Freeze } from 'react-freeze'
+import AnimationType from '@/enums/AnimationType'
 
 class AnimeTransition extends React.Component {
   doneCallback = React.createRef()
@@ -62,10 +63,10 @@ class AnimeTransition extends React.Component {
               pause()
               this.finish(() => {
                 assets.node?.remove()
-                if (type === 'exit') node.setAttribute('style', styleSnapshot)
+                if (type === AnimationType.Exit) node.setAttribute('style', styleSnapshot)
               })
 
-              if (options.type !== 'switch' || type !== 'exit' || !unmountOnExit)
+              if (options.type !== 'switch' || type !== AnimationType.Exit || !unmountOnExit)
                 [].filter.call(node.attributes, a => a.name?.startsWith('data-animation'))
                   .forEach(a => node.removeAttribute(a.name))
 
@@ -86,8 +87,8 @@ class AnimeTransition extends React.Component {
         }
       }
 
-      if (type === 'enter') this.props.onEntering?.(node, ...args)
-      else if (type === 'exit') this.props.onExiting?.(node, ...args)
+      if (type === AnimationType.Enter) this.props.onEntering?.(node, ...args)
+      else if (type === AnimationType.Exit) this.props.onExiting?.(node, ...args)
     }
   }
 
@@ -110,8 +111,8 @@ class AnimeTransition extends React.Component {
         exit={(!!animations?.exit?.animation || options.after) && exit}
         mountOnEnter={mountOnEnter}
         unmountOnExit={unmountOnExit}
-        onEntering={this.onAnimate('enter')}
-        onExiting={this.onAnimate('exit')}
+        onEntering={this.onAnimate(AnimationType.Enter)}
+        onExiting={this.onAnimate(AnimationType.Exit)}
         onEntered={(node, ...args) => props.onEntered?.(this.getTargetNode(node), ...args)}
         onExited={(node, ...args) => props.onExited?.(this.getTargetNode(node), ...args)}
         addEndListener={(_, done) => this.doneCallback.current = done}

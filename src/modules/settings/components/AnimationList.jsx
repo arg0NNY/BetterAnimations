@@ -1,6 +1,7 @@
 import { Common } from '@/modules/DiscordModules'
 import AnimationItem from '@/modules/settings/components/AnimationItem'
 import Config from '@/modules/Config'
+import AnimationType from '@/enums/AnimationType'
 
 export default function AnimationList ({ module, pack, animations, selected, onSelect, onChange }) {
   const packConfig = Config.pack(pack.slug)
@@ -19,14 +20,14 @@ export default function AnimationList ({ module, pack, animations, selected, onS
         {animations.map(animation => (
           <AnimationItem
             animation={animation}
-            enterActive={isActive(animation, 'enter')}
-            exitActive={isActive(animation, 'exit')}
-            setEnter={handleSelect('enter', animation)}
-            setExit={handleSelect('exit', animation)}
+            enterActive={isActive(animation, AnimationType.Enter)}
+            exitActive={isActive(animation, AnimationType.Exit)}
+            setEnter={handleSelect(AnimationType.Enter, animation)}
+            setExit={handleSelect(AnimationType.Exit, animation)}
             enterSettings={selected.enter.settings}
             exitSettings={selected.exit.settings}
-            setEnterSettings={handleSetSettings(animation, 'enter')}
-            setExitSettings={handleSetSettings(animation, 'exit')}
+            setEnterSettings={handleSetSettings(animation, AnimationType.Enter)}
+            setExitSettings={handleSetSettings(animation, AnimationType.Exit)}
           />
         ))}
       </div>

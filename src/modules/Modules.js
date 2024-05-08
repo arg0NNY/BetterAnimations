@@ -9,6 +9,7 @@ import Axis from '@/enums/Axis'
 import { getPosition, reversePosition } from '@/helpers/position'
 import Config from '@/modules/Config'
 import { getAnimationDefaultSettings } from '@/helpers/animations'
+import AnimationType from '@/enums/AnimationType'
 
 class Module {
   constructor (id, name, meta = {}) {
@@ -61,8 +62,8 @@ class Module {
   }
   getAnimations (options = {}) {
     return {
-      enter: this.getAnimation('enter', options),
-      exit: this.getAnimation('exit', options)
+      enter: this.getAnimation(AnimationType.Enter, options),
+      exit: this.getAnimation(AnimationType.Exit, options)
     }
   }
   setAnimation (type, packSlug, animationKey) {

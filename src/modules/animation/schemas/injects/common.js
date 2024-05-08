@@ -3,6 +3,7 @@ import { buildSwitchSchema } from '@/helpers/schemas'
 import { InjectSchema } from '@/modules/animation/schemas/injects/InjectSchema'
 import evaluate from '@emmetio/math-expression'
 import Inject from '@/enums/Inject'
+import AnimationType from '@/enums/AnimationType'
 
 export const NodeInjectSchema = ({ node }) => InjectSchema(Inject.Node)
   .extend({
@@ -20,7 +21,7 @@ export const NodeInjectSchema = ({ node }) => InjectSchema(Inject.Node)
   })
 
 export const TypeInjectSchema = ({ type }) => InjectSchema(Inject.Type)
-  .extend(buildSwitchSchema(['enter', 'exit']))
+  .extend(buildSwitchSchema(AnimationType.values()))
   .transform(params => params[type])
 
 export const ObjectAssignInjectSchema = InjectSchema(Inject.ObjectAssign).extend({
