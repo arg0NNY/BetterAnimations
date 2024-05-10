@@ -33,7 +33,7 @@ function BaseView ({ children }) {
         options={{ type: 'switch' }}
         onEntered={clearContainingStyles}
       >
-        <div className="base_c0676e">
+        <div className="base_c0676e"> {/* TODO: Make this a custom class, unified container. `base_XXX` inside `base_XXX` if screwing up the BD notices. Do the same for `content_XXX` below. */}
           {children}
         </div>
       </AnimeTransition>

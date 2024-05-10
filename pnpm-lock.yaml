@@ -26,6 +26,9 @@ importers:
       react-freeze:
         specifier: ^1.0.4
         version: 1.0.4(react@18.3.1)
+      semver:
+        specifier: ^7.6.2
+        version: 7.6.2
       zod:
         specifier: ^3.22.4
         version: 3.23.6
@@ -1276,6 +1279,11 @@ packages:
 
   semver@6.3.1:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
+    hasBin: true
+
+  semver@7.6.2:
+    resolution: {integrity: sha512-FNAIBWCx9qcRhoHcgcJ0gvU7SN1lYU2ZXuSfl04bSC5OpvDHFyJCjdNHomPXxjQlCBU67YW64PzY7/VIEH7F2w==}
+    engines: {node: '>=10'}
     hasBin: true
 
   serialize-javascript@6.0.2:
@@ -2759,6 +2767,8 @@ snapshots:
       ajv-keywords: 5.1.0(ajv@8.13.0)
 
   semver@6.3.1: {}
+
+  semver@7.6.2: {}
 
   serialize-javascript@6.0.2:
     dependencies:

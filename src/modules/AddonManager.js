@@ -130,6 +130,7 @@ export default class AddonManager {
     addon.modified = stats.mtimeMs
     addon.size = stats.size
     addon.fileContent = fileContent
+    addon.installed = addon
     if (this.addonList.find(c => c.id == addon.id)) throw new AddonError(addon.name, filename, `There is already a ${this.prefix} with name ${addon.name}`, this.prefix)
     this.addonList.push(addon)
     return addon
@@ -277,7 +278,7 @@ export default class AddonManager {
   }
 
   unloadAllAddons () {
-    this.addonList.forEach(addon => this.unloadAddon(addon))
+    this.addonList.slice().forEach(addon => this.unloadAddon(addon, false))
   }
 
   shutdown () {

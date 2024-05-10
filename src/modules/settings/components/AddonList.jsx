@@ -21,7 +21,7 @@ export default function AddonList ({ children, getList, prefix }) {
   }, [prefix])
 
   return (
-    <div style={{ display: 'grid', gap: 20 }}>
+    <div style={{ display: 'grid', gap: 8 }}>
       {getList().map(children)}
     </div>
   )

@@ -8,8 +8,8 @@ export default new class Settings {
     this.history = History.createMemoryHistory()
   }
 
-  openSettingsModal () {
-    this.history.push('/')
+  openSettingsModal (location = '/') {
+    this.history.push(location)
 
     ModalActions.openModal(props => (
       <SettingsModal {...props} history={this.history} />

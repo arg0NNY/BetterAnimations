@@ -20,6 +20,7 @@ import Settings from '@/modules/Settings'
 import { ModalActions } from '@/modules/DiscordModules'
 import Config from '@/modules/Config'
 import Prompt from '@/modules/Prompt'
+import PackRegistry from '@/modules/PackRegistry'
 
 anime.suspendWhenDocumentHidden = false
 
@@ -31,15 +32,12 @@ export default function (meta) {
       DOM.addStyle('BA-test', style)
 
       Logger.info('Startup', 'Initializing modules...')
+      Prompt.onStartup()
       Config.initialize()
+      PackRegistry.initialize()
       const packErrors = PackManager.initialize()
       if (packErrors?.length) Logger.error('Startup', 'Failed to load packs:', packErrors)
       else Logger.info('PackManager', 'Initialized.')
-
-      console.log(PackManager)
-      window.PackManager = PackManager
-
-      Prompt.onStartup()
 
       Logger.info('Startup', 'Applying patches...')
       patchAppView()
@@ -65,6 +63,7 @@ export default function (meta) {
 
       Logger.info('Shutdown', 'Shutting down modules...')
       Config.shutdown()
+      PackRegistry.shutdown()
       PackManager.shutdown()
 
       Logger.info('Shutdown', 'Removing patches...')

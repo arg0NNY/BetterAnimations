@@ -12,9 +12,14 @@ export default function Home () {
           </Router.Link>
         ))}
       </div>
-      <Router.Link to="/library">
-        <Common.Button>Library</Common.Button>
-      </Router.Link>
+      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+        <Router.Link to="/catalog">
+          <Common.Button>Catalog</Common.Button>
+        </Router.Link>
+        <Router.Link to="/library">
+          <Common.Button>Library</Common.Button>
+        </Router.Link>
+      </div>
     </div>
   )
 }

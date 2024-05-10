@@ -8,7 +8,7 @@ export default function AnimationSelect ({ module, selected, onSelect, onChange 
     <AddonList>
       {pack => {
         const animations = pack.animations.filter(a => module.isSupportedBy(a))
-        return animations.length && (
+        return !!animations.length && (
           <AnimationList
             module={module}
             pack={pack}
