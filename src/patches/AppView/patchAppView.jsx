@@ -14,6 +14,8 @@ import ModuleKey from '@/enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
 
+// TODO: Restructurize "patches" folder, make it so each folder represents a module, not a component that it patches
+
 // TODO: Insert classes dynamically
 
 function BaseView ({ children }) {
@@ -28,12 +30,13 @@ function BaseView ({ children }) {
     <TransitionGroup component={null} childFactory={passAnimations(animations)}>
       <AnimeTransition
         key={key}
+        container={{ className: 'base_c0676e' }}
         freeze={true}
         animations={animations}
         options={{ type: 'switch' }}
         onEntered={clearContainingStyles}
       >
-        <div className="base_c0676e"> {/* TODO: Make this a custom class, unified container. `base_XXX` inside `base_XXX` if screwing up the BD notices. Do the same for `content_XXX` below. */}
+        <div className="base_c0676e"> {/* TODO: Make this a custom class, unified container. `base_XXX` inside `base_XXX` is screwing up the BD notices. Do the same for `content_XXX` below. */}
           {children}
         </div>
       </AnimeTransition>
@@ -57,6 +60,7 @@ function ContentView ({ children }) {
     <TransitionGroup className="content__76dcf" childFactory={passAnimations(animations)}>
       <AnimeTransition
         key={key}
+        container={{ className: 'content__76dcf' }}
         freeze={true}
         animations={animations}
         options={{ type: 'switch' }}

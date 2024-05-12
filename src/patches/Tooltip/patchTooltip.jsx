@@ -1,7 +1,6 @@
 import { Patcher } from '@/BdApi'
 import { SpringTransitionPhases, Tooltip, TooltipLayer } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
-import { directChild } from '@/helpers/transition'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
@@ -30,7 +29,7 @@ function TooltipTransition (props) {
   return (
     <AnimeTransition
       in={isVisible}
-      targetNode={directChild}
+      targetContainer={e => e}
       animations={animations}
       onEntered={onRest(true)}
       onExited={onRest(false)}

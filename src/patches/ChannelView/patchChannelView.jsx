@@ -9,6 +9,7 @@ import ThreadSidebarTransition from '@/patches/ChannelView/components/ThreadSide
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
+import patchChatSidebar from '@/patches/ChannelView/patchChatSidebar'
 
 function patchChannelView () {
   const once = ensureOnce()
@@ -23,12 +24,13 @@ function patchChannelView () {
             const module = Modules.getModule(ModuleKey.Sidebars)
             if (!module.isEnabled()) return value
 
-            const modifier = type => ({ node }) => animate(type, node)
+            const modifier = type => ({ container }) => animate(type, container)
 
             return (
               <SwitchTransition>
                 <AnimeTransition
                   key={self.props.section}
+                  container={true}
                   options={{
                     before: modifier('before'),
                     after: modifier('after')
@@ -57,6 +59,7 @@ function patchChannelView () {
     })
   })
 
+  patchChatSidebar()
   patchVoiceChannelView()
 }
 

@@ -15,15 +15,16 @@ function patchContextSubmenu () {
 
     const i = value.props.children.length - 1
     value.props.children[i] = (
-      <Layer layerContext={appLayerContext}>
-        <AnimeTransition
-          in={props.isFocused}
-          animations={module.getAnimations(animationOptions)}
-          onEntered={clearContainingStyles}
-        >
+      <AnimeTransition
+        in={props.isFocused}
+        targetContainer={e => e}
+        animations={module.getAnimations(animationOptions)}
+        onEntered={clearContainingStyles}
+      >
+        <Layer layerContext={appLayerContext}>
           {value.props.children[i]}
-        </AnimeTransition>
-      </Layer>
+        </Layer>
+      </AnimeTransition>
     )
 
     return value

@@ -8,7 +8,6 @@ import { DiscordClasses } from '@/modules/DiscordSelectors'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
-import usePrevious from '@/hooks/usePrevious'
 
 function LayerContainer ({ baseLayer, children }) {
   return (

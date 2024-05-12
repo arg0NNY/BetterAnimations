@@ -9,7 +9,7 @@ import MessageStackStore from '@/patches/ChannelMessageList/MessageStackStore'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 
-// TODO: Disallow adding custom html for messages animations (and other animations with no proper wrapper)
+// TODO: Add proper container for all animations without one
 function patchChannelMessageList () {
   const once = ensureOnce()
 
@@ -48,6 +48,7 @@ function patchChannelMessageList () {
                 return (
                   <AnimeTransition
                     key={item.key}
+                    container={true}
                     enter={toEnter.has(message ? item.key : getMessageKey(arr[index + 1]?.props?.message))}
                     exit={false} // Managed in childFactory
                     animations={animations}

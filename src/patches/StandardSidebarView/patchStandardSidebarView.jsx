@@ -42,6 +42,7 @@ async function patchStandardSidebarView () {
       <TransitionGroup className="contentRegion__08eba" childFactory={passAnimations(animations)}>
         <AnimeTransition
           key={props.section}
+          container={{ className: 'contentRegion__08eba' }}
           freeze={true}
           animations={animations}
           options={{ type: 'switch'  }}

@@ -6,6 +6,14 @@ import { fromZodError } from 'zod-validation-error'
 import { Freeze } from 'react-freeze'
 import AnimationType from '@/enums/AnimationType'
 
+export function AnimeContainer ({ container, children }) {
+  if (!container) return children
+
+  return (
+    <div data-animation-container="" {...container}>{children}</div>
+  )
+}
+
 class AnimeTransition extends React.Component {
   doneCallback = React.createRef()
 
@@ -18,14 +26,25 @@ class AnimeTransition extends React.Component {
     else this._cancelAnimation.current = value
   }
 
-  getTargetNode (node) {
-    return this.props.targetNode?.(node) ?? node
+  getTargetNodes (container) {
+    if (container && this.props.targetContainer) {
+      container = this.props.targetContainer(container)
+      container?.setAttribute('data-animation-container', '')
+    }
+
+    return {
+      container: container,
+      node: container?.getAttribute('data-animation-container') === ''
+        ? container.lastElementChild // First one may be [data-animation]
+        : container
+    }
   }
 
   onAnimate (type) {
-    return (node, ...args) => {
+    return (targetNode, ...args) => {
       this.cancelAnimation?.()
-      node = this.getTargetNode(node)
+      const { container, node } = this.getTargetNodes(targetNode)
+
       if (node) node.style.display = '' // Removes the 'display: none !important' that is added by Suspense in Freeze
 
       if (node) {
@@ -41,6 +60,7 @@ class AnimeTransition extends React.Component {
               {},
               animationData?.settings ?? {},
               {
+                container,
                 node,
                 type,
                 settings: animation.settings
@@ -56,8 +76,8 @@ class AnimeTransition extends React.Component {
             const styleSnapshot = node.getAttribute('style')
             const { finished, pause } = assets.execute()
 
-            node.setAttribute('data-animation-type', type)
-            if (options.type) node.setAttribute(`data-animation-${options.type}`, '')
+            container.setAttribute('data-animation-type', type)
+            if (options.type) container.setAttribute(`data-animation-${options.type}`, '')
 
             this.cancelAnimation = () => {
               pause()
@@ -67,8 +87,8 @@ class AnimeTransition extends React.Component {
               })
 
               if (options.type !== 'switch' || type !== AnimationType.Exit || !unmountOnExit)
-                [].filter.call(node.attributes, a => a.name?.startsWith('data-animation'))
-                  .forEach(a => node.removeAttribute(a.name))
+                [].filter.call(container.attributes, a => a.name !== 'data-animation-container' && a.name?.startsWith('data-animation'))
+                  .forEach(a => container.removeAttribute(a.name))
 
               this.cancelAnimation = null
               // console.log('finished', type)
@@ -102,7 +122,18 @@ class AnimeTransition extends React.Component {
   }
 
   render () {
-    const { animations, options = {}, children, freeze = false, mountOnEnter = true, unmountOnExit = true, enter = true, exit = true, ...props } = this.props
+    const {
+      animations,
+      options = {},
+      children,
+      container = false,
+      freeze = false,
+      mountOnEnter = true,
+      unmountOnExit = true,
+      enter = true,
+      exit = true,
+      ...props
+    } = this.props
 
     return (
       <Transition
@@ -113,13 +144,15 @@ class AnimeTransition extends React.Component {
         unmountOnExit={unmountOnExit}
         onEntering={this.onAnimate(AnimationType.Enter)}
         onExiting={this.onAnimate(AnimationType.Exit)}
-        onEntered={(node, ...args) => props.onEntered?.(this.getTargetNode(node), ...args)}
-        onExited={(node, ...args) => props.onExited?.(this.getTargetNode(node), ...args)}
+        onEntered={(node, ...args) => props.onEntered?.(this.getTargetNodes(node).node, ...args)}
+        onExited={(node, ...args) => props.onExited?.(this.getTargetNodes(node).node, ...args)}
         addEndListener={(_, done) => this.doneCallback.current = done}
       >
-        <Freeze freeze={freeze && props.in === false}>
-          {children && React.Children.only(children)}
-        </Freeze>
+        <AnimeContainer container={children && container}>
+          <Freeze freeze={freeze && props.in === false}>
+            {children && React.Children.only(children)}
+          </Freeze>
+        </AnimeContainer>
       </Transition>
     )
   }

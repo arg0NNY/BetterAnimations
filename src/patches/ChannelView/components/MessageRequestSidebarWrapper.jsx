@@ -1,7 +1,6 @@
 import { React } from '@/BdApi'
 import {
   ChatSidebar,
-  ChatSidebarType,
   Constants,
   MESSAGE_REQUESTS_BASE_CHANNEL_ID,
   MessageRequestSidebar
@@ -9,8 +8,8 @@ import {
 
 const MessageRequestSidebarWrapper = React.memo(function MessageRequestSidebarWrapper ({ pageWidth, onSidebarResize, channel }) {
   return (
-    <ChatSidebar
-      sidebarType={ChatSidebarType.MessageRequestSidebar}
+    <ChatSidebar.default
+      sidebarType={ChatSidebar.ChatSidebarType.MessageRequestSidebar}
       maxWidth={pageWidth - Constants.DEFAULT_MESSAGE_REQUEST_SIDEBAR_WIDTH}
       onWidthChange={onSidebarResize}
     >
@@ -18,7 +17,7 @@ const MessageRequestSidebarWrapper = React.memo(function MessageRequestSidebarWr
         channel={channel}
         baseChannelId={MESSAGE_REQUESTS_BASE_CHANNEL_ID}
       />
-    </ChatSidebar>
+    </ChatSidebar.default>
   )
 })
 

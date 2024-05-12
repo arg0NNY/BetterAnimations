@@ -55,6 +55,7 @@ export function buildAnimateAssets (data = null, context = {}, options = {}) {
       style.appendChild(document.createTextNode(
         buildCSS(data.css, s => {
           if (s === '{node}') return `${parent} + *`
+          if (s === '{container}') return `[data-animation-container]:has(> ${parent})`
           return `${parent} :is(${s})`
         })
       ))
@@ -68,7 +69,7 @@ export function buildAnimateAssets (data = null, context = {}, options = {}) {
     execute: () => {
       const instances = [].concat(data.anime ?? []).map(
         a => (
-          typeof a === 'function'
+          typeof a === 'function' // Can be a function because of "anime.timeline" inject
             ? a(wrapper)
             : anime(transformAnimeConfig(a, wrapper))
         )

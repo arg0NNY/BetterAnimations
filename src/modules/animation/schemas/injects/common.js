@@ -35,7 +35,7 @@ export const WaitInjectSchema = InjectSchema(Inject.Wait).extend({
   targets: { inject: 'node' },
   translateY: [0, 0],
   duration: params.duration
-}))
+})) // TODO: https://github.com/juliangarnier/anime/wiki/What's-new-in-Anime.js-V4#-timers
 
 export const StringTemplateSchema = InjectSchema(Inject.StringTemplate).extend({
   template: z.string(),

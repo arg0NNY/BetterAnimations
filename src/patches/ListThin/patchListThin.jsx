@@ -53,6 +53,7 @@ function patchListThin () {
             return (
               <PassThrough
                 key={item.key}
+                targetContainer={e => e}
                 enter={shouldAnimate(item)}
                 exit={false} // Managed in childFactory
                 animations={animations}

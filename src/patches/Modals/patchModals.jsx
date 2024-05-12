@@ -8,6 +8,7 @@ import { DiscordSelectors } from '@/modules/DiscordSelectors'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import ensureOnce from '@/helpers/ensureOnce'
+import { directChild } from '@/helpers/transition'
 
 function patchModals () {
   const once = ensureOnce()
@@ -33,7 +34,8 @@ function patchModals () {
                   key={modal.props.modalKey}
                   mountOnEnter={false}
                   unmountOnExit={false}
-                  targetNode={node => node?.querySelector(`${DiscordSelectors.Modal.root}, .bd-modal-root`)}
+                  targetContainer={directChild}
+                  // targetNode={node => node?.querySelector(`${DiscordSelectors.Modal.root}, .bd-modal-root`)}
                   animations={animations}
                   enter={!modal.props.instant}
                   exit={!modal.props.instant}

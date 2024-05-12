@@ -1,7 +1,7 @@
 import { Patcher } from '@/BdApi'
 import { ContextMenu, TransitionGroup } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
-import { clearContainingStyles, directChild } from '@/helpers/transition'
+import { clearContainingStyles } from '@/helpers/transition'
 import patchContextSubmenu from '@/patches/ContextMenu/patchContextSubmenu'
 import ensureOnce from '@/helpers/ensureOnce'
 import Position from '@/enums/Position'
@@ -29,7 +29,7 @@ function patchContextMenu () {
         return (
           <AnimeTransition
             in={!!value}
-            targetNode={directChild}
+            targetContainer={e => e}
             exit={false}
             animations={module.getAnimations(animationOptions)}
             onEntered={clearContainingStyles}
@@ -48,7 +48,7 @@ function patchContextMenu () {
           value.props.isOpen &&
           <AnimeTransition
             key={value.key}
-            targetNode={directChild}
+            targetContainer={e => e}
             enter={false}
             animations={module.getAnimations(animationOptions)}
           >
