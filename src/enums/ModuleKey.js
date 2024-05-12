@@ -2,7 +2,8 @@ import Enum from '@/enums/Enum'
 
 export const ModuleKeyAlias = Enum({
   Switch: 'switch',
-  Reveal: 'reveal'
+  Reveal: 'reveal',
+  Sidebars: 'sidebars'
 })
 
 export default Enum({
@@ -16,5 +17,6 @@ export default Enum({
   ChannelList: 'channelList',
   Modals: 'modals',
   Layers: 'layers',
-  Sidebars: 'sidebars'
+  MembersSidebar: 'membersSidebar',
+  ThreadSidebar: 'threadSidebar'
 })

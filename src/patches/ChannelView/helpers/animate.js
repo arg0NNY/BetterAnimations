@@ -3,7 +3,7 @@ import Modules from '@/modules/Modules'
 import ModuleKey from '@/enums/ModuleKey'
 
 const animate = (type, node, width = node.clientWidth) => {
-  const { duration, easing } = Modules.getModule(ModuleKey.Sidebars).getGeneralSettings()
+  const { duration, easing } = Modules.getModule(ModuleKey.ThreadSidebar).getGeneralSettings()
 
   return anime({
     targets: node,

@@ -15,9 +15,9 @@ function patchVoiceChannelView () {
     if (!channelView) return
 
     once(() => {
-      injectModule(channelView.type, ModuleKey.Sidebars)
+      injectModule(channelView.type, ModuleKey.ThreadSidebar)
       Patcher.after(channelView.type.prototype, 'render', (self, args, value) => {
-        const module = Modules.getModule(ModuleKey.Sidebars)
+        const module = Modules.getModule(ModuleKey.ThreadSidebar)
         if (!module.isEnabled()) return value
 
         const chatWrapper = findInReactTree(value, m => m?.className?.includes('channelChatWrapper'))
@@ -27,7 +27,7 @@ function patchVoiceChannelView () {
           <TransitionGroup component={null}>
             {
               chatWrapper.children &&
-              <ThreadSidebarTransition>
+              <ThreadSidebarTransition animations={module.getAnimations()}>
                 {chatWrapper.children}
               </ThreadSidebarTransition>
             }

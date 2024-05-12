@@ -27,8 +27,10 @@ function patchMessageRequestsRoute (route) {
 
   Patcher.after(route.props, 'render', (self, args, value) => {
     once(() => Patcher.after(value.type, 'render', (self, args, value) => {
-      const module = useModule(ModuleKey.Sidebars)
+      const module = useModule(ModuleKey.ThreadSidebar)
       if (!module.isEnabled()) return
+
+      const animations = module.getAnimations()
 
       Patcher.after(value.props, 'children', (self, args, value) => {
         Patcher.after(value, 'type', (self, [props], value) => {
@@ -38,7 +40,7 @@ function patchMessageRequestsRoute (route) {
           const children = value.props.children
           children[1] = (
             <SwitchTransition>
-              <ThreadSidebarTransition key={state?.channelId ?? 'none'}>
+              <ThreadSidebarTransition key={state?.channelId ?? 'none'} animations={animations}>
                 {
                   state && state.type === SidebarType.VIEW_MESSAGE_REQUEST && channel && channel.isPrivate() &&
                   <MessageRequestSidebarContext.Provider value={state}>

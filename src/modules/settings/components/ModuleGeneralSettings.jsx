@@ -18,7 +18,7 @@ function ModalsGeneralSettings ({ settings, onChange }) {
 }
 
 function SidebarsGeneralSettings ({ settings, onChange }) {
-  const defaultValues = Config.defaults.modules[ModuleKey.Sidebars].settings
+  const defaultValues = Config.defaults.modules[ModuleKey.ThreadSidebar].settings
 
   return (
     <>
@@ -40,7 +40,8 @@ function SidebarsGeneralSettings ({ settings, onChange }) {
 function ModuleGeneralSettings ({ module, settings, onChange }) {
   const Component = {
     [ModuleKey.Modals]: ModalsGeneralSettings,
-    [ModuleKey.Sidebars]: SidebarsGeneralSettings
+    [ModuleKey.MembersSidebar]: SidebarsGeneralSettings,
+    [ModuleKey.ThreadSidebar]: SidebarsGeneralSettings
   }[module.id]
   if (!Component) return null
 

@@ -63,7 +63,11 @@
     isolation: isolate;
 }
 
-/* for voice chat sidebar */
+/* sidebars */
 .chat__52833 {
     overflow: clip;
+    isolation: isolate;
+}
+.chatLayerWrapper__1b344 {
+    background-color: var(--background-tertiary) !important;
 }

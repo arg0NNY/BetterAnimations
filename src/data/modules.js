@@ -18,6 +18,10 @@ export const moduleAliases = {
     ModuleKey.Messages,
     ModuleKey.ChannelList,
     ModuleKey.Modals
+  ],
+  [ModuleKeyAlias.Sidebars]: [
+    ModuleKey.MembersSidebar,
+    ModuleKey.ThreadSidebar
   ]
 }
 
@@ -146,11 +150,12 @@ const modules = [
     }
   },
   {
-    id: ModuleKey.Sidebars,
-    name: 'Sidebars',
-    meta: {
-      disableCustomAnimations: true
-    }
+    id: ModuleKey.MembersSidebar,
+    name: 'Members Sidebar'
+  },
+  {
+    id: ModuleKey.ThreadSidebar,
+    name: 'Thread Sidebar'
   }
 ]
 

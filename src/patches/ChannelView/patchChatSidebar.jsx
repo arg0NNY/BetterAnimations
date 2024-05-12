@@ -7,7 +7,7 @@ import ModuleKey from '@/enums/ModuleKey'
 
 function patchChatSidebar () {
   Patcher.after(ChatSidebar, 'default', (self, args, value) => {
-    const module = Modules.getModule(ModuleKey.Sidebars)
+    const module = Modules.getModule(ModuleKey.ThreadSidebar)
     if (!module.isEnabled()) return
 
     const chatTarget = findInReactTree(value, m => m?.props?.className?.includes('chatTarget'))
