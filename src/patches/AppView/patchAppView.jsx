@@ -13,10 +13,9 @@ import { clearContainingStyles, passAnimations } from '@/helpers/transition'
 import ModuleKey from '@/enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
+import { DiscordClasses } from '@/modules/DiscordSelectors'
 
 // TODO: Restructurize "patches" folder, make it so each folder represents a module, not a component that it patches
-
-// TODO: Insert classes dynamically
 
 function BaseView ({ children }) {
   const [key, direction] = useLocationKey(shouldSwitchBase, getSwitchBaseDirection)
@@ -30,13 +29,13 @@ function BaseView ({ children }) {
     <TransitionGroup component={null} childFactory={passAnimations(animations)}>
       <AnimeTransition
         key={key}
-        container={{ className: 'base_c0676e' }}
+        container={{ className: DiscordClasses.AppView.base }}
         freeze={true}
         animations={animations}
         options={{ type: 'switch' }}
         onEntered={clearContainingStyles}
       >
-        <div className="base_c0676e"> {/* TODO: Make this a custom class, unified container. `base_XXX` inside `base_XXX` is screwing up the BD notices. Do the same for `content_XXX` below. */}
+        <div className={DiscordClasses.AppView.base}> {/* TODO: Make this a custom class, unified container. `base_XXX` inside `base_XXX` is screwing up the BD notices. Do the same for `content_XXX` below. */}
           {children}
         </div>
       </AnimeTransition>
@@ -57,16 +56,16 @@ function ContentView ({ children }) {
   const animations = module.getAnimations({ auto: { direction } })
 
   return (
-    <TransitionGroup className="content__76dcf" childFactory={passAnimations(animations)}>
+    <TransitionGroup className={DiscordClasses.AppView.content} childFactory={passAnimations(animations)}>
       <AnimeTransition
         key={key}
-        container={{ className: 'content__76dcf' }}
+        container={{ className: DiscordClasses.AppView.content }}
         freeze={true}
         animations={animations}
         options={{ type: 'switch' }}
         onEntered={clearContainingStyles}
       >
-        <div className="content__76dcf">
+        <div className={DiscordClasses.AppView.content}>
           <Router.Switch location={location}>
             {children}
           </Router.Switch>
@@ -78,12 +77,12 @@ function ContentView ({ children }) {
 
 function patchAppView () {
   Patcher.after(AppView, 'default', (self, args, value) => {
-    const base = findInReactTree(value, m => m?.props?.className === 'base_c0676e')
+    const base = findInReactTree(value, m => m?.props?.className === DiscordClasses.AppView.base)
     if (!base) return
 
     base.props.children = <BaseView>{base.props.children}</BaseView>
 
-    const content = findInReactTree(base, m => m?.props?.className === 'content__76dcf')
+    const content = findInReactTree(base, m => m?.props?.className === DiscordClasses.AppView.content)
     if (!content) return
 
     const view = findInReactTree(content, m => m?.children?.type === Router.Switch)
@@ -93,8 +92,6 @@ function patchAppView () {
     if (messageRequestsRoute) patchMessageRequestsRoute(messageRequestsRoute)
 
     view.children = <ContentView>{routes}</ContentView>
-
-    // console.log(view)
   })
 }
 

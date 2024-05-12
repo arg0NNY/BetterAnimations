@@ -6,8 +6,8 @@ import { clearContainingStyles, passAnimations } from '@/helpers/transition'
 import useDirection from '@/hooks/useDirection'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
+import { DiscordClasses } from '@/modules/DiscordSelectors'
 
-// TODO: Insert classes dynamically
 async function patchStandardSidebarView () {
   Patcher.after((await StandardSidebarViewWrapper).default.prototype, 'render', (self, args, value) => {
     const view = findInReactTree(value, m => m?.props?.content && m?.props?.sidebar)
@@ -24,10 +24,10 @@ async function patchStandardSidebarView () {
       animated.type = 'div'
     }
 
-    const standardSidebarView = findInReactTree(value, m => m?.className?.includes('standardSidebarView__12528'))
+    const standardSidebarView = findInReactTree(value, m => m?.className?.includes(DiscordClasses.StandardSidebarView.standardSidebarView))
     if (!standardSidebarView) return
 
-    const i = standardSidebarView.children.findIndex(i => i?.props?.className?.includes('contentRegion__08eba'))
+    const i = standardSidebarView.children.findIndex(i => i?.props?.className?.includes(DiscordClasses.StandardSidebarView.contentRegion))
     if (i === -1) return
 
     const contentRegion = standardSidebarView.children[i]
@@ -39,10 +39,10 @@ async function patchStandardSidebarView () {
     const animations = module.getAnimations({ auto: { direction } })
 
     standardSidebarView.children[i] = (
-      <TransitionGroup className="contentRegion__08eba" childFactory={passAnimations(animations)}>
+      <TransitionGroup className={DiscordClasses.StandardSidebarView.contentRegion} childFactory={passAnimations(animations)}>
         <AnimeTransition
           key={props.section}
-          container={{ className: 'contentRegion__08eba' }}
+          container={{ className: DiscordClasses.StandardSidebarView.contentRegion }}
           freeze={true}
           animations={animations}
           options={{ type: 'switch'  }}

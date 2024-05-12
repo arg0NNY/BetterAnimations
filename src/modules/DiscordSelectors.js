@@ -1,22 +1,31 @@
 import { Webpack } from '@/BdApi'
 
-// TODO: Add support for lazy loaded modules
 const Classes = {
-  ThreadSidebar: Webpack.getByKeys('chatLayerWrapper', 'chatTarget'),
+  ChatSidebar: Webpack.getByKeys('chatLayerWrapper', 'chatTarget'),
   StandardSidebarView: () => Webpack.getByKeys('standardSidebarView', 'contentRegion'),
   Modal: Webpack.getByKeys('root', 'rootWithShadow'),
-  Layer: Webpack.getByKeys('layer', 'baseLayer'),
+  Layers: Webpack.getByKeys('layer', 'baseLayer'),
   Margins: Webpack.getByKeys('marginTop20'),
+  AppMount: Webpack.getByKeys('appMount'),
+  AppView: Webpack.getByKeys('base', 'content'),
+  ChannelView: Webpack.getByKeys('chat', 'channelName'),
+  VoiceChannelView: Webpack.getByKeys('channelChatWrapper', 'chatSidebarOpen'),
+  ChannelItem: Webpack.getByKeys('containerDefault', 'channelInfo')
 }
 
-export const DiscordClasses = Classes
-// export const DiscordClasses = new Proxy(Classes, {
-//   get (obj, prop) {
-//
-//   }
-// })
+export const DiscordClasses = new Proxy(Classes, {
+  get (obj, prop) {
+    const value = obj[prop]
+    if (typeof value !== 'function') return value
 
-export const DiscordSelectors = new Proxy(Classes, {
+    const resolved = value()
+    if (!resolved) return undefined
+
+    return (obj[prop] = resolved)
+  }
+})
+
+export const DiscordSelectors = new Proxy(DiscordClasses, {
   get (obj, prop) {
     return obj[prop] && new Proxy(obj[prop], {
       get (obj, prop) {

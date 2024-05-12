@@ -9,7 +9,6 @@ import MessageStackStore from '@/patches/ChannelMessageList/MessageStackStore'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 
-// TODO: Add proper container for all animations without one
 function patchChannelMessageList () {
   const once = ensureOnce()
 

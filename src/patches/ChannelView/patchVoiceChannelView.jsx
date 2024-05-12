@@ -6,6 +6,7 @@ import ThreadSidebarTransition from '@/patches/ChannelView/components/ThreadSide
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
+import { DiscordClasses } from '@/modules/DiscordSelectors'
 
 function patchVoiceChannelView () {
   const once = ensureOnce()
@@ -20,7 +21,7 @@ function patchVoiceChannelView () {
         const module = Modules.getModule(ModuleKey.ThreadSidebar)
         if (!module.isEnabled()) return value
 
-        const chatWrapper = findInReactTree(value, m => m?.className?.includes('channelChatWrapper'))
+        const chatWrapper = findInReactTree(value, m => m?.className?.includes(DiscordClasses.VoiceChannelView.channelChatWrapper))
         if (!chatWrapper) return
 
         chatWrapper.children = (

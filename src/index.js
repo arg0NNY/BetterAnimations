@@ -1,5 +1,4 @@
 import anime from 'animejs'
-import style from './style.css'
 import { DOM, Patcher } from '@/BdApi'
 import { forceAppUpdate } from '@/helpers/forceUpdate'
 import patchAppView from '@/patches/AppView/patchAppView'
@@ -21,15 +20,19 @@ import { ModalActions } from '@/modules/DiscordModules'
 import Config from '@/modules/Config'
 import Prompt from '@/modules/Prompt'
 import PackRegistry from '@/modules/PackRegistry'
+import { saveMeta } from '@/meta'
+import style from '@/style'
 
 anime.suspendWhenDocumentHidden = false
 
 export default function (meta) {
+  saveMeta(meta)
+  const styleId = `${meta.name}-style`
 
   return {
     start () {
       Logger.info('Startup', 'Injecting styles...')
-      DOM.addStyle('BA-test', style)
+      DOM.addStyle(styleId, style())
 
       Logger.info('Startup', 'Initializing modules...')
       Prompt.onStartup()
@@ -59,7 +62,7 @@ export default function (meta) {
     },
     stop () {
       Logger.info('Shutdown', 'Removing styles...')
-      DOM.removeStyle('BA-test')
+      DOM.removeStyle(styleId)
 
       Logger.info('Shutdown', 'Shutting down modules...')
       Config.shutdown()

@@ -10,6 +10,7 @@ import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import patchChatSidebar from '@/patches/ChannelView/patchChatSidebar'
+import { DiscordClasses } from '@/modules/DiscordSelectors'
 
 function patchChannelView () {
   const once = ensureOnce()
@@ -20,7 +21,7 @@ function patchChannelView () {
 
         once(() => {
           injectModule(value.type, ModuleKey.MembersSidebar)
-          injectModule(value.type, ModuleKey.ThreadSidebar)
+          injectModule(value.type, ModuleKey.ThreadSidebar) // TODO: Won't clear the second module on unmount because of how injectModule made, fix that
           Patcher.after(value.type.prototype, 'renderSidebar', (self, args, value) => {
             const module = Modules.getModule(ModuleKey.MembersSidebar)
             if (!module.isEnabled()) return value
@@ -31,7 +32,7 @@ function patchChannelView () {
               <SwitchTransition>
                 <AnimeTransition
                   key={self.props.section}
-                  container={{ className: 'content__01e65', style: { flex: '0 0 auto' } }}
+                  container={{ className: DiscordClasses.ChannelView.content, style: { flex: '0 0 auto' } }}
                   animations={module.getAnimations()}
                   options={{
                     before: modifier('before'),

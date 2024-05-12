@@ -11,7 +11,7 @@ import Modules from '@/modules/Modules'
 
 function LayerContainer ({ baseLayer, children }) {
   return (
-    <div className={`${DiscordClasses.Layer.layer} ${baseLayer ? DiscordClasses.Layer.baseLayer : ''}`}>
+    <div className={`${DiscordClasses.Layers.layer} ${baseLayer ? DiscordClasses.Layers.baseLayer : ''}`}>
       {children}
     </div>
   )
