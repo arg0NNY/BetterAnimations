@@ -4,6 +4,7 @@ import Inject from '@/enums/Inject'
 import {
   MathInjectSchema,
   ElementInjectSchema,
+  ContainerInjectSchema,
   ObjectAssignInjectSchema,
   StringTemplateSchema,
   TypeInjectSchema,
@@ -24,6 +25,7 @@ import {
 
 const injectSchemas = {
   [Inject.Element]: ElementInjectSchema,
+  [Inject.Container]: ContainerInjectSchema,
   [Inject.AnimeStagger]: AnimeStaggerInjectSchema,
   [Inject.AnimeTimeline]: AnimeTimelineInjectSchema,
   [Inject.Duration]: DurationInjectSchema,

@@ -20,6 +20,9 @@ export const ElementInjectSchema = ({ element }) => InjectSchema(Inject.Element)
     return element
   })
 
+export const ContainerInjectSchema = ({ container }) => InjectSchema(Inject.Container)
+  .transform(() => container)
+
 export const TypeInjectSchema = ({ type }) => InjectSchema(Inject.Type)
   .extend(buildSwitchSchema(AnimationType.values()))
   .transform(params => params[type])
