@@ -21,20 +21,18 @@ import Config from '@/modules/Config'
 import Prompt from '@/modules/Prompt'
 import PackRegistry from '@/modules/PackRegistry'
 import { saveMeta } from '@/meta'
-import style from '@/style'
+import Style, { css } from '@/modules/Style'
+import { DiscordSelectors } from '@/modules/DiscordSelectors'
 
 anime.suspendWhenDocumentHidden = false
 
 export default function (meta) {
   saveMeta(meta)
-  const styleId = `${meta.name}-style`
 
   return {
     start () {
-      Logger.info('Startup', 'Injecting styles...')
-      DOM.addStyle(styleId, style())
-
       Logger.info('Startup', 'Initializing modules...')
+      Style.initialize()
       Prompt.onStartup()
       Config.initialize()
       PackRegistry.initialize()
@@ -61,10 +59,8 @@ export default function (meta) {
       Logger.info('Startup', 'Finished.')
     },
     stop () {
-      Logger.info('Shutdown', 'Removing styles...')
-      DOM.removeStyle(styleId)
-
       Logger.info('Shutdown', 'Shutting down modules...')
+      Style.shutdown()
       Config.shutdown()
       PackRegistry.shutdown()
       PackManager.shutdown()
@@ -84,3 +80,9 @@ export default function (meta) {
     }
   }
 }
+
+css
+`${DiscordSelectors.AppMount.appMount} {
+    overflow: clip;
+}`
+`Index`

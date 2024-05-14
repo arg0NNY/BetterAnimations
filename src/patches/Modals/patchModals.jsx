@@ -8,6 +8,8 @@ import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import ensureOnce from '@/helpers/ensureOnce'
 import { directChild } from '@/helpers/transition'
+import { css } from '@/modules/Style'
+import { DiscordSelectors } from '@/modules/DiscordSelectors'
 
 function patchModals () {
   const once = ensureOnce()
@@ -53,3 +55,9 @@ function patchModals () {
 }
 
 export default patchModals
+
+css
+`${DiscordSelectors.Modal.focusLock}:is(:has(> [data-animation-type]), :has(> [data-animation])) {
+    position: relative;
+}`
+`Modals`

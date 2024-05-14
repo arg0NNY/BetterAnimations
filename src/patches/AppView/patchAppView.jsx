@@ -13,7 +13,8 @@ import { clearContainingStyles, passAnimations } from '@/helpers/transition'
 import ModuleKey from '@/enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
+import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
+import { css } from '@/modules/Style'
 
 // TODO: Restructurize "patches" folder, make it so each folder represents a module, not a component that it patches
 
@@ -96,3 +97,17 @@ function patchAppView () {
 }
 
 export default patchAppView
+
+css
+`${DiscordSelectors.AppView.container} {
+    overflow: clip; /* Fix whole app jumping with sidebar animations */
+}
+${DiscordSelectors.AppView.base} {
+    min-width: 0;
+    min-height: 0;
+    overflow: visible;
+}
+${DiscordSelectors.AppView.content}:has(> [data-animation-type]) {
+    position: relative;
+}`
+`AppView (Servers, Channels)`

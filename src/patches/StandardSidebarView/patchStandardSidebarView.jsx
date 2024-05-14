@@ -6,7 +6,8 @@ import { clearContainingStyles, passAnimations } from '@/helpers/transition'
 import useDirection from '@/hooks/useDirection'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
+import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
+import { css } from '@/modules/Style'
 
 async function patchStandardSidebarView () {
   Patcher.after((await StandardSidebarViewWrapper).default.prototype, 'render', (self, args, value) => {
@@ -56,3 +57,11 @@ async function patchStandardSidebarView () {
 }
 
 export default patchStandardSidebarView
+
+StandardSidebarView.then(() =>
+css
+`${DiscordSelectors.StandardSidebarView.contentRegion} > ${DiscordSelectors.StandardSidebarView.contentRegion} {
+    height: 100%;
+}`
+`StandardSidebarView (Settings)`
+)

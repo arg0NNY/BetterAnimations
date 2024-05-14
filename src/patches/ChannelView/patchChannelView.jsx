@@ -10,7 +10,8 @@ import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import patchChatSidebar from '@/patches/ChannelView/patchChatSidebar'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
+import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
+import { css } from '@/modules/Style'
 
 function patchChannelView () {
   const once = ensureOnce()
@@ -70,3 +71,13 @@ function patchChannelView () {
 }
 
 export default patchChannelView
+
+css
+`${DiscordSelectors.ChannelView.chat} {
+    overflow: clip;
+    isolation: isolate;
+}
+${DiscordSelectors.ChatSidebar.chatLayerWrapper} {
+    background-color: var(--background-tertiary) !important;
+}`
+`ChannelView (Sidebars)`

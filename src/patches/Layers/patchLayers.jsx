@@ -4,10 +4,11 @@ import ensureOnce from '@/helpers/ensureOnce'
 import PassThrough from '@/components/PassThrough'
 import AnimeTransition from '@/components/AnimeTransition'
 import { clearContainingStyles, passAnimations } from '@/helpers/transition'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
+import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
+import { css } from '@/modules/Style'
 
 function LayerContainer ({ baseLayer, children }) {
   return (
@@ -71,3 +72,12 @@ function patchLayers () {
 }
 
 export default patchLayers
+
+css
+`.platform-win ${DiscordSelectors.Layers.layer} {
+    top: -22px !important;
+}
+${DiscordSelectors.Layers.layers} > ${DiscordSelectors.Layers.layer} {
+    contain: strict;
+}`
+`Layers`

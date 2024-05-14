@@ -7,6 +7,8 @@ import ChannelStackStore from '@/patches/ListThin/ChannelStackStore'
 import PassThrough from '@/components/PassThrough'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
+import { css } from '@/modules/Style'
+import { DiscordSelectors } from '@/modules/DiscordSelectors'
 
 function patchListThin () {
   Patcher.after(ListThin, 'render', (self, [props], value) => {
@@ -78,3 +80,10 @@ function patchListThin () {
 }
 
 export default patchListThin
+
+css
+`${DiscordSelectors.ChannelItem.containerDefault}, ${DiscordSelectors.ChannelItem.containerDragBefore},
+${DiscordSelectors.ChannelItem.containerUserOver}, ${DiscordSelectors.ChannelItem.containerDragAfter} {
+    transition: none;
+}`
+`ListThin (Channel List)`

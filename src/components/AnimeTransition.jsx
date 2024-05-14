@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 import { Freeze } from 'react-freeze'
 import AnimationType from '@/enums/AnimationType'
+import { css } from '@/modules/Style'
 
 export function AnimeContainer ({ container, children }) {
   if (!container) return children
@@ -159,3 +160,29 @@ class AnimeTransition extends React.Component {
 }
 
 export default AnimeTransition
+
+css
+`[data-animation-container][data-animation-type] { /* Container while animation is running */
+    position: relative;
+    background: none;
+}
+
+[data-animation] > * {
+    position: absolute;
+}
+
+[data-animation-type="exit"] {
+    pointer-events: none;
+}
+
+[data-animation-container][data-animation-switch] { /* Temporary while overflow is not a setting */
+    overflow: clip;
+}
+[data-animation-container][data-animation-switch] > :not([data-animation]) { /* Animating switch element */
+    contain: layout;
+}
+[data-animation-container][data-animation-switch][data-animation-type="exit"] { /* Exiting switch container */
+    position: absolute !important;
+    inset: 0;
+}`
+`AnimeTransition`
