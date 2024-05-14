@@ -74,7 +74,6 @@ class AnimeTransition extends React.Component {
           if (assets.node) node.before(assets.node)
 
           requestAnimationFrame(() => {
-            const styleSnapshot = node.getAttribute('style')
             const { finished, pause } = assets.execute()
 
             container.setAttribute('data-animation-type', type)
@@ -84,7 +83,6 @@ class AnimeTransition extends React.Component {
               pause()
               this.finish(() => {
                 assets.node?.remove()
-                if (type === AnimationType.Exit) node.setAttribute('style', styleSnapshot)
               })
 
               if (options.type !== 'switch' || type !== AnimationType.Exit || !unmountOnExit)
