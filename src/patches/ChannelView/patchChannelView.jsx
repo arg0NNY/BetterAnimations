@@ -27,7 +27,7 @@ function patchChannelView () {
             const module = Modules.getModule(ModuleKey.MembersSidebar)
             if (!module.isEnabled()) return value
 
-            const modifier = type => ({ container }) => animate(type, container)
+            const modifier = type => context => animate(type, context)
 
             return (
               <SwitchTransition>

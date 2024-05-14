@@ -74,27 +74,20 @@ export function buildAnimateAssets (data = null, context = {}, options = {}) {
             : anime(transformAnimeConfig(a, wrapper))
         )
       )
-      const pause = () => instances.forEach(i => i.pause())
-      const finished = () => Promise.all(instances.map(i => i.finished))
+      const pauseAll = () => instances.forEach(i => i.pause())
+      const finishedAll = () => Promise.all(instances.map(i => i.finished))
 
       if (before && context.type === AnimationType.Enter) {
-        pause()
+        pauseAll()
         const instance = before(context)
         instance.finished.then(() => instances.slice(1).forEach(i => i.play()))
         instances.unshift(instance)
       }
 
-      if (after && context.type === AnimationType.Exit) {
-        const instance = after(context)
-        instance.pause()
-        finished().then(() => instance.play())
-        instances.push(instance)
-      }
-
       return {
-        instances,
-        finished: finished(),
-        pause
+        pause: pauseAll,
+        finished: finishedAll()
+          .then(() => after && context.type === AnimationType.Exit && after(context).finished)
       }
     }
   }

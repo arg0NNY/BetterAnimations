@@ -2,9 +2,7 @@ import AnimeTransition from '@/components/AnimeTransition'
 import animate from '@/patches/ChannelView/helpers/animate'
 
 function ThreadSidebarTransition (props) {
-  const modifier = type => ({ container }) => {
-    return animate(type, container)
-  }
+  const modifier = type => context => animate(type, context)
 
   return (
     <AnimeTransition

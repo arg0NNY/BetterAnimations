@@ -2,7 +2,7 @@ import anime from 'animejs'
 import Modules from '@/modules/Modules'
 import ModuleKey from '@/enums/ModuleKey'
 
-const animate = (type, node, width = node.clientWidth) => {
+const animate = (type, { container: node }, width = node.clientWidth) => {
   const { duration, easing } = Modules.getModule(ModuleKey.ThreadSidebar).getGeneralSettings()
 
   return anime({

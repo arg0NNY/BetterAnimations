@@ -62,4 +62,4 @@ export const StyleRemovePropertiesInjectSchema = ({ type, element }) => InjectSc
   element: z.instanceof(HTMLElement).optional().default(element),
   properties: z.array(z.string())
 }).transform(({ element, properties }) =>
-  () => type === 'enter' && properties.forEach(p => element.style.removeProperty(p))) // TODO: Remove enter check if AnimeTransition rework fixes element flashing before disappearing from DOM
+  () => type === AnimationType.Enter && properties.forEach(p => element.style.removeProperty(p)))
