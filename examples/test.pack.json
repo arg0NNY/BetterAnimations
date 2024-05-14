@@ -55,7 +55,8 @@
             "inset": 0,
             "z-index": 20
           },
-          "{node}": {
+          "{element}": {
+            "position": "relative",
             "z-index": 20
           },
           ".el:nth-child(odd)": {
@@ -69,13 +70,17 @@
           {
             "inject": "Object.assign",
             "target": {
-              "targets": [".el", { "inject": "node" }],
+              "targets": [".el", { "inject": "element" }],
               "delay": {
                 "inject": "anime.stagger",
                 "value": 80
               },
               "duration": { "inject": "duration" },
-              "easing": { "inject": "easing" }
+              "easing": { "inject": "easing" },
+              "complete": {
+                "inject": "style.removeProperties",
+                "properties": ["opacity", "transform"]
+              }
             },
             "source": {
               "inject": "direction",
@@ -93,7 +98,7 @@
         "anime": {
           "inject": "Object.assign",
           "target": {
-            "targets": { "inject": "node" },
+            "targets": { "inject": "element" },
             "duration": {
               "inject": "math",
               "expression": {
@@ -129,15 +134,23 @@
         "direction": ["forwards", "backwards"],
 
         "defaults": {
-          "position": "center",
-          "duration": 200,
-          "easing": "easeOutBack",
-          "direction": "backwards"
+          "enter": {
+            "position": "center",
+            "duration": 200,
+            "easing": "easeOutBack",
+            "direction": "backwards"
+          },
+          "exit": {
+            "position": "center",
+            "duration": 200,
+            "easing": "easeOutBack",
+            "direction": "forwards"
+          }
         }
       },
       "animate": {
         "css": {
-          "{node}": {
+          "{element}": {
             "transform-origin": { "inject": "position" },
             "z-index": {
               "inject": "type",
@@ -149,20 +162,22 @@
         "anime": {
           "inject": "Object.assign",
           "target": {
-            "targets": { "inject": "node" },
+            "targets": { "inject": "element" },
             "duration": { "inject": "duration" },
-            "easing": { "inject": "easing" }
+            "easing": { "inject": "easing" },
+            "complete": {
+              "inject": "style.removeProperties",
+              "properties": ["opacity", "transform"]
+            }
           },
           "source": [
             {
               "inject": "type",
               "enter": {
-                "opacity": [0, 1],
-                "scale": [0.9, 1]
+                "opacity": [0, 1]
               },
               "exit": {
-                "opacity": 0,
-                "scale": 0.9
+                "opacity": 0
               }
             },
             {

@@ -8,15 +8,23 @@
     "direction": ["forwards", "backwards"],
 
     "defaults": {
-      "position": "center",
-      "duration": 200,
-      "easing": "easeOutBack",
-      "direction": "backwards"
+      "enter": {
+        "position": "center",
+        "duration": 200,
+        "easing": "easeOutBack",
+        "direction": "backwards"
+      },
+      "exit": {
+        "position": "center",
+        "duration": 200,
+        "easing": "easeOutBack",
+        "direction": "forwards"
+      }
     }
   },
   "animate": {
     "css": {
-      "{node}": {
+      "{element}": {
         "transform-origin": { "inject": "position" },
         "z-index": {
           "inject": "type",
@@ -28,20 +36,22 @@
     "anime": {
       "inject": "Object.assign",
       "target": {
-        "targets": { "inject": "node" },
+        "targets": { "inject": "element" },
         "duration": { "inject": "duration" },
-        "easing": { "inject": "easing" }
+        "easing": { "inject": "easing" },
+        "complete": {
+          "inject": "style.removeProperties",
+          "properties": ["opacity", "transform"]
+        }
       },
       "source": [
         {
           "inject": "type",
           "enter": {
-            "opacity": [0, 1],
-            "scale": [0.9, 1]
+            "opacity": [0, 1]
           },
           "exit": {
-            "opacity": 0,
-            "scale": 0.9
+            "opacity": 0
           }
         },
         {
