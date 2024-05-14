@@ -7,7 +7,7 @@ Gets precompiled before the animation starts.
 
 ---
 
-## `node`
+## `node` _(renamed to `element`)_
 - **Allowed inside:** [`anime`](AnimateOptions.md#anime)
 
 **Parameters:**

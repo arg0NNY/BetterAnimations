@@ -15,7 +15,7 @@ export function parseAnimationData (data) {
 /**
  * @param data
  * @param context {{
- *     node,
+ *     element,
  *     type,
  *     variant,
  *     duration,
@@ -54,7 +54,7 @@ export function buildAnimateAssets (data = null, context = {}, options = {}) {
       style = document.createElement('style')
       style.appendChild(document.createTextNode(
         buildCSS(data.css, s => {
-          if (s === '{node}') return `${parent} + *`
+          if (s === '{element}') return `${parent} + *`
           if (s === '{container}') return `[data-animation-container]:has(> ${parent})`
           return `${parent} :is(${s})`
         })

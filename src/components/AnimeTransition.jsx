@@ -62,7 +62,7 @@ class AnimeTransition extends React.Component {
               animationData?.settings ?? {},
               {
                 container,
-                node,
+                element: node,
                 type,
                 settings: animation.settings
               }

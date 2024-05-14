@@ -3,7 +3,7 @@ import { formatValuesList, Literal } from '@/helpers/schemas'
 import Inject from '@/enums/Inject'
 import {
   MathInjectSchema,
-  NodeInjectSchema,
+  ElementInjectSchema,
   ObjectAssignInjectSchema,
   StringTemplateSchema,
   TypeInjectSchema,
@@ -23,7 +23,7 @@ import {
 } from '@/modules/animation/schemas/injects/settings'
 
 const injectSchemas = {
-  [Inject.Node]: NodeInjectSchema,
+  [Inject.Element]: ElementInjectSchema,
   [Inject.AnimeStagger]: AnimeStaggerInjectSchema,
   [Inject.AnimeTimeline]: AnimeTimelineInjectSchema,
   [Inject.Duration]: DurationInjectSchema,
@@ -59,7 +59,7 @@ const InjectableSchema = (context, { allowed, disallowed } = {}) => {
 
       const schema = injectSchemas[value.inject]
       if (!schema) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Unknown inject type '${value.inject}'. Available injects: ${formatValuesList(Object.keys(injectSchemas))}` })
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Unknown inject '${value.inject}'. Available injects: ${formatValuesList(Object.keys(injectSchemas))}` })
         return z.NEVER
       }
 

@@ -1,7 +1,7 @@
 import Enum from '@/enums/Enum'
 
 export default Enum({
-  Node: 'node',
+  Element: 'element',
   AnimeStagger: 'anime.stagger',
   AnimeTimeline: 'anime.timeline',
   Duration: 'duration',

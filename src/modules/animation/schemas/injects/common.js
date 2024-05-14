@@ -5,19 +5,19 @@ import evaluate from '@emmetio/math-expression'
 import Inject from '@/enums/Inject'
 import AnimationType from '@/enums/AnimationType'
 
-export const NodeInjectSchema = ({ node }) => InjectSchema(Inject.Node)
+export const ElementInjectSchema = ({ element }) => InjectSchema(Inject.Element)
   .extend({
     querySelector: z.string().optional(),
     querySelectorAll: z.string().optional()
   })
   .transform((params, ctx) => {
     if ('querySelector' in params && 'querySelectorAll' in params) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject type '${Inject.Node}' can't have both 'querySelector' and 'querySelectorAll' defined in pair` })
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject type '${Inject.Element}' can't have both 'querySelector' and 'querySelectorAll' defined in pair` })
       return z.NEVER
     }
-    if (params.querySelectorAll) return node.querySelectorAll(params.querySelectorAll)
-    if (params.querySelector) return node.querySelector(params.querySelector)
-    return node
+    if (params.querySelectorAll) return element.querySelectorAll(params.querySelectorAll)
+    if (params.querySelector) return element.querySelector(params.querySelector)
+    return element
   })
 
 export const TypeInjectSchema = ({ type }) => InjectSchema(Inject.Type)
@@ -32,7 +32,7 @@ export const ObjectAssignInjectSchema = InjectSchema(Inject.ObjectAssign).extend
 export const WaitInjectSchema = InjectSchema(Inject.Wait).extend({
   duration: z.number().positive()
 }).transform(params => ({
-  targets: { inject: 'node' },
+  targets: { inject: 'element' },
   translateY: [0, 0],
   duration: params.duration
 })) // TODO: https://github.com/juliangarnier/anime/wiki/What's-new-in-Anime.js-V4#-timers
