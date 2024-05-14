@@ -1,4 +1,4 @@
-import config from '@/config.json'
+import meta from '@/meta'
 
 /**
  * List of logging types.
@@ -25,7 +25,7 @@ export default class Logger {
    * @param {Error} error - Error object to log with the message.
    */
   static stacktrace(module, message, error) {
-    console.error(`%c[${config.name}] %c[${module}]%c ${message}\n\n%c`, "color: #3E82E5; font-weight: 700;", "color: #3a71c1; font-weight: 700;", "color: red; font-weight: 700;", "color: red;", error);
+    console.error(`%c[${meta.name}] %c[${module}]%c ${message}\n\n%c`, "color: #3E82E5; font-weight: 700;", "color: #3a71c1; font-weight: 700;", "color: red; font-weight: 700;", "color: red;", error);
   }
 
   /**
@@ -85,7 +85,7 @@ export default class Logger {
   static _log(module, message, type = "log") {
     type = Logger.parseType(type);
     if (!Array.isArray(message)) message = [message];
-    console[type](`%c[${config.name}]%c [${module}]%c`, "color: #3E82E5; font-weight: 700;", "color: #3a71c1;", "", ...message);
+    console[type](`%c[${meta.name}]%c [${module}]%c`, "color: #3E82E5; font-weight: 700;", "color: #3a71c1;", "", ...message);
   }
 
   static parseType(type) {

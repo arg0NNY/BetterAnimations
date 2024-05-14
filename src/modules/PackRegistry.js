@@ -6,9 +6,9 @@ import Emitter from '@/modules/Emitter'
 import Events from '@/enums/Events'
 import PackManager from '@/modules/PackManager'
 import semverGt from 'semver/functions/gt'
-import config from '@/config.json'
 import Notices from '@/modules/Notices'
 import Settings from '@/modules/Settings'
+import meta from '@/meta'
 
 export default new class PackRegistry {
   get name () { return 'PackRegistry' }
@@ -103,7 +103,7 @@ export default new class PackRegistry {
     Logger.info(this.name, `Found ${updatesCount} updates.`)
     if (useToasts) return Toasts.info(`Found updates for ${updatesCount} of your packs!`)
 
-    const closeNotice = Notices.info(`${config.name} has found updates for ${updatesCount} of your packs!`, {
+    const closeNotice = Notices.info(`${meta.name} has found updates for ${updatesCount} of your packs!`, {
       buttons: [{
         label: 'View Library',
         onClick: () => {

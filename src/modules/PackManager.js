@@ -1,18 +1,18 @@
 import AddonManager from '@/modules/AddonManager'
 import { path } from '@/modules/Node'
 import { Plugins } from '@/BdApi'
-import config from '@/config.json'
 import Logger from '@/modules/Logger'
 import AddonError from '@/structs/AddonError'
 import PackSchema from '@/modules/animation/schemas/PackSchema'
 import { z } from 'zod'
 import { fromZodError } from 'zod-validation-error'
+import meta from '@/meta'
 
 export default new class PackManager extends AddonManager {
   get name () {return 'PackManager'}
   get extension () {return '.pack.json'}
   get duplicatePattern () {return /\.pack\s?\([0-9]+\)\.json/}
-  get addonFolder () {return path.resolve(Plugins.folder, config.name)}
+  get addonFolder () {return path.resolve(Plugins.folder, meta.name)}
   get prefix () {return 'pack'}
   get language () {return 'json'}
 

@@ -1,8 +1,8 @@
 import { App, Common, ModalActions } from '@/modules/DiscordModules'
-import config from '@/config.json'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import Enum from '@/enums/Enum'
 import Data from '@/modules/Data'
+import meta from '@/meta'
 
 export default new class Prompt {
   Types = Enum({
@@ -51,7 +51,7 @@ export default new class Prompt {
       ModalActions.openModal(props => (
         <Common.ConfirmModal
           {...props}
-          header={config.name}
+          header={meta.name}
           cancelText="Cancel"
           confirmText="Enable"
           onCancel={() => resolve(true)}
