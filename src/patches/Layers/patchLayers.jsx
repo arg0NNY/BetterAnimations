@@ -3,7 +3,7 @@ import { Layers, TransitionGroup } from '@/modules/DiscordModules'
 import ensureOnce from '@/helpers/ensureOnce'
 import PassThrough from '@/components/PassThrough'
 import AnimeTransition from '@/components/AnimeTransition'
-import { clearContainingStyles, passAnimations } from '@/helpers/transition'
+import { passAnimations } from '@/helpers/transition'
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
@@ -54,7 +54,6 @@ function patchLayers () {
                         mountOnEnter={false}
                         unmountOnExit={false}
                         options={{ type: 'switch' }}
-                        onEntered={clearContainingStyles}
                       >
                         {layer}
                       </AnimeTransition>

@@ -2,7 +2,7 @@ import { Patcher } from '@/BdApi'
 import { StandardSidebarView, StandardSidebarViewWrapper, TransitionGroup } from '@/modules/DiscordModules'
 import findInReactTree from '@/helpers/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
-import { clearContainingStyles, passAnimations } from '@/helpers/transition'
+import { passAnimations } from '@/helpers/transition'
 import useDirection from '@/hooks/useDirection'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
@@ -47,7 +47,6 @@ async function patchStandardSidebarView () {
           freeze={true}
           animations={animations}
           options={{ type: 'switch'  }}
-          onEntered={clearContainingStyles}
         >
           {contentRegion}
         </AnimeTransition>

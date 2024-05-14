@@ -45,5 +45,14 @@
       { "note": "source can also be a single object" },
       {}
     ]
+  },
+  {
+    "inject": "style.removeProperties",
+    "element": "element to remove style properties from (animating element by default)",
+    "properties": [
+      "margin-left",
+      "transform",
+      "..."
+    ]
   }
 ]

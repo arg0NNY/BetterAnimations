@@ -1,7 +1,6 @@
 import { Patcher, React, ReactDOM } from '@/BdApi'
 import { BasePopoutModule, TransitionGroup } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
-import { clearContainingStyles } from '@/helpers/transition'
 import patchPopoutCSSAnimator from '@/patches/BasePopout/patchPopoutCSSAnimator'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
@@ -46,7 +45,6 @@ class AnimatedBasePopout extends BasePopoutModule.BasePopout {
             key={+this.state.isLoading}
             targetContainer={e => e}
             animations={animations}
-            onEntered={clearContainingStyles}
           >
             {value}
           </AnimeTransition>

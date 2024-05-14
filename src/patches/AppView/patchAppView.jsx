@@ -9,7 +9,7 @@ import {
   shouldSwitchBase,
   shouldSwitchContent
 } from '@/helpers/locations'
-import { clearContainingStyles, passAnimations } from '@/helpers/transition'
+import { passAnimations } from '@/helpers/transition'
 import ModuleKey from '@/enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
@@ -34,7 +34,6 @@ function BaseView ({ children }) {
         freeze={true}
         animations={animations}
         options={{ type: 'switch' }}
-        onEntered={clearContainingStyles}
       >
         <div className={DiscordClasses.AppView.base}> {/* TODO: Make this a custom class, unified container. `base_XXX` inside `base_XXX` is screwing up the BD notices. Do the same for `content_XXX` below. */}
           {children}
@@ -64,7 +63,6 @@ function ContentView ({ children }) {
         freeze={true}
         animations={animations}
         options={{ type: 'switch' }}
-        onEntered={clearContainingStyles}
       >
         <div className={DiscordClasses.AppView.content}>
           <Router.Switch location={location}>

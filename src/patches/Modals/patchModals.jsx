@@ -57,7 +57,7 @@ function patchModals () {
 export default patchModals
 
 css
-`${DiscordSelectors.Modal.focusLock}:is(:has(> [data-animation-type]), :has(> [data-animation])) {
-    position: relative;
+`${DiscordSelectors.Modal.root}, .bd-modal-root {
+    isolation: isolate;
 }`
 `Modals`

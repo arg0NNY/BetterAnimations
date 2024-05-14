@@ -1,7 +1,6 @@
 import { Patcher } from '@/BdApi'
 import { appLayerContext, Layer, MenuSubmenuItem, MenuSubmenuListItem } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
-import { clearContainingStyles } from '@/helpers/transition'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import { animationOptions } from '@/patches/ContextMenu/patchContextMenu'
@@ -19,7 +18,6 @@ function patchContextSubmenu () {
         in={props.isFocused}
         targetContainer={e => e}
         animations={module.getAnimations(animationOptions)}
-        onEntered={clearContainingStyles}
       >
         <Layer layerContext={appLayerContext}>
           {value.props.children[i]}

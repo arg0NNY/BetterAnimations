@@ -2,7 +2,7 @@ import { Patcher, React } from '@/BdApi'
 import { ChannelMessageList, TransitionGroup, useStateFromStores } from '@/modules/DiscordModules'
 import findInReactTree from '@/helpers/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
-import { clearContainingStyles, heightModifier } from '@/helpers/transition'
+import { heightModifier } from '@/helpers/transition'
 import ensureOnce from '@/helpers/ensureOnce'
 import { getMessageKey } from '@/patches/ChannelMessageList/helpers'
 import MessageStackStore from '@/patches/ChannelMessageList/MessageStackStore'
@@ -52,7 +52,6 @@ function patchChannelMessageList () {
                     exit={false} // Managed in childFactory
                     animations={animations}
                     options={heightModifier({ duration: 250 })}
-                    onEntered={clearContainingStyles}
                   >
                     {item}
                   </AnimeTransition>

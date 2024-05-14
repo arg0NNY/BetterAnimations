@@ -1,7 +1,6 @@
 import { Patcher } from '@/BdApi'
 import { ContextMenu, TransitionGroup } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
-import { clearContainingStyles } from '@/helpers/transition'
 import patchContextSubmenu from '@/patches/ContextMenu/patchContextSubmenu'
 import ensureOnce from '@/helpers/ensureOnce'
 import Position from '@/enums/Position'
@@ -33,7 +32,6 @@ function patchContextMenu () {
             targetContainer={e => e}
             exit={false}
             animations={module.getAnimations(animationOptions)}
-            onEntered={clearContainingStyles}
           >
             {value}
           </AnimeTransition>

@@ -57,3 +57,9 @@ export const MathInjectSchema = InjectSchema(Inject.Math).extend({
     return z.NEVER
   }
 })
+
+export const StyleRemovePropertiesInjectSchema = ({ type, element }) => InjectSchema(Inject.StyleRemoveProperties).extend({
+  element: z.instanceof(HTMLElement).optional().default(element),
+  properties: z.array(z.string())
+}).transform(({ element, properties }) =>
+  () => type === 'enter' && properties.forEach(p => element.style.removeProperty(p))) // TODO: Remove enter check if AnimeTransition rework fixes element flashing before disappearing from DOM

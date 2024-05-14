@@ -15,5 +15,6 @@ export default Enum({
   Wait: 'wait',
   StringTemplate: 'string.template',
   Math: 'math',
-  AnimeRandom: 'anime.random'
+  AnimeRandom: 'anime.random',
+  StyleRemoveProperties: 'style.removeProperties'
 })
