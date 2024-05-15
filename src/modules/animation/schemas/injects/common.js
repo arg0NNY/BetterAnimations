@@ -65,3 +65,5 @@ export const StyleRemovePropertyInjectSchema = ({ element }) => InjectSchema(Inj
   () => [].concat(element).forEach(
     e => [].concat(properties).forEach(p => e.style.removeProperty(p))
   ))
+
+export const UndefinedInjectSchema = InjectSchema(Inject.Undefined).transform(() => undefined)
