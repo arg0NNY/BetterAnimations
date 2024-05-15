@@ -55,3 +55,5 @@ export const MessageRequestSidebar = Webpack.getByStrings('MESSAGE_REQUESTS_BASE
 export const { SidebarType } = Webpack.getByKeys('SidebarType')
 export const useMessageRequestSidebarState = Webpack.getByKeys('useMessageRequestSidebarState')
 export const App = Webpack.getByKeys('setEnableHardwareAcceleration', 'releaseChannel')
+export const { default: Message } = Webpack.getByKeys('ThreadStarterChatMessage')
+export const MessageDivider = Webpack.getModule(m => Filters.byStrings('divider', 'unreadPill')(m?.render))

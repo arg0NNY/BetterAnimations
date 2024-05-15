@@ -1,0 +1,27 @@
+import { Patcher } from '@/BdApi'
+import { MessageDivider } from '@/modules/DiscordModules'
+import useModule from '@/hooks/useModule'
+import ModuleKey from '@/enums/ModuleKey'
+
+function patchMessageDivider() {
+  Patcher.after(MessageDivider, 'render', (self, [props], value) => {
+    // Transform message divider DOM tree to unified "container -> element" structure
+
+    const module = useModule(ModuleKey.Messages)
+    if (!module.isEnabled()) return
+
+    const { children, className, ...rest } = value.props
+    value.props = {
+      children,
+      className: className.replace(props.className, '')
+    }
+
+    return (
+      <div className={props.className} {...rest}>
+        {value}
+      </div>
+    )
+  })
+}
+
+export default patchMessageDivider

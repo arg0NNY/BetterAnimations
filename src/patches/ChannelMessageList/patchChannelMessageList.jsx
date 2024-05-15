@@ -8,6 +8,10 @@ import { getMessageKey } from '@/patches/ChannelMessageList/helpers'
 import MessageStackStore from '@/patches/ChannelMessageList/MessageStackStore'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
+import patchMessage from '@/patches/ChannelMessageList/patchMessage'
+import patchMessageDivider from '@/patches/ChannelMessageList/patchMessageDivider'
+import { css } from '@/modules/Style'
+import { DiscordSelectors } from '@/modules/DiscordSelectors'
 
 function patchChannelMessageList () {
   const once = ensureOnce()
@@ -47,7 +51,7 @@ function patchChannelMessageList () {
                 return (
                   <AnimeTransition
                     key={item.key}
-                    container={true}
+                    targetContainer={e => e}
                     enter={toEnter.has(message ? item.key : getMessageKey(arr[index + 1]?.props?.message))}
                     exit={false} // Managed in childFactory
                     animations={animations}
@@ -63,6 +67,15 @@ function patchChannelMessageList () {
       })
     )
   })
+
+  patchMessage()
+  patchMessageDivider()
 }
 
 export default patchChannelMessageList
+
+css
+`${DiscordSelectors.MessageList.divider} {
+    position: relative;
+}`
+`ChannelMessageList (Messages)`

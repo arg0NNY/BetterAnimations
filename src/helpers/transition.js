@@ -8,7 +8,9 @@ const _heightModifier = (type, { duration = 250 } = {}) => ({ container: node, e
   element.style.visibility = 'hidden'
   return anime({
     targets: node,
-    height: type === 'after' ? 0 : [0, element.clientHeight],
+    height: type === 'after' ? 0 : [0, anime.get(node, 'height')],
+    marginTop: type === 'after' ? 0 : [0, anime.get(node, 'marginTop')],
+    marginBottom: type === 'after' ? 0 : [0, anime.get(node, 'marginBottom')],
     easing: 'cubicBezier(0.42, 0, 0.58, 1.0)', // easeInOut
     duration,
     complete: type === 'after' ? undefined : () => {
