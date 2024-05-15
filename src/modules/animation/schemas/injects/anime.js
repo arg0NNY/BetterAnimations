@@ -1,4 +1,4 @@
-import { Defined } from '@/helpers/schemas'
+import { ArrayOrSingleSchema, Defined } from '@/helpers/schemas'
 import { InjectSchema } from '@/modules/animation/schemas/injects/InjectSchema'
 import anime from 'animejs'
 import { z } from 'zod'
@@ -31,3 +31,8 @@ export const AnimeRandomInjectSchema = InjectSchema(Inject.AnimeRandom).extend({
   min: z.number(),
   max: z.number()
 }).transform(params => anime.random(params.min, params.max))
+
+export const AnimeSetInjectSchema = ({ element }) => InjectSchema(Inject.AnimeSet).extend({
+  target: ArrayOrSingleSchema(z.instanceof(HTMLElement)).optional().default(element),
+  properties: z.record(z.any())
+}).transform(({ target, properties }) => () => anime.set(target, properties))

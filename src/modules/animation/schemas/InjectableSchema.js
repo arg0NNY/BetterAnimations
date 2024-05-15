@@ -14,6 +14,7 @@ import {
   FunctionInjectSchema
 } from '@/modules/animation/schemas/injects/common'
 import {
+  AnimeSetInjectSchema,
   AnimeRandomInjectSchema,
   AnimeStaggerInjectSchema,
   AnimeTimelineInjectSchema
@@ -31,6 +32,8 @@ const injectSchemas = {
   [Inject.Container]: ContainerInjectSchema,
   [Inject.AnimeStagger]: AnimeStaggerInjectSchema,
   [Inject.AnimeTimeline]: AnimeTimelineInjectSchema,
+  [Inject.AnimeRandom]: AnimeRandomInjectSchema,
+  [Inject.AnimeSet]: AnimeSetInjectSchema,
   [Inject.Duration]: DurationInjectSchema,
   [Inject.Easing]: EasingInjectSchema,
   [Inject.Variant]: VariantInjectSchema,
@@ -40,7 +43,6 @@ const injectSchemas = {
   [Inject.Wait]: WaitInjectSchema,
   [Inject.StringTemplate]: StringTemplateSchema,
   [Inject.Math]: MathInjectSchema,
-  [Inject.AnimeRandom]: AnimeRandomInjectSchema,
   [Inject.Direction]: DirectionInjectSchema,
   [Inject.StyleRemoveProperty]: StyleRemovePropertyInjectSchema,
   [Inject.Undefined]: UndefinedInjectSchema,

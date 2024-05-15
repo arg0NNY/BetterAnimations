@@ -5,6 +5,8 @@ export default Enum({
   Container: 'container',
   AnimeStagger: 'anime.stagger',
   AnimeTimeline: 'anime.timeline',
+  AnimeRandom: 'anime.random',
+  AnimeSet: 'anime.set',
   Duration: 'duration',
   Easing: 'easing',
   Variant: 'variant',
@@ -15,7 +17,6 @@ export default Enum({
   Wait: 'wait',
   StringTemplate: 'string.template',
   Math: 'math',
-  AnimeRandom: 'anime.random',
   StyleRemoveProperty: 'style.removeProperty',
   Undefined: 'undefined',
   Function: 'function'
