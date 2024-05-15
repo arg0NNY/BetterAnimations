@@ -15,7 +15,7 @@ export const ElementInjectSchema = ({ element }) => InjectSchema(Inject.Element)
       ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject type '${Inject.Element}' can't have both 'querySelector' and 'querySelectorAll' defined in pair` })
       return z.NEVER
     }
-    if (params.querySelectorAll) return element.querySelectorAll(params.querySelectorAll)
+    if (params.querySelectorAll) return Array.from(element.querySelectorAll(params.querySelectorAll))
     if (params.querySelector) return element.querySelector(params.querySelector)
     return element
   })

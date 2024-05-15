@@ -20,7 +20,7 @@ if such parameters were provided. Otherwise, it returns an animating element its
 
 > Providing both `querySelector` and `querySelectorAll` to a single inject will cause an error.
 
-**Returns:** `NodeList` if `querySelectorAll` was provided, otherwise `HTMLElement`
+**Returns:** `Array<HTMLElement>` if `querySelectorAll` was provided, otherwise `HTMLElement`
 
 **Example:**
 ```json
