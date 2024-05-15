@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { buildSwitchSchema } from '@/helpers/schemas'
+import { ArrayOrSingleSchema, buildSwitchSchema } from '@/helpers/schemas'
 import { InjectSchema } from '@/modules/animation/schemas/injects/InjectSchema'
 import evaluate from '@emmetio/math-expression'
 import Inject from '@/enums/Inject'
@@ -58,8 +58,10 @@ export const MathInjectSchema = InjectSchema(Inject.Math).extend({
   }
 })
 
-export const StyleRemovePropertiesInjectSchema = ({ type, element }) => InjectSchema(Inject.StyleRemoveProperties).extend({
-  element: z.instanceof(HTMLElement).optional().default(element),
-  properties: z.array(z.string())
+export const StyleRemovePropertyInjectSchema = ({ element }) => InjectSchema(Inject.StyleRemoveProperty).extend({
+  element: ArrayOrSingleSchema(z.instanceof(HTMLElement)).optional().default(element),
+  property: ArrayOrSingleSchema(z.string())
 }).transform(({ element, properties }) =>
-  () => type === AnimationType.Enter && properties.forEach(p => element.style.removeProperty(p)))
+  () => [].concat(element).forEach(
+    e => [].concat(properties).forEach(p => e.style.removeProperty(p))
+  ))

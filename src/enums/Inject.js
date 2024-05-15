@@ -16,5 +16,5 @@ export default Enum({
   StringTemplate: 'string.template',
   Math: 'math',
   AnimeRandom: 'anime.random',
-  StyleRemoveProperties: 'style.removeProperties'
+  StyleRemoveProperty: 'style.removeProperty'
 })
