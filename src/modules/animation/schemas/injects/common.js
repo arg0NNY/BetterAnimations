@@ -61,9 +61,17 @@ export const MathInjectSchema = InjectSchema(Inject.Math).extend({
 export const StyleRemovePropertyInjectSchema = ({ element }) => InjectSchema(Inject.StyleRemoveProperty).extend({
   element: ArrayOrSingleSchema(z.instanceof(HTMLElement)).optional().default(element),
   property: ArrayOrSingleSchema(z.string())
-}).transform(({ element, properties }) =>
+}).transform(({ element, property }) =>
   () => [].concat(element).forEach(
-    e => [].concat(properties).forEach(p => e.style.removeProperty(p))
+    e => [].concat(property).forEach(p => e.style.removeProperty(p))
   ))
 
 export const UndefinedInjectSchema = InjectSchema(Inject.Undefined).transform(() => undefined)
+
+export const FunctionInjectSchema = InjectSchema(Inject.Function).extend({
+  functions: z.array(z.function()).optional(),
+  'return': z.any().optional()
+}).transform(({ functions, 'return': returnValue }) => () => {
+  functions?.forEach(f => f())
+  return returnValue
+})

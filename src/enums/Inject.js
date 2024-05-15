@@ -17,5 +17,6 @@ export default Enum({
   Math: 'math',
   AnimeRandom: 'anime.random',
   StyleRemoveProperty: 'style.removeProperty',
-  Undefined: 'undefined'
+  Undefined: 'undefined',
+  Function: 'function'
 })

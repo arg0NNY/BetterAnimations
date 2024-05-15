@@ -10,7 +10,8 @@ import {
   TypeInjectSchema,
   WaitInjectSchema,
   StyleRemovePropertyInjectSchema,
-  UndefinedInjectSchema
+  UndefinedInjectSchema,
+  FunctionInjectSchema
 } from '@/modules/animation/schemas/injects/common'
 import {
   AnimeRandomInjectSchema,
@@ -42,7 +43,8 @@ const injectSchemas = {
   [Inject.AnimeRandom]: AnimeRandomInjectSchema,
   [Inject.Direction]: DirectionInjectSchema,
   [Inject.StyleRemoveProperty]: StyleRemovePropertyInjectSchema,
-  [Inject.Undefined]: UndefinedInjectSchema
+  [Inject.Undefined]: UndefinedInjectSchema,
+  [Inject.Function]: FunctionInjectSchema
 }
 const injectTypes = Object.keys(injectSchemas)
 
