@@ -6,8 +6,9 @@ import SettingsSchema from '@/modules/animation/schemas/SettingsSchema'
 import MetaSchema from '@/modules/animation/schemas/MetaSchema'
 
 const safeInjects = [
-  Inject.Variant,
+  Inject.Module,
   Inject.Type,
+  Inject.Variant,
   Inject.Position,
   Inject.Direction,
   Inject.ObjectAssign,

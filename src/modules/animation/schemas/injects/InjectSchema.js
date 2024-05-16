@@ -17,7 +17,7 @@ export function SwitchSchema (inject, valueList, options = {}) {
     if (setting) schema = schema.transform(hasInSettings(inject, !!context.settings?.[setting]))
 
     return schema.transform((params, ctx) => {
-      if (possibleValues)
+      if (get(possibleValues))
         values = values.filter(v => get(possibleValues).includes(v))
       else if (setting && context.settings[setting] !== true)
         values = values.filter(v => context.settings[setting].includes(v))

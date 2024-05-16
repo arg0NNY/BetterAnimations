@@ -13,6 +13,7 @@ export default Enum({
   Variant: 'variant',
   Position: 'position',
   Direction: 'direction',
+  Module: 'module',
   Type: 'type',
   ObjectAssign: 'Object.assign',
   Wait: 'wait',

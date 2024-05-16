@@ -11,7 +11,8 @@ import {
   WaitInjectSchema,
   StyleRemovePropertyInjectSchema,
   UndefinedInjectSchema,
-  FunctionInjectSchema
+  FunctionInjectSchema,
+  ModuleInjectSchema
 } from '@/modules/animation/schemas/injects/common'
 import {
   AnimeGetInjectSchema,
@@ -40,6 +41,7 @@ const injectSchemas = {
   [Inject.Easing]: EasingInjectSchema,
   [Inject.Variant]: VariantInjectSchema,
   [Inject.Position]: PositionInjectSchema,
+  [Inject.Module]: ModuleInjectSchema,
   [Inject.Type]: TypeInjectSchema,
   [Inject.ObjectAssign]: ObjectAssignInjectSchema,
   [Inject.Wait]: WaitInjectSchema,

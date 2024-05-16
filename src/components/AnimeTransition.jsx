@@ -65,7 +65,8 @@ class AnimeTransition extends React.Component {
                 element: node,
                 type,
                 module,
-                settings: animation.settings
+                settings: animation.settings,
+                meta: animation.meta
               }
             ),
             options

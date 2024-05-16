@@ -4,6 +4,7 @@ import { InjectSchema, SwitchSchema } from '@/modules/animation/schemas/injects/
 import evaluate from '@emmetio/math-expression'
 import Inject from '@/enums/Inject'
 import AnimationType from '@/enums/AnimationType'
+import ModuleKey from '@/enums/ModuleKey'
 
 export const ElementInjectSchema = ({ element }) => InjectSchema(Inject.Element)
   .extend({
@@ -22,6 +23,11 @@ export const ElementInjectSchema = ({ element }) => InjectSchema(Inject.Element)
 
 export const ContainerInjectSchema = ({ container }) => InjectSchema(Inject.Container)
   .transform(() => container)
+
+export const ModuleInjectSchema = SwitchSchema(Inject.Module, ModuleKey.values(), {
+  currentValue: ctx => ctx.module.id,
+  possibleValues: ctx => ctx.meta?.modules && Array.from(ctx.meta.modules)
+})
 
 export const TypeInjectSchema = SwitchSchema(Inject.Type, AnimationType.values(), { currentValue: ctx => ctx.type })
 
