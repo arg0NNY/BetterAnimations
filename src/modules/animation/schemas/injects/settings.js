@@ -1,6 +1,5 @@
-import { buildSwitchSchema, Defined, formatValuesList, hasInSettings } from '@/helpers/schemas'
-import { InjectSchema } from '@/modules/animation/schemas/injects/InjectSchema'
-import { z } from 'zod'
+import { hasInSettings } from '@/helpers/schemas'
+import { InjectSchema, SwitchSchema } from '@/modules/animation/schemas/injects/InjectSchema'
 import Position from '@/enums/Position'
 import Inject from '@/enums/Inject'
 import Setting from '@/enums/AnimationSetting'
@@ -14,38 +13,10 @@ export const EasingInjectSchema = ({ easing, settings }) => InjectSchema(Inject.
   .transform(hasInSettings(Inject.Easing, !!settings?.[Setting.Easing]))
   .transform(() => easing)
 
-function SwitchSchema (inject, setting, valueList, options = {}) {
-  const { defaultValue, preprocess, isEnum } = options
+export const VariantInjectSchema = SwitchSchema(Inject.Variant, ctx => ctx.settings?.[Setting.Variant]?.map(v => v.key) ?? [], { setting: Setting.Variant })
 
-  return context => {
-    let values = typeof valueList === 'function' ? valueList(context) : valueList
+export const PositionInjectSchema = SwitchSchema(Inject.Position, Position.values(), { defaultValue: Position.Center, setting: Setting.Position })
 
-    return InjectSchema(inject)
-      .extend(buildSwitchSchema(values, Defined.optional()))
-      .transform(hasInSettings(inject, !!context.settings?.[setting]))
-      .transform((params, ctx) => {
-        if (isEnum && context.settings[setting] !== true)
-          values = values.filter(v => context.settings[setting].includes(v))
-
-        let value = context[setting]
-        if (!values.includes(value)) value = defaultValue
-        if (preprocess) value = preprocess(value)
-
-        if (values.some(k => k in params))
-          if (values.every(k => k in params)) return params[value]
-          else {
-            ctx.addIssue({ code: z.ZodIssueCode.custom, message: `All of the possible values must be defined in the '${inject}' inject when using switch mode. Missing keys: ${formatValuesList(values.filter(k => !(k in params)))}` })
-            return z.NEVER
-          }
-        else return value
-      })
-  }
-}
-
-export const VariantInjectSchema = SwitchSchema(Inject.Variant, Setting.Variant, ctx => ctx.settings?.[Setting.Variant]?.map(v => v.key))
-
-export const PositionInjectSchema = SwitchSchema(Inject.Position, Setting.Position, Position.values(), { defaultValue: Position.Center, isEnum: true })
-
-export const DirectionInjectSchema = SwitchSchema(Inject.Direction, Setting.Direction, Direction.values(), { defaultValue: Direction.Right, isEnum: true })
+export const DirectionInjectSchema = SwitchSchema(Inject.Direction, Direction.values(), { defaultValue: Direction.Right, setting: Setting.Direction })
 
 // TODO: Add custom settings for animations

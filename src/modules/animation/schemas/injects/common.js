@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { ArrayOrSingleSchema, buildSwitchSchema } from '@/helpers/schemas'
-import { InjectSchema } from '@/modules/animation/schemas/injects/InjectSchema'
+import { InjectSchema, SwitchSchema } from '@/modules/animation/schemas/injects/InjectSchema'
 import evaluate from '@emmetio/math-expression'
 import Inject from '@/enums/Inject'
 import AnimationType from '@/enums/AnimationType'
@@ -23,9 +23,7 @@ export const ElementInjectSchema = ({ element }) => InjectSchema(Inject.Element)
 export const ContainerInjectSchema = ({ container }) => InjectSchema(Inject.Container)
   .transform(() => container)
 
-export const TypeInjectSchema = ({ type }) => InjectSchema(Inject.Type)
-  .extend(buildSwitchSchema(AnimationType.values()))
-  .transform(params => params[type])
+export const TypeInjectSchema = SwitchSchema(Inject.Type, AnimationType.values(), { currentValue: ctx => ctx.type })
 
 export const ObjectAssignInjectSchema = InjectSchema(Inject.ObjectAssign).extend({
   target: z.record(z.any()),
