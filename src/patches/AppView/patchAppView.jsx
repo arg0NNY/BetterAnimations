@@ -32,8 +32,8 @@ function BaseView ({ children }) {
         key={key}
         container={{ className: DiscordClasses.AppView.base }}
         freeze={true}
+        module={module}
         animations={animations}
-        options={{ type: 'switch' }}
       >
         <div className={DiscordClasses.AppView.base}> {/* TODO: Make this a custom class, unified container. `base_XXX` inside `base_XXX` is screwing up the BD notices. Do the same for `content_XXX` below. */}
           {children}
@@ -61,8 +61,8 @@ function ContentView ({ children }) {
         key={key}
         container={{ className: DiscordClasses.AppView.content }}
         freeze={true}
+        module={module}
         animations={animations}
-        options={{ type: 'switch' }}
       >
         <div className={DiscordClasses.AppView.content}>
           <Router.Switch location={location}>

@@ -47,13 +47,13 @@ function patchLayers () {
                   <PassThrough>
                     {props => (
                       <AnimeTransition
+                        module={module}
                         animations={animations}
                         {...props}
                         in={layer.props.mode === 'SHOWN' && props.in}
                         key={layer.key}
                         mountOnEnter={false}
                         unmountOnExit={false}
-                        options={{ type: 'switch' }}
                       >
                         {layer}
                       </AnimeTransition>

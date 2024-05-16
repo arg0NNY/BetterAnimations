@@ -3,6 +3,7 @@ import AnimationSetting from '@/enums/AnimationSetting'
 import Axis from '@/enums/Axis'
 import Direction from '@/enums/Direction'
 import Position from '@/enums/Position'
+import ModuleType from '@/enums/ModuleType'
 
 export const moduleAliases = {
   [ModuleKeyAlias.Switch]: [
@@ -30,6 +31,7 @@ const modules = [
     id: ModuleKey.Servers,
     name: 'Servers',
     meta: {
+      type: ModuleType.Switch,
       settings: {
         supportsAuto: {
           [AnimationSetting.Direction]: true
@@ -44,6 +46,7 @@ const modules = [
     id: ModuleKey.Channels,
     name: 'Channels',
     meta: {
+      type: ModuleType.Switch,
       settings: {
         supportsAuto: {
           [AnimationSetting.Direction]: true
@@ -58,6 +61,7 @@ const modules = [
     id: ModuleKey.Settings,
     name: 'Settings',
     meta: {
+      type: ModuleType.Switch,
       settings: {
         supportsAuto: {
           [AnimationSetting.Direction]: true
@@ -139,6 +143,7 @@ const modules = [
     id: ModuleKey.Layers,
     name: 'Layers',
     meta: {
+      type: ModuleType.Switch,
       settings: {
         supportsAuto: {
           [AnimationSetting.Direction]: true

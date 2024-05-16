@@ -37,6 +37,7 @@ function patchModals () {
                   unmountOnExit={false}
                   targetContainer={directChild}
                   // targetNode={node => node?.querySelector(`${DiscordSelectors.Modal.root}, .bd-modal-root`)}
+                  module={module}
                   animations={animations}
                   enter={!modal.props.instant}
                   exit={!modal.props.instant}

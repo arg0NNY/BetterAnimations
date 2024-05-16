@@ -17,6 +17,7 @@ function patchContextSubmenu () {
       <AnimeTransition
         in={props.isFocused}
         targetContainer={e => e}
+        module={module}
         animations={module.getAnimations(animationOptions)}
       >
         <Layer layerContext={appLayerContext}>

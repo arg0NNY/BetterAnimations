@@ -40,7 +40,7 @@ function patchMessageRequestsRoute (route) {
           const children = value.props.children
           children[1] = (
             <SwitchTransition>
-              <ThreadSidebarTransition key={state?.channelId ?? 'none'} animations={animations}>
+              <ThreadSidebarTransition key={state?.channelId ?? 'none'} module={module} animations={animations}>
                 {
                   state && state.type === SidebarType.VIEW_MESSAGE_REQUEST && channel && channel.isPrivate() &&
                   <MessageRequestSidebarContext.Provider value={state}>

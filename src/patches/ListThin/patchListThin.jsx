@@ -58,6 +58,7 @@ function patchListThin () {
                 targetContainer={e => e}
                 enter={shouldAnimate(item)}
                 exit={false} // Managed in childFactory
+                module={module}
                 animations={animations}
                 options={heightModifier()}
                 items={items}

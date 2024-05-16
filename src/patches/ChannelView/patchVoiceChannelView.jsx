@@ -28,7 +28,7 @@ function patchVoiceChannelView () {
           <TransitionGroup component={null}>
             {
               chatWrapper.children &&
-              <ThreadSidebarTransition animations={module.getAnimations()}>
+              <ThreadSidebarTransition module={module} animations={module.getAnimations()}>
                 {chatWrapper.children}
               </ThreadSidebarTransition>
             }

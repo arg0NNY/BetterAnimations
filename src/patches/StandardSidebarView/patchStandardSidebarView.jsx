@@ -18,6 +18,10 @@ async function patchStandardSidebarView () {
   })
 
   Patcher.after(await StandardSidebarView, 'default', (self, [props], value) => {
+    const direction = useDirection(props.sections, props.section)
+    const module = useModule(ModuleKey.Settings)
+    if (!module.isEnabled()) return
+
     // Disable Discord's internal animations, for Layers module
     const animated = findInReactTree(value, m => m?.type?.displayName?.startsWith('Animated'))
     if (animated) {
@@ -33,10 +37,6 @@ async function patchStandardSidebarView () {
 
     const contentRegion = standardSidebarView.children[i]
 
-    const direction = useDirection(props.sections, props.section)
-    const module = useModule(ModuleKey.Settings)
-    if (!module.isEnabled()) return
-
     const animations = module.getAnimations({ auto: { direction } })
 
     standardSidebarView.children[i] = (
@@ -45,6 +45,7 @@ async function patchStandardSidebarView () {
           key={props.section}
           container={{ className: DiscordClasses.StandardSidebarView.contentRegion }}
           freeze={true}
+          module={module}
           animations={animations}
           options={{ type: 'switch'  }}
         >

@@ -10,6 +10,7 @@ import { getPosition, reversePosition } from '@/helpers/position'
 import Config from '@/modules/Config'
 import { getAnimationDefaultSettings } from '@/helpers/animations'
 import AnimationType from '@/enums/AnimationType'
+import ModuleType from '@/enums/ModuleType'
 
 class Module {
   constructor (id, name, meta = {}) {
@@ -30,6 +31,11 @@ class Module {
   disable () { this.settings.enabled = false }
   toggle () { this.settings.enabled = !this.settings.enabled }
   setIsEnabled (value) { this.settings.enabled = value }
+
+  get type () {
+    return this.meta.type ?? ModuleType.Reveal
+  }
+  getType () { return this.type }
 
   findAnimation (packOrSlug, key) {
     const animation = PackManager.getAnimation(packOrSlug, key)

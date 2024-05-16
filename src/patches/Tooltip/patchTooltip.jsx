@@ -30,6 +30,7 @@ function TooltipTransition (props) {
     <AnimeTransition
       in={isVisible}
       targetContainer={e => e}
+      module={module}
       animations={animations}
       onEntered={onRest(true)}
       onExited={onRest(false)}

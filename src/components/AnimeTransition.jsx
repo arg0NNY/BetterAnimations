@@ -50,7 +50,7 @@ class AnimeTransition extends React.Component {
 
       if (node) {
         try {
-          const { animations = {}, options = {}, unmountOnExit = true } = this.props
+          const { module, animations = {}, options = {}, unmountOnExit = true } = this.props
 
           const animationData = animations[type]
           const animation = animationData?.animation ?? {}
@@ -64,6 +64,7 @@ class AnimeTransition extends React.Component {
                 container,
                 element: node,
                 type,
+                module,
                 settings: animation.settings
               }
             ),
@@ -77,7 +78,7 @@ class AnimeTransition extends React.Component {
             const { finished, pause } = assets.execute()
 
             container.setAttribute('data-animation-type', type)
-            if (options.type) container.setAttribute(`data-animation-${options.type}`, '')
+            if (module.type) container.setAttribute(`data-animation-${module.type}`, '')
 
             this.cancelAnimation = () => {
               pause()
@@ -85,7 +86,7 @@ class AnimeTransition extends React.Component {
                 assets.node?.remove()
               })
 
-              if (options.type !== 'switch' || type !== AnimationType.Exit || !unmountOnExit)
+              if (module.type !== 'switch' || type !== AnimationType.Exit || !unmountOnExit)
                 [].filter.call(container.attributes, a => a.name !== 'data-animation-container' && a.name?.startsWith('data-animation'))
                   .forEach(a => container.removeAttribute(a.name))
 

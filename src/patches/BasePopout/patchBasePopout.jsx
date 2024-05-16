@@ -44,6 +44,7 @@ class AnimatedBasePopout extends BasePopoutModule.BasePopout {
           <AnimeTransition
             key={+this.state.isLoading}
             targetContainer={e => e}
+            module={this.props.module}
             animations={animations}
           >
             {value}

@@ -31,6 +31,7 @@ function patchContextMenu () {
             in={!!value}
             targetContainer={e => e}
             exit={false}
+            module={module}
             animations={module.getAnimations(animationOptions)}
           >
             {value}
@@ -49,6 +50,7 @@ function patchContextMenu () {
             key={value.key}
             targetContainer={e => e}
             enter={false}
+            module={module}
             animations={module.getAnimations(animationOptions)}
           >
             {value}
