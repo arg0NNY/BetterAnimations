@@ -71,8 +71,8 @@
           "duration": { "inject": "duration" },
           "easing": { "inject": "easing" },
           "complete": {
-            "inject": "style.removeProperties",
-            "properties": ["opacity", "transform"]
+            "inject": "style.removeProperty",
+            "property": ["opacity", "transform"]
           }
         },
         "source": {

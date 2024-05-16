@@ -38,17 +38,17 @@
       "target": {
         "targets": { "inject": "element" },
         "duration": { "inject": "duration" },
-        "easing": { "inject": "easing" },
-        "complete": {
-          "inject": "style.removeProperties",
-          "properties": ["opacity", "transform"]
-        }
+        "easing": { "inject": "easing" }
       },
       "source": [
         {
           "inject": "type",
           "enter": {
-            "opacity": [0, 1]
+            "opacity": [0, 1],
+            "complete": {
+              "inject": "style.removeProperty",
+              "property": ["opacity", "transform"]
+            }
           },
           "exit": {
             "opacity": 0
