@@ -8,7 +8,6 @@ import useModule, { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
 
-// TODO: Make this dynamic (for example, when the context menu is mirrored)
 export const animationOptions = {
   auto: {
     position: Position.Bottom,

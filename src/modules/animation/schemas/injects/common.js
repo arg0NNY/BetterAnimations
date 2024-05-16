@@ -70,7 +70,7 @@ export const UndefinedInjectSchema = InjectSchema(Inject.Undefined).transform(()
 
 export const FunctionInjectSchema = InjectSchema(Inject.Function).extend({
   functions: z.array(z.function()).optional(),
-  'return': z.any().optional() // FIXME: This doesn't really help, because injects inside return still are evaluated during JSON parsing, not on function execution
+  'return': z.any().optional()
 }).transform(({ functions, 'return': returnValue }) => () => {
   functions?.forEach(f => f())
   return returnValue

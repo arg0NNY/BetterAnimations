@@ -38,7 +38,6 @@ function patchLayers () {
             }
           })
 
-          // TODO: Hide layers that are not visible (you can see them in the back with some animations)
           prevLength = value.length
           return (
             <TransitionGroup component={null} childFactory={passAnimations(animations)}>

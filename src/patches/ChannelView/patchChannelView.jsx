@@ -22,7 +22,7 @@ function patchChannelView () {
 
         once(() => {
           injectModule(value.type, ModuleKey.MembersSidebar)
-          injectModule(value.type, ModuleKey.ThreadSidebar) // TODO: Won't clear the second module on unmount because of how injectModule made, fix that
+          injectModule(value.type, ModuleKey.ThreadSidebar)
           Patcher.after(value.type.prototype, 'renderSidebar', (self, args, value) => {
             const module = Modules.getModule(ModuleKey.MembersSidebar)
             if (!module.isEnabled()) return value

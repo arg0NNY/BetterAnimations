@@ -5,9 +5,6 @@ import Toasts from '@/modules/Toasts'
 import Data from '@/modules/Data'
 import Events from '@/modules/Emitter'
 
-// TODO: Go through the class and remove unnecessary things
-// TODO: Go through toast notifications
-
 const splitRegex = /[^\S\r\n]*?\r?(?:\r\n|\n)[^\S\r\n]*?\*[^\S\r\n]?/
 const escapedAtRegex = /^\\@/
 
@@ -201,7 +198,6 @@ export default class AddonManager {
     return this.addonList.find(c => c.id == idOrFile || c.filename == idOrFile)
   }
 
-  // TODO: Remove enabled/disabled functionality
   enableAddon (idOrAddon) {
     const addon = typeof (idOrAddon) == 'string' ? this.addonList.find(p => p.id == idOrAddon) : idOrAddon
     if (!addon || addon.partial) return

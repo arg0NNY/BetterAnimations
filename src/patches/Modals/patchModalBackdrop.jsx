@@ -17,9 +17,8 @@ function patchModalBackdrop () {
   Patcher.before(ReactSpring, 'useTransition', (self, [_, { config }]) => {
     if (!renderRunning || config.duration === 0) return
 
-    // TODO: Think of a way to determine which animation is running here (enter/exit)
     config.duration = renderRunning.backdropTransitionDuration ?? 200
-    config.easing = Easing.inOut(Easing.sin) // TODO: Make this a general setting for Modals module
+    config.easing = Easing.inOut(Easing.sin)
   })
 }
 

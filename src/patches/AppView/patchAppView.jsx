@@ -16,8 +16,6 @@ import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequest
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { css } from '@/modules/Style'
 
-// TODO: Restructurize "patches" folder, make it so each folder represents a module, not a component that it patches
-
 function BaseView ({ children }) {
   const [key, direction] = useLocationKey(shouldSwitchBase, getSwitchBaseDirection)
 
@@ -35,7 +33,7 @@ function BaseView ({ children }) {
         module={module}
         animations={animations}
       >
-        <div className={DiscordClasses.AppView.base}> {/* TODO: Make this a custom class, unified container. `base_XXX` inside `base_XXX` is screwing up the BD notices. Do the same for `content_XXX` below. */}
+        <div className={DiscordClasses.AppView.base}>
           {children}
         </div>
       </AnimeTransition>

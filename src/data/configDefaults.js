@@ -1,6 +1,5 @@
 import ModuleKey from '@/enums/ModuleKey'
 
-// TODO: Finalize default settings
 export const configDefaults = {
   modules: {
     [ModuleKey.Servers]: {

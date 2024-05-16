@@ -18,5 +18,3 @@ export const VariantInjectSchema = SwitchSchema(Inject.Variant, ctx => ctx.setti
 export const PositionInjectSchema = SwitchSchema(Inject.Position, Position.values(), { defaultValue: Position.Center, setting: Setting.Position })
 
 export const DirectionInjectSchema = SwitchSchema(Inject.Direction, Direction.values(), { defaultValue: Direction.Right, setting: Setting.Direction })
-
-// TODO: Add custom settings for animations
