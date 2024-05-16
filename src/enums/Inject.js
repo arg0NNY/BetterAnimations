@@ -6,6 +6,7 @@ export default Enum({
   AnimeStagger: 'anime.stagger',
   AnimeTimeline: 'anime.timeline',
   AnimeRandom: 'anime.random',
+  AnimeGet: 'anime.get',
   AnimeSet: 'anime.set',
   Duration: 'duration',
   Easing: 'easing',
