@@ -2,11 +2,11 @@ import { Patcher } from '@/BdApi'
 import { TransitionGroup, VoiceChannelView } from '@/modules/DiscordModules'
 import findInReactTree from '@/helpers/findInReactTree'
 import ensureOnce from '@/helpers/ensureOnce'
-import ThreadSidebarTransition from '@/patches/ChannelView/components/ThreadSidebarTransition'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
+import AnimeTransition from '@/components/AnimeTransition'
 
 function patchVoiceChannelView () {
   const once = ensureOnce()
@@ -28,9 +28,13 @@ function patchVoiceChannelView () {
           <TransitionGroup component={null}>
             {
               chatWrapper.children &&
-              <ThreadSidebarTransition module={module} animations={module.getAnimations()}>
+              <AnimeTransition
+                targetContainer={e => e}
+                module={module}
+                animations={module.getAnimations()}
+              >
                 {chatWrapper.children}
-              </ThreadSidebarTransition>
+              </AnimeTransition>
             }
           </TransitionGroup>
         )

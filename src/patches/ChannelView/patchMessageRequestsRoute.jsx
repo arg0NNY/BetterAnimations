@@ -7,13 +7,13 @@ import {
   SidebarType,
   useStateFromStores
 } from '@/modules/DiscordModules'
-import ThreadSidebarTransition from '@/patches/ChannelView/components/ThreadSidebarTransition'
 import SwitchTransition from '@/components/SwitchTransition'
 import patchUseMessageRequestSidebarState from '@/patches/ChannelView/patchUseMessageRequestSidebarState'
 import MessageRequestSidebarContext from '@/patches/ChannelView/context/MessageRequestSidebarContext'
 import MessageRequestSidebarWrapper from '@/patches/ChannelView/components/MessageRequestSidebarWrapper'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
+import AnimeTransition from '@/components/AnimeTransition'
 
 let once = () => {}
 
@@ -40,7 +40,12 @@ function patchMessageRequestsRoute (route) {
           const children = value.props.children
           children[1] = (
             <SwitchTransition>
-              <ThreadSidebarTransition key={state?.channelId ?? 'none'} module={module} animations={animations}>
+              <AnimeTransition
+                key={state?.channelId ?? 'none'}
+                targetContainer={e => e}
+                module={module}
+                animations={animations}
+              >
                 {
                   state && state.type === SidebarType.VIEW_MESSAGE_REQUEST && channel && channel.isPrivate() &&
                   <MessageRequestSidebarContext.Provider value={state}>
@@ -51,7 +56,7 @@ function patchMessageRequestsRoute (route) {
                     />
                   </MessageRequestSidebarContext.Provider>
                 }
-              </ThreadSidebarTransition>
+              </AnimeTransition>
             </SwitchTransition>
           )
         })

@@ -47,21 +47,10 @@ class Module {
     const animation = pack && this.findAnimation(pack, pointer.animationKey)
     const config = animation ? Config.pack(pack.slug).getAnimationConfig(animation.key, this.id, type) : {}
 
-    const settings = animation ? this.normalizeSettings(
-      animation,
-      type,
-      Object.assign(
-        this.buildDefaultSettings(animation, type, false),
-        config
-      )
-    ) : {}
-
-    if (options.auto) this.assignAutoValues(animation, settings, options.auto)
-
     return {
       packSlug: pointer.packSlug ?? null,
       animationKey: pointer.animationKey ?? null,
-      settings,
+      settings: this.buildSettings(animation, type, config, options),
       pack,
       animation
     }
@@ -140,6 +129,20 @@ class Module {
 
     return normalized ? this.normalizeSettings(animation, type, settings) : settings
   }
+  buildSettings (animation, type, config, options = {}) {
+    const settings = animation ? this.normalizeSettings(
+      animation,
+      type,
+      Object.assign(
+        this.buildDefaultSettings(animation, type, false),
+        config
+      )
+    ) : {}
+
+    if (options.auto) this.assignAutoValues(animation, settings, options.auto)
+
+    return settings
+  }
 
   normalizeSetting (animation, type, setting, value, allSettings = {}) {
     switch (setting) {
@@ -204,6 +207,56 @@ class Module {
       settings[Setting.Direction] = getDirection(settings.directionAxis, values.direction)
 
     return settings
+  }
+
+  getModifierAnimation () {
+    const { modifier } = this.meta
+    if (!modifier) return null
+
+    return {
+      name: 'Smooth expand/collapse',
+      settings: {
+        [Setting.Duration]: { from: 100, to: 2000 },
+        [Setting.Easing]: true,
+        defaults: modifier.defaults
+      }
+    }
+  }
+  getModifier (type, options = {}) {
+    const { modifier } = this.meta
+    if (!modifier) return null
+
+    const animation = this.getModifierAnimation()
+    const config = this.settings.modifier?.[type] ?? {}
+    const settings = this.buildSettings(animation, type, config.settings, options)
+
+    return {
+      enabled: config.enabled ?? true,
+      animate: modifier.create(type, settings),
+      defaults: getAnimationDefaultSettings(animation, type),
+      settings
+    }
+  }
+  getModifiers (options = {}) {
+    const animation = this.getModifierAnimation()
+    if (!animation) return null
+
+    return {
+      animation,
+      enter: this.getModifier(AnimationType.Enter, options),
+      exit: this.getModifier(AnimationType.Exit, options)
+    }
+  }
+  updateModifier (type, values) {
+    const config = this.settings.modifier ??= {}
+    Object.assign(config[type] ??= {}, values)
+  }
+  buildOptions () {
+    const options = {}
+    const modifiers = this.getModifiers()
+    if (modifiers?.enter?.enabled) options.before = modifiers.enter.animate
+    if (modifiers?.exit?.enabled) options.after = modifiers.exit.animate
+    return options
   }
 }
 

@@ -4,8 +4,6 @@ import ensureOnce from '@/helpers/ensureOnce'
 import AnimeTransition from '@/components/AnimeTransition'
 import SwitchTransition from '@/components/SwitchTransition'
 import patchVoiceChannelView from '@/patches/ChannelView/patchVoiceChannelView'
-import animate from '@/patches/ChannelView/helpers/animate'
-import ThreadSidebarTransition from '@/patches/ChannelView/components/ThreadSidebarTransition'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
@@ -27,8 +25,6 @@ function patchChannelView () {
             const module = Modules.getModule(ModuleKey.MembersSidebar)
             if (!module.isEnabled()) return value
 
-            const modifier = type => context => animate(type, context)
-
             return (
               <SwitchTransition>
                 <AnimeTransition
@@ -36,10 +32,6 @@ function patchChannelView () {
                   container={{ className: DiscordClasses.ChannelView.content, style: { flex: '0 0 auto' } }}
                   module={module}
                   animations={module.getAnimations()}
-                  options={{
-                    before: modifier('before'),
-                    after: modifier('after')
-                  }}
                 >
                   {value}
                 </AnimeTransition>
@@ -52,13 +44,14 @@ function patchChannelView () {
 
             return (
               <SwitchTransition>
-                <ThreadSidebarTransition
+                <AnimeTransition
                   key={JSON.stringify(self.props.channelSidebarState ?? self.props.guildSidebarState) ?? 'none'}
+                  targetContainer={e => e}
                   module={module}
                   animations={module.getAnimations()}
                 >
                   {value}
-                </ThreadSidebarTransition>
+                </AnimeTransition>
               </SwitchTransition>
             )
           })

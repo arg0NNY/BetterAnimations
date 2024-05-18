@@ -50,7 +50,7 @@ class AnimeTransition extends React.Component {
 
       if (node) {
         try {
-          const { module, animations = {}, options = {}, unmountOnExit = true } = this.props
+          const { module, animations = {}, unmountOnExit = true } = this.props
 
           const animationData = animations[type]
           const animation = animationData?.animation ?? {}
@@ -69,7 +69,7 @@ class AnimeTransition extends React.Component {
                 meta: animation.meta
               }
             ),
-            options
+            module.buildOptions()
           )
           // console.log(assets)
 
@@ -125,22 +125,17 @@ class AnimeTransition extends React.Component {
   render () {
     const {
       animations,
-      options = {},
       children,
       container = false,
       freeze = false,
       mountOnEnter = true,
       unmountOnExit = true,
-      enter = true,
-      exit = true,
       ...props
     } = this.props
 
     return (
       <Transition
         {...props}
-        enter={(!!animations?.enter?.animation || options.before) && enter}
-        exit={(!!animations?.exit?.animation || options.after) && exit}
         mountOnEnter={mountOnEnter}
         unmountOnExit={unmountOnExit}
         onEntering={this.onAnimate(AnimationType.Enter)}

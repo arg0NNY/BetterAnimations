@@ -5,7 +5,7 @@ export default new Proxy({}, {
     return Data.load(name)
   },
   set (_, name, value) {
-    Data.save(name, value)
+    Data.save(name, structuredClone(value))
     return true
   }
 })

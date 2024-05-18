@@ -17,18 +17,6 @@ export const configDefaults = {
       settings: {
         backdropTransitionDuration: 200
       }
-    },
-    [ModuleKey.MembersSidebar]: {
-      settings: {
-        duration: 400,
-        easing: 'easeInOutQuint'
-      }
-    },
-    [ModuleKey.ThreadSidebar]: {
-      settings: {
-        duration: 400,
-        easing: 'easeInOutQuint'
-      }
     }
   }
 }

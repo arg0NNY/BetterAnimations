@@ -23,20 +23,20 @@ export default function AnimationItem ({
 
   return (
     <div>
-      <Common.FormTitle tag="h5">{animation.name} ({animation.key})</Common.FormTitle>
+      <Common.FormTitle tag="h5">{animation.name}</Common.FormTitle>
       <div style={{ display: 'grid', gap: 10 }}>
         <div style={{ display: 'flex', gap: 10 }}>
           <Common.Switch checked={enterActive} onChange={setEnter}>Enter</Common.Switch>
           <Common.Switch checked={exitActive} onChange={setExit}>Exit</Common.Switch>
         </div>
         {enterActive && (
-          <Common.Card>
+          <Common.Card style={{ padding: '12px' }}>
             <Common.FormText>Enter <Common.Button size={Common.ButtonSizes.SMALL} onClick={resetSettings(setEnterSettings, AnimationType.Enter)}>Reset</Common.Button></Common.FormText>
             <AnimationSettings animation={animation} type={AnimationType.Enter} settings={enterSettings} onChange={setEnterSettings} />
           </Common.Card>
         )}
         {exitActive && (
-          <Common.Card>
+          <Common.Card style={{ padding: '12px' }}>
             <Common.FormText>Exit <Common.Button size={Common.ButtonSizes.SMALL} onClick={resetSettings(setExitSettings, AnimationType.Exit)}>Reset</Common.Button></Common.FormText>
             <AnimationSettings animation={animation} type={AnimationType.Exit} settings={exitSettings} onChange={setExitSettings} />
           </Common.Card>

@@ -47,7 +47,6 @@ async function patchStandardSidebarView () {
           freeze={true}
           module={module}
           animations={animations}
-          options={{ type: 'switch'  }}
         >
           {contentRegion}
         </AnimeTransition>

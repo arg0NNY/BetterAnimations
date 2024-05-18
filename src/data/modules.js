@@ -1,9 +1,10 @@
 import ModuleKey, { ModuleKeyAlias } from '@/enums/ModuleKey'
-import AnimationSetting from '@/enums/AnimationSetting'
+import Setting from '@/enums/AnimationSetting'
 import Axis from '@/enums/Axis'
 import Direction from '@/enums/Direction'
 import Position from '@/enums/Position'
 import ModuleType from '@/enums/ModuleType'
+import { heightModifier, marginRightModifier } from '@/helpers/modifiers'
 
 export const moduleAliases = {
   [ModuleKeyAlias.Switch]: [
@@ -34,10 +35,10 @@ const modules = [
       type: ModuleType.Switch,
       settings: {
         supportsAuto: {
-          [AnimationSetting.Direction]: true
+          [Setting.Direction]: true
         },
         defaults: {
-          [AnimationSetting.DirectionAxis]: Axis.Y
+          [Setting.DirectionAxis]: Axis.Y
         }
       }
     }
@@ -49,10 +50,10 @@ const modules = [
       type: ModuleType.Switch,
       settings: {
         supportsAuto: {
-          [AnimationSetting.Direction]: true
+          [Setting.Direction]: true
         },
         defaults: {
-          [AnimationSetting.DirectionAxis]: Axis.Y
+          [Setting.DirectionAxis]: Axis.Y
         }
       }
     }
@@ -64,10 +65,10 @@ const modules = [
       type: ModuleType.Switch,
       settings: {
         supportsAuto: {
-          [AnimationSetting.Direction]: true
+          [Setting.Direction]: true
         },
         defaults: {
-          [AnimationSetting.DirectionAxis]: Axis.Y
+          [Setting.DirectionAxis]: Axis.Y
         }
       }
     }
@@ -78,7 +79,7 @@ const modules = [
     meta: {
       settings: {
         supportsAuto: {
-          [AnimationSetting.Position]: true
+          [Setting.Position]: true
         }
       }
     }
@@ -89,7 +90,7 @@ const modules = [
     meta: {
       settings: {
         supportsAuto: {
-          [AnimationSetting.Position]: true
+          [Setting.Position]: true
         }
       }
     }
@@ -100,7 +101,7 @@ const modules = [
     meta: {
       settings: {
         supportsAuto: {
-          [AnimationSetting.Position]: true
+          [Setting.Position]: true
         }
       }
     }
@@ -109,10 +110,17 @@ const modules = [
     id: ModuleKey.Messages,
     name: 'Messages',
     meta: {
+      modifier: {
+        create: heightModifier,
+        defaults: {
+          [Setting.Duration]: 200,
+          [Setting.Easing]: 'easeInOutQuad'
+        }
+      },
       settings: {
         defaults: {
-          [AnimationSetting.Direction]: Direction.Upwards,
-          [AnimationSetting.Position]: Position.Left
+          [Setting.Direction]: Direction.Upwards,
+          [Setting.Position]: Position.Left
         }
       }
     }
@@ -121,9 +129,16 @@ const modules = [
     id: ModuleKey.ChannelList,
     name: 'Channel List',
     meta: {
+      modifier: {
+        create: heightModifier,
+        defaults: {
+          [Setting.Duration]: 200,
+          [Setting.Easing]: 'easeInOutQuad'
+        }
+      },
       settings: {
         defaults: {
-          [AnimationSetting.Position]: Position.Left
+          [Setting.Position]: Position.Left
         }
       }
     }
@@ -134,7 +149,7 @@ const modules = [
     meta: {
       settings: {
         defaults: {
-          [AnimationSetting.Position]: Position.Center
+          [Setting.Position]: Position.Center
         }
       }
     }
@@ -146,21 +161,39 @@ const modules = [
       type: ModuleType.Switch,
       settings: {
         supportsAuto: {
-          [AnimationSetting.Direction]: true
+          [Setting.Direction]: true
         },
         defaults: {
-          [AnimationSetting.DirectionAxis]: Axis.Z
+          [Setting.DirectionAxis]: Axis.Z
         }
       }
     }
   },
   {
     id: ModuleKey.MembersSidebar,
-    name: 'Members Sidebar'
+    name: 'Members Sidebar',
+    meta: {
+      modifier: {
+        create: marginRightModifier,
+        defaults: {
+          [Setting.Duration]: 400,
+          [Setting.Easing]: 'easeInOutQuint'
+        }
+      }
+    }
   },
   {
     id: ModuleKey.ThreadSidebar,
-    name: 'Thread Sidebar'
+    name: 'Thread Sidebar',
+    meta: {
+      modifier: {
+        create: marginRightModifier,
+        defaults: {
+          [Setting.Duration]: 400,
+          [Setting.Easing]: 'easeInOutQuint'
+        }
+      }
+    }
   }
 ]
 

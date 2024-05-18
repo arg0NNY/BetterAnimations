@@ -4,6 +4,7 @@ import ModuleContext from '@/modules/settings/context/ModuleContext'
 import Emitter from '@/modules/Emitter'
 import Events from '@/enums/Events'
 import useModule from '@/hooks/useModule'
+import ModuleGeneralSettingsLegacy from '@/modules/settings/components/ModuleGeneralSettingsLegacy'
 import ModuleGeneralSettings from '@/modules/settings/components/ModuleGeneralSettings'
 
 export default function ModuleSettings () {
@@ -40,10 +41,14 @@ export default function ModuleSettings () {
               onChange={onChange}
             />
           )}
-          <ModuleGeneralSettings
+          <ModuleGeneralSettingsLegacy
             module={module}
             settings={module.getGeneralSettings()}
             onChange={setGeneralSettings}
+          />
+          <ModuleGeneralSettings
+            module={module}
+            onChange={onChange}
           />
         </div>
       )}

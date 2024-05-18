@@ -1,58 +1,51 @@
 import { React } from '@/BdApi'
-import ModuleKey from '@/enums/ModuleKey'
 import { Common } from '@/modules/DiscordModules'
-import DurationControl from '@/modules/settings/components/controls/DurationControl'
-import EasingControl from '@/modules/settings/components/controls/EasingControl'
-import Config from '@/modules/Config'
+import AnimationItem from '@/modules/settings/components/AnimationItem'
+import AnimationType from '@/enums/AnimationType'
 
-function ModalsGeneralSettings ({ settings, onChange }) {
+function ModifiersSettings ({ modifiers, onUpdate }) {
+  const { animation, enter, exit } = modifiers
+
+  const handleSelect = type => enabled => onUpdate(type, { enabled })
+  const handleSetSettings = type => settings => onUpdate(type, { settings })
+
   return (
-    <DurationControl
-      label="Backdrop transition duration"
-      options={{ from: 0, to: 2000 }}
-      value={settings.backdropTransitionDuration}
-      onChange={duration => onChange({ backdropTransitionDuration: duration })}
-      defaultValue={Config.defaults.modules[ModuleKey.Modals].settings.backdropTransitionDuration}
+    <AnimationItem
+      animation={animation}
+      enterActive={enter.enabled}
+      exitActive={exit.enabled}
+      setEnter={handleSelect(AnimationType.Enter)}
+      setExit={handleSelect(AnimationType.Exit)}
+      enterSettings={enter.settings}
+      exitSettings={exit.settings}
+      setEnterSettings={handleSetSettings(AnimationType.Enter)}
+      setExitSettings={handleSetSettings(AnimationType.Exit)}
     />
   )
 }
 
-function SidebarsGeneralSettings ({ settings, onChange }) {
-  const defaultValues = Config.defaults.modules[ModuleKey.ThreadSidebar].settings
+function ModuleGeneralSettings ({ module, onChange }) {
+  const modifiers = module.getModifiers()
+  const onModifiersUpdate = (...args) => {
+    module.updateModifier(...args)
+    onChange()
+  }
 
-  return (
-    <>
-      <DurationControl
-        options={{ from: 100, to: 2000 }}
-        value={settings.duration}
-        onChange={duration => onChange({ duration })}
-        defaultValue={defaultValues.duration}
+  const items = [
+    modifiers && (
+      <ModifiersSettings
+        modifiers={modifiers}
+        onUpdate={onModifiersUpdate}
       />
-      <EasingControl
-        value={settings.easing}
-        onChange={easing => onChange({ easing })}
-        defaultValue={defaultValues.easing}
-      />
-    </>
-  )
-}
+    )
+  ].filter(Boolean)
 
-function ModuleGeneralSettings ({ module, settings, onChange }) {
-  const Component = {
-    [ModuleKey.Modals]: ModalsGeneralSettings,
-    [ModuleKey.MembersSidebar]: SidebarsGeneralSettings,
-    [ModuleKey.ThreadSidebar]: SidebarsGeneralSettings
-  }[module.id]
-  if (!Component) return null
-
-  const setSettings = values => onChange(Object.assign({}, settings, values))
-
-  return (
+  return items.length ? (
     <div style={{ display: 'grid', gap: 10, marginTop: 20 }}>
       <Common.FormTitle tag="h4">General settings</Common.FormTitle>
-      <Component settings={settings} onChange={setSettings} />
+      {items}
     </div>
-  )
+  ) : null
 }
 
 export default ModuleGeneralSettings

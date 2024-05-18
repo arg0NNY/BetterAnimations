@@ -1,5 +1,5 @@
 import anime from 'animejs'
-import { DOM, Patcher } from '@/BdApi'
+import { Patcher } from '@/BdApi'
 import { forceAppUpdate } from '@/helpers/forceUpdate'
 import patchAppView from '@/patches/AppView/patchAppView'
 import patchContextMenu from '@/patches/ContextMenu/patchContextMenu'
