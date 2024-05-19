@@ -59,10 +59,10 @@ export const MathInjectSchema = InjectSchema(Inject.Math).extend({
 })
 
 export const StyleRemovePropertyInjectSchema = ({ element }) => InjectSchema(Inject.StyleRemoveProperty).extend({
-  element: ArrayOrSingleSchema(z.instanceof(HTMLElement)).optional().default(element),
+  target: ArrayOrSingleSchema(z.instanceof(HTMLElement)).optional().default(element),
   property: ArrayOrSingleSchema(z.string())
-}).transform(({ element, property }) =>
-  () => [].concat(element).forEach(
+}).transform(({ target, property }) =>
+  () => [].concat(target).forEach(
     e => [].concat(property).forEach(p => e.style.removeProperty(p))
   ))
 
