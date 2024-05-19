@@ -73,6 +73,6 @@ css
     isolation: isolate;
 }
 ${DiscordSelectors.ChatSidebar.chatLayerWrapper} {
-    background-color: var(--background-tertiary) !important;
+    filter: none;
 }`
 `ChannelView (Sidebars)`
