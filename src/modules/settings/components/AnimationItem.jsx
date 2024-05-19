@@ -1,14 +1,34 @@
 import { React } from '@/BdApi'
-import { Common } from '@/modules/DiscordModules'
+import { Common, Tooltip } from '@/modules/DiscordModules'
 import ModuleContext from '@/modules/settings/context/ModuleContext'
 import AnimationSettings from '@/modules/settings/components/AnimationSettings'
 import AnimationType from '@/enums/AnimationType'
 import { getAnimationDefaultSettings } from '@/helpers/animations'
 
+const FORCED_TEXT = 'Value is forced by selected animation'
+
+function Toggle ({ checked, onChange, disabled = false, text }) {
+  const children = (
+    <Common.Switch
+      checked={checked}
+      onChange={onChange}
+      disabled={disabled}
+    />
+  )
+
+  return (
+    <Tooltip text={text}>
+      {props => <div {...props}>{children}</div>}
+    </Tooltip>
+  )
+}
+
 export default function AnimationItem ({
   animation,
   enterActive,
   exitActive,
+  enterDisabled = false,
+  exitDisabled = false,
   setEnter,
   setExit,
   enterSettings,
@@ -26,8 +46,8 @@ export default function AnimationItem ({
       <Common.FormTitle tag="h5">{animation.name}</Common.FormTitle>
       <div style={{ display: 'grid', gap: 10 }}>
         <div style={{ display: 'flex', gap: 10 }}>
-          <Common.Switch checked={enterActive} onChange={setEnter}>Enter</Common.Switch>
-          <Common.Switch checked={exitActive} onChange={setExit}>Exit</Common.Switch>
+          <Toggle checked={enterActive} onChange={setEnter} disabled={enterDisabled} text={enterDisabled ? FORCED_TEXT : 'Enter'} />
+          <Toggle checked={exitActive} onChange={setExit} disabled={exitDisabled} text={exitDisabled ? FORCED_TEXT : 'Exit'} />
         </div>
         {enterActive && (
           <Common.Card style={{ padding: '12px' }}>

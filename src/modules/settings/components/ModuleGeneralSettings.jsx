@@ -14,6 +14,8 @@ function ModifiersSettings ({ modifiers, onUpdate }) {
       animation={animation}
       enterActive={enter.enabled}
       exitActive={exit.enabled}
+      enterDisabled={enter.forceDisabled}
+      exitDisabled={exit.forceDisabled}
       setEnter={handleSelect(AnimationType.Enter)}
       setExit={handleSelect(AnimationType.Exit)}
       enterSettings={enter.settings}

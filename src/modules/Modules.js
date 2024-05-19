@@ -50,7 +50,7 @@ class Module {
     return {
       packSlug: pointer.packSlug ?? null,
       animationKey: pointer.animationKey ?? null,
-      settings: this.buildSettings(animation, type, config, options),
+      settings: options && this.buildSettings(animation, type, config, options),
       pack,
       animation
     }
@@ -226,12 +226,14 @@ class Module {
     const { modifier } = this.meta
     if (!modifier) return null
 
+    const forceDisabled = !!this.getAnimation(type, false).animation?.meta?.forceDisableInternalExpandCollapseAnimations
     const animation = this.getModifierAnimation()
     const config = this.settings.modifier?.[type] ?? {}
     const settings = this.buildSettings(animation, type, config.settings, options)
 
     return {
-      enabled: config.enabled ?? true,
+      enabled: !forceDisabled && (config.enabled ?? true),
+      forceDisabled,
       animate: modifier.create(type, settings),
       defaults: getAnimationDefaultSettings(animation, type),
       settings
