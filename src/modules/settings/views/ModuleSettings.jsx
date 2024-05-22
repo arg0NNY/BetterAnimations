@@ -9,7 +9,7 @@ import ModuleGeneralSettings from '@/modules/settings/components/ModuleGeneralSe
 
 export default function ModuleSettings () {
   const { id } = Router.useParams()
-  const module = useModule(id)
+  const module = useModule(id, true)
 
   const onChange = () => Emitter.emit(Events.ModuleSettingsChanged, id)
 
@@ -20,7 +20,7 @@ export default function ModuleSettings () {
   }
   const setIsEnabled = value => {
     module.setIsEnabled(value)
-    onChange()
+    Emitter.emit(Events.ModuleToggled, id, value)
   }
   const setGeneralSettings = value => {
     module.setGeneralSettings(value)

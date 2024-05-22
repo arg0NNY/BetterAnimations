@@ -4,32 +4,45 @@ import Emitter from '@/modules/Emitter'
 import Events from '@/enums/Events'
 import Modules from '@/modules/Modules'
 
-export function moduleEffect (id, forceUpdate) {
+export function moduleEffectFull (id, forceUpdate) {
   const events = [Events.PackLoaded, Events.PackUnloaded, Events.SettingsChanged]
+  const moduleEvents = [Events.ModuleToggled, Events.ModuleSettingsChanged]
   const ifSameId = moduleId => moduleId === id && forceUpdate()
 
   events.forEach(e => Emitter.on(e, forceUpdate))
-  Emitter.on(Events.ModuleSettingsChanged, ifSameId)
+  moduleEvents.forEach(e => Emitter.on(e, ifSameId))
   return () => {
     events.forEach(e => Emitter.off(e, forceUpdate))
-    Emitter.off(Events.ModuleSettingsChanged, ifSameId)
+    moduleEvents.forEach(e => Emitter.off(e, ifSameId))
   }
 }
 
+export function moduleEffectToggleOnly (id, forceUpdate) {
+  const ifSameId = moduleId => moduleId === id && forceUpdate()
+
+  Emitter.on(Events.ModuleToggled, ifSameId)
+  return () => Emitter.off(Events.ModuleToggled, ifSameId)
+}
+
+export function moduleEffect (id, forceUpdate, full = false) {
+  if (full) return moduleEffectFull(id, forceUpdate)
+  return moduleEffectToggleOnly(id, forceUpdate)
+}
+
 // For class components
-export function injectModule (component, id) {
+export function injectModule (component, id, full = false) {
   Patcher.after(component.prototype, 'componentDidMount', (self) => {
-    self.clearModuleEffect = moduleEffect(id, () => self.forceUpdate())
+    self.clearModuleEffect = moduleEffect(id, () => self.forceUpdate(), full)
   })
   Patcher.after(component.prototype, 'componentWillUnmount', (self) => {
     self.clearModuleEffect?.()
   })
 }
 
-function useModule (id) {
+function useModule (id, full = false) {
   const forceUpdate = useForceUpdate()
 
-  React.useEffect(() => moduleEffect(id, forceUpdate), [id])
+  React.useEffect(() => moduleEffect(id, forceUpdate, full), [id])
 
   return Modules.getModule(id)
 }

@@ -28,8 +28,6 @@ function patchChannelMessageList () {
         const i = list.props.children.findIndex(i => Array.isArray(i))
         if (i === -1) return
 
-        const animations = module.getAnimations()
-
         const childFactory = (e, index, arr) => {
           let message = findInReactTree(e, m => m?.message)?.message
             ?? findInReactTree(arr[index + 1] ?? {}, m => m?.message)?.message
@@ -54,7 +52,6 @@ function patchChannelMessageList () {
                     enter={toEnter.has(message ? item.key : getMessageKey(arr[index + 1]?.props?.message))}
                     exit={false} // Managed in childFactory
                     module={module}
-                    animations={animations}
                   >
                     {item}
                   </AnimeTransition>

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { ArrayOrSingleSchema, buildSwitchSchema } from '@/helpers/schemas'
-import { InjectSchema, SwitchSchema } from '@/modules/animation/schemas/injects/InjectSchema'
+import { InjectSchema, InjectWithMeta, SwitchSchema } from '@/modules/animation/schemas/injects/InjectSchema'
 import evaluate from '@emmetio/math-expression'
 import Inject from '@/enums/Inject'
 import AnimationType from '@/enums/AnimationType'
@@ -24,16 +24,22 @@ export const ElementInjectSchema = ({ element }) => InjectSchema(Inject.Element)
 export const ContainerInjectSchema = ({ container }) => InjectSchema(Inject.Container)
   .transform(() => container)
 
-export const ModuleInjectSchema = SwitchSchema(Inject.Module, ModuleKey.values(), {
-  currentValue: ctx => ctx.module.id,
-  possibleValues: ctx => ctx.meta?.modules && Array.from(ctx.meta.modules)
-})
+export const ModuleInjectSchema = InjectWithMeta(
+  SwitchSchema(Inject.Module, ModuleKey.values(), {
+    currentValue: ctx => ctx.module.id,
+    possibleValues: ctx => ctx.meta?.modules && Array.from(ctx.meta.modules)
+  }),
+  { immediate: ['module'] }
+)
 
-export const TypeInjectSchema = SwitchSchema(Inject.Type, AnimationType.values(), { currentValue: ctx => ctx.type })
+export const TypeInjectSchema = InjectWithMeta(
+  SwitchSchema(Inject.Type, AnimationType.values(), { currentValue: ctx => ctx.type }),
+  { immediate: ['type'] }
+)
 
 export const ObjectAssignInjectSchema = InjectSchema(Inject.ObjectAssign).extend({
   target: z.record(z.any()),
-  source: z.union([z.record(z.any()), z.record(z.any()).array()])
+  source: ArrayOrSingleSchema(z.record(z.any())),
 }).transform(params => Object.assign(params.target, ...[].concat(params.source)))
 
 export const WaitInjectSchema = InjectSchema(Inject.Wait).extend({
@@ -58,20 +64,28 @@ export const MathInjectSchema = InjectSchema(Inject.Math).extend({
   }
 })
 
-export const StyleRemovePropertyInjectSchema = ({ element }) => InjectSchema(Inject.StyleRemoveProperty).extend({
-  target: ArrayOrSingleSchema(z.instanceof(HTMLElement)).optional().default(element),
-  property: ArrayOrSingleSchema(z.string())
-}).transform(({ target, property }) =>
-  () => [].concat(target).forEach(
-    e => [].concat(property).forEach(p => e.style.removeProperty(p))
-  ))
+export const StyleRemovePropertyInjectSchema = InjectWithMeta(
+  ({ element }) => InjectSchema(Inject.StyleRemoveProperty).extend({
+    target: ArrayOrSingleSchema(z.instanceof(HTMLElement)).optional().default(element),
+    property: ArrayOrSingleSchema(z.string())
+  }).transform(({ target, property }) => [].concat(target).forEach(
+      e => [].concat(property).forEach(p => e.style.removeProperty(p))
+    )),
+  { lazy: true }
+)
 
-export const UndefinedInjectSchema = InjectSchema(Inject.Undefined).transform(() => undefined)
+export const UndefinedInjectSchema = InjectWithMeta(
+  InjectSchema(Inject.Undefined).transform(() => undefined),
+  { immediate: true }
+)
 
-export const FunctionInjectSchema = InjectSchema(Inject.Function).extend({
-  functions: z.array(z.function()).optional(),
-  'return': z.any().optional()
-}).transform(({ functions, 'return': returnValue }) => () => {
-  functions?.forEach(f => f())
-  return returnValue
-})
+export const FunctionInjectSchema = InjectWithMeta(
+  InjectSchema(Inject.Function).extend({
+    functions: z.array(z.function()).optional(),
+    'return': z.any().optional()
+  }).transform(({ functions, 'return': returnValue }) => {
+    functions?.forEach(f => f())
+    return returnValue
+  }),
+  { lazy: true }
+)

@@ -3,7 +3,7 @@ import { appLayerContext, Layer, MenuSubmenuItem, MenuSubmenuListItem } from '@/
 import AnimeTransition from '@/components/AnimeTransition'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
-import { animationOptions } from '@/patches/ContextMenu/patchContextMenu'
+import { auto } from '@/patches/ContextMenu/patchContextMenu'
 
 function patchContextSubmenu () {
   const callback = (self, [props], original) => {
@@ -18,7 +18,7 @@ function patchContextSubmenu () {
         in={props.isFocused}
         targetContainer={e => e}
         module={module}
-        animations={module.getAnimations(animationOptions)}
+        auto={auto}
       >
         <Layer layerContext={appLayerContext}>
           {value.props.children[i]}

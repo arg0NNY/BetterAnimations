@@ -30,12 +30,10 @@ class AnimatedBasePopout extends BasePopoutModule.BasePopout {
       args
     )
 
-    const animations = this.props.module.getAnimations({
-      auto: {
-        position: this.props.position,
-        align: this.props.align
-      }
-    })
+    const auto = {
+      position: this.props.position,
+      align: this.props.align
+    }
 
     return (
       <TransitionGroup component={null}>
@@ -45,7 +43,7 @@ class AnimatedBasePopout extends BasePopoutModule.BasePopout {
             key={+this.state.isLoading}
             targetContainer={e => e}
             module={this.props.module}
-            animations={animations}
+            auto={auto}
           >
             {value}
           </AnimeTransition>

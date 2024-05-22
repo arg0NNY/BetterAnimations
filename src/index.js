@@ -23,6 +23,7 @@ import PackRegistry from '@/modules/PackRegistry'
 import { saveMeta } from '@/meta'
 import Style, { css } from '@/modules/Style'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
+import Modules from '@/modules/Modules'
 
 anime.suspendWhenDocumentHidden = false
 
@@ -39,6 +40,8 @@ export default function (meta) {
       const packErrors = PackManager.initialize()
       if (packErrors?.length) Logger.error('Startup', 'Failed to load packs:', packErrors)
       else Logger.info('PackManager', 'Initialized.')
+
+      Modules.initialize()
 
       Logger.info('Startup', 'Applying patches...')
       patchAppView()
@@ -64,6 +67,8 @@ export default function (meta) {
       Config.shutdown()
       PackRegistry.shutdown()
       PackManager.shutdown()
+
+      Modules.shutdown()
 
       Logger.info('Shutdown', 'Removing patches...')
       Patcher.unpatchAll()

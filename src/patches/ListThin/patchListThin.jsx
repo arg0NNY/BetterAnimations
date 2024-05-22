@@ -29,8 +29,6 @@ function patchListThin () {
       return false
     }
 
-    const animations = module.getAnimations()
-
     const childFactory = e => {
       if (e) e.props.exit = e.props.items.some(i => shouldAnimate(i))
       return e
@@ -58,7 +56,6 @@ function patchListThin () {
                 enter={shouldAnimate(item)}
                 exit={false} // Managed in childFactory
                 module={module}
-                animations={animations}
                 items={items}
               >
                 {props => (

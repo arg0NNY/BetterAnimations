@@ -3,7 +3,7 @@ import { Layers, TransitionGroup } from '@/modules/DiscordModules'
 import ensureOnce from '@/helpers/ensureOnce'
 import PassThrough from '@/components/PassThrough'
 import AnimeTransition from '@/components/AnimeTransition'
-import { passAnimations } from '@/helpers/transition'
+import { passAuto } from '@/helpers/transition'
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
@@ -32,22 +32,20 @@ function patchLayers () {
 
           value.forEach(layer => layer.type = LayerContainer) // Disable Discord's internal animations
 
-          const animations = module.getAnimations({
-            auto: {
-              direction: +(value.length > prevLength)
-            }
-          })
+          const auto = {
+            direction: +(value.length > prevLength)
+          }
 
           prevLength = value.length
           return (
-            <TransitionGroup component={null} childFactory={passAnimations(animations)}>
+            <TransitionGroup component={null} childFactory={passAuto(auto)}>
               {
                 value.map(layer => (
                   <PassThrough>
                     {props => (
                       <AnimeTransition
                         module={module}
-                        animations={animations}
+                        auto={auto}
                         {...props}
                         in={layer.props.mode === 'SHOWN' && props.in}
                         key={layer.key}

@@ -1,4 +1,4 @@
-import AnimationSchema, { AnimateSchema } from '@/modules/animation/schemas/AnimationSchema'
+import { AnimateSchema } from '@/modules/animation/schemas/AnimationSchema'
 import { toDom } from 'hast-util-to-dom'
 import { defaultSchema, sanitize } from 'hast-util-sanitize'
 import deepmerge from 'deepmerge'
@@ -6,10 +6,16 @@ import anime from 'animejs'
 import { buildCSS, transformAnimeConfig } from '@/modules/animation/helpers'
 import AnimationType from '@/enums/AnimationType'
 
-export function parseAnimationData (data) {
-  data = typeof data === 'string' ? JSON.parse(data) : data
-
-  return AnimationSchema().parse(data)
+export function buildContext (animation, type, settings = {}, context = {}) {
+  return Object.assign(
+    {
+      settings: animation?.settings,
+      meta: animation?.meta,
+      type
+    },
+    settings,
+    context
+  )
 }
 
 /**

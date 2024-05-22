@@ -46,66 +46,46 @@ class AnimeTransition extends React.Component {
       this.cancelAnimation?.()
       const { container, node } = this.getTargetNodes(targetNode)
 
-      if (node) node.style.display = '' // Removes the 'display: none !important' that is added by Suspense in Freeze
-
       if (node) {
-        try {
-          const { module, animations = {}, unmountOnExit = true } = this.props
+        node.style.display = '' // Removes the 'display: none !important' that is added by Suspense in Freeze
 
-          const animationData = animations[type]
-          const animation = animationData?.animation ?? {}
+        const { module, auto, unmountOnExit = true } = this.props
 
-          const assets = buildAnimateAssets(
-            animation[type] ?? animation.animate,
-            Object.assign(
-              {},
-              animationData?.settings ?? {},
-              {
-                container,
-                element: node,
-                type,
-                module,
-                settings: animation.settings,
-                meta: animation.meta
-              }
-            ),
-            module.buildOptions()
-          )
-          // console.log(assets)
+        const { animate, context } = module.getAnimation(
+          type,
+          auto ? { auto } : {},
+          { container, element: node }
+        )
 
-          if (assets.node) node.before(assets.node)
+        const assets = buildAnimateAssets(animate, context, module.buildOptions())
 
-          requestAnimationFrame(() => {
-            const { finished, pause } = assets.execute()
+        if (assets.node) node.before(assets.node)
 
-            container.setAttribute('data-animation-type', type)
-            if (module.type) container.setAttribute(`data-animation-${module.type}`, '')
+        requestAnimationFrame(() => {
+          const { finished, pause } = assets.execute()
 
-            this.cancelAnimation = () => {
-              pause()
-              this.finish(() => {
-                assets.node?.remove()
-              })
+          container.setAttribute('data-animation-type', type)
+          if (module.type) container.setAttribute(`data-animation-${module.type}`, '')
 
-              if (module.type !== 'switch' || type !== AnimationType.Exit || !unmountOnExit)
-                [].filter.call(container.attributes, a => a.name !== 'data-animation-container' && a.name?.startsWith('data-animation'))
-                  .forEach(a => container.removeAttribute(a.name))
+          this.cancelAnimation = () => {
+            pause()
+            this.finish(() => {
+              assets.node?.remove()
+            })
 
-              this.cancelAnimation = null
-              // console.log('finished', type)
-            }
+            if (module.type !== 'switch' || type !== AnimationType.Exit || !unmountOnExit)
+              [].filter.call(container.attributes, a => a.name !== 'data-animation-container' && a.name?.startsWith('data-animation'))
+                .forEach(a => container.removeAttribute(a.name))
 
-            finished
-              .then(() => {})
-              .catch(e => console.error(`Failed to execute '${type}' animation:`, e))
-              .finally(this.cancelAnimation.bind(this))
-          })
-        }
-        catch (e) {
-          e = e instanceof z.ZodError ? fromZodError(e).message : e
-          console.error(`Failed to load '${type}' animation:`, e)
-          this.finish(() => {}, true)
-        }
+            this.cancelAnimation = null
+            // console.log('finished', type)
+          }
+
+          finished
+            .then(() => {})
+            .catch(e => console.error(`Error during '${type}' animation execution:`, e))
+            .finally(this.cancelAnimation.bind(this))
+        })
       }
 
       if (type === AnimationType.Enter) this.props.onEntering?.(node, ...args)
@@ -124,7 +104,6 @@ class AnimeTransition extends React.Component {
 
   render () {
     const {
-      animations,
       children,
       container = false,
       freeze = false,

@@ -30,8 +30,6 @@ function patchMessageRequestsRoute (route) {
       const module = useModule(ModuleKey.ThreadSidebar)
       if (!module.isEnabled()) return
 
-      const animations = module.getAnimations()
-
       Patcher.after(value.props, 'children', (self, args, value) => {
         Patcher.after(value, 'type', (self, [props], value) => {
           const state = useStateFromStores([ChannelSectionStore], () => ChannelSectionStore.getSidebarState(MESSAGE_REQUESTS_BASE_CHANNEL_ID))
@@ -44,7 +42,6 @@ function patchMessageRequestsRoute (route) {
                 key={state?.channelId ?? 'none'}
                 targetContainer={e => e}
                 module={module}
-                animations={animations}
               >
                 {
                   state && state.type === SidebarType.VIEW_MESSAGE_REQUEST && channel && channel.isPrivate() &&

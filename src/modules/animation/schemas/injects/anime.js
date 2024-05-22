@@ -1,5 +1,5 @@
 import { ArrayOrSingleSchema, Defined } from '@/helpers/schemas'
-import { InjectSchema } from '@/modules/animation/schemas/injects/InjectSchema'
+import { InjectSchema, InjectWithMeta } from '@/modules/animation/schemas/injects/InjectSchema'
 import anime from 'animejs'
 import { z } from 'zod'
 import { transformAnimeConfig } from '@/modules/animation/helpers'
@@ -41,7 +41,10 @@ export const AnimeGetInjectSchema = InjectSchema(Inject.AnimeGet).extend({
   return unit === false ? Number.parseInt(value) : value
 })
 
-export const AnimeSetInjectSchema = ({ element }) => InjectSchema(Inject.AnimeSet).extend({
-  target: ArrayOrSingleSchema(z.instanceof(HTMLElement)).optional().default(element),
-  properties: z.record(z.any())
-}).transform(({ target, properties }) => () => anime.set(target, properties))
+export const AnimeSetInjectSchema = InjectWithMeta(
+  ({ element }) => InjectSchema(Inject.AnimeSet).extend({
+    target: ArrayOrSingleSchema(z.instanceof(HTMLElement)).optional().default(element),
+    properties: z.record(z.any())
+  }).transform(({ target, properties }) => () => anime.set(target, properties)),
+  { lazy: true }
+)

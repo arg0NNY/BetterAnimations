@@ -31,7 +31,6 @@ function patchVoiceChannelView () {
               <AnimeTransition
                 targetContainer={e => e}
                 module={module}
-                animations={module.getAnimations()}
               >
                 {chatWrapper.children}
               </AnimeTransition>

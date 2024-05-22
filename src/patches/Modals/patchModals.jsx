@@ -21,8 +21,6 @@ function patchModals () {
     const module = useModule(ModuleKey.Modals)
     if (!module.isEnabled()) return
 
-    const animations = module.getAnimations()
-
     value.props.children[1] = (
       <TransitionGroup component={null}>
         {
@@ -38,7 +36,6 @@ function patchModals () {
                   targetContainer={directChild}
                   // targetNode={node => node?.querySelector(`${DiscordSelectors.Modal.root}, .bd-modal-root`)}
                   module={module}
-                  animations={animations}
                   enter={!modal.props.instant}
                   exit={!modal.props.instant}
                 >

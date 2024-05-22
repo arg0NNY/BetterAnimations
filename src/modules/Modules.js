@@ -11,6 +11,13 @@ import Config from '@/modules/Config'
 import { getAnimationDefaultSettings } from '@/helpers/animations'
 import AnimationType from '@/enums/AnimationType'
 import ModuleType from '@/enums/ModuleType'
+import { buildContext } from '@/modules/animation/parser'
+import ParseStage from '@/enums/ParseStage'
+import { z } from 'zod'
+import { fromZodError } from 'zod-validation-error'
+import { AnimateSchema } from '@/modules/animation/schemas/AnimationSchema'
+import Events from '@/enums/Events'
+import Emitter from '@/modules/Emitter'
 
 class Module {
   constructor (id, name, meta = {}) {
@@ -41,18 +48,63 @@ class Module {
     const animation = PackManager.getAnimation(packOrSlug, key)
     return this.isSupportedBy(animation) ? animation : null
   }
-  getAnimation (type, options = {}) {
+
+  initializeAnimation (type) {
     const pointer = this.settings[type] ?? {}
     const pack = pointer.packSlug && PackManager.getPack(pointer.packSlug)
     const animation = pack && this.findAnimation(pack, pointer.animationKey)
     const config = animation ? Config.pack(pack.slug).getAnimationConfig(animation.key, this.id, type) : {}
 
+    const settings = animation && this.buildSettings(animation, type, config, { auto: false })
+    let animate
+    try {
+      animate = animation && AnimateSchema(
+        buildContext(animation, type, settings, { module: this }),
+      { stage: ParseStage.Initialize }
+      ).parse(animation[type] ?? animation.animate)
+    }
+    catch (e) {
+      e = e instanceof z.ZodError ? fromZodError(e).message : e
+      console.error(`Failed to initialize '${type}' animation:`, e)
+    }
+
     return {
       packSlug: pointer.packSlug ?? null,
       animationKey: pointer.animationKey ?? null,
-      settings: options && this.buildSettings(animation, type, config, options),
       pack,
-      animation
+      animation,
+      config,
+      animate
+    }
+  }
+  initializeAnimations () {
+    this.animations = {
+      enter: this.initializeAnimation(AnimationType.Enter),
+      exit: this.initializeAnimation(AnimationType.Exit)
+    }
+  }
+
+  getAnimation (type, options = {}, context = null) {
+    const { animation, config, animate: cachedAnimate } = this.animations[type]
+
+    const settings = animation && this.buildSettings(animation, type, config, options)
+    const ctx = buildContext(animation, type, settings, { module: this, ...context })
+
+    let animate
+    try {
+      animate = cachedAnimate && context && AnimateSchema(ctx, { stage: ParseStage.Execute })
+        .parse(cachedAnimate)
+    }
+    catch (e) {
+      e = e instanceof z.ZodError ? fromZodError(e).message : e
+      console.error(`Failed to parse '${type}' animation:`, e)
+    }
+
+    return {
+      ...this.animations[type],
+      settings,
+      context: ctx,
+      animate
     }
   }
   getAnimations (options = {}) {
@@ -61,6 +113,7 @@ class Module {
       exit: this.getAnimation(AnimationType.Exit, options)
     }
   }
+
   setAnimation (type, packSlug, animationKey) {
     this.settings[type] = { packSlug, animationKey }
   }
@@ -139,7 +192,7 @@ class Module {
       )
     ) : {}
 
-    if (options.auto) this.assignAutoValues(animation, settings, options.auto)
+    if ('auto' in options) this.assignAutoValues(animation, settings, options.auto)
 
     return settings
   }
@@ -193,6 +246,11 @@ class Module {
   assignAutoValues (animation, normalizedSettings, values) {
     const settings = normalizedSettings
 
+    if (values === false) {
+      Object.keys(settings).forEach(key => settings[key] === Auto() && delete settings[key])
+      return settings
+    }
+
     if (settings[Setting.Position] === Auto()) {
       const position = reversePosition(values.position)
       const mergedPosition = getPosition(position, values.align)
@@ -226,7 +284,7 @@ class Module {
     const { modifier } = this.meta
     if (!modifier) return null
 
-    const forceDisabled = !!this.getAnimation(type, false).animation?.meta?.forceDisableInternalExpandCollapseAnimations
+    const forceDisabled = !!this.animations[type]?.animation?.meta?.forceDisableInternalExpandCollapseAnimations
     const animation = this.getModifierAnimation()
     const config = this.settings.modifier?.[type] ?? {}
     const settings = this.buildSettings(animation, type, config.settings, options)
@@ -265,6 +323,32 @@ class Module {
 export default new class Modules {
   constructor () {
     this.modules = modules.map(m => new Module(m.id, m.name, m.meta))
+
+    this.globalChangeEvents = [Events.PackLoaded, Events.PackUnloaded, Events.SettingsChanged]
+    this.onGlobalChange = () => this.onChange()
+    this.onModuleChange = id => this.onChange(id)
+  }
+
+  initialize () {
+    this.modules.forEach(m => m.initializeAnimations())
+    this.listenEvents()
+  }
+
+  shutdown () {
+    this.unlistenEvents()
+  }
+
+  onChange (id = null) {
+    if (!id) return this.modules.forEach(m => m.initializeAnimations())
+    this.getModule(id)?.initializeAnimations()
+  }
+  listenEvents () {
+    this.globalChangeEvents.forEach(e => Emitter.on(e, this.onGlobalChange))
+    Emitter.on(Events.ModuleSettingsChanged, this.onModuleChange)
+  }
+  unlistenEvents () {
+    this.globalChangeEvents.forEach(e => Emitter.off(e, this.onGlobalChange))
+    Emitter.off(Events.ModuleSettingsChanged, this.onModuleChange)
   }
 
   getModule (id) {

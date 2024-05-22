@@ -35,3 +35,7 @@ export function SwitchSchema (inject, valueList, options = {}) {
     })
   }
 }
+
+export function InjectWithMeta (schema, { immediate = false, lazy = false }) {
+  return [schema, { immediate, lazy }]
+}

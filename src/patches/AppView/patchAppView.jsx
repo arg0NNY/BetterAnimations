@@ -9,7 +9,7 @@ import {
   shouldSwitchBase,
   shouldSwitchContent
 } from '@/helpers/locations'
-import { passAnimations } from '@/helpers/transition'
+import { passAuto } from '@/helpers/transition'
 import ModuleKey from '@/enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
@@ -22,16 +22,16 @@ function BaseView ({ children }) {
   const module = useModule(ModuleKey.Servers)
   if (!module.isEnabled()) return children
 
-  const animations = module.getAnimations({ auto: { direction } })
+  const auto = { direction }
 
   return (
-    <TransitionGroup component={null} childFactory={passAnimations(animations)}>
+    <TransitionGroup component={null} childFactory={passAuto(auto)}>
       <AnimeTransition
         key={key}
         container={{ className: DiscordClasses.AppView.base }}
         freeze={true}
         module={module}
-        animations={animations}
+        auto={auto}
       >
         <div className={DiscordClasses.AppView.base}>
           {children}
@@ -51,16 +51,16 @@ function ContentView ({ children }) {
     </Router.Switch>
   )
 
-  const animations = module.getAnimations({ auto: { direction } })
+  const auto = { direction }
 
   return (
-    <TransitionGroup className={DiscordClasses.AppView.content} childFactory={passAnimations(animations)}>
+    <TransitionGroup className={DiscordClasses.AppView.content} childFactory={passAuto(auto)}>
       <AnimeTransition
         key={key}
         container={{ className: DiscordClasses.AppView.content }}
         freeze={true}
         module={module}
-        animations={animations}
+        auto={auto}
       >
         <div className={DiscordClasses.AppView.content}>
           <Router.Switch location={location}>

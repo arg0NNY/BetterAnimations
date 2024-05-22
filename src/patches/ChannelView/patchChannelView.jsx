@@ -31,7 +31,6 @@ function patchChannelView () {
                   key={self.props.section}
                   container={{ className: DiscordClasses.ChannelView.content, style: { flex: '0 0 auto' } }}
                   module={module}
-                  animations={module.getAnimations()}
                 >
                   {value}
                 </AnimeTransition>
@@ -48,7 +47,6 @@ function patchChannelView () {
                   key={JSON.stringify(self.props.channelSidebarState ?? self.props.guildSidebarState) ?? 'none'}
                   targetContainer={e => e}
                   module={module}
-                  animations={module.getAnimations()}
                 >
                   {value}
                 </AnimeTransition>

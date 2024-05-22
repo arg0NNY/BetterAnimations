@@ -8,11 +8,9 @@ import useModule, { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
 
-export const animationOptions = {
-  auto: {
-    position: Position.Bottom,
-    align: Position.Left
-  }
+export const auto = {
+  position: Position.Bottom,
+  align: Position.Left
 }
 
 function patchContextMenu () {
@@ -31,7 +29,7 @@ function patchContextMenu () {
             targetContainer={e => e}
             exit={false}
             module={module}
-            animations={module.getAnimations(animationOptions)}
+            auto={auto}
           >
             {value}
           </AnimeTransition>
@@ -50,7 +48,7 @@ function patchContextMenu () {
             targetContainer={e => e}
             enter={false}
             module={module}
-            animations={module.getAnimations(animationOptions)}
+            auto={auto}
           >
             {value}
           </AnimeTransition>

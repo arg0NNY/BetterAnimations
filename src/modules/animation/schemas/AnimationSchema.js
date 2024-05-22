@@ -17,8 +17,8 @@ const safeInjects = [
   Inject.AnimeRandom
 ]
 
-export const AnimateSchema = (context = null, injectOptions = {}) => {
-  const restrictedInjectOptions = Object.assign({ allowed: safeInjects }, injectOptions)
+export const AnimateSchema = (context = null, env = {}) => {
+  const restrictedInjectOptions = Object.assign({ allowed: safeInjects }, env)
 
   return z.object({
     hast: ArrayOrSingleSchema(z.record(z.any()))
@@ -31,7 +31,7 @@ export const AnimateSchema = (context = null, injectOptions = {}) => {
       )).optional(),
     anime: ArrayOrSingleSchema(z.record(z.any()))
       .transform(!context ? v => v : matchesSchema(
-        InjectableSchema(context, injectOptions)
+        InjectableSchema(context, env)
       ))
   })
 }

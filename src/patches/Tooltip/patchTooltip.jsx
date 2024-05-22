@@ -19,19 +19,17 @@ function TooltipTransition (props) {
     }
   )
 
-  const animations = module.getAnimations({
-    auto: {
-      position: props.position,
-      align: props.align
-    }
-  })
+  const auto = {
+    position: props.position,
+    align: props.align
+  }
 
   return (
     <AnimeTransition
       in={isVisible}
       targetContainer={e => e}
       module={module}
-      animations={animations}
+      auto={auto}
       onEntered={onRest(true)}
       onExited={onRest(false)}
     >

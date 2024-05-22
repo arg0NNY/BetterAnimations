@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { formatValuesList, Literal } from '@/helpers/schemas'
 import Inject from '@/enums/Inject'
+import ParseStage from '@/enums/ParseStage'
 import {
   MathInjectSchema,
   ElementInjectSchema,
@@ -54,38 +55,57 @@ const injectSchemas = {
 }
 const injectTypes = Object.keys(injectSchemas)
 
-const InjectableSchema = (context, { allowed, disallowed } = {}) => {
+function parseInject ({ schema, context, value, ctx }) {
+  const { success, data, error } = (
+    typeof schema === 'function' ? schema(context) : schema
+  ).safeParse(value)
+
+  if (!success) {
+    error.issues.forEach(i => ctx.addIssue(i))
+    return z.NEVER
+  }
+  return data
+}
+
+const InjectableSchema = (context, env = {}) => {
+  const { allowed, disallowed, stage } = env
+
   const schema = z.lazy(
     () => z.union([
       Literal,
+      z.function(), // Lazy injects are transformed into functions
+      z.instanceof(HTMLElement), // Prevent Zod from parsing HTMLElement
       z.array(schema),
       z.record(schema)
     ]).transform((value, ctx) => {
       if (value?.inject === undefined) return value
 
-      if (
-        (disallowed?.length && disallowed.includes(value.inject))
-        || (allowed?.length && !allowed.includes(value.inject))
-      ) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject type '${value.inject}' is not allowed here. Only injects of these types can be used here: ${formatValuesList(injectTypes.filter(i => !disallowed?.includes(i) && (!allowed || allowed.includes(i))))}` })
-        return z.NEVER
+      const [schema, meta = {}] = [].concat(injectSchemas[value.inject])
+
+      if (stage === ParseStage.Initialize) {
+        if (!schema) {
+          ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Unknown inject '${value.inject}'. Available injects: ${formatValuesList(Object.keys(injectSchemas))}` })
+          return z.NEVER
+        }
+
+        if (
+          (disallowed?.length && disallowed.includes(value.inject))
+          || (allowed?.length && !allowed.includes(value.inject))
+        ) {
+          ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject type '${value.inject}' is not allowed here. Only injects of these types can be used here: ${formatValuesList(injectTypes.filter(i => !disallowed?.includes(i) && (!allowed || allowed.includes(i))))}` })
+          return z.NEVER
+        }
+
+        if (meta.immediate === true || (Array.isArray(meta.immediate) && meta.immediate.every(key => key in context)))
+          return parseInject({ schema, context, value, ctx })
+
+        return value
       }
 
-      const schema = injectSchemas[value.inject]
-      if (!schema) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Unknown inject '${value.inject}'. Available injects: ${formatValuesList(Object.keys(injectSchemas))}` })
-        return z.NEVER
-      }
+      if (stage === ParseStage.Execute && meta.lazy)
+        return () => InjectableSchema(context, { ...env, stage: ParseStage.Lazy }).parse(value)
 
-      const { success, data, error } = (
-        typeof schema === 'function' ? schema(context) : schema
-      ).safeParse(value)
-
-      if (!success) {
-        error.issues.forEach(i => ctx.addIssue(i))
-        return z.NEVER
-      }
-      return data
+      return parseInject({ schema, context, value, ctx })
     })
   )
 
