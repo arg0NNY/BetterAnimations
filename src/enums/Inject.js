@@ -21,5 +21,6 @@ export default Enum({
   Math: 'math',
   StyleRemoveProperty: 'style.removeProperty',
   Undefined: 'undefined',
-  Function: 'function'
+  Function: 'function',
+  Debug: 'debug'
 })

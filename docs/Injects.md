@@ -193,7 +193,7 @@ Can be used anywhere, but most useful is in pair with [`Object.assign`](#objecta
 ---
 
 ## `type`
-- **Allowed inside:** [`hast`](AnimateOptions.md#hast), [`css`](AnimateOptions.md#css), [`anime`](AnimateOptions.md#anime) (only for `animate`)
+- **Allowed inside:** [`hast`](AnimateOptions.md#hast), [`css`](AnimateOptions.md#css), [`anime`](AnimateOptions.md#anime)
 
 **Parameters:**
 
@@ -207,8 +207,8 @@ corresponding values.
 
 Can be used anywhere, but most useful is in pair with [`Object.assign`](#objectassign) inject.
 
-> This inject doesn't work for animations declared inside `enter` and `exit` properties,
-> since the types are already separated that way, and there's no need for it.
+> Note that you most probably shouldn't use this inject for animations declared inside `enter` and `exit` properties,
+> since the types are already separated that way.
 
 **Example:**
 ```json

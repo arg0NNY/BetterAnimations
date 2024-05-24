@@ -9,6 +9,7 @@ import AnimationType from '@/enums/AnimationType'
 export function buildContext (animation, type, settings = {}, context = {}) {
   return Object.assign(
     {
+      animation,
       settings: animation?.settings,
       meta: animation?.meta,
       type
@@ -32,7 +33,7 @@ export function buildContext (animation, type, settings = {}, context = {}) {
  */
 export function buildAnimateAssets (data = null, context = {}, options = {}) {
   const { before, after } = options
-  data = data ? AnimateSchema(context).parse(data) : {}
+  data = data ?? {}
 
   let wrapper
   if (data.hast || data.css) {
@@ -73,6 +74,7 @@ export function buildAnimateAssets (data = null, context = {}, options = {}) {
   return {
     node: wrapper,
     execute: () => {
+      data.onBeforeCreate?.()
       const instances = [].concat(data.anime ?? []).map(
         a => (
           typeof a === 'function' // Can be a function because of "anime.timeline" inject
@@ -82,18 +84,28 @@ export function buildAnimateAssets (data = null, context = {}, options = {}) {
       )
       const pauseAll = () => instances.forEach(i => i.pause())
       const finishedAll = () => Promise.all(instances.map(i => i.finished))
+      data.onCreated?.()
 
       if (before && context.type === AnimationType.Enter) {
         pauseAll()
         const instance = before(context)
-        instance.finished.then(() => instances.slice(1).forEach(i => i.play()))
+        instance.finished.then(() => {
+          data.onBeforeBegin?.()
+          instances.slice(1).forEach(i => i.play())
+        })
         instances.unshift(instance)
       }
+      else data.onBeforeBegin?.()
 
       return {
         pause: pauseAll,
         finished: finishedAll()
-          .then(() => after && context.type === AnimationType.Exit && after(context).finished)
+          .then(() => {
+            data.onCompleted?.()
+            return after && context.type === AnimationType.Exit && after(context).finished
+          }),
+        onBeforeDestroy: data.onBeforeDestroy,
+        onDestroyed: data.onDestroyed
       }
     }
   }

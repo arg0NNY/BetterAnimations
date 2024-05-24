@@ -13,7 +13,8 @@ import {
   StyleRemovePropertyInjectSchema,
   UndefinedInjectSchema,
   FunctionInjectSchema,
-  ModuleInjectSchema
+  ModuleInjectSchema,
+  DebugInjectSchema
 } from '@/modules/animation/schemas/injects/common'
 import {
   AnimeGetInjectSchema,
@@ -51,7 +52,8 @@ const injectSchemas = {
   [Inject.Direction]: DirectionInjectSchema,
   [Inject.StyleRemoveProperty]: StyleRemovePropertyInjectSchema,
   [Inject.Undefined]: UndefinedInjectSchema,
-  [Inject.Function]: FunctionInjectSchema
+  [Inject.Function]: FunctionInjectSchema,
+  [Inject.Debug]: DebugInjectSchema
 }
 const injectTypes = Object.keys(injectSchemas)
 

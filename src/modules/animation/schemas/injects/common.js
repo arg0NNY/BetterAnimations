@@ -5,6 +5,7 @@ import evaluate from '@emmetio/math-expression'
 import Inject from '@/enums/Inject'
 import AnimationType from '@/enums/AnimationType'
 import ModuleKey from '@/enums/ModuleKey'
+import Logger from '@/modules/Logger'
 
 export const ElementInjectSchema = ({ element }) => InjectSchema(Inject.Element)
   .extend({
@@ -87,5 +88,12 @@ export const FunctionInjectSchema = InjectWithMeta(
     functions?.forEach(f => f())
     return returnValue
   }),
+  { lazy: true }
+)
+
+export const DebugInjectSchema = InjectWithMeta(
+  ({ animation, type }) => InjectSchema(Inject.Debug).extend({
+    data: z.any()
+  }).transform(({ data }) => Logger.log('Animation', `${animation.key} [${type}]:`, data)),
   { lazy: true }
 )

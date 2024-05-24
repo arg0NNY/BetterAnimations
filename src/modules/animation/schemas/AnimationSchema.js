@@ -4,6 +4,7 @@ import { ArrayOrSingleSchema, matchesSchema } from '@/helpers/schemas'
 import Inject from '@/enums/Inject'
 import SettingsSchema from '@/modules/animation/schemas/SettingsSchema'
 import MetaSchema from '@/modules/animation/schemas/MetaSchema'
+import ParseStage from '@/enums/ParseStage'
 
 const safeInjects = [
   Inject.Module,
@@ -17,33 +18,56 @@ const safeInjects = [
   Inject.AnimeRandom
 ]
 
+export const HookSchema = (context = null, env = {}) => {
+  const schema = ArrayOrSingleSchema(z.record(z.any()))
+    .transform(!context ? v => v : matchesSchema(
+      InjectableSchema(context, env)
+    ))
+
+  return !('stage' in env) || env.stage === ParseStage.Initialize
+    ? schema
+    : schema.pipe(
+      ArrayOrSingleSchema(z.function())
+    ).transform(
+      v => Array.isArray(v)
+        ? () => v.forEach(f => f())
+        : v
+    )
+}
+
 export const AnimateSchema = (context = null, env = {}) => {
-  const restrictedInjectOptions = Object.assign({ allowed: safeInjects }, env)
+  const restrictedInjectEnv = Object.assign({ allowed: safeInjects }, env)
 
   return z.object({
     hast: ArrayOrSingleSchema(z.record(z.any()))
       .transform(!context ? v => v : matchesSchema(
-        InjectableSchema(context, restrictedInjectOptions)
+        InjectableSchema(context, restrictedInjectEnv)
       )).optional(),
     css: z.record(z.record(z.any()))
       .transform(!context ? v => v : matchesSchema(
-        InjectableSchema(context, restrictedInjectOptions)
+        InjectableSchema(context, restrictedInjectEnv)
       )).optional(),
     anime: ArrayOrSingleSchema(z.record(z.any()))
       .transform(!context ? v => v : matchesSchema(
         InjectableSchema(context, env)
-      ))
-  })
+      )),
+    onBeforeCreate: HookSchema(context, env).optional(),
+    onCreated: HookSchema(context, env).optional(),
+    onBeforeBegin: HookSchema(context, env).optional(),
+    onCompleted: HookSchema(context, env).optional(),
+    onBeforeDestroy: HookSchema(context, env).optional(),
+    onDestroyed: HookSchema(context, env).optional(),
+  }).strict()
 }
 
-const AnimationSchema = (context = null) => z.object({
+const AnimationSchema = z.object({
   key: z.string().min(1).trim(),
   name: z.string().trim(),
   meta: MetaSchema.optional(),
   settings: SettingsSchema.optional(),
-  animate: AnimateSchema(context).optional(),
-  enter: AnimateSchema(context, { disallowed: [Inject.Type] }).optional(),
-  exit: AnimateSchema(context, { disallowed: [Inject.Type] }).optional(),
+  animate: AnimateSchema().optional(),
+  enter: AnimateSchema().optional(),
+  exit: AnimateSchema().optional(),
 }).strict().refine(
   v => v.animate ? !(v.enter || v.exit) : (v.enter && v.exit),
   { message: `Animation definition is required and must be either inside a single 'animate' property or inside 'enter' and 'exit' properties` }

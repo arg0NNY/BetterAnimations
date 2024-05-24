@@ -13,7 +13,7 @@ const PackSchema = z.object({
   patreon: z.string().regex(regex.url).optional(),
   website: z.string().regex(regex.url).optional(),
 
-  animations: AnimationSchema().array()
+  animations: AnimationSchema.array()
 })
 
 export default PackSchema
