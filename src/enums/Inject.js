@@ -22,5 +22,7 @@ export default Enum({
   StyleRemoveProperty: 'style.removeProperty',
   Undefined: 'undefined',
   Function: 'function',
-  Debug: 'debug'
+  Debug: 'debug',
+  VarGet: 'var.get',
+  VarSet: 'var.set'
 })

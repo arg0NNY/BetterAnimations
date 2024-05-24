@@ -14,7 +14,9 @@ import {
   UndefinedInjectSchema,
   FunctionInjectSchema,
   ModuleInjectSchema,
-  DebugInjectSchema
+  DebugInjectSchema,
+  VarGetInjectSchema,
+  VarSetInjectSchema
 } from '@/modules/animation/schemas/injects/common'
 import {
   AnimeGetInjectSchema,
@@ -53,9 +55,12 @@ const injectSchemas = {
   [Inject.StyleRemoveProperty]: StyleRemovePropertyInjectSchema,
   [Inject.Undefined]: UndefinedInjectSchema,
   [Inject.Function]: FunctionInjectSchema,
-  [Inject.Debug]: DebugInjectSchema
+  [Inject.Debug]: DebugInjectSchema,
+  [Inject.VarGet]: VarGetInjectSchema,
+  [Inject.VarSet]: VarSetInjectSchema
 }
 const injectTypes = Object.keys(injectSchemas)
+const lazyInjects = injectTypes.filter(k => injectSchemas[k][1]?.lazy)
 
 function parseInject ({ schema, context, value, ctx }) {
   const { success, data, error } = (
@@ -77,6 +82,9 @@ const InjectableSchema = (context, env = {}) => {
       Literal,
       z.function(), // Lazy injects are transformed into functions
       z.instanceof(HTMLElement), // Prevent Zod from parsing HTMLElement
+      ...(stage === ParseStage.Execute
+        ? lazyInjects.map(k => z.object({ inject: z.literal(k) }).passthrough())
+        : []), // Do not let Zod parse anything inside lazy injects, because they will be parsed upon call
       z.array(schema),
       z.record(schema)
     ]).transform((value, ctx) => {

@@ -93,7 +93,19 @@ export const FunctionInjectSchema = InjectWithMeta(
 
 export const DebugInjectSchema = InjectWithMeta(
   ({ animation, type }) => InjectSchema(Inject.Debug).extend({
-    data: z.any()
+    data: z.any().optional()
   }).transform(({ data }) => Logger.log('Animation', `${animation.key} [${type}]:`, data)),
+  { lazy: true }
+)
+
+export const VarGetInjectSchema = ({ vars }) => InjectSchema(Inject.VarGet).extend({
+  name: z.string()
+}).transform(({ name }) => vars[name])
+
+export const VarSetInjectSchema = InjectWithMeta(
+  ({ vars }) => InjectSchema(Inject.VarSet).extend({
+    name: z.string(),
+    value: z.any()
+  }).transform(({ name, value }) => { vars[name] = value }),
   { lazy: true }
 )

@@ -1,4 +1,3 @@
-import { AnimateSchema } from '@/modules/animation/schemas/AnimationSchema'
 import { toDom } from 'hast-util-to-dom'
 import { defaultSchema, sanitize } from 'hast-util-sanitize'
 import deepmerge from 'deepmerge'
@@ -12,7 +11,8 @@ export function buildContext (animation, type, settings = {}, context = {}) {
       animation,
       settings: animation?.settings,
       meta: animation?.meta,
-      type
+      type,
+      vars: {}
     },
     settings,
     context
