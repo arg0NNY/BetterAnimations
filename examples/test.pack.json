@@ -76,11 +76,7 @@
                 "value": 80
               },
               "duration": { "inject": "duration" },
-              "easing": { "inject": "easing" },
-              "complete": {
-                "inject": "style.removeProperty",
-                "property": ["opacity", "transform"]
-              }
+              "easing": { "inject": "easing" }
             },
             "source": {
               "inject": "direction",
@@ -92,7 +88,11 @@
               "backwards": { "scale": [0.9, 1], "opacity": [0, 1] }
             }
           }
-        ]
+        ],
+        "onDestroyed": {
+          "inject": "style.removeProperty",
+          "property": ["opacity", "transform"]
+        }
       },
       "exit": {
         "anime": {
@@ -120,6 +120,10 @@
             "forwards": { "scale": 0.9, "opacity": 0 },
             "backwards": { "scale": 1.1, "opacity": 0 }
           }
+        },
+        "onDestroyed": {
+          "inject": "style.removeProperty",
+          "property": ["opacity", "transform"]
         }
       }
     },
@@ -170,11 +174,7 @@
             {
               "inject": "type",
               "enter": {
-                "opacity": [0, 1],
-                "complete": {
-                  "inject": "style.removeProperty",
-                  "property": ["opacity", "transform"]
-                }
+                "opacity": [0, 1]
               },
               "exit": {
                 "opacity": 0
@@ -194,7 +194,85 @@
               }
             }
           ]
+        },
+        "onDestroyed": {
+          "inject": "style.removeProperty",
+          "property": ["opacity", "transform"]
         }
+      }
+    },
+
+    {
+      "key": "sidebar",
+      "name": "Sidebar",
+      "meta": {
+        "modules": "sidebars",
+        "forceDisableInternalExpandCollapseAnimations": true
+      },
+      "settings": {
+        "duration": true,
+        "easing": true,
+
+        "defaults": {
+          "duration": 400,
+          "easing": "easeInOutQuint"
+        }
+      },
+      "animate": {
+        "css": {
+          "{container}": {
+            "perspective": "1750px",
+            "perspective-origin": "right center"
+          },
+          "{element}": {
+            "position": "absolute",
+            "top": 0,
+            "right": 0,
+            "height": "100%",
+            "transform-origin": "right center"
+          }
+        },
+        "anime": [
+          {
+            "targets": { "inject": "container" },
+            "duration": { "inject": "duration" },
+            "easing": { "inject": "easing" },
+            "width": {
+              "inject": "type",
+              "enter": [0, {
+                "inject": "anime.get",
+                "target": { "inject": "element" },
+                "property": "width"
+              }],
+              "exit": [{
+                "inject": "anime.get",
+                "target": { "inject": "container" },
+                "property": "width"
+              }, 0]
+            }
+          },
+          {
+            "targets": { "inject": "element" },
+            "duration": { "inject": "duration" },
+            "easing": { "inject": "easing" },
+            "rotateY": {
+              "inject": "type",
+              "enter": ["-90deg", 0],
+              "exit": "-90deg"
+            }
+          }
+        ],
+        "onDestroyed": [
+          {
+            "inject": "style.removeProperty",
+            "target": { "inject": "container" },
+            "property": "width"
+          },
+          {
+            "inject": "style.removeProperty",
+            "property": "transform"
+          }
+        ]
       }
     }
 
