@@ -18,6 +18,7 @@ import { fromZodError } from 'zod-validation-error'
 import { AnimateSchema } from '@/modules/animation/schemas/AnimationSchema'
 import Events from '@/enums/Events'
 import Emitter from '@/modules/Emitter'
+import Logger from '@/modules/Logger'
 
 class Module {
   constructor (id, name, meta = {}) {
@@ -321,6 +322,8 @@ class Module {
 }
 
 export default new class Modules {
+  get name () { return 'Core' }
+
   constructor () {
     this.modules = modules.map(m => new Module(m.id, m.name, m.meta))
 
@@ -332,10 +335,14 @@ export default new class Modules {
   initialize () {
     this.modules.forEach(m => m.initializeAnimations())
     this.listenEvents()
+
+    Logger.log(this.name, `Initialized ${this.modules.length} animation modules.`)
   }
 
   shutdown () {
     this.unlistenEvents()
+
+    Logger.log(this.name, 'Shutdown.')
   }
 
   onChange (id = null) {
