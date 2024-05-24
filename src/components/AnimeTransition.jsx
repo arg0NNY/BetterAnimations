@@ -58,11 +58,13 @@ class AnimeTransition extends React.Component {
         )
 
         const assets = buildAnimateAssets(animate, context, module.buildOptions())
+        const { onBeforeCreate, onBeforeDestroy, onDestroyed } = assets
 
+        onBeforeCreate?.()
         if (assets.node) node.before(assets.node)
 
         requestAnimationFrame(() => {
-          const { finished, pause, onBeforeDestroy, onDestroyed } = assets.execute()
+          const { finished, pause } = assets.execute()
 
           container.setAttribute('data-animation-type', type)
           if (module.type) container.setAttribute(`data-animation-${module.type}`, '')

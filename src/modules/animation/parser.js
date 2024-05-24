@@ -73,8 +73,10 @@ export function buildAnimateAssets (data = null, context = {}, options = {}) {
 
   return {
     node: wrapper,
+    onBeforeCreate: data.onBeforeCreate,
+    onBeforeDestroy: data.onBeforeDestroy,
+    onDestroyed: data.onDestroyed,
     execute: () => {
-      data.onBeforeCreate?.()
       const instances = [].concat(data.anime ?? []).map(
         a => (
           typeof a === 'function' // Can be a function because of "anime.timeline" inject
@@ -103,9 +105,7 @@ export function buildAnimateAssets (data = null, context = {}, options = {}) {
           .then(() => {
             data.onCompleted?.()
             return after && context.type === AnimationType.Exit && after(context).finished
-          }),
-        onBeforeDestroy: data.onBeforeDestroy,
-        onDestroyed: data.onDestroyed
+          })
       }
     }
   }
