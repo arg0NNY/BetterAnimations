@@ -94,7 +94,15 @@ export const FunctionInjectSchema = InjectWithMeta(
 export const DebugInjectSchema = InjectWithMeta(
   ({ animation, type }) => InjectSchema(Inject.Debug).extend({
     data: z.any().optional()
-  }).transform(({ data }) => Logger.log('Animation', `${animation.key} [${type}]:`, data)),
+  }).transform(({ data }) => Logger.stylized(
+    'Animation',
+    'log',
+    `%c${animation.key} (${type}) %c[DEBUG]%c`,
+    'color: #B8AF5E;',
+    'color: #6BA6FF;',
+    '',
+    data
+  )),
   { lazy: true }
 )
 

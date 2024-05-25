@@ -76,16 +76,28 @@ export default class Logger {
   static log(module, ...message) {Logger._log(module, message);}
 
   /**
+   * Logs using stylized formatting.
+   *
+   * @param {string} module - Name of the calling module.
+   * @param {string} type - Type of log to use in console.
+   * @param {string} message - Message to stylize.
+   * @param {...any} entries - Substitutions for stylizing and other messages.
+   */
+  static stylized(module, type, message, ...entries) {
+    Logger._log(module, entries, type, message)
+  }
+
+  /**
    * Logs strings using different console levels and a module label.
    *
    * @param {string} module - Name of the calling module.
    * @param {any|Array<any>} message - Messages to have logged.
    * @param {module:Logger.LogTypes} type - Type of log to use in console.
    */
-  static _log(module, message, type = "log") {
+  static _log(module, message, type = "log", after = '') {
     type = Logger.parseType(type);
     if (!Array.isArray(message)) message = [message];
-    console[type](`%c[${meta.name}]%c [${module}]%c`, "color: #3E82E5; font-weight: 700;", "color: #3a71c1;", "", ...message);
+    console[type](`%c[${meta.name}]%c [${module}]%c` + (after ? ` ${after}` : ''), "color: #3E82E5; font-weight: 700;", "color: #3a71c1;", "", ...message);
   }
 
   static parseType(type) {
