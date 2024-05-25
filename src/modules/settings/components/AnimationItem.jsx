@@ -52,13 +52,17 @@ export default function AnimationItem ({
         {enterActive && (
           <Common.Card style={{ padding: '12px' }}>
             <Common.FormText>Enter <Common.Button size={Common.ButtonSizes.SMALL} onClick={resetSettings(setEnterSettings, AnimationType.Enter)}>Reset</Common.Button></Common.FormText>
-            <AnimationSettings animation={animation} type={AnimationType.Enter} settings={enterSettings} onChange={setEnterSettings} />
+            {animation.settings && (
+              <AnimationSettings animation={animation} type={AnimationType.Enter} settings={enterSettings} onChange={setEnterSettings} />
+            )}
           </Common.Card>
         )}
         {exitActive && (
           <Common.Card style={{ padding: '12px' }}>
             <Common.FormText>Exit <Common.Button size={Common.ButtonSizes.SMALL} onClick={resetSettings(setExitSettings, AnimationType.Exit)}>Reset</Common.Button></Common.FormText>
-            <AnimationSettings animation={animation} type={AnimationType.Exit} settings={exitSettings} onChange={setExitSettings} />
+            {animation.settings && (
+              <AnimationSettings animation={animation} type={AnimationType.Exit} settings={exitSettings} onChange={setExitSettings} />
+            )}
           </Common.Card>
         )}
       </div>

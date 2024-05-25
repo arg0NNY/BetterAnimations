@@ -69,6 +69,7 @@ export default function (meta) {
       PackManager.shutdown()
 
       Modules.shutdown()
+      ModalActions.closeAllModals()
 
       Logger.info('Shutdown', 'Removing patches...')
       Patcher.unpatchAll()

@@ -67,6 +67,7 @@ class AnimeTransition extends React.Component {
           const { finished, pause } = assets.execute()
 
           container.setAttribute('data-animation-type', type)
+          container.setAttribute('data-animation-overflow', context.overflow)
           if (module.type) container.setAttribute(`data-animation-${module.type}`, '')
 
           this.cancelAnimation = () => {
@@ -154,7 +155,7 @@ css
     pointer-events: none;
 }
 
-[data-animation-container][data-animation-switch] { /* Temporary while overflow is not a setting */
+[data-animation-container][data-animation-overflow="false"] {
     overflow: clip;
 }
 [data-animation-container][data-animation-switch] > :not([data-animation]) { /* Animating switch element */

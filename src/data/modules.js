@@ -38,7 +38,8 @@ const modules = [
           [Setting.Direction]: true
         },
         defaults: {
-          [Setting.DirectionAxis]: Axis.Y
+          [Setting.DirectionAxis]: Axis.Y,
+          [Setting.Overflow]: false
         }
       }
     }
@@ -53,7 +54,8 @@ const modules = [
           [Setting.Direction]: true
         },
         defaults: {
-          [Setting.DirectionAxis]: Axis.Y
+          [Setting.DirectionAxis]: Axis.Y,
+          [Setting.Overflow]: false
         }
       }
     }
@@ -68,7 +70,8 @@ const modules = [
           [Setting.Direction]: true
         },
         defaults: {
-          [Setting.DirectionAxis]: Axis.Y
+          [Setting.DirectionAxis]: Axis.Y,
+          [Setting.Overflow]: false
         }
       }
     }
@@ -164,7 +167,8 @@ const modules = [
           [Setting.Direction]: true
         },
         defaults: {
-          [Setting.DirectionAxis]: Axis.Z
+          [Setting.DirectionAxis]: Axis.Z,
+          [Setting.Overflow]: false
         }
       }
     }

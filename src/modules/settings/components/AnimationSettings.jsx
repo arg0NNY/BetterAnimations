@@ -5,6 +5,7 @@ import VariantControl from '@/modules/settings/components/controls/VariantContro
 import PositionControl from '@/modules/settings/components/controls/PositionControl'
 import DirectionControl from '@/modules/settings/components/controls/DirectionControl'
 import { getAnimationDefaultSettings } from '@/helpers/animations'
+import OverflowControl from '@/modules/settings/components/controls/OverflowControl'
 
 export default function AnimationSettings ({ animation, type, settings, onChange }) {
   const defaults = getAnimationDefaultSettings(animation, type)
@@ -53,6 +54,11 @@ export default function AnimationSettings ({ animation, type, settings, onChange
           onAxisChange={axis => setSettings({ directionAxis: axis })}
         />
       )}
+      <OverflowControl
+        value={settings.overflow}
+        onChange={(_, overflow) => setSettings({ overflow })}
+        forced={animation.settings.overflow === false}
+      />
     </div>
   )
 }

@@ -12,11 +12,13 @@
         "duration": true,
         "easing": true,
         "direction": ["upwards", "downwards", "leftwards", "rightwards", "forwards", "backwards"],
+        "overflow": false,
 
         "defaults": {
           "duration": 500,
           "easing": "easeInOutQuad",
-          "direction": "rightwards"
+          "direction": "rightwards",
+          "overflow": false
         }
       },
       "enter": {
@@ -241,7 +243,6 @@
               "inject": "type",
               "enter": [0, {
                 "inject": "anime.get",
-                "target": { "inject": "element" },
                 "property": "width"
               }],
               "exit": [{

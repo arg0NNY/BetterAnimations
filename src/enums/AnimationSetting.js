@@ -6,5 +6,6 @@ export default Enum({
   Variant: 'variant',
   Position: 'position',
   Direction: 'direction',
-  DirectionAxis: 'directionAxis'
+  DirectionAxis: 'directionAxis',
+  Overflow: 'overflow'
 })

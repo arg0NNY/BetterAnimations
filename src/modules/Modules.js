@@ -166,6 +166,7 @@ class Module {
     return Object.fromEntries(
       Object.entries(this.meta.settings?.defaults ?? {})
         .filter(([key]) => {
+          if (key === Setting.Overflow) return true
           if (key === Setting.DirectionAxis) key = Setting.Direction
           return key in (animation.settings ?? {})
         })
@@ -173,7 +174,7 @@ class Module {
   }
   buildDefaultSettings (animation, type, normalized = true) {
     const settings = Object.assign(
-      {},
+      { [Setting.Overflow]: true },
       getAnimationDefaultSettings(animation, type),
       this.buildModuleDefaultSettings(animation),
       Object.fromEntries(
@@ -199,6 +200,8 @@ class Module {
   }
 
   normalizeSetting (animation, type, setting, value, allSettings = {}) {
+    const animationDefaults = getAnimationDefaultSettings(animation, type)
+
     switch (setting) {
       case Setting.DirectionAxis: {
         if (allSettings[Setting.Direction] !== Auto()) return undefined
@@ -207,6 +210,12 @@ class Module {
         if (directions === true) return value
         if (getDirectionsByAxis(value)?.every(d => directions.includes(d))) return value
         return [Axis.Y, Axis.Z, Axis.X].find(axis => getDirectionsByAxis(axis).every(d => directions.includes(d)))
+      }
+      case Setting.Overflow: {
+        if (animation.settings?.[setting] === false)
+          return animationDefaults[setting]
+
+        return value
       }
     }
 
@@ -221,7 +230,7 @@ class Module {
       }
       case Setting.Variant: {
         const keys = animation.settings[setting].map(v => v.key)
-        if (!keys.includes(value)) return getAnimationDefaultSettings(animation, type)[setting] ?? keys[0]
+        if (!keys.includes(value)) return animationDefaults[setting] ?? keys[0]
         return value
       }
       case Setting.Position:
@@ -231,7 +240,7 @@ class Module {
           values === true
             || (value === Auto() && this.supportsAuto(animation, setting))
         ) return value
-        if (!values.includes(value)) return getAnimationDefaultSettings(animation, type)[setting] ?? values[0]
+        if (!values.includes(value)) return animationDefaults[setting] ?? values[0]
         return value
       }
       default: return value

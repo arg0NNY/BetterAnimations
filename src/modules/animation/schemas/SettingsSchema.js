@@ -12,7 +12,8 @@ const DefaultsSchema = z.object({
   [Setting.Easing]: z.string(),
   [Setting.Variant]: z.string(),
   [Setting.Position]: z.enum(Position.values()),
-  [Setting.Direction]: z.enum(Direction.values())
+  [Setting.Direction]: z.enum(Direction.values()),
+  [Setting.Overflow]: z.boolean()
 }).strict().partial()
 
 const SettingsSchema = z.object({
@@ -31,6 +32,7 @@ const SettingsSchema = z.object({
   [Setting.Position]: EnumSchema(Position.values()).optional(),
   [Setting.Direction]: EnumSchema(Direction.values()).optional()
     .transform(value => value === true ? [Direction.Upwards, Direction.Downwards, Direction.Leftwards, Direction.Rightwards] : value),
+  [Setting.Overflow]: z.boolean().optional(),
 
   defaults: z.union([
     z.object({
