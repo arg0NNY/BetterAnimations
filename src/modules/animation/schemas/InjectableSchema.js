@@ -60,7 +60,6 @@ const injectSchemas = {
   [Inject.VarSet]: VarSetInjectSchema
 }
 const injectTypes = Object.keys(injectSchemas)
-const lazyInjects = injectTypes.filter(k => injectSchemas[k][1]?.lazy)
 
 function parseInject ({ schema, context, value, ctx }) {
   const { success, data, error } = (
@@ -82,12 +81,12 @@ const InjectableSchema = (context, env = {}) => {
       Literal,
       z.function(), // Lazy injects are transformed into functions
       z.instanceof(HTMLElement), // Prevent Zod from parsing HTMLElement
-      ...(stage === ParseStage.Execute
-        ? lazyInjects.map(k => z.object({ inject: z.literal(k) }).passthrough())
-        : []), // Do not let Zod parse anything inside lazy injects, because they will be parsed upon call
       z.array(schema),
       z.record(schema)
     ]).transform((value, ctx) => {
+      // If we meet a function, that's a parsed lazy inject, which turned into a generator function, awaiting a complete context
+      if (typeof value === 'function') return value(context)
+
       if (value?.inject === undefined) return value
 
       const [schema, meta = {}] = [].concat(injectSchemas[value.inject])
@@ -109,11 +108,11 @@ const InjectableSchema = (context, env = {}) => {
         if (meta.immediate === true || (Array.isArray(meta.immediate) && meta.immediate.every(key => key in context)))
           return parseInject({ schema, context, value, ctx })
 
+        if (meta.lazy)
+          return context => () => InjectableSchema(context, { ...env, stage: ParseStage.Lazy }).parse(value)
+
         return value
       }
-
-      if (stage === ParseStage.Execute && meta.lazy)
-        return () => InjectableSchema(context, { ...env, stage: ParseStage.Lazy }).parse(value)
 
       return parseInject({ schema, context, value, ctx })
     })

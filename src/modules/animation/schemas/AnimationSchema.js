@@ -19,16 +19,19 @@ const safeInjects = [
 ]
 
 export const HookSchema = (context = null, env = {}) => {
-  const schema = ArrayOrSingleSchema(z.record(z.any()))
-    .transform(!context ? v => v : matchesSchema(
+  // If parsing on load or on initialize stage, expect an unparsed object
+  if (!context || env.stage === ParseStage.Initialize)
+    return ArrayOrSingleSchema(z.record(z.any()))
+      .transform(!context ? v => v : matchesSchema(
+        InjectableSchema(context, env)
+      ))
+
+  // Otherwise, expect a lazy inject, which turned into a generator function, awaiting a complete context
+  return ArrayOrSingleSchema(z.function())
+    .transform(matchesSchema(
       InjectableSchema(context, env)
     ))
-
-  return !('stage' in env) || env.stage === ParseStage.Initialize
-    ? schema
-    : schema.pipe(
-      ArrayOrSingleSchema(z.function())
-    ).transform(
+    .transform(
       v => Array.isArray(v)
         ? () => v.forEach(f => f())
         : v
