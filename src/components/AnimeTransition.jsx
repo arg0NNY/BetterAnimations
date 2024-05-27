@@ -36,7 +36,7 @@ class AnimeTransition extends React.Component {
     return {
       container: container,
       node: container?.getAttribute('data-animation-container') === ''
-        ? container.lastElementChild // First one may be [data-animation]
+        ? [].find.call(container.childNodes, e => !e.getAttribute('data-animation'))
         : container
     }
   }
