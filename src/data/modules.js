@@ -158,6 +158,11 @@ const modules = [
     }
   },
   {
+    id: ModuleKey.ModalsBackdrop,
+    name: 'Backdrop',
+    parent: ModuleKey.Modals
+  },
+  {
     id: ModuleKey.Layers,
     name: 'Layers',
     meta: {

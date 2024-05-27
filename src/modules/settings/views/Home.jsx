@@ -1,17 +1,12 @@
 import { Common, Router } from '@/modules/DiscordModules'
-import modules from '@/data/modules'
+import Modules from '@/modules/Modules'
+import ModuleList from '@/modules/settings/components/ModuleList'
 
 export default function Home () {
   return (
     <div>
       <Common.FormTitle tag="h2">Home</Common.FormTitle>
-      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 20 }}>
-        {modules.map(m => (
-          <Router.Link key={m.id} to={`/modules/${m.id}`}>
-            <Common.Button size={Common.ButtonSizes.SMALL}>{m.name}</Common.Button>
-          </Router.Link>
-        ))}
-      </div>
+      <ModuleList items={Modules.getAllModules()} />
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
         <Router.Link to="/catalog">
           <Common.Button>Catalog</Common.Button>

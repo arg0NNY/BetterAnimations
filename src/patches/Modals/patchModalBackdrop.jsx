@@ -1,24 +1,46 @@
 import { Patcher } from '@/BdApi'
-import { Easing, ModalBackdrop, ReactSpring } from '@/modules/DiscordModules'
+import { ModalBackdrop } from '@/modules/DiscordModules'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
+import findInReactTree from '@/helpers/findInReactTree'
+import { DiscordClasses } from '@/modules/DiscordSelectors'
+import AnimeTransition from '@/components/AnimeTransition'
+import Modules from '@/modules/Modules'
 
 function patchModalBackdrop () {
-  let renderRunning = false
-
-  Patcher.before(ModalBackdrop.default, 'render', () => {
-    const module = useModule(ModuleKey.Modals)
+  Patcher.before(ModalBackdrop.default, 'render', (self, [props]) => {
+    const module = useModule(ModuleKey.ModalsBackdrop)
     if (!module.isEnabled()) return
 
-    renderRunning = module.getGeneralSettings()
+    props._isVisible = props.isVisible
+    props.isVisible = true
   })
-  Patcher.after(ModalBackdrop.default, 'render', () => { renderRunning = false })
+  Patcher.after(ModalBackdrop.default, 'render', (self, [props], value) => {
+    const module = Modules.getModule(ModuleKey.ModalsBackdrop)
+    if (!module.isEnabled()) return
 
-  Patcher.before(ReactSpring, 'useTransition', (self, [_, { config }]) => {
-    if (!renderRunning || config.duration === 0) return
+    const children = findInReactTree(value, m => m?.[0]?.props?.className?.includes(DiscordClasses.ModalBackdrop.backdrop))
+    if (!children) return
 
-    config.duration = renderRunning.backdropTransitionDuration ?? 200
-    config.easing = Easing.inOut(Easing.sin)
+    const [backdrop] = children
+    if (backdrop) {
+      backdrop.type = 'div'
+      delete backdrop.props.style
+      backdrop.props.children = (
+        <div className="BA__modalBackdrop" />
+      )
+    }
+
+    children[0] = (
+      <AnimeTransition
+        appear={true}
+        in={props._isVisible}
+        module={module}
+        targetContainer={e => e}
+      >
+        {backdrop}
+      </AnimeTransition>
+    )
   })
 }
 

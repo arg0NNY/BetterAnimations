@@ -5,7 +5,7 @@ export const heightModifier = (type, { easing, duration }) => ({ container, elem
   element.style.visibility = 'hidden'
   return anime({
     targets: container,
-    height: type === AnimationType.Exit ? 0 : [0, anime.get(container, 'height')],
+    height: type === AnimationType.Exit ? 0 : [0, anime.get(element, 'height')],
     marginTop: type === AnimationType.Exit ? 0 : [0, anime.get(container, 'marginTop')],
     marginBottom: type === AnimationType.Exit ? 0 : [0, anime.get(container, 'marginBottom')],
     easing,

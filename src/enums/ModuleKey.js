@@ -16,6 +16,7 @@ export default Enum({
   Messages: 'messages',
   ChannelList: 'channelList',
   Modals: 'modals',
+  ModalsBackdrop: 'modalsBackdrop',
   Layers: 'layers',
   MembersSidebar: 'membersSidebar',
   ThreadSidebar: 'threadSidebar'

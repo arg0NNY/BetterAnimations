@@ -57,5 +57,20 @@ export default patchModals
 css
 `${DiscordSelectors.Modal.root}, .bd-modal-root {
     isolation: isolate;
+}
+
+${DiscordSelectors.ModalBackdrop.backdrop} {
+    z-index: -1;
+    position: fixed !important;
+}
+${DiscordSelectors.Layer.layerContainer} + ${DiscordSelectors.Layer.layerContainer} ${DiscordSelectors.ModalBackdrop.backdrop} {
+    display: none;
+}
+
+.BA__modalBackdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0.7);
 }`
 `Modals`

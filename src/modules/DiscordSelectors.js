@@ -4,6 +4,7 @@ const Classes = {
   ChatSidebar: Webpack.getByKeys('chatLayerWrapper', 'chatTarget'),
   StandardSidebarView: () => Webpack.getByKeys('standardSidebarView', 'contentRegion'),
   Modal: Webpack.getByKeys('root', 'rootWithShadow'),
+  ModalBackdrop: Webpack.getByKeys('backdrop', 'withLayer'),
   Layers: Webpack.getByKeys('layer', 'baseLayer'),
   Margins: Webpack.getByKeys('marginTop20'),
   AppMount: Webpack.getByKeys('appMount'),
@@ -11,7 +12,8 @@ const Classes = {
   ChannelView: Webpack.getByKeys('chat', 'channelName'),
   VoiceChannelView: Webpack.getByKeys('channelChatWrapper', 'chatSidebarOpen'),
   ChannelItem: Webpack.getByKeys('containerDefault', 'channelInfo'),
-  MessageList: Webpack.getByKeys('message', 'groupStart')
+  MessageList: Webpack.getByKeys('message', 'groupStart'),
+  Layer: Webpack.getByKeys('layer', 'layerContainer')
 }
 
 export const DiscordClasses = new Proxy(Classes, {

@@ -21,10 +21,11 @@ import Emitter from '@/modules/Emitter'
 import Logger from '@/modules/Logger'
 
 class Module {
-  constructor (id, name, meta = {}) {
+  constructor (id, name, meta = {}, { parent } = {}) {
     this.id = id
     this.name = name
     this.meta = meta
+    this.parent = parent
   }
 
   get settings () {
@@ -120,15 +121,7 @@ class Module {
   }
 
   isSupportedBy (animation) {
-    return !animation.meta?.modules
-      || (animation.meta.modules.has(this.id))
-  }
-
-  getGeneralSettings () {
-    return this.settings.settings ?? {}
-  }
-  setGeneralSettings (settings) {
-    this.settings.settings = settings
+    return animation.meta.modules.has(this.id)
   }
 
   supportsAuto (animation, setting) {
@@ -334,7 +327,7 @@ export default new class Modules {
   get name () { return 'Core' }
 
   constructor () {
-    this.modules = modules.map(m => new Module(m.id, m.name, m.meta))
+    this.modules = modules.map(({ id, name, meta, ...options }) => new Module(id, name, meta, options))
 
     this.globalChangeEvents = [Events.PackLoaded, Events.PackUnloaded, Events.SettingsChanged]
     this.onGlobalChange = () => this.onChange()
@@ -367,7 +360,16 @@ export default new class Modules {
     Emitter.off(Events.ModuleSettingsChanged, this.onModuleChange)
   }
 
+  getAllModules (includeNested = false) {
+    return this.modules.filter(m => includeNested || !m.parent)
+  }
   getModule (id) {
     return this.modules.find(m => m.id === id)
+  }
+  getParentModule (module) {
+    return module.parent && this.getModule(module.parent)
+  }
+  getChildModules (module) {
+    return this.modules.filter(m => m.parent === module.id)
   }
 }

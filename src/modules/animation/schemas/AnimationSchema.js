@@ -6,6 +6,7 @@ import SettingsSchema from '@/modules/animation/schemas/SettingsSchema'
 import MetaSchema from '@/modules/animation/schemas/MetaSchema'
 import ParseStage from '@/enums/ParseStage'
 
+// TODO: Update
 const safeInjects = [
   Inject.Module,
   Inject.Type,
@@ -66,7 +67,7 @@ export const AnimateSchema = (context = null, env = {}) => {
 const AnimationSchema = z.object({
   key: z.string().min(1).trim(),
   name: z.string().trim(),
-  meta: MetaSchema.optional(),
+  meta: MetaSchema.optional().default({}),
   settings: SettingsSchema.optional(),
   animate: AnimateSchema().optional(),
   enter: AnimateSchema().optional(),

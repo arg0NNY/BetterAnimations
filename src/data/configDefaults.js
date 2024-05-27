@@ -12,11 +12,6 @@ export const configDefaults = {
         packSlug: 'test',
         animationKey: 'example'
       }
-    },
-    [ModuleKey.Modals]: {
-      settings: {
-        backdropTransitionDuration: 200
-      }
     }
   }
 }
