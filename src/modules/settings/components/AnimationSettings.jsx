@@ -6,8 +6,10 @@ import PositionControl from '@/modules/settings/components/controls/PositionCont
 import DirectionControl from '@/modules/settings/components/controls/DirectionControl'
 import { getAnimationDefaultSettings } from '@/helpers/animations'
 import OverflowControl from '@/modules/settings/components/controls/OverflowControl'
+import ModuleContext from '@/modules/settings/context/ModuleContext'
 
 export default function AnimationSettings ({ animation, type, settings, onChange }) {
+  const module = React.useContext(ModuleContext)
   const defaults = getAnimationDefaultSettings(animation, type)
   const setSettings = values => onChange(Object.assign({}, settings, values))
 
@@ -54,11 +56,13 @@ export default function AnimationSettings ({ animation, type, settings, onChange
           onAxisChange={axis => setSettings({ directionAxis: axis })}
         />
       )}
-      <OverflowControl
-        value={settings.overflow}
-        onChange={(_, overflow) => setSettings({ overflow })}
-        forced={animation.settings.overflow === false}
-      />
+      {!module?.meta.settings?.hideOverflow && (
+        <OverflowControl
+          value={settings.overflow}
+          onChange={(_, overflow) => setSettings({ overflow })}
+          forced={animation.settings.overflow === false}
+        />
+      )}
     </div>
   )
 }

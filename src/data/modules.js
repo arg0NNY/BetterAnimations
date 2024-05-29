@@ -160,7 +160,12 @@ const modules = [
   {
     id: ModuleKey.ModalsBackdrop,
     name: 'Backdrop',
-    parent: ModuleKey.Modals
+    parent: ModuleKey.Modals,
+    meta: {
+      settings: {
+        hideOverflow: true
+      }
+    }
   },
   {
     id: ModuleKey.Layers,
@@ -174,7 +179,8 @@ const modules = [
         defaults: {
           [Setting.DirectionAxis]: Axis.Z,
           [Setting.Overflow]: false
-        }
+        },
+        hideOverflow: true
       }
     }
   },
