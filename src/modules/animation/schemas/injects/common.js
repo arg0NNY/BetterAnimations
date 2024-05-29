@@ -91,6 +91,13 @@ export const FunctionInjectSchema = InjectWithMeta(
   { lazy: true }
 )
 
+export const ArgumentsInjectSchema = (context, env) => InjectSchema(Inject.Arguments).extend({
+  index: z.number().optional()
+}).transform(({ index }) => {
+  const args = env.args ?? []
+  return index === undefined ? args : args[index]
+})
+
 export const DebugInjectSchema = InjectWithMeta(
   ({ animation, type }) => InjectSchema(Inject.Debug).extend({
     data: z.any().optional()

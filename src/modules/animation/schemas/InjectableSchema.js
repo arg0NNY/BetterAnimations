@@ -13,6 +13,7 @@ import {
   StyleRemovePropertyInjectSchema,
   UndefinedInjectSchema,
   FunctionInjectSchema,
+  ArgumentsInjectSchema,
   ModuleInjectSchema,
   DebugInjectSchema,
   VarGetInjectSchema,
@@ -55,15 +56,16 @@ const injectSchemas = {
   [Inject.StyleRemoveProperty]: StyleRemovePropertyInjectSchema,
   [Inject.Undefined]: UndefinedInjectSchema,
   [Inject.Function]: FunctionInjectSchema,
+  [Inject.Arguments]: ArgumentsInjectSchema,
   [Inject.Debug]: DebugInjectSchema,
   [Inject.VarGet]: VarGetInjectSchema,
   [Inject.VarSet]: VarSetInjectSchema
 }
 const injectTypes = Object.keys(injectSchemas)
 
-function parseInject ({ schema, context, value, ctx }) {
+function parseInject ({ schema, context, env, value, ctx }) {
   const { success, data, error } = (
-    typeof schema === 'function' ? schema(context) : schema
+    typeof schema === 'function' ? schema(context, env) : schema
   ).safeParse(value)
 
   if (!success) {
@@ -85,7 +87,7 @@ const InjectableSchema = (context, env = {}) => {
       z.record(schema)
     ]).transform((value, ctx) => {
       // If we meet a function, that's a parsed lazy inject, which turned into a generator function, awaiting a complete context
-      if (typeof value === 'function') return value(context)
+      if (typeof value === 'function') return value(context, env)
 
       if (value?.inject === undefined) return value
 
@@ -106,15 +108,19 @@ const InjectableSchema = (context, env = {}) => {
         }
 
         if (meta.immediate === true || (Array.isArray(meta.immediate) && meta.immediate.every(key => key in context)))
-          return parseInject({ schema, context, value, ctx })
+          return parseInject({ schema, context, env, value, ctx })
 
         if (meta.lazy)
-          return context => () => InjectableSchema(context, { ...env, stage: ParseStage.Lazy }).parse(value)
+          return (context, env) => (...args) => InjectableSchema(context, {
+            ...env,
+            stage: ParseStage.Lazy,
+            args
+          }).parse(value)
 
         return value
       }
 
-      return parseInject({ schema, context, value, ctx })
+      return parseInject({ schema, context, env, value, ctx })
     })
   )
 
