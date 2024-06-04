@@ -5,7 +5,7 @@ import ParseStage from '@/enums/ParseStage'
 import {
   MathInjectSchema,
   ElementInjectSchema,
-  WrapperInjectSchema,
+  HastInjectSchema,
   ContainerInjectSchema,
   ObjectAssignInjectSchema,
   StringTemplateSchema,
@@ -37,7 +37,7 @@ import {
 
 const injectSchemas = {
   [Inject.Element]: ElementInjectSchema,
-  [Inject.Wrapper]: WrapperInjectSchema,
+  [Inject.Hast]: HastInjectSchema,
   [Inject.Container]: ContainerInjectSchema,
   [Inject.AnimeStagger]: AnimeStaggerInjectSchema,
   [Inject.AnimeTimeline]: AnimeTimelineInjectSchema,

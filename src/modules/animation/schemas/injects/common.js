@@ -14,7 +14,7 @@ import Logger from '@/modules/Logger'
 
 export const ElementInjectSchema = ({ element }) => ElementSchema(Inject.Element, element)
 
-export const WrapperInjectSchema = ({ wrapper }) => ElementSchema(Inject.Wrapper, wrapper, false)
+export const HastInjectSchema = ({ wrapper }) => ElementSchema(Inject.Hast, wrapper, false)
 
 export const ContainerInjectSchema = ({ container }) => InjectSchema(Inject.Container)
   .transform(() => container)
