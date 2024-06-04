@@ -2,6 +2,7 @@ import Enum from '@/enums/Enum'
 
 export default Enum({
   Element: 'element',
+  Wrapper: 'wrapper',
   Container: 'container',
   AnimeStagger: 'anime.stagger',
   AnimeTimeline: 'anime.timeline',

@@ -1,26 +1,20 @@
 import { z } from 'zod'
-import { ArrayOrSingleSchema, buildSwitchSchema } from '@/helpers/schemas'
-import { InjectSchema, InjectWithMeta, SwitchSchema } from '@/modules/animation/schemas/injects/InjectSchema'
+import { ArrayOrSingleSchema } from '@/helpers/schemas'
+import {
+  ElementSchema,
+  InjectSchema,
+  InjectWithMeta,
+  SwitchSchema
+} from '@/modules/animation/schemas/injects/InjectSchema'
 import evaluate from '@emmetio/math-expression'
 import Inject from '@/enums/Inject'
 import AnimationType from '@/enums/AnimationType'
 import ModuleKey from '@/enums/ModuleKey'
 import Logger from '@/modules/Logger'
 
-export const ElementInjectSchema = ({ element }) => InjectSchema(Inject.Element)
-  .extend({
-    querySelector: z.string().optional(),
-    querySelectorAll: z.string().optional()
-  })
-  .transform((params, ctx) => {
-    if ('querySelector' in params && 'querySelectorAll' in params) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject type '${Inject.Element}' can't have both 'querySelector' and 'querySelectorAll' defined in pair` })
-      return z.NEVER
-    }
-    if (params.querySelectorAll) return Array.from(element.querySelectorAll(params.querySelectorAll))
-    if (params.querySelector) return element.querySelector(params.querySelector)
-    return element
-  })
+export const ElementInjectSchema = ({ element }) => ElementSchema(Inject.Element, element)
+
+export const WrapperInjectSchema = ({ wrapper }) => ElementSchema(Inject.Wrapper, wrapper, false)
 
 export const ContainerInjectSchema = ({ container }) => InjectSchema(Inject.Container)
   .transform(() => container)

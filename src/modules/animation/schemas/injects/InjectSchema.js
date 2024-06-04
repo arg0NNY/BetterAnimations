@@ -39,3 +39,25 @@ export function SwitchSchema (inject, valueList, options = {}) {
 export function InjectWithMeta (schema, { immediate = false, lazy = false }) {
   return [schema, { immediate, lazy }]
 }
+
+export function ElementSchema (inject, element = null, allowDirect = true) {
+  return InjectSchema(inject)
+    .extend({
+      querySelector: z.string().optional(),
+      querySelectorAll: z.string().optional()
+    })
+    .transform((params, ctx) => {
+      if (!allowDirect && !('querySelector' in params || 'querySelectorAll' in params)) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject '${inject}' can't be used directly and must define either 'querySelector' or 'querySelectorAll'` })
+        return z.NEVER
+      }
+      if ('querySelector' in params && 'querySelectorAll' in params) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject '${inject}' can't have both 'querySelector' and 'querySelectorAll' defined in pair` })
+        return z.NEVER
+      }
+      if (!element) return null
+      if (params.querySelectorAll) return Array.from(element.querySelectorAll(params.querySelectorAll))
+      if (params.querySelector) return element.querySelector(params.querySelector)
+      return element
+    })
+}

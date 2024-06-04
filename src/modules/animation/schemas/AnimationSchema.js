@@ -21,13 +21,15 @@ const safeInjects = [
 
 export const HookSchema = (context = null, env = {}) => {
   // If parsing on load or on initialize stage, expect an unparsed object
-  if (!context || env.stage === ParseStage.Initialize)
+  if (!env.stage || env.stage === ParseStage.Initialize)
     return ArrayOrSingleSchema(z.record(z.any()))
       .transform(!context ? v => v : matchesSchema(
         InjectableSchema(context, env)
       ))
 
   // Otherwise, expect a lazy inject, which turned into a generator function, awaiting a complete context
+  if (!context) return ArrayOrSingleSchema(z.function())
+
   return ArrayOrSingleSchema(z.function())
     .transform(matchesSchema(
       InjectableSchema(context, env)
@@ -40,16 +42,19 @@ export const HookSchema = (context = null, env = {}) => {
 }
 
 export const AnimateSchema = (context = null, env = {}) => {
-  const restrictedInjectEnv = Object.assign({ allowed: safeInjects }, env)
+  const layoutContext = context
+  const layoutEnv = Object.assign({ allowed: safeInjects }, env)
+
+  context = env.stage === ParseStage.Layout ? null : context
 
   return z.object({
     hast: ArrayOrSingleSchema(z.record(z.any()))
-      .transform(!context ? v => v : matchesSchema(
-        InjectableSchema(context, restrictedInjectEnv)
+      .transform(!layoutContext ? v => v : matchesSchema(
+        InjectableSchema(layoutContext, layoutEnv)
       )).optional(),
     css: z.record(z.record(z.any()))
-      .transform(!context ? v => v : matchesSchema(
-        InjectableSchema(context, restrictedInjectEnv)
+      .transform(!layoutContext ? v => v : matchesSchema(
+        InjectableSchema(layoutContext, layoutEnv)
       )).optional(),
     anime: ArrayOrSingleSchema(z.record(z.any()))
       .transform(!context ? v => v : matchesSchema(

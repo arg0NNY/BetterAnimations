@@ -45,6 +45,6 @@ export const AnimeSetInjectSchema = InjectWithMeta(
   ({ element }) => InjectSchema(Inject.AnimeSet).extend({
     target: ArrayOrSingleSchema(z.instanceof(HTMLElement)).optional().default(element),
     properties: z.record(z.any())
-  }).transform(({ target, properties }) => () => anime.set(target, properties)),
+  }).transform(({ target, properties }) => anime.set(target, properties)),
   { lazy: true }
 )

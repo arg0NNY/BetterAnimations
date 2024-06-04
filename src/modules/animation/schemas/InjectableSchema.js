@@ -5,6 +5,7 @@ import ParseStage from '@/enums/ParseStage'
 import {
   MathInjectSchema,
   ElementInjectSchema,
+  WrapperInjectSchema,
   ContainerInjectSchema,
   ObjectAssignInjectSchema,
   StringTemplateSchema,
@@ -36,6 +37,7 @@ import {
 
 const injectSchemas = {
   [Inject.Element]: ElementInjectSchema,
+  [Inject.Wrapper]: WrapperInjectSchema,
   [Inject.Container]: ContainerInjectSchema,
   [Inject.AnimeStagger]: AnimeStaggerInjectSchema,
   [Inject.AnimeTimeline]: AnimeTimelineInjectSchema,
@@ -103,7 +105,7 @@ const InjectableSchema = (context, env = {}) => {
           (disallowed?.length && disallowed.includes(value.inject))
           || (allowed?.length && !allowed.includes(value.inject))
         ) {
-          ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject type '${value.inject}' is not allowed here. Only injects of these types can be used here: ${formatValuesList(injectTypes.filter(i => !disallowed?.includes(i) && (!allowed || allowed.includes(i))))}` })
+          ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject '${value.inject}' is not allowed here. Only injects of these types can be used here: ${formatValuesList(injectTypes.filter(i => !disallowed?.includes(i) && (!allowed || allowed.includes(i))))}` })
           return z.NEVER
         }
 

@@ -61,7 +61,7 @@ class AnimeTransition extends React.Component {
         const { onBeforeCreate, onBeforeDestroy, onDestroyed } = assets
 
         onBeforeCreate?.()
-        if (assets.node) node.before(assets.node)
+        if (assets.wrapper) node.before(assets.wrapper)
 
         requestAnimationFrame(() => {
           const { finished, pause } = assets.execute()
@@ -75,7 +75,7 @@ class AnimeTransition extends React.Component {
             onBeforeDestroy?.()
 
             this.finish(() => {
-              assets.node?.remove()
+              assets.wrapper?.remove()
               onDestroyed?.()
             })
 

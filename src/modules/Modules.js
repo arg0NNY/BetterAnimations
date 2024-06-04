@@ -94,7 +94,7 @@ class Module {
 
     let animate
     try {
-      animate = cachedAnimate && context && AnimateSchema(ctx, { stage: ParseStage.Execute })
+      animate = cachedAnimate && context && AnimateSchema(ctx, { stage: ParseStage.Layout })
         .parse(cachedAnimate)
     }
     catch (e) {
