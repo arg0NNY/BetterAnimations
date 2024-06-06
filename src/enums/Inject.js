@@ -9,6 +9,7 @@ export default Enum({
   AnimeRandom: 'anime.random',
   AnimeGet: 'anime.get',
   AnimeSet: 'anime.set',
+  AnimePath: 'anime.path',
   Duration: 'duration',
   Easing: 'easing',
   Variant: 'variant',

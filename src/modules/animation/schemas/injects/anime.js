@@ -48,3 +48,13 @@ export const AnimeSetInjectSchema = InjectWithMeta(
   }).transform(({ target, properties }) => anime.set(target, properties)),
   { lazy: true }
 )
+
+export const AnimePathInjectSchema = InjectSchema(Inject.AnimePath).extend({
+  path: z.instanceof(SVGElement),
+  property: z.string().optional()
+}).transform(({ path, property }) => {
+  const fn = anime.path(path)
+
+  if (typeof property === 'string') return fn(property)
+  return fn
+})
