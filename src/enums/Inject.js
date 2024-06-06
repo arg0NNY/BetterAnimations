@@ -28,5 +28,6 @@ export default Enum({
   Arguments: 'arguments',
   Debug: 'debug',
   VarGet: 'var.get',
-  VarSet: 'var.set'
+  VarSet: 'var.set',
+  Call: 'call'
 })

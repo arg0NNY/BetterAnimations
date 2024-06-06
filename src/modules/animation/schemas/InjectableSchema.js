@@ -18,7 +18,8 @@ import {
   ModuleInjectSchema,
   DebugInjectSchema,
   VarGetInjectSchema,
-  VarSetInjectSchema
+  VarSetInjectSchema,
+  CallInjectSchema
 } from '@/modules/animation/schemas/injects/common'
 import {
   AnimeGetInjectSchema,
@@ -65,7 +66,8 @@ const injectSchemas = {
   [Inject.Arguments]: ArgumentsInjectSchema,
   [Inject.Debug]: DebugInjectSchema,
   [Inject.VarGet]: VarGetInjectSchema,
-  [Inject.VarSet]: VarSetInjectSchema
+  [Inject.VarSet]: VarSetInjectSchema,
+  [Inject.Call]: CallInjectSchema
 }
 const injectTypes = Object.keys(injectSchemas)
 

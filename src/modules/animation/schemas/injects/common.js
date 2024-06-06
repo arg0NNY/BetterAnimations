@@ -118,3 +118,8 @@ export const VarSetInjectSchema = InjectWithMeta(
   }).transform(({ name, value }) => { vars[name] = value }),
   { lazy: true }
 )
+
+export const CallInjectSchema = InjectSchema(Inject.Call).extend({
+  function: z.function(),
+  args: ArrayOrSingleSchema(z.any()).optional()
+}).transform(({ function: fn, args }) => fn(...[].concat(args)))
