@@ -51,7 +51,7 @@ export function buildWrapper (data, context) {
     style = document.createElement('style')
     style.appendChild(document.createTextNode(
       buildCSS(data.css, s => {
-        if (s === '{element}') return `${parent} + *`
+        if (s.startsWith('{element}')) return s.replace('{element}', `${parent} + *`)
         if (s === '{container}') return `[data-animation-container]:has(> ${parent})`
         return `${parent} :is(${s})`
       })

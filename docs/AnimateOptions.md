@@ -19,7 +19,7 @@ Gets inserted in the root of the animation wrapper **right before** animating el
 All the root elements have `position: absolute` by default.
 
 > Note that provided tree gets sanitized according to [this schema](https://github.com/syntax-tree/hast-util-sanitize/blob/e9dba3269d2750d99f3334883b9e09aec77b69e0/lib/schema.js)
-before being inserted into DOM for safety purposes, with an exception to `className` attribute, which is allowed for any element.
+> before being inserted into DOM for safety purposes, with an exception to `className` attribute, which is allowed for any element.
 
 #### Example:
 ```json
@@ -74,7 +74,7 @@ Gets transpiled into this CSS:
 
 However, you can only target elements that you've created using `hast` property,
 with a single exception to animating element, which you can target using `{node}`
-as a selector, for example:
+as a selector, for example: _(`{node}` renamed to `{element}` and you can target any elements inside it now, `{container}` added)_
 ```json
 {
   "{node}": {
