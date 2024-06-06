@@ -26,7 +26,8 @@ import {
   AnimeRandomInjectSchema,
   AnimeStaggerInjectSchema,
   AnimeTimelineInjectSchema,
-  AnimePathInjectSchema
+  AnimePathInjectSchema,
+  AnimeSetDashoffsetInjectSchema
 } from '@/modules/animation/schemas/injects/anime'
 import {
   DirectionInjectSchema,
@@ -46,6 +47,7 @@ const injectSchemas = {
   [Inject.AnimeGet]: AnimeGetInjectSchema,
   [Inject.AnimeSet]: AnimeSetInjectSchema,
   [Inject.AnimePath]: AnimePathInjectSchema,
+  [Inject.AnimeSetDashoffset]: AnimeSetDashoffsetInjectSchema,
   [Inject.Duration]: DurationInjectSchema,
   [Inject.Easing]: EasingInjectSchema,
   [Inject.Variant]: VariantInjectSchema,

@@ -58,3 +58,8 @@ export const AnimePathInjectSchema = InjectSchema(Inject.AnimePath).extend({
   if (typeof property === 'string') return fn(property)
   return fn
 })
+
+export const AnimeSetDashoffsetInjectSchema = InjectWithMeta(
+  InjectSchema(Inject.AnimeSetDashoffset).transform(() => anime.setDashoffset),
+  { immediate: true }
+)

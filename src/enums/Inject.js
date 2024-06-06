@@ -10,6 +10,7 @@ export default Enum({
   AnimeGet: 'anime.get',
   AnimeSet: 'anime.set',
   AnimePath: 'anime.path',
+  AnimeSetDashoffset: 'anime.setDashoffset',
   Duration: 'duration',
   Easing: 'easing',
   Variant: 'variant',
