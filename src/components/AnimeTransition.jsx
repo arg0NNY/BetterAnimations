@@ -1,8 +1,6 @@
 import { React } from '@/BdApi'
 import { Transition } from '@/modules/DiscordModules'
 import { buildAnimateAssets } from '@/modules/animation/parser'
-import { z } from 'zod'
-import { fromZodError } from 'zod-validation-error'
 import { Freeze } from 'react-freeze'
 import AnimationType from '@/enums/AnimationType'
 import { css } from '@/modules/Style'
@@ -17,15 +15,7 @@ export function AnimeContainer ({ container, children }) {
 
 class AnimeTransition extends React.Component {
   doneCallback = React.createRef()
-
-  _cancelAnimation = React.createRef()
-  get cancelAnimation () {
-    return this.props.cancelAnimation?.current ?? this._cancelAnimation.current
-  }
-  set cancelAnimation (value) {
-    if (this.props.cancelAnimation) this.props.cancelAnimation.current = value
-    else this._cancelAnimation.current = value
-  }
+  cancel = React.createRef()
 
   getTargetNodes (container) {
     if (container && this.props.targetContainer) {
@@ -42,70 +32,74 @@ class AnimeTransition extends React.Component {
   }
 
   onAnimate (type) {
-    return (targetNode, ...args) => {
-      this.cancelAnimation?.()
+    return (targetNode) => {
+      const callback = this.cancel.current?.(true)
+
       const { container, node } = this.getTargetNodes(targetNode)
 
-      if (node) {
-        node.style.display = '' // Removes the 'display: none !important' that is added by Suspense in Freeze
+      if (!node) return requestAnimationFrame(() => this.doneCallback.current?.())
 
-        const { module, auto, unmountOnExit = true } = this.props
+      node.style.display = '' // Removes the 'display: none !important' that is added by Suspense in Freeze
 
-        const { animate, context } = module.getAnimation(
-          type,
-          auto ? { auto } : {},
-          { container, element: node }
-        )
+      const { module, auto } = this.props
 
-        const assets = buildAnimateAssets(animate, context, module.buildOptions())
-        const { onBeforeCreate, onBeforeDestroy, onDestroyed } = assets
+      const { animate, context } = module.getAnimation(
+        type,
+        auto ? { auto } : {},
+        { container, element: node }
+      )
 
-        onBeforeCreate?.()
+      const assets = buildAnimateAssets(animate, context, module.buildOptions())
+      const { onBeforeCreate, onBeforeDestroy, onDestroyed } = assets
+
+      onBeforeCreate?.()
+
+      requestAnimationFrame(() => {
+        const { instances, finished, pause } = assets.execute()
+
+        if (callback) {
+          callback()
+          instances.forEach(i => {
+            // Force anime to re-apply styles because cancel callback might have removed some (prevent element flashing on 1 frame)
+            const { paused } = i
+            i.reset()
+            i.paused = paused
+          })
+        }
+
+        container.setAttribute('data-animation-type', type)
+        container.setAttribute('data-animation-overflow', context.overflow)
+        if (module.type) container.setAttribute(`data-animation-${module.type}`, '')
+
         if (assets.wrapper) node.before(assets.wrapper)
 
-        requestAnimationFrame(() => {
-          const { finished, pause } = assets.execute()
+        const clear = (cancel = false) => {
+          onBeforeDestroy?.()
 
-          container.setAttribute('data-animation-type', type)
-          container.setAttribute('data-animation-overflow', context.overflow)
-          if (module.type) container.setAttribute(`data-animation-${module.type}`, '')
+          pause()
+          this.doneCallback.current?.()
+          this.cancel.current = null
 
-          this.cancelAnimation = () => {
-            pause()
-            onBeforeDestroy?.()
+          const callback = () => {
+            assets.wrapper?.remove()
 
-            this.finish(() => {
-              assets.wrapper?.remove()
-              onDestroyed?.()
-            })
+            ;[].filter.call(container.attributes, a => a.name !== 'data-animation-container' && a.name?.startsWith('data-animation'))
+              .forEach(a => container.removeAttribute(a.name))
 
-            if (module.type !== 'switch' || type !== AnimationType.Exit || !unmountOnExit)
-              [].filter.call(container.attributes, a => a.name !== 'data-animation-container' && a.name?.startsWith('data-animation'))
-                .forEach(a => container.removeAttribute(a.name))
-
-            this.cancelAnimation = null
-            // console.log('finished', type)
+            onDestroyed?.()
           }
 
-          finished
-            .then(() => {})
-            .catch(e => console.error(`Error during '${type}' animation execution:`, e))
-            .finally(this.cancelAnimation.bind(this))
-        })
-      }
+          return cancel ? callback : requestAnimationFrame(callback)
+        }
 
-      if (type === AnimationType.Enter) this.props.onEntering?.(node, ...args)
-      else if (type === AnimationType.Exit) this.props.onExiting?.(node, ...args)
-    }
-  }
+        this.cancel.current = clear
 
-  finish (callback = () => {}, immediate = false) {
-    const done = () => {
-      this.doneCallback.current?.()
-      setTimeout(() => callback())
+        finished
+          .then(() => {})
+          .catch(e => console.error(`Error during '${type}' animation execution:`, e))
+          .finally(() => clear())
+      })
     }
-    if (immediate) setTimeout(done.bind(this))
-    else done()
   }
 
   render () {
@@ -125,8 +119,6 @@ class AnimeTransition extends React.Component {
         unmountOnExit={unmountOnExit}
         onEntering={this.onAnimate(AnimationType.Enter)}
         onExiting={this.onAnimate(AnimationType.Exit)}
-        onEntered={(node, ...args) => props.onEntered?.(this.getTargetNodes(node).node, ...args)}
-        onExited={(node, ...args) => props.onExited?.(this.getTargetNodes(node).node, ...args)}
         addEndListener={(_, done) => this.doneCallback.current = done}
       >
         <AnimeContainer container={children && container}>

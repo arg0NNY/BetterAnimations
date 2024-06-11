@@ -119,6 +119,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
       else data.onBeforeBegin?.()
 
       return {
+        instances,
         pause: pauseAll,
         finished: finishedAll()
           .then(() => {
