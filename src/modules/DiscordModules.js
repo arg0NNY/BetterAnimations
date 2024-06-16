@@ -37,7 +37,7 @@ export const StandardSidebarViewWrapper = Webpack.waitForModule(Filters.byKeys('
 export const StandardSidebarView = Webpack.waitForModule(Filters.byKeys('SectionTypes', 'ContentTypes'))
 export const Modals = Webpack.getModule(m => Filters.byKeys('Modals')(m) && avoidCommon(m))
 export const ModalActions = Webpack.getModule(m => Filters.byKeys('closeAllModals', 'openModal')(m) && avoidCommon(m))
-export const ModalBackdrop = Webpack.getByKeys('BackdropStyles')
+export const ModalBackdrop = Webpack.getByKeys('BackdropStyles', 'default')
 export const ReactSpring = Webpack.getModule(m => m?.Spring && !m?.animated)
 export const Layers = Webpack.getModule(Filters.byStrings('hasFullScreenLayer'), { defaultExport: false })
 export const { ListThin } = Webpack.getModule(m => Filters.byKeys('ListThin')(m) && avoidCommon(m))
