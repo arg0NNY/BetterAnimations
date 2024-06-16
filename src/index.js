@@ -24,6 +24,7 @@ import { saveMeta } from '@/meta'
 import Style, { css } from '@/modules/Style'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
 import Modules from '@/modules/Modules'
+import TickThread from '@/modules/TickThread'
 
 anime.suspendWhenDocumentHidden = false
 
@@ -33,6 +34,7 @@ export default function (meta) {
   return {
     start () {
       Logger.info('Startup', 'Initializing modules...')
+      TickThread.initialize()
       Style.initialize()
       Prompt.onStartup()
       Config.initialize()
@@ -63,6 +65,7 @@ export default function (meta) {
     },
     stop () {
       Logger.info('Shutdown', 'Shutting down modules...')
+      TickThread.shutdown()
       Style.shutdown()
       Config.shutdown()
       PackRegistry.shutdown()
