@@ -36,7 +36,8 @@ class Module {
   isEnabled (type = null) {
     if (!type) return this.settings.enabled ?? true
 
-    return !!this.animations[type]?.animate || this.getModifier(type)?.enabled
+    return (this.settings.enabled ?? true)
+      && (!!this.animations[type]?.animate || !!this.getModifier(type)?.enabled)
   }
   enable () { this.settings.enabled = true }
   disable () { this.settings.enabled = false }
