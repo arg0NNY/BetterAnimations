@@ -123,6 +123,6 @@ export default new class PackRegistry {
 
   shutdown () {
     this.unlistenPackEvents()
-    Logger.info(this.name, 'Stopped.')
+    Logger.info(this.name, 'Shutdown.')
   }
 }

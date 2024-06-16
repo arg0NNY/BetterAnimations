@@ -96,6 +96,6 @@ export default new class Config {
     this.unlistenPackEvents()
     this.packs.clear()
 
-    Logger.info('Config', 'Stopped.')
+    Logger.info('Config', 'Shutdown.')
   }
 }

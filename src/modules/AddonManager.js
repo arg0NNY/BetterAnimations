@@ -59,7 +59,7 @@ export default class AddonManager {
 
   watchAddons () {
     if (this.watcher) return Logger.err(this.name, `Already watching ${this.prefix} addons.`)
-    Logger.log(this.name, `Starting to watch ${this.prefix} addons.`)
+    Logger.log(this.name, `Starting to watch ${this.prefix} addons...`)
     this.watcher = fs.watch(this.addonFolder, { persistent: false }, async (eventType, filename) => {
       if (!eventType || !filename) return
 
@@ -280,7 +280,7 @@ export default class AddonManager {
   shutdown () {
     this.unloadAllAddons()
     this.unwatchAddons()
-    Logger.info(this.name, 'Stopped.')
+    Logger.info(this.name, 'Shutdown.')
   }
 
   deleteAddon (idOrFileOrAddon) {

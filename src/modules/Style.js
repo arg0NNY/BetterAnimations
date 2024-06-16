@@ -21,7 +21,7 @@ const Style = new class Style {
     this.removeStyle()
 
     this.initialized = false
-    Logger.info(this.name, 'Stopped.')
+    Logger.info(this.name, 'Shutdown.')
   }
 
   buildStyle () {
