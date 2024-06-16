@@ -53,17 +53,22 @@ class AnimeTransition extends React.Component {
 
   render () {
     const {
+      module,
       children,
       container = false,
       freeze = false,
       mountOnEnter = true,
       unmountOnExit = true,
+      enter = true,
+      exit = true,
       ...props
     } = this.props
 
     return (
       <Transition
         {...props}
+        enter={module.isEnabled(AnimationType.Enter) && enter}
+        exit={module.isEnabled(AnimationType.Exit) && exit}
         mountOnEnter={mountOnEnter}
         unmountOnExit={unmountOnExit}
         onEntering={this.onAnimate(AnimationType.Enter)}

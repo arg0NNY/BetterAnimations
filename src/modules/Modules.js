@@ -33,8 +33,10 @@ class Module {
   }
   getSettings () { return this.settings }
 
-  isEnabled () {
-    return this.settings.enabled ?? true
+  isEnabled (type = null) {
+    if (!type) return this.settings.enabled ?? true
+
+    return !!this.animations[type]?.animate || this.getModifier(type)?.enabled
   }
   enable () { this.settings.enabled = true }
   disable () { this.settings.enabled = false }
