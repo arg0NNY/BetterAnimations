@@ -277,6 +277,7 @@ class Module {
     return {
       name: 'Smooth expand/collapse',
       settings: {
+        [Setting.Overflow]: false,
         [Setting.Duration]: { from: 100, to: 2000 },
         [Setting.Easing]: true,
         defaults: modifier.defaults

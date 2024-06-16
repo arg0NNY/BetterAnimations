@@ -4,6 +4,7 @@ import { buildAnimateAssets } from '@/modules/animation/parser'
 import { Freeze } from 'react-freeze'
 import AnimationType from '@/enums/AnimationType'
 import { css } from '@/modules/Style'
+import AnimationStore from '@/modules/AnimationStore'
 
 export function AnimeContainer ({ container, children }) {
   if (!container) return children
@@ -15,7 +16,11 @@ export function AnimeContainer ({ container, children }) {
 
 class AnimeTransition extends React.Component {
   doneCallback = React.createRef()
-  cancel = React.createRef()
+  instance = React.createRef()
+
+  componentWillUnmount () {
+    requestAnimationFrame(this.instance.current?.cancel() ?? (() => {}))
+  }
 
   getTargetNodes (container) {
     if (container && this.props.targetContainer) {
@@ -33,71 +38,15 @@ class AnimeTransition extends React.Component {
 
   onAnimate (type) {
     return (targetNode) => {
-      const callback = this.cancel.current?.(true)
-
       const { container, node } = this.getTargetNodes(targetNode)
 
-      if (!node) return requestAnimationFrame(() => this.doneCallback.current?.())
-
-      node.style.display = '' // Removes the 'display: none !important' that is added by Suspense in Freeze
-
-      const { module, auto } = this.props
-
-      const { animate, context } = module.getAnimation(
+      this.instance.current = AnimationStore.requestAnimation({
+        module: this.props.module,
         type,
-        auto ? { auto } : {},
-        { container, element: node }
-      )
-
-      const assets = buildAnimateAssets(animate, context, module.buildOptions())
-      const { onBeforeCreate, onBeforeDestroy, onDestroyed } = assets
-
-      onBeforeCreate?.()
-
-      requestAnimationFrame(() => {
-        const { instances, finished, pause } = assets.execute()
-
-        if (callback) {
-          callback()
-          instances.forEach(i => {
-            // Force anime to re-apply styles because cancel callback might have removed some (prevent element flashing on 1 frame)
-            const { paused } = i
-            i.reset()
-            i.paused = paused
-          })
-        }
-
-        container.setAttribute('data-animation-type', type)
-        container.setAttribute('data-animation-overflow', context.overflow)
-        if (module.type) container.setAttribute(`data-animation-${module.type}`, '')
-
-        if (assets.wrapper) node.before(assets.wrapper)
-
-        const clear = (cancel = false) => {
-          onBeforeDestroy?.()
-
-          pause()
-          this.doneCallback.current?.()
-          this.cancel.current = null
-
-          const callback = () => {
-            assets.wrapper?.remove()
-
-            ;[].filter.call(container.attributes, a => a.name !== 'data-animation-container' && a.name?.startsWith('data-animation'))
-              .forEach(a => container.removeAttribute(a.name))
-
-            onDestroyed?.()
-          }
-
-          return cancel ? callback : requestAnimationFrame(callback)
-        }
-
-        this.cancel.current = clear
-
-        finished
-          .then(() => {})
-          .catch(e => console.error(`Error during '${type}' animation execution:`, e))
-          .finally(() => clear())
+        container,
+        node,
+        auto: this.props.auto,
+        doneCallbackRef: this.doneCallback
       })
     }
   }

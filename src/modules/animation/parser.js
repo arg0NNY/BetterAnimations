@@ -76,25 +76,37 @@ export function buildWrapper (data, context) {
  * @param options
  */
 export function buildAnimateAssets (data = null, context, options = {}) {
-  const { before, after } = options
-  data = data ?? {}
-
-  const wrapper = buildWrapper(data, context)
+  const wrapper = data ? buildWrapper(data, context) : null
 
   try {
-    data = AnimateSchema({ ...context, wrapper }, { stage: ParseStage.Execute })
-      .parse(data)
+    data = data ? AnimateSchema({ ...context, wrapper }, { stage: ParseStage.Execute })
+      .parse(data) : {}
   }
   catch (e) {
     e = e instanceof z.ZodError ? fromZodError(e).message : e
     console.error(`Failed to parse '${context.type}' animation:`, e)
   }
 
+  const before = options.before && context.type === AnimationType.Enter
+    ? options.before(context)
+    : null
+  const after = options.after && context.type === AnimationType.Exit
+    ? options.after(context)
+    : null
+  const instance = before?.execute() ?? after?.execute() ?? null
+  instance?.pause()
+
+  const exposedHook = hook => () => {
+    data[hook]?.()
+    before?.[hook]?.()
+    after?.[hook]?.()
+  }
+
   return {
     wrapper,
-    onBeforeCreate: data.onBeforeCreate,
-    onBeforeDestroy: data.onBeforeDestroy,
-    onDestroyed: data.onDestroyed,
+    onBeforeCreate: exposedHook('onBeforeCreate'),
+    onBeforeDestroy: exposedHook('onBeforeDestroy'),
+    onDestroyed: exposedHook('onDestroyed'),
     execute: () => {
       const instances = [].concat(data.anime ?? []).map(
         a => (
@@ -107,24 +119,43 @@ export function buildAnimateAssets (data = null, context, options = {}) {
       const finishedAll = () => Promise.all(instances.map(i => i.finished))
       data.onCreated?.()
 
-      if (before && context.type === AnimationType.Enter) {
+      if (before) {
         pauseAll()
-        const instance = before(context)
+
         instance.finished.then(() => {
+          before.onCompleted?.()
           data.onBeforeBegin?.()
-          instances.slice(1).forEach(i => i.play())
+          instances.slice(1).forEach(i => {
+            i.reset()
+            i.play()
+          })
         })
         instances.unshift(instance)
+        Promise.resolve().then(() => {
+          before.onBeforeBegin?.()
+          instance.reset()
+          instance.play()
+        })
       }
-      else data.onBeforeBegin?.()
+
+      const finished = finishedAll()
+      if (after) instances.push(instance)
 
       return {
         instances,
+        onBeforeBegin: !before ? data.onBeforeBegin : null,
         pause: pauseAll,
-        finished: finishedAll()
+        finished: finished
           .then(() => {
             data.onCompleted?.()
-            return after && context.type === AnimationType.Exit && after(context).finished
+
+            if (after) {
+              instance.reset()
+              instance.play()
+              after.onCreated?.()
+              after.onBeforeBegin?.()
+              return instance.finished.then(() => after.onCompleted?.())
+            }
           })
       }
     }
