@@ -23,8 +23,8 @@ class Animation {
 
   initialize (callback, allowed) {
     if (!allowed || !this.node) {
-      requestAnimationFrame(() => {
-        this.doneCallbackRef.current?.()
+      this.doneCallbackRef.await(done => {
+        done?.()
         callback?.()
       })
       return false

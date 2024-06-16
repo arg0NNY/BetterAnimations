@@ -1,10 +1,10 @@
 import { React } from '@/BdApi'
 import { Transition } from '@/modules/DiscordModules'
-import { buildAnimateAssets } from '@/modules/animation/parser'
 import { Freeze } from 'react-freeze'
 import AnimationType from '@/enums/AnimationType'
 import { css } from '@/modules/Style'
 import AnimationStore from '@/modules/AnimationStore'
+import { createAwaitableRef } from '@/helpers/react'
 
 export function AnimeContainer ({ container, children }) {
   if (!container) return children
@@ -15,7 +15,7 @@ export function AnimeContainer ({ container, children }) {
 }
 
 class AnimeTransition extends React.Component {
-  doneCallback = React.createRef()
+  doneCallback = createAwaitableRef()
   instance = React.createRef()
 
   componentWillUnmount () {
