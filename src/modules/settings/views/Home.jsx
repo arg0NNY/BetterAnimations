@@ -14,6 +14,9 @@ export default function Home () {
         <Router.Link to="/library">
           <Common.Button>Library</Common.Button>
         </Router.Link>
+        <Router.Link to="/settings">
+          <Common.Button>Settings</Common.Button>
+        </Router.Link>
       </div>
     </div>
   )

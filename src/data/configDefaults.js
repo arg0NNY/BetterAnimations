@@ -13,5 +13,8 @@ export const configDefaults = {
         animationKey: 'example'
       }
     }
+  },
+  general: {
+    switchCooldownDuration: 1000
   }
 }

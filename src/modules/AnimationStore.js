@@ -1,6 +1,7 @@
 import { buildAnimateAssets } from '@/modules/animation/parser'
 import AnimationType from '@/enums/AnimationType'
 import ModuleType from '@/enums/ModuleType'
+import Config from '@/modules/Config'
 
 class Animation {
 
@@ -113,7 +114,6 @@ class Animation {
 }
 
 export default new class AnimationStore {
-  static SWITCH_COOLDOWN = 1000
 
   constructor () {
     this.animations = []
@@ -121,7 +121,7 @@ export default new class AnimationStore {
   }
 
   cooldown () {
-    this.switchCooldownUntil = Date.now() + AnimationStore.SWITCH_COOLDOWN
+    this.switchCooldownUntil = Date.now() + Config.current.general.switchCooldownDuration
   }
   isCooldown () {
     return this.switchCooldownUntil > Date.now()
