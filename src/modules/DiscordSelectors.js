@@ -9,7 +9,7 @@ const Classes = {
   Margins: Webpack.getByKeys('marginTop20'),
   AppMount: Webpack.getByKeys('appMount'),
   AppView: Webpack.getByKeys('base', 'content'),
-  ChannelView: Webpack.getByKeys('chat', 'channelName'),
+  ChannelView: Webpack.getByKeys('chat', 'chatContent'),
   VoiceChannelView: Webpack.getByKeys('channelChatWrapper', 'chatSidebarOpen'),
   ChannelItem: Webpack.getByKeys('containerDefault', 'channelInfo'),
   MessageList: Webpack.getByKeys('message', 'groupStart'),

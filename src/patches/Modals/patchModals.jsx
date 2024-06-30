@@ -14,7 +14,7 @@ import { DiscordSelectors } from '@/modules/DiscordSelectors'
 function patchModals () {
   const once = ensureOnce()
 
-  Patcher.after(Modals, 'Modals', (self, args, value) => {
+  Patcher.after(...Modals, (self, args, value) => {
     const modals = value.props.children[1]
     if (modals?.length) once(() => patchModalItem(modals[0].type))
 

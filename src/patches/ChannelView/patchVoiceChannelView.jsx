@@ -11,7 +11,7 @@ import AnimeTransition from '@/components/AnimeTransition'
 function patchVoiceChannelView () {
   const once = ensureOnce()
 
-  Patcher.after(VoiceChannelView, 'default', (self, args, value) => {
+  Patcher.after(...VoiceChannelView, (self, args, value) => {
     const channelView = findInReactTree(value, m => m?.props?.channel)
     if (!channelView) return
 

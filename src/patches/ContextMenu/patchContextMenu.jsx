@@ -16,7 +16,7 @@ export const auto = {
 function patchContextMenu () {
   const once = ensureOnce()
 
-  Patcher.after(ContextMenu, 'default', (self, args, value) => {
+  Patcher.after(...ContextMenu, (self, args, value) => {
     once(() => {
       injectModule(value.type, ModuleKey.ContextMenu)
       Patcher.after(value.type.prototype, 'render', (self, args, value) => {

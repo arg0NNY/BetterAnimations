@@ -21,7 +21,7 @@ function LayerContainer ({ baseLayer, children }) {
 function patchLayers () {
   const once = ensureOnce()
 
-  Patcher.after(Layers, 'default', (self, args, value) => {
+  Patcher.after(...Layers, (self, args, value) => {
     once(
       () => {
         let prevLength = 0

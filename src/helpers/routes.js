@@ -1,7 +1,7 @@
-import { ChannelListCommunityRow, Constants, StaticChannelRoute } from '@/modules/DiscordModules'
+import { ChannelListCommunityRow, Routes, StaticChannelRoute } from '@/modules/DiscordModules'
 
 export function communityRowToChannelRoute (communityRow) {
-  // Keep up-to-date with the internal GuildChannelList component (`Webpack.getByKeys('GuildChannelList')` -> `renderRow` method)
+  // Keep up-to-date with the internal GuildChannelList component (`Webpack.getModule(Filters.byStrings('favorites-channel-list'), { searchExports: true })` -> `renderRow` method)
   return {
     [ChannelListCommunityRow.GUILD_HOME]: StaticChannelRoute.GUILD_HOME,
     [ChannelListCommunityRow.GUILD_ROLE_SUBSCRIPTIONS]: StaticChannelRoute.ROLE_SUBSCRIPTIONS,
@@ -15,12 +15,12 @@ export function communityRowToChannelRoute (communityRow) {
 export function getStaticDMRouteIndex (pathname) {
   // Keep up-to-date with the internal `Webpack.getByStrings('hasLibraryApplication', 'getCurrentPath')`
   return [
-    p => p === Constants.Routes.FRIENDS,
-    p => p.startsWith(Constants.Routes.APPLICATION_LIBRARY),
-    p => p.startsWith(Constants.Routes.APPLICATION_STORE),
-    p => p.startsWith(Constants.Routes.ACTIVITIES),
-    p => p.startsWith(Constants.Routes.MESSAGE_REQUESTS),
-    p => p.startsWith(Constants.Routes.COLLECTIBLES_SHOP),
-    p => p.startsWith(Constants.Routes.FAMILY_CENTER),
+    p => p === Routes.FRIENDS,
+    p => p.startsWith(Routes.APPLICATION_LIBRARY),
+    p => p.startsWith(Routes.APPLICATION_STORE),
+    p => p.startsWith(Routes.ACTIVITIES),
+    p => p.startsWith(Routes.MESSAGE_REQUESTS),
+    p => p.startsWith(Routes.COLLECTIBLES_SHOP),
+    p => p.startsWith(Routes.FAMILY_CENTER),
   ].findIndex(c => c(pathname ?? ''))
 }

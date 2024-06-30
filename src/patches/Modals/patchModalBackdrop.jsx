@@ -8,14 +8,14 @@ import AnimeTransition from '@/components/AnimeTransition'
 import Modules from '@/modules/Modules'
 
 function patchModalBackdrop () {
-  Patcher.before(ModalBackdrop.default, 'render', (self, [props]) => {
+  Patcher.before(ModalBackdrop, 'render', (self, [props]) => {
     const module = useModule(ModuleKey.ModalsBackdrop)
     if (!module.isEnabled()) return
 
     props._isVisible = props.isVisible
     props.isVisible = true
   })
-  Patcher.after(ModalBackdrop.default, 'render', (self, [props], value) => {
+  Patcher.after(ModalBackdrop, 'render', (self, [props], value) => {
     const module = Modules.getModule(ModuleKey.ModalsBackdrop)
     if (!module.isEnabled()) return
 

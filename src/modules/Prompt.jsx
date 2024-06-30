@@ -1,4 +1,4 @@
-import { App, Common, ModalActions } from '@/modules/DiscordModules'
+import { App, Common } from '@/modules/DiscordModules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import Enum from '@/enums/Enum'
 import Data from '@/modules/Data'
@@ -48,7 +48,7 @@ export default new class Prompt {
   }
   promptHardwareAcceleration () {
     return new Promise(resolve =>
-      ModalActions.openModal(props => (
+      Common.openModal(props => (
         <Common.ConfirmModal
           {...props}
           header={meta.name}

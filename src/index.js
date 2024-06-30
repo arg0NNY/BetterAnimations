@@ -16,7 +16,7 @@ import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequest
 import PackManager from '@/modules/PackManager'
 import Logger from '@/modules/Logger'
 import Settings from '@/modules/Settings'
-import { ModalActions } from '@/modules/DiscordModules'
+import { Common } from '@/modules/DiscordModules'
 import Config from '@/modules/Config'
 import Prompt from '@/modules/Prompt'
 import PackRegistry from '@/modules/PackRegistry'
@@ -72,7 +72,7 @@ export default function (meta) {
       PackManager.shutdown()
 
       Modules.shutdown()
-      ModalActions.closeAllModals()
+      Common.closeAllModals()
 
       Logger.info('Shutdown', 'Removing patches...')
       Patcher.unpatchAll()
@@ -83,7 +83,7 @@ export default function (meta) {
     },
     getSettingsPanel () {
       requestAnimationFrame(() => {
-        ModalActions.closeAllModals()
+        Common.closeAllModals()
         Settings.openSettingsModal()
       })
     }

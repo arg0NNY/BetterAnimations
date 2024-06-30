@@ -1,17 +1,18 @@
-import { History, ModalActions } from '@/modules/DiscordModules'
+import { Common } from '@/modules/DiscordModules'
+import { createMemoryHistory } from 'history'
 import SettingsModal from '@/modules/settings/SettingsModal'
 import anime from 'animejs'
 
 export default new class Settings {
 
   constructor () {
-    this.history = History.createMemoryHistory()
+    this.history = createMemoryHistory()
   }
 
   openSettingsModal (location = '/') {
     this.history.push(location)
 
-    ModalActions.openModal(props => (
+    Common.openModal(props => (
       <SettingsModal {...props} history={this.history} />
     ), {
       onCloseRequest: () => { // Disable dismissing

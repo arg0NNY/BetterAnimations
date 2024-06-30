@@ -29,8 +29,8 @@ function patchContextSubmenu () {
     return value
   }
 
-  Patcher.instead(MenuSubmenuItem, 'MenuSubmenuItem', callback)
-  Patcher.instead(MenuSubmenuListItem, 'MenuSubmenuListItem', callback)
+  Patcher.instead(...MenuSubmenuItem, callback)
+  Patcher.instead(...MenuSubmenuListItem, callback)
 }
 
 export default patchContextSubmenu

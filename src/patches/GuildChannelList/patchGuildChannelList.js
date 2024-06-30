@@ -4,7 +4,7 @@ import { GuildChannelList } from '@/modules/DiscordModules'
 export let currentGuildChannels = null
 
 function patchGuildChannelList () {
-  Patcher.after(GuildChannelList, 'GuildChannelList', (self, args, value) => {
+  Patcher.after(...GuildChannelList, (self, args, value) => {
     currentGuildChannels = value.props.guildChannels
   })
 }

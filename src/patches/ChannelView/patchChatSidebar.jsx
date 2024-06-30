@@ -7,7 +7,7 @@ import ModuleKey from '@/enums/ModuleKey'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 
 function patchChatSidebar () {
-  Patcher.after(ChatSidebar, 'default', (self, args, value) => {
+  Patcher.after(...ChatSidebar, (self, args, value) => {
     const module = Modules.getModule(ModuleKey.ThreadSidebar)
     if (!module.isEnabled()) return
 

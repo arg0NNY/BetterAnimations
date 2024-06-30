@@ -1,5 +1,5 @@
 import { Patcher, React } from '@/BdApi'
-import { AppView, Constants, Router, TransitionGroup } from '@/modules/DiscordModules'
+import { AppView, Router, Routes, TransitionGroup } from '@/modules/DiscordModules'
 import findInReactTree from '@/helpers/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
 import useLocationKey from '@/hooks/useLocationKey'
@@ -73,7 +73,7 @@ function ContentView ({ children }) {
 }
 
 function patchAppView () {
-  Patcher.after(AppView, 'default', (self, args, value) => {
+  Patcher.after(...AppView, (self, args, value) => {
     const base = findInReactTree(value, m => m?.props?.className === DiscordClasses.AppView.base)
     if (!base) return
 
@@ -85,7 +85,7 @@ function patchAppView () {
     const view = findInReactTree(content, m => m?.children?.type === Router.Switch)
     const routes = view.children.props.children
 
-    const messageRequestsRoute = routes.find(r => r?.props?.path === Constants.Routes.MESSAGE_REQUESTS)
+    const messageRequestsRoute = routes.find(r => r?.props?.path === Routes.MESSAGE_REQUESTS)
     if (messageRequestsRoute) patchMessageRequestsRoute(messageRequestsRoute)
 
     view.children = <ContentView>{routes}</ContentView>

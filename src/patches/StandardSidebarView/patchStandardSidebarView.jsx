@@ -10,14 +10,14 @@ import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { css } from '@/modules/Style'
 
 async function patchStandardSidebarView () {
-  Patcher.after((await StandardSidebarViewWrapper).default.prototype, 'render', (self, args, value) => {
+  Patcher.after((await StandardSidebarViewWrapper).prototype, 'render', (self, args, value) => {
     const view = findInReactTree(value, m => m?.props?.content && m?.props?.sidebar)
     if (!view) return
 
     view.props.sections = self.getPredicateSections().map(s => s.section)
   })
 
-  Patcher.after(await StandardSidebarView, 'default', (self, [props], value) => {
+  Patcher.after(...await StandardSidebarView, (self, [props], value) => {
     const direction = useDirection(props.sections, props.section)
     const module = useModule(ModuleKey.Settings)
     if (!module.isEnabled()) return
