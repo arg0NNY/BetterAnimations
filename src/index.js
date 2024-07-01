@@ -25,6 +25,7 @@ import Style, { css } from '@/modules/Style'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
 import Modules from '@/modules/Modules'
 import TickThread from '@/modules/TickThread'
+import patchChatSearchSidebar from '@/patches/ChatSearchSidebar/patchChatSearchSidebar'
 
 anime.suspendWhenDocumentHidden = false
 
@@ -58,6 +59,7 @@ export default function (meta) {
       patchListThin()
       patchGuildChannelList()
       patchMessageRequestsRoute()
+      patchChatSearchSidebar()
 
       Logger.info('Startup', 'Forcing app update...')
       forceAppUpdate()

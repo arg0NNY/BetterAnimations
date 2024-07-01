@@ -118,3 +118,4 @@ export const useMessageRequestSidebarState = getMangled(Filters.byStrings('getSi
 export const App = Webpack.getByKeys('setEnableHardwareAcceleration', 'releaseChannel')
 export const Message = Webpack.getModule(m => Filters.byStrings('must not be a thread starter message')(m?.type), { searchExports: true })
 export const MessageDivider = Webpack.getModule(m => Filters.byStrings('divider', 'unreadPill')(m?.render))
+export const ChatSearchSidebar = getMangled(Filters.byStrings('getResultsState', 'searchAnalyticsId'))
