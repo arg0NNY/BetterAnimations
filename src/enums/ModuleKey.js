@@ -19,5 +19,6 @@ export default Enum({
   ModalsBackdrop: 'modalsBackdrop',
   Layers: 'layers',
   MembersSidebar: 'membersSidebar',
-  ThreadSidebar: 'threadSidebar'
+  ThreadSidebar: 'threadSidebar',
+  ThreadSidebarSwitch: 'threadSidebarSwitch'
 })

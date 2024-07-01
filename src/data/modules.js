@@ -11,7 +11,8 @@ export const moduleAliases = {
     ModuleKey.Servers,
     ModuleKey.Channels,
     ModuleKey.Settings,
-    ModuleKey.Layers
+    ModuleKey.Layers,
+    ModuleKey.ThreadSidebarSwitch
   ],
   [ModuleKeyAlias.Reveal]: [
     ModuleKey.Popouts,
@@ -206,6 +207,19 @@ const modules = [
         defaults: {
           [Setting.Duration]: 400,
           [Setting.Easing]: 'easeInOutQuint'
+        }
+      }
+    }
+  },
+  {
+    id: ModuleKey.ThreadSidebarSwitch,
+    name: 'Switch',
+    parent: ModuleKey.ThreadSidebar,
+    meta: {
+      type: ModuleType.Switch,
+      settings: {
+        defaults: {
+          [Setting.Overflow]: false
         }
       }
     }

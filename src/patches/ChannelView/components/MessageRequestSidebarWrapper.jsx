@@ -8,9 +8,9 @@ import {
   MessageRequestSidebar
 } from '@/modules/DiscordModules'
 
-const ChatSidebar = mangled(_ChatSidebar)
+function MessageRequestSidebarWrapper ({ pageWidth, onSidebarResize, channel }) {
+  const ChatSidebar = mangled(_ChatSidebar)
 
-const MessageRequestSidebarWrapper = function MessageRequestSidebarWrapper ({ pageWidth, onSidebarResize, channel }) {
   return (
     <ChatSidebar
       sidebarType={ChatSidebarType.MessageRequestSidebar}

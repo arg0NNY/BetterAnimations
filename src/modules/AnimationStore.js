@@ -31,31 +31,28 @@ class Animation {
       return false
     }
 
+    // Call this if animations SHOULD NOT be aware of each other
+    // callback?.()
+
     this.node.style.display = '' // Removes the 'display: none !important' that is added by Suspense in Freeze
-
-    const { animate, context } = this.module.getAnimation(
-      this.type,
-      this.auto ? { auto: this.auto } : {},
-      { container: this.container, element: this.node }
-    )
-
-    const { execute, wrapper, onBeforeCreate, onBeforeDestroy, onDestroyed }
-      = buildAnimateAssets(animate, context, this.module.buildOptions())
-
-    onBeforeCreate?.()
-
-    this.cancel = () => {
-      onBeforeDestroy?.()
-      onDestroyed?.()
-      this.destroy()
-      this.cancelled = true
-    }
 
     requestAnimationFrame(() => {
       if (this.cancelled) return
 
+      const { animate, context } = this.module.getAnimation(
+        this.type,
+        this.auto ? { auto: this.auto } : {},
+        { container: this.container, element: this.node }
+      )
+
+      const { execute, wrapper, onBeforeCreate, onBeforeDestroy, onDestroyed }
+        = buildAnimateAssets(animate, context, this.module.buildOptions())
+
+      onBeforeCreate?.()
+
       const { instances, onBeforeBegin, finished, pause } = execute()
 
+      // Call this if animations SHOULD be aware of each other
       if (callback) {
         callback()
         instances.forEach(i => {

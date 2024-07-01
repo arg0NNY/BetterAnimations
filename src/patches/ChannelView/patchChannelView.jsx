@@ -10,6 +10,7 @@ import Modules from '@/modules/Modules'
 import patchChatSidebar from '@/patches/ChannelView/patchChatSidebar'
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { css } from '@/modules/Style'
+import SwitchSidebarTransition from '@/patches/ChannelView/components/SwitchSidebarTransition'
 
 function patchChannelView () {
   const once = ensureOnce()
@@ -21,6 +22,7 @@ function patchChannelView () {
         once(() => {
           injectModule(value.type, ModuleKey.MembersSidebar)
           injectModule(value.type, ModuleKey.ThreadSidebar)
+          injectModule(value.type, ModuleKey.ThreadSidebarSwitch)
           Patcher.after(value.type.prototype, 'renderSidebar', (self, args, value) => {
             const module = Modules.getModule(ModuleKey.MembersSidebar)
             if (!module.isEnabled()) return value
@@ -39,16 +41,25 @@ function patchChannelView () {
           })
           Patcher.after(value.type.prototype, 'renderThreadSidebar', (self, args, value) => {
             const module = Modules.getModule(ModuleKey.ThreadSidebar)
-            if (!module.isEnabled()) return value
+            const switchModule = Modules.getModule(ModuleKey.ThreadSidebarSwitch)
+            if (!module.isEnabled() && !switchModule.isEnabled()) return
+
+            const state = self.props.channelSidebarState ?? self.props.guildSidebarState
+            const key = state?.type ?? 'none'
 
             return (
               <SwitchTransition>
                 <AnimeTransition
-                  key={JSON.stringify(self.props.channelSidebarState ?? self.props.guildSidebarState) ?? 'none'}
-                  targetContainer={e => e}
+                  key={key}
+                  container={{ className: DiscordClasses.AppView.content, style: { flex: '0 0 auto' } }}
                   module={module}
                 >
-                  {value}
+                  <SwitchSidebarTransition
+                    state={state}
+                    module={switchModule}
+                  >
+                    {value}
+                  </SwitchSidebarTransition>
                 </AnimeTransition>
               </SwitchTransition>
             )

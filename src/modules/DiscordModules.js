@@ -73,7 +73,7 @@ export const Router = Object.assign(
   }
 )
 export const Transition = Webpack.getByKeys('ENTERING', 'EXITING', 'contextType')
-export const TransitionGroup = Webpack.getModule(Filters.byPrototypeKeys('handleExited'), { searchExports: true })
+export const TransitionGroup = Webpack.getModule(m => Filters.byPrototypeKeys('handleExited')(m) && !m.childContextTypes, { searchExports: true })
 export const TransitionGroupContext = new Transition({ children: React.createElement('div') }, {}).render().type._context
 export const Routes = Webpack.getModule(Filters.byKeys('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'), { searchExports: true })
 export const Constants = { DEFAULT_MESSAGE_REQUEST_SIDEBAR_WIDTH: 650, Routes }
