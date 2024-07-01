@@ -26,6 +26,7 @@ class Module {
     this.name = name
     this.meta = meta
     this.parent = parent
+    this.animations = {}
   }
 
   get settings () {
@@ -76,6 +77,7 @@ class Module {
     return {
       packSlug: pointer.packSlug ?? null,
       animationKey: pointer.animationKey ?? null,
+      id: [pointer.packSlug, pointer.animationKey].filter(Boolean).join('/') || null,
       pack,
       animation,
       config,

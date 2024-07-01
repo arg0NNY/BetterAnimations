@@ -9,6 +9,7 @@ class Animation {
     this.store = store
 
     this.module = module
+    this.raw = module.animations[type]
     this.type = type
     this.container = container
     this.node = node
@@ -22,7 +23,7 @@ class Animation {
     }
   }
 
-  initialize (callback, allowed) {
+  initialize (callback, allowed, intersect = false) {
     if (!allowed || !this.node) {
       this.doneCallbackRef.await(done => {
         done?.()
@@ -31,8 +32,7 @@ class Animation {
       return false
     }
 
-    // Call this if animations SHOULD NOT be aware of each other
-    // callback?.()
+    if (!intersect) callback?.()
 
     this.node.style.display = '' // Removes the 'display: none !important' that is added by Suspense in Freeze
 
@@ -52,8 +52,7 @@ class Animation {
 
       const { instances, onBeforeBegin, finished, pause } = execute()
 
-      // Call this if animations SHOULD be aware of each other
-      if (callback) {
+      if (intersect && callback) {
         callback()
         instances.forEach(i => {
           // Force anime to re-apply styles because cancel callback might have removed some (prevent element flashing on 1 frame)
@@ -133,10 +132,11 @@ export default new class AnimationStore {
   processAnimation (animation) {
     switch (animation.module.type) {
       case ModuleType.Reveal:
-        return [
-          this.cancelAnimations(a => a.module.id === animation.module.id && a.node === animation.node),
-          true
-        ]
+        const conflicts = this.animations.filter(a => a.module.id === animation.module.id && a.node === animation.node)
+        const intersect = conflicts.length === 1 && animation.raw?.id && animation.raw.id === conflicts[0].raw?.id
+          && !animation.raw.animation?.meta?.disableSelfIntersect
+
+        return [this.cancelAnimations(conflicts), true, intersect]
       case ModuleType.Switch: {
         if (this.isCooldown()) {
           this.cooldown()
@@ -155,8 +155,8 @@ export default new class AnimationStore {
 
   requestAnimation (payload) {
     const animation = new Animation(this, payload)
-    const [callback, allowed] = this.processAnimation(animation)
-    if (!animation.initialize(callback, allowed)) return null
+    const [callback, allowed, intersect = false] = this.processAnimation(animation)
+    if (!animation.initialize(callback, allowed, intersect)) return null
 
     this.animations.push(animation)
     return animation
