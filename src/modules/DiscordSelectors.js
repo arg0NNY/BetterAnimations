@@ -13,7 +13,8 @@ const Classes = {
   VoiceChannelView: Webpack.getByKeys('channelChatWrapper', 'chatSidebarOpen'),
   ChannelItem: Webpack.getByKeys('containerDefault', 'channelInfo'),
   MessageList: Webpack.getByKeys('message', 'groupStart'),
-  Layer: Webpack.getByKeys('layer', 'layerContainer')
+  Layer: Webpack.getByKeys('layer', 'layerContainer'),
+  Toast: Webpack.getByKeys('toast', 'icon')
 }
 
 export const DiscordClasses = new Proxy(Classes, {

@@ -5,9 +5,6 @@ import Toasts from '@/modules/Toasts'
 import Data from '@/modules/Data'
 import Events from '@/modules/Emitter'
 
-const splitRegex = /[^\S\r\n]*?\r?(?:\r\n|\n)[^\S\r\n]*?\*[^\S\r\n]?/
-const escapedAtRegex = /^\\@/
-
 const stripBOM = function (fileContent) {
   if (fileContent.charCodeAt(0) === 0xFEFF) {
     fileContent = fileContent.slice(1)
@@ -21,6 +18,7 @@ export default class AddonManager {
     this.timeCache = {}
     this.addonList = []
     this.state = {}
+    this.toastQueue = []
   }
 
   get name () {return ''}
@@ -55,6 +53,19 @@ export default class AddonManager {
 
   saveState() {
     Data[`${this.prefix}s`] = this.state
+  }
+
+  toast (content, event = 'loaded') {
+    this.toastQueue.push({ content, event })
+    setTimeout(() => {
+      const toasts = this.toastQueue.filter(t => t.event === event)
+      if (!toasts.length) return
+
+      if (toasts.length === 1) Toasts.show(toasts[0].content)
+      else Toasts.show(`${event.slice(0, 1).toUpperCase() + event.slice(1)} ${toasts.length} ${this.prefix}s.`)
+
+      this.toastQueue = this.toastQueue.filter(t => t.event !== event)
+    }, 100)
   }
 
   watchAddons () {
@@ -134,7 +145,7 @@ export default class AddonManager {
   }
 
   // Subclasses should use the return (if not AddonError) and push to this.addonList
-  loadAddon (filename, shouldToast = false) {
+  loadAddon (filename, shouldToast = true) {
     if (typeof (filename) === 'undefined') return
     let addon
     try {
@@ -157,10 +168,13 @@ export default class AddonManager {
       return error
     }
 
-    if (shouldToast) Toasts.show(`${addon.name} v${addon.version} was loaded.`)
+    const message = `${addon.name} v${addon.version} was loaded.`
+    if (shouldToast) this.toast(message, 'loaded')
+    Logger.log(this.name, message)
+
     this.emit('loaded', addon)
 
-    if (!this.state[addon.id]) return this.state[addon.id] = false
+    if (this.state[addon.id] !== false) return this.state[addon.id] = true
     return this.startAddon(addon)
   }
 
@@ -171,7 +185,11 @@ export default class AddonManager {
 
     this.addonList.splice(this.addonList.indexOf(addon), 1)
     this.emit('unloaded', addon)
-    if (shouldToast) Toasts.show(`${addon.name} was unloaded.`)
+
+    const message = `${addon.name} was unloaded.`
+    if (shouldToast) this.toast(message, 'unloaded')
+    Logger.log(this.name, message)
+
     return true
   }
 
@@ -264,7 +282,7 @@ export default class AddonManager {
         // Rename the file and let it go on
         fs.renameSync(absolutePath, path.resolve(this.addonFolder, newFilename))
       }
-      const addon = this.loadAddon(filename, false)
+      const addon = this.loadAddon(filename, true)
       if (addon instanceof AddonError) errors.push(addon)
     }
 

@@ -101,7 +101,7 @@ export default new class PackRegistry {
     }
 
     Logger.info(this.name, `Found ${updatesCount} updates.`)
-    if (useToasts) return Toasts.info(`Found updates for ${updatesCount} of your packs!`)
+    if (useToasts) return Toasts.show(`Found updates for ${updatesCount} of your packs!`)
 
     const closeNotice = Notices.info(`${meta.name} has found updates for ${updatesCount} of your packs!`, {
       buttons: [{
