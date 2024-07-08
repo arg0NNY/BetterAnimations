@@ -9,10 +9,10 @@ function avoidCommon (module) {
 }
 
 function mapModule (module, gettersMap, options = {}) {
-  const { withKeys = false } = options
+  const { withKeys = false, avoidCommon: _avoidCommon = true } = options
 
   if (typeof module === 'function')
-    module = Webpack.getModule(m => Object.values(m).some(module))
+    module = Webpack.getModule(m => Object.values(m).some(module) && (!_avoidCommon || avoidCommon(m)))
 
   return module && Object.fromEntries(
     Object.entries(gettersMap)
@@ -119,3 +119,7 @@ export const App = Webpack.getByKeys('setEnableHardwareAcceleration', 'releaseCh
 export const Message = Webpack.getModule(m => Filters.byStrings('must not be a thread starter message')(m?.type), { searchExports: true })
 export const MessageDivider = Webpack.getModule(m => Filters.byStrings('divider', 'unreadPill')(m?.render))
 export const ChatSearchSidebar = getMangled(Filters.byStrings('getResultsState', 'searchAnalyticsId'))
+export const { Select, SingleSelect } = mapModule(Filters.byStrings('SELECT', 'renderPopout', 'closeOnSelect'), {
+  Select: Filters.byStrings('SELECT', 'renderPopout', 'closeOnSelect'),
+  SingleSelect: m => Filters.byStrings('value', 'onChange')(m) && !Filters.byStrings('isSelected')(m)
+}, { withKeys: true })

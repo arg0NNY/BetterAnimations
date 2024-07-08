@@ -27,6 +27,7 @@ import Modules from '@/modules/Modules'
 import TickThread from '@/modules/TickThread'
 import patchChatSearchSidebar from '@/patches/ChatSearchSidebar/patchChatSearchSidebar'
 import patchReferencePositionLayer from '@/patches/ReferencePositionLayer/patchReferencePositionLayer'
+import patchSelect from '@/patches/Select/patchSelect'
 
 anime.suspendWhenDocumentHidden = false
 
@@ -62,6 +63,7 @@ export default function (meta) {
       patchMessageRequestsRoute()
       patchChatSearchSidebar()
       patchReferencePositionLayer()
+      patchSelect()
 
       Logger.info('Startup', 'Forcing app update...')
       forceAppUpdate()

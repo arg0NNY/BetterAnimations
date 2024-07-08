@@ -4,6 +4,7 @@ import AnimeTransition from '@/components/AnimeTransition'
 import patchPopoutCSSAnimator from '@/patches/BasePopout/patchPopoutCSSAnimator'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
+import { autoPosition } from '@/hooks/useAutoPosition'
 
 function patchBasePopout () {
   const Original = mangled(BasePopout)
@@ -33,10 +34,14 @@ function patchBasePopout () {
         args
       )
 
-      const auto = {
-        position: this.props.position,
-        align: this.props.align
-      }
+      const { autoRef, setPosition } = autoPosition(
+        this,
+        this.props.position,
+        { align: this.props.align }
+      )
+
+      const position = this.state.renderedPosition ?? this.props.position
+      if (autoRef.current.position !== position) setPosition(position)
 
       return (
         <TransitionGroup component={null}>
@@ -46,7 +51,7 @@ function patchBasePopout () {
               key={+this.state.isLoading}
               targetContainer={e => e}
               module={this.props.module}
-              auto={auto}
+              autoRef={autoRef}
             >
               {value}
             </AnimeTransition>

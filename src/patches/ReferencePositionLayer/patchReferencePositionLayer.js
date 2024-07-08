@@ -3,7 +3,9 @@ import { Common } from '@/modules/DiscordModules'
 
 function patchReferencePositionLayer () {
   Patcher.after(Common.ReferencePositionLayer.prototype, 'componentDidMount', (self) => {
-    self.props.onPositionChange?.call(self.props, self.calculateState().position)
+    queueMicrotask(
+      () => self.props.onPositionChange?.call(self.props, self.calculateState().position)
+    )
   })
 }
 
