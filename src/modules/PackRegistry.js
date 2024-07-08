@@ -46,7 +46,7 @@ export default new class PackRegistry {
   fetch (filename, parse = true) {
     return Net.fetch(`${this.baseUrl}/${filename}?${Date.now()}`)
       .then(res => parse ? res.json() : res.text())
-      .catch(err => Logger.error(this.name, `Failed to fetch "${filename}"`))
+      .catch(err => Logger.error(this.name, `Failed to fetch "${filename}"`, err))
   }
   async updateRegistry () {
     if (this.pending) return

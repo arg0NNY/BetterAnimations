@@ -41,7 +41,7 @@ class Animation {
 
       const { animate, context } = this.module.getAnimation(
         this.type,
-        this.auto ? { auto: this.auto } : {},
+        this.auto?.current ? { auto: this.auto.current } : {},
         { container: this.container, element: this.node }
       )
 

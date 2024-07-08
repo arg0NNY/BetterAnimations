@@ -1,24 +1,29 @@
-import { Patcher } from '@/BdApi'
+import { Patcher, React } from '@/BdApi'
 import { appLayerContext, Layer, MenuSubmenuItem, MenuSubmenuListItem } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
-import { auto } from '@/patches/ContextMenu/patchContextMenu'
+import Position from '@/enums/Position'
+import useAutoPosition from '@/hooks/useAutoPosition'
 
 function patchContextSubmenu () {
   const callback = (self, [props], original) => {
+    const { autoRef, setPosition } = useAutoPosition(Position.Right)
+
     const module = useModule(ModuleKey.ContextMenu)
     if (!module.isEnabled()) return original(props)
 
     const value = original(Object.assign({}, props, { isFocused: true }))
+    const { children } = value.props
 
-    const i = value.props.children.length - 1
-    value.props.children[i] = (
+    const i = children.length - 1
+    children[i].props.onPositionChange = setPosition
+    children[i] = (
       <AnimeTransition
         in={props.isFocused}
         targetContainer={e => e}
         module={module}
-        auto={auto}
+        autoRef={autoRef}
       >
         <Layer layerContext={appLayerContext}>
           {value.props.children[i]}

@@ -1,4 +1,4 @@
-import { Patcher } from '@/BdApi'
+import { Patcher, React } from '@/BdApi'
 import { ContextMenu, TransitionGroup } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
 import patchContextSubmenu from '@/patches/ContextMenu/patchContextSubmenu'
@@ -7,11 +7,7 @@ import Position from '@/enums/Position'
 import useModule, { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
-
-export const auto = {
-  position: Position.Bottom,
-  align: Position.Left
-}
+import { autoPosition } from '@/hooks/useAutoPosition'
 
 function patchContextMenu () {
   const once = ensureOnce()
@@ -23,13 +19,26 @@ function patchContextMenu () {
         const module = Modules.getModule(ModuleKey.ContextMenu)
         if (!module.isEnabled()) return
 
+        const { config = {} } = self.props
+        const { autoRef, setPosition } = autoPosition(
+          self,
+          config.position ?? Position.Right,
+          { align: config.align ?? Position.Top }
+        )
+
+        if (value) {
+          value.props.onPositionChange = setPosition
+          Patcher.after(value, 'type', (self, [props], value) => {
+            value.props.onPositionChange = props.onPositionChange ?? (() => {})
+          })
+        }
+
         return (
           <AnimeTransition
-            in={!!value}
+            in={self.props.in && !!value}
             targetContainer={e => e}
-            exit={false}
             module={module}
-            auto={auto}
+            autoRef={autoRef}
           >
             {value}
           </AnimeTransition>
@@ -39,20 +48,10 @@ function patchContextMenu () {
 
     const module = useModule(ModuleKey.ContextMenu)
     if (!module.isEnabled()) return
+
     return (
       <TransitionGroup component={null}>
-        {
-          value.props.isOpen &&
-          <AnimeTransition
-            key={value.key}
-            targetContainer={e => e}
-            enter={false}
-            module={module}
-            auto={auto}
-          >
-            {value}
-          </AnimeTransition>
-        }
+        {value.props.isOpen && value}
       </TransitionGroup>
     )
   })

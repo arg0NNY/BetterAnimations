@@ -26,6 +26,7 @@ import { DiscordSelectors } from '@/modules/DiscordSelectors'
 import Modules from '@/modules/Modules'
 import TickThread from '@/modules/TickThread'
 import patchChatSearchSidebar from '@/patches/ChatSearchSidebar/patchChatSearchSidebar'
+import patchReferencePositionLayer from '@/patches/ReferencePositionLayer/patchReferencePositionLayer'
 
 anime.suspendWhenDocumentHidden = false
 
@@ -60,6 +61,7 @@ export default function (meta) {
       patchGuildChannelList()
       patchMessageRequestsRoute()
       patchChatSearchSidebar()
+      patchReferencePositionLayer()
 
       Logger.info('Startup', 'Forcing app update...')
       forceAppUpdate()

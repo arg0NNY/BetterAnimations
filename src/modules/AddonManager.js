@@ -195,9 +195,10 @@ export default class AddonManager {
 
   reloadAddon (idOrFileOrAddon, shouldToast = true) {
     const addon = typeof (idOrFileOrAddon) == 'string' ? this.addonList.find(c => c.id == idOrFileOrAddon || c.filename == idOrFileOrAddon) : idOrFileOrAddon
-    const didUnload = this.unloadAddon(addon, shouldToast, true)
+    const didUnload = this.unloadAddon(addon, false, true)
     if (addon && !didUnload) return didUnload
-    return this.loadAddon(addon ? addon.filename : idOrFileOrAddon, shouldToast)
+    this.loadAddon(addon ? addon.filename : idOrFileOrAddon, false)
+    if (shouldToast) this.toast(`${addon.name} was reloaded.`, 'reloaded')
   }
 
   isLoaded (idOrFile) {
