@@ -3,6 +3,9 @@ import { getSortedGuildChannelIds, getSortedGuildTreeIds } from '@/helpers/guild
 import { getStaticDMRouteIndex } from '@/helpers/routes'
 import { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChannelList'
 
+// Keep up-to-date with the internal AppView component (`Webpack.getByStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY')`)
+
+// Keep up-to-date: (`impressionName: ImpressionNames.GUILD_CHANNEL` in AppView)
 const CHANNEL_PATH = [
   Routes.CHANNEL_THREAD_VIEW(':guildId', ':channelId', ':threadId', ':messageId?'),
   Routes.CHANNEL(':guildId', ':channelId?', ':messageId?')
@@ -21,6 +24,7 @@ export function shouldSwitchBase (next, prev) {
 
   const nextOrPrev = (fn, n = next, p = prev) => fn(n) || fn(p)
   if (
+    // Keep up-to-date: list everything that hides the sidebar (`hideSidebar` in AppView)
     nextOrPrev(l => l.pathname.startsWith(Routes.GUILD_MEMBER_VERIFICATION('')))
     || nextOrPrev(l => l.pathname.startsWith(Routes.GUILD_MEMBER_VERIFICATION_FOR_HUB('')))
     || nextOrPrev(l => matchExact(l.pathname, Routes.GUILD_BOOSTING_MARKETING(':guildId')))
