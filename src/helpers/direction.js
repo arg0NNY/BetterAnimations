@@ -1,5 +1,6 @@
 import Axis from '@/enums/Axis'
 import Direction from '@/enums/Direction'
+import { toDirection } from '@/helpers/position'
 
 export function getDirectionsByAxis (axis) {
   switch (axis) {
@@ -11,4 +12,20 @@ export function getDirectionsByAxis (axis) {
 
 export function getDirection (axis, isMore) {
   return getDirectionsByAxis(axis)[+isMore]
+}
+
+export function reverseDirection (direction) {
+  switch (direction) {
+    case Direction.Upwards: return Direction.Downwards
+    case Direction.Downwards: return Direction.Upwards
+    case Direction.Leftwards: return Direction.Rightwards
+    case Direction.Rightwards: return Direction.Leftwards
+    case Direction.Forwards: return Direction.Backwards
+    case Direction.Backwards: return Direction.Forwards
+  }
+}
+
+export function getAnchorDirection (position, isTowards) {
+  const direction = toDirection(position)
+  return isTowards ? reverseDirection(direction) : direction
 }

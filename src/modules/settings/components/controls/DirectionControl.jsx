@@ -7,8 +7,39 @@ import directionAxes from '@/data/directionAxes'
 import { getDirectionsByAxis } from '@/helpers/direction'
 import { Common } from '@/modules/DiscordModules'
 import Direction from '@/enums/Direction'
+import DirectionAutoType from '@/enums/DirectionAutoType'
+import directionAnchorOptions from '@/data/directionAnchorOptions'
 
-function DirectionControl ({ animation, value, onChange, axis, onAxisChange, defaultValue }) {
+function DirectionAxisControl ({ animation, value, onChange }) {
+  const axisOptions = directionAxes.filter(
+    a => animation.settings.direction === true
+      || getDirectionsByAxis(a.value).every(d => animation.settings.direction.includes(d))
+  )
+
+  return (
+    <div style={{ marginTop: 10 }}>
+      <Common.RadioGroup
+        options={axisOptions}
+        value={value}
+        onChange={option => onChange(option.value)}
+      />
+    </div>
+  )
+}
+
+function DirectionAnchorControl ({ value, onChange }) {
+  return (
+    <div style={{ marginTop: 10 }}>
+      <Common.RadioGroup
+        options={directionAnchorOptions}
+        value={value}
+        onChange={option => onChange(option.value)}
+      />
+    </div>
+  )
+}
+
+function DirectionControl ({ animation, value, onChange, defaultValue, axis, onAxisChange, towards, onTowardsChange }) {
   const module = React.useContext(ModuleContext)
 
   const options = directions.filter(
@@ -17,10 +48,23 @@ function DirectionControl ({ animation, value, onChange, axis, onAxisChange, def
       : (animation.settings.direction === true || animation.settings.direction.includes(d.value))
   )
 
-  const axisOptions = directionAxes.filter(
-    a => animation.settings.direction === true
-      || getDirectionsByAxis(a.value).every(d => animation.settings.direction.includes(d))
-  )
+  const additionalControl = value === Auto(Direction).Auto
+    ? {
+        [DirectionAutoType.Alternate]: (
+          <DirectionAxisControl
+            animation={animation}
+            value={axis}
+            onChange={onAxisChange}
+          />
+        ),
+        [DirectionAutoType.Anchor]: (
+          <DirectionAnchorControl
+            value={towards}
+            onChange={onTowardsChange}
+          />
+        )
+      }[module?.meta.settings?.supportsAuto?.[AnimationSetting.Direction]]
+    : null
 
   return (
     <Common.FormItem>
@@ -31,15 +75,7 @@ function DirectionControl ({ animation, value, onChange, axis, onAxisChange, def
         value={value}
         onChange={onChange}
       />
-      {value === Auto(Direction).Auto && (
-        <div style={{ marginTop: 10 }}>
-          <Common.RadioGroup
-            options={axisOptions}
-            value={axis}
-            onChange={option => onAxisChange(option.value)}
-          />
-        </div>
-      )}
+      {additionalControl}
     </Common.FormItem>
   )
 }

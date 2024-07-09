@@ -5,6 +5,7 @@ import Direction from '@/enums/Direction'
 import Position from '@/enums/Position'
 import ModuleType from '@/enums/ModuleType'
 import { heightModifier, marginRightModifier } from '@/helpers/modifiers'
+import DirectionAutoType from '@/enums/DirectionAutoType.js'
 
 export const moduleAliases = {
   [ModuleKeyAlias.Switch]: [
@@ -36,7 +37,7 @@ const modules = [
       type: ModuleType.Switch,
       settings: {
         supportsAuto: {
-          [Setting.Direction]: true
+          [Setting.Direction]: DirectionAutoType.Alternate
         },
         defaults: {
           [Setting.DirectionAxis]: Axis.Y,
@@ -52,7 +53,7 @@ const modules = [
       type: ModuleType.Switch,
       settings: {
         supportsAuto: {
-          [Setting.Direction]: true
+          [Setting.Direction]: DirectionAutoType.Alternate
         },
         defaults: {
           [Setting.DirectionAxis]: Axis.Y,
@@ -68,7 +69,7 @@ const modules = [
       type: ModuleType.Switch,
       settings: {
         supportsAuto: {
-          [Setting.Direction]: true
+          [Setting.Direction]: DirectionAutoType.Alternate
         },
         defaults: {
           [Setting.DirectionAxis]: Axis.Y,
@@ -83,7 +84,11 @@ const modules = [
     meta: {
       settings: {
         supportsAuto: {
-          [Setting.Position]: true
+          [Setting.Position]: true,
+          [Setting.Direction]: DirectionAutoType.Anchor
+        },
+        defaults: {
+          [Setting.DirectionTowards]: false
         }
       }
     }
@@ -94,7 +99,11 @@ const modules = [
     meta: {
       settings: {
         supportsAuto: {
-          [Setting.Position]: true
+          [Setting.Position]: true,
+          [Setting.Direction]: DirectionAutoType.Anchor
+        },
+        defaults: {
+          [Setting.DirectionTowards]: false
         }
       }
     }
@@ -105,7 +114,11 @@ const modules = [
     meta: {
       settings: {
         supportsAuto: {
-          [Setting.Position]: true
+          [Setting.Position]: true,
+          [Setting.Direction]: DirectionAutoType.Anchor
+        },
+        defaults: {
+          [Setting.DirectionTowards]: false
         }
       }
     }
@@ -175,7 +188,7 @@ const modules = [
       type: ModuleType.Switch,
       settings: {
         supportsAuto: {
-          [Setting.Direction]: true
+          [Setting.Direction]: DirectionAutoType.Alternate
         },
         defaults: {
           [Setting.DirectionAxis]: Axis.Z,

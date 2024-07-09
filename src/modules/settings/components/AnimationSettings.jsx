@@ -54,6 +54,8 @@ export default function AnimationSettings ({ animation, type, settings, onChange
           defaultValue={defaults.direction}
           axis={settings.directionAxis}
           onAxisChange={axis => setSettings({ directionAxis: axis })}
+          towards={settings.directionTowards}
+          onTowardsChange={towards => setSettings({ directionTowards: towards })}
         />
       )}
       {!module?.meta.settings?.hideOverflow && (

@@ -1,4 +1,5 @@
 import Position from '@/enums/Position'
+import Direction from '@/enums/Direction'
 
 export function reversePosition (position) {
   switch (position) {
@@ -21,4 +22,14 @@ export function getPosition (position, align = Position.Center) {
   if (equals(Position.Top, Position.Left)) return Position.TopLeft
   if (equals(Position.Bottom, Position.Right)) return Position.BottomRight
   if (equals(Position.Bottom, Position.Left)) return Position.BottomLeft
+}
+
+export function toDirection (position) {
+  switch (position) {
+    case Position.Top: return Direction.Upwards
+    case Position.Bottom: return Direction.Downwards
+    case Position.Left: return Direction.Leftwards
+    case Position.Right: return Direction.Rightwards
+    case Position.Center: return Direction.Backwards
+  }
 }

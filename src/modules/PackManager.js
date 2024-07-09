@@ -28,9 +28,9 @@ export default new class PackManager extends AddonManager {
   loadPack (filename) {return this.loadAddon(filename)}
   reloadPack (idOrFileOrAddon) {return this.reloadAddon(idOrFileOrAddon)}
 
-  loadAddon (filename, shouldCTE = true) {
-    const error = super.loadAddon(filename, shouldCTE)
-    if (error && shouldCTE) Logger.error('PackManager', 'Failed to load pack:', error) // Modals.showAddonErrors({ themes: [error] })
+  loadAddon (filename, shouldToast = true) {
+    const error = super.loadAddon(filename, shouldToast)
+    if (error) Logger.error('PackManager', 'Failed to load pack:', error) // Modals.showAddonErrors({ themes: [error] })
     return error
   }
 

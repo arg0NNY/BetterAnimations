@@ -174,7 +174,7 @@ export default class AddonManager {
 
     this.emit('loaded', addon)
 
-    if (this.state[addon.id] !== false) return this.state[addon.id] = true
+    if (this.state[addon.id] !== false) this.state[addon.id] = true
     return this.startAddon(addon)
   }
 
@@ -197,8 +197,9 @@ export default class AddonManager {
     const addon = typeof (idOrFileOrAddon) == 'string' ? this.addonList.find(c => c.id == idOrFileOrAddon || c.filename == idOrFileOrAddon) : idOrFileOrAddon
     const didUnload = this.unloadAddon(addon, false, true)
     if (addon && !didUnload) return didUnload
-    this.loadAddon(addon ? addon.filename : idOrFileOrAddon, false)
-    if (shouldToast) this.toast(`${addon.name} was reloaded.`, 'reloaded')
+    const error = this.loadAddon(addon ? addon.filename : idOrFileOrAddon, false)
+    if (!error && shouldToast) this.toast(`${addon.name} was reloaded.`, 'reloaded')
+    return error
   }
 
   isLoaded (idOrFile) {

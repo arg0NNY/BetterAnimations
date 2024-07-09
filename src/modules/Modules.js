@@ -4,7 +4,7 @@ import Auto from '@/enums/Auto'
 import Setting from '@/enums/AnimationSetting'
 import Position from '@/enums/Position'
 import Direction from '@/enums/Direction'
-import { getDirection, getDirectionsByAxis } from '@/helpers/direction'
+import { getAnchorDirection, getDirection, getDirectionsByAxis } from '@/helpers/direction'
 import Axis from '@/enums/Axis'
 import { getPosition, reversePosition } from '@/helpers/position'
 import Config from '@/modules/Config'
@@ -19,6 +19,7 @@ import { AnimateSchema } from '@/modules/animation/schemas/AnimationSchema'
 import Events from '@/enums/Events'
 import Emitter from '@/modules/Emitter'
 import Logger from '@/modules/Logger'
+import DirectionAutoType from '@/enums/DirectionAutoType'
 
 class Module {
   constructor (id, name, meta = {}, { parent } = {}) {
@@ -130,7 +131,8 @@ class Module {
   }
 
   supportsAuto (animation, setting) {
-    if (!this.meta.settings?.supportsAuto?.[setting] || !animation.settings?.[setting]) return false
+    const type = this.meta.settings?.supportsAuto?.[setting]
+    if (!type || !animation.settings?.[setting]) return false
     if (animation.settings[setting] === true) return true
 
     switch (setting) {
@@ -143,13 +145,23 @@ class Module {
           Position.Center
         ].every(v => animation.settings[setting].includes(v))
       case Setting.Direction:
-        return [
-          [Direction.Upwards, Direction.Downwards],
-          [Direction.Leftwards, Direction.Rightwards],
-          [Direction.Forwards, Direction.Backwards]
-        ].some(
-          pair => pair.every(v => animation.settings[setting]?.includes(v))
-        )
+        switch (type) {
+          case DirectionAutoType.Alternate:
+            return [
+              [Direction.Upwards, Direction.Downwards],
+              [Direction.Leftwards, Direction.Rightwards],
+              [Direction.Forwards, Direction.Backwards]
+            ].some(
+              pair => pair.every(v => animation.settings[setting]?.includes(v))
+            )
+          case DirectionAutoType.Anchor:
+            return [
+              Direction.Upwards,
+              Direction.Downwards,
+              Direction.Leftwards,
+              Direction.Rightwards
+            ].every(v => animation.settings[setting]?.includes(v))
+        }
       default: return false
     }
   }
@@ -165,7 +177,8 @@ class Module {
       Object.entries(this.meta.settings?.defaults ?? {})
         .filter(([key]) => {
           if (key === Setting.Overflow) return true
-          if (key === Setting.DirectionAxis) key = Setting.Direction
+          if ([Setting.DirectionAxis, Setting.DirectionTowards].includes(key))
+            key = Setting.Direction
           return key in (animation.settings ?? {})
         })
     )
@@ -192,7 +205,7 @@ class Module {
       )
     ) : {}
 
-    if ('auto' in options) this.assignAutoValues(animation, settings, options.auto)
+    if ('auto' in options) this.assignAutoValues(animation, type, settings, options.auto)
 
     return settings
   }
@@ -202,12 +215,20 @@ class Module {
 
     switch (setting) {
       case Setting.DirectionAxis: {
-        if (allSettings[Setting.Direction] !== Auto()) return undefined
+        if (allSettings[Setting.Direction] !== Auto()
+          || this.meta.settings?.supportsAuto?.[Setting.Direction] !== DirectionAutoType.Alternate)
+          return undefined
 
         const directions = animation.settings[Setting.Direction] ?? []
         if (directions === true) return value
         if (getDirectionsByAxis(value)?.every(d => directions.includes(d))) return value
         return [Axis.Y, Axis.Z, Axis.X].find(axis => getDirectionsByAxis(axis).every(d => directions.includes(d)))
+      }
+      case Setting.DirectionTowards: {
+        if (allSettings[Setting.Direction] !== Auto()
+          || this.meta.settings?.supportsAuto?.[Setting.Direction] !== DirectionAutoType.Anchor)
+          return undefined
+        return Boolean(value)
       }
       case Setting.Overflow: {
         if (animation.settings?.[setting] === false)
@@ -251,8 +272,9 @@ class Module {
     )
   }
 
-  assignAutoValues (animation, normalizedSettings, values) {
+  assignAutoValues (animation, type, normalizedSettings, values) {
     const settings = normalizedSettings
+    const animationDefaults = getAnimationDefaultSettings(animation, type)
 
     if (values === false) {
       Object.keys(settings).forEach(key => settings[key] === Auto() && delete settings[key])
@@ -270,7 +292,17 @@ class Module {
     }
 
     if (settings[Setting.Direction] === Auto())
-      settings[Setting.Direction] = getDirection(settings.directionAxis, values.direction)
+      switch (this.meta.settings.supportsAuto[Setting.Direction]) {
+        case DirectionAutoType.Alternate:
+          settings[Setting.Direction] = getDirection(settings[Setting.DirectionAxis], values.direction)
+          break
+        case DirectionAutoType.Anchor:
+          settings[Setting.Direction] = values.position
+            ? getAnchorDirection(values.position, settings[Setting.DirectionTowards])
+            : animationDefaults[Setting.Direction]
+          break
+      }
+
 
     return settings
   }
