@@ -126,7 +126,14 @@ export default class AddonManager {
     let fileContent = fs.readFileSync(filename, 'utf8')
     fileContent = stripBOM(fileContent)
     const stats = fs.statSync(filename)
-    const addon = JSON.parse(fileContent)
+    let addon, parseError
+    try {
+      addon = JSON.parse(fileContent)
+    }
+    catch (e) {
+      addon = {}
+      parseError = e
+    }
     if (!addon.author) addon.author = 'Unknown Author'
     if (!addon.version) addon.version = '???'
     if (!addon.description) addon.description = 'Description not provided.'
@@ -139,8 +146,9 @@ export default class AddonManager {
     addon.size = stats.size
     addon.fileContent = fileContent
     addon.installed = addon
-    if (this.addonList.find(c => c.id == addon.id)) throw new AddonError(addon.name, filename, `There is already a ${this.prefix} with name ${addon.name}`, this.prefix)
+    if (this.addonList.find(c => c.id == addon.id)) throw new AddonError(addon, `There is already a ${this.prefix} with name ${addon.name}`, this.prefix)
     this.addonList.push(addon)
+    if (parseError) throw new AddonError(addon, parseError.message, parseError, this.prefix)
     return addon
   }
 
@@ -151,7 +159,7 @@ export default class AddonManager {
     try {
       addon = this.requireAddon(path.resolve(this.addonFolder, filename))
     } catch (e) {
-      const partialAddon = this.addonList.find(c => c.filename == filename)
+      const { addon: partialAddon } = e
       if (partialAddon) {
         partialAddon.partial = true
         this.state[partialAddon.id] = false

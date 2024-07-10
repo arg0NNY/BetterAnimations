@@ -1,9 +1,8 @@
 
 export default class AddonError extends Error {
-  constructor (name, filename, message, error, type) {
+  constructor (addon, message, error, type) {
     super(message)
-    this.name = name
-    this.file = filename
+    this.addon = addon
     this.error = error
     this.type = type
   }

@@ -2,6 +2,7 @@ import { Common } from '@/modules/DiscordModules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import AddonList from '@/modules/settings/components/AddonList'
 import PackRegistry from '@/modules/PackRegistry'
+import PackManager from '@/modules/PackManager'
 
 export default function Library () {
   return (
@@ -11,7 +12,9 @@ export default function Library () {
         onClick={() => PackRegistry.checkForUpdates({ useToasts: true })}
         className={DiscordClasses.Margins.marginBottom20}
       >Check for Updates</Common.Button>
-      <AddonList />
+      <AddonList
+        getList={() => PackManager.getAllPacks(true)}
+      />
     </div>
   )
 }

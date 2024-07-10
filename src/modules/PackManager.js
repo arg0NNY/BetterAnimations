@@ -30,7 +30,7 @@ export default new class PackManager extends AddonManager {
 
   loadAddon (filename, shouldToast = true) {
     const error = super.loadAddon(filename, shouldToast)
-    if (error) Logger.error('PackManager', 'Failed to load pack:', error) // Modals.showAddonErrors({ themes: [error] })
+    if (error) Logger.error('PackManager', `Failed to load pack "${filename}":`, error) // Modals.showAddonErrors({ themes: [error] })
     return error
   }
 
@@ -41,7 +41,7 @@ export default new class PackManager extends AddonManager {
     }
     catch (e) {
       const message = e instanceof z.ZodError ? fromZodError(e).message : e.message
-      return new AddonError(addon.name || addon.filename, addon.filename, message, e, this.prefix)
+      return new AddonError(addon, message, e, this.prefix)
     }
   }
 

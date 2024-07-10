@@ -83,7 +83,16 @@ export default new class PackRegistry {
     const latest = this.items.find(item => item.filename === pack.filename)
     if (!latest) return false
 
-    return semverGt(latest.version, pack.version) && latest.version
+    let hasUpdate
+    try {
+      hasUpdate = semverGt(latest.version, pack.version)
+    }
+    catch (e) {
+      Logger.warn(this.name, `Failed to compare versions for "${pack.filename}":`, e)
+      hasUpdate = false
+    }
+
+    return hasUpdate && latest.version
   }
 
   async checkForUpdates (options = {}) {
