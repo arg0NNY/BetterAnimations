@@ -36,7 +36,7 @@ function patchMessageRequestsRoute (route) {
       Patcher.after(value.props, 'children', (self, args, value) => {
         Patcher.after(value, 'type', (self, [props], value) => {
           const state = useStateFromStores([ChannelSectionStore], () => ChannelSectionStore.getSidebarState(MESSAGE_REQUESTS_BASE_CHANNEL_ID))
-          const channel = useStateFromStores([ChannelStore], () => ChannelStore.getChannel(state?.channelId))
+          const channel = useStateFromStores([ChannelStore], () => ChannelStore.getChannel(state?.channelId), [state?.channelId])
 
           const cached = usePrevious({ state, channel })
 

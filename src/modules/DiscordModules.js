@@ -123,3 +123,4 @@ export const { Select, SingleSelect } = mapModule(Filters.byStrings('SELECT', 'r
   Select: Filters.byStrings('SELECT', 'renderPopout', 'closeOnSelect'),
   SingleSelect: m => Filters.byStrings('value', 'onChange')(m) && !Filters.byStrings('isSelected')(m)
 }, { withKeys: true })
+export const MembersModViewSidebar = getMangled(Filters.byStrings('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))

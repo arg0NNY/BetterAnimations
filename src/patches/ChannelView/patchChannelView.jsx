@@ -10,7 +10,8 @@ import Modules from '@/modules/Modules'
 import patchChatSidebar from '@/patches/ChannelView/patchChatSidebar'
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { css } from '@/modules/Style'
-import SwitchSidebarTransition from '@/patches/ChannelView/components/SwitchSidebarTransition'
+import patchMembersModViewSidebar from '@/patches/ChannelView/patchMembersModViewSidebar'
+import SidebarTransition from '@/patches/ChannelView/components/SidebarTransition'
 
 function patchChannelView () {
   const once = ensureOnce()
@@ -45,23 +46,15 @@ function patchChannelView () {
             if (!module.isEnabled() && !switchModule.isEnabled()) return
 
             const state = self.props.channelSidebarState ?? self.props.guildSidebarState
-            const key = state?.type ?? 'none'
 
             return (
-              <SwitchTransition>
-                <AnimeTransition
-                  key={key}
-                  container={{ className: DiscordClasses.AppView.content, style: { flex: '0 0 auto' } }}
-                  module={module}
-                >
-                  <SwitchSidebarTransition
-                    state={state}
-                    module={switchModule}
-                  >
-                    {value}
-                  </SwitchSidebarTransition>
-                </AnimeTransition>
-              </SwitchTransition>
+              <SidebarTransition
+                module={module}
+                switchModule={switchModule}
+                state={state}
+              >
+                {value}
+              </SidebarTransition>
             )
           })
         })
@@ -72,6 +65,7 @@ function patchChannelView () {
 
   patchChatSidebar()
   patchVoiceChannelView()
+  patchMembersModViewSidebar()
 }
 
 export default patchChannelView
