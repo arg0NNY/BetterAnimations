@@ -28,9 +28,11 @@ function copyToBDPlugin() {
       })()
       const bdFolder = path.join(userConfig, 'BetterDiscord')
       const outputFile = path.join(__dirname, 'dist', `${pluginConfig.name}.plugin.js`)
-      if (!fs.existsSync(path.join(bdFolder, 'plugins'))) {
+      if (!fs.existsSync(path.join(bdFolder, 'plugins')))
         fs.mkdirSync(path.join(bdFolder, 'plugins'), { recursive: true })
-      }
+
+      if (!fs.existsSync(outputFile)) return
+
       fs.copyFileSync(outputFile, path.join(bdFolder, 'plugins', `${pluginConfig.name}.plugin.js`))
       console.log('\x1b[32m%s\x1b[34m%s\x1b[32m%s\x1b[0m', '✓ copied to ', 'BetterDiscord', ' folder')
     }
