@@ -10,9 +10,12 @@ import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import { css } from '@/modules/Style'
 
-function LayerContainer ({ baseLayer, children }) {
+function LayerContainer ({ baseLayer, hidden, children }) {
   return (
-    <div className={`${DiscordClasses.Layers.layer} ${baseLayer ? DiscordClasses.Layers.baseLayer : ''}`}>
+    <div
+      className={`${DiscordClasses.Layers.layer} ${baseLayer ? DiscordClasses.Layers.baseLayer : ''}`}
+      style={hidden ? { visibility: 'hidden' } : undefined}
+    >
       {children}
     </div>
   )
@@ -29,8 +32,6 @@ function patchLayers () {
         Patcher.after(value.type.prototype, 'renderLayers', (self, args, value) => {
           const module = Modules.getModule(ModuleKey.Layers)
           if (!module.isEnabled()) return
-
-          value.forEach(layer => layer.type = LayerContainer) // Disable Discord's internal animations
 
           const auto = {
             direction: +(value.length > prevLength)
@@ -52,7 +53,13 @@ function patchLayers () {
                         mountOnEnter={false}
                         unmountOnExit={false}
                       >
-                        {layer}
+                        {state => (
+                          <LayerContainer
+                            {...layer.props}
+                            key={layer.key}
+                            hidden={state === 'exited'}
+                          />
+                        )}
                       </AnimeTransition>
                     )}
                   </PassThrough>

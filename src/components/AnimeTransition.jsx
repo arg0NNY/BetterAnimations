@@ -59,6 +59,14 @@ class AnimeTransition extends React.Component {
       ...props
     } = this.props
 
+    const contents = (state = null) => (
+      <AnimeContainer container={children && container} ref={this.containerRef}>
+        <Freeze freeze={freeze && props.in === false} nodeRef={containerRef ?? this.containerRef}>
+          {typeof children === 'function' ? children(state) : children}
+        </Freeze>
+      </AnimeContainer>
+    )
+
     return (
       <Transition
         {...props}
@@ -70,11 +78,7 @@ class AnimeTransition extends React.Component {
         onExiting={this.onAnimate(AnimationType.Exit)}
         addEndListener={(_, done) => this.doneCallback.current = done}
       >
-        <AnimeContainer container={children && container} ref={this.containerRef}>
-          <Freeze freeze={freeze && props.in === false} nodeRef={containerRef ?? this.containerRef}>
-            {children && React.Children.only(children)}
-          </Freeze>
-        </AnimeContainer>
+        {typeof children === 'function' ? contents : contents()}
       </Transition>
     )
   }
