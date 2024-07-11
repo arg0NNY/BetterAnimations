@@ -32,10 +32,11 @@ export function moduleEffect (id, forceUpdate, full = false) {
 // For class components
 export function injectModule (component, id, full = false) {
   Patcher.after(component.prototype, 'componentDidMount', (self) => {
-    self.clearModuleEffect = moduleEffect(id, () => self.forceUpdate(), full)
+    const effects = [].concat(id).map(id => moduleEffect(id, () => self.forceUpdate(), full))
+    self.__clearModuleEffect = () => effects.forEach(e => e())
   })
   Patcher.after(component.prototype, 'componentWillUnmount', (self) => {
-    self.clearModuleEffect?.()
+    self.__clearModuleEffect?.()
   })
 }
 

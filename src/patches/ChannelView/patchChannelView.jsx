@@ -21,9 +21,11 @@ function patchChannelView () {
       Patcher.after(value.props, 'children', (self, args, value) => {
 
         once(() => {
-          injectModule(value.type, ModuleKey.MembersSidebar)
-          injectModule(value.type, ModuleKey.ThreadSidebar)
-          injectModule(value.type, ModuleKey.ThreadSidebarSwitch)
+          injectModule(value.type, [
+            ModuleKey.MembersSidebar,
+            ModuleKey.ThreadSidebar,
+            ModuleKey.ThreadSidebarSwitch
+          ])
           Patcher.after(value.type.prototype, 'renderSidebar', (self, args, value) => {
             const module = Modules.getModule(ModuleKey.MembersSidebar)
             if (!module.isEnabled()) return value
