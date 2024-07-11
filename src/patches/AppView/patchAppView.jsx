@@ -16,24 +16,31 @@ import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequest
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { css } from '@/modules/Style'
 
-function BaseView ({ children }) {
+function BaseView ({ module, children }) {
+  const baseRef = React.useRef()
   const [key, direction] = useLocationKey(shouldSwitchBase, getSwitchBaseDirection)
-
-  const module = useModule(ModuleKey.Servers)
-  if (!module.isEnabled()) return children
-
   const auto = { direction }
+
+  React.useLayoutEffect(() => {
+    if (!baseRef.current) return
+
+    const bdNotices = document.getElementById('bd-notices')
+    if (bdNotices && bdNotices.parentElement !== baseRef.current) {
+      bdNotices.replaceWith(bdNotices.cloneNode(true))
+      baseRef.current.prepend(bdNotices)
+    }
+  })
 
   return (
     <TransitionGroup component={null} childFactory={passAuto(auto)}>
       <AnimeTransition
         key={key}
-        container={{ className: DiscordClasses.AppView.base }}
+        container={{ className: 'BA__base' }}
         freeze={true}
         module={module}
         auto={auto}
       >
-        <div className={DiscordClasses.AppView.base}>
+        <div className={DiscordClasses.AppView.base} ref={baseRef}>
           {children}
         </div>
       </AnimeTransition>
@@ -41,16 +48,8 @@ function BaseView ({ children }) {
   )
 }
 
-function ContentView ({ children }) {
+function ContentView ({ module, children }) {
   const [key, direction] = useLocationKey(shouldSwitchContent, getSwitchContentDirection)
-
-  const module = useModule(ModuleKey.Channels)
-  if (!module.isEnabled()) return (
-    <Router.Switch location={location}>
-      {children}
-    </Router.Switch>
-  )
-
   const auto = { direction }
 
   return (
@@ -74,10 +73,16 @@ function ContentView ({ children }) {
 
 function patchAppView () {
   Patcher.after(...AppView, (self, args, value) => {
-    const base = findInReactTree(value, m => m?.props?.className === DiscordClasses.AppView.base)
+    const serversModule = useModule(ModuleKey.Servers)
+    const channelsModule = useModule(ModuleKey.Channels)
+
+    const base = findInReactTree(value, m => m?.className === DiscordClasses.AppView.base)
     if (!base) return
 
-    base.props.children = <BaseView>{base.props.children}</BaseView>
+    if (serversModule.isEnabled()) {
+      base.className = 'BA__base'
+      base.children = <BaseView module={serversModule}>{base.children}</BaseView>
+    }
 
     const content = findInReactTree(base, m => m?.props?.className === DiscordClasses.AppView.content)
     if (!content) return
@@ -88,7 +93,8 @@ function patchAppView () {
     const messageRequestsRoute = routes.find(r => r?.props?.path === Routes.MESSAGE_REQUESTS)
     if (messageRequestsRoute) patchMessageRequestsRoute(messageRequestsRoute)
 
-    view.children = <ContentView>{routes}</ContentView>
+    if (channelsModule.isEnabled())
+      view.children = <ContentView module={channelsModule}>{routes}</ContentView>
   })
 }
 
@@ -98,7 +104,15 @@ css
 `${DiscordSelectors.AppView.container} {
     overflow: clip; /* Fix whole app jumping with sidebar animations */
 }
-${DiscordSelectors.AppView.base} {
+.BA__base {
+    /* Keep up-to-date with DiscordClasses.AppView.base */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    flex-grow: 1;
+}
+${DiscordSelectors.AppView.base}, .BA__base {
     min-width: 0;
     min-height: 0;
     overflow: visible;
