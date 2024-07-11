@@ -1,5 +1,4 @@
 import { buildAnimateAssets } from '@/modules/animation/parser'
-import AnimationType from '@/enums/AnimationType'
 import ModuleType from '@/enums/ModuleType'
 import Config from '@/modules/Config'
 
@@ -33,8 +32,6 @@ class Animation {
     }
 
     if (!intersect) callback?.()
-
-    this.node.style.display = '' // Removes the 'display: none !important' that is added by Suspense in Freeze
 
     requestAnimationFrame(() => {
       if (this.cancelled) return

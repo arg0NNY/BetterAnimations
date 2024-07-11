@@ -1,7 +1,7 @@
 import { Patcher, React } from '@/BdApi'
 import { ChatSidebar } from '@/modules/DiscordModules'
 import findInReactTree from '@/helpers/findInReactTree'
-import { AnimeContainer } from '@/components/AnimeTransition'
+import AnimeContainer from '@/components/AnimeContainer'
 import Modules from '@/modules/Modules'
 import ModuleKey from '@/enums/ModuleKey'
 import { DiscordClasses } from '@/modules/DiscordSelectors'

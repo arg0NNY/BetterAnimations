@@ -1,21 +1,15 @@
 import { React } from '@/BdApi'
 import { Transition } from '@/modules/DiscordModules'
-import { Freeze } from 'react-freeze'
+import Freeze from '@/components/Freeze'
 import AnimationType from '@/enums/AnimationType'
 import { css } from '@/modules/Style'
 import AnimationStore from '@/modules/AnimationStore'
 import { createAwaitableRef } from '@/helpers/react'
-
-export function AnimeContainer ({ container, children }) {
-  if (!container) return children
-
-  return (
-    <div data-animation-container="" {...container}>{children}</div>
-  )
-}
+import AnimeContainer from '@/components/AnimeContainer'
 
 class AnimeTransition extends React.Component {
   doneCallback = createAwaitableRef()
+  containerRef = React.createRef()
   instance = React.createRef()
 
   componentWillUnmount () {
@@ -61,6 +55,7 @@ class AnimeTransition extends React.Component {
       unmountOnExit = true,
       enter = true,
       exit = true,
+      containerRef,
       ...props
     } = this.props
 
@@ -75,8 +70,8 @@ class AnimeTransition extends React.Component {
         onExiting={this.onAnimate(AnimationType.Exit)}
         addEndListener={(_, done) => this.doneCallback.current = done}
       >
-        <AnimeContainer container={children && container}>
-          <Freeze freeze={freeze && props.in === false}>
+        <AnimeContainer container={children && container} ref={this.containerRef}>
+          <Freeze freeze={freeze && props.in === false} nodeRef={containerRef ?? this.containerRef}>
             {children && React.Children.only(children)}
           </Freeze>
         </AnimeContainer>
