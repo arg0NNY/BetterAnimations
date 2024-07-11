@@ -99,5 +99,9 @@ export default function (meta) {
 css
 `${DiscordSelectors.AppMount.appMount} {
     overflow: clip;
+}
+
+${DiscordSelectors.Layer.layer} {
+    isolation: isolate;
 }`
 `Index`
