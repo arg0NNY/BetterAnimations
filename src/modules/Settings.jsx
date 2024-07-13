@@ -1,30 +1,18 @@
-import { Common } from '@/modules/DiscordModules'
-import { createMemoryHistory } from 'history'
-import SettingsModal from '@/modules/settings/SettingsModal'
-import anime from 'animejs'
+import { React } from '@/BdApi'
+import { LayerActions, LayerStore } from '@/modules/DiscordModules'
+import SettingsModal from '@/modules/settingsRefresh/SettingsModal'
 
 export default new class Settings {
 
-  constructor () {
-    this.history = createMemoryHistory()
+  openSettingsModal (section) {
+    const component = () => <SettingsModal initialSection={section} />
+    component.__BA_isSettingsModal = true
+    LayerActions.pushLayer(component)
   }
 
-  openSettingsModal (location = '/') {
-    this.history.push(location)
-
-    Common.openModal(props => (
-      <SettingsModal {...props} history={this.history} />
-    ), {
-      onCloseRequest: () => { // Disable dismissing
-        anime({
-          targets: '.BA__settingsModal',
-          scale: [1, 1.025],
-          duration: 50,
-          direction: 'alternate',
-          easing: 'easeInOutSine'
-        })
-      }
-    })
+  closeSettingsModal () {
+    if (LayerStore.getLayers().at(-1)?.__BA_isSettingsModal)
+      LayerActions.popLayer()
   }
 
 }

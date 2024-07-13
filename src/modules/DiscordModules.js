@@ -76,7 +76,11 @@ export const Transition = Webpack.getByKeys('ENTERING', 'EXITING', 'contextType'
 export const TransitionGroup = Webpack.getModule(m => Filters.byPrototypeKeys('handleExited')(m) && !m.childContextTypes, { searchExports: true })
 export const TransitionGroupContext = new Transition({ children: React.createElement('div') }, {}).render().type._context
 export const Routes = Webpack.getModule(Filters.byKeys('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'), { searchExports: true })
-export const Constants = { DEFAULT_MESSAGE_REQUEST_SIDEBAR_WIDTH: 650, Routes }
+export const Constants = {
+  DEFAULT_MESSAGE_REQUEST_SIDEBAR_WIDTH: 650,
+  Routes,
+  Themes: Webpack.getByKeys('DARK', 'LIGHT')
+}
 export const StaticChannelRoute = Webpack.getModule(Filters.byKeys('ROLE_SUBSCRIPTIONS', 'CHANNEL_BROWSER'), { searchExports: true })
 export const ContextMenu = getMangled(Filters.byStrings('getContextMenu', 'isOpen'))
 export const Flux = Webpack.getByKeys('Store', 'connectStores')
@@ -124,3 +128,9 @@ export const { Select, SingleSelect } = mapModule(Filters.byStrings('SELECT', 'r
   SingleSelect: m => Filters.byStrings('value', 'onChange')(m) && !Filters.byStrings('isSelected')(m)
 }, { withKeys: true })
 export const MembersModViewSidebar = getMangled(Filters.byStrings('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))
+export const LayerActions = mapModule(Filters.byStrings('LAYER_PUSH', 'component'), {
+  pushLayer: Filters.byStrings('"LAYER_PUSH"'),
+  popLayer: Filters.byStrings('"LAYER_POP"'),
+  popAllLayers: Filters.byStrings('"LAYER_POP_ALL"')
+})
+export const LayerStore = Webpack.getStore('LayerStore')

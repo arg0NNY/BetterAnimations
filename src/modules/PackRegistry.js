@@ -117,7 +117,7 @@ export default new class PackRegistry {
         label: 'View Library',
         onClick: () => {
           closeNotice()
-          Settings.openSettingsModal('/library')
+          Settings.openSettingsModal('library')
         }
       }]
     })
