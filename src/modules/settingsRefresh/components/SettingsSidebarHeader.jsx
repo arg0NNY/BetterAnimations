@@ -14,7 +14,7 @@ export default SettingsSidebarHeader
 css
 `.BA__settingsSidebarHeader {
     margin-top: -30px;
-    padding-bottom: 5px;
+    padding-bottom: 2px;
 }
     
 .BA__settingsSidebarHeader > svg {

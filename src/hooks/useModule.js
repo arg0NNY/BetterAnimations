@@ -5,7 +5,7 @@ import Events from '@/enums/Events'
 import Modules from '@/modules/Modules'
 
 export function moduleEffectFull (id, forceUpdate) {
-  const events = [Events.PackLoaded, Events.PackUnloaded, Events.SettingsChanged]
+  const events = [Events.PackLoaded, Events.PackUnloaded, Events.PackEnabled, Events.PackDisabled, Events.SettingsChanged]
   const moduleEvents = [Events.ModuleToggled, Events.ModuleSettingsChanged]
   const ifSameId = moduleId => moduleId === id && forceUpdate()
 

@@ -1,0 +1,40 @@
+import PackAccordionItem from '@/modules/settingsRefresh/components/PackAccordionItem'
+import PackManager from '@/modules/PackManager'
+import { css } from '@/modules/Style'
+import AnimationList from '@/modules/settingsRefresh/components/AnimationList'
+
+function PackAccordion ({ module, packs, ...props }) {
+  return (
+    <div className="BA__packAccordion">
+      {packs.map(pack => {
+        const animations = pack.animations.filter(a => module.isSupportedBy(a))
+        if (!animations.length) return null
+
+        return (
+          <PackAccordionItem
+            pack={pack}
+            isOpen={PackManager.isEnabled(pack.id)}
+            onToggle={() => PackManager.togglePack(pack.id)}
+          >
+            <AnimationList
+              {...props}
+              module={module}
+              pack={pack}
+              animations={animations}
+            />
+          </PackAccordionItem>
+        )
+      })}
+    </div>
+  )
+}
+
+export default PackAccordion
+
+css
+`.BA__packAccordion {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}`
+`PackAccordion`

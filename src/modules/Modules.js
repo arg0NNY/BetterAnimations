@@ -407,6 +407,12 @@ export default new class Modules {
   getParentModule (module) {
     return module.parent && this.getModule(module.parent)
   }
+  getParentModules (module, _list = []) {
+    const parent = this.getParentModule(module)
+    if (!parent) return _list
+
+    return this.getParentModules(parent, [parent, ..._list])
+  }
   getChildModules (module) {
     return this.modules.filter(m => m.parent === module.id)
   }

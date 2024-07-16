@@ -8,10 +8,10 @@ export function getSections () {
       section: 'CUSTOM',
       element: SettingsSidebarHeader
     },
-    ...Modules.getAllModules().map(m => ({
-      section: m.id,
-      label: m.name,
-      element: () => <ModuleSettings module={m} />
+    ...Modules.getAllModules().map(module => ({
+      section: module.id,
+      label: module.name,
+      element: () => <ModuleSettings moduleId={module.id} />
     }))
   ]
 }
