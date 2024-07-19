@@ -45,9 +45,18 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/index.js'),
       name: pluginConfig.name,
       fileName: () => `${pluginConfig.name}.plugin.js`,
-      formats: ['cjs']
+      formats: ['iife']
     },
-    minify: false
+    minify: false,
+    rollupOptions: {
+      external: ['react', 'react-dom'],
+      output: {
+        globals: {
+          react: 'BdApi.React',
+          'react-dom': 'BdApi.ReactDOM'
+        }
+      }
+    }
   },
   resolve: {
     alias: {
