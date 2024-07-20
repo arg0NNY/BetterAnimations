@@ -73,6 +73,7 @@ export const Router = Object.assign(
   }
 )
 export const Transition = Webpack.getByKeys('ENTERING', 'EXITING', 'contextType')
+export const CSSTransition = Webpack.getModule(m => m?.defaultProps?.classNames === '')
 export const TransitionGroup = Webpack.getModule(m => Filters.byPrototypeKeys('handleExited')(m) && !m.childContextTypes, { searchExports: true })
 export const TransitionGroupContext = new Transition({ children: React.createElement('div') }, {}).render().type._context
 export const Routes = Webpack.getModule(Filters.byKeys('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'), { searchExports: true })
@@ -134,3 +135,4 @@ export const LayerActions = mapModule(Filters.byStrings('LAYER_PUSH', 'component
   popAllLayers: Filters.byStrings('"LAYER_POP_ALL"')
 })
 export const LayerStore = Webpack.getStore('LayerStore')
+export const Platform = Webpack.getByKeys('isWindows', 'isMac')

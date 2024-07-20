@@ -11,7 +11,8 @@ export function getSections () {
     ...Modules.getAllModules().map(module => ({
       section: module.id,
       label: module.name,
-      element: () => <ModuleSettings moduleId={module.id} />
+      elementProps: { moduleId: module.id },
+      element: ModuleSettings
     }))
   ]
 }

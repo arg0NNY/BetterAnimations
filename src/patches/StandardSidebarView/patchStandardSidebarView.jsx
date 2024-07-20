@@ -61,6 +61,10 @@ StandardSidebarView.then(() =>
 css
 `${DiscordSelectors.StandardSidebarView.contentRegion} > ${DiscordSelectors.StandardSidebarView.contentRegion} {
     height: 100%;
+}
+
+${DiscordSelectors.StandardSidebarView.contentColumnDefault}:has(> .BA__moduleSettings) {
+    position: static;
 }`
 `StandardSidebarView (Settings)`
 )

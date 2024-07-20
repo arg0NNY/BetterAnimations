@@ -30,5 +30,6 @@ css
     inset: 0;
     padding: 8px;
     background: rgba(0, 0, 0, .5);
+    transition: opacity .2s;
 }`
 `AnimationPreview`

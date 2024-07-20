@@ -44,7 +44,10 @@ class Module {
   enable () { this.settings.enabled = true }
   disable () { this.settings.enabled = false }
   toggle () { this.settings.enabled = !this.settings.enabled }
-  setIsEnabled (value) { this.settings.enabled = value }
+  setIsEnabled (value) {
+    this.settings.enabled = value
+    Emitter.emit(Events.ModuleToggled, this.id, value)
+  }
 
   get type () {
     return this.meta.type ?? ModuleType.Reveal
@@ -124,6 +127,7 @@ class Module {
 
   setAnimation (type, packSlug, animationKey) {
     this.settings[type] = { packSlug, animationKey }
+    Emitter.emit(Events.ModuleSettingsChanged, this.id)
   }
 
   isSupportedBy (animation) {

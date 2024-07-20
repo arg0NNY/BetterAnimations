@@ -4,12 +4,12 @@ import AnimationToggleControl from '@/modules/settingsRefresh/components/Animati
 import { css } from '@/modules/Style'
 import { stop } from '@/modules/settingsRefresh/helpers/stopPropagation'
 
-function AnimationCardControls ({ animation, ...props }) {
+function AnimationCardControls ({ animation, onSettings, ...props }) {
   return (
     <div className="BA__animationCardControls">
       <div className="BA__animationCardControlsGroup">
         {animation.settings && (
-          <IconButton tooltip="Settings" onClick={stop()}>
+          <IconButton tooltip="Settings" onClick={stop(onSettings)}>
             <Common.SettingsIcon size="xs" color="currentColor" />
           </IconButton>
         )}

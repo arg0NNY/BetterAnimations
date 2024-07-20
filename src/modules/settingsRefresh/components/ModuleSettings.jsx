@@ -4,10 +4,9 @@ import Modules from '@/modules/Modules'
 import PackAccordion from '@/modules/settingsRefresh/components/PackAccordion'
 import PackManager from '@/modules/PackManager'
 import useModule from '@/hooks/useModule'
-import Emitter from '@/modules/Emitter'
-import Events from '@/enums/Events'
+import { css } from '@/modules/Style'
 
-function ModuleSettings ({ moduleId }) {
+function ModuleSettings ({ moduleId, refToScroller }) {
   const module = useModule(moduleId, true)
   const parentModules = React.useMemo(() => Modules.getParentModules(module), [module])
   const breadcrumbs = parentModules.concat(module).map(m => ({
@@ -15,17 +14,11 @@ function ModuleSettings ({ moduleId }) {
     label: m.name
   }))
 
-  const onChange = React.useCallback(() => Emitter.emit(Events.ModuleSettingsChanged, module.id), [module.id])
-
   const onSelect = React.useCallback((type, pack, animation) => {
     if (!animation) module.setAnimation(type, null, null)
     else module.setAnimation(type, pack.slug, animation.key, {})
-    onChange()
   }, [module])
-  const setIsEnabled = React.useCallback(value => {
-    module.setIsEnabled(value)
-    Emitter.emit(Events.ModuleToggled, module.id, value)
-  }, [module])
+  const setIsEnabled = React.useCallback(value => module.setIsEnabled(value), [module])
 
   return (
     <div className="BA__moduleSettings">
@@ -38,9 +31,17 @@ function ModuleSettings ({ moduleId }) {
         packs={PackManager.getAllPacks()}
         selected={module.getAnimations()}
         onSelect={onSelect}
+        refToScroller={refToScroller}
       />
+      <div style={{ height: '1000px' }} />
     </div>
   )
 }
 
 export default ModuleSettings
+
+css
+`.BA__moduleSettings {
+    transition: transform .4s;
+}`
+`ModuleSettings`

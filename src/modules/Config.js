@@ -39,6 +39,7 @@ class PackConfig {
     this.current[key] ??= {}
     this.current[key][moduleId] ??= {}
     this.current[key][moduleId][type] = value
+    Emitter.emit(Events.ModuleSettingsChanged, moduleId)
   }
 }
 

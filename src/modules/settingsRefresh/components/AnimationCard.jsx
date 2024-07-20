@@ -1,14 +1,63 @@
+import { React } from '@/BdApi'
 import { css } from '@/modules/Style'
 import AnimationPreview from '@/modules/settingsRefresh/components/AnimationPreview'
 import AnimationCardControls from '@/modules/settingsRefresh/components/AnimationCardControls'
 import BackgroundOptionRing from '@/modules/settingsRefresh/components/BackgroundOptionRing'
+import { useElementBounding, useEventListener } from '@reactuses/core'
+import { CSSTransition, Platform } from '@/modules/DiscordModules'
+import usePrevious from '@/hooks/usePrevious'
 
-function AnimationCard ({ animation, enter, exit, setEnter, setExit, onClick }) {
+const X_OFFSET = 40
+const Y_OFFSET = 40
+const TOP_OFFSET = Y_OFFSET + (Platform.isWindows() ? 22 : 0)
+
+function AnimationCard ({ animation, enter, exit, setEnter, setExit, onClick, refToScroller }) {
+  const positionerRef = React.useRef()
+  const cardRef = React.useRef()
+
+  const [expanded, setExpanded] = React.useState(false)
+  const close = () => setExpanded(false)
+
+  useEventListener('wheel', e => {
+    if (!expanded) return
+    e.stopPropagation()
+    e.preventDefault()
+  }, cardRef)
+
+  const { top, update } = useElementBounding(positionerRef)
+  useEventListener('scroll', update, () => refToScroller.current?.getScrollerNode())
+
+  const translateY = expanded ? TOP_OFFSET - top : 0
+  const prevTranslateY = usePrevious(translateY)
+
+  const base = node => node.style.transform = `translateY(0)`
+  const transform = translate => node => node.style.transform = `translateY(${-translate}px)`
+
   return (
-    <div className="BA__animationCardWrapper">
-      <div className="BA__animationCardBackdrop"></div>
-      <div className="BA__animationCardPositioner">
-        <div className="BA__animationCard" onClick={onClick}>
+    <div className={`BA__animationCardWrapper ${expanded ? 'BA__animationCard--expanded' : ''}`}>
+      <div className="BA__animationCardBackdrop" onClick={close}></div>
+      <CSSTransition
+        in={expanded}
+        timeout={400}
+        classNames="BA__fade"
+        mountOnEnter
+        unmountOnExit
+        onEnter={transform(translateY)}
+        onEntering={base}
+        onExit={base}
+        onExiting={transform(prevTranslateY)}
+      >
+        <div className="BA__animationCardPopout">
+
+        </div>
+      </CSSTransition>
+      <div ref={positionerRef} className="BA__animationCardPositioner">
+        <div
+          ref={cardRef}
+          className="BA__animationCard"
+          style={{ transform: `translateY(${translateY}px)` }}
+          onClick={onClick}
+        >
           {(enter || exit) && <BackgroundOptionRing />}
           <AnimationPreview title={animation.name} />
           <AnimationCardControls
@@ -17,6 +66,7 @@ function AnimationCard ({ animation, enter, exit, setEnter, setExit, onClick }) 
             exit={exit}
             setEnter={setEnter}
             setExit={setExit}
+            onSettings={() => setExpanded(true)}
           />
         </div>
       </div>
@@ -30,21 +80,86 @@ css
 `.BA__animationCardWrapper {
     min-width: 0;
 }
+
+.BA__animationCardBackdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 1000;
+    background-color: transparent;
+    pointer-events: none;
+    transition: background-color .4s;
+}
     
 .BA__animationCardPositioner {
     position: relative;
     height: 164px;
 }
+    
+.BA__animationCardPopout {
+    position: absolute;
+    top: ${223 + Y_OFFSET * 1.5}px;
+    left: ${X_OFFSET}px;
+    width: calc(100% - ${X_OFFSET * 2}px);
+    max-height: calc(100% - ${223 + Y_OFFSET * 2.5}px);
+    background-color: var(--background-primary);
+    border-radius: 8px;
+    padding: 20px;
+    z-index: 1010;
+    transition: transform .4s;
+}
 
 .BA__animationCard {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     padding: 8px;
     border-radius: 8px;
     background-color: var(--background-secondary);
     cursor: pointer;
-    transition: background-color .2s;
+    transition: background-color .2s, transform .4s, width .4s, z-index .4s step-end;
+    z-index: 10;
 }
 .BA__animationCard:hover {
     background-color: var(--background-secondary-alt);
+}
+.BA__animationCard:hover .BA__animationPreviewTitle,
+.BA__animationCard--expanded .BA__animationPreviewTitle {
+    opacity: 0;
+}
+
+.BA__animationCardWrapper:nth-child(3n - 1) .BA__animationCard {
+    left: 50%;
+    translate: -50%;
+}
+.BA__animationCardWrapper:nth-child(3n) .BA__animationCard {
+    left: auto;
+    right: 0;
+}
+
+.BA__animationCard--expanded .BA__animationCardBackdrop {
+    background-color: rgba(0, 0, 0, .7);
+    pointer-events: all;
+}
+
+.BA__animationCard--expanded .BA__animationCard {
+    width: 320px;
+    z-index: 1010;
+    transition: background-color .2s, transform .4s, width .4s, z-index .4s step-start;
+}
+
+.BA__fade-enter {
+    opacity: 0;
+}
+.BA__fade-enter-active {
+    opacity: 1;
+    transition: all .4s;
+}
+.BA__fade-exit {
+    opacity: 1;
+}
+.BA__fade-exit-active {
+    opacity: 0;
+    transition: all .4s;
 }`
 `AnimationCard`
