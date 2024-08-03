@@ -136,3 +136,4 @@ export const LayerActions = mapModule(Filters.byStrings('LAYER_PUSH', 'component
 })
 export const LayerStore = Webpack.getStore('LayerStore')
 export const Platform = Webpack.getByKeys('isWindows', 'isMac')
+export const { LocalStorage } = mapModule(Filters.byPrototypeKeys('setRaw'), { LocalStorage: Filters.byKeys('setRaw') })

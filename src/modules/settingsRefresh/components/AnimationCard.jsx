@@ -4,14 +4,33 @@ import AnimationPreview from '@/modules/settingsRefresh/components/AnimationPrev
 import AnimationCardControls from '@/modules/settingsRefresh/components/AnimationCardControls'
 import BackgroundOptionRing from '@/modules/settingsRefresh/components/BackgroundOptionRing'
 import { useElementBounding, useEventListener } from '@reactuses/core'
-import { CSSTransition, Platform } from '@/modules/DiscordModules'
+import { Common, CSSTransition, Platform } from '@/modules/DiscordModules'
 import usePrevious from '@/hooks/usePrevious'
+import useAnimationSettings from '@/modules/settingsRefresh/hooks/useAnimationSettings'
+import AnimationType from '@/enums/AnimationType'
+import AnimationSettings from '@/modules/settingsRefresh/components/AnimationSettings'
+import { DiscordClasses } from '@/modules/DiscordSelectors'
 
 const X_OFFSET = 40
 const Y_OFFSET = 40
 const TOP_OFFSET = Y_OFFSET + (Platform.isWindows() ? 22 : 0)
 
-function AnimationCard ({ animation, enter, exit, setEnter, setExit, onClick, refToScroller }) {
+function AnimationCard ({
+  module,
+  animation,
+  enter,
+  exit,
+  setEnter,
+  setExit,
+  enterSettings,
+  exitSettings,
+  setEnterSettings,
+  setExitSettings,
+  resetEnterSettings,
+  resetExitSettings,
+  onClick,
+  refToScroller
+}) {
   const positionerRef = React.useRef()
   const cardRef = React.useRef()
 
@@ -33,6 +52,28 @@ function AnimationCard ({ animation, enter, exit, setEnter, setExit, onClick, re
   const base = node => node.style.transform = `translateY(0)`
   const transform = translate => node => node.style.transform = `translateY(${-translate}px)`
 
+  const { headers, settings } = useAnimationSettings(module, [
+    {
+      animation,
+      type: AnimationType.Enter,
+      settings: enterSettings,
+      setSettings: setEnterSettings,
+      enabled: enter,
+      setEnabled: setEnter,
+      onReset: resetEnterSettings
+    },
+    {
+      animation,
+      type: AnimationType.Exit,
+      settings: exitSettings,
+      setSettings: setExitSettings,
+      enabled: exit,
+      setEnabled: setExit,
+      onReset: resetExitSettings
+    }
+  ])
+  // console.log(headers, settings)
+
   return (
     <div className={`BA__animationCardWrapper ${expanded ? 'BA__animationCard--expanded' : ''}`}>
       <div className="BA__animationCardBackdrop" onClick={close}></div>
@@ -48,7 +89,9 @@ function AnimationCard ({ animation, enter, exit, setEnter, setExit, onClick, re
         onExiting={transform(prevTranslateY)}
       >
         <div className="BA__animationCardPopout">
-
+          <div className={`BA__animationCardPopoutScroller ${DiscordClasses.Scroller.thin}`}>
+            <AnimationSettings headers={headers} settings={settings} />
+          </div>
         </div>
       </CSSTransition>
       <div ref={positionerRef} className="BA__animationCardPositioner">
@@ -61,12 +104,11 @@ function AnimationCard ({ animation, enter, exit, setEnter, setExit, onClick, re
           {(enter || exit) && <BackgroundOptionRing />}
           <AnimationPreview title={animation.name} />
           <AnimationCardControls
-            animation={animation}
             enter={enter}
             exit={exit}
             setEnter={setEnter}
             setExit={setExit}
-            onSettings={() => setExpanded(true)}
+            onSettings={!!settings.length && (() => setExpanded(true))}
           />
         </div>
       </div>
@@ -103,9 +145,20 @@ css
     max-height: calc(100% - ${223 + Y_OFFSET * 2.5}px);
     background-color: var(--background-primary);
     border-radius: 8px;
-    padding: 20px;
     z-index: 1010;
     transition: transform .4s;
+    overflow: hidden;
+    display: flex;
+}
+.BA__animationCardPopoutScroller {
+    overflow: hidden scroll;
+    padding: 20px;
+    padding-right: 12px;
+}
+.BA__animationCardPopoutScroller::-webkit-scrollbar-thumb,
+.BA__animationCardPopoutScroller::-webkit-scrollbar-track {
+    border-top-width: 6px;
+    border-bottom-width: 6px;
 }
 
 .BA__animationCard {

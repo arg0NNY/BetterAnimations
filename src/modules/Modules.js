@@ -59,6 +59,10 @@ class Module {
     return this.isSupportedBy(animation) ? animation : null
   }
 
+  getAnimationSettings (pack, animation, type, options = {}) {
+    return this.buildSettings(animation, type, Config.pack(pack.slug).getAnimationConfig(animation.key, this.id, type), options)
+  }
+
   initializeAnimation (type) {
     const pointer = this.settings[type] ?? {}
     const pack = pointer.packSlug && PackManager.getPack(pointer.packSlug)

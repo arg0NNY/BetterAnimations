@@ -3,15 +3,16 @@ import { Common } from '@/modules/DiscordModules'
 
 function IconButton ({ children, tooltip, disabled = false, ...props }) {
   const button = _props => (
-    <Common.Clickable
-      tag="button"
-      className="BA__iconButton"
-      disabled={disabled}
-      {..._props}
-      {...props}
-    >
-      {children}
-    </Common.Clickable>
+    <div {..._props}>
+      <Common.Clickable
+        tag="button"
+        className="BA__iconButton"
+        disabled={disabled}
+        {...props}
+      >
+        {children}
+      </Common.Clickable>
+    </div>
   )
 
   if (!tooltip) return button({})
@@ -27,6 +28,7 @@ export default IconButton
 
 css
 `.BA__iconButton {
+    display: block;
     color: var(--interactive-normal);
     background: none;
     border: none;

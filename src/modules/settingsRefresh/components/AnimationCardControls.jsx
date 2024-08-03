@@ -4,15 +4,17 @@ import AnimationToggleControl from '@/modules/settingsRefresh/components/Animati
 import { css } from '@/modules/Style'
 import { stop } from '@/modules/settingsRefresh/helpers/stopPropagation'
 
-function AnimationCardControls ({ animation, onSettings, ...props }) {
+function AnimationCardControls ({ onSettings, ...props }) {
   return (
     <div className="BA__animationCardControls">
       <div className="BA__animationCardControlsGroup">
-        {animation.settings && (
-          <IconButton tooltip="Settings" onClick={stop(onSettings)}>
-            <Common.SettingsIcon size="xs" color="currentColor" />
-          </IconButton>
-        )}
+        <IconButton
+          tooltip={onSettings ? 'Settings' : 'No settings available'}
+          disabled={!onSettings}
+          onClick={stop(onSettings)}
+        >
+          <Common.SettingsIcon size="xs" color="currentColor" />
+        </IconButton>
         <IconButton tooltip="Smooth expand/collapse" onClick={stop()}>
           <Common.CollapseListIcon size="xs" color="currentColor" />
         </IconButton>

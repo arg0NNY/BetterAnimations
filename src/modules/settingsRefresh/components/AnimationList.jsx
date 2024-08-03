@@ -17,9 +17,10 @@ function AnimationList ({ module, pack, animations, selected, onSelect, ...props
     AnimationType.values().forEach(type => handleSelect(type, animation)(value))
   }
 
-  const handleSetSettings = (animation, type) => value => {
-    packConfig.setAnimationConfig(animation.key, module.id, type, value)
-    // onChange()
+  const handleSetSettings = (animation, type) => value => packConfig.setAnimationConfig(animation.key, module.id, type, value)
+  const handleResetSettings = (animation, type) => {
+    const setSettings = handleSetSettings(animation, type)
+    return () => setSettings(module.buildDefaultSettings(animation, type))
   }
 
   return (
@@ -28,12 +29,19 @@ function AnimationList ({ module, pack, animations, selected, onSelect, ...props
         <AnimationCard
           {...props}
           key={animation.key}
+          module={module}
           animation={animation}
           enter={isActive(animation, AnimationType.Enter)}
           exit={isActive(animation, AnimationType.Exit)}
           setEnter={handleSelect(AnimationType.Enter, animation)}
           setExit={handleSelect(AnimationType.Exit, animation)}
           onClick={handleSelectAll(animation)}
+          enterSettings={module.getAnimationSettings(pack, animation, AnimationType.Enter)}
+          exitSettings={module.getAnimationSettings(pack, animation, AnimationType.Exit)}
+          setEnterSettings={handleSetSettings(animation, AnimationType.Enter)}
+          setExitSettings={handleSetSettings(animation, AnimationType.Exit)}
+          resetEnterSettings={handleResetSettings(animation, AnimationType.Enter)}
+          resetExitSettings={handleResetSettings(animation, AnimationType.Exit)}
         />
       ))}
     </div>
