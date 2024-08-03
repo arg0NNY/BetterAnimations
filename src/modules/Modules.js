@@ -339,11 +339,14 @@ class Module {
     const settings = this.buildSettings(animation, type, config.settings, options)
 
     return {
-      enabled: !forceDisabled && (config.enabled ?? true),
-      forceDisabled,
       animate: modifier.create(type, settings),
+      forceDisabled,
+      enabled: !forceDisabled && (config.enabled ?? true),
+      setEnabled: forceDisabled ? null : enabled => this.updateModifier(type, { enabled }),
+      settings,
+      setSettings: settings => this.updateModifier(type, { settings }),
       defaults: getAnimationDefaultSettings(animation, type),
-      settings
+      onReset: () => this.updateModifier(type, { settings: this.buildDefaultSettings(animation, type) })
     }
   }
   getModifiers (options = {}) {
@@ -359,6 +362,7 @@ class Module {
   updateModifier (type, values) {
     const config = this.settings.modifier ??= {}
     Object.assign(config[type] ??= {}, values)
+    Emitter.emit(Events.ModuleSettingsChanged, this.id)
   }
   buildOptions () {
     const options = {}

@@ -5,6 +5,8 @@ import PackAccordion from '@/modules/settingsRefresh/components/PackAccordion'
 import PackManager from '@/modules/PackManager'
 import useModule from '@/hooks/useModule'
 import { css } from '@/modules/Style'
+import useAnimationSettings from '@/modules/settingsRefresh/hooks/useAnimationSettings'
+import AnimationType from '@/enums/AnimationType'
 
 function ModuleSettings ({ moduleId, refToScroller }) {
   const module = useModule(moduleId, true)
@@ -19,6 +21,22 @@ function ModuleSettings ({ moduleId, refToScroller }) {
     else module.setAnimation(type, pack.slug, animation.key, {})
   }, [module])
   const setIsEnabled = React.useCallback(value => module.setIsEnabled(value), [module])
+
+  const modifiers = module.getModifiers()
+  const modifiersSettings = useAnimationSettings(module, modifiers ? [
+    {
+      animation: modifiers.animation,
+      type: AnimationType.Enter,
+      title: 'Smooth expand',
+      ...modifiers.enter
+    },
+    {
+      animation: modifiers.animation,
+      type: AnimationType.Exit,
+      title: 'Smooth collapse',
+      ...modifiers.exit
+    }
+  ] : [], { hideOverflow: true })
 
   return (
     <div className="BA__moduleSettings">

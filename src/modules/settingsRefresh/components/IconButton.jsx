@@ -1,12 +1,12 @@
 import { css } from '@/modules/Style'
 import { Common } from '@/modules/DiscordModules'
 
-function IconButton ({ children, tooltip, disabled = false, ...props }) {
+function IconButton ({ children, tooltip, disabled = false, active = false, ...props }) {
   const button = _props => (
     <div {..._props}>
       <Common.Clickable
         tag="button"
-        className="BA__iconButton"
+        className={`BA__iconButton ${active ? 'BA__iconButton--active' : ''}`}
         disabled={disabled}
         {...props}
       >
@@ -38,7 +38,8 @@ css
 .BA__iconButton:hover {
     color: var(--interactive-hover);
 }
-.BA__iconButton:active {
+.BA__iconButton:active,
+.BA__iconButton--active {
     color: var(--interactive-active);
 }
 .BA__iconButton:disabled {

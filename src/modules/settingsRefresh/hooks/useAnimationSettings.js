@@ -30,7 +30,8 @@ function mergeFunctions (array) {
   )
 }
 
-function _useAnimationSettings (module, items) {
+function _useAnimationSettings (module, items, options = {}) {
+  const { hideOverflow = false } = options
   const isAdvanced = useAdvancedMode()
 
   const sets = items.map(({ animation, type, settings, setSettings: _setSettings }) => {
@@ -58,13 +59,13 @@ function _useAnimationSettings (module, items) {
         towards: settings[Setting.DirectionTowards],
         onTowardsChange: value => setSettings({ [Setting.DirectionTowards]: value })
       }),
-      isAdvanced && !module.meta?.settings?.hideOverflow && buildSetting(Setting.Overflow, {
+      isAdvanced && !hideOverflow && !module.meta?.settings?.hideOverflow && buildSetting(Setting.Overflow, {
         forced: animation.settings?.[Setting.Overflow] === false
       })
     ].filter(Boolean)
   })
 
-  return Array(Math.max(...sets.map(s => s.length))).fill(null).map((_, i) => {
+  return Array(Math.max(...sets.map(s => s.length), 0)).fill(null).map((_, i) => {
     const settings = sets.map(s => s[i] ?? null)
     const shouldMerge = !isAdvanced && module.meta?.type === ModuleType.Switch && isSame(items, 'enabled') && canMerge(settings)
 
@@ -81,12 +82,13 @@ function _useAnimationSettings (module, items) {
   })
 }
 
-function useAnimationSettingsHeaders (module, items, settings) {
-  const headers = items.map(({ animation, type, enabled, setEnabled, onReset }) => ({
-    title: {
+function useAnimationSettingsHeaders (module, items, settings = _useAnimationSettings(module, items)) {
+  const headers = items.map(({ animation, type, forceDisabled, enabled, setEnabled, onReset, title }) => ({
+    title: title || {
       [AnimationType.Enter]: 'Enter',
       [AnimationType.Exit]: 'Exit'
     }[type] || animation.name,
+    forceDisabled,
     enabled,
     setEnabled,
     onReset
@@ -101,8 +103,8 @@ function useAnimationSettingsHeaders (module, items, settings) {
   return headers
 }
 
-function useAnimationSettings (module, items) {
-  const settings = _useAnimationSettings(module, items)
+function useAnimationSettings (module, items, options = {}) {
+  const settings = _useAnimationSettings(module, items, options)
   return {
     headers: useAnimationSettingsHeaders(module, items, settings),
     settings

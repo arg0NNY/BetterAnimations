@@ -4,7 +4,7 @@ import AnimationPreview from '@/modules/settingsRefresh/components/AnimationPrev
 import AnimationCardControls from '@/modules/settingsRefresh/components/AnimationCardControls'
 import BackgroundOptionRing from '@/modules/settingsRefresh/components/BackgroundOptionRing'
 import { useElementBounding, useEventListener } from '@reactuses/core'
-import { Common, CSSTransition, Platform } from '@/modules/DiscordModules'
+import { CSSTransition, Platform, TransitionGroup } from '@/modules/DiscordModules'
 import usePrevious from '@/hooks/usePrevious'
 import useAnimationSettings from '@/modules/settingsRefresh/hooks/useAnimationSettings'
 import AnimationType from '@/enums/AnimationType'
@@ -29,13 +29,14 @@ function AnimationCard ({
   resetEnterSettings,
   resetExitSettings,
   onClick,
-  refToScroller
+  refToScroller,
+  modifiersSettings
 }) {
   const positionerRef = React.useRef()
   const cardRef = React.useRef()
 
-  const [expanded, setExpanded] = React.useState(false)
-  const close = () => setExpanded(false)
+  const [expanded, setExpanded] = React.useState(null)
+  const close = () => setExpanded(null)
 
   useEventListener('wheel', e => {
     if (!expanded) return
@@ -51,8 +52,13 @@ function AnimationCard ({
 
   const base = node => node.style.transform = `translateY(0)`
   const transform = translate => node => node.style.transform = `translateY(${-translate}px)`
+  const childFactory = e => {
+    e.props.onExit = base
+    e.props.onExiting = transform(prevTranslateY)
+    return e
+  }
 
-  const { headers, settings } = useAnimationSettings(module, [
+  const animationSettings = useAnimationSettings(module, [
     {
       animation,
       type: AnimationType.Enter,
@@ -72,34 +78,40 @@ function AnimationCard ({
       onReset: resetExitSettings
     }
   ])
-  // console.log(headers, settings)
+  const expandSettings = animationSettings.settings.length ? () => setExpanded('settings') : undefined
 
   return (
     <div className={`BA__animationCardWrapper ${expanded ? 'BA__animationCard--expanded' : ''}`}>
       <div className="BA__animationCardBackdrop" onClick={close}></div>
-      <CSSTransition
-        in={expanded}
-        timeout={400}
-        classNames="BA__fade"
-        mountOnEnter
-        unmountOnExit
-        onEnter={transform(translateY)}
-        onEntering={base}
-        onExit={base}
-        onExiting={transform(prevTranslateY)}
-      >
-        <div className="BA__animationCardPopout">
-          <div className={`BA__animationCardPopoutScroller ${DiscordClasses.Scroller.thin}`}>
-            <AnimationSettings headers={headers} settings={settings} />
-          </div>
-        </div>
-      </CSSTransition>
+      <TransitionGroup childFactory={childFactory}>
+        {expanded && (
+          <CSSTransition
+            key={expanded}
+            timeout={400}
+            classNames="BA__fade"
+            mountOnEnter
+            unmountOnExit
+            onEnter={transform(translateY)}
+            onEntering={base}
+          >
+            <div className="BA__animationCardPopout">
+              <div className={`BA__animationCardPopoutScroller ${DiscordClasses.Scroller.thin}`}>
+                <AnimationSettings {...{
+                  settings: animationSettings,
+                  modifiers: modifiersSettings,
+                }[expanded]} />
+              </div>
+            </div>
+          </CSSTransition>
+        )}
+      </TransitionGroup>
       <div ref={positionerRef} className="BA__animationCardPositioner">
         <div
           ref={cardRef}
           className="BA__animationCard"
           style={{ transform: `translateY(${translateY}px)` }}
           onClick={onClick}
+          onContextMenu={expandSettings}
         >
           {(enter || exit) && <BackgroundOptionRing />}
           <AnimationPreview title={animation.name} />
@@ -108,7 +120,10 @@ function AnimationCard ({
             exit={exit}
             setEnter={setEnter}
             setExit={setExit}
-            onSettings={!!settings.length && (() => setExpanded(true))}
+            hasSettings={!!animationSettings.settings.length}
+            hasModifiers={!!modifiersSettings?.settings?.length}
+            expanded={expanded}
+            setExpanded={setExpanded}
           />
         </div>
       </div>
