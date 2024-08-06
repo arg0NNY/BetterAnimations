@@ -8,6 +8,8 @@ export default Enum({
   ModuleToggled: 'module-toggled',
   ModuleSettingsChanged: 'module-settings-changed',
   SettingsChanged: 'settings-changed',
+  SettingsLoaded: 'settings-loaded',
+  SettingsSaved: 'settings-saved',
   PackRegistryUpdated: 'pack-registry-updated',
   SettingsModeChanged: 'settings-mode-changed'
 })

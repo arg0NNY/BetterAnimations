@@ -2,7 +2,8 @@ import Modules from '@/modules/Modules'
 import ModuleSettings from '@/modules/settingsRefresh/components/ModuleSettings'
 import SettingsSidebarHeader from '@/modules/settingsRefresh/components/SettingsSidebarHeader'
 import ModeSwitch from '@/modules/settingsRefresh/components/ModeSwitch'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
+import FormNotice from '@/modules/settingsRefresh/components/FormNotice'
+import SettingsNoticeStore from '@/modules/settingsRefresh/stores/SettingsNoticeStore'
 
 export function getSections () {
   return [
@@ -18,7 +19,11 @@ export function getSections () {
       section: module.id,
       label: module.name,
       elementProps: { moduleId: module.id },
-      element: ModuleSettings
+      element: ModuleSettings,
+      notice: {
+        element: FormNotice,
+        stores: [SettingsNoticeStore]
+      }
     }))
   ]
 }

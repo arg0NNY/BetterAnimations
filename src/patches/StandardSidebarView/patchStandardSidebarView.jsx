@@ -65,6 +65,12 @@ css
 
 ${DiscordSelectors.StandardSidebarView.contentColumnDefault}:has(> .BA__moduleSettings) {
     position: static;
+}
+
+${DiscordSelectors.StandardSidebarView.noticeRegion}:has(> .BA__settingsNotice) {
+    padding-left: 40px;
+    padding-right: 40px;
+    z-index: 200;
 }`
 `StandardSidebarView (Settings)`
 )

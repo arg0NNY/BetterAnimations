@@ -32,6 +32,10 @@ class PackConfig {
     fs.writeFileSync(this.filePath, JSON.stringify(value, null, 4), 'utf8')
   }
 
+  hasUnsavedChanges () {
+    return JSON.stringify(this.current) !== JSON.stringify(this.read())
+  }
+
   getAnimationConfig (key, moduleId, type) {
     return this.current[key]?.[moduleId]?.[type] ?? {}
   }
@@ -68,10 +72,18 @@ export default new class Config {
   load (defaults = this.defaults) {
     this.current = deepmerge(defaults, this.read())
     this.packs.forEach(pack => pack.load())
+    Emitter.emit(Events.SettingsLoaded)
+    Emitter.emit(Events.SettingsChanged)
   }
   save (value = this.current) {
     Data[this.dataKey] = value
     this.packs.forEach(pack => pack.save())
+    Emitter.emit(Events.SettingsSaved)
+  }
+
+  hasUnsavedChanges () {
+    return JSON.stringify(this.current) !== JSON.stringify(this.read())
+      || Array.from(this.packs.values()).some(pack => pack.hasUnsavedChanges())
   }
 
   listenPackEvents () {

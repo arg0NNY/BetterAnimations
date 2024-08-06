@@ -14,6 +14,7 @@ import { DiscordClasses } from '@/modules/DiscordSelectors'
 const X_OFFSET = 40
 const Y_OFFSET = 40
 const TOP_OFFSET = Y_OFFSET + (Platform.isWindows() ? 22 : 0)
+const BOTTOM_OFFSET = 72 + 20 // 72 is the height of the settings notice
 
 function AnimationCard ({
   module,
@@ -141,7 +142,7 @@ css
 .BA__animationCardBackdrop {
     position: absolute;
     inset: 0;
-    z-index: 1000;
+    z-index: 99;
     background-color: transparent;
     pointer-events: none;
     transition: background-color .4s;
@@ -157,10 +158,10 @@ css
     top: ${223 + Y_OFFSET * 1.5}px;
     left: ${X_OFFSET}px;
     width: calc(100% - ${X_OFFSET * 2}px);
-    max-height: calc(100% - ${223 + Y_OFFSET * 2.5}px);
+    max-height: calc(100% - ${223 + Y_OFFSET * 1.5 + BOTTOM_OFFSET}px);
     background-color: var(--background-primary);
-    border-radius: 8px;
-    z-index: 1010;
+    border-radius: 5px;
+    z-index: 100;
     transition: transform .4s;
     overflow: hidden;
     display: flex;
@@ -206,13 +207,13 @@ css
 }
 
 .BA__animationCard--expanded .BA__animationCardBackdrop {
-    background-color: rgba(0, 0, 0, .7);
+    background-color: rgba(0, 0, 0, .8);
     pointer-events: all;
 }
 
 .BA__animationCard--expanded .BA__animationCard {
     width: 320px;
-    z-index: 1010;
+    z-index: 100;
     transition: background-color .2s, transform .4s, width .4s, z-index .4s step-start;
 }
 
