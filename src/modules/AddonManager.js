@@ -189,7 +189,7 @@ export default class AddonManager {
   unloadAddon (idOrFileOrAddon, shouldToast = true, isReload = false) {
     const addon = typeof (idOrFileOrAddon) == 'string' ? this.addonList.find(c => c.id == idOrFileOrAddon || c.filename == idOrFileOrAddon) : idOrFileOrAddon
     if (!addon) return false
-    if (this.state[addon.id]) isReload ? this.stopAddon(addon) : this.disableAddon(addon)
+    if (this.state[addon.id]) this.stopAddon(addon)
 
     this.addonList.splice(this.addonList.indexOf(addon), 1)
     this.emit('unloaded', addon)
