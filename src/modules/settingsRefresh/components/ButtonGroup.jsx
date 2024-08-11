@@ -6,9 +6,8 @@ function ButtonGroupItem ({ children, tooltip, selected, disabled, onClick }) {
     <Common.Clickable
       {...props}
       tag="button"
-      className={`BA__buttonGroupItem ${selected ? 'BA__buttonGroupItem--selected' : ''}`}
+      className={`BA__buttonGroupItem ${selected ? 'BA__buttonGroupItem--selected' : ''} ${disabled ? 'BA__buttonGroupItem--disabled' : ''}`}
       onClick={onClick}
-      disabled={disabled}
     >
       {children}
     </Common.Clickable>
@@ -17,7 +16,7 @@ function ButtonGroupItem ({ children, tooltip, selected, disabled, onClick }) {
   if (!tooltip) return button({})
 
   return (
-    <Common.Tooltip text={tooltip}>
+    <Common.Tooltip {...(typeof tooltip === 'string' ? { text: tooltip } : tooltip)}>
       {button}
     </Common.Tooltip>
   )
@@ -86,7 +85,7 @@ css
 .BA__buttonGroupItem:hover {
     background-color: var(--background-modifier-hover);
 }
-.BA__buttonGroupItem:disabled {
+.BA__buttonGroupItem.BA__buttonGroupItem--disabled {
     color: var(--interactive-muted);
     cursor: not-allowed;
 }

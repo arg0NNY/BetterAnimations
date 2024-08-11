@@ -98,8 +98,8 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
             )}
             onBreadcrumbClick={({ id }) => setSection(id)}
           />
-          <Common.Tooltip text={`${enabled ? 'Disable' : 'Enable'} ${module.name} animations`}>
-            {props => <div {...props} onClick={() => {}}>{toggleSwitch}</div>}
+          <Common.Tooltip text={`${enabled ? 'Disable' : 'Enable'} ${module.name} animations`} hideOnClick={false}>
+            {props => <div {...props}>{toggleSwitch}</div>}
           </Common.Tooltip>
         </div>
         {module.description && (

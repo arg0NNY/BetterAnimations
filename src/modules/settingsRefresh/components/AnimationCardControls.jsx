@@ -53,6 +53,7 @@ css
     justify-content: space-between;
     align-items: center;
     margin-top: 8px;
+    min-height: 28px;
 }
 
 .BA__animationCardControlsGroup {

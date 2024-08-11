@@ -8,13 +8,13 @@ import {
 } from '@/modules/DiscordModules'
 import { getSections } from '@/modules/settingsRefresh/data/sections'
 import meta from '@/meta'
-import ModuleKey from '@/enums/ModuleKey'
 import SectionContext from '@/modules/settingsRefresh/context/SectionContext'
 import { css } from '@/modules/Style'
+import SettingsSections from '@/enums/SettingsSections'
 
 const StandardSidebarViewComponent = React.lazy(async () => ({ default: await StandardSidebarViewWrapper }))
 
-function SettingsModal ({ initialSection = ModuleKey.Servers }) {
+function SettingsModal ({ initialSection = SettingsSections.Home }) {
   const theme = useStateFromStores([ThemeStore], () => ThemeStore.theme)
   const sidebarTheme = useStateFromStores([ThemeStore], () => ThemeStore.darkSidebar ? Constants.Themes.DARK : undefined)
 

@@ -88,7 +88,7 @@ function AnimationCard ({
           ref={cardRef}
           className="BA__animationCard"
           style={{ transform: `translateY(${translateY}px)` }}
-          onClick={onClick}
+          onClick={onClick ?? expandSettings}
           onContextMenu={expandSettings}
         >
           {active && <BackgroundOptionRing />}

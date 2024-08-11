@@ -5,6 +5,8 @@ import ModeSwitch from '@/modules/settingsRefresh/components/ModeSwitch'
 import FormNotice from '@/modules/settingsRefresh/components/FormNotice'
 import SettingsNoticeStore from '@/modules/settingsRefresh/stores/SettingsNoticeStore'
 import IconSpine from '@/modules/settingsRefresh/components/icons/IconSpine'
+import { Common } from '@/modules/DiscordModules'
+import SettingsSections from '@/enums/SettingsSections'
 
 export function getSections () {
   return [
@@ -12,6 +14,13 @@ export function getSections () {
       section: 'CUSTOM',
       element: SettingsSidebarHeader
     },
+    {
+      section: SettingsSections.Home,
+      label: 'Home',
+      icon: <Common.HomeIcon size="xs" color="currentColor" />,
+      element: () => {}
+    },
+    { section: 'DIVIDER' },
     {
       section: 'CUSTOM',
       element: ModeSwitch

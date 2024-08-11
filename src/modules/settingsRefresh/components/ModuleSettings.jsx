@@ -5,6 +5,7 @@ import PackManager from '@/modules/PackManager'
 import useModule from '@/hooks/useModule'
 import { css } from '@/modules/Style'
 import ModuleSettingsHeader from '@/modules/settingsRefresh/components/ModuleSettingsHeader'
+import ModuleContext from '@/modules/settingsRefresh/context/ModuleContext'
 
 function ModuleSettings ({ moduleId, refToScroller }) {
   const module = useModule(moduleId, true)
@@ -18,28 +19,30 @@ function ModuleSettings ({ moduleId, refToScroller }) {
   const selected = module.getAnimations()
 
   return (
-    <div className="BA__moduleSettings">
-      <ModuleSettingsHeader
-        module={module}
-        enabled={module.isEnabled()}
-        setEnabled={setIsEnabled}
-        selected={selected}
-        onSelect={onSelect}
-        refToScroller={refToScroller}
-      />
+    <ModuleContext.Provider value={module}>
+      <div className="BA__moduleSettings">
+        <ModuleSettingsHeader
+          module={module}
+          enabled={module.isEnabled()}
+          setEnabled={setIsEnabled}
+          selected={selected}
+          onSelect={onSelect}
+          refToScroller={refToScroller}
+        />
 
-      <Common.Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
-        <span>ANIMATIONS AVAILABLE</span>
-      </Common.Text>
-      <PackAccordion
-        module={module}
-        packs={PackManager.getAllPacks()}
-        selected={selected}
-        onSelect={onSelect}
-        refToScroller={refToScroller}
-      />
-      <div style={{ height: '1000px' }} />
-    </div>
+        <Common.Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
+          <span>ANIMATIONS AVAILABLE</span>
+        </Common.Text>
+        <PackAccordion
+          module={module}
+          packs={PackManager.getAllPacks()}
+          selected={selected}
+          onSelect={onSelect}
+          refToScroller={refToScroller}
+        />
+        <div style={{ height: '1000px' }} />
+      </div>
+    </ModuleContext.Provider>
   )
 }
 
