@@ -1,7 +1,8 @@
 import { css } from '@/modules/Style'
 import { Common } from '@/modules/DiscordModules'
+import BackgroundOptionRing from '@/modules/settingsRefresh/components/BackgroundOptionRing'
 
-function AnimationPreview ({ title }) {
+function AnimationPreview ({ title, active = false }) {
   return (
     <div className="BA__animationPreview">
       {title && (
@@ -9,6 +10,7 @@ function AnimationPreview ({ title }) {
           <Common.Text variant="heading-sm/normal" lineClamp={2}>{title}</Common.Text>
         </div>
       )}
+      {active && <BackgroundOptionRing />}
     </div>
   )
 }
@@ -18,8 +20,7 @@ export default AnimationPreview
 css
 `.BA__animationPreview {
     position: relative;
-    overflow: hidden;
-    /* width: 288px; */
+    /* overflow: hidden; */
     aspect-ratio: 16 / 9;
     border-radius: 8px;
     background: var(--background-accent);

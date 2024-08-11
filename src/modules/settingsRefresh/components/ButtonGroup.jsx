@@ -1,13 +1,14 @@
 import { Common } from '@/modules/DiscordModules'
 import { css } from '@/modules/Style'
 
-function ButtonGroupItem ({ children, tooltip, selected, onClick }) {
+function ButtonGroupItem ({ children, tooltip, selected, disabled, onClick }) {
   const button = props => (
     <Common.Clickable
       {...props}
       tag="button"
       className={`BA__buttonGroupItem ${selected ? 'BA__buttonGroupItem--selected' : ''}`}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </Common.Clickable>
@@ -84,6 +85,10 @@ css
 }
 .BA__buttonGroupItem:hover {
     background-color: var(--background-modifier-hover);
+}
+.BA__buttonGroupItem:disabled {
+    color: var(--interactive-muted);
+    cursor: not-allowed;
 }
 
 .BA__buttonGroupItem.BA__buttonGroupItem--selected {

@@ -3,6 +3,7 @@ import { css } from '@/modules/Style'
 import AnimationCard from '@/modules/settingsRefresh/components/AnimationCard'
 import Config from '@/modules/Config'
 import AnimationType from '@/enums/AnimationType'
+import useAnimationSettings from '@/modules/settingsRefresh/hooks/useAnimationSettings'
 
 function AnimationList ({ module, pack, animations, selected, onSelect, ...props }) {
   const packConfig = React.useMemo(() => Config.pack(pack.slug), [pack.slug])
@@ -23,27 +24,46 @@ function AnimationList ({ module, pack, animations, selected, onSelect, ...props
     return () => setSettings(module.buildDefaultSettings(animation, type))
   }
 
+  function AnimationItem (animation) {
+    const animationSettings = useAnimationSettings(module, [
+      {
+        animation,
+        type: AnimationType.Enter,
+        settings: module.getAnimationSettings(pack, animation, AnimationType.Enter),
+        setSettings: handleSetSettings(animation, AnimationType.Enter),
+        enabled: isActive(animation, AnimationType.Enter),
+        setEnabled: handleSelect(AnimationType.Enter, animation),
+        onReset: handleResetSettings(animation, AnimationType.Enter)
+      },
+      {
+        animation,
+        type: AnimationType.Exit,
+        settings: module.getAnimationSettings(pack, animation, AnimationType.Exit),
+        setSettings: handleSetSettings(animation, AnimationType.Exit),
+        enabled: isActive(animation, AnimationType.Exit),
+        setEnabled: handleSelect(AnimationType.Exit, animation),
+        onReset: handleResetSettings(animation, AnimationType.Exit)
+      }
+    ])
+
+    return (
+      <AnimationCard
+        {...props}
+        key={animation.key}
+        name={animation.name}
+        enter={isActive(animation, AnimationType.Enter)}
+        exit={isActive(animation, AnimationType.Exit)}
+        setEnter={handleSelect(AnimationType.Enter, animation)}
+        setExit={handleSelect(AnimationType.Exit, animation)}
+        onClick={handleSelectAll(animation)}
+        animationSettings={animationSettings}
+      />
+    )
+  }
+
   return (
     <div className="BA__animationList">
-      {animations.map(animation => (
-        <AnimationCard
-          {...props}
-          key={animation.key}
-          module={module}
-          animation={animation}
-          enter={isActive(animation, AnimationType.Enter)}
-          exit={isActive(animation, AnimationType.Exit)}
-          setEnter={handleSelect(AnimationType.Enter, animation)}
-          setExit={handleSelect(AnimationType.Exit, animation)}
-          onClick={handleSelectAll(animation)}
-          enterSettings={module.getAnimationSettings(pack, animation, AnimationType.Enter)}
-          exitSettings={module.getAnimationSettings(pack, animation, AnimationType.Exit)}
-          setEnterSettings={handleSetSettings(animation, AnimationType.Enter)}
-          setExitSettings={handleSetSettings(animation, AnimationType.Exit)}
-          resetEnterSettings={handleResetSettings(animation, AnimationType.Enter)}
-          resetExitSettings={handleResetSettings(animation, AnimationType.Exit)}
-        />
-      ))}
+      {animations.map(AnimationItem)}
     </div>
   )
 }

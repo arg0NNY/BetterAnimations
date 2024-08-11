@@ -35,6 +35,8 @@ function _useAnimationSettings (module, items, options = {}) {
   const isAdvanced = useAdvancedMode()
 
   const sets = items.map(({ animation, type, settings, setSettings: _setSettings }) => {
+    if (!animation) return []
+
     const defaults = getAnimationDefaultSettings(animation, type)
     const setSettings = values => _setSettings({ ...settings, ...values })
 
@@ -65,6 +67,15 @@ function _useAnimationSettings (module, items, options = {}) {
     ].filter(Boolean)
   })
 
+  if (!isSame(items, 'animation'))
+    return [{
+      type: Setting.Group,
+      children: sets.map(settings => ({
+        type: Setting.List,
+        children: settings
+      }))
+    }]
+
   return Array(Math.max(...sets.map(s => s.length), 0)).fill(null).map((_, i) => {
     const settings = sets.map(s => s[i] ?? null)
     const shouldMerge = !isAdvanced && module.meta?.type === ModuleType.Switch && isSame(items, 'enabled') && canMerge(settings)
@@ -83,11 +94,17 @@ function _useAnimationSettings (module, items, options = {}) {
 }
 
 function useAnimationSettingsHeaders (module, items, settings = _useAnimationSettings(module, items)) {
-  const headers = items.map(({ animation, type, forceDisabled, enabled, setEnabled, onReset, title }) => ({
-    title: title || {
-      [AnimationType.Enter]: 'Enter',
-      [AnimationType.Exit]: 'Exit'
-    }[type] || animation.name,
+  const typeLabel = type => ({
+    [AnimationType.Enter]: 'Enter',
+    [AnimationType.Exit]: 'Exit'
+  }[type])
+
+  const headers = items.map(({ animation, type, forceDisabled, enabled, setEnabled, onReset, title, subtitle = false }) => ({
+    key: type,
+    title: title || typeLabel(type) || animation.name,
+    subtitle: title && subtitle
+      ? (subtitle === true ? typeLabel(type) : subtitle)
+      : null,
     forceDisabled,
     enabled,
     setEnabled,
@@ -95,7 +112,8 @@ function useAnimationSettingsHeaders (module, items, settings = _useAnimationSet
   }))
 
   if (!settings.some(s => s.type === Setting.Group)) return [{
-    title: items[0]?.animation?.name || 'Animation Settings',
+    key: 'both',
+    title: items[0]?.animation?.name || 'No animations selected',
     enabled: items.every(i => i.enabled),
     ...mergeFunctions(headers)
   }]

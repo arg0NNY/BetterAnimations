@@ -3,11 +3,9 @@ import { css } from '@/modules/Style'
 import AnimationPreview from '@/modules/settingsRefresh/components/AnimationPreview'
 import AnimationCardControls from '@/modules/settingsRefresh/components/AnimationCardControls'
 import BackgroundOptionRing from '@/modules/settingsRefresh/components/BackgroundOptionRing'
-import { useElementBounding, useEventListener } from '@reactuses/core'
+import { useElementBounding, useEventListener, useHover } from '@reactuses/core'
 import { CSSTransition, Platform, TransitionGroup } from '@/modules/DiscordModules'
 import usePrevious from '@/hooks/usePrevious'
-import useAnimationSettings from '@/modules/settingsRefresh/hooks/useAnimationSettings'
-import AnimationType from '@/enums/AnimationType'
 import AnimationSettings from '@/modules/settingsRefresh/components/AnimationSettings'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 
@@ -17,24 +15,23 @@ const TOP_OFFSET = Y_OFFSET + (Platform.isWindows() ? 22 : 0)
 const BOTTOM_OFFSET = 72 + 20 // 72 is the height of the settings notice
 
 function AnimationCard ({
-  module,
-  animation,
+  name,
   enter,
   exit,
   setEnter,
   setExit,
-  enterSettings,
-  exitSettings,
-  setEnterSettings,
-  setExitSettings,
-  resetEnterSettings,
-  resetExitSettings,
   onClick,
   refToScroller,
-  modifiersSettings
+  animationSettings,
+  modifiersSettings,
+  active = enter || exit,
+  previewAlwaysActive = false,
+  wide = false
 }) {
   const positionerRef = React.useRef()
   const cardRef = React.useRef()
+
+  const cardHovered = useHover(cardRef)
 
   const [expanded, setExpanded] = React.useState(null)
   const close = () => setExpanded(null)
@@ -59,32 +56,12 @@ function AnimationCard ({
     return e
   }
 
-  const animationSettings = useAnimationSettings(module, [
-    {
-      animation,
-      type: AnimationType.Enter,
-      settings: enterSettings,
-      setSettings: setEnterSettings,
-      enabled: enter,
-      setEnabled: setEnter,
-      onReset: resetEnterSettings
-    },
-    {
-      animation,
-      type: AnimationType.Exit,
-      settings: exitSettings,
-      setSettings: setExitSettings,
-      enabled: exit,
-      setEnabled: setExit,
-      onReset: resetExitSettings
-    }
-  ])
   const expandSettings = animationSettings.settings.length ? () => setExpanded('settings') : undefined
 
   return (
-    <div className={`BA__animationCardWrapper ${expanded ? 'BA__animationCard--expanded' : ''}`}>
+    <div className={`BA__animationCardWrapper ${expanded ? 'BA__animationCard--expanded' : ''} ${wide ? 'BA__animationCard--wide' : ''}`}>
       <div className="BA__animationCardBackdrop" onClick={close}></div>
-      <TransitionGroup childFactory={childFactory}>
+      <TransitionGroup component={null} childFactory={childFactory}>
         {expanded && (
           <CSSTransition
             key={expanded}
@@ -114,8 +91,8 @@ function AnimationCard ({
           onClick={onClick}
           onContextMenu={expandSettings}
         >
-          {(enter || exit) && <BackgroundOptionRing />}
-          <AnimationPreview title={animation.name} />
+          {active && <BackgroundOptionRing />}
+          <AnimationPreview title={name} active={previewAlwaysActive || cardHovered || !!expanded} />
           <AnimationCardControls
             enter={enter}
             exit={exit}
@@ -171,11 +148,6 @@ css
     padding: 20px;
     padding-right: 12px;
 }
-.BA__animationCardPopoutScroller::-webkit-scrollbar-thumb,
-.BA__animationCardPopoutScroller::-webkit-scrollbar-track {
-    border-top-width: 6px;
-    border-bottom-width: 6px;
-}
 
 .BA__animationCard {
     position: absolute;
@@ -210,9 +182,16 @@ css
     background-color: rgba(0, 0, 0, .8);
     pointer-events: all;
 }
-
-.BA__animationCard--expanded .BA__animationCard {
+    
+.BA__animationCard--wide .BA__animationCardPositioner {
+    height: 223px;
+}
+.BA__animationCard--wide .BA__animationCard,
+.BA__animationCard--expanded .BA__animationCard,
+.BA__animationCard--wide .BA__animationCardPositioner {
     width: 320px;
+}
+.BA__animationCard--expanded .BA__animationCard {
     z-index: 100;
     transition: background-color .2s, transform .4s, width .4s, z-index .4s step-start;
 }

@@ -9,8 +9,29 @@ import OverflowControl from '@/modules/settingsRefresh/components/controls/Overf
 import { css } from '@/modules/Style'
 import { Common } from '@/modules/DiscordModules'
 import IconButton from '@/modules/settingsRefresh/components/IconButton'
+import { DiscordClasses } from '@/modules/DiscordSelectors'
+
+function SettingList ({ children, className = 'BA__animationSettingsList' }) {
+  return (
+    <div className={className}>
+      {typeof children === 'function' ? children() : children.map(item => {
+        if (!item) return <div></div>
+        return <Setting {...item} />
+      })}
+    </div>
+  )
+}
+
+function SettingGroup ({ children }) {
+  return (
+    <SettingList className="BA__animationSettingsGroup">
+      {children}
+    </SettingList>
+  )
+}
 
 function Setting ({ type, ...props }) {
+  if (type === AnimationSetting.List) return <SettingList {...props} />
   if (type === AnimationSetting.Group) return <SettingGroup {...props} />
 
   return (
@@ -30,23 +51,22 @@ function Setting ({ type, ...props }) {
   )
 }
 
-function SettingGroup ({ children }) {
-  return (
-    <div className="BA__animationSettingsGroup">
-      {typeof children === 'function' ? children() : children.map(item => {
-        if (!item) return <div></div>
-        return <Setting {...item} />
-      })}
-    </div>
-  )
-}
-
 function AnimationSettingsHeader ({ headers }) {
   return (
     <SettingGroup>
-      {() => headers.map(({ title, enabled, setEnabled, onReset }) => (
-        <div className="BA__animationSettingsItem BA__animationSettingsHeader" key={title}>
-          <Common.Text variant="heading-lg/semibold">{title}</Common.Text>
+      {() => headers.map(({ key, title, subtitle, enabled, setEnabled, onReset }) => (
+        <div className="BA__animationSettingsItem BA__animationSettingsHeader" key={key}>
+          <Common.Text variant="heading-lg/semibold">
+            {title}
+            {subtitle && (
+              <Common.Text
+                tag="span"
+                variant="heading-md/normal"
+                color="header-muted"
+                className={DiscordClasses.Margins.marginLeft8}
+              >{subtitle}</Common.Text>
+            )}
+          </Common.Text>
           <div className="BA__animationSettingsHeaderControls">
             {onReset && (
               <IconButton tooltip="Reset" onClick={onReset}>
@@ -78,9 +98,6 @@ css
 `.BA__animationSettings {
     position: relative;
     isolation: isolate;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
 }
 .BA__animationSettings::before {
     content: '';
@@ -91,7 +108,12 @@ css
     border-right: 1px solid var(--background-accent);
     z-index: -1;
 }
-    
+.BA__animationSettings, .BA__animationSettingsList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
 .BA__animationSettingsGroup {
     display: flex;
     gap: 40px;

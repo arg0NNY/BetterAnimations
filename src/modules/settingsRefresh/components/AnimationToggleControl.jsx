@@ -9,6 +9,7 @@ function AnimationToggleControl ({ enter, exit, setEnter, setExit }) {
       value: 'enter',
       tooltip: 'Enter',
       selected: enter,
+      disabled: !setEnter,
       onClick: stop(() => setEnter(!enter)),
       children: <Common.DoorEnterIcon size="xs" color="currentColor" />
     },
@@ -16,6 +17,7 @@ function AnimationToggleControl ({ enter, exit, setEnter, setExit }) {
       value: 'exit',
       tooltip: 'Exit',
       selected: exit,
+      disabled: !setExit,
       onClick: stop(() => setExit(!exit)),
       children: <Common.DoorExitIcon size="xs" color="currentColor" />
     }
