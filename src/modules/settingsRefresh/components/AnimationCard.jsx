@@ -4,10 +4,11 @@ import AnimationPreview from '@/modules/settingsRefresh/components/AnimationPrev
 import AnimationCardControls from '@/modules/settingsRefresh/components/AnimationCardControls'
 import BackgroundOptionRing from '@/modules/settingsRefresh/components/BackgroundOptionRing'
 import { useElementBounding, useEventListener, useHover } from '@reactuses/core'
-import { CSSTransition, Platform, TransitionGroup } from '@/modules/DiscordModules'
+import { Common, CSSTransition, Dispatcher, Platform, TransitionGroup } from '@/modules/DiscordModules'
 import usePrevious from '@/hooks/usePrevious'
 import AnimationSettings from '@/modules/settingsRefresh/components/AnimationSettings'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
+import DispatcherEvents from '@/enums/DispatcherEvents'
 
 const X_OFFSET = 40
 const Y_OFFSET = 40
@@ -34,7 +35,23 @@ function AnimationCard ({
   const cardHovered = useHover(cardRef)
 
   const [expanded, setExpanded] = React.useState(null)
-  const close = () => setExpanded(null)
+  const close = React.useCallback(() => setExpanded(null), [setExpanded])
+
+  React.useEffect(() => {
+    const onKeyDown = e => {
+      if (e.key !== 'Escape' || !expanded) return
+      close()
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    document.addEventListener('keydown', onKeyDown)
+    if (expanded) Dispatcher.dispatch({ type: DispatcherEvents.ADD_PREVENT_SETTINGS_CLOSE, callback: close })
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      Dispatcher.dispatch({ type: DispatcherEvents.REMOVE_PREVENT_SETTINGS_CLOSE, callback: close })
+    }
+  }, [expanded, close])
 
   useEventListener('wheel', e => {
     if (!expanded) return
@@ -60,6 +77,30 @@ function AnimationCard ({
 
   return (
     <div className={`BA__animationCardWrapper ${expanded ? 'BA__animationCard--expanded' : ''} ${wide ? 'BA__animationCard--wide' : ''}`}>
+      <div ref={positionerRef} className="BA__animationCardPositioner">
+        <Common.Clickable
+          ref={cardRef}
+          tag="div"
+          className="BA__animationCard"
+          style={{ transform: `translateY(${translateY}px)` }}
+          onClick={onClick ?? expandSettings}
+          onContextMenu={expandSettings}
+        >
+          {active && <BackgroundOptionRing/>}
+          <AnimationPreview title={name} active={previewAlwaysActive || cardHovered || !!expanded}/>
+          <AnimationCardControls
+            enter={enter}
+            exit={exit}
+            setEnter={setEnter}
+            setExit={setExit}
+            hasSettings={!!animationSettings.settings.length}
+            hasModifiers={!!modifiersSettings?.settings?.length}
+            expanded={expanded}
+            setExpanded={setExpanded}
+          />
+        </Common.Clickable>
+      </div>
+
       <div className="BA__animationCardBackdrop" onClick={close}></div>
       <TransitionGroup component={null} childFactory={childFactory}>
         {expanded && (
@@ -76,35 +117,13 @@ function AnimationCard ({
               <div className={`BA__animationCardPopoutScroller ${DiscordClasses.Scroller.thin}`}>
                 <AnimationSettings {...{
                   settings: animationSettings,
-                  modifiers: modifiersSettings,
+                  modifiers: modifiersSettings
                 }[expanded]} />
               </div>
             </div>
           </CSSTransition>
         )}
       </TransitionGroup>
-      <div ref={positionerRef} className="BA__animationCardPositioner">
-        <div
-          ref={cardRef}
-          className="BA__animationCard"
-          style={{ transform: `translateY(${translateY}px)` }}
-          onClick={onClick ?? expandSettings}
-          onContextMenu={expandSettings}
-        >
-          {active && <BackgroundOptionRing />}
-          <AnimationPreview title={name} active={previewAlwaysActive || cardHovered || !!expanded} />
-          <AnimationCardControls
-            enter={enter}
-            exit={exit}
-            setEnter={setEnter}
-            setExit={setExit}
-            hasSettings={!!animationSettings.settings.length}
-            hasModifiers={!!modifiersSettings?.settings?.length}
-            expanded={expanded}
-            setExpanded={setExpanded}
-          />
-        </div>
-      </div>
     </div>
   )
 }

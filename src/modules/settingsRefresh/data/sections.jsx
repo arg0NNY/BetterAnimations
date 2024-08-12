@@ -3,7 +3,7 @@ import ModuleSettings from '@/modules/settingsRefresh/components/ModuleSettings'
 import SettingsSidebarHeader from '@/modules/settingsRefresh/components/SettingsSidebarHeader'
 import ModeSwitch from '@/modules/settingsRefresh/components/ModeSwitch'
 import FormNotice from '@/modules/settingsRefresh/components/FormNotice'
-import SettingsNoticeStore from '@/modules/settingsRefresh/stores/SettingsNoticeStore'
+import SettingsStore from '@/modules/settingsRefresh/stores/SettingsStore'
 import IconSpine from '@/modules/settingsRefresh/components/icons/IconSpine'
 import { Common } from '@/modules/DiscordModules'
 import SettingsSections from '@/enums/SettingsSections'
@@ -20,7 +20,9 @@ export function getSections () {
       icon: <Common.HomeIcon size="xs" color="currentColor" />,
       element: () => {}
     },
-    { section: 'DIVIDER' },
+    {
+      section: 'DIVIDER'
+    },
     {
       section: 'CUSTOM',
       element: ModeSwitch
@@ -34,7 +36,7 @@ export function getSections () {
       element: ModuleSettings,
       notice: {
         element: FormNotice,
-        stores: [SettingsNoticeStore]
+        stores: [SettingsStore]
       }
     }))
   ]

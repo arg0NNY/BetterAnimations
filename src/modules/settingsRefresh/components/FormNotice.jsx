@@ -10,12 +10,10 @@ function FormNotice () {
 
   return (
     <React.Suspense>
-      <div className="BA__settingsNotice">
-        <SettingsNoticeComponent
-          onSave={onSave}
-          onReset={onReset}
-        />
-      </div>
+      <SettingsNoticeComponent
+        onSave={onSave}
+        onReset={onReset}
+      />
     </React.Suspense>
   )
 }

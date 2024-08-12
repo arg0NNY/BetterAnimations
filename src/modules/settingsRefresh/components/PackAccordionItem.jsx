@@ -4,7 +4,7 @@ import { css } from '@/modules/Style'
 function PackAccordionItem ({ pack, children, isOpen, onToggle }) {
   return (
     <div className="BA__packAccordionItem">
-      <div role="button" className="BA__packAccordionItemHeader" onClick={onToggle}>
+      <Common.Clickable tag="div" className="BA__packAccordionItemHeader" onClick={onToggle}>
         <div className="BA__packAccordionItemHeading">
           <Common.Text
             variant="heading-md/semibold"
@@ -22,7 +22,7 @@ function PackAccordionItem ({ pack, children, isOpen, onToggle }) {
               : <Common.ChevronSmallDownIcon />
           }
         </div>
-      </div>
+      </Common.Clickable>
       {isOpen ? (
         <div className="BA__packAccordionItemContentWrapper">
           <div className="BA__packAccordionItemContent">

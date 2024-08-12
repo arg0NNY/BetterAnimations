@@ -112,15 +112,16 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
         )}
 
         {childModules.map(m => (
-          <Common.FormTitle
-            key={m.id}
-            tag="label"
-            className="BA__moduleSettingsLink"
-            onClick={() => setSection(m.id)}
-          >
-            {m.name} animations
-            <Common.ArrowSmallRightIcon size="xs" />
-          </Common.FormTitle>
+          <Common.Clickable tag="div" onClick={() => setSection(m.id)}>
+            <Common.FormTitle
+              key={m.id}
+              tag="label"
+              className="BA__moduleSettingsLink"
+            >
+              {m.name} animations
+              <Common.ArrowSmallRightIcon size="xs" />
+            </Common.FormTitle>
+          </Common.Clickable>
         ))}
       </div>
     </div>

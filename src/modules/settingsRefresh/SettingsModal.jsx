@@ -2,6 +2,7 @@ import { React } from '@/BdApi'
 import {
   Constants,
   LayerActions,
+  StandardSidebarView,
   StandardSidebarViewWrapper,
   ThemeStore,
   useStateFromStores
@@ -11,6 +12,8 @@ import meta from '@/meta'
 import SectionContext from '@/modules/settingsRefresh/context/SectionContext'
 import { css } from '@/modules/Style'
 import SettingsSections from '@/enums/SettingsSections'
+import SettingsStore from '@/modules/settingsRefresh/stores/SettingsStore'
+import { DiscordSelectors } from '@/modules/DiscordSelectors'
 
 const StandardSidebarViewComponent = React.lazy(async () => ({ default: await StandardSidebarViewWrapper }))
 
@@ -22,32 +25,53 @@ function SettingsModal ({ initialSection = SettingsSections.Home }) {
   const sections = React.useMemo(getSections, [])
   const [section, setSection] = React.useState(initialSection)
 
+  const onClose = React.useCallback(() => {
+    if (SettingsStore.preventCloseIfNeeded()) return
+    LayerActions.popLayer()
+  }, [])
+
   return (
     <SectionContext.Provider value={{ section, setSection }}>
-      <React.Suspense>
-        <StandardSidebarViewComponent
-          title={title}
-          theme={theme}
-          sidebarTheme={sidebarTheme}
-          sections={sections}
-          section={section}
-          onSetSection={setSection}
-          onClose={LayerActions.popLayer}
-        />
-      </React.Suspense>
+      <div className="BA__settingsModal">
+        <React.Suspense>
+          <StandardSidebarViewComponent
+            title={title}
+            theme={theme}
+            sidebarTheme={sidebarTheme}
+            sections={sections}
+            section={section}
+            onSetSection={setSection}
+            onClose={onClose}
+          />
+        </React.Suspense>
+      </div>
     </SectionContext.Provider>
   )
 }
 
 export default SettingsModal
 
+StandardSidebarView.then(() =>
 css
-`.BA__nestedTabBarItem {
+`.BA__settingsModal ${DiscordSelectors.StandardSidebarView.tools} {
+    z-index: 100;
+}
+
+.BA__settingsModal ${DiscordSelectors.StandardSidebarView.noticeRegion} {
+    padding-left: 40px;
+    padding-right: 40px;
+    z-index: 200;
+}
+
+${DiscordSelectors.StandardSidebarView.contentColumnDefault}:has(> .BA__moduleSettings) {
+    position: static;
+}
+
+.BA__nestedTabBarItem {
     position: relative;
     margin-left: 30px;
     overflow: visible;
 }
-
 .BA__nestedTabBarItem svg {
     position: absolute;
     left: -14px;
@@ -55,3 +79,4 @@ css
     color: var(--interactive-muted);
 }`
 `SettingsModal`
+)
