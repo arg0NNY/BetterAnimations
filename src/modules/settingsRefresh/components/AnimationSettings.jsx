@@ -54,7 +54,7 @@ function Setting ({ type, ...props }) {
 function AnimationSettingsHeader ({ headers }) {
   return (
     <SettingGroup>
-      {() => headers.map(({ key, title, subtitle, enabled, setEnabled, onReset }) => (
+      {() => headers.map(({ key, title, subtitle, enabled, setEnabled, onReset, switchTooltip }) => (
         <div className="BA__animationSettingsItem BA__animationSettingsHeader" key={key}>
           <Common.Text variant="heading-lg/semibold">
             {title}
@@ -74,7 +74,13 @@ function AnimationSettingsHeader ({ headers }) {
               </IconButton>
             )}
             {typeof enabled === 'boolean' && (
-              <Common.Switch checked={enabled} disabled={!setEnabled} onChange={setEnabled} />
+              <Common.Tooltip text={switchTooltip} hideOnClick={false}>
+                {props => (
+                  <div {...props}>
+                    <Common.Switch checked={enabled} disabled={!setEnabled} onChange={setEnabled} />
+                  </div>
+                )}
+              </Common.Tooltip>
             )}
           </div>
         </div>

@@ -15,7 +15,7 @@ function OverflowControl ({ value, onChange, forced = false }) {
   if (!forced) return control
 
   return (
-    <Tooltip text="Value is forced by animation" align="left">
+    <Tooltip text="Value forced by animation" align="left" hideOnClick={false}>
       {props => <div {...props}>{control}</div>}
     </Tooltip>
   )

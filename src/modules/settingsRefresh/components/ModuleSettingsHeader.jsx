@@ -8,6 +8,7 @@ import Modules from '@/modules/Modules'
 import { Common } from '@/modules/DiscordModules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import SectionContext from '@/modules/settingsRefresh/context/SectionContext'
+import Messages from '@/modules/Messages'
 
 function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect, ...props }) {
   const { setSection } = React.useContext(SectionContext)
@@ -27,8 +28,8 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
     return () => setSettings(module.buildDefaultSettings(animation, type))
   }
 
-  const setEnterEnabled = selected.enter.animation ? value => !value && onSelect(AnimationType.Enter, null, null) : undefined
-  const setExitEnabled = selected.exit.animation ? value => !value && onSelect(AnimationType.Exit, null, null) : undefined
+  const setEnterEnabled = selected.enter.animation ? value => !value && onSelect(AnimationType.Enter, null, null) : null
+  const setExitEnabled = selected.exit.animation ? value => !value && onSelect(AnimationType.Exit, null, null) : null
 
   const animationSettings = useAnimationSettings(module, [
     {
@@ -40,6 +41,7 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
       setSettings: selected.enter.animation && handleSetSettings(selected.enter.pack, selected.enter.animation, AnimationType.Enter),
       enabled: !!selected.enter.animation,
       setEnabled: setEnterEnabled,
+      switchTooltip: !selected.enter.animation ? Messages.SELECT_ANIMATION_TO_ENABLE : null,
       onReset: selected.enter.animation && handleResetSettings(selected.enter.pack, selected.enter.animation, AnimationType.Enter)
     },
     {
@@ -51,6 +53,7 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
       setSettings: selected.exit.animation && handleSetSettings(selected.exit.pack, selected.exit.animation, AnimationType.Exit),
       enabled: !!selected.exit.animation,
       setEnabled: setExitEnabled,
+      switchTooltip: !selected.exit.animation ? Messages.SELECT_ANIMATION_TO_ENABLE : null,
       onReset: selected.exit.animation && handleResetSettings(selected.exit.pack, selected.exit.animation, AnimationType.Exit)
     }
   ])
@@ -61,12 +64,14 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
       animation: modifiers.animation,
       type: AnimationType.Enter,
       title: 'Smooth expand',
+      switchTooltip: modifiers.enter.forceDisabled ? Messages.FORCE_DISABLED_BY_ANIMATION(selected.enter.animation?.name) : null,
       ...modifiers.enter
     },
     {
       animation: modifiers.animation,
       type: AnimationType.Exit,
       title: 'Smooth collapse',
+      switchTooltip: modifiers.exit.forceDisabled ? Messages.FORCE_DISABLED_BY_ANIMATION(selected.exit.animation?.name) : null,
       ...modifiers.exit
     }
   ] : [], { hideOverflow: true })

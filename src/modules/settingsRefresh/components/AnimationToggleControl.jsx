@@ -6,13 +6,14 @@ import { useAdvancedMode } from '@/modules/settingsRefresh/hooks/useMode'
 import ModuleContext from '@/modules/settingsRefresh/context/ModuleContext'
 import ModuleType from '@/enums/ModuleType'
 import { css } from '@/modules/Style'
+import Messages from '@/modules/Messages'
 
 function useToggleHint () {
   const [hintShown, setHintShown] = React.useState(false)
   const showHint = React.useCallback(() => setHintShown(true), [setHintShown])
   const hideHint = React.useCallback(() => setHintShown(false), [setHintShown])
 
-  const hintProps = React.useCallback((optionDisabled, text = 'Select any animation below to enable') => {
+  const hintProps = React.useCallback((optionDisabled, text = Messages.SELECT_ANIMATION_TO_ENABLE) => {
     if (!optionDisabled) return {}
     return Object.assign(
       { onClick: stop(showHint) },
@@ -31,9 +32,9 @@ function useToggleHint () {
   }
 }
 
-function AnimationToggleCheckbox ({ value, onChange, disabled, tooltip, ...props }) {
-  const checkbox = _props => (
-    <div {..._props} {...props}>
+function AnimationToggleCheckbox ({ value, onChange, disabled }) {
+  const checkbox = props => (
+    <div {...props} onClick={stop()}>
       <Common.Checkbox
         className="BA__animationToggleCheckbox"
         type={Common.Checkbox.Types.INVERTED}
@@ -45,8 +46,8 @@ function AnimationToggleCheckbox ({ value, onChange, disabled, tooltip, ...props
     </div>
   )
 
-  return tooltip
-    ? <Common.Tooltip {...tooltip}>{checkbox}</Common.Tooltip>
+  return disabled
+    ? <Common.Tooltip text={Messages.SELECT_ANIMATION_TO_ENABLE}>{checkbox}</Common.Tooltip>
     : checkbox({})
 }
 
@@ -85,8 +86,6 @@ function AnimationToggleControl ({ enter, exit, setEnter, setExit }) {
         setExit(value)
       }}
       disabled={!setEnter || !setExit}
-      onClick={stop()}
-      {...hintProps(!setEnter || !setExit)}
     />
   )
 

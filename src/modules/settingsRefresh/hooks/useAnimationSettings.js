@@ -99,15 +99,24 @@ function useAnimationSettingsHeaders (module, items, settings = _useAnimationSet
     [AnimationType.Exit]: 'Exit'
   }[type])
 
-  const headers = items.map(({ animation, type, forceDisabled, enabled, setEnabled, onReset, title, subtitle = false }) => ({
+  const headers = items.map(({
+    animation,
+    type,
+    enabled,
+    setEnabled,
+    onReset,
+    title,
+    subtitle,
+    switchTooltip
+  }) => ({
     key: type,
     title: title || typeLabel(type) || animation.name,
     subtitle: title && subtitle
       ? (subtitle === true ? typeLabel(type) : subtitle)
       : null,
-    forceDisabled,
     enabled,
     setEnabled,
+    switchTooltip,
     onReset
   }))
 
