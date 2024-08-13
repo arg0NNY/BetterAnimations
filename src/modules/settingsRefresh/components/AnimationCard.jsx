@@ -9,6 +9,7 @@ import usePrevious from '@/hooks/usePrevious'
 import AnimationSettings from '@/modules/settingsRefresh/components/AnimationSettings'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import DispatcherEvents from '@/enums/DispatcherEvents'
+import useHint from '@/modules/settingsRefresh/hooks/useHint'
 
 const X_OFFSET = 40
 const Y_OFFSET = 40
@@ -36,6 +37,8 @@ function AnimationCard ({
 
   const [expanded, setExpanded] = React.useState(null)
   const close = React.useCallback(() => setExpanded(null), [setExpanded])
+
+  const [rightClickHint, setRightClickHint] = useHint('rightClickAnimationCard')
 
   React.useEffect(() => {
     const onKeyDown = e => {
@@ -73,33 +76,44 @@ function AnimationCard ({
     return e
   }
 
-  const expandSettings = animationSettings.settings.length ? () => setExpanded('settings') : undefined
+  const expandSettings = animationSettings.settings.length ? () => {
+    setExpanded('settings')
+    if (!rightClickHint) setRightClickHint(true)
+  } : undefined
 
   return (
     <div className={`BA__animationCardWrapper ${expanded ? 'BA__animationCard--expanded' : ''} ${wide ? 'BA__animationCard--wide' : ''}`}>
-      <div ref={positionerRef} className="BA__animationCardPositioner">
-        <Common.Clickable
-          ref={cardRef}
-          tag="div"
-          className="BA__animationCard"
-          style={{ transform: `translateY(${translateY}px)` }}
-          onClick={onClick ?? expandSettings}
-          onContextMenu={expandSettings}
-        >
-          {active && <BackgroundOptionRing/>}
-          <AnimationPreview title={name} active={previewAlwaysActive || cardHovered || !!expanded}/>
-          <AnimationCardControls
-            enter={enter}
-            exit={exit}
-            setEnter={setEnter}
-            setExit={setExit}
-            hasSettings={!!animationSettings.settings.length}
-            hasModifiers={!!modifiersSettings?.settings?.length}
-            expanded={expanded}
-            setExpanded={setExpanded}
-          />
-        </Common.Clickable>
-      </div>
+      <Common.Tooltip
+        text="Right-click the card to open the settings"
+        shouldShow={!rightClickHint && !!expandSettings}
+        color={Common.Tooltip.Colors.BRAND}
+      >
+        {props => (
+          <div ref={positionerRef} className="BA__animationCardPositioner" {...props}>
+            <Common.Clickable
+              ref={cardRef}
+              tag="div"
+              className="BA__animationCard"
+              style={{ transform: `translateY(${translateY}px)` }}
+              onClick={onClick ?? expandSettings}
+              onContextMenu={expandSettings}
+            >
+              {active && <BackgroundOptionRing/>}
+              <AnimationPreview title={name} active={previewAlwaysActive || cardHovered || !!expanded}/>
+              <AnimationCardControls
+                enter={enter}
+                exit={exit}
+                setEnter={setEnter}
+                setExit={setExit}
+                hasSettings={!!animationSettings.settings.length}
+                hasModifiers={!!modifiersSettings?.settings?.length}
+                expanded={expanded}
+                setExpanded={setExpanded}
+              />
+            </Common.Clickable>
+          </div>
+        )}
+      </Common.Tooltip>
 
       <div className="BA__animationCardBackdrop" onClick={close}></div>
       <TransitionGroup component={null} childFactory={childFactory}>

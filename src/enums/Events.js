@@ -11,5 +11,6 @@ export default Enum({
   SettingsLoaded: 'settings-loaded',
   SettingsSaved: 'settings-saved',
   PackRegistryUpdated: 'pack-registry-updated',
-  SettingsModeChanged: 'settings-mode-changed'
+  SettingsModeChanged: 'settings-mode-changed',
+  HintUpdated: 'hint-updated'
 })
