@@ -91,7 +91,7 @@ function AnimationCard ({
         {props => (
           <div ref={positionerRef} className="BA__animationCardPositioner" {...props}>
             <Common.Clickable
-              ref={cardRef}
+              innerRef={cardRef}
               tag="div"
               className="BA__animationCard"
               style={{ transform: `translateY(${translateY}px)` }}
