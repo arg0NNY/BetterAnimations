@@ -1,6 +1,10 @@
 import { css } from '@/modules/Style'
 import { Common } from '@/modules/DiscordModules'
 
+export function getPreviewHeight (width) {
+  return width * 9 / 16
+}
+
 function AnimationPreview ({ title, active = false }) {
   return (
     <div className="BA__animationPreview">
