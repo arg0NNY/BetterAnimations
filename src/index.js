@@ -88,7 +88,7 @@ export default function (meta) {
       Logger.info('Shutdown', 'Finished.')
     },
     getSettingsPanel () {
-      requestAnimationFrame(() => {
+      queueMicrotask(() => {
         Common.closeAllModals()
         Settings.openSettingsModal()
       })
