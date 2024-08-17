@@ -22,10 +22,11 @@ import Logger from '@/modules/Logger'
 import DirectionAutoType from '@/enums/DirectionAutoType'
 
 class Module {
-  constructor (id, name, meta = {}, { parent, description } = {}) {
+  constructor (id, name, meta = {}, { parent, description, alert } = {}) {
     this.id = id
     this.name = name
     this.description = description ?? 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aspernatur at consequatur debitis dolor dolore dolorem eaque eligendi esse id illo, inventore iste iure nobis non, officia officiis optio quo recusandae saepe, sequi sit tempora veniam? Atque est quibusdam quis.'
+    this._alert = alert
     this.meta = meta
     this.parent = parent
     this.animations = {}
@@ -54,6 +55,11 @@ class Module {
     return this.meta.type ?? ModuleType.Reveal
   }
   getType () { return this.type }
+
+  get alert () {
+    if (typeof this._alert === 'function') return this._alert(this.name)
+    return this._alert
+  }
 
   findAnimation (packOrSlug, key) {
     const animation = PackManager.getAnimation(packOrSlug, key)

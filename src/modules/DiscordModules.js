@@ -138,3 +138,7 @@ export const LayerStore = Webpack.getStore('LayerStore')
 export const Platform = Webpack.getByKeys('isWindows', 'isMac')
 export const { LocalStorage } = mapModule(Filters.byPrototypeKeys('setRaw'), { LocalStorage: Filters.byKeys('setRaw') })
 export const SettingsNotice = Webpack.waitForModule(Filters.byStrings('SETTINGS_NOTICE_MESSAGE', 'EMPHASIZE_NOTICE'))
+export const { Alert, AlertTypes } = mapModule(Filters.byStrings('messageType', 'CircleWarningIcon'), {
+  Alert: Filters.byStrings('messageType', 'CircleWarningIcon'),
+  AlertTypes: Filters.byKeys('WARNING', 'ERROR')
+})

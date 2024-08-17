@@ -5,7 +5,7 @@ import Config from '@/modules/Config'
 import AnimationCard from '@/modules/settingsRefresh/components/AnimationCard'
 import { React } from '@/BdApi'
 import Modules from '@/modules/Modules'
-import { Common } from '@/modules/DiscordModules'
+import { Alert, AlertTypes, Common } from '@/modules/DiscordModules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import SectionContext from '@/modules/settingsRefresh/context/SectionContext'
 import Messages from '@/modules/Messages'
@@ -109,6 +109,9 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
         </div>
         {module.description && (
           <Common.FormText type={Common.FormTextTypes.DESCRIPTION} className={DiscordClasses.Margins.marginTop8}>{module.description}</Common.FormText>
+        )}
+        {module.alert && (
+          <Alert messageType={AlertTypes.WARNING} className={DiscordClasses.Margins.marginTop8}>{module.alert}</Alert>
         )}
 
         {childModules.map(m => (

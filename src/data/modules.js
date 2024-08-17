@@ -6,6 +6,7 @@ import Position from '@/enums/Position'
 import ModuleType from '@/enums/ModuleType'
 import { heightModifier, marginRightModifier } from '@/helpers/modifiers'
 import DirectionAutoType from '@/enums/DirectionAutoType.js'
+import Messages from '@/modules/Messages'
 
 export const moduleAliases = {
   [ModuleKeyAlias.Switch]: [
@@ -33,6 +34,7 @@ const modules = [
   {
     id: ModuleKey.Servers,
     name: 'Servers',
+    alert: Messages.HEAVY_MODULE_ALERT,
     meta: {
       type: ModuleType.Switch,
       settings: {
@@ -49,6 +51,7 @@ const modules = [
   {
     id: ModuleKey.Channels,
     name: 'Channels',
+    alert: Messages.HEAVY_MODULE_ALERT,
     meta: {
       type: ModuleType.Switch,
       settings: {
