@@ -40,7 +40,6 @@ function ModuleSettings ({ moduleId, refToScroller }) {
           onSelect={onSelect}
           refToScroller={refToScroller}
         />
-        <div style={{ height: '1000px' }} />
       </div>
     </ModuleContext.Provider>
   )
