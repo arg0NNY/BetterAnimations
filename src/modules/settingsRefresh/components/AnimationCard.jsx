@@ -118,9 +118,9 @@ function AnimationCard ({
     e.preventDefault()
   }, cardRef)
 
-  const expandSettings = animationSettings.settings.length ? () => {
+  const expandSettings = animationSettings.settings.length && !expanded ? (rightClick = false) => {
     setExpanded('settings')
-    if (!rightClickHint) setRightClickHint(true)
+    if (rightClick === true && !rightClickHint) setRightClickHint(true)
   } : undefined
 
   return (
@@ -143,7 +143,7 @@ function AnimationCard ({
               className="BA__animationCard"
               style={cardStyle}
               onClick={onClick ?? expandSettings}
-              onContextMenu={expandSettings}
+              onContextMenu={() => expandSettings(true)}
             >
               {active && <BackgroundOptionRing/>}
               <AnimationPreview title={name} active={previewAlwaysActive || cardHovered || !!expanded} />
