@@ -76,7 +76,7 @@ function AnimationCard ({
 }) {
   const positionerRef = React.useRef()
   const cardRef = React.useRef()
-  const [popoutRef, setPopoutRef] = React.useState()
+  const popoutRef = React.useRef()
 
   const {
     expanded,
@@ -172,7 +172,7 @@ function AnimationCard ({
             mountOnEnter
             unmountOnExit
           >
-            <div ref={setPopoutRef} className="BA__animationCardPopoutWrapper" style={popoutWrapperStyle}>
+            <div ref={popoutRef} className="BA__animationCardPopoutWrapper" style={popoutWrapperStyle}>
               <div className="BA__animationCardPopout" style={popoutStyle}>
                 <div className={`BA__animationCardPopoutScroller ${DiscordClasses.Scroller.thin}`}>
                   <AnimationSettings {...{

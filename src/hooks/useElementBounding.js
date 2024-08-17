@@ -36,11 +36,14 @@ function useElementBounding (target, options = {}) {
 
   const bounding = getTargetElement(target)?.getBoundingClientRect()
 
+  const boundingCached = React.useRef()
+  if (bounding) boundingCached.current = bounding
+
   return {
-    top: bounding?.top ?? 0,
-    left: bounding?.left ?? 0,
-    width: bounding?.width ?? 0,
-    height: bounding?.height ?? 0,
+    top: bounding?.top ?? boundingCached.current?.top ?? 0,
+    left: bounding?.left ?? boundingCached.current?.left ?? 0,
+    width: bounding?.width ?? boundingCached.current?.width ?? 0,
+    height: bounding?.height ?? boundingCached.current?.height ?? 0,
     update
   }
 }
