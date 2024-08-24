@@ -5,22 +5,16 @@ import ModuleKey from '@/enums/ModuleKey'
 import findInReactTree from '@/helpers/findInReactTree'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import AnimeTransition from '@/components/AnimeTransition'
-import Modules from '@/modules/Modules'
 
 function patchModalBackdrop () {
-  Patcher.before(ModalBackdrop, 'render', (self, [props]) => {
+  Patcher.instead(ModalBackdrop, 'render', (self, [props, ...args], original) => {
     const module = useModule(ModuleKey.ModalsBackdrop)
-    if (!module.isEnabled()) return
+    if (!module.isEnabled()) return original(props, ...args)
 
-    props._isVisible = props.isVisible
-    props.isVisible = true
-  })
-  Patcher.after(ModalBackdrop, 'render', (self, [props], value) => {
-    const module = Modules.getModule(ModuleKey.ModalsBackdrop)
-    if (!module.isEnabled()) return
+    const value = original({ ...props, isVisible: true }, ...args)
 
     const children = findInReactTree(value, m => m?.[0]?.props?.className?.includes(DiscordClasses.ModalBackdrop.backdrop))
-    if (!children) return
+    if (!children) return original(props, ...args)
 
     const [backdrop] = children
     if (backdrop) {
@@ -34,13 +28,15 @@ function patchModalBackdrop () {
     children[0] = (
       <AnimeTransition
         appear={true}
-        in={props._isVisible}
+        in={props.isVisible}
         module={module}
         targetContainer={e => e}
       >
         {backdrop}
       </AnimeTransition>
     )
+
+    return value
   })
 }
 
