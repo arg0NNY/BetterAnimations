@@ -31,8 +31,6 @@ function patchModals () {
                   {...props}
                   in={modal.props.isTopModal && props.in}
                   key={modal.props.modalKey}
-                  mountOnEnter={false}
-                  unmountOnExit={false}
                   targetContainer={directChild}
                   // targetNode={node => node?.querySelector(`${DiscordSelectors.Modal.root}, .bd-modal-root`)}
                   module={module}
