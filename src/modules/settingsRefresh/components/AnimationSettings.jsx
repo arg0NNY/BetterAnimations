@@ -111,7 +111,7 @@ css
     top: 0;
     left: 50%;
     height: 100%;
-    border-right: 1px solid var(--background-accent);
+    border-right: 1px solid var(--background-modifier-accent);
     z-index: -1;
 }
 .BA__animationSettings, .BA__animationSettingsList {

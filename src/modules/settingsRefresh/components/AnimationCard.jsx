@@ -124,7 +124,7 @@ function AnimationCard ({
   } : undefined
 
   return (
-    <div className={`BA__animationCardWrapper ${expanded ? 'BA__animationCard--expanded' : ''} ${wide ? 'BA__animationCard--wide' : ''}`}>
+    <div className={`BA__animationCardWrapper ${expanded ? 'BA__animationCard--expanded' : ''} ${wide ? 'BA__animationCard--wide' : ''} ${active ? 'BA__animationCard--active' : ''}`}>
       <Common.Tooltip
         text="Right-click the card to open the settings"
         shouldShow={!rightClickHint && !!expandSettings}
@@ -145,8 +145,11 @@ function AnimationCard ({
               onClick={onClick ?? expandSettings}
               onContextMenu={() => expandSettings(true)}
             >
-              {active && <BackgroundOptionRing/>}
-              <AnimationPreview title={name} active={previewAlwaysActive || cardHovered || !!expanded} />
+              {/*{active && <BackgroundOptionRing/>}*/}
+              <AnimationPreview
+                title={name}
+                active={previewAlwaysActive || cardHovered || !!expanded}
+              />
               <AnimationCardControls
                 enter={enter}
                 exit={exit}
@@ -240,8 +243,9 @@ css
     border-radius: 8px;
     background-color: var(--background-secondary);
     cursor: pointer;
-    transition: background-color .2s, transform .4s, width .4s, z-index .4s step-end;
+    transition: background-color .2s, transform .4s, width .4s, box-shadow .2s, z-index .4s step-end;
     z-index: 10;
+    box-shadow: 0 0 0 0 var(--brand-500);
 }
 .BA__animationCard:hover {
     background-color: var(--background-secondary-alt);
@@ -275,7 +279,11 @@ css
 }
 .BA__animationCard--expanded .BA__animationCard {
     z-index: 105;
-    transition: background-color .2s, transform .4s, width .4s, z-index .4s step-start;
+    transition: background-color .2s, transform .4s, width .4s, box-shadow .2s, z-index .4s step-start;
+}
+
+.BA__animationCard--active .BA__animationCard {
+    box-shadow: 0 0 0 2.5px var(--brand-500);
 }
 
 .BA__fade-enter, .BA__fade-exit-active {
