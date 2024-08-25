@@ -56,7 +56,7 @@ export const AnimateSchema = (context = null, env = {}) => {
       .transform(!layoutContext ? v => v : matchesSchema(
         InjectableSchema(layoutContext, layoutEnv)
       )).optional(),
-    anime: ArrayOrSingleSchema(z.record(z.any()))
+    anime: ArrayOrSingleSchema(z.record(z.any()).nullable().optional())
       .transform(!context ? v => v : matchesSchema(
         InjectableSchema(context, env)
       )),

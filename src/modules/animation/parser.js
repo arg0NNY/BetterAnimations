@@ -108,7 +108,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
     onBeforeDestroy: exposedHook('onBeforeDestroy'),
     onDestroyed: exposedHook('onDestroyed'),
     execute: () => {
-      const instances = [].concat(data.anime ?? []).map(
+      const instances = [].concat(data.anime ?? []).filter(a => !!a).map(
         a => (
           typeof a === 'function' // Can be a function because of "anime.timeline" inject
             ? a(wrapper)
