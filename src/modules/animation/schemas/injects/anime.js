@@ -33,7 +33,7 @@ export const AnimeRandomInjectSchema = InjectSchema(Inject.AnimeRandom).extend({
 }).transform(params => anime.random(params.min, params.max))
 
 export const AnimeGetInjectSchema = ({ element }) => InjectSchema(Inject.AnimeGet).extend({
-  target: z.instanceof(HTMLElement).optional().default(element),
+  target: z.instanceof(Element).optional().default(element),
   property: z.string(),
   unit: z.union([z.string(), z.literal(false)]).optional()
 }).transform(({ target, property, unit }) => {
@@ -43,7 +43,7 @@ export const AnimeGetInjectSchema = ({ element }) => InjectSchema(Inject.AnimeGe
 
 export const AnimeSetInjectSchema = InjectWithMeta(
   ({ element }) => InjectSchema(Inject.AnimeSet).extend({
-    target: ArrayOrSingleSchema(z.instanceof(HTMLElement)).optional().default(element),
+    target: ArrayOrSingleSchema(z.instanceof(Element)).optional().default(element),
     properties: z.record(z.any())
   }).transform(({ target, properties }) => anime.set(target, properties)),
   { lazy: true }

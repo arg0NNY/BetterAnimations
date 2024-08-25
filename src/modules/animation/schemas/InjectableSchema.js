@@ -96,7 +96,7 @@ const InjectableSchema = (context, env = {}) => {
     () => z.union([
       Literal,
       z.function(), // Lazy injects are transformed into functions
-      z.instanceof(HTMLElement), // Prevent Zod from parsing HTMLElement
+      z.instanceof(Element), // Prevent Zod from parsing Element
       z.array(schema),
       z.record(schema)
     ]).transform((value, ctx) => {

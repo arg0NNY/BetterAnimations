@@ -71,7 +71,7 @@ export const MathInjectSchema = InjectSchema(Inject.Math).extend({
 
 export const StyleRemovePropertyInjectSchema = InjectWithMeta(
   ({ element }) => InjectSchema(Inject.StyleRemoveProperty).extend({
-    target: ArrayOrSingleSchema(z.instanceof(HTMLElement)).optional().default(element),
+    target: ArrayOrSingleSchema(z.instanceof(Element)).optional().default(element),
     property: ArrayOrSingleSchema(z.string())
   }).transform(({ target, property }) => [].concat(target).forEach(
       e => [].concat(property).forEach(p => e.style.removeProperty(p))
@@ -135,7 +135,7 @@ export const CallInjectSchema = InjectSchema(Inject.Call).extend({
 }).transform(({ function: fn, args }) => fn(...[].concat(args)))
 
 export const GetBoundingClientRectInjectSchema = ({ element }) => InjectSchema(Inject.GetBoundingClientRect).extend({
-  target: z.instanceof(HTMLElement).optional().default(element),
+  target: z.instanceof(Element).optional().default(element),
   value: z.enum(['x', 'y', 'width', 'height']).optional()
 }).transform(({ target, value }) => {
   const rect = target.getBoundingClientRect()
