@@ -1,6 +1,10 @@
 import Position from '@/enums/Position'
 import Direction from '@/enums/Direction'
 
+function getDefaultRect () {
+  return document.body.getBoundingClientRect()
+}
+
 export function reversePosition (position) {
   switch (position) {
     case Position.Top: return Position.Bottom
@@ -32,4 +36,44 @@ export function toDirection (position) {
     case Position.Right: return Direction.Rightwards
     case Position.Center: return Direction.Backwards
   }
+}
+
+export function toPercent (value, rect = getDefaultRect()) {
+  if (typeof value === 'string')
+    switch (value) {
+      case Position.TopLeft: return [0, 0]
+      case Position.Top: return [.5, 0]
+      case Position.TopRight: return [1, 0]
+      case Position.Left: return [0, .5]
+      case Position.Center: return [.5, .5]
+      case Position.Right: return [1, .5]
+      case Position.BottomLeft: return [0, 1]
+      case Position.Bottom: return [.5, 1]
+      case Position.BottomRight: return [1, 1]
+    }
+
+  const [x, y] = value
+  return [x / rect.width, y / rect.height]
+}
+
+export function toPx (value, rect = getDefaultRect()) {
+  const [x, y] = typeof value === 'string' ? toPercent(value, rect) : value
+  return [x * rect.width, y * rect.height]
+}
+
+export function toUnit (value, unit, rect = undefined) {
+  switch (unit) {
+    case 'px': return toPx(value, rect)
+    case '%': return toPercent(value, rect)
+  }
+}
+
+export function getCenter (rect = getDefaultRect(), unit = 'px', relative = getDefaultRect()) {
+  const [x, y] = [
+    rect.x + rect.width / 2 - relative.x,
+    rect.y + rect.height / 2 - relative.y
+  ]
+
+  if (unit === '%') return toPercent([x, y], relative)
+  return [x, y]
 }

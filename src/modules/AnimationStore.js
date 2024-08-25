@@ -23,6 +23,12 @@ class Animation {
     }
   }
 
+  applyAttributes (context = null) {
+    this.container.setAttribute('data-animation-type', this.type)
+    if (context) this.container.setAttribute('data-animation-overflow', context.overflow)
+    if (this.module.type) this.container.setAttribute(`data-animation-${this.module.type}`, '')
+  }
+
   initialize (callback, allowed, intersect = false) {
     if (!allowed || !this.node) {
       this.doneCallbackRef.await(done => {
@@ -34,12 +40,14 @@ class Animation {
 
     if (!intersect) callback?.()
 
+    this.applyAttributes()
+
     requestAnimationFrame(() => {
       if (this.cancelled) return
 
       const { animate, context } = this.module.getAnimation(
         this.type,
-        this.auto?.current ? { auto: this.auto.current } : {},
+        { auto: this.auto?.current },
         {
           container: this.container,
           element: this.node,
@@ -64,11 +72,9 @@ class Animation {
         })
       }
 
-      onBeforeBegin?.()
+      this.applyAttributes(context)
 
-      this.container.setAttribute('data-animation-type', this.type)
-      this.container.setAttribute('data-animation-overflow', context.overflow)
-      if (this.module.type) this.container.setAttribute(`data-animation-${this.module.type}`, '')
+      onBeforeBegin?.()
 
       if (wrapper) this.node.before(wrapper)
 

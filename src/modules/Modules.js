@@ -146,8 +146,11 @@ class Module {
   }
 
   supportsAuto (animation, setting) {
+    if (!animation.settings?.[setting]) return false
+    if (setting === Setting.Position && animation.settings[setting] === true) return true
+
     const type = this.meta.settings?.supportsAuto?.[setting]
-    if (!type || !animation.settings?.[setting]) return false
+    if (!type) return false
     if (animation.settings[setting] === true) return true
 
     switch (setting) {
@@ -287,7 +290,7 @@ class Module {
     )
   }
 
-  assignAutoValues (animation, type, normalizedSettings, values) {
+  assignAutoValues (animation, type, normalizedSettings, values = {}) {
     const settings = normalizedSettings
     const animationDefaults = getAnimationDefaultSettings(animation, type)
 
@@ -297,13 +300,19 @@ class Module {
     }
 
     if (settings[Setting.Position] === Auto()) {
-      const position = reversePosition(values.position)
-      const mergedPosition = getPosition(position, values.align)
-      const supportedPositions = animation.settings[Setting.Position]
+      if (!values.position)
+        settings[Setting.Position] = { isAuto: true, value: null }
+      else {
+        const position = reversePosition(values.position)
+        const mergedPosition = getPosition(position, values.align)
+        const supportedPositions = animation.settings[Setting.Position]
 
-      settings[Setting.Position] = supportedPositions !== true && !supportedPositions.includes(mergedPosition)
-        ? position
-        : mergedPosition
+        const value = Array.isArray(supportedPositions) && !supportedPositions.includes(mergedPosition)
+          ? position
+          : mergedPosition
+
+        settings[Setting.Position] = { isAuto: true, value }
+      }
     }
 
     if (settings[Setting.Direction] === Auto())
@@ -317,7 +326,6 @@ class Module {
             : animationDefaults[Setting.Direction]
           break
       }
-
 
     return settings
   }
