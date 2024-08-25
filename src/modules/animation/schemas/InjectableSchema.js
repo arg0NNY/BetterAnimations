@@ -19,7 +19,9 @@ import {
   DebugInjectSchema,
   VarGetInjectSchema,
   VarSetInjectSchema,
-  CallInjectSchema
+  CallInjectSchema,
+  MouseInjectSchema,
+  GetBoundingClientRectInjectSchema
 } from '@/modules/animation/schemas/injects/common'
 import {
   AnimeGetInjectSchema,
@@ -67,7 +69,9 @@ const injectSchemas = {
   [Inject.Debug]: DebugInjectSchema,
   [Inject.VarGet]: VarGetInjectSchema,
   [Inject.VarSet]: VarSetInjectSchema,
-  [Inject.Call]: CallInjectSchema
+  [Inject.Call]: CallInjectSchema,
+  [Inject.Mouse]: MouseInjectSchema,
+  [Inject.GetBoundingClientRect]: GetBoundingClientRectInjectSchema
 }
 const injectTypes = Object.keys(injectSchemas)
 

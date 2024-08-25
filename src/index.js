@@ -28,6 +28,7 @@ import TickThread from '@/modules/TickThread'
 import patchChatSearchSidebar from '@/patches/ChatSearchSidebar/patchChatSearchSidebar'
 import patchReferencePositionLayer from '@/patches/ReferencePositionLayer/patchReferencePositionLayer'
 import patchSelect from '@/patches/Select/patchSelect'
+import Mouse from '@/modules/Mouse'
 
 anime.suspendWhenDocumentHidden = false
 
@@ -38,6 +39,7 @@ export default function (meta) {
     start () {
       Logger.info('Startup', 'Initializing modules...')
       TickThread.initialize()
+      Mouse.initialize()
       Style.initialize()
       Prompt.onStartup()
       Config.initialize()
@@ -72,6 +74,7 @@ export default function (meta) {
     stop () {
       Logger.info('Shutdown', 'Shutting down modules...')
       TickThread.shutdown()
+      Mouse.shutdown()
       Style.shutdown()
       Config.shutdown()
       PackRegistry.shutdown()

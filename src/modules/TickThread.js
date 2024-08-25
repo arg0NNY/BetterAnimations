@@ -1,5 +1,6 @@
 import Logger from '@/modules/Logger'
 
+// TODO: Remove if won't be needed
 export default new class TickThread {
   get name () { return 'TickThread' }
 

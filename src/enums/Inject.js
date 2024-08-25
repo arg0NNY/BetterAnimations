@@ -29,5 +29,7 @@ export default Enum({
   Debug: 'debug',
   VarGet: 'var.get',
   VarSet: 'var.set',
-  Call: 'call'
+  Call: 'call',
+  Mouse: 'mouse',
+  GetBoundingClientRect: 'getBoundingClientRect'
 })

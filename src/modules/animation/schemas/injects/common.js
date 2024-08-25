@@ -11,6 +11,7 @@ import Inject from '@/enums/Inject'
 import AnimationType from '@/enums/AnimationType'
 import ModuleKey from '@/enums/ModuleKey'
 import Logger from '@/modules/Logger'
+import Mouse from '@/modules/Mouse'
 
 export const ElementInjectSchema = ({ element }) => ElementSchema(Inject.Element, element)
 
@@ -123,3 +124,32 @@ export const CallInjectSchema = InjectSchema(Inject.Call).extend({
   function: z.function(),
   args: ArrayOrSingleSchema(z.any()).optional()
 }).transform(({ function: fn, args }) => fn(...[].concat(args)))
+
+export const GetBoundingClientRectInjectSchema = ({ element }) => InjectSchema(Inject.GetBoundingClientRect).extend({
+  target: z.instanceof(HTMLElement).optional().default(element),
+  value: z.enum(['x', 'y', 'width', 'height']).optional()
+}).transform(({ target, value }) => {
+  const rect = target.getBoundingClientRect()
+  return value ? rect[value] : rect
+})
+
+export const MouseInjectSchema = ({ container }) => InjectSchema(Inject.Mouse).extend({
+  value: z.enum(['x', 'y']).optional(),
+  absolute: z.boolean().optional().default(false)
+}).transform(({ value, absolute }) => {
+  const { x, y } = (() => {
+    if (absolute || !container) return { x: Mouse.x, y: Mouse.y }
+
+    const { left, top } = container.getBoundingClientRect()
+    return {
+      x: Mouse.x - left,
+      y: Mouse.y - top
+    }
+  })()
+
+  switch (value) {
+    case 'x': return x
+    case 'y': return y
+    default: return `${x}px ${y}px`
+  }
+})
