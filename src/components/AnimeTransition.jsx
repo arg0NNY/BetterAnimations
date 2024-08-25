@@ -39,6 +39,7 @@ class AnimeTransition extends React.Component {
         type,
         container,
         node,
+        anchor: this.props.anchor,
         auto: this.props.autoRef ?? { current: this.props.auto },
         doneCallbackRef: this.doneCallback
       })

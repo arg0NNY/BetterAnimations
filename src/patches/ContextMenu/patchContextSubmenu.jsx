@@ -24,6 +24,7 @@ function patchContextSubmenu () {
         targetContainer={e => e}
         module={module}
         autoRef={autoRef}
+        anchor={value.ref}
       >
         <Layer layerContext={appLayerContext}>
           {value.props.children[i]}

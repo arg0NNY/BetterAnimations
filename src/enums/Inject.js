@@ -4,6 +4,7 @@ export default Enum({
   Element: 'element',
   Hast: 'hast',
   Container: 'container',
+  Anchor: 'anchor',
   AnimeStagger: 'anime.stagger',
   AnimeTimeline: 'anime.timeline',
   AnimeRandom: 'anime.random',

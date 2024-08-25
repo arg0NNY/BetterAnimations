@@ -22,12 +22,14 @@ function patchBasePopout () {
     }
 
     renderLayer (...args) {
+      const anchor = this.domElementRef?.current ?? ReactDOM.findDOMNode(this)
+
       const value = super.renderLayer.call(
         Object.assign(
           {}, this,
           {
             shouldShowPopout: () => true,
-            domElementRef: { current: this.domElementRef.current ?? ReactDOM.findDOMNode(this) },
+            domElementRef: { current: anchor },
             state: Object.assign({}, this.state, { shouldShowLoadingState: true })
           }
         ),
@@ -52,6 +54,7 @@ function patchBasePopout () {
               targetContainer={e => e}
               module={this.props.module}
               autoRef={autoRef}
+              anchor={anchor}
             >
               {value}
             </AnimeTransition>

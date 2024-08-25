@@ -32,6 +32,7 @@ function TooltipTransition (props) {
       auto={auto}
       onEntered={onRest(true)}
       onExited={onRest(false)}
+      anchor={props.targetElementRef}
     >
       <TooltipLayer {...rest} />
     </AnimeTransition>

@@ -4,7 +4,7 @@ import Config from '@/modules/Config'
 
 class Animation {
 
-  constructor (store, { module, type, container, node, auto, doneCallbackRef }) {
+  constructor (store, { module, type, container, node, anchor, auto, doneCallbackRef }) {
     this.store = store
 
     this.module = module
@@ -12,6 +12,7 @@ class Animation {
     this.type = type
     this.container = container
     this.node = node
+    this.anchor = anchor
     this.auto = auto
     this.doneCallbackRef = doneCallbackRef
 
@@ -39,7 +40,11 @@ class Animation {
       const { animate, context } = this.module.getAnimation(
         this.type,
         this.auto?.current ? { auto: this.auto.current } : {},
-        { container: this.container, element: this.node }
+        {
+          container: this.container,
+          element: this.node,
+          anchor: this.anchor?.current ?? this.anchor
+        }
       )
 
       const { execute, wrapper, onBeforeCreate, onBeforeDestroy, onDestroyed }
