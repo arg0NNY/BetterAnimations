@@ -168,3 +168,10 @@ export const MouseInjectSchema = ({ container }) => InjectSchema(Inject.Mouse).e
     default: return `${x}px ${y}px`
   }
 })
+
+export const IsIntersectedInjectSchema = InjectWithMeta(
+  SwitchSchema(Inject.IsIntersected, [true, false], {
+    currentValue: ctx => !!ctx.isIntersected,
+  }),
+  { immediate: ['isIntersected'] }
+)

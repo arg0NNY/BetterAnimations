@@ -51,7 +51,8 @@ class Animation {
         {
           container: this.container,
           element: this.node,
-          anchor: this.anchor?.current ?? this.anchor
+          anchor: this.anchor?.current ?? this.anchor,
+          isIntersected: intersect
         }
       )
 
