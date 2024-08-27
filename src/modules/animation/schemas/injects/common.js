@@ -5,7 +5,7 @@ import {
   InjectSchema,
   InjectWithMeta,
   SwitchSchema
-} from '@/modules/animation/schemas/injects/InjectSchema'
+} from '@/modules/animation/schemas/utils'
 import evaluate from '@emmetio/math-expression'
 import Inject from '@/enums/Inject'
 import AnimationType from '@/enums/AnimationType'
@@ -51,7 +51,7 @@ export const WaitInjectSchema = InjectSchema(Inject.Wait).extend({
   duration: z.number().positive()
 }).transform(params => ({ duration: params.duration }))
 
-export const StringTemplateSchema = InjectSchema(Inject.StringTemplate).extend({
+export const StringTemplateInjectSchema = InjectSchema(Inject.StringTemplate).extend({
   template: z.string(),
   values: z.union([z.record(z.any()), z.any().array()])
 }).transform(({ template, values }) => template.replaceAll(

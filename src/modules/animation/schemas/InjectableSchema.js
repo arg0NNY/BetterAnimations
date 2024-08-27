@@ -1,79 +1,16 @@
 import { z } from 'zod'
-import { formatValuesList, Literal } from '@/helpers/schemas'
-import Inject from '@/enums/Inject'
+import { formatValuesList, Literal, parseInjectSchemas } from '@/helpers/schemas'
 import ParseStage from '@/enums/ParseStage'
-import {
-  MathInjectSchema,
-  ElementInjectSchema,
-  HastInjectSchema,
-  ContainerInjectSchema,
-  AnchorInjectSchema,
-  ObjectAssignInjectSchema,
-  StringTemplateSchema,
-  TypeInjectSchema,
-  WaitInjectSchema,
-  StyleRemovePropertyInjectSchema,
-  UndefinedInjectSchema,
-  FunctionInjectSchema,
-  ArgumentsInjectSchema,
-  ModuleInjectSchema,
-  DebugInjectSchema,
-  VarGetInjectSchema,
-  VarSetInjectSchema,
-  CallInjectSchema,
-  MouseInjectSchema,
-  GetBoundingClientRectInjectSchema
-} from '@/modules/animation/schemas/injects/common'
-import {
-  AnimeGetInjectSchema,
-  AnimeSetInjectSchema,
-  AnimeRandomInjectSchema,
-  AnimeStaggerInjectSchema,
-  AnimeTimelineInjectSchema,
-  AnimePathInjectSchema,
-  AnimeSetDashoffsetInjectSchema
-} from '@/modules/animation/schemas/injects/anime'
-import {
-  DirectionInjectSchema,
-  DurationInjectSchema,
-  EasingInjectSchema,
-  PositionInjectSchema,
-  VariantInjectSchema
-} from '@/modules/animation/schemas/injects/settings'
+import * as CommonInjectSchemas from '@/modules/animation/schemas/injects/common'
+import * as AnimeInjectSchemas from '@/modules/animation/schemas/injects/anime'
+import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/settings'
+import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
 
 const injectSchemas = {
-  [Inject.Element]: ElementInjectSchema,
-  [Inject.Hast]: HastInjectSchema,
-  [Inject.Container]: ContainerInjectSchema,
-  [Inject.Anchor]: AnchorInjectSchema,
-  [Inject.AnimeStagger]: AnimeStaggerInjectSchema,
-  [Inject.AnimeTimeline]: AnimeTimelineInjectSchema,
-  [Inject.AnimeRandom]: AnimeRandomInjectSchema,
-  [Inject.AnimeGet]: AnimeGetInjectSchema,
-  [Inject.AnimeSet]: AnimeSetInjectSchema,
-  [Inject.AnimePath]: AnimePathInjectSchema,
-  [Inject.AnimeSetDashoffset]: AnimeSetDashoffsetInjectSchema,
-  [Inject.Duration]: DurationInjectSchema,
-  [Inject.Easing]: EasingInjectSchema,
-  [Inject.Variant]: VariantInjectSchema,
-  [Inject.Position]: PositionInjectSchema,
-  [Inject.Module]: ModuleInjectSchema,
-  [Inject.Type]: TypeInjectSchema,
-  [Inject.ObjectAssign]: ObjectAssignInjectSchema,
-  [Inject.Wait]: WaitInjectSchema,
-  [Inject.StringTemplate]: StringTemplateSchema,
-  [Inject.Math]: MathInjectSchema,
-  [Inject.Direction]: DirectionInjectSchema,
-  [Inject.StyleRemoveProperty]: StyleRemovePropertyInjectSchema,
-  [Inject.Undefined]: UndefinedInjectSchema,
-  [Inject.Function]: FunctionInjectSchema,
-  [Inject.Arguments]: ArgumentsInjectSchema,
-  [Inject.Debug]: DebugInjectSchema,
-  [Inject.VarGet]: VarGetInjectSchema,
-  [Inject.VarSet]: VarSetInjectSchema,
-  [Inject.Call]: CallInjectSchema,
-  [Inject.Mouse]: MouseInjectSchema,
-  [Inject.GetBoundingClientRect]: GetBoundingClientRectInjectSchema
+  ...parseInjectSchemas(CommonInjectSchemas),
+  ...parseInjectSchemas(AnimeInjectSchemas),
+  ...parseInjectSchemas(SettingsInjectSchemas),
+  ...parseInjectSchemas(MathInjectSchemas)
 }
 const injectTypes = Object.keys(injectSchemas)
 

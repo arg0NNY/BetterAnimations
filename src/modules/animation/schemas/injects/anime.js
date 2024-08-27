@@ -1,5 +1,5 @@
 import { ArrayOrSingleSchema, Defined } from '@/helpers/schemas'
-import { InjectSchema, InjectWithMeta } from '@/modules/animation/schemas/injects/InjectSchema'
+import { InjectSchema, InjectWithMeta } from '@/modules/animation/schemas/utils'
 import anime from 'animejs'
 import { z } from 'zod'
 import { transformAnimeConfig } from '@/modules/animation/helpers'
