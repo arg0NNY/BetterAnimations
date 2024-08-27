@@ -13,6 +13,7 @@ import ModuleKey from '@/enums/ModuleKey'
 import Logger from '@/modules/Logger'
 import Mouse from '@/modules/Mouse'
 import ModuleType from '@/enums/ModuleType'
+import { getPath } from '@/helpers/object'
 
 export const ElementInjectSchema = ({ element }) => ElementSchema(Inject.Element, element)
 
@@ -175,3 +176,13 @@ export const IsIntersectedInjectSchema = InjectWithMeta(
   }),
   { immediate: ['isIntersected'] }
 )
+
+export const GetInjectSchema = InjectSchema(Inject.Get).extend({
+  target: z.instanceof(Object),
+  key: z.string().optional(),
+  path: z.string().optional()
+}).transform(({ target, key, path }) => {
+  if (key) return target[key]
+  if (path) return getPath(target, path)
+  return target
+})
