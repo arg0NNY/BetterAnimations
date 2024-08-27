@@ -186,3 +186,9 @@ export const GetInjectSchema = InjectSchema(Inject.Get).extend({
   if (path) return getPath(target, path)
   return target
 })
+
+export const IfInjectSchema = InjectSchema(Inject.If).extend({
+  value: z.any(),
+  then: z.any(),
+  else: z.any().optional()
+}).transform(({ value, then, else: elseValue }) => value ? then : elseValue)

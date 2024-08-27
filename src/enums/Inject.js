@@ -36,6 +36,7 @@ export default Enum({
   GetBoundingClientRect: 'getBoundingClientRect',
   IsIntersected: 'isIntersected',
   Get: 'get',
+  If: 'if',
   MathAbs: 'Math.abs',
   MathAcos: 'Math.acos',
   MathAcosh: 'Math.acosh',
