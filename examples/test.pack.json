@@ -1,7 +1,7 @@
 {
   "name": "test",
   "author": "arg0NNY",
-  "version": "0.0.1",
+  "version": "0.0.2",
 
   "animations": [
 
@@ -205,6 +205,99 @@
     },
 
     {
+      "key": "slip",
+      "name": "Slip",
+      "settings": {
+        "duration": true,
+        "easing": true,
+        "direction": true,
+
+        "defaults": {
+          "duration": 200,
+          "easing": "easeInOutQuart",
+          "direction": "upwards"
+        }
+      },
+      "animate": {
+        "anime": {
+          "inject": "Object.assign",
+          "target": {
+            "targets": { "inject": "element" },
+            "duration": { "inject": "duration" },
+            "easing": { "inject": "easing" },
+            "opacity": {
+              "inject": "type",
+              "enter": [0, 1],
+              "exit": 0
+            }
+          },
+          "source": {
+            "inject": "type",
+            "enter": {
+              "inject": "direction",
+              "upwards": { "translateY": ["5px", 0] },
+              "downwards": { "translateY": ["-5px", 0] },
+              "leftwards": { "translateX": ["5px", 0] },
+              "rightwards": { "translateX": ["-5px", 0] }
+            },
+            "exit": {
+              "inject": "direction",
+              "upwards": { "translateY": "-5px" },
+              "downwards": { "translateY": "5px" },
+              "leftwards": { "translateX": "-5px" },
+              "rightwards": { "translateX": "5px" }
+            }
+          }
+        },
+        "onDestroyed": {
+          "inject": "style.removeProperty",
+          "property": ["opacity", "transform"]
+        }
+      }
+    },
+
+    {
+      "key": "slip-no-settings",
+      "name": "Slip (No settings)",
+      "animate": {
+        "anime": {
+          "inject": "Object.assign",
+          "target": {
+            "targets": { "inject": "element" },
+            "duration": { "inject": "duration" },
+            "easing": { "inject": "easing" },
+            "opacity": {
+              "inject": "type",
+              "enter": [0, 1],
+              "exit": 0
+            }
+          },
+          "source": {
+            "inject": "type",
+            "enter": {
+              "inject": "direction",
+              "upwards": { "translateY": ["5px", 0] },
+              "downwards": { "translateY": ["-5px", 0] },
+              "leftwards": { "translateX": ["5px", 0] },
+              "rightwards": { "translateX": ["-5px", 0] }
+            },
+            "exit": {
+              "inject": "direction",
+              "upwards": { "translateY": "-5px" },
+              "downwards": { "translateY": "5px" },
+              "leftwards": { "translateX": "-5px" },
+              "rightwards": { "translateX": "5px" }
+            }
+          }
+        },
+        "onDestroyed": {
+          "inject": "style.removeProperty",
+          "property": ["opacity", "transform"]
+        }
+      }
+    },
+
+    {
       "key": "sidebar",
       "name": "Sidebar",
       "meta": {
@@ -271,6 +364,149 @@
           },
           {
             "inject": "style.removeProperty",
+            "property": "transform"
+          }
+        ]
+      }
+    },
+
+    {
+      "key": "circle",
+      "name": "Circle",
+      "settings": {
+        "duration": true,
+        "easing": true,
+        "position": true,
+
+        "defaults": {
+          "duration": 200,
+          "easing": "easeInOutSine",
+          "position": "center"
+        }
+      },
+      "animate": {
+        "onBeforeCreate": [
+          {
+            "inject": "var.set",
+            "name": "radius",
+            "value": {
+              "inject": "string.template",
+              "template": "${value}px",
+              "values": {
+                "value": {
+                  "inject": "Math.hypot",
+                  "values": [
+                    {
+                      "inject": "Math.max",
+                      "values": [
+                        {
+                          "inject": "Math.abs",
+                          "value": { "inject": "position", "value": "x", "clip": false }
+                        },
+                        {
+                          "inject": "Math.abs",
+                          "value": {
+                            "inject": "math",
+                            "expression": {
+                              "inject": "string.template",
+                              "template": "${0} - ${1}",
+                              "values": [
+                                { "inject": "position", "value": "x", "clip": false },
+                                { "inject": "getBoundingClientRect", "value": "width" }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "inject": "Math.max",
+                      "values": [
+                        {
+                          "inject": "Math.abs",
+                          "value": { "inject": "position", "value": "y", "clip": false }
+                        },
+                        {
+                          "inject": "Math.abs",
+                          "value": {
+                            "inject": "math",
+                            "expression": {
+                              "inject": "string.template",
+                              "template": "${0} - ${1}",
+                              "values": [
+                                { "inject": "position", "value": "y", "clip": false },
+                                { "inject": "getBoundingClientRect", "value": "height" }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "inject": "var.set",
+            "name": "clipPathExpanded",
+            "value": {
+              "inject": "string.template",
+              "template": "circle(${radius} at ${position})",
+              "values": {
+                "radius": { "inject": "var.get", "name": "radius" },
+                "position": { "inject": "position", "clip": false }
+              }
+            }
+          },
+          {
+            "inject": "var.set",
+            "name": "clipPathCollapsed",
+            "value": {
+              "inject": "string.template",
+              "template": "circle(0px at ${position})",
+              "values": {
+                "position": { "inject": "position", "clip": false }
+              }
+            }
+          }
+        ],
+        "css": {
+          "{element}": {
+            "z-index": {
+              "inject": "type",
+              "enter": 10,
+              "exit": 5
+            }
+          }
+        },
+        "anime": {
+          "targets": { "inject": "element" },
+          "duration": { "inject": "duration" },
+          "easing": { "inject": "easing" },
+          "clipPath": {
+            "inject": "function",
+            "return": {
+              "inject": "type",
+              "enter": [
+                { "inject": "var.get", "name": "clipPathCollapsed" },
+                { "inject": "var.get", "name": "clipPathExpanded" }
+              ],
+              "exit": [
+                { "inject": "var.get", "name": "clipPathExpanded" },
+                { "inject": "var.get", "name": "clipPathCollapsed" }
+              ]
+            }
+          }
+        },
+        "onDestroyed": [
+          {
+            "inject": "style.removeProperty",
+            "property": "clip-path"
+          },
+          {
+            "inject": "style.removeProperty",
+            "target": { "inject": "anchor" },
             "property": "transform"
           }
         ]

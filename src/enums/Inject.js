@@ -18,6 +18,7 @@ export default Enum({
   Position: 'position',
   Direction: 'direction',
   Module: 'module',
+  ModuleType: 'module.type',
   Type: 'type',
   ObjectAssign: 'Object.assign',
   Wait: 'wait',

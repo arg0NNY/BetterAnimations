@@ -12,6 +12,7 @@ import AnimationType from '@/enums/AnimationType'
 import ModuleKey from '@/enums/ModuleKey'
 import Logger from '@/modules/Logger'
 import Mouse from '@/modules/Mouse'
+import ModuleType from '@/enums/ModuleType'
 
 export const ElementInjectSchema = ({ element }) => ElementSchema(Inject.Element, element)
 
@@ -34,6 +35,11 @@ export const ModuleInjectSchema = InjectWithMeta(
     currentValue: ctx => ctx.module.id,
     possibleValues: ctx => ctx.meta?.modules && Array.from(ctx.meta.modules)
   }),
+  { immediate: ['module'] }
+)
+
+export const ModuleTypeInjectSchema = InjectWithMeta(
+  SwitchSchema(Inject.ModuleType, ModuleType.values(), { currentValue: ctx => ctx.module.type }),
   { immediate: ['module'] }
 )
 
