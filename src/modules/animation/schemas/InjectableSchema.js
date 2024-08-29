@@ -5,12 +5,14 @@ import * as CommonInjectSchemas from '@/modules/animation/schemas/injects/common
 import * as AnimeInjectSchemas from '@/modules/animation/schemas/injects/anime'
 import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/settings'
 import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
+import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/operators'
 
 const injectSchemas = {
   ...parseInjectSchemas(CommonInjectSchemas),
   ...parseInjectSchemas(AnimeInjectSchemas),
   ...parseInjectSchemas(SettingsInjectSchemas),
-  ...parseInjectSchemas(MathInjectSchemas)
+  ...parseInjectSchemas(MathInjectSchemas),
+  ...parseInjectSchemas(OperatorsInjectSchemas)
 }
 const injectTypes = Object.keys(injectSchemas)
 
