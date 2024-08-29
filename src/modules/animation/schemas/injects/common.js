@@ -192,3 +192,16 @@ export const IfInjectSchema = InjectSchema(Inject.If).extend({
   then: z.any(),
   else: z.any().optional()
 }).transform(({ value, then, else: elseValue }) => value ? then : elseValue)
+
+export const SwitchInjectSchema = InjectSchema(Inject.Switch).extend({
+  value: z.any(),
+  case: z.union([
+    z.record(z.any()),
+    z.tuple([z.any(), z.any()]).array()
+  ]),
+  default: z.any().optional()
+}).transform(({ value, case: cases, default: defaultValue }) => {
+  return new Map(
+    Array.isArray(cases) ? cases : Object.entries(cases)
+  ).get(value) ?? defaultValue
+})

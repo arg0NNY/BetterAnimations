@@ -37,6 +37,7 @@ export default Enum({
   IsIntersected: 'isIntersected',
   Get: 'get',
   If: 'if',
+  Switch: 'switch',
   MathAbs: 'Math.abs',
   MathAcos: 'Math.acos',
   MathAcosh: 'Math.acosh',
