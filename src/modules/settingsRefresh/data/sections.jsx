@@ -24,6 +24,21 @@ export function getSections () {
       section: 'DIVIDER'
     },
     {
+      section: SettingsSections.Catalog,
+      label: 'Catalog',
+      icon: <Common.ShopIcon size="xs" color="currentColor" />,
+      element: () => {}
+    },
+    {
+      section: SettingsSections.Library,
+      label: 'Library',
+      icon: <Common.BookCheckIcon size="xs" color="currentColor" />,
+      element: () => {}
+    },
+    {
+      section: 'DIVIDER'
+    },
+    {
       section: 'CUSTOM',
       element: ModeSwitch
     },
