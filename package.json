@@ -6,7 +6,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "vite build",
-    "dev": "vite build --watch"
+    "dev": "vite build --mode development --watch"
   },
   "author": "arg0NNY",
   "license": "MIT",

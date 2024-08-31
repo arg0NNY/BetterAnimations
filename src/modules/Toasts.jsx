@@ -21,5 +21,3 @@ export default class Toasts {
     )
   }
 }
-
-window.Toasts = Toasts

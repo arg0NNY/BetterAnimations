@@ -29,8 +29,30 @@ import patchChatSearchSidebar from '@/patches/ChatSearchSidebar/patchChatSearchS
 import patchReferencePositionLayer from '@/patches/ReferencePositionLayer/patchReferencePositionLayer'
 import patchSelect from '@/patches/Select/patchSelect'
 import Mouse from '@/modules/Mouse'
+import AnimationStore from '@/modules/AnimationStore'
+import Emitter from '@/modules/Emitter'
+import Notices from '@/modules/Notices'
+import Toasts from '@/modules/Toasts'
 
 anime.suspendWhenDocumentHidden = false
+
+if (import.meta.env.MODE === 'development')
+  window.BetterAnimations = {
+    PackManager,
+    Logger,
+    Settings,
+    Config,
+    Prompt,
+    PackRegistry,
+    Style,
+    Modules,
+    TickThread,
+    Mouse,
+    AnimationStore,
+    Emitter,
+    Notices,
+    Toasts
+  }
 
 export default function (meta) {
   saveMeta(meta)
