@@ -47,6 +47,7 @@ export default new class PackManager extends AddonManager {
 
   getAllPacks (includePartial = false) {
     return this.addonList.filter(p => includePartial || !p.partial)
+      .sort((a, b) => a.name.localeCompare(b.name))
   }
   getPack (slug) {
     return this.getAllPacks().find(p => p.slug === slug)
