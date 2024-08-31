@@ -32,6 +32,9 @@ importers:
       semver:
         specifier: ^7.6.2
         version: 7.6.2
+      spelling:
+        specifier: ^2.0.2
+        version: 2.0.2
       zod:
         specifier: ^3.22.4
         version: 3.23.6
@@ -418,6 +421,10 @@ packages:
     resolution: {integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==}
     engines: {node: '>=0.10.0'}
 
+  spelling@2.0.2:
+    resolution: {integrity: sha512-LMcxpEV7clACLN5kTNuZNOElJOTysEFU3dRgwn8RvLt/7nhaiSB4RzrtlxS3FEcquLsOmkn+U+KRLYZnApxCfQ==}
+    engines: {node: '>=0.10.0'}
+
   terser@5.31.0:
     resolution: {integrity: sha512-Q1JFAoUKE5IMfI4Z/lkE/E6+SwgzO+x4tq4v1AyBLRj8VSYvRO6A/rQrPg1yud4g0En9EKI1TvFRF2tQFcoUkg==}
     engines: {node: '>=10'}
@@ -795,6 +802,8 @@ snapshots:
 
   source-map@0.6.1:
     optional: true
+
+  spelling@2.0.2: {}
 
   terser@5.31.0:
     dependencies:

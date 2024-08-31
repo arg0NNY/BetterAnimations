@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { formatValuesList, Literal, parseInjectSchemas } from '@/helpers/schemas'
 import ParseStage from '@/enums/ParseStage'
+import Spelling from 'spelling'
 import * as CommonInjectSchemas from '@/modules/animation/schemas/injects/common'
 import * as AnimeInjectSchemas from '@/modules/animation/schemas/injects/anime'
 import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/settings'
@@ -15,6 +16,7 @@ const injectSchemas = {
   ...parseInjectSchemas(OperatorsInjectSchemas)
 }
 const injectTypes = Object.keys(injectSchemas)
+const injectDict = new Spelling(injectTypes)
 
 function parseInject ({ schema, context, env, value, ctx }) {
   const { success, data, error } = (
@@ -48,7 +50,12 @@ const InjectableSchema = (context, env = {}) => {
 
       if (stage === ParseStage.Initialize) {
         if (!schema) {
-          ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Unknown inject '${value.inject}'. Available injects: ${formatValuesList(Object.keys(injectSchemas))}` })
+          const { found, word, suggestions } = injectDict.lookup(String(value.inject))
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `Unknown inject '${value.inject}'`
+              + (found || suggestions?.length ? `. Did you mean: ${formatValuesList(found ? [word] : suggestions.map(s => s.word))}` : '')
+          })
           return z.NEVER
         }
 
@@ -56,7 +63,7 @@ const InjectableSchema = (context, env = {}) => {
           (disallowed?.length && disallowed.includes(value.inject))
           || (allowed?.length && !allowed.includes(value.inject))
         ) {
-          ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject '${value.inject}' is not allowed here. Only injects of these types can be used here: ${formatValuesList(injectTypes.filter(i => !disallowed?.includes(i) && (!allowed || allowed.includes(i))))}` })
+          ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject '${value.inject}' is not allowed` })
           return z.NEVER
         }
 
