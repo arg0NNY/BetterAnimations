@@ -142,3 +142,4 @@ export const { Alert, AlertTypes } = mapModule(Filters.byStrings('messageType', 
   Alert: Filters.byStrings('messageType', 'CircleWarningIcon'),
   AlertTypes: Filters.byKeys('WARNING', 'ERROR')
 })
+export const UserSettingsModal = Webpack.getByKeys('open', 'setSection', 'updateAccount')

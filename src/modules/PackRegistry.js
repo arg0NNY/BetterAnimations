@@ -9,6 +9,7 @@ import semverGt from 'semver/functions/gt'
 import Notices from '@/modules/Notices'
 import Settings from '@/modules/Settings'
 import meta from '@/meta'
+import SettingsSections from '@/enums/SettingsSections'
 
 export default new class PackRegistry {
   get name () { return 'PackRegistry' }
@@ -112,12 +113,16 @@ export default new class PackRegistry {
     Logger.info(this.name, `Found ${updatesCount} updates.`)
     if (useToasts) return Toasts.show(`Found updates for ${updatesCount} of your packs!`)
 
+    this.showUpdatesNotice(updatesCount)
+  }
+
+  showUpdatesNotice (updatesCount = 1, onClick = () => Settings.openSettingsModal(SettingsSections.Library)) {
     const closeNotice = Notices.info(`${meta.name} has found updates for ${updatesCount} of your packs!`, {
       buttons: [{
         label: 'View Library',
         onClick: () => {
           closeNotice()
-          Settings.openSettingsModal('library')
+          onClick()
         }
       }]
     })
