@@ -95,6 +95,7 @@ export default function (meta) {
     },
     stop () {
       Logger.info('Shutdown', 'Shutting down modules...')
+      Modules.shutdown()
       TickThread.shutdown()
       Mouse.shutdown()
       Style.shutdown()
@@ -102,7 +103,6 @@ export default function (meta) {
       PackRegistry.shutdown()
       PackManager.shutdown()
 
-      Modules.shutdown()
       Settings.closeSettingsModal()
 
       Logger.info('Shutdown', 'Removing patches...')
