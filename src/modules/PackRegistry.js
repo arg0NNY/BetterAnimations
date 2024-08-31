@@ -1,5 +1,4 @@
 import { Net } from '@/BdApi'
-import variables from '@/variables.json'
 import Logger from '@/modules/Logger'
 import Toasts from '@/modules/Toasts'
 import Emitter from '@/modules/Emitter'
@@ -13,8 +12,8 @@ import SettingsSections from '@/enums/SettingsSections'
 
 export default new class PackRegistry {
   get name () { return 'PackRegistry' }
-  get baseUrl () { return variables.PACK_REGISTRY_BASE_URL }
-  get mainFilename () { return variables.PACK_REGISTRY_MAIN_FILENAME }
+  get baseUrl () { return import.meta.env.VITE_PACK_REGISTRY_BASE_URL }
+  get mainFilename () { return import.meta.env.VITE_PACK_REGISTRY_MAIN_FILENAME }
 
   constructor () {
     this._pending = false
