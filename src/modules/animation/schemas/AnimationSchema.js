@@ -1,10 +1,14 @@
 import { z } from 'zod'
 import InjectableSchema from '@/modules/animation/schemas/InjectableSchema'
-import { ArrayOrSingleSchema, matchesSchema } from '@/helpers/schemas'
+import { ArrayOrSingleSchema } from '@/helpers/schemas'
 import Inject from '@/enums/Inject'
 import SettingsSchema from '@/modules/animation/schemas/SettingsSchema'
 import MetaSchema from '@/modules/animation/schemas/MetaSchema'
 import ParseStage from '@/enums/ParseStage'
+import { defaultSchema, sanitize } from 'hast-util-sanitize'
+import { toDom } from 'hast-util-to-dom'
+import deepmerge from 'deepmerge'
+import { executeWithZod } from '@/modules/animation/utils'
 
 // TODO: Update
 const safeInjects = [
@@ -20,26 +24,62 @@ const safeInjects = [
 ]
 
 export const HookSchema = (context = null, env = {}) => {
-  // If parsing on load or on initialize stage, expect an unparsed object
-  if (!env.stage || env.stage === ParseStage.Initialize)
-    return ArrayOrSingleSchema(z.record(z.any()))
-      .transform(!context ? v => v : matchesSchema(
-        InjectableSchema(context, env)
-      ))
+  // If parsing on load or on initialize stage, expect an unparsed data
+  if (!env.stage || env.stage === ParseStage.Initialize || !context)
+    return !context ? z.any() : InjectableSchema(context, env)
 
   // Otherwise, expect a lazy inject, which turned into a generator function, awaiting a complete context
-  if (!context) return ArrayOrSingleSchema(z.function())
-
-  return ArrayOrSingleSchema(z.function())
-    .transform(matchesSchema(
-      InjectableSchema(context, env)
-    ))
-    .transform(
-      v => Array.isArray(v)
-        ? () => v.forEach(f => f())
-        : v
-    )
+  return InjectableSchema(context, env)
+    .pipe(ArrayOrSingleSchema(z.function()))
+    .transform((value, ctx) => () => {
+      return executeWithZod(value, (value, ctx) => {
+        [].concat(value).forEach((fn, i) => {
+          try { fn() }
+          catch (error) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: error.message,
+              path: Array.isArray(value) ? [i] : [],
+              params: { error, received: fn }
+            })
+          }
+        })
+      }, context, ctx)
+    })
 }
+
+export const HastSchema = (context = null, env = {}) =>
+  ArrayOrSingleSchema(z.record(z.any()))
+    .pipe(!context ? z.any() : InjectableSchema(context, env))
+    .optional()
+    .transform(!context || env.stage !== ParseStage.Layout
+      ? v => v
+      : (value, ctx) => {
+        if (!value) return value
+
+        return [].concat(value).map((node, i) => {
+          const sanitized = sanitize(
+            node,
+            deepmerge(defaultSchema, { attributes: {'*': ['className']} })
+          )
+          if (sanitized.type === 'root') {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Invalid or forbidden hast node',
+              path: Array.isArray(value) ? [i] : [],
+              params: { received: node }
+            })
+            return z.NEVER
+          }
+
+          return toDom(sanitized)
+        })
+      })
+
+export const CssSchema = (context = null, env = {}) =>
+  z.record(z.record(z.any()))
+    .pipe(!context ? z.any() : InjectableSchema(context, env))
+    .optional()
 
 export const AnimateSchema = (context = null, env = {}) => {
   const layoutContext = context
@@ -48,18 +88,10 @@ export const AnimateSchema = (context = null, env = {}) => {
   context = env.stage === ParseStage.Layout ? null : context
 
   return z.object({
-    hast: ArrayOrSingleSchema(z.record(z.any()))
-      .transform(!layoutContext ? v => v : matchesSchema(
-        InjectableSchema(layoutContext, layoutEnv)
-      )).optional(),
-    css: z.record(z.record(z.any()))
-      .transform(!layoutContext ? v => v : matchesSchema(
-        InjectableSchema(layoutContext, layoutEnv)
-      )).optional(),
+    hast: env.stage === ParseStage.Execute ? z.any() : HastSchema(layoutContext, layoutEnv),
+    css: env.stage === ParseStage.Execute ? z.any() : CssSchema(layoutContext, layoutEnv),
     anime: ArrayOrSingleSchema(z.record(z.any()).nullable().optional())
-      .transform(!context ? v => v : matchesSchema(
-        InjectableSchema(context, env)
-      )),
+      .pipe(!context ? z.any() : InjectableSchema(context, env)),
     onBeforeCreate: HookSchema(context, env).optional(),
     onCreated: HookSchema(context, env).optional(),
     onBeforeBegin: HookSchema(context, env).optional(),
@@ -79,7 +111,11 @@ const AnimationSchema = z.object({
   exit: AnimateSchema().optional(),
 }).strict().refine(
   v => v.animate ? !(v.enter || v.exit) : (v.enter && v.exit),
-  { message: `Animation definition is required and must be either inside a single 'animate' property or inside 'enter' and 'exit' properties` }
+  v => ({
+    message: `Animation definition is required and must be either inside a single 'animate' property or inside 'enter' and 'exit' properties`,
+    path: [].concat(Object.keys(v).find(k => ['enter', 'exit', 'animate'].includes(k)) ?? []),
+    params: { pointAt: 'key' }
+  })
 )
 
 export default AnimationSchema

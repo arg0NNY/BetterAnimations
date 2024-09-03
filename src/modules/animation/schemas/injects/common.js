@@ -14,6 +14,7 @@ import Logger from '@/modules/Logger'
 import Mouse from '@/modules/Mouse'
 import ModuleType from '@/enums/ModuleType'
 import { getPath } from '@/helpers/object'
+import { zodTransformErrorBoundary } from '@/helpers/zod'
 
 export const ElementInjectSchema = ({ element }) => ElementSchema(Inject.Element, element)
 
@@ -54,6 +55,9 @@ export const ObjectAssignInjectSchema = InjectSchema(Inject.ObjectAssign).extend
   source: ArrayOrSingleSchema(z.record(z.any())),
 }).transform(params => Object.assign(params.target, ...[].concat(params.source)))
 
+/**
+ * @deprecated Just use { duration: number } instead
+ */
 export const WaitInjectSchema = InjectSchema(Inject.Wait).extend({
   duration: z.number().positive()
 }).transform(params => ({ duration: params.duration }))
@@ -71,7 +75,11 @@ export const MathInjectSchema = InjectSchema(Inject.Math).extend({
 }).transform(({ expression }, ctx) => {
   try { return evaluate(expression) }
   catch (e) {
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: e.message + ` "${expression}"` })
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: e.message + ` "${expression}"`,
+      path: ['expression']
+    })
     return z.NEVER
   }
 })
@@ -95,10 +103,12 @@ export const FunctionInjectSchema = InjectWithMeta(
   InjectSchema(Inject.Function).extend({
     functions: z.array(z.function()).optional(),
     'return': z.any().optional()
-  }).transform(({ functions, 'return': returnValue }) => {
-    functions?.forEach(f => f())
-    return returnValue
-  }),
+  }).transform(zodTransformErrorBoundary(
+    ({ functions, 'return': returnValue }) => {
+      functions?.forEach(f => f())
+      return returnValue
+    }
+  )),
   { lazy: true }
 )
 
@@ -139,7 +149,9 @@ export const VarSetInjectSchema = InjectWithMeta(
 export const CallInjectSchema = InjectSchema(Inject.Call).extend({
   function: z.function(),
   args: ArrayOrSingleSchema(z.any()).optional()
-}).transform(({ function: fn, args }) => fn(...[].concat(args)))
+}).transform(zodTransformErrorBoundary(
+  ({ function: fn, args }) => fn(...[].concat(args))
+))
 
 export const GetBoundingClientRectInjectSchema = ({ element }) => InjectSchema(Inject.GetBoundingClientRect).extend({
   target: z.instanceof(Element).optional().default(element),

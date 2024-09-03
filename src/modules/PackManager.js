@@ -1,12 +1,11 @@
 import AddonManager from '@/modules/AddonManager'
 import { path } from '@/modules/Node'
 import { Plugins } from '@/BdApi'
-import Logger from '@/modules/Logger'
 import AddonError from '@/structs/AddonError'
 import PackSchema from '@/modules/animation/schemas/PackSchema'
-import { z } from 'zod'
-import { fromZodError } from 'zod-validation-error'
 import meta from '@/meta'
+import ErrorManager from '@/modules/ErrorManager'
+import { formatZodError } from '@/helpers/zod'
 
 export default new class PackManager extends AddonManager {
   get name () {return 'PackManager'}
@@ -30,7 +29,7 @@ export default new class PackManager extends AddonManager {
 
   loadAddon (filename, shouldToast = true) {
     const error = super.loadAddon(filename, shouldToast)
-    if (error) Logger.error('PackManager', `Failed to load pack "${filename}":`, error) // Modals.showAddonErrors({ themes: [error] })
+    if (error) ErrorManager.registerAddonError(error)
     return error
   }
 
@@ -40,8 +39,7 @@ export default new class PackManager extends AddonManager {
       Object.assign(addon, PackSchema.parse(addon))
     }
     catch (e) {
-      const message = e instanceof z.ZodError ? fromZodError(e).message : e.message
-      return new AddonError(addon, message, e, this.prefix)
+      return new AddonError(addon, formatZodError(e, { pack: addon }), e, this.prefix)
     }
   }
 

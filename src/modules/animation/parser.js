@@ -6,12 +6,16 @@ import { buildCSS, transformAnimeConfig } from '@/modules/animation/helpers'
 import AnimationType from '@/enums/AnimationType'
 import { AnimateSchema } from '@/modules/animation/schemas/AnimationSchema'
 import ParseStage from '@/enums/ParseStage'
+import ErrorManager from '@/modules/ErrorManager'
+import AnimationError from '@/structs/AnimationError'
+import { formatZodError } from '@/helpers/zod'
+import { executeWithZod } from '@/modules/animation/utils'
 import { z } from 'zod'
-import { fromZodError } from 'zod-validation-error'
 
-export function buildContext (animation, type, settings = {}, context = {}) {
+export function buildContext (pack, animation, type, settings = {}, context = {}) {
   return Object.assign(
     {
+      pack,
       animation,
       settings: animation?.settings,
       meta: animation?.meta,
@@ -31,21 +35,7 @@ export function buildWrapper (data, context) {
 
   wrapper.setAttribute('data-animation', id)
 
-  let nodes, style
-
-  if (data.hast) {
-    nodes = [].concat(data.hast).map((node, i) => {
-      const sanitized = sanitize(
-        node,
-        deepmerge(defaultSchema, { attributes: {'*': ['className']} })
-      )
-      if (sanitized.type === 'root')
-        throw new Error(`Failed to parse hast node at "hast.${i}"`)
-
-      return toDom(sanitized)
-    })
-  }
-
+  let style
   if (data.css) {
     const parent = `[data-animation="${id}"]`
     style = document.createElement('style')
@@ -58,8 +48,11 @@ export function buildWrapper (data, context) {
     ))
   }
 
-  wrapper.append(...[].concat(nodes).concat(style).filter(n => !!n))
-
+  wrapper.append(
+    ...[].concat(data.hast)
+      .concat(style)
+      .filter(i => i instanceof Element)
+  )
   return wrapper
 }
 
@@ -82,9 +75,16 @@ export function buildAnimateAssets (data = null, context, options = {}) {
     data = data ? AnimateSchema({ ...context, wrapper }, { stage: ParseStage.Execute })
       .parse(data) : {}
   }
-  catch (e) {
-    e = e instanceof z.ZodError ? fromZodError(e).message : e
-    console.error(`Failed to parse '${context.type}' animation:`, e)
+  catch (error) {
+    ErrorManager.registerAnimationError(
+      new AnimationError(
+        context.animation,
+        formatZodError(error, { pack: context.pack, path: context.path, received: data }),
+        { module: context.module, pack: context.pack, type: context.type, context, stage: 'Execute' }
+      )
+    )
+    context.instance.cancel(true)
+    return {}
   }
 
   const before = options.before && context.type === AnimationType.Enter
@@ -108,16 +108,35 @@ export function buildAnimateAssets (data = null, context, options = {}) {
     onBeforeDestroy: exposedHook('onBeforeDestroy'),
     onDestroyed: exposedHook('onDestroyed'),
     execute: () => {
-      const instances = [].concat(data.anime ?? []).filter(a => !!a).map(
-        a => (
-          typeof a === 'function' // Can be a function because of "anime.timeline" inject
-            ? a(wrapper)
-            : anime(transformAnimeConfig(a, wrapper))
-        )
-      )
+      const instances = [].concat(data.anime ?? []).map(
+        (value, i) => {
+          if (!value) return null
+          return executeWithZod(value, (value, ctx) => {
+            try {
+              return typeof value === 'function' // Can be a function because of "anime.timeline" inject
+                ? value(wrapper)
+                : anime(transformAnimeConfig(value, wrapper))
+            }
+            catch (error) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: error.message,
+                params: { error, received: value }
+              })
+              return z.NEVER
+            }
+          }, context, { path: ['anime'].concat(Array.isArray(data.anime) ? [i] : []) })
+        }
+      ).filter(Boolean)
+
       const pauseAll = () => instances.forEach(i => i.pause())
       const finishedAll = () => Promise.all(instances.map(i => i.finished))
+      context.instance.instances = instances
+      context.instance.pause = pauseAll
+      if (context.instance.cancelled) return {}
+
       data.onCreated?.()
+      if (context.instance.cancelled) return {}
 
       if (before) {
         pauseAll()
@@ -148,6 +167,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
         finished: finished
           .then(() => {
             data.onCompleted?.()
+            if (context.instance.cancelled) return
 
             if (after) {
               instance.reset()

@@ -1,7 +1,12 @@
 import { z } from 'zod'
 import { formatValuesList, Literal, parseInjectSchemas } from '@/helpers/schemas'
+import { InjectPlaceholderSchema, isInjectPlaceholder } from '@/modules/animation/schemas/injects/placeholder'
+import { formatZodError, zodSubParse } from '@/helpers/zod'
+import { isLazyInject, LazyInjectSchema, wrapLazyInject } from '@/modules/animation/schemas/injects/lazy'
 import ParseStage from '@/enums/ParseStage'
 import Spelling from 'spelling'
+import ErrorManager from '@/modules/ErrorManager'
+import AnimationError from '@/structs/AnimationError'
 import * as CommonInjectSchemas from '@/modules/animation/schemas/injects/common'
 import * as AnimeInjectSchemas from '@/modules/animation/schemas/injects/anime'
 import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/settings'
@@ -18,16 +23,19 @@ const injectSchemas = {
 const injectTypes = Object.keys(injectSchemas)
 const injectDict = new Spelling(injectTypes)
 
-function parseInject ({ schema, context, env, value, ctx }) {
-  const { success, data, error } = (
-    typeof schema === 'function' ? schema(context, env) : schema
-  ).safeParse(value)
+function assertInjectType (type) {
+  if (Array.isArray(type)) return type.map(assertInjectType).filter(Boolean)
+  return injectTypes.find(t => t.toLowerCase() === type.toLowerCase())
+}
 
-  if (!success) {
-    error.issues.forEach(i => ctx.addIssue(i))
-    return z.NEVER
-  }
-  return data
+function parseInject ({ schema, context, env, value, ctx }) {
+  return zodSubParse(
+    typeof schema === 'function'
+      ? schema(context, env)
+      : schema,
+    value,
+    ctx
+  )
 }
 
 const InjectableSchema = (context, env = {}) => {
@@ -36,51 +44,105 @@ const InjectableSchema = (context, env = {}) => {
   const schema = z.lazy(
     () => z.union([
       Literal,
-      z.function(), // Lazy injects are transformed into functions
+      z.function(), // Some injects return functions (anime.timeline, anime.setDashoffset, etc.)
       z.instanceof(Element), // Prevent Zod from parsing Element
+      InjectPlaceholderSchema, // Prevent Zod from parsing InjectPlaceholder
+      LazyInjectSchema, // Prevent Zod from parsing LazyInject
       z.array(schema),
       z.record(schema)
     ]).transform((value, ctx) => {
-      // If we meet a function, that's a parsed lazy inject, which turned into a generator function, awaiting a complete context
-      if (typeof value === 'function') return value(context, env)
+      try {
+        if (isLazyInject(value)) // A parsed lazy inject, which turned into a generator function, awaiting a complete context
+          return value.generator(context, env)
 
-      if (value?.inject === undefined) return value
+        if (isInjectPlaceholder(value))
+          return zodSubParse(
+            InjectableSchema(context, env),
+            value.value,
+            ctx,
+            { path: value.path }
+          )
 
-      const [schema, meta = {}] = [].concat(injectSchemas[value.inject])
+        if (value?.inject === undefined)
+          return value
 
-      if (stage === ParseStage.Initialize) {
-        if (!schema) {
-          const { found, word, suggestions } = injectDict.lookup(String(value.inject))
+        try {
+          const [schema, meta = {}] = [].concat(injectSchemas[value.inject])
+
+          if (stage === ParseStage.Initialize) {
+            if (!schema) {
+              const { found, word, suggestions } = injectDict.lookup(String(value.inject))
+              const injects = assertInjectType(found ? [word] : suggestions.map(s => s.word))
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: `Unknown inject '${value.inject}'`
+                  + (injects.length ? `. Did you mean: ${formatValuesList(injects)}` : ''),
+                path: ['inject']
+              })
+              return z.NEVER
+            }
+
+            if (
+              (disallowed?.length && disallowed.includes(value.inject))
+              || (allowed?.length && !allowed.includes(value.inject))
+            ) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: `Inject '${value.inject}' is not allowed`,
+                path: ['inject']
+              })
+              return z.NEVER
+            }
+
+            if (meta.immediate === true || (Array.isArray(meta.immediate) && meta.immediate.every(key => key in context)))
+              return parseInject({ schema, context, env, value, ctx })
+
+            if (meta.lazy)
+              return wrapLazyInject(
+                (context, env) => (...args) => {
+                  const { success, data, error } = InjectableSchema(context, {
+                    ...env,
+                    stage: ParseStage.Lazy,
+                    args
+                  }).safeParse(value)
+
+                  if (!success) {
+                    ErrorManager.registerAnimationError(
+                      new AnimationError(
+                        context.animation,
+                        formatZodError(error, { pack: context.pack, path: context.path.concat(ctx.path), received: value }),
+                        { module: context.module, pack: context.pack, type: context.type, context, stage: 'Lazy' }
+                      )
+                    )
+                    context.instance.cancel(true)
+                    return
+                  }
+
+                  return data
+                }
+              )
+
+            return value
+          }
+
+          return parseInject({ schema, context, env, value, ctx })
+        }
+        catch (error) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: `Unknown inject '${value.inject}'`
-              + (found || suggestions?.length ? `. Did you mean: ${formatValuesList(found ? [word] : suggestions.map(s => s.word))}` : '')
+            message: error.message,
+            path: ['inject'],
+            params: { error }
           })
-          return z.NEVER
         }
-
-        if (
-          (disallowed?.length && disallowed.includes(value.inject))
-          || (allowed?.length && !allowed.includes(value.inject))
-        ) {
-          ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject '${value.inject}' is not allowed` })
-          return z.NEVER
-        }
-
-        if (meta.immediate === true || (Array.isArray(meta.immediate) && meta.immediate.every(key => key in context)))
-          return parseInject({ schema, context, env, value, ctx })
-
-        if (meta.lazy)
-          return (context, env) => (...args) => InjectableSchema(context, {
-            ...env,
-            stage: ParseStage.Lazy,
-            args
-          }).parse(value)
-
-        return value
       }
-
-      return parseInject({ schema, context, env, value, ctx })
+      catch (error) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: error.message,
+          params: { error }
+        })
+      }
     })
   )
 

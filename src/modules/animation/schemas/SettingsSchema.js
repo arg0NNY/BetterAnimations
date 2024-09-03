@@ -28,7 +28,7 @@ const SettingsSchema = z.object({
   [Setting.Variant]: z.object({
     key: z.string(),
     name: z.string()
-  }).strict().array().optional(),
+  }).strict().array().nonempty().optional(),
   [Setting.Position]: z.union([
     z.literal(true),
     z.literal('precise'),
@@ -57,7 +57,7 @@ const SettingsSchema = z.object({
     z.object({
       [AnimationType.Enter]: DefaultsSchema,
       [AnimationType.Exit]: DefaultsSchema
-    }),
+    }).strict(),
     DefaultsSchema
   ])
 }).strict()
@@ -70,18 +70,34 @@ const SettingsSchema = z.object({
     )]
     if (!missingDefaultKeys.length) return settings
 
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: `A default value must be specified for all the defined settings. Missing default values for: ${formatValuesList(missingDefaultKeys)}` })
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `A default value must be specified for all the defined settings. Missing default values for: ${formatValuesList(missingDefaultKeys)}`,
+      path: ['defaults'],
+      params: { pointAt: 'key' }
+    })
     return z.NEVER
   })
   .transform((settings, ctx) => {
     if (!settings[Setting.Variant]) return settings
 
     const variantKeys = settings[Setting.Variant].map(v => v.key)
-    const value = settings.defaults[Setting.Variant]
-    if (variantKeys.includes(value)) return settings
+    if (
+      (settings.defaults[AnimationType.Enter] ? AnimationType.values() : [null]).map(t => {
+        const value = (t ? settings.defaults[t] : settings.defaults)[Setting.Variant]
+        if (variantKeys.includes(value)) return true
 
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Invalid default value for '${Setting.Variant}'. Expected ${formatValuesList(variantKeys, ' | ')}, received '${value}'` })
-    return z.NEVER
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Invalid default value for '${Setting.Variant}'. Expected ${formatValuesList(variantKeys, ' | ')}, received '${value}'`,
+          path: ['defaults', t, Setting.Variant].filter(Boolean)
+        })
+        return false
+      }).every(Boolean)
+    )
+      return settings
+    else
+      return z.NEVER
   })
 
 export default SettingsSchema

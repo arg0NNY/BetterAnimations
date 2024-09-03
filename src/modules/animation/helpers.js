@@ -1,7 +1,7 @@
 
 function buildStyles (styles) {
   return Object.entries(styles).reduce(
-    (str, [name, value]) => str + `    ${name.trim()}: ${value.toString().trim()};\n`,
+    (str, [name, value]) => str + `    ${name.trim()}: ${String(value).trim()};\n`,
     ''
   )
 }

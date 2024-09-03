@@ -17,10 +17,6 @@ class Animation {
     this.doneCallbackRef = doneCallbackRef
 
     this.cancelled = false
-    this.cancel = () => {
-      this.cancelled = true
-      this.destroy()
-    }
   }
 
   applyAttributes (context = null) {
@@ -38,7 +34,10 @@ class Animation {
       return false
     }
 
-    if (!intersect) callback?.()
+    if (!intersect) {
+      callback?.()
+      if (this.cancelled) return false
+    }
 
     this.applyAttributes()
 
@@ -49,6 +48,7 @@ class Animation {
         this.type,
         { auto: this.auto?.current },
         {
+          instance: this,
           container: this.container,
           element: this.node,
           anchor: this.anchor?.current ?? this.anchor,
@@ -58,15 +58,24 @@ class Animation {
 
       const { execute, wrapper, onBeforeCreate, onBeforeDestroy, onDestroyed }
         = buildAnimateAssets(animate, context, this.module.buildOptions())
+      if (this.cancelled) return
+
+      this.wrapper = wrapper
+      this.onBeforeDestroy = onBeforeDestroy
+      this.onDestroyed = onDestroyed
 
       onBeforeCreate?.()
+      if (this.cancelled) return
 
-      const { instances, onBeforeBegin, finished, pause } = execute()
+      const { instances, onBeforeBegin, finished } = execute()
+      if (this.cancelled) return
 
       if (intersect && callback) {
         callback()
+        if (this.cancelled) return
+
+        // Force anime to re-apply styles because cancel callback might have removed some (prevent element flashing on 1 frame)
         instances.forEach(i => {
-          // Force anime to re-apply styles because cancel callback might have removed some (prevent element flashing on 1 frame)
           const { paused } = i
           i.reset()
           i.paused = paused
@@ -76,40 +85,38 @@ class Animation {
       this.applyAttributes(context)
 
       onBeforeBegin?.()
+      if (this.cancelled) return
 
       if (wrapper) this.node.before(wrapper)
 
-      const createClear = cancel => (...args) => {
-        onBeforeDestroy?.()
-
-        pause()
-        this.doneCallbackRef.current?.()
-        this.destroy(...args)
-
-        const callback = () => {
-          wrapper?.remove()
-
-          ;[].filter.call(this.container.attributes, a => a.name !== 'data-animation-container' && a.name?.startsWith('data-animation'))
-            .forEach(a => this.container.removeAttribute(a.name))
-
-          onDestroyed?.()
-        }
-
-        return cancel ? callback : requestAnimationFrame(callback)
-      }
-
-      this.cancel = createClear(true)
-      const clear = createClear(false)
-
-      finished
-        .then(() => clear(false))
-        .catch(e => {
-          console.error(`Error during '${this.type}' animation execution:`, e)
-          clear(true)
-        })
+      finished.then(() => this.cancel())
     })
 
     return true
+  }
+
+  cancel (dueToError = false, provideCallback = false) {
+    if (this.cancelled) return
+    this.cancelled = true
+
+    this.onBeforeDestroy?.()
+
+    this.pause?.()
+    if (this.instances) this.instances.length = 0
+    this.doneCallbackRef.current?.()
+    this.destroy(dueToError)
+
+    const callback = () => {
+      this.wrapper?.remove()
+
+      ;[].filter.call(this.container.attributes, a => a.name !== 'data-animation-container' && a.name?.startsWith('data-animation'))
+        .forEach(a => this.container.removeAttribute(a.name))
+
+      this.onDestroyed?.()
+    }
+
+    if (provideCallback) return callback
+    requestAnimationFrame(callback)
   }
 
   destroy (dueToError = false) {
@@ -134,7 +141,7 @@ export default new class AnimationStore {
 
   cancelAnimations (animations) {
     const list = typeof animations === 'function' ? this.animations.filter(animations) : [].concat(animations)
-    const callbacks = list.map(animation => animation.cancel()).filter(c => typeof c === 'function')
+    const callbacks = list.map(animation => animation.cancel(false, true)).filter(c => typeof c === 'function')
     return () => callbacks.forEach(c => c())
   }
 

@@ -11,7 +11,11 @@ export const formatValuesList = (arr, separator = ', ') => arr.map(i => `'${i}'`
 
 export const hasInSettings = (name, has) => (value, ctx) => {
   if (!has) {
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Used '${name}' inject while it is not defined in the animation\'s settings` })
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `Used '${name}' inject while the corresponding setting is not defined in the animation\'s settings`,
+      path: ['inject']
+    })
     return z.NEVER
   }
   return value

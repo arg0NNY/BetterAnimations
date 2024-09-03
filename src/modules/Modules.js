@@ -14,12 +14,14 @@ import ModuleType from '@/enums/ModuleType'
 import { buildContext } from '@/modules/animation/parser'
 import ParseStage from '@/enums/ParseStage'
 import { z } from 'zod'
-import { fromZodError } from 'zod-validation-error'
 import { AnimateSchema } from '@/modules/animation/schemas/AnimationSchema'
 import Events from '@/enums/Events'
 import Emitter from '@/modules/Emitter'
 import Logger from '@/modules/Logger'
 import DirectionAutoType from '@/enums/DirectionAutoType'
+import ErrorManager from '@/modules/ErrorManager'
+import AnimationError from '@/structs/AnimationError'
+import { formatZodError } from '@/helpers/zod'
 
 class Module {
   constructor (id, name, meta = {}, { parent, description, alert } = {}) {
@@ -75,18 +77,23 @@ class Module {
     const pack = pointer.packSlug && PackManager.getPack(pointer.packSlug)
     const animation = pack && this.findAnimation(pack, pointer.animationKey)
     const config = animation ? Config.pack(pack.slug).getAnimationConfig(animation.key, this.id, type) : {}
+    const path = animation ? ['animations', pack.animations.indexOf(animation), type in animation ? type : 'animate'] : []
 
     const settings = animation && this.buildSettings(animation, type, config, { auto: false })
-    let animate
+    const ctx = buildContext(pack, animation, type, settings, { module: this, path })
+
+    let animate, error
     try {
-      animate = animation && AnimateSchema(
-        buildContext(animation, type, settings, { module: this }),
-      { stage: ParseStage.Initialize }
-      ).parse(animation[type] ?? animation.animate)
+      animate = animation && AnimateSchema(ctx, { stage: ParseStage.Initialize })
+        .parse(animation[type] ?? animation.animate)
     }
-    catch (e) {
-      e = e instanceof z.ZodError ? fromZodError(e).message : e
-      console.error(`Failed to initialize '${type}' animation:`, e)
+    catch (err) {
+      error = new AnimationError(
+        animation,
+        formatZodError(err, { pack, path, received: animation[type] ?? animation.animate }),
+        { module: this, pack, type, context: ctx, stage: 'Initialize' }
+      )
+      ErrorManager.registerAnimationError(error)
     }
 
     return {
@@ -95,8 +102,10 @@ class Module {
       id: [pointer.packSlug, pointer.animationKey].filter(Boolean).join('/') || null,
       pack,
       animation,
+      path,
       config,
-      animate
+      animate,
+      error
     }
   }
   initializeAnimations () {
@@ -107,19 +116,24 @@ class Module {
   }
 
   getAnimation (type, options = {}, context = null) {
-    const { animation, config, animate: cachedAnimate } = this.animations[type]
+    const { pack, animation, path, config, animate: cachedAnimate } = this.animations[type]
 
     const settings = animation && this.buildSettings(animation, type, config, options)
-    const ctx = buildContext(animation, type, settings, { module: this, ...context })
+    const ctx = buildContext(pack, animation, type, settings, { module: this, path, ...context })
 
     let animate
     try {
       animate = cachedAnimate && context && AnimateSchema(ctx, { stage: ParseStage.Layout })
         .parse(cachedAnimate)
     }
-    catch (e) {
-      e = e instanceof z.ZodError ? fromZodError(e).message : e
-      console.error(`Failed to parse '${type}' animation:`, e)
+    catch (error) {
+      ErrorManager.registerAnimationError(
+        new AnimationError(
+          animation,
+          formatZodError(error, { pack, path, received: cachedAnimate }),
+          { module: this, pack, type, context: ctx, stage: 'Layout' }
+        )
+      )
     }
 
     return {
@@ -142,7 +156,7 @@ class Module {
   }
 
   isSupportedBy (animation) {
-    return animation.meta.modules.has(this.id)
+    return animation.meta?.modules?.has(this.id)
   }
 
   supportsAuto (animation, setting) {

@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { InjectSchema, InjectWithMeta } from '@/modules/animation/schemas/utils'
 import Inject from '@/enums/Inject'
 import { ArrayOrSingleSchema } from '@/helpers/schemas'
+import { zodTransformErrorBoundary } from '@/helpers/zod'
 
 const MathConstantInjectSchema = (inject, value) => InjectWithMeta(
   InjectSchema(inject).transform(() => value),
@@ -10,11 +11,15 @@ const MathConstantInjectSchema = (inject, value) => InjectWithMeta(
 
 const MathSingleInjectSchema = (inject, fn) => InjectSchema(inject).extend({
   value: z.number()
-}).transform(({ value }) => fn(value))
+}).transform(zodTransformErrorBoundary(
+  ({ value }) => fn(value)
+))
 
 const MathMultipleInjectSchema = (inject, fn) => InjectSchema(inject).extend({
   values: ArrayOrSingleSchema(z.number())
-}).transform(({ values }) => fn(...[].concat(values)))
+}).transform(zodTransformErrorBoundary(
+  ({ values }) => fn(...[].concat(values))
+))
 
 export const MathAbsInjectSchema = MathSingleInjectSchema(Inject.MathAbs, Math.abs)
 export const MathAcosInjectSchema = MathSingleInjectSchema(Inject.MathAcos, Math.acos)
@@ -25,7 +30,7 @@ export const MathAtanInjectSchema = MathSingleInjectSchema(Inject.MathAtan, Math
 export const MathAtan2InjectSchema = InjectSchema(Inject.MathAtan2).extend({
   y: z.number(),
   x: z.number()
-}).transform(({ y, x }) => Math.atan2(y, x))
+}).transform(zodTransformErrorBoundary(({ y, x }) => Math.atan2(y, x)))
 export const MathAtanhInjectSchema = MathSingleInjectSchema(Inject.MathAtanh, Math.atanh)
 export const MathCbrtInjectSchema = MathSingleInjectSchema(Inject.MathCbrt, Math.cbrt)
 export const MathCeilInjectSchema = MathSingleInjectSchema(Inject.MathCeil, Math.ceil)
@@ -40,7 +45,7 @@ export const MathHypotInjectSchema = MathMultipleInjectSchema(Inject.MathHypot, 
 export const MathImulInjectSchema = InjectSchema(Inject.MathImul).extend({
   a: z.number(),
   b: z.number()
-}).transform(({ a, b }) => Math.imul(a, b))
+}).transform(zodTransformErrorBoundary(({ a, b }) => Math.imul(a, b)))
 export const MathLogInjectSchema = MathSingleInjectSchema(Inject.MathLog, Math.log)
 export const MathLog1pInjectSchema = MathSingleInjectSchema(Inject.MathLog1p, Math.log1p)
 export const MathLog10InjectSchema = MathSingleInjectSchema(Inject.MathLog10, Math.log10)
@@ -50,7 +55,7 @@ export const MathMinInjectSchema = MathMultipleInjectSchema(Inject.MathMin, Math
 export const MathPowInjectSchema = InjectSchema(Inject.MathPow).extend({
   base: z.number(),
   exponent: z.number()
-}).transform(({ base, exponent }) => Math.pow(base, exponent))
+}).transform(zodTransformErrorBoundary(({ base, exponent }) => Math.pow(base, exponent)))
 export const MathRandomInjectSchema = InjectWithMeta(
   InjectSchema(Inject.MathRandom).transform(() => Math.random()),
   { immediate: true }

@@ -1,12 +1,13 @@
 import { z } from 'zod'
 import { buildSwitchSchema, Defined, formatValuesList, hasInSettings } from '@/helpers/schemas'
+import { wrapWithPlaceholderIfNeeded } from '@/modules/animation/schemas/injects/placeholder.js'
 
 export const InjectSchema = type => z.object({ inject: z.literal(type) }).strict()
 
 export function SwitchSchema (inject, valueList, options = {}) {
   const { currentValue, defaultValue, possibleValues, setting } = options
 
-  return context => {
+  return (context, env) => {
     const get = value => typeof value === 'function' ? value(context) : value
 
     let values = get(valueList)
@@ -26,9 +27,13 @@ export function SwitchSchema (inject, valueList, options = {}) {
       if (!values.includes(value)) value = defaultValue
 
       if (values.some(k => k in params))
-        if (values.every(k => k in params)) return params[value]
+        if (values.every(k => k in params)) return wrapWithPlaceholderIfNeeded(env, params[value], [value])
         else {
-          ctx.addIssue({ code: z.ZodIssueCode.custom, message: `All of the possible values must be defined in the '${inject}' inject when using switch mode. Missing keys: ${formatValuesList(values.filter(k => !(k in params)))}` })
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `All of the possible values must be defined in the '${inject}' inject when using switch mode. Missing keys: ${formatValuesList(values.filter(k => !(k in params)))}`,
+            path: ['inject']
+          })
           return z.NEVER
         }
       else return value
@@ -48,11 +53,19 @@ export function ElementSchema (inject, element = null, allowDirect = true) {
     })
     .transform((params, ctx) => {
       if (!allowDirect && !('querySelector' in params || 'querySelectorAll' in params)) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject '${inject}' can't be used directly and must define either 'querySelector' or 'querySelectorAll'` })
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Inject '${inject}' can't be used directly and must define either 'querySelector' or 'querySelectorAll'`,
+          path: ['inject']
+        })
         return z.NEVER
       }
       if ('querySelector' in params && 'querySelectorAll' in params) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `Inject '${inject}' can't have both 'querySelector' and 'querySelectorAll' defined in pair` })
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Inject '${inject}' can't have both 'querySelector' and 'querySelectorAll' defined in pair`,
+          path: ['inject']
+        })
         return z.NEVER
       }
       if (!element) return null

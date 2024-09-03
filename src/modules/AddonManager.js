@@ -4,6 +4,8 @@ import AddonError from '@/structs/AddonError'
 import Toasts from '@/modules/Toasts'
 import Data from '@/modules/Data'
 import Events from '@/modules/Emitter'
+import { parse } from 'json-source-map'
+import { formatAddonParseError } from '@/helpers/json'
 
 const stripBOM = function (fileContent) {
   if (fileContent.charCodeAt(0) === 0xFEFF) {
@@ -128,27 +130,32 @@ export default class AddonManager {
     const stats = fs.statSync(filename)
     let addon, parseError
     try {
-      addon = JSON.parse(fileContent)
+      const { data, pointers } = parse(fileContent)
+      addon = data
+      addon.pointers = pointers
     }
     catch (e) {
       addon = {}
       parseError = e
     }
+    addon.slug = path.basename(filename).replace(this.extension, '').replace(/ /g, '-')
+    if (!addon.name) addon.name = addon.slug
     if (!addon.author) addon.author = 'Unknown Author'
     if (!addon.version) addon.version = '???'
     if (!addon.description) addon.description = 'Description not provided.'
     // if (!addon.name || !addon.author || !addon.description || !addon.version) return new AddonError(addon.name || path.basename(filename), filename, "Addon is missing name, author, description, or version", {message: "Addon must provide name, author, description, and version.", stack: ""}, this.prefix);
-    addon.id = addon.name || path.basename(filename)
-    addon.slug = path.basename(filename).replace(this.extension, '').replace(/ /g, '-')
+    addon.id = addon.slug
     addon.filename = path.basename(filename)
     addon.added = stats.atimeMs
     addon.modified = stats.mtimeMs
     addon.size = stats.size
-    addon.fileContent = fileContent
+    addon.fileContent = fileContent.split('\n')
     addon.installed = addon
-    if (this.addonList.find(c => c.id == addon.id)) throw new AddonError(addon, `There is already a ${this.prefix} with name ${addon.name}`, this.prefix)
+    if (this.addonList.find(c => c.id === addon.id))
+      throw new AddonError(addon, `There is already a ${this.prefix} with name ${addon.name}`, null, this.prefix)
     this.addonList.push(addon)
-    if (parseError) throw new AddonError(addon, parseError.message, parseError, this.prefix)
+    if (parseError)
+      throw new AddonError(addon, formatAddonParseError(addon, parseError), parseError, this.prefix)
     return addon
   }
 
