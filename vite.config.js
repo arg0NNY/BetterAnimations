@@ -55,6 +55,10 @@ export default defineConfig({
           react: 'BdApi.React',
           'react-dom': 'BdApi.ReactDOM'
         }
+      },
+      onwarn (warning, warn) {
+        if (warning.code === 'MODULE_LEVEL_DIRECTIVE') return
+        warn(warning)
       }
     }
   },
