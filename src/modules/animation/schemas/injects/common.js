@@ -55,13 +55,6 @@ export const ObjectAssignInjectSchema = InjectSchema(Inject.ObjectAssign).extend
   source: ArrayOrSingleSchema(z.record(z.any())),
 }).transform(params => Object.assign(params.target, ...[].concat(params.source)))
 
-/**
- * @deprecated Just use { duration: number } instead
- */
-export const WaitInjectSchema = InjectSchema(Inject.Wait).extend({
-  duration: z.number().positive()
-}).transform(params => ({ duration: params.duration }))
-
 export const StringTemplateInjectSchema = InjectSchema(Inject.StringTemplate).extend({
   template: z.string(),
   values: z.union([z.record(z.any()), z.any().array()])
