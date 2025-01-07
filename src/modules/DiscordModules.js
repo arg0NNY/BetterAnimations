@@ -124,8 +124,8 @@ export const App = Webpack.getByKeys('setEnableHardwareAcceleration', 'releaseCh
 export const Message = Webpack.getModule(m => Filters.byStrings('must not be a thread starter message')(m?.type), { searchExports: true })
 export const MessageDivider = Webpack.getModule(m => Filters.byStrings('divider', 'unreadPill')(m?.render))
 export const ChatSearchSidebar = getMangled(Filters.byStrings('getResultsState', 'searchAnalyticsId'))
-export const { Select, SingleSelect } = mapModule(Filters.byStrings('SELECT', 'renderPopout', 'closeOnSelect'), {
-  Select: Filters.byStrings('SELECT', 'renderPopout', 'closeOnSelect'),
+export const { Select, SingleSelect } = mapModule(Filters.byStrings('listbox', 'renderPopout', 'closeOnSelect'), {
+  Select: Filters.byStrings('listbox', 'renderPopout', 'closeOnSelect'),
   SingleSelect: m => Filters.byStrings('value', 'onChange')(m) && !Filters.byStrings('isSelected')(m)
 }, { withKeys: true })
 export const MembersModViewSidebar = getMangled(Filters.byStrings('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))
@@ -137,9 +137,9 @@ export const LayerActions = mapModule(Filters.byStrings('LAYER_PUSH', 'component
 export const LayerStore = Webpack.getStore('LayerStore')
 export const Platform = Webpack.getByKeys('isWindows', 'isMac')
 export const { LocalStorage } = mapModule(Filters.byPrototypeKeys('setRaw'), { LocalStorage: Filters.byKeys('setRaw') })
-export const SettingsNotice = Webpack.waitForModule(Filters.byStrings('SETTINGS_NOTICE_MESSAGE', 'EMPHASIZE_NOTICE'))
-export const { Alert, AlertTypes } = mapModule(Filters.byStrings('messageType', 'CircleWarningIcon'), {
-  Alert: Filters.byStrings('messageType', 'CircleWarningIcon'),
+export const SettingsNotice = Webpack.waitForModule(Filters.byStrings('resetButton', 'EMPHASIZE_NOTICE'))
+export const { Alert, AlertTypes } = mapModule(Filters.byStrings('messageType', 'iconDiv'), {
+  Alert: Filters.byStrings('messageType', 'iconDiv'),
   AlertTypes: Filters.byKeys('WARNING', 'ERROR')
 })
 export const UserSettingsModal = Webpack.getByKeys('open', 'setSection', 'updateAccount')
