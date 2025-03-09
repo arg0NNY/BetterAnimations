@@ -109,7 +109,9 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
           </Common.Tooltip>
         </div>
         {module.description && (
-          <Common.FormText type={Common.FormText.Types.DESCRIPTION} className={DiscordClasses.Margins.marginTop8}>{module.description}</Common.FormText>
+          <Common.FormText type={Common.FormText.Types.DESCRIPTION} className={DiscordClasses.Margins.marginTop8}>
+            {typeof module.description === 'function' ? module.description(setSection) : module.description}
+          </Common.FormText>
         )}
         {module.alert && (
           <Alert messageType={AlertTypes.WARNING} className={DiscordClasses.Margins.marginTop8}>{module.alert}</Alert>
@@ -147,6 +149,7 @@ css
 
 .BA__moduleSettingsHeading {
     padding: 12px 0;
+    flex-grow: 1;
 }
     
 .BA__moduleSettingsTitle {

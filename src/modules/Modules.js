@@ -27,7 +27,7 @@ class Module {
   constructor (id, name, meta = {}, { parent, description, alert } = {}) {
     this.id = id
     this.name = name
-    this.description = description ?? 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aspernatur at consequatur debitis dolor dolore dolorem eaque eligendi esse id illo, inventore iste iure nobis non, officia officiis optio quo recusandae saepe, sequi sit tempora veniam? Atque est quibusdam quis.'
+    this.description = description ?? 'No description provided.'
     this._alert = alert
     this.meta = meta
     this.parent = parent

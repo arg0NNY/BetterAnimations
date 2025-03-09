@@ -96,6 +96,7 @@ export const Slider = Webpack.getModule(m => Filters.byKeys('stickToMarkers', 'i
 export const ModalTransitionState = Webpack.getModule(Filters.byKeys('ENTERED', 'EXITED', 'HIDDEN'), { searchExports: true })
 export const ReferencePositionLayer = Webpack.getModule(Filters.byPrototypeKeys('getHorizontalAlignmentStyle', 'nudgeLeftAlignment'), { searchExports: true })
 export const SearchableSelect = Webpack.getModule(m => Filters.byStrings('SearchableSelect')(m?.render), { searchExports: true })
+export const { Anchor } = Webpack.getByKeys('Anchor')
 
 export const LocaleStore = Webpack.getModule(m => m.Messages?.IMAGE)
 export const Dispatcher = Webpack.getByKeys('dispatch', 'subscribe')
