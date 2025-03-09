@@ -31,7 +31,12 @@ function ModuleSettings ({ moduleId, refToScroller }) {
         />
 
         <Common.Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
-          <span>ANIMATIONS AVAILABLE</span>
+          <span>ANIMATIONS</span>
+        </Common.Text>
+        <Common.Text>*Preinstalled animations*</Common.Text>
+
+        <Common.Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
+          <span>PACKS</span>
         </Common.Text>
         <PackAccordion
           module={module}
@@ -53,6 +58,7 @@ css
 }
 
 .BA__moduleSettingsSectionTitle {
+    margin-top: 32px;
     margin-bottom: 16px;
     color: var(--header-secondary);
     text-align: center;
