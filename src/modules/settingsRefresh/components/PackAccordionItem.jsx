@@ -1,5 +1,7 @@
 import { Common } from '@/modules/DiscordModules'
 import { css } from '@/modules/Style'
+import ChevronSmallUpIcon from '@/modules/settingsRefresh/components/icons/ChevronSmallUpIcon'
+import ChevronSmallDownIcon from '@/modules/settingsRefresh/components/icons/ChevronSmallDownIcon'
 
 function PackAccordionItem ({ pack, children, isOpen, onToggle }) {
   return (
@@ -18,8 +20,8 @@ function PackAccordionItem ({ pack, children, isOpen, onToggle }) {
         <div className="BA__packAccordionItemArrow">
           {
             isOpen
-              ? <Common.ChevronSmallUpIcon />
-              : <Common.ChevronSmallDownIcon />
+              ? <ChevronSmallUpIcon />
+              : <ChevronSmallDownIcon />
           }
         </div>
       </Common.Clickable>

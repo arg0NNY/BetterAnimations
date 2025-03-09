@@ -9,6 +9,7 @@ import { Alert, AlertTypes, Common } from '@/modules/DiscordModules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import SectionContext from '@/modules/settingsRefresh/context/SectionContext'
 import Messages from '@/modules/Messages'
+import ArrowSmallRightIcon from '@/modules/settingsRefresh/components/icons/ArrowSmallRightIcon'
 
 function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect, ...props }) {
   const { setSection } = React.useContext(SectionContext)
@@ -122,7 +123,7 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
               className="BA__moduleSettingsLink"
             >
               {m.name} animations
-              <Common.ArrowSmallRightIcon size="xs" />
+              <ArrowSmallRightIcon size="xs" />
             </Common.FormTitle>
           </Common.Clickable>
         ))}

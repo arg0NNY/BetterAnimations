@@ -97,9 +97,6 @@ export const ModalTransitionState = Webpack.getModule(Filters.byKeys('ENTERED', 
 export const ReferencePositionLayer = Webpack.getModule(Filters.byPrototypeKeys('getHorizontalAlignmentStyle', 'nudgeLeftAlignment'), { searchExports: true })
 export const SearchableSelect = Webpack.getModule(m => Filters.byStrings('SearchableSelect')(m?.render), { searchExports: true })
 
-// TODO: Move icons to plugin source
-export const SettingsIcon = Webpack.getModule(Filters.byStrings('12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z'), { searchExports: true })
-
 export const LocaleStore = Webpack.getModule(m => m.Messages?.IMAGE)
 export const Dispatcher = Webpack.getByKeys('dispatch', 'subscribe')
 export const AppView = getMangled(Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'))
@@ -187,6 +184,7 @@ export const { Alert, AlertTypes } = mapModule(Filters.byStrings('messageType', 
   AlertTypes: Filters.byKeys('WARNING', 'ERROR')
 })
 export const UserSettingsModal = Webpack.getByKeys('open', 'setSection', 'updateAccount')
+export const { colors } = Webpack.getByKeys('colors', 'modules')
 
 export const Common = {
   ...ModalActions,
@@ -203,27 +201,16 @@ export const Common = {
   Toast,
   createToast,
   Clickable,
-  SettingsIcon,
-  CollapseListIcon: SettingsIcon,
   Switch,
-  RefreshIcon: SettingsIcon,
-  DoorEnterIcon: SettingsIcon,
-  DoorExitIcon: SettingsIcon,
   Checkbox,
   FormTitle,
   FormText,
-  ArrowSmallRightIcon: SettingsIcon,
   Breadcrumbs,
-  ChevronSmallUpIcon: SettingsIcon,
-  ChevronSmallDownIcon: SettingsIcon,
   RadioGroup,
   FormItem,
   get Select () { return mangled(Select) },
   get SingleSelect () { return mangled(SingleSelect) },
   Slider,
-  HomeIcon: SettingsIcon,
-  ShopIcon: SettingsIcon,
-  BookCheckIcon: SettingsIcon,
   ModalTransitionState,
   ReferencePositionLayer,
   SearchableSelect

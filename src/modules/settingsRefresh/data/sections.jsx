@@ -4,9 +4,11 @@ import SettingsSidebarHeader from '@/modules/settingsRefresh/components/Settings
 import ModeSwitch from '@/modules/settingsRefresh/components/ModeSwitch'
 import FormNotice from '@/modules/settingsRefresh/components/FormNotice'
 import SettingsStore from '@/modules/settingsRefresh/stores/SettingsStore'
-import IconSpine from '@/modules/settingsRefresh/components/icons/IconSpine'
-import { Common } from '@/modules/DiscordModules'
+import SpineIcon from '@/modules/settingsRefresh/components/icons/SpineIcon'
 import SettingsSections from '@/enums/SettingsSections'
+import HomeIcon from '@/modules/settingsRefresh/components/icons/HomeIcon'
+import ShopIcon from '@/modules/settingsRefresh/components/icons/ShopIcon'
+import BookCheckIcon from '@/modules/settingsRefresh/components/icons/BookCheckIcon'
 
 export function getSections () {
   return [
@@ -17,7 +19,7 @@ export function getSections () {
     {
       section: SettingsSections.Home,
       label: 'Home',
-      icon: <Common.HomeIcon size="xs" color="currentColor" />,
+      icon: <HomeIcon size="xs" color="currentColor" />,
       element: () => {}
     },
     {
@@ -26,13 +28,13 @@ export function getSections () {
     {
       section: SettingsSections.Catalog,
       label: 'Catalog',
-      icon: <Common.ShopIcon size="xs" color="currentColor" />,
+      icon: <ShopIcon size="xs" color="currentColor" />,
       element: () => {}
     },
     {
       section: SettingsSections.Library,
       label: 'Library',
-      icon: <Common.BookCheckIcon size="xs" color="currentColor" />,
+      icon: <BookCheckIcon size="xs" color="currentColor" />,
       element: () => {}
     },
     {
@@ -46,7 +48,7 @@ export function getSections () {
       section: module.id,
       label: module.name,
       className: module.parent ? 'BA__nestedTabBarItem' : undefined,
-      icon: module.parent ? <IconSpine /> : undefined,
+      icon: module.parent ? <SpineIcon /> : undefined,
       elementProps: { moduleId: module.id },
       element: ModuleSettings,
       notice: {

@@ -7,6 +7,8 @@ import ModuleContext from '@/modules/settingsRefresh/context/ModuleContext'
 import ModuleType from '@/enums/ModuleType'
 import { css } from '@/modules/Style'
 import Messages from '@/modules/Messages'
+import DoorEnterIcon from '@/modules/settingsRefresh/components/icons/DoorEnterIcon'
+import DoorExitIcon from '@/modules/settingsRefresh/components/icons/DoorExitIcon'
 
 function useToggleHint () {
   const [hintShown, setHintShown] = React.useState(false)
@@ -64,7 +66,7 @@ function AnimationToggleControl ({ enter, exit, setEnter, setExit }) {
       selected: enter,
       disabled: !setEnter,
       onClick: stop(() => setEnter(!enter)),
-      children: <Common.DoorEnterIcon size="xs" color="currentColor" />,
+      children: <DoorEnterIcon size="xs" color="currentColor" />,
       ...hintProps(!setEnter)
     },
     {
@@ -73,7 +75,7 @@ function AnimationToggleControl ({ enter, exit, setEnter, setExit }) {
       selected: exit,
       disabled: !setExit,
       onClick: stop(() => setExit(!exit)),
-      children: <Common.DoorExitIcon size="xs" color="currentColor" />,
+      children: <DoorExitIcon size="xs" color="currentColor" />,
       ...hintProps(!setExit)
     }
   ], [enter, exit, setEnter, setExit, hintProps])

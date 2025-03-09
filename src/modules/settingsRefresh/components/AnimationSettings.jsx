@@ -10,6 +10,7 @@ import { css } from '@/modules/Style'
 import { Common } from '@/modules/DiscordModules'
 import IconButton from '@/modules/settingsRefresh/components/IconButton'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
+import RefreshIcon from '@/modules/settingsRefresh/components/icons/RefreshIcon'
 
 function SettingList ({ children, className = 'BA__animationSettingsList' }) {
   return (
@@ -70,7 +71,7 @@ function AnimationSettingsHeader ({ headers }) {
           <div className="BA__animationSettingsHeaderControls">
             {onReset && (
               <IconButton tooltip="Reset" onClick={onReset}>
-                <Common.RefreshIcon size="xs" color="currentColor" />
+                <RefreshIcon size="xs" color="currentColor" />
               </IconButton>
             )}
             {typeof enabled === 'boolean' && (

@@ -1,8 +1,9 @@
 import IconButton from '@/modules/settingsRefresh/components/IconButton'
-import { Common } from '@/modules/DiscordModules'
 import AnimationToggleControl from '@/modules/settingsRefresh/components/AnimationToggleControl'
 import { css } from '@/modules/Style'
 import { stop } from '@/modules/settingsRefresh/helpers/stopPropagation'
+import SettingsIcon from '@/modules/settingsRefresh/components/icons/SettingsIcon'
+import CollapseListIcon from '@/modules/settingsRefresh/components/icons/CollapseListIcon'
 
 function AnimationCardControls ({
   hasSettings,
@@ -23,7 +24,7 @@ function AnimationCardControls ({
           active={expanded === 'settings'}
           onClick={stop(() => setExpanded('settings'))}
         >
-          <Common.SettingsIcon size="xs" color="currentColor" />
+          <SettingsIcon size="xs" color="currentColor" />
         </IconButton>
         {hasModifiers && (
           <IconButton
@@ -31,7 +32,7 @@ function AnimationCardControls ({
             active={expanded === 'modifiers'}
             onClick={stop(() => setExpanded('modifiers'))}
           >
-            <Common.CollapseListIcon size="xs" color="currentColor" />
+            <CollapseListIcon size="xs" color="currentColor" />
           </IconButton>
         )}
       </div>
