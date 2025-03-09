@@ -8,6 +8,7 @@ import useModule, { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import { autoPosition } from '@/hooks/useAutoPosition'
+import { avoidClickTrap } from '@/helpers/transition'
 
 function patchContextMenu () {
   const once = ensureOnce()
@@ -36,7 +37,7 @@ function patchContextMenu () {
         return (
           <AnimeTransition
             in={self.props.in && !!value}
-            targetContainer={e => e}
+            targetContainer={avoidClickTrap}
             module={module}
             autoRef={autoRef}
           >

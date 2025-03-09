@@ -5,6 +5,7 @@ import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Position from '@/enums/Position'
 import useAutoPosition from '@/hooks/useAutoPosition'
+import { avoidClickTrap } from '@/helpers/transition'
 
 function patchContextSubmenu () {
   const callback = (self, [props], original) => {
@@ -17,11 +18,13 @@ function patchContextSubmenu () {
     const { children } = value.props
 
     const i = children.length - 1
+    if (!children[i]) return value
+
     children[i].props.onPositionChange = setPosition
     children[i] = (
       <AnimeTransition
         in={props.isFocused}
-        targetContainer={e => e}
+        targetContainer={avoidClickTrap}
         module={module}
         autoRef={autoRef}
         anchor={value.ref}

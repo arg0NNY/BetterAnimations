@@ -8,6 +8,9 @@ function avoidCommon (module) {
   return module === null || typeof module !== 'object' || Object.keys(module).length <= 100
 }
 
+/**
+ * @deprecated TODO: Remove in favour to `Webpack.getMangled`
+ */
 function mapModule (module, gettersMap, options = {}) {
   const { withKeys = false, avoidCommon: _avoidCommon = true } = options
 
@@ -29,6 +32,9 @@ function mapModule (module, gettersMap, options = {}) {
   )
 }
 
+/**
+ * @deprecated TODO: Remove in favour to `Webpack.getWithKey`
+ */
 function getMangled (filter, options = {}) {
   const { avoidCommon: _avoidCommon = true, lazy = false, ...rest } = options
   const predicate = m => Object.values(m).some(e => filter(e, m)) && (!_avoidCommon || avoidCommon(m))
@@ -49,25 +55,63 @@ export function mangled (mangled) {
 
 /* ======== MODULES ======== */
 
-export const Common = Webpack.getByKeys('Button', 'ButtonSizes', 'Clickable', 'Dialog')
-export const {
-  Tooltip,
-  TooltipLayer,
-  Backdrop: ModalBackdrop,
-  List: ListThin
-} = Common
+export const ModalActions = Webpack.getMangled(Filters.bySource('POPOUT', 'OVERLAY', 'modalKey'), {
+  openModal: Filters.byStrings('onCloseRequest', 'onCloseCallback', 'backdropStyle'),
+  closeModal: Filters.byStrings('onCloseCallback()', 'filter'),
+  closeAllModals: Filters.byRegex(/for\(let \w+ of \w+\[\w+]\)\w+\(\w+\.key,\w+\)/)
+})
+export const Text = Webpack.getModule(m => Filters.byStrings('WebkitLineClamp', 'data-text-variant')(m?.render), { searchExports: true })
+export const Heading = Webpack.getModule(m => Filters.byStrings('variant', 'data-excessive-heading-level')(m?.render), { searchExports: true })
+export const { ConfirmModal } = Webpack.getByKeys('ConfirmModal')
+export const { Tooltip, TooltipLayer } = Webpack.getMangled(Filters.byPrototypeKeys('renderTooltip'), {
+  Tooltip: Filters.byPrototypeKeys('renderTooltip'),
+  TooltipLayer: Filters.byStrings('tooltipPointer')
+}, { searchExports: true, raw: true })
+export const ModalBackdrop = Webpack.getModule(m => Filters.byStrings('backdrop', 'BG_BACKDROP_NO_OPACITY')(m?.render), { searchExports: true })
+export const ListThin = (() => {
+  const { id, exports } = Webpack.getModule(Filters.bySource('thin', 'customTheme', 'ResizeObserver'), { raw: true })
+  const source = Webpack.modules[id].toString()
+  return exports[
+    source.match(new RegExp(`(\\w+):\\(\\)=>${source.match(/let (\w+)=/)[1]}`))[1]
+  ]
+})()
+export const ToastPosition = Webpack.getModule(Filters.byKeys('MESSAGE', 'SUCCESS', 'FAILURE'), { searchExports: true })
+export const ToastActions = Webpack.getMangled(Filters.bySource('currentToast', 'queuedToasts'), {
+  showToast: Filters.byRegex(/queuedToasts:\[...\w+\.queuedToasts,\w+\]/),
+  popToast: Filters.byStrings('currentToast:null')
+})
+export const { Toast, createToast } = Webpack.getMangled(Filters.bySource('toast', 'FAILURE', 'STATUS_DANGER'), {
+  Toast: Filters.byKeys('type'),
+  createToast: Filters.byStrings('type', 'position')
+})
+export const Clickable = Webpack.getModule(Filters.byPrototypeKeys('renderInner', 'renderNonInteractive'), { searchExports: true })
+export const Switch = Webpack.getModule(Filters.byStrings('checkbox', 'Switch'), { searchExports: true })
+export const Checkbox = Webpack.getModule(m => Filters.byKeys('BOX', 'ROUND')(m?.Shapes), { searchExports: true })
+export const FormTitle = Webpack.getModule(Filters.byStrings('defaultMargin', 'errorMessage'), { searchExports: true })
+export const FormText = Webpack.getModule(m => Filters.byKeys('DESCRIPTION', 'ERROR')(m?.Types), { searchExports: true })
+export const Breadcrumbs = Webpack.getModule(m => Filters.byStrings('renderBreadcrumb')(m?.prototype?.render), { searchExports: true })
+export const RadioGroup = Webpack.getModule(m => Filters.byKeys('NOT_SET', 'NONE')(m?.Sizes), { searchExports: true })
+export const FormItem = Webpack.getModule(m => Filters.byStrings('titleId', 'errorId', 'setIsFocused')(m?.render), { searchExports: true })
+export const Slider = Webpack.getModule(m => Filters.byKeys('stickToMarkers', 'initialValue')(m?.defaultProps), { searchExports: true })
+export const ModalTransitionState = Webpack.getModule(Filters.byKeys('ENTERED', 'EXITED', 'HIDDEN'), { searchExports: true })
+export const ReferencePositionLayer = Webpack.getModule(Filters.byPrototypeKeys('getHorizontalAlignmentStyle', 'nudgeLeftAlignment'), { searchExports: true })
+export const SearchableSelect = Webpack.getModule(m => Filters.byStrings('SearchableSelect')(m?.render), { searchExports: true })
+
+// TODO: Move icons to plugin source
+export const SettingsIcon = Webpack.getModule(Filters.byStrings('12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z'), { searchExports: true })
+
 export const LocaleStore = Webpack.getModule(m => m.Messages?.IMAGE)
 export const Dispatcher = Webpack.getByKeys('dispatch', 'subscribe')
 export const AppView = getMangled(Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'))
 export const Router = Object.assign(
-  mapModule(m => m?.computeRootMatch, {
+  Webpack.getMangled(m => m?.computeRootMatch, {
     Router: m => m?.computeRootMatch,
     Route: m => Filters.byStrings('props.computedMatch', 'props.path')(m?.prototype?.render),
     Switch: m => Filters.byStrings('props.location', 'cloneElement')(m?.prototype?.render),
     matchPath: Filters.byStrings('strict', 'isExact'),
     useLocation: Filters.byRegex(/return \w+\(\w+\)\.location/),
     useParams: Filters.byStrings('.match', '.params')
-  }),
+  }, { searchExports: true, raw: true }),
   {
     Link: Webpack.getModule(m => Filters.byStrings('createHref', 'navigate')(m?.render), { searchExports: true })
   }
@@ -102,7 +146,7 @@ export const ChannelView = Webpack.getModule(m => Filters.byStrings('providedCha
 export const PropTypes = Webpack.getByKeys('PropTypes')
 export const StandardSidebarViewWrapper = Webpack.waitForModule(Filters.byPrototypeKeys('getPredicateSections', 'renderSidebar'))
 export const StandardSidebarView = getMangled(Filters.byStrings('standardSidebarView', 'section'), { lazy: true })
-export const Modals = getMangled(Filters.byStrings('Backdrop', 'modalKey'))
+export const Modals = getMangled(Filters.byStrings('modalKey', '"layer-"'))
 export const Layers = getMangled(Filters.byStrings('hasFullScreenLayer'))
 export const ChannelStore = Webpack.getStore('ChannelStore')
 export const VoiceChannelView = getMangled(Filters.byStrings('shouldUseVoiceEffectsActionBar'))
@@ -143,3 +187,44 @@ export const { Alert, AlertTypes } = mapModule(Filters.byStrings('messageType', 
   AlertTypes: Filters.byKeys('WARNING', 'ERROR')
 })
 export const UserSettingsModal = Webpack.getByKeys('open', 'setSection', 'updateAccount')
+
+export const Common = {
+  ...ModalActions,
+  Text,
+  Heading,
+  ConfirmModal,
+  Tooltip,
+  TooltipLayer,
+  Backdrop: ModalBackdrop,
+  List: ListThin,
+  ListThin,
+  ToastPosition,
+  ...ToastActions,
+  Toast,
+  createToast,
+  Clickable,
+  SettingsIcon,
+  CollapseListIcon: SettingsIcon,
+  Switch,
+  RefreshIcon: SettingsIcon,
+  DoorEnterIcon: SettingsIcon,
+  DoorExitIcon: SettingsIcon,
+  Checkbox,
+  FormTitle,
+  FormText,
+  ArrowSmallRightIcon: SettingsIcon,
+  Breadcrumbs,
+  ChevronSmallUpIcon: SettingsIcon,
+  ChevronSmallDownIcon: SettingsIcon,
+  RadioGroup,
+  FormItem,
+  get Select () { return mangled(Select) },
+  get SingleSelect () { return mangled(SingleSelect) },
+  Slider,
+  HomeIcon: SettingsIcon,
+  ShopIcon: SettingsIcon,
+  BookCheckIcon: SettingsIcon,
+  ModalTransitionState,
+  ReferencePositionLayer,
+  SearchableSelect
+}

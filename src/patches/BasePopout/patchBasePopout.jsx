@@ -5,6 +5,7 @@ import patchPopoutCSSAnimator from '@/patches/BasePopout/patchPopoutCSSAnimator'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import { autoPosition } from '@/hooks/useAutoPosition'
+import { avoidClickTrap } from '@/helpers/transition'
 
 function patchBasePopout () {
   const Original = mangled(BasePopout)
@@ -51,7 +52,7 @@ function patchBasePopout () {
             this.shouldShow(this) &&
             <AnimeTransition
               key={+this.state.isLoading}
-              targetContainer={e => e}
+              targetContainer={avoidClickTrap}
               module={this.props.module}
               autoRef={autoRef}
               anchor={anchor}

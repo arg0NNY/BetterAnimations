@@ -17,7 +17,7 @@ function patchChannelMessageList () {
 
   Patcher.after(ChannelMessageList, 'type', (self, args, value) => {
     once(() =>
-      Patcher.after(value.props.children.type, 'type', (self, args, value) => {
+      Patcher.after(findInReactTree(value.props.children, m => m?.props?.messages).type, 'type', (self, args, value) => {
         const { toEnter, toExit } = useStateFromStores([MessageStackStore], () => MessageStackStore.getMessagesAwaitingTransition())
         const module = useModule(ModuleKey.Messages)
         if (!module.isEnabled()) return
