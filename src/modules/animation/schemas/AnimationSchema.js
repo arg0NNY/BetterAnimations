@@ -48,6 +48,7 @@ export const HookSchema = (context = null, env = {}) => {
     })
 }
 
+const sanitizeSchema = deepmerge(defaultSchema, { attributes: {'*': ['className']} })
 export const HastSchema = (context = null, env = {}) =>
   ArrayOrSingleSchema(z.record(z.any()))
     .pipe(!context ? z.any() : InjectableSchema(context, env))
@@ -58,10 +59,7 @@ export const HastSchema = (context = null, env = {}) =>
         if (!value) return value
 
         return [].concat(value).map((node, i) => {
-          const sanitized = sanitize(
-            node,
-            deepmerge(defaultSchema, { attributes: {'*': ['className']} })
-          )
+          const sanitized = sanitize(node, sanitizeSchema)
           if (sanitized.type === 'root') {
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
