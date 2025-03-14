@@ -72,7 +72,7 @@ export function formatZodError (error, options = {}) {
 
 export function zodSubParse (schema, value, ctx, options = {}) {
   const { path = [], received = true } = options
-  const { success, data, error } = schema.safeParse(value)
+  const { success, data, error } = schema.safeParse(value, { path: ctx.path })
 
   if (!success) {
     error.issues.forEach(i => {

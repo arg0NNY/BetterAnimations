@@ -23,3 +23,19 @@ export function executeWithZod (value, fn, context, options = {}) {
   }
   return data
 }
+
+export function zodErrorBoundary (fn, context, options = {}) {
+  return (...args) => executeWithZod(args, (args, ctx) => {
+    try {
+      return fn(...args)
+    }
+    catch (error) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: error.message,
+        params: { error }
+      })
+      return z.NEVER
+    }
+  }, context, options)
+}

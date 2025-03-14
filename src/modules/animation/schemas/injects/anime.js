@@ -5,12 +5,19 @@ import { z } from 'zod'
 import { transformAnimeConfig } from '@/modules/animation/helpers'
 import Inject from '@/enums/Inject'
 import { zodTransformErrorBoundary } from '@/helpers/zod'
+import { zodErrorBoundary } from '@/modules/animation/utils'
 
-export const AnimeStaggerInjectSchema = InjectSchema(Inject.AnimeStagger).extend({
+export const AnimeStaggerInjectSchema = context => InjectSchema(Inject.AnimeStagger).extend({
   value: Defined,
   options: Defined.optional()
 }).transform(
-  zodTransformErrorBoundary(params => anime.stagger(params.value, params.options))
+  zodTransformErrorBoundary((params, ctx) =>
+    zodErrorBoundary(
+      anime.stagger(params.value, params.options),
+      context,
+      { path: ctx.path.concat('inject') }
+    )
+  )
 )
 
 export const AnimeTimelineInjectSchema = InjectSchema(Inject.AnimeTimeline).extend({
@@ -36,7 +43,7 @@ export const AnimeRandomInjectSchema = InjectSchema(Inject.AnimeRandom).extend({
 }).transform(
   zodTransformErrorBoundary(params => anime.random(params.min, params.max))
 )
-  
+
 export const AnimeGetInjectSchema = ({ element }) => InjectSchema(Inject.AnimeGet).extend({
   target: z.instanceof(Element).optional().default(element),
   property: z.string(),
@@ -58,19 +65,26 @@ export const AnimeSetInjectSchema = InjectWithMeta(
   { lazy: true }
 )
 
-export const AnimePathInjectSchema = InjectSchema(Inject.AnimePath).extend({
+export const AnimePathInjectSchema = context => InjectSchema(Inject.AnimePath).extend({
   path: z.instanceof(SVGElement),
   property: z.string().optional()
 }).transform(
-  zodTransformErrorBoundary(({ path, property }) => {
+  zodTransformErrorBoundary(({ path, property }, ctx) => {
     const fn = anime.path(path)
 
     if (typeof property === 'string') return fn(property)
-    return fn
+    return zodErrorBoundary(
+      fn,
+      context,
+      { path: ctx.path.concat('inject') }
+    )
   })
 )
 
-export const AnimeSetDashoffsetInjectSchema = InjectWithMeta(
-  InjectSchema(Inject.AnimeSetDashoffset).transform(() => anime.setDashoffset),
-  { immediate: true }
+export const AnimeSetDashoffsetInjectSchema = context => InjectSchema(Inject.AnimeSetDashoffset).transform((_, ctx) =>
+  zodErrorBoundary(
+    anime.setDashoffset,
+    context,
+    { path: ctx.path.concat('inject') }
+  )
 )
