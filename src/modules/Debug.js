@@ -15,7 +15,7 @@ export default class Debug {
 
   get isEnabled () {
     if (this.animation)
-      return [true, this.animationType].includes(this.animation.meta?.debug)
+      return [true, this.animationType].includes(this.animation.debug)
 
     return import.meta.env.MODE === 'development'
   }

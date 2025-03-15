@@ -11,6 +11,7 @@ import deepmerge from 'deepmerge'
 import { executeWithZod } from '@/modules/animation/utils'
 import { hookSymbol } from '@/modules/animation/schemas/SanitizeInjectableSchema'
 import { animeTimelineInjectSymbol } from '@/modules/animation/schemas/injects/anime'
+import AnimationType from '@/enums/AnimationType'
 
 // TODO: Update
 const safeInjects = [
@@ -122,6 +123,10 @@ const AnimationSchema = z.object({
   name: z.string().trim(),
   meta: MetaSchema.optional().default({}),
   settings: SettingsSchema.optional(),
+  debug: z.union([
+    z.boolean(),
+    z.enum(AnimationType.values())
+  ]).optional(),
   animate: AnimateSchema().optional(),
   enter: AnimateSchema().optional(),
   exit: AnimateSchema().optional(),
