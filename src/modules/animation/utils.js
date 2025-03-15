@@ -6,25 +6,26 @@ import { formatZodError } from '@/helpers/zod'
 export function executeWithZod (value, fn, context, options = {}) {
   const { path = [] } = options
 
-  const { success, data, error } = z.any()
-    .transform(fn)
-    .safeParse(value)
-
-  if (!success) {
+  try {
+    return z.any()
+      .transform(fn)
+      .parse(value, { path })
+  }
+  catch (error) {
     ErrorManager.registerAnimationError(
       new AnimationError(
         context.animation,
-        formatZodError(error, { pack: context.pack, path: context.path.concat(path), received: value }),
+        formatZodError(error, { pack: context.pack, path: context.path, received: value }),
         { module: context.module, pack: context.pack, type: context.type, context }
       )
     )
     context.instance.cancel(true)
-    return
   }
-  return data
 }
 
 export function zodErrorBoundary (fn, context, options = {}) {
+  const { name, ...opts } = options
+
   return (...args) => executeWithZod(args, (args, ctx) => {
     try {
       return fn(...args)
@@ -32,10 +33,10 @@ export function zodErrorBoundary (fn, context, options = {}) {
     catch (error) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: error.message,
-        params: { error }
+        message: `An error occurred while executing ${name ? `"${name}"` : 'an external function'}`,
+        params: { error, args }
       })
       return z.NEVER
     }
-  }, context, options)
+  }, context, opts)
 }

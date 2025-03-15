@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z, ZodError } from 'zod'
 import InjectableSchema from '@/modules/animation/schemas/InjectableSchema'
 import { ArrayOrSingleSchema } from '@/helpers/schemas'
 import Inject from '@/enums/Inject'
@@ -36,6 +36,7 @@ export const HookSchema = (context = null, env = {}) => {
         [].concat(value).forEach((fn, i) => {
           try { fn() }
           catch (error) {
+            if (error instanceof ZodError) throw error
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
               message: error.message,

@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z, ZodError } from 'zod'
 import { formatValuesList, Literal, parseInjectSchemas } from '@/helpers/schemas'
 import { InjectPlaceholderSchema, isInjectPlaceholder } from '@/modules/animation/schemas/injects/placeholder'
 import { formatZodError, zodSubParse } from '@/helpers/zod'
@@ -34,7 +34,7 @@ function parseInject ({ schema, context, env, value, ctx }) {
       ? schema(context, env)
       : schema,
     value,
-    ctx
+    { path: ctx.path }
   )
 }
 
@@ -59,8 +59,7 @@ const InjectableSchema = (context, env = {}) => {
           return zodSubParse(
             InjectableSchema(context, env),
             value.value,
-            ctx,
-            { path: value.path }
+            { path: ctx.path.concat(value.path) }
           )
 
         if (value?.inject === undefined)
@@ -100,25 +99,23 @@ const InjectableSchema = (context, env = {}) => {
             if (meta.lazy)
               return wrapLazyInject(
                 (context, env) => (...args) => {
-                  const { success, data, error } = InjectableSchema(context, {
-                    ...env,
-                    stage: ParseStage.Lazy,
-                    args
-                  }).safeParse(value)
-
-                  if (!success) {
+                  try {
+                    return InjectableSchema(context, {
+                      ...env,
+                      stage: ParseStage.Lazy,
+                      args
+                    }).parse(value, { path: ctx.path })
+                  }
+                  catch (error) {
                     ErrorManager.registerAnimationError(
                       new AnimationError(
                         context.animation,
-                        formatZodError(error, { pack: context.pack, path: context.path.concat(ctx.path), received: value }),
+                        formatZodError(error, { pack: context.pack, path: context.path, received: value }),
                         { module: context.module, pack: context.pack, type: context.type, context, stage: 'Lazy' }
                       )
                     )
                     context.instance.cancel(true)
-                    return
                   }
-
-                  return data
                 }
               )
 
@@ -128,6 +125,7 @@ const InjectableSchema = (context, env = {}) => {
           return parseInject({ schema, context, env, value, ctx })
         }
         catch (error) {
+          if (error instanceof ZodError) throw error
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: error.message,
@@ -137,6 +135,7 @@ const InjectableSchema = (context, env = {}) => {
         }
       }
       catch (error) {
+        if (error instanceof ZodError) throw error
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: error.message,

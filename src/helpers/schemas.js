@@ -21,16 +21,6 @@ export const hasInSettings = (name, has) => (value, ctx) => {
   return value
 }
 
-export const matchesSchema = schema => (value, ctx) => {
-  const { success, data, error } = schema.safeParse(value)
-
-  if (!success) {
-    error.issues.forEach(i => ctx.addIssue(i))
-    return z.NEVER
-  }
-  return data
-}
-
 export const parseInjectSchemas = schemas => Object.fromEntries(
   Object.entries(schemas).map(
     ([key, schema]) => [

@@ -40,12 +40,7 @@ export function formatZodError (error, options = {}) {
     if (issue.unionErrors)
       message += indent(
         issue.unionErrors
-          .map(e => formatZodError(e, {
-            pack,
-            path: issue.params?.initialPath
-              ? issuePath.slice(0, -issue.params.initialPath.length)
-              : path
-          }))
+          .map(e => formatZodError(e, { pack, path }))
           .join(`\nOR`)
       )
 
@@ -54,7 +49,14 @@ export function formatZodError (error, options = {}) {
       if (visualized) message += indent('\n' + visualized)
     }
 
-    if ('received' in (issue.params ?? {}))
+    if ('args' in (issue.params ?? {}))
+      message += indent(
+        `\n↪ Received arguments: `
+        + indent(
+          '(' + objectInspect(issue.params.args, { indent: 2 }).slice(1, -1) + ')'
+        ).trim()
+      )
+    else if ('received' in (issue.params ?? {}))
       message += indent(
         `\n↪ Received: `
         + indent(objectInspect(issue.params.received, { indent: 2 })).trim()
@@ -70,19 +72,18 @@ export function formatZodError (error, options = {}) {
   }).join('\n')
 }
 
-export function zodSubParse (schema, value, ctx, options = {}) {
+export function zodSubParse (schema, value, options = {}) {
   const { path = [], received = true } = options
-  const { success, data, error } = schema.safeParse(value, { path: ctx.path })
+  const { success, data, error } = schema.safeParse(value, { path })
 
   if (!success) {
-    error.issues.forEach(i => {
-      i.params ??= {}
-      i.params.initialPath = structuredClone(i.path)
-      if (received) i.params.received = getPath(value, i.path[i.path.length - 1] === 'inject' ? i.path.slice(0, -1) : i.path)
-      if (path.length) i.path.unshift(...path)
-      ctx.addIssue(i)
-    })
-    return z.NEVER
+    if (received)
+      error.issues.forEach(i => {
+        const issuePath = i.path.slice(path.length)
+        i.params ??= {}
+        i.params.received = getPath(value, issuePath[issuePath.length - 1] === 'inject' ? issuePath.slice(0, -1) : issuePath)
+      })
+    throw error
   }
   return data
 }

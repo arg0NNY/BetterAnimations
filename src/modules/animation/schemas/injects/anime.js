@@ -15,7 +15,7 @@ export const AnimeStaggerInjectSchema = context => InjectSchema(Inject.AnimeStag
     zodErrorBoundary(
       anime.stagger(params.value, params.options),
       context,
-      { path: ctx.path.concat('inject') }
+      { path: ctx.path, name: 'anime.stagger' }
     )
   )
 )
@@ -76,7 +76,7 @@ export const AnimePathInjectSchema = context => InjectSchema(Inject.AnimePath).e
     return zodErrorBoundary(
       fn,
       context,
-      { path: ctx.path.concat('inject') }
+      { path: ctx.path, name: 'anime.path' }
     )
   })
 )
@@ -85,6 +85,6 @@ export const AnimeSetDashoffsetInjectSchema = context => InjectSchema(Inject.Ani
   zodErrorBoundary(
     anime.setDashoffset,
     context,
-    { path: ctx.path.concat('inject') }
+    { path: ctx.path, name: 'anime.setDashoffset' }
   )
 )
