@@ -20,22 +20,34 @@ export const AnimeStaggerInjectSchema = context => InjectSchema(Inject.AnimeStag
   )
 )
 
-export const AnimeTimelineInjectSchema = InjectSchema(Inject.AnimeTimeline).extend({
-  parameters: Defined.optional(),
-  children: z.object({
-    parameters: Defined,
-    offset: Defined.optional()
-  }).array().optional()
-}).transform(params => (...args) => {
-  const tl = anime.timeline(
-    params.parameters && transformAnimeConfig(params.parameters, ...args)
-  )
-  params.children?.forEach(p => tl.add(
-    transformAnimeConfig(p.parameters, ...args),
-    p.offset
-  ))
-  return tl
-})
+export const animeTimelineInjectSymbol = Symbol('animeTimelineInject')
+export const AnimeTimelineInjectSchema = InjectWithMeta(
+  InjectSchema(Inject.AnimeTimeline).extend({
+    parameters: Defined.optional(),
+    children: z.object({
+      parameters: Defined,
+      offset: Defined.optional()
+    }).array().optional()
+  }).transform(params => {
+    const fn = (...args) => {
+      const tl = anime.timeline(
+        params.parameters && transformAnimeConfig(params.parameters, ...args)
+      )
+      params.children?.forEach(p => tl.add(
+        transformAnimeConfig(p.parameters, ...args),
+        p.offset
+      ))
+      return tl
+    }
+    fn[animeTimelineInjectSymbol] = true
+    return fn
+  }),
+  {
+    allowed: ({ ctx }) => ctx.path.length <= 2
+      && ctx.path[0] === 'anime'
+      && ['number', 'undefined'].includes(typeof ctx.path[1])
+  }
+)
 
 export const AnimeRandomInjectSchema = InjectSchema(Inject.AnimeRandom).extend({
   min: z.number(),

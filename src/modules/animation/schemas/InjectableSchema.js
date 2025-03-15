@@ -102,11 +102,11 @@ const InjectableSchema = (context, env = {}) => {
             if (
               (disallowed?.length && disallowed.includes(value.inject))
               || (allowed?.length && !allowed.includes(value.inject))
+              || (typeof meta.allowed === 'function' && !meta.allowed({ value, context, ctx, env }))
             ) {
               ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                message: `Inject '${value.inject}' is not allowed`,
-                path: ['inject']
+                message: `Inject '${value.inject}' is not allowed`
               })
               return z.NEVER
             }

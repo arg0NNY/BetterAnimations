@@ -10,6 +10,7 @@ import { toDom } from 'hast-util-to-dom'
 import deepmerge from 'deepmerge'
 import { executeWithZod } from '@/modules/animation/utils'
 import { hookSymbol } from '@/modules/animation/schemas/SanitizeInjectableSchema'
+import { animeTimelineInjectSymbol } from '@/modules/animation/schemas/injects/anime'
 
 // TODO: Update
 const safeInjects = [
@@ -54,8 +55,8 @@ export const HookSchema = (context = null, env = {}) => {
 
 const sanitizeSchema = deepmerge(defaultSchema, { attributes: {'*': ['className']} })
 export const HastSchema = (context = null, env = {}) =>
-  ArrayOrSingleSchema(z.record(z.any()))
-    .pipe(!context ? z.any() : InjectableSchema(context, env))
+  (!context ? z.any() : InjectableSchema(context, env))
+    .pipe(ArrayOrSingleSchema(z.record(z.any())))
     .optional()
     .transform(!context || env.stage !== ParseStage.Layout
       ? v => v
@@ -83,6 +84,20 @@ export const CssSchema = (context = null, env = {}) =>
     .pipe(!context ? z.any() : InjectableSchema(context, env))
     .optional()
 
+export const AnimeSchema = (context = null, env = {}) =>
+  (!context ? z.any() : InjectableSchema(context, env))
+    .pipe(
+      ArrayOrSingleSchema(
+        z.union([
+          z.record(z.any()),
+          z.instanceof(Function).refine(
+            fn => fn[animeTimelineInjectSymbol] === true,
+            { message: `Only '${Inject.AnimeTimeline}' is allowed as a function` }
+          )
+        ]).nullable().optional()
+      )
+    )
+
 export const AnimateSchema = (context = null, env = {}) => {
   const layoutContext = context
   const layoutEnv = Object.assign({ allowed: safeInjects }, env)
@@ -92,8 +107,7 @@ export const AnimateSchema = (context = null, env = {}) => {
   return z.object({
     hast: env.stage === ParseStage.Execute ? z.any() : HastSchema(layoutContext, layoutEnv),
     css: env.stage === ParseStage.Execute ? z.any() : CssSchema(layoutContext, layoutEnv),
-    anime: ArrayOrSingleSchema(z.record(z.any()).nullable().optional())
-      .pipe(!context ? z.any() : InjectableSchema(context, env)),
+    anime: AnimeSchema(context, env),
     onBeforeCreate: HookSchema(context, env).optional(),
     onCreated: HookSchema(context, env).optional(),
     onBeforeBegin: HookSchema(context, env).optional(),
