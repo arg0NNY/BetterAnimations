@@ -30,7 +30,6 @@ const SanitizeInjectableSchema = z.lazy(
     if (isInjectPlaceholder(value))
       return value.value
 
-    if (typeof value === 'function') console.log(value)
     return value
   })
 )
