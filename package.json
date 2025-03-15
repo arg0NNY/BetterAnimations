@@ -21,13 +21,11 @@
     "deepmerge": "^4.3.1",
     "hast-util-sanitize": "^5.0.1",
     "hast-util-to-dom": "^4.0.0",
-    "history": "4.10.1",
     "json-source-map": "^0.6.1",
     "lodash": "^4.17.21",
     "object-inspect": "^1.13.2",
     "semver": "^7.6.2",
     "spelling": "^2.0.2",
-    "zod": "^3.22.4",
-    "zod-validation-error": "^2.1.0"
+    "zod": "^3.22.4"
   }
 }
