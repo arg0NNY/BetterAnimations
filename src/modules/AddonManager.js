@@ -149,7 +149,7 @@ export default class AddonManager {
     addon.added = stats.atimeMs
     addon.modified = stats.mtimeMs
     addon.size = stats.size
-    addon.fileContent = fileContent.split('\n')
+    addon.fileContent = fileContent.split(/\r?\n|\r|\n/g)
     addon.installed = addon
     if (this.addonList.find(c => c.id === addon.id))
       throw new AddonError(addon, `There is already a ${this.prefix} with name ${addon.name}`, null, this.prefix)
