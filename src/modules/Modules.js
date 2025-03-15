@@ -84,8 +84,9 @@ class Module {
     const ctx = buildContext(pack, animation, type, settings, { module: this, path })
 
     const debug = Debug.animation(animation, type)
-    const data = animation[type] ?? animation.animate
-    debug.initializeStart(data, ctx)
+    const data = animation?.[type] ?? animation?.animate
+
+    if (animation) debug.initializeStart(data, ctx)
 
     let animate, error
     try {
@@ -101,7 +102,7 @@ class Module {
       ErrorManager.registerAnimationError(error)
     }
 
-    debug.initializeEnd(animate, ctx)
+    if (animation) debug.initializeEnd(animate, ctx)
 
     return {
       packSlug: pointer.packSlug ?? null,
