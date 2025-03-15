@@ -9,6 +9,7 @@ import { defaultSchema, sanitize } from 'hast-util-sanitize'
 import { toDom } from 'hast-util-to-dom'
 import deepmerge from 'deepmerge'
 import { executeWithZod } from '@/modules/animation/utils'
+import { hookSymbol } from '@/modules/animation/schemas/SanitizeInjectableSchema'
 
 // TODO: Update
 const safeInjects = [
@@ -31,21 +32,23 @@ export const HookSchema = (context = null, env = {}) => {
   // Otherwise, expect a lazy inject, which turned into a generator function, awaiting a complete context
   return InjectableSchema(context, env)
     .pipe(ArrayOrSingleSchema(z.function()))
-    .transform((value, ctx) => () => {
-      return executeWithZod(value, (value, ctx) => {
-        [].concat(value).forEach((fn, i) => {
-          try { fn() }
-          catch (error) {
-            if (error instanceof ZodError) throw error
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: error.message,
-              path: Array.isArray(value) ? [i] : [],
-              params: { error, received: fn }
-            })
-          }
-        })
-      }, context, ctx)
+    .transform((value, ctx) => {
+      const hook = () => executeWithZod(value, (value, ctx) => {
+          [].concat(value).forEach((fn, i) => {
+            try { fn() }
+            catch (error) {
+              if (error instanceof ZodError) throw error
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: error.message,
+                path: Array.isArray(value) ? [i] : [],
+                params: { error, received: fn }
+              })
+            }
+          })
+        }, context, ctx)
+      hook[hookSymbol] = true
+      return hook
     })
 }
 

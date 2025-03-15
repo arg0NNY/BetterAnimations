@@ -1,6 +1,3 @@
-import { toDom } from 'hast-util-to-dom'
-import { defaultSchema, sanitize } from 'hast-util-sanitize'
-import deepmerge from 'deepmerge'
 import anime from 'animejs'
 import { buildCSS, transformAnimeConfig } from '@/modules/animation/helpers'
 import AnimationType from '@/enums/AnimationType'
@@ -11,6 +8,7 @@ import AnimationError from '@/structs/AnimationError'
 import { formatZodError } from '@/helpers/zod'
 import { executeWithZod } from '@/modules/animation/utils'
 import { z } from 'zod'
+import Debug from '@/modules/Debug'
 
 export function buildContext (pack, animation, type, settings = {}, context = {}) {
   return Object.assign(
@@ -56,23 +54,29 @@ export function buildWrapper (data, context) {
   return wrapper
 }
 
-/**
- * @param data
- * @param context {{
- *     element,
- *     type,
- *     variant,
- *     duration,
- *     easing,
- *     position
- * }}
- * @param options
- */
 export function buildAnimateAssets (data = null, context, options = {}) {
-  const wrapper = data ? buildWrapper(data, context) : null
+  const debug = Debug.animation(context.animation, context.type)
+  debug.parseStart(data, context)
 
   try {
-    data = data ? AnimateSchema({ ...context, wrapper }, { stage: ParseStage.Execute })
+    data = data ? AnimateSchema(context, { stage: ParseStage.Layout })
+      .parse(data) : {}
+  }
+  catch (error) {
+    ErrorManager.registerAnimationError(
+      new AnimationError(
+        context.animation,
+        formatZodError(error, { pack: context.pack, path: context.path, received: data }),
+        { module: context.module, pack: context.pack, type: context.type, context, stage: 'Layout' }
+      )
+    )
+    context.instance.cancel(true)
+    return {}
+  }
+
+  context.wrapper = data ? buildWrapper(data, context) : null
+  try {
+    data = data ? AnimateSchema(context, { stage: ParseStage.Execute })
       .parse(data) : {}
   }
   catch (error) {
@@ -87,6 +91,8 @@ export function buildAnimateAssets (data = null, context, options = {}) {
     return {}
   }
 
+  debug.parseEnd(data, context)
+
   const before = options.before && context.type === AnimationType.Enter
     ? options.before(context)
     : null
@@ -97,13 +103,14 @@ export function buildAnimateAssets (data = null, context, options = {}) {
   instance?.pause()
 
   const exposedHook = hook => () => {
+    debug.hook(hook, context)
     data[hook]?.()
     before?.[hook]?.()
     after?.[hook]?.()
   }
 
   return {
-    wrapper,
+    wrapper: context.wrapper,
     onBeforeCreate: exposedHook('onBeforeCreate'),
     onBeforeDestroy: exposedHook('onBeforeDestroy'),
     onDestroyed: exposedHook('onDestroyed'),
@@ -114,8 +121,8 @@ export function buildAnimateAssets (data = null, context, options = {}) {
           return executeWithZod(value, (value, ctx) => {
             try {
               return typeof value === 'function' // Can be a function because of "anime.timeline" inject
-                ? value(wrapper)
-                : anime(transformAnimeConfig(value, wrapper))
+                ? value(context.wrapper)
+                : anime(transformAnimeConfig(value, context.wrapper))
             }
             catch (error) {
               ctx.addIssue({
@@ -135,6 +142,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
       context.instance.pause = pauseAll
       if (context.instance.cancelled) return {}
 
+      debug.hook('onCreated', context)
       data.onCreated?.()
       if (context.instance.cancelled) return {}
 
@@ -143,6 +151,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
 
         instance.finished.then(() => {
           before.onCompleted?.()
+          debug.hook('onBeforeBegin', context)
           data.onBeforeBegin?.()
           instances.slice(1).forEach(i => {
             i.reset()
@@ -162,10 +171,14 @@ export function buildAnimateAssets (data = null, context, options = {}) {
 
       return {
         instances,
-        onBeforeBegin: !before ? data.onBeforeBegin : null,
+        onBeforeBegin: !before ? () => {
+          debug.hook('onBeforeBegin', context)
+          data.onBeforeBegin?.()
+        } : null,
         pause: pauseAll,
         finished: finished
           .then(() => {
+            debug.hook('onCompleted', context)
             data.onCompleted?.()
             if (context.instance.cancelled) return
 

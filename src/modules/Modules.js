@@ -22,6 +22,7 @@ import DirectionAutoType from '@/enums/DirectionAutoType'
 import ErrorManager from '@/modules/ErrorManager'
 import AnimationError from '@/structs/AnimationError'
 import { formatZodError } from '@/helpers/zod'
+import Debug from '@/modules/Debug'
 
 class Module {
   constructor (id, name, meta = {}, { parent, description, alert } = {}) {
@@ -82,10 +83,14 @@ class Module {
     const settings = animation && this.buildSettings(animation, type, config, { auto: false })
     const ctx = buildContext(pack, animation, type, settings, { module: this, path })
 
+    const debug = Debug.animation(animation, type)
+    const data = animation[type] ?? animation.animate
+    debug.initializeStart(data, ctx)
+
     let animate, error
     try {
       animate = animation && AnimateSchema(ctx, { stage: ParseStage.Initialize })
-        .parse(animation[type] ?? animation.animate)
+        .parse(data)
     }
     catch (err) {
       error = new AnimationError(
@@ -95,6 +100,8 @@ class Module {
       )
       ErrorManager.registerAnimationError(error)
     }
+
+    debug.initializeEnd(animate, ctx)
 
     return {
       packSlug: pointer.packSlug ?? null,
@@ -116,31 +123,15 @@ class Module {
   }
 
   getAnimation (type, options = {}, context = null) {
-    const { pack, animation, path, config, animate: cachedAnimate } = this.animations[type]
+    const { pack, animation, path, config } = this.animations[type]
 
     const settings = animation && this.buildSettings(animation, type, config, options)
     const ctx = buildContext(pack, animation, type, settings, { module: this, path, ...context })
 
-    let animate
-    try {
-      animate = cachedAnimate && context && AnimateSchema(ctx, { stage: ParseStage.Layout })
-        .parse(cachedAnimate)
-    }
-    catch (error) {
-      ErrorManager.registerAnimationError(
-        new AnimationError(
-          animation,
-          formatZodError(error, { pack, path, received: cachedAnimate }),
-          { module: this, pack, type, context: ctx, stage: 'Layout' }
-        )
-      )
-    }
-
     return {
       ...this.animations[type],
       settings,
-      context: ctx,
-      animate
+      context: ctx
     }
   }
   getAnimations (options = {}) {

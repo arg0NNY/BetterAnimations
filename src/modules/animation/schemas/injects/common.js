@@ -15,6 +15,7 @@ import Mouse from '@/modules/Mouse'
 import ModuleType from '@/enums/ModuleType'
 import { getPath } from '@/helpers/object'
 import { zodTransformErrorBoundary } from '@/helpers/zod'
+import Debug from '@/modules/Debug'
 
 export const ElementInjectSchema = ({ element }) => ElementSchema(Inject.Element, element)
 
@@ -113,17 +114,12 @@ export const ArgumentsInjectSchema = (context, env) => InjectSchema(Inject.Argum
 })
 
 export const DebugInjectSchema = InjectWithMeta(
-  ({ animation, type }) => InjectSchema(Inject.Debug).extend({
+  context => InjectSchema(Inject.Debug).extend({
     data: z.any().optional()
-  }).transform(({ data }) => Logger.stylized(
-    'Animation',
-    'log',
-    `%c${animation.key} (${type}) %c[DEBUG]%c`,
-    'color: #B8AF5E;',
-    'color: #6BA6FF;',
-    '',
-    data
-  )),
+  }).transform(
+    ({ data }, ctx) => Debug.animation(context.animation, context.type)
+      .debug(Inject.Debug, context.path.concat(ctx.path), context, data)
+  ),
   { lazy: true }
 )
 

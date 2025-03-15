@@ -2,7 +2,12 @@ import { z, ZodError } from 'zod'
 import { formatValuesList, Literal, parseInjectSchemas } from '@/helpers/schemas'
 import { InjectPlaceholderSchema, isInjectPlaceholder } from '@/modules/animation/schemas/injects/placeholder'
 import { formatZodError, zodSubParse } from '@/helpers/zod'
-import { isLazyInject, LazyInjectSchema, wrapLazyInject } from '@/modules/animation/schemas/injects/lazy'
+import {
+  generatedLazyInjectSymbol,
+  isLazyInject,
+  LazyInjectSchema,
+  wrapLazyInject
+} from '@/modules/animation/schemas/injects/lazy'
 import ParseStage from '@/enums/ParseStage'
 import Spelling from 'spelling'
 import ErrorManager from '@/modules/ErrorManager'
@@ -12,6 +17,7 @@ import * as AnimeInjectSchemas from '@/modules/animation/schemas/injects/anime'
 import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/settings'
 import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
 import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/operators'
+import Debug from '@/modules/Debug'
 
 const injectSchemas = {
   ...parseInjectSchemas(CommonInjectSchemas),
@@ -29,31 +35,43 @@ function assertInjectType (type) {
 }
 
 function parseInject ({ schema, context, env, value, ctx }) {
-  return zodSubParse(
+  const report = Debug.animation(context.animation, context.type)
+    .inject(value.inject, context.path.concat(ctx.path), context, value)
+
+  const parsed = zodSubParse(
     typeof schema === 'function'
       ? schema(context, env)
       : schema,
     value,
     { path: ctx.path }
   )
+  report(parsed)
+  return parsed
 }
+
+export const InjectableBaseSchema = (schema, extend = []) => z.union([
+  ...extend,
+  Literal,
+  z.instanceof(Function), // Some injects return functions (anime.timeline, anime.setDashoffset, etc.)
+  z.instanceof(Element), // Prevent Zod from parsing Element
+  z.array(schema),
+  z.record(schema)
+])
 
 const InjectableSchema = (context, env = {}) => {
   const { allowed, disallowed, stage } = env
 
   const schema = z.lazy(
-    () => z.union([
-      Literal,
-      z.function(), // Some injects return functions (anime.timeline, anime.setDashoffset, etc.)
-      z.instanceof(Element), // Prevent Zod from parsing Element
+    () => InjectableBaseSchema(schema, [
       InjectPlaceholderSchema, // Prevent Zod from parsing InjectPlaceholder
-      LazyInjectSchema, // Prevent Zod from parsing LazyInject
-      z.array(schema),
-      z.record(schema)
+      LazyInjectSchema // Prevent Zod from parsing LazyInject
     ]).transform((value, ctx) => {
       try {
-        if (isLazyInject(value)) // A parsed lazy inject, which turned into a generator function, awaiting a complete context
-          return value.generator(context, env)
+        if (isLazyInject(value)) { // A parsed lazy inject, which turned into a generator function, awaiting a complete context
+          const generated = value.generator(context, env)
+          generated[generatedLazyInjectSymbol] = value.name
+          return generated
+        }
 
         if (isInjectPlaceholder(value))
           return zodSubParse(
@@ -98,7 +116,11 @@ const InjectableSchema = (context, env = {}) => {
 
             if (meta.lazy)
               return wrapLazyInject(
+                value.inject,
                 (context, env) => (...args) => {
+                  Debug.animation(context.animation, context.type)
+                    .lazyInjectCall(value.inject, context.path.concat(ctx.path), args, context)
+
                   try {
                     return InjectableSchema(context, {
                       ...env,

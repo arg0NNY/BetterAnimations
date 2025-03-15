@@ -1,15 +1,18 @@
 import { z } from 'zod'
 
 export const lazyInjectSymbol = Symbol('lazyInject')
+export const generatedLazyInjectSymbol = Symbol('generatedLazyInject')
 
 export const LazyInjectSchema = z.object({
   symbol: z.literal(lazyInjectSymbol),
+  name: z.string(),
   generator: z.function()
 })
 
-export function wrapLazyInject (generator) {
+export function wrapLazyInject (name, generator) {
   return {
     symbol: lazyInjectSymbol,
+    name,
     generator
   }
 }
