@@ -185,9 +185,13 @@
             {
               "inject": "type",
               "enter": {
-                "inject": "direction",
-                "forwards": { "scale": [1.1, 1] },
-                "backwards": { "scale": [0.9, 1] }
+                "inject": "isIntersected",
+                "true": { "scale": 1 },
+                "false": {
+                  "inject": "direction",
+                  "forwards": { "scale": [1.1, 1] },
+                  "backwards": { "scale": [0.9, 1] }
+                }
               },
               "exit": {
                 "inject": "direction",
@@ -227,7 +231,11 @@
             "easing": { "inject": "easing" },
             "opacity": {
               "inject": "type",
-              "enter": [0, 1],
+              "enter": {
+                "inject": "module.type",
+                "reveal": [0, 1],
+                "switch": 1
+              },
               "exit": 0
             }
           },
@@ -488,14 +496,26 @@
             "inject": "function",
             "return": {
               "inject": "type",
-              "enter": [
-                { "inject": "var.get", "name": "clipPathCollapsed" },
-                { "inject": "var.get", "name": "clipPathExpanded" }
-              ],
-              "exit": [
-                { "inject": "var.get", "name": "clipPathExpanded" },
-                { "inject": "var.get", "name": "clipPathCollapsed" }
-              ]
+              "enter": {
+                "inject": "isIntersected",
+                "true": { "inject": "var.get", "name": "clipPathExpanded" },
+                "false": [
+                  { "inject": "var.get", "name": "clipPathCollapsed" },
+                  { "inject": "var.get", "name": "clipPathExpanded" }
+                ]
+              },
+              "exit": {
+                "inject": "module.type",
+                "reveal": {
+                  "inject": "isIntersected",
+                  "true": { "inject": "var.get", "name": "clipPathCollapsed" },
+                  "false": [
+                    { "inject": "var.get", "name": "clipPathExpanded" },
+                    { "inject": "var.get", "name": "clipPathCollapsed" }
+                  ]
+                },
+                "switch": []
+              }
             }
           }
         },
