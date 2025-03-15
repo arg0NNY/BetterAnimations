@@ -179,7 +179,7 @@ export default new class AnimationStore {
   }
 
   destroyAnimation (animation, dueToError = false) {
-    // TODO: Make specific actions if animation destroyed due to error
+    if (dueToError && animation.module.type === ModuleType.Switch) this.cooldown()
     this.removeAnimation(animation)
   }
 
