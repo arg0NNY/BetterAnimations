@@ -139,11 +139,6 @@ export default class AddonManager {
       parseError = e
     }
     addon.slug = path.basename(filename).replace(this.extension, '').replace(/ /g, '-')
-    if (!addon.name) addon.name = addon.slug
-    if (!addon.author) addon.author = 'Unknown Author'
-    if (!addon.version) addon.version = '???'
-    if (!addon.description) addon.description = 'Description not provided.'
-    // if (!addon.name || !addon.author || !addon.description || !addon.version) return new AddonError(addon.name || path.basename(filename), filename, "Addon is missing name, author, description, or version", {message: "Addon must provide name, author, description, and version.", stack: ""}, this.prefix);
     addon.id = addon.slug
     addon.filename = path.basename(filename)
     addon.added = stats.atimeMs
@@ -152,7 +147,7 @@ export default class AddonManager {
     addon.fileContent = fileContent.split(/\r?\n|\r|\n/g)
     addon.installed = addon
     if (this.addonList.find(c => c.id === addon.id))
-      throw new AddonError(addon, `There is already a ${this.prefix} with name ${addon.name}`, null, this.prefix)
+      throw new AddonError(addon, `There is already a ${this.prefix} with name "${addon.id}"`, null, this.prefix)
     this.addonList.push(addon)
     if (parseError)
       throw new AddonError(addon, formatAddonParseError(addon, parseError), parseError, this.prefix)
