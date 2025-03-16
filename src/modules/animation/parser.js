@@ -1,7 +1,7 @@
 import anime from 'animejs'
 import { buildCSS, transformAnimeConfig } from '@/modules/animation/helpers'
 import AnimationType from '@/enums/AnimationType'
-import { AnimateSchema } from '@/modules/animation/schemas/AnimationSchema'
+import AnimateSchema from '@/modules/animation/schemas/AnimateSchema'
 import ParseStage from '@/enums/ParseStage'
 import ErrorManager from '@/modules/ErrorManager'
 import AnimationError from '@/structs/AnimationError'

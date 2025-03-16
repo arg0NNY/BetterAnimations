@@ -33,7 +33,9 @@ export default class AddonManager {
 
   initialize () {
     this.ensureAddonFolder()
-    return this.loadAllAddons()
+    const errors = this.loadAllAddons()
+    Logger.info(this.name, 'Initialized.')
+    return errors
   }
 
   ensureAddonFolder () {

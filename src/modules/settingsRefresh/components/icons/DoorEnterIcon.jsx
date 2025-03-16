@@ -1,4 +1,4 @@
-import useIconSize from '@/modules/settingsRefresh/hooks/useIconSize'
+import useIconSize from '@/hooks/useIconSize'
 import { colors } from '@/modules/DiscordModules'
 
 function DoorEnterIcon ({ size, width, height, color = colors.INTERACTIVE_NORMAL }) {

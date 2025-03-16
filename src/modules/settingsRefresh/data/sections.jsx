@@ -8,7 +8,7 @@ import SpineIcon from '@/modules/settingsRefresh/components/icons/SpineIcon'
 import SettingsSections from '@/enums/SettingsSections'
 import HomeIcon from '@/modules/settingsRefresh/components/icons/HomeIcon'
 import ShopIcon from '@/modules/settingsRefresh/components/icons/ShopIcon'
-import BookCheckIcon from '@/modules/settingsRefresh/components/icons/BookCheckIcon'
+import BookCheckIcon from '@/components/icons/BookCheckIcon'
 
 export function getSections () {
   return [

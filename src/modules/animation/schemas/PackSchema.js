@@ -8,7 +8,7 @@ const PackSchema = z.object({
   author: z.string().trim().min(1),
   version: z.string().regex(regex.semver, 'Should match semver format'),
   description: z.string().optional(),
-  invite: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),
+  invite: z.string().optional(),
   authorLink: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),
   donate: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),
   patreon: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),

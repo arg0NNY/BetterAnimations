@@ -4,7 +4,13 @@ import SettingsModal from '@/modules/settingsRefresh/SettingsModal'
 
 export default new class Settings {
 
+  isSettingsModalOpen () {
+    return !!LayerStore.getLayers().at(-1)?.__BA_isSettingsModal
+  }
+
   openSettingsModal (section) {
+    if (this.isSettingsModalOpen()) return
+
     if (!LayerStore.getLayers().includes('USER_SETTINGS'))
       UserSettingsModal.open('plugins')
 
@@ -14,7 +20,7 @@ export default new class Settings {
   }
 
   closeSettingsModal () {
-    if (LayerStore.getLayers().at(-1)?.__BA_isSettingsModal)
+    if (this.isSettingsModalOpen())
       LayerActions.popLayer()
   }
 

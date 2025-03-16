@@ -23,7 +23,7 @@ export default class AnimationError extends BaseError {
 
     super(message, options, meta)
     this.animation = animation
-    this.type = type
+    this.animationType = type
     this.context = context
   }
 

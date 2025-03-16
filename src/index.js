@@ -67,10 +67,9 @@ export default function (meta) {
       Style.initialize()
       Prompt.onStartup()
       Config.initialize()
+      ErrorManager.initialize()
       PackRegistry.initialize()
-      const packErrors = PackManager.initialize()
-      if (packErrors?.length) Logger.error('Startup', 'Failed to load packs:', packErrors)
-      else Logger.info('PackManager', 'Initialized.')
+      PackManager.initialize()
 
       Modules.initialize()
 
@@ -102,6 +101,7 @@ export default function (meta) {
       Mouse.shutdown()
       Style.shutdown()
       Config.shutdown()
+      ErrorManager.shutdown()
       PackRegistry.shutdown()
       PackManager.shutdown()
 

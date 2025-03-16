@@ -76,10 +76,12 @@ export const ListThin = (() => {
   ]
 })()
 export const ToastPosition = Webpack.getModule(Filters.byKeys('MESSAGE', 'SUCCESS', 'FAILURE'), { searchExports: true })
-export const ToastActions = Webpack.getMangled(Filters.bySource('currentToast', 'queuedToasts'), {
+export const { showToast, popToast, useToastStore } = Webpack.getMangled(Filters.bySource('currentToast', 'queuedToasts'), {
   showToast: Filters.byRegex(/queuedToasts:\[...\w+\.queuedToasts,\w+\]/),
-  popToast: Filters.byStrings('currentToast:null')
+  popToast: Filters.byStrings('currentToast:null'),
+  useToastStore: Filters.byKeys('setState')
 })
+export const popToastKeyed = [...Webpack.getWithKey(Filters.byStrings('currentToast:null'))]
 export const { Toast, createToast } = Webpack.getMangled(Filters.bySource('toast', 'FAILURE', 'STATUS_DANGER'), {
   Toast: Filters.byKeys('type'),
   createToast: Filters.byStrings('type', 'position')
@@ -186,6 +188,20 @@ export const { Alert, AlertTypes } = mapModule(Filters.byStrings('messageType', 
 })
 export const UserSettingsModal = Webpack.getByKeys('open', 'setSection', 'updateAccount')
 export const { colors } = Webpack.getByKeys('colors', 'modules')
+export const { ModalRoot, ModalSize, ModalHeader, ModalFooter, ModalContent } = Webpack.getMangled(
+  Filters.bySource('MODAL', 'fullscreenOnMobile'),
+  {
+    ModalRoot: Filters.byStrings('MODAL', 'fullscreenOnMobile'),
+    ModalSize: Filters.byKeys('MEDIUM', 'LARGE'),
+    ModalHeader: Filters.byStrings('headerIdIsManaged', 'HORIZONTAL'),
+    ModalFooter: Filters.byStrings('footerSeparator'),
+    ModalContent: Filters.byStrings('content', 'scrollbarType')
+  }
+)
+export const Button = Webpack.getModule(Filters.byKeys('Link', 'Sizes'), { searchExports: true })
+export const Flex = Webpack.getByKeys('Direction', 'Justify', 'Child')
+export const Parser = Webpack.getByKeys('defaultRules', 'parse').defaultRules
+export const InviteEmbed = Webpack.getByStrings('Invite Button Embed', 'getInvite')
 
 export const Common = {
   ...ModalActions,
@@ -198,7 +214,8 @@ export const Common = {
   List: ListThin,
   ListThin,
   ToastPosition,
-  ...ToastActions,
+  showToast,
+  popToast,
   Toast,
   createToast,
   Clickable,

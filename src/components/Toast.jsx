@@ -25,17 +25,22 @@ function ToastIcon ({ type, className }) {
   }
 }
 
-function Toast ({ children, type = ToastTypes.INFO }) {
+function Toast ({ children, text, type = ToastTypes.INFO }) {
   return (
     <div className={DiscordClasses.Toast.toast}>
       <ToastIcon
         type={type}
         className={`${DiscordClasses.Toast.icon} BA__toastIcon`}
       />
-      <Common.Text
-        color="header-primary"
-        variant="text-md/normal"
-      >{children}</Common.Text>
+      {text && (
+        <Common.Text
+          color="header-primary"
+          variant="text-md/normal"
+        >
+          {text}
+        </Common.Text>
+      )}
+      {children}
     </div>
   )
 }
