@@ -125,6 +125,7 @@ export default class AddonManager {
 
   // Subclasses should overload this and modify the addon using the fileContent as needed to "require()"" the file
   requireAddon (filename) {
+    const slug = path.basename(filename).replace(this.extension, '').replace(/ /g, '-')
     let fileContent = fs.readFileSync(filename, 'utf8')
     fileContent = stripBOM(fileContent)
     const stats = fs.statSync(filename)
@@ -135,10 +136,10 @@ export default class AddonManager {
       addon.pointers = pointers
     }
     catch (e) {
-      addon = {}
+      addon = { name: slug }
       parseError = e
     }
-    addon.slug = path.basename(filename).replace(this.extension, '').replace(/ /g, '-')
+    addon.slug = slug
     addon.id = addon.slug
     addon.filename = path.basename(filename)
     addon.added = stats.atimeMs
@@ -146,11 +147,15 @@ export default class AddonManager {
     addon.size = stats.size
     addon.fileContent = fileContent.split(/\r?\n|\r|\n/g)
     addon.installed = addon
+
     if (this.addonList.find(c => c.id === addon.id))
-      throw new AddonError(addon, `There is already a ${this.prefix} with name "${addon.id}"`, null, this.prefix)
+      throw new AddonError(this.prefix, addon, `There is already a ${this.prefix} with name "${addon.id}"`)
+
     this.addonList.push(addon)
+
     if (parseError)
-      throw new AddonError(addon, formatAddonParseError(addon, parseError), parseError, this.prefix)
+      throw new AddonError(this.prefix, addon, formatAddonParseError(addon, parseError, fileContent))
+
     return addon
   }
 

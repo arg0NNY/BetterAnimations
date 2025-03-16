@@ -1,12 +1,10 @@
-import { indent } from '@/helpers/text'
+import BaseError from '@/structs/BaseError'
 import objectInspect from 'object-inspect'
 import { sanitizeContext } from '@/helpers/animations'
 
-export default class AnimationError extends Error {
-  constructor (animation, message, { module, pack, type, context, stage }) {
+export default class AnimationError extends BaseError {
+  constructor (animation, message, { type, context, stage, ...options } = {}) {
     const meta = [
-      `Pack: ${pack.name} v${pack.version} by ${pack.author}`,
-      `Module: ${module.name}`,
       `Animation: ${animation.name} (${animation.key})`,
       `Type: ${type}`
     ]
@@ -23,9 +21,7 @@ export default class AnimationError extends Error {
         )
       )
 
-    super(message + '\n\n' + indent(meta.filter(Boolean).join('\n'), 2) + '\n')
-    this.module = module
-    this.pack = pack
+    super(message, options, meta)
     this.animation = animation
     this.type = type
     this.context = context

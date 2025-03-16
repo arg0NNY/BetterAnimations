@@ -33,6 +33,7 @@ import AnimationStore from '@/modules/AnimationStore'
 import Emitter from '@/modules/Emitter'
 import Notices from '@/modules/Notices'
 import Toasts from '@/modules/Toasts'
+import ErrorManager from '@/modules/ErrorManager'
 
 anime.suspendWhenDocumentHidden = false
 
@@ -51,7 +52,8 @@ if (import.meta.env.MODE === 'development')
     AnimationStore,
     Emitter,
     Notices,
-    Toasts
+    Toasts,
+    ErrorManager
   }
 
 export default function (meta) {

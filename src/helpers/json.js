@@ -23,13 +23,18 @@ export function toPath (path) {
 }
 
 export function positionToLineColumn (content, position) {
-  let offset = 0
-  const lineIndex = content.findIndex(l => (offset += l.length + 1) >= position)
-  if (lineIndex === -1) return
+  let lineBreaks = 0,
+    lastLineBreakPosition = -1
+
+  for (let i = 0; i < position; i++) {
+    if (content.charAt(i) !== '\n') continue
+    lineBreaks += 1
+    lastLineBreakPosition = i
+  }
 
   return {
-    line: lineIndex,
-    column: content[lineIndex].length - (offset - position) + 1
+    line: lineBreaks,
+    column: position - lastLineBreakPosition - 1
   }
 }
 
@@ -38,11 +43,12 @@ export function visualizePosition (content, start, end = undefined, options = {}
 
   const { line, column } = start
   const lineCounterLength = String(line + lineClamp + 1).length
-  const lines = content.slice(line - lineClamp, line + lineClamp + 1)
-    .map((l, i) => `${line - lineClamp + i + 1}`.padStart(lineCounterLength) + '│' + l)
+  const startLine = Math.max(line - lineClamp, 0)
+  const lines = content.slice(startLine, line + lineClamp + 1)
+    .map((l, i) => `${startLine + i + 1}`.padStart(lineCounterLength) + '│' + l)
 
   lines.splice(
-    lineClamp + 1,
+    line - startLine + 1,
     0,
     (
       ' '.repeat(lineCounterLength)
@@ -81,19 +87,20 @@ export function visualizeAddonPath (addon, path, options = {}) {
   return visualizePosition(addon.fileContent, start, end, options)
 }
 
-export function visualizeAddonParseError (addon, error, options = {}) {
+export function visualizeAddonParseError (addon, error, rawContent, options = {}) {
   const [, position] = error.message.match(/at position (\d+)/) ?? []
   if (typeof position !== 'string') return
 
-  const { line, column } = positionToLineColumn(addon.fileContent, +position) ?? {}
+  const { line, column } = positionToLineColumn(rawContent, +position) ?? {}
+  console.log(line, column)
   if (typeof line !== 'number') return
 
   return visualizePosition(addon.fileContent, { line, column }, undefined, options)
 }
 
-export function formatAddonParseError (addon, error) {
+export function formatAddonParseError (addon, error, rawContent) {
   let message = '\n• ' + error.message
-  const visualized = visualizeAddonParseError(addon, error)
+  const visualized = visualizeAddonParseError(addon, error, rawContent)
   if (visualized) message += indent('\n' + visualized + '\n')
   return message
 }

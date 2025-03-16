@@ -1,14 +1,17 @@
+import BaseError from '@/structs/BaseError'
 import { capitalize } from '@/helpers/text'
 
-export default class AddonError extends Error {
-  constructor (addon, message, error, type) {
-    super(message)
-    this.addon = addon
-    this.error = error
+export default class AddonError extends BaseError {
+  constructor (type, addon, message, options = {}) {
+    super(message, {
+      [type]: addon,
+      ...options
+    })
     this.type = type
+    this.addon = addon
   }
 
   get name () {
-    return `${capitalize(this.type)}Error (${this.addon.slug})`
+    return `${capitalize(this.type)}Error`
   }
 }
