@@ -179,7 +179,10 @@ export default new class AnimationStore {
   }
 
   destroyAnimation (animation, dueToError = false) {
-    if (dueToError && animation.module.type === ModuleType.Switch) this.cooldown()
+    if (dueToError && animation.module.type === ModuleType.Switch) {
+      this.cancelAnimations(this.animations.filter(a => a.module.type === ModuleType.Switch))
+      this.cooldown()
+    }
     this.removeAnimation(animation)
   }
 
