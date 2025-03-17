@@ -1,10 +1,12 @@
 import { indent } from '@/helpers/text'
+import pluginMeta from '@/meta'
 
 export default class BaseError extends Error {
   constructor (message, options = {}, additionalMeta = []) {
     const { module, pack } = options
 
     const meta = [
+      `${pluginMeta.name} ${pluginMeta.version}`,
       pack && 'Pack: ' + [
         pack.name,
         pack.version && `v${pack.version}`,
