@@ -164,7 +164,7 @@ css
     align-items: center;
     justify-content: center;
     align-self: flex-start;
-    background-color: var(--background-floating);
+    background-color: var(--background-tertiary);
     width: 48px;
     height: 48px;
     border-radius: 50%;
