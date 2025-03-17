@@ -18,6 +18,8 @@ function ModuleSettings ({ moduleId, refToScroller }) {
 
   const selected = module.getAnimations()
 
+  const packs = PackManager.getAllPacks()
+
   return (
     <ModuleContext.Provider value={module}>
       <div className="BA__moduleSettings">
@@ -35,16 +37,20 @@ function ModuleSettings ({ moduleId, refToScroller }) {
         </Common.Text>
         <Common.Text>*Preinstalled animations*</Common.Text>
 
-        <Common.Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
-          <span>PACKS</span>
-        </Common.Text>
-        <PackAccordion
-          module={module}
-          packs={PackManager.getAllPacks()}
-          selected={selected}
-          onSelect={onSelect}
-          refToScroller={refToScroller}
-        />
+        {packs.length ? (
+          <>
+            <Common.Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
+              <span>PACKS</span>
+            </Common.Text>
+            <PackAccordion
+              module={module}
+              packs={packs}
+              selected={selected}
+              onSelect={onSelect}
+              refToScroller={refToScroller}
+            />
+          </>
+        ) : null}
       </div>
     </ModuleContext.Provider>
   )
