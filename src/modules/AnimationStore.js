@@ -139,10 +139,12 @@ export default new class AnimationStore {
     return this.switchCooldownUntil > Date.now()
   }
 
-  cancelAnimations (animations) {
+  cancelAnimations (animations, provideCallback = true) {
     const list = typeof animations === 'function' ? this.animations.filter(animations) : [].concat(animations)
     const callbacks = list.map(animation => animation.cancel(false, true)).filter(c => typeof c === 'function')
-    return () => callbacks.forEach(c => c())
+    const callback = () => callbacks.forEach(c => c())
+    if (provideCallback) return callback
+    requestAnimationFrame(callback)
   }
 
   processAnimation (animation) {
@@ -180,8 +182,8 @@ export default new class AnimationStore {
 
   destroyAnimation (animation, dueToError = false) {
     if (dueToError && animation.module.type === ModuleType.Switch) {
-      this.cancelAnimations(this.animations.filter(a => a.module.type === ModuleType.Switch))
       this.cooldown()
+      this.cancelAnimations(this.animations.filter(a => a.module.type === ModuleType.Switch), false)
     }
     this.removeAnimation(animation)
   }
