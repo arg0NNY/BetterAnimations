@@ -189,9 +189,9 @@ export const { Alert, AlertTypes } = mapModule(Filters.byStrings('messageType', 
 export const UserSettingsModal = Webpack.getByKeys('open', 'setSection', 'updateAccount')
 export const { colors } = Webpack.getByKeys('colors', 'modules')
 export const { ModalRoot, ModalSize, ModalHeader, ModalFooter, ModalContent } = Webpack.getMangled(
-  Filters.bySource('MODAL', 'fullscreenOnMobile'),
+  Filters.bySource('MODAL', 'rootWithShadow'),
   {
-    ModalRoot: Filters.byStrings('MODAL', 'fullscreenOnMobile'),
+    ModalRoot: Filters.byStrings('MODAL', 'rootWithShadow'),
     ModalSize: Filters.byKeys('MEDIUM', 'LARGE'),
     ModalHeader: Filters.byStrings('headerIdIsManaged', 'HORIZONTAL'),
     ModalFooter: Filters.byStrings('footerSeparator'),
