@@ -11,7 +11,18 @@ import IconBrand from '@/components/icons/IconBrand'
 import { css } from '@/modules/Style'
 import meta from '@/meta'
 
-function Modal ({ title, children, onClose, ...props }) {
+function Modal ({
+  title,
+  children,
+  onClose,
+  confirmText = 'Close',
+  confirmButtonColor = Button.Colors.PRIMARY,
+  cancelText,
+  onConfirm,
+  onCancel,
+  loading = false,
+  ...props
+}) {
   return (
     <ModalRoot
       className="BA__modal"
@@ -20,6 +31,7 @@ function Modal ({ title, children, onClose, ...props }) {
       <ModalHeader separator={false}>
         <Tooltip
           text={meta.name}
+          shouldShow={!!title}
           position="bottom"
           align="left"
         >
@@ -34,7 +46,7 @@ function Modal ({ title, children, onClose, ...props }) {
           )}
         </Tooltip>
         <Heading variant="heading-lg/semibold">
-          {title}
+          {title ?? meta.name}
         </Heading>
       </ModalHeader>
       <ModalContent className="BA__modalContent">
@@ -43,11 +55,29 @@ function Modal ({ title, children, onClose, ...props }) {
       <ModalFooter>
         <Button
           type="submit"
-          color={Button.Colors.PRIMARY}
-          onClick={onClose}
+          color={confirmButtonColor}
+          submitting={loading}
+          onClick={() => {
+            onConfirm?.()
+            onClose()
+          }}
         >
-          Close
+          {confirmText}
         </Button>
+        {cancelText ? (
+          <Button
+            type="button"
+            look={Button.Looks.LINK}
+            color={Button.Colors.PRIMARY}
+            disabled={loading}
+            onClick={() => {
+              onCancel?.()
+              onClose()
+            }}
+          >
+            {cancelText}
+          </Button>
+        ) : null}
       </ModalFooter>
     </ModalRoot>
   )

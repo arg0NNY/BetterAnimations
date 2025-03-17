@@ -8,6 +8,7 @@ function ErrorModal ({ errors = [], ...props }) {
     <Modal
       title="Error Inspector"
       size={ModalSize.MEDIUM}
+      confirmText="Dismiss"
       {...props}
     >
       <div className="BA__errorModalList">

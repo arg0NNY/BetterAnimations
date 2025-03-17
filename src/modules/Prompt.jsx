@@ -1,8 +1,9 @@
-import { App, Common } from '@/modules/DiscordModules'
+import { App, Button, Common } from '@/modules/DiscordModules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import Enum from '@/enums/Enum'
 import Data from '@/modules/Data'
 import meta from '@/meta'
+import Modal from '@/components/Modal'
 
 export default new class Prompt {
   Types = Enum({
@@ -49,11 +50,11 @@ export default new class Prompt {
   promptHardwareAcceleration () {
     return new Promise(resolve =>
       Common.openModal(props => (
-        <Common.ConfirmModal
+        <Modal
           {...props}
-          header={meta.name}
           cancelText="Cancel"
           confirmText="Enable"
+          confirmButtonColor={Button.Colors.RED}
           onCancel={() => resolve(true)}
           onConfirm={() => {
             resolve(false)
@@ -62,7 +63,7 @@ export default new class Prompt {
         >
           <Common.Heading variant="heading-md/semibold" className={DiscordClasses.Margins.marginBottom8}>HARDWARE ACCELERATION IS DISABLED</Common.Heading>
           <Common.Text variant="text-sm/normal">The animations might be choppy, turn the Hardware Acceleration on to drastically improve the performance. Discord will quit and re-launch.</Common.Text>
-        </Common.ConfirmModal>
+        </Modal>
       ))
     )
   }
