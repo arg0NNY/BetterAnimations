@@ -1,6 +1,9 @@
 import { buildAnimateAssets } from '@/modules/animation/parser'
 import ModuleType from '@/enums/ModuleType'
 import Config from '@/modules/Config'
+import ErrorManager from '@/modules/ErrorManager'
+import AnimationError from '@/structs/AnimationError'
+import { formatSeconds } from '@/helpers/time'
 
 class Animation {
 
@@ -16,12 +19,15 @@ class Animation {
     this.auto = auto
     this.doneCallbackRef = doneCallbackRef
 
+    this.context = null
+
+    this.timeout = null
     this.cancelled = false
   }
 
-  applyAttributes (context = null) {
+  applyAttributes () {
     this.container.setAttribute('data-animation-type', this.type)
-    if (context) this.container.setAttribute('data-animation-overflow', context.overflow)
+    if (this.context) this.container.setAttribute('data-animation-overflow', this.context.overflow)
     if (this.module.type) this.container.setAttribute(`data-animation-${this.module.type}`, '')
   }
 
@@ -55,6 +61,7 @@ class Animation {
           isIntersected: intersect
         }
       )
+      this.context = context
 
       const { execute, wrapper, onBeforeCreate, onBeforeDestroy, onDestroyed }
         = buildAnimateAssets(animate, context, this.module.buildOptions())
@@ -82,13 +89,14 @@ class Animation {
         })
       }
 
-      this.applyAttributes(context)
+      this.applyAttributes()
 
       onBeforeBegin?.()
       if (this.cancelled) return
 
       if (wrapper) this.node.before(wrapper)
 
+      this.ensureTimeLimit()
       finished.then(() => this.cancel())
     })
 
@@ -119,7 +127,26 @@ class Animation {
     requestAnimationFrame(callback)
   }
 
+  computeTimeLimit () {
+    return 5000 + (typeof this.context.duration === 'number' ? this.context.duration : 0)
+  }
+
+  ensureTimeLimit (limit = this.computeTimeLimit()) {
+    this.timeout = setTimeout(() => {
+      const { animation, module, pack, type } = this.context
+      ErrorManager.registerAnimationError(
+        new AnimationError(
+          animation,
+          `Animation exceeded the execution time limit (${formatSeconds(limit)})`,
+          { module, pack, type, context: this.context }
+        )
+      )
+      this.destroy(true)
+    }, limit)
+  }
+
   destroy (dueToError = false) {
+    clearTimeout(this.timeout)
     this.store.destroyAnimation(this, dueToError)
   }
 
