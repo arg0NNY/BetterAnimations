@@ -6,7 +6,7 @@ import Config from '@/modules/Config'
 import Settings from '@/modules/Settings'
 
 function ErrorDetailsActions ({ error, className }) {
-  const module = useModule(error.module?.id, true)
+  const module = useModule(error.module?.id)
 
   const actions = [
     module && !Settings.isSettingsModalOpen() && (
@@ -39,7 +39,7 @@ function ErrorDetailsActions ({ error, className }) {
 
   return (
     <>
-      <FormTitle>Helpful actions</FormTitle>
+      <FormTitle>Suggested actions</FormTitle>
       <div className={Utils.className('BA__errorDetailsActions', className)}>
         {actions}
       </div>
