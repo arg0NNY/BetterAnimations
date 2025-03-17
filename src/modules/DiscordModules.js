@@ -202,6 +202,8 @@ export const Button = Webpack.getModule(Filters.byKeys('Link', 'Sizes'), { searc
 export const Flex = Webpack.getByKeys('Direction', 'Justify', 'Child')
 export const Parser = Webpack.getByKeys('defaultRules', 'parse').defaultRules
 export const InviteEmbed = Webpack.getByStrings('Invite Button Embed', 'getInvite')
+export const InviteStates = Webpack.getModule(Filters.byKeys('APP_NOT_OPENED', 'RESOLVING'), { searchExports: true })
+export const InviteStore = Webpack.getStore('InviteStore')
 
 export const Common = {
   ...ModalActions,

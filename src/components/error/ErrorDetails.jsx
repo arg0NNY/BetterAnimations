@@ -2,7 +2,17 @@ import { css } from '@/modules/Style'
 import { React } from '@/BdApi'
 import IconBrand from '@/components/icons/IconBrand'
 import Divider from '@/components/Divider'
-import { Alert, AlertTypes, FormTitle, InviteEmbed, Parser, Text } from '@/modules/DiscordModules'
+import {
+  Alert,
+  AlertTypes,
+  FormTitle,
+  InviteEmbed,
+  InviteStates,
+  InviteStore,
+  Parser,
+  Text,
+  useStateFromStores
+} from '@/modules/DiscordModules'
 import meta from '@/meta'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import InternalError from '@/structs/InternalError'
@@ -31,10 +41,16 @@ function ErrorDetails ({ error, open = false }) {
     return 'Unknown error occurred.'
   }, [error])
 
-  const invite = React.useMemo(() => {
+  const code = React.useMemo(() => {
     if (error instanceof InternalError) return meta.invite
     return error.pack?.invite
   }, [error])
+
+  const invite = useStateFromStores([InviteStore], () => (
+    ![InviteStates.EXPIRED, InviteStates.BANNED, InviteStates.ERROR].includes(InviteStore.getInvite(code)?.state)
+      ? code
+      : null
+  ))
 
   const alert = React.useMemo(() => {
     if (invite) return 'Go to the Support Server to get help with this error:'
@@ -99,7 +115,7 @@ function ErrorDetails ({ error, open = false }) {
               <div className="BA__errorDetailsInvite">
                 <InviteEmbed
                   code={invite}
-                  author={{}}
+                  author={{ username: error.pack?.author }}
                   getAcceptInviteContext={() => ({})}
                 />
               </div>
