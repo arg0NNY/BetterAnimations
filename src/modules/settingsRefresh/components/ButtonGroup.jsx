@@ -1,5 +1,11 @@
 import { Common } from '@/modules/DiscordModules'
 import { css } from '@/modules/Style'
+import { Utils } from '@/BdApi'
+
+const Sizes = {
+  SMALL: 'small',
+  MEDIUM: 'medium'
+}
 
 function ButtonGroupItem ({ children, tooltip, selected, disabled, onClick }) {
   const button = props => (
@@ -22,9 +28,19 @@ function ButtonGroupItem ({ children, tooltip, selected, disabled, onClick }) {
   )
 }
 
-function ButtonGroup ({ options, multiple = false, vertical = false, selected, onChange }) {
+function ButtonGroup ({ options, multiple = false, vertical = false, selected, onChange, className, size = Sizes.SMALL }) {
   return (
-    <div className={`BA__buttonGroup ${vertical ? 'BA__buttonGroup--vertical' : ''} ${!multiple ? 'BA__buttonGroup--single' : ''}`}>
+    <div
+      className={Utils.className(
+        'BA__buttonGroup',
+        `BA__buttonGroup--${size}`,
+        {
+          'BA__buttonGroup--vertical': vertical,
+          'BA__buttonGroup--single': !multiple
+        },
+        className
+      )}
+    >
       {options.map(option => (
         <ButtonGroupItem
           {...option}
@@ -37,6 +53,8 @@ function ButtonGroup ({ options, multiple = false, vertical = false, selected, o
     </div>
   )
 }
+
+ButtonGroup.Sizes = Sizes
 
 export default ButtonGroup
 
@@ -59,18 +77,26 @@ css
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
 }
-.BA__buttonGroup.BA__buttonGroup--vertical {
+
+.BA__buttonGroup--medium {
+    height: 42px;
+}
+.BA__buttonGroup--medium > .BA__buttonGroupItem {
+    padding: 0 12px;
+}
+
+.BA__buttonGroup--vertical {
     flex-direction: column;
     width: 28px;
     height: auto;
 }
-.BA__buttonGroup.BA__buttonGroup--vertical > .BA__buttonGroupItem {
+.BA__buttonGroup--vertical > .BA__buttonGroupItem {
     padding: 8px 0;
 }
-.BA__buttonGroup.BA__buttonGroup--vertical > .BA__buttonGroupItem:first-child {
+.BA__buttonGroup--vertical > .BA__buttonGroupItem:first-child {
     border-radius: 4px 4px 0 0;
 }
-.BA__buttonGroup.BA__buttonGroup--vertical > .BA__buttonGroupItem:last-child {
+.BA__buttonGroup--vertical > .BA__buttonGroupItem:last-child {
     border-radius: 0 0 4px 4px;
 }
 
@@ -78,6 +104,7 @@ css
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 4px;
     background-color: var(--background-primary);
     color: var(--interactive-normal);
     flex: 1;

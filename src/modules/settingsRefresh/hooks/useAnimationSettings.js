@@ -15,7 +15,7 @@ function canMerge (settings) {
 
   const base = _isSame('animation') && _isSame('value')
   switch (settings[0].type) {
-    case Setting.Direction: return base && _isSame('axis') && _isSame('towards')
+    case Setting.Direction: return base && _isSame('axis') && _isSame('reverse') && _isSame('towards')
     default: return base
   }
 }
@@ -58,6 +58,8 @@ function _useAnimationSettings (module, items, options = {}) {
       animation.settings?.[Setting.Direction] && buildSetting(Setting.Direction, {
         axis: settings[Setting.DirectionAxis],
         onAxisChange: value => setSettings({ [Setting.DirectionAxis]: value }),
+        reverse: settings[Setting.DirectionReverse],
+        onReverseChange: value => setSettings({ [Setting.DirectionReverse]: value }),
         towards: settings[Setting.DirectionTowards],
         onTowardsChange: value => setSettings({ [Setting.DirectionTowards]: value })
       }),

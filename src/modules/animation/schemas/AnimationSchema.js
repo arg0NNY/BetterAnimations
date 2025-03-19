@@ -7,7 +7,7 @@ const AnimationSchema = z.object({
   key: z.string().min(1).trim(),
   name: z.string().trim(),
   meta: MetaSchema.optional().default({}),
-  settings: SettingsSchema.optional(),
+  settings: SettingsSchema.optional().default({ defaults: {} }),
   debug: z.union([
     z.boolean(),
     z.enum(AnimationType.values())

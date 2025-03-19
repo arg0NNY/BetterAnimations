@@ -9,20 +9,59 @@ import Direction from '@/enums/Direction'
 import DirectionAutoType from '@/enums/DirectionAutoType'
 import directionAnchorOptions from '@/data/directionAnchorOptions'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
+import ButtonGroup from '@/modules/settingsRefresh/components/ButtonGroup'
+import HorizontalIcon from '@/modules/settingsRefresh/components/icons/HorizontalIcon'
+import VerticalIcon from '@/modules/settingsRefresh/components/icons/VerticalIcon'
+import DepthIcon from '@/modules/settingsRefresh/components/icons/DepthIcon'
+import RepeatIcon from '@/modules/settingsRefresh/components/icons/RepeatIcon'
+import Axis from '@/enums/Axis'
+import { css } from '@/modules/Style'
 
-function DirectionAxisControl ({ animation, value, onChange }) {
+function getAxisIcon (axis) {
+  switch (axis) {
+    case Axis.Y: return <VerticalIcon color="currentColor" />
+    case Axis.X: return <HorizontalIcon color="currentColor" />
+    case Axis.Z: return <DepthIcon color="currentColor" />
+  }
+}
+
+function DirectionAxisControl ({ animation, value, onChange, reverse, onReverseChange }) {
   const axisOptions = directionAxes.filter(
     a => animation.settings.direction === true
       || getDirectionsByAxis(a.value).every(d => animation.settings.direction.includes(d))
   )
 
+  const options = axisOptions.map(option => ({
+    value: option.value,
+    children: (
+      <>
+        {getAxisIcon(option.value)}
+        <span>{option.name}</span>
+      </>
+    )
+  }))
+
   return (
-    <Common.RadioGroup
-      className={DiscordClasses.Margins.marginTop8}
-      options={axisOptions}
-      value={value}
-      onChange={option => onChange(option.value)}
-    />
+    <div className="BA__directionAxisControl">
+      <ButtonGroup
+        className="BA__directionAxisControlSelect"
+        size={ButtonGroup.Sizes.MEDIUM}
+        options={options}
+        selected={value}
+        onChange={onChange}
+      />
+      <ButtonGroup
+        className="BA__directionAxisControlReverse"
+        size={ButtonGroup.Sizes.MEDIUM}
+        multiple={true}
+        options={[{
+          children: <RepeatIcon color="currentColor" />,
+          tooltip: 'Reverse',
+          selected: reverse,
+          onClick: () => onReverseChange(!reverse)
+        }]}
+      />
+    </div>
   )
 }
 
@@ -37,7 +76,7 @@ function DirectionAnchorControl ({ value, onChange }) {
   )
 }
 
-function DirectionControl ({ module, animation, value, onChange, defaultValue, axis, onAxisChange, towards, onTowardsChange }) {
+function DirectionControl ({ module, animation, value, onChange, defaultValue, axis, onAxisChange, reverse, onReverseChange, towards, onTowardsChange }) {
   const options = directions.filter(
     d => d.value === Auto()
       ? module?.supportsAuto(animation, AnimationSetting.Direction)
@@ -51,6 +90,8 @@ function DirectionControl ({ module, animation, value, onChange, defaultValue, a
             animation={animation}
             value={axis}
             onChange={onAxisChange}
+            reverse={reverse}
+            onReverseChange={onReverseChange}
           />
         ),
         [DirectionAutoType.Anchor]: (
@@ -77,3 +118,18 @@ function DirectionControl ({ module, animation, value, onChange, defaultValue, a
 }
 
 export default DirectionControl
+
+css
+`.BA__directionAxisControl {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+.BA__directionAxisControlSelect {
+    flex-grow: 1;
+}
+.BA__directionAxisControlReverse {
+    flex-shrink: 0;
+}`
+`DirectionControl`

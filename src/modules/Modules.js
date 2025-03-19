@@ -4,7 +4,7 @@ import Auto from '@/enums/Auto'
 import Setting from '@/enums/AnimationSetting'
 import Position from '@/enums/Position'
 import Direction from '@/enums/Direction'
-import { getAnchorDirection, getDirection, getDirectionsByAxis } from '@/helpers/direction'
+import { getAnchorDirection, getDirection, getDirectionsByAxis, reverseDirection } from '@/helpers/direction'
 import Axis from '@/enums/Axis'
 import { getPosition, reversePosition } from '@/helpers/position'
 import Config from '@/modules/Config'
@@ -200,7 +200,7 @@ class Module {
       Object.entries(this.meta.settings?.defaults ?? {})
         .filter(([key]) => {
           if (key === Setting.Overflow) return true
-          if ([Setting.DirectionAxis, Setting.DirectionTowards].includes(key))
+          if ([Setting.DirectionAxis, Setting.DirectionReverse, Setting.DirectionTowards].includes(key))
             key = Setting.Direction
           return key in (animation.settings ?? {})
         })
@@ -246,6 +246,12 @@ class Module {
         if (directions === true) return value
         if (getDirectionsByAxis(value)?.every(d => directions.includes(d))) return value
         return [Axis.Y, Axis.Z, Axis.X].find(axis => getDirectionsByAxis(axis).every(d => directions.includes(d)))
+      }
+      case Setting.DirectionReverse: {
+        if (allSettings[Setting.Direction] !== Auto()
+          || this.meta.settings?.supportsAuto?.[Setting.Direction] !== DirectionAutoType.Alternate)
+          return undefined
+        return Boolean(value)
       }
       case Setting.DirectionTowards: {
         if (allSettings[Setting.Direction] !== Auto()
@@ -322,14 +328,17 @@ class Module {
 
     if (settings[Setting.Direction] === Auto())
       switch (this.meta.settings.supportsAuto[Setting.Direction]) {
-        case DirectionAutoType.Alternate:
-          settings[Setting.Direction] = getDirection(settings[Setting.DirectionAxis], values.direction)
+        case DirectionAutoType.Alternate: {
+          const direction = getDirection(settings[Setting.DirectionAxis], values.direction)
+          settings[Setting.Direction] = settings[Setting.DirectionReverse] ? reverseDirection(direction) : direction
           break
-        case DirectionAutoType.Anchor:
+        }
+        case DirectionAutoType.Anchor: {
           settings[Setting.Direction] = values.position
             ? getAnchorDirection(values.position, settings[Setting.DirectionTowards])
             : animationDefaults[Setting.Direction]
           break
+        }
       }
 
     return settings
