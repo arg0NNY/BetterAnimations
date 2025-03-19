@@ -3,6 +3,7 @@ import Setting from '@/enums/AnimationSetting'
 import { getAnimationDefaultSettings } from '@/helpers/animations'
 import ModuleType from '@/enums/ModuleType'
 import AnimationType from '@/enums/AnimationType'
+import AnimationSettingContainer from '@/enums/AnimationSettingContainer'
 
 function isSame (array, key) {
   return array.every(item => item?.[key] === array[0]?.[key])
@@ -71,9 +72,9 @@ function _useAnimationSettings (module, items, options = {}) {
 
   if (!isSame(items, 'animation'))
     return [{
-      type: Setting.Group,
+      type: AnimationSettingContainer.Group,
       children: sets.map(settings => ({
-        type: Setting.List,
+        type: AnimationSettingContainer.List,
         children: settings
       }))
     }]
@@ -83,7 +84,7 @@ function _useAnimationSettings (module, items, options = {}) {
     const shouldMerge = !isAdvanced && module.meta?.type === ModuleType.Switch && isSame(items, 'enabled') && canMerge(settings)
 
     if (!shouldMerge) return {
-      type: Setting.Group,
+      type: AnimationSettingContainer.Group,
       children: settings
     }
 
@@ -122,7 +123,7 @@ function useAnimationSettingsHeaders (module, items, settings = _useAnimationSet
     onReset
   }))
 
-  if (!settings.some(s => s.type === Setting.Group)) return [{
+  if (!settings.some(s => s.type === AnimationSettingContainer.Group)) return [{
     key: 'both',
     title: items[0]?.animation?.name || 'No animations selected',
     enabled: items.every(i => i.enabled),

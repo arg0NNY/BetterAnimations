@@ -9,7 +9,5 @@ export default Enum({
   DirectionAxis: 'directionAxis',
   DirectionReverse: 'directionReverse',
   DirectionTowards: 'directionTowards',
-  Overflow: 'overflow',
-  Group: 'group',
-  List: 'list'
+  Overflow: 'overflow'
 })

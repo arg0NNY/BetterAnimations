@@ -11,6 +11,7 @@ import { Common } from '@/modules/DiscordModules'
 import IconButton from '@/modules/settingsRefresh/components/IconButton'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import RefreshIcon from '@/modules/settingsRefresh/components/icons/RefreshIcon'
+import AnimationSettingContainer from '@/enums/AnimationSettingContainer'
 
 function SettingList ({ children, className = 'BA__animationSettingsList' }) {
   return (
@@ -32,8 +33,8 @@ function SettingGroup ({ children }) {
 }
 
 function Setting ({ type, ...props }) {
-  if (type === AnimationSetting.List) return <SettingList {...props} />
-  if (type === AnimationSetting.Group) return <SettingGroup {...props} />
+  if (type === AnimationSettingContainer.List) return <SettingList {...props} />
+  if (type === AnimationSettingContainer.Group) return <SettingGroup {...props} />
 
   return (
     <div className="BA__animationSettingsItem">

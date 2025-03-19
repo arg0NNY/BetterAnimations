@@ -296,7 +296,7 @@ class Module {
   }
   normalizeSettings (animation, type, settings) {
     return Object.fromEntries(
-      Object.entries(settings).map(([key, value]) => [key, this.normalizeSetting(animation, type, key, value, settings)])
+      Setting.values().map(key => [key, this.normalizeSetting(animation, type, key, settings[key], settings)])
         .filter(a => a[1] !== undefined)
     )
   }
