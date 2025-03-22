@@ -16,6 +16,8 @@ import DepthIcon from '@/modules/settingsRefresh/components/icons/DepthIcon'
 import RepeatIcon from '@/modules/settingsRefresh/components/icons/RepeatIcon'
 import Axis from '@/enums/Axis'
 import { css } from '@/modules/Style'
+import ArrowLeftToLineIcon from '@/modules/settingsRefresh/components/icons/ArrowLeftToLineIcon'
+import ArrowRightFromLineIcon from '@/modules/settingsRefresh/components/icons/ArrowRightFromLineIcon'
 
 function getAxisIcon (axis) {
   switch (axis) {
@@ -23,6 +25,12 @@ function getAxisIcon (axis) {
     case Axis.X: return <HorizontalIcon color="currentColor" />
     case Axis.Z: return <DepthIcon color="currentColor" />
   }
+}
+
+function getAnchorIcon (isTowards) {
+  return isTowards
+    ? <ArrowLeftToLineIcon color="currentColor" />
+    : <ArrowRightFromLineIcon color="currentColor" />
 }
 
 function DirectionAxisControl ({ animation, value, onChange, reverse, onReverseChange }) {
@@ -66,12 +74,23 @@ function DirectionAxisControl ({ animation, value, onChange, reverse, onReverseC
 }
 
 function DirectionAnchorControl ({ value, onChange }) {
+  const options = directionAnchorOptions.map(option => ({
+    value: option.value,
+    children: (
+      <>
+        {getAnchorIcon(option.value)}
+        <span>{option.name}</span>
+      </>
+    )
+  }))
+
   return (
-    <Common.RadioGroup
+    <ButtonGroup
       className={DiscordClasses.Margins.marginTop8}
-      options={directionAnchorOptions}
-      value={value}
-      onChange={option => onChange(option.value)}
+      size={ButtonGroup.Sizes.MEDIUM}
+      options={options}
+      selected={value}
+      onChange={onChange}
     />
   )
 }
