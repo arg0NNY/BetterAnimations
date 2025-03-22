@@ -150,10 +150,9 @@ export default class AddonManager {
     addon.fileContent = fileContent.split(/\r?\n|\r|\n/g)
     addon.installed = addon
 
-    if (this.addonList.find(c => c.id === addon.id))
-      throw new AddonError(this.prefix, addon, `There is already a ${this.prefix} with name "${addon.id}"`)
-
-    this.addonList.push(addon)
+    const existingIndex = this.addonList.findIndex(c => c.id === addon.id)
+    if (existingIndex !== -1) this.addonList.splice(existingIndex, 1, addon)
+    else this.addonList.push(addon)
 
     if (parseError)
       throw new AddonError(this.prefix, addon, formatAddonParseError(addon, parseError, fileContent))

@@ -10,12 +10,23 @@
       "key": "example",
       "name": "Example animation",
       "settings": {
+        "variant": [
+          {
+            "key": "black",
+            "name": "Black"
+          },
+          {
+            "key": "white",
+            "name": "White"
+          }
+        ],
         "duration": true,
         "easing": true,
         "direction": ["upwards", "downwards", "leftwards", "rightwards", "forwards", "backwards"],
         "overflow": false,
 
         "defaults": {
+          "variant": "black",
           "duration": 500,
           "easing": "easeInOutQuad",
           "direction": "rightwards",
@@ -63,7 +74,11 @@
             "z-index": 20
           },
           ".el:nth-child(odd)": {
-            "background": "#000"
+            "background": {
+              "inject": "variant",
+              "black": "#000",
+              "white": "#FFF"
+            }
           },
           ".el:nth-child(even)": {
             "background": "#5662f6"
