@@ -2,10 +2,10 @@ import { colors, Common } from '@/modules/DiscordModules'
 import { css } from '@/modules/Style'
 import ChevronSmallUpIcon from '@/modules/settingsRefresh/components/icons/ChevronSmallUpIcon'
 import ChevronSmallDownIcon from '@/modules/settingsRefresh/components/icons/ChevronSmallDownIcon'
-import CircleAlertIcon from '@/modules/settingsRefresh/components/icons/CircleAlertIcon'
 import { Utils } from '@/BdApi'
 import IconButton from '@/modules/settingsRefresh/components/IconButton'
 import ErrorManager from '@/modules/ErrorManager'
+import CircleWarningIcon from '@/modules/settingsRefresh/components/icons/CircleWarningIcon'
 
 function PackAccordionItem ({ pack, children, isOpen, onToggle }) {
   return (
@@ -39,7 +39,7 @@ function PackAccordionItem ({ pack, children, isOpen, onToggle }) {
                   tooltip="An error occurred"
                   onClick={() => ErrorManager.showModal([pack.error])}
                 >
-                  <CircleAlertIcon color={colors.STATUS_DANGER} />
+                  <CircleWarningIcon color={colors.STATUS_DANGER} />
                 </IconButton>
               )
               : isOpen

@@ -77,6 +77,11 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
     }
   ] : [], { hideOverflow: true })
 
+  const errors = [
+    selected.enter.error,
+    selected.exit.error
+  ].filter(Boolean)
+
   return (
     <div className="BA__moduleSettingsHeader">
       <AnimationCard
@@ -90,6 +95,7 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
         active={false}
         previewAlwaysActive
         wide
+        errors={errors}
       />
       <div className="BA__moduleSettingsHeading">
         <div className="BA__moduleSettingsTitle">

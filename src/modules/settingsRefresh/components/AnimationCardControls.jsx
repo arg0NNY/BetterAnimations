@@ -4,6 +4,9 @@ import { css } from '@/modules/Style'
 import { stop } from '@/modules/settingsRefresh/helpers/stopPropagation'
 import SettingsIcon from '@/modules/settingsRefresh/components/icons/SettingsIcon'
 import CollapseListIcon from '@/modules/settingsRefresh/components/icons/CollapseListIcon'
+import ErrorManager from '@/modules/ErrorManager'
+import { colors } from '@/modules/DiscordModules'
+import CircleWarningIcon from '@/modules/settingsRefresh/components/icons/CircleWarningIcon'
 
 function AnimationCardControls ({
   hasSettings,
@@ -13,7 +16,8 @@ function AnimationCardControls ({
   enter,
   exit,
   setEnter,
-  setExit
+  setExit,
+  errors = []
 }) {
   return (
     <div className="BA__animationCardControls">
@@ -33,6 +37,14 @@ function AnimationCardControls ({
             onClick={stop(() => setExpanded('modifiers'))}
           >
             <CollapseListIcon size="xs" color="currentColor" />
+          </IconButton>
+        )}
+        {!!errors.length && (
+          <IconButton
+            tooltip="An error occurred"
+            onClick={stop(() => ErrorManager.showModal(errors))}
+          >
+            <CircleWarningIcon size="xs" color={colors.STATUS_DANGER} />
           </IconButton>
         )}
       </div>

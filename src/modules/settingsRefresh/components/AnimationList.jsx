@@ -46,6 +46,10 @@ function AnimationList ({ module, pack, animations, selected, onSelect, ...props
       }
     ])
 
+    const errors = AnimationType.values()
+      .map(type => isActive(animation, type) && selected[type].error)
+      .filter(Boolean)
+
     return (
       <AnimationCard
         {...props}
@@ -57,6 +61,7 @@ function AnimationList ({ module, pack, animations, selected, onSelect, ...props
         setExit={handleSelect(AnimationType.Exit, animation)}
         onClick={handleSelectAll(animation)}
         animationSettings={animationSettings}
+        errors={errors}
       />
     )
   }

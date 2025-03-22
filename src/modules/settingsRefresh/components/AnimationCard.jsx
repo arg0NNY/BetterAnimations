@@ -78,7 +78,8 @@ function AnimationCard ({
   modifiersSettings,
   active = enter || exit,
   previewAlwaysActive = false,
-  wide = false
+  wide = false,
+  errors
 }) {
   const positionerRef = React.useRef()
   const cardRef = React.useRef()
@@ -168,6 +169,7 @@ function AnimationCard ({
                 hasModifiers={!!modifiersSettings?.settings?.length}
                 expanded={expanded}
                 setExpanded={setExpanded}
+                errors={errors}
               />
             </Common.Clickable>
           </div>
