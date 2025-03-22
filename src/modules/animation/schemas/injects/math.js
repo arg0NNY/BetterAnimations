@@ -56,10 +56,7 @@ export const MathPowInjectSchema = InjectSchema(Inject.MathPow).extend({
   base: z.number(),
   exponent: z.number()
 }).transform(zodTransformErrorBoundary(({ base, exponent }) => Math.pow(base, exponent)))
-export const MathRandomInjectSchema = InjectWithMeta(
-  InjectSchema(Inject.MathRandom).transform(() => Math.random()),
-  { immediate: true }
-)
+export const MathRandomInjectSchema = InjectSchema(Inject.MathRandom).transform(() => Math.random())
 export const MathRoundInjectSchema = MathSingleInjectSchema(Inject.MathRound, Math.round)
 export const MathSignInjectSchema = MathSingleInjectSchema(Inject.MathSign, Math.sign)
 export const MathSinInjectSchema = MathSingleInjectSchema(Inject.MathSin, Math.sin)
