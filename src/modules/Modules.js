@@ -243,7 +243,6 @@ class Module {
           return undefined
 
         const directions = animation.settings[Setting.Direction] ?? []
-        if (directions === true) return value
         if (getDirectionsByAxis(value)?.every(d => directions.includes(d))) return value
         return [Axis.Y, Axis.Z, Axis.X].find(axis => getDirectionsByAxis(axis).every(d => directions.includes(d)))
       }
@@ -262,8 +261,7 @@ class Module {
       case Setting.Overflow: {
         if (animation.settings?.[setting] === false)
           return animationDefaults[setting]
-
-        return value
+        return Boolean(value)
       }
     }
 
@@ -272,26 +270,27 @@ class Module {
     switch (setting) {
       case Setting.Duration: {
         const { from, to } = animation.settings[setting]
-        if (value > to) return to
-        if (value < from) return from
-        return value
+        return Math.max(from, Math.min(to, typeof value === 'number' ? value : animationDefaults[setting]))
       }
       case Setting.Variant: {
         const keys = animation.settings[setting].map(v => v.key)
         if (!keys.includes(value)) return animationDefaults[setting] ?? keys[0]
         return value
       }
-      case Setting.Position:
-      case Setting.Direction: {
-        const values = animation.settings[setting]
-        if (
-          values === true
-            || (value === Auto() && this.supportsAuto(animation, setting))
-        ) return value
+      case Setting.Position: {
+        if (value === Auto() && this.supportsAuto(animation, setting)) return value
+        const values = animation.settings[setting] === true ? Position.values() : animation.settings[setting]
         if (!values.includes(value)) return animationDefaults[setting] ?? values[0]
         return value
       }
-      default: return value
+      case Setting.Direction: {
+        if (value === Auto() && this.supportsAuto(animation, setting)) return value
+        const values = animation.settings[setting]
+        if (!values.includes(value)) return animationDefaults[setting] ?? values[0]
+        return value
+      }
+      case Setting.Easing: return String(value)
+      default: return undefined
     }
   }
   normalizeSettings (animation, type, settings) {

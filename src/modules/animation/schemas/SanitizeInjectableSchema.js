@@ -15,10 +15,7 @@ function createFunctionPlaceholder (name, readme) {
 }
 
 const SanitizeInjectableSchema = z.lazy(
-  () => InjectableBaseSchema(SanitizeInjectableSchema, [
-    z.undefined(),
-    z.symbol()
-  ]).transform(value => {
+  () => InjectableBaseSchema(SanitizeInjectableSchema).transform(value => {
     if (
       isLazyInject(value)
       || (typeof value === 'function' && value[generatedLazyInjectSymbol])

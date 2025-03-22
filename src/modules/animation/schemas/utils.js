@@ -31,8 +31,7 @@ export function SwitchSchema (inject, valueList, options = {}) {
         else {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: `All of the possible values must be defined in the '${inject}' inject when using switch mode. Missing keys: ${formatValuesList(values.filter(k => !(k in params)))}`,
-            path: ['inject']
+            message: `All of the possible values must be defined in the '${inject}' inject when using switch mode. Missing keys: ${formatValuesList(values.filter(k => !(k in params)))}`
           })
           return z.NEVER
         }
@@ -62,16 +61,14 @@ export function ElementSchema (inject, element = null, allowDirect = true) {
       if (!allowDirect && !('querySelector' in params || 'querySelectorAll' in params)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: `Inject '${inject}' can't be used directly and must define either 'querySelector' or 'querySelectorAll'`,
-          path: ['inject']
+          message: `Inject '${inject}' can't be used directly and must define either 'querySelector' or 'querySelectorAll'`
         })
         return z.NEVER
       }
       if ('querySelector' in params && 'querySelectorAll' in params) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: `Inject '${inject}' can't have both 'querySelector' and 'querySelectorAll' defined in pair`,
-          path: ['inject']
+          message: `Inject '${inject}' can't have both 'querySelector' and 'querySelectorAll' defined in pair`
         })
         return z.NEVER
       }

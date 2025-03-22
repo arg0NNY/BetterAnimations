@@ -12,18 +12,19 @@ export const DurationInjectSchema = InjectWithMeta(
   ({ duration, settings }) => InjectSchema(Inject.Duration)
     .transform(hasInSettings(Inject.Duration, !!settings?.[Setting.Duration]))
     .transform(() => duration),
-  { immediate: ['duration', 'settings'] }
+  { immediate: [Setting.Duration, 'settings'] }
 )
 
 export const EasingInjectSchema = InjectWithMeta(
   ({ easing, settings }) => InjectSchema(Inject.Easing)
     .transform(hasInSettings(Inject.Easing, !!settings?.[Setting.Easing]))
     .transform(() => easing),
-  { immediate: ['easing', 'settings'] }
+  { immediate: [Setting.Easing, 'settings'] }
 )
 
+const getVariantKeys = context => context.settings?.[Setting.Variant]?.map(v => v.key) ?? []
 export const VariantInjectSchema = InjectWithMeta(
-  SwitchSchema(Inject.Variant, ctx => ctx.settings?.[Setting.Variant]?.map(v => v.key) ?? [], { setting: Setting.Variant }),
+  SwitchSchema(Inject.Variant, getVariantKeys, { setting: Setting.Variant, possibleValues: getVariantKeys }),
   { immediate: [Setting.Variant, 'settings'] }
 )
 

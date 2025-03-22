@@ -62,12 +62,12 @@ export default function (meta) {
   return {
     start () {
       Logger.info('Startup', 'Initializing modules...')
+      ErrorManager.initialize()
       TickThread.initialize()
       Mouse.initialize()
       Style.initialize()
       Prompt.onStartup()
       Config.initialize()
-      ErrorManager.initialize()
       PackRegistry.initialize()
       PackManager.initialize()
 

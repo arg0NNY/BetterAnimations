@@ -11,8 +11,8 @@ const DefaultsSchema = z.object({
   [Setting.Duration]: z.number().int().nonnegative(),
   [Setting.Easing]: z.string(),
   [Setting.Variant]: z.string(),
-  [Setting.Position]: z.enum(Position.values()),
-  [Setting.Direction]: z.enum(Direction.values()),
+  [Setting.Position]: z.string(),
+  [Setting.Direction]: z.string(),
   [Setting.Overflow]: z.boolean()
 }).strict().partial()
 
@@ -20,10 +20,15 @@ const SettingsSchema = z.object({
   [Setting.Duration]: z.union([
     z.literal(true),
     z.object({
-      from: z.number().int().nonnegative().min(100).multipleOf(100),
-      to: z.number().int().nonnegative().max(5000).multipleOf(100)
+      from: z.number().int().min(100).multipleOf(100),
+      to: z.number().int().max(5000).multipleOf(100)
     }).strict()
-  ]).optional().transform(v => v === true ? { from: 100, to: 2000 } : v),
+  ]).optional()
+    .transform(v => v === true ? { from: 100, to: 2000 } : v)
+    .refine(
+      value => !value || value.to > value.from,
+      { message: `'to' must be greater than 'from'`, path: ['to'] }
+    ),
   [Setting.Easing]: z.literal(true).optional(),
   [Setting.Variant]: z.object({
     key: z.string(),
@@ -53,13 +58,19 @@ const SettingsSchema = z.object({
       : value),
   [Setting.Overflow]: z.boolean().optional(),
 
-  defaults: z.union([
-    z.object({
-      [AnimationType.Enter]: DefaultsSchema,
-      [AnimationType.Exit]: DefaultsSchema
-    }).strict(),
-    DefaultsSchema
-  ])
+  defaults: DefaultsSchema.extend({
+    [AnimationType.Enter]: DefaultsSchema,
+    [AnimationType.Exit]: DefaultsSchema
+  }).strict().partial()
+    .pipe(
+      z.union([
+        z.object({
+          [AnimationType.Enter]: DefaultsSchema,
+          [AnimationType.Exit]: DefaultsSchema
+        }).strict(),
+        DefaultsSchema
+      ])
+    )
 }).strict()
   .transform((settings, ctx) => {
     const defaults = settings.defaults[AnimationType.Enter]
@@ -79,25 +90,28 @@ const SettingsSchema = z.object({
     return z.NEVER
   })
   .transform((settings, ctx) => {
-    if (!settings[Setting.Variant]) return settings
-
-    const variantKeys = settings[Setting.Variant].map(v => v.key)
     if (
-      (settings.defaults[AnimationType.Enter] ? AnimationType.values() : [null]).map(t => {
-        const value = (t ? settings.defaults[t] : settings.defaults)[Setting.Variant]
-        if (variantKeys.includes(value)) return true
+      [
+        [Setting.Variant, settings[Setting.Variant]?.map(v => v.key)],
+        [Setting.Position, settings[Setting.Position] === true ? Position.values() : settings[Setting.Position]],
+        [Setting.Direction, settings[Setting.Direction]]
+      ].every(([key, values]) => {
+        if (!settings[key]) return true
 
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: `Invalid default value for '${Setting.Variant}'. Expected ${formatValuesList(variantKeys, ' | ')}, received '${value}'`,
-          path: ['defaults', t, Setting.Variant].filter(Boolean)
-        })
-        return false
-      }).every(Boolean)
-    )
-      return settings
-    else
-      return z.NEVER
+        return (settings.defaults[AnimationType.Enter] ? AnimationType.values() : [null]).map(t => {
+          const value = (t ? settings.defaults[t] : settings.defaults)[key]
+          if (values.includes(value)) return true
+
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `Invalid default value for '${key}'. Expected ${formatValuesList(values, ' | ')}, received '${value}'`,
+            path: ['defaults', t, key].filter(Boolean)
+          })
+          return false
+        }).every(Boolean)
+      })
+    ) return settings
+    else return z.NEVER
   })
 
 export default SettingsSchema

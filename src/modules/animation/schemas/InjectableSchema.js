@@ -52,6 +52,8 @@ function parseInject ({ schema, context, env, value, ctx }) {
 export const InjectableBaseSchema = (schema, extend = []) => z.union([
   ...extend,
   Literal,
+  z.undefined(),
+  z.symbol(),
   z.instanceof(Function), // Some injects return functions (anime.timeline, anime.setDashoffset, etc.)
   z.instanceof(Element), // Prevent Zod from parsing Element
   z.array(schema),
