@@ -34,6 +34,7 @@ import Emitter from '@/modules/Emitter'
 import Notices from '@/modules/Notices'
 import Toasts from '@/modules/Toasts'
 import ErrorManager from '@/modules/ErrorManager'
+import * as DiscordModules from '@/modules/DiscordModules'
 
 anime.suspendWhenDocumentHidden = false
 
@@ -53,7 +54,8 @@ if (import.meta.env.MODE === 'development')
     Emitter,
     Notices,
     Toasts,
-    ErrorManager
+    ErrorManager,
+    DiscordModules
   }
 
 export default function (meta) {
