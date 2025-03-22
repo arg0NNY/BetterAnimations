@@ -22,7 +22,7 @@
     "hast-util-sanitize": "^5.0.1",
     "hast-util-to-dom": "^4.0.0",
     "json-source-map": "^0.6.1",
-    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21",
     "object-inspect": "^1.13.2",
     "semver": "^7.6.2",
     "spelling": "^2.0.2",
