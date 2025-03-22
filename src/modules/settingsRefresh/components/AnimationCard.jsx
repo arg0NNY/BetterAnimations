@@ -31,9 +31,14 @@ function useAnimationCardExpand ({ positionerRef, popoutRef, refToScroller }) {
 
   const positioner = useElementBounding(positionerRef)
   useEventListener('scroll', positioner.update, () => refToScroller.current?.getScrollerNode())
-  React.useLayoutEffect(positioner.update, [expanded])
 
   const popout = useElementBounding(popoutRef)
+
+  const update = React.useCallback(() => {
+    positioner.update()
+    popout.update()
+  }, [positioner.update, popout.update])
+  React.useLayoutEffect(update, [expanded])
 
   const popoutMaxHeight = window.height - (TOP_OFFSET + CARD_WIDE_HEIGHT + POPOUT_GAP + BOTTOM_OFFSET)
   const totalHeight = CARD_WIDE_HEIGHT + POPOUT_GAP + popout.height
@@ -41,6 +46,7 @@ function useAnimationCardExpand ({ positionerRef, popoutRef, refToScroller }) {
   const top = Math.max(TOP_OFFSET, Math.min(window.height - (BOTTOM_OFFSET + totalHeight), positioner.top))
 
   return {
+    update,
     expanded,
     setExpanded,
     close,
@@ -79,6 +85,7 @@ function AnimationCard ({
   const popoutRef = React.useRef()
 
   const {
+    update,
     expanded,
     setExpanded,
     close,
@@ -91,6 +98,8 @@ function AnimationCard ({
     popoutRef,
     refToScroller
   })
+
+  React.useLayoutEffect(update, [animationSettings, modifiersSettings])
 
   const cardHovered = useHover(cardRef)
 
@@ -143,7 +152,7 @@ function AnimationCard ({
               className="BA__animationCard"
               style={cardStyle}
               onClick={onClick ?? expandSettings}
-              onContextMenu={() => expandSettings(true)}
+              onContextMenu={() => expandSettings?.(true)}
             >
               {/*{active && <BackgroundOptionRing/>}*/}
               <AnimationPreview
