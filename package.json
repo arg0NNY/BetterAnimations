@@ -11,8 +11,8 @@
   "author": "arg0NNY",
   "license": "MIT",
   "devDependencies": {
-    "vite": "^5.4.11",
-    "vite-plugin-banner": "^0.7.1"
+    "vite": "^6.2.2",
+    "vite-plugin-banner": "^0.8.0"
   },
   "dependencies": {
     "@emmetio/math-expression": "^1.0.5",
