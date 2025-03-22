@@ -26,7 +26,7 @@ export default new class PackRegistry {
   get items () {
     return this._items.map(item => ({
       ...item,
-      installed: PackManager.getPackByFile(item.filename)
+      installed: PackManager.getPackByFile(item.filename, true)
     }))
   }
   set items (value) { this._items = value; this.onChange() }

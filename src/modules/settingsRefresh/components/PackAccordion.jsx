@@ -7,8 +7,8 @@ function PackAccordion ({ module, packs, ...props }) {
   return (
     <div className="BA__packAccordion">
       {packs.map(pack => {
-        const animations = pack.animations.filter(a => module.isSupportedBy(a))
-        if (!animations.length) return null
+        const animations = !pack.partial ? pack.animations.filter(a => module.isSupportedBy(a)) : []
+        if (!pack.partial && !animations.length) return null
 
         return (
           <PackAccordionItem
@@ -16,12 +16,14 @@ function PackAccordion ({ module, packs, ...props }) {
             isOpen={PackManager.isEnabled(pack.id)}
             onToggle={() => PackManager.togglePack(pack.id)}
           >
-            <AnimationList
-              {...props}
-              module={module}
-              pack={pack}
-              animations={animations}
-            />
+            {!pack.partial && (
+              <AnimationList
+                {...props}
+                module={module}
+                pack={pack}
+                animations={animations}
+              />
+            )}
           </PackAccordionItem>
         )
       })}

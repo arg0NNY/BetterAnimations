@@ -1,27 +1,50 @@
-import { Common } from '@/modules/DiscordModules'
+import { colors, Common } from '@/modules/DiscordModules'
 import { css } from '@/modules/Style'
 import ChevronSmallUpIcon from '@/modules/settingsRefresh/components/icons/ChevronSmallUpIcon'
 import ChevronSmallDownIcon from '@/modules/settingsRefresh/components/icons/ChevronSmallDownIcon'
+import CircleAlertIcon from '@/modules/settingsRefresh/components/icons/CircleAlertIcon'
+import { Utils } from '@/BdApi'
+import IconButton from '@/modules/settingsRefresh/components/IconButton'
+import ErrorManager from '@/modules/ErrorManager'
 
 function PackAccordionItem ({ pack, children, isOpen, onToggle }) {
   return (
-    <div className="BA__packAccordionItem">
+    <div className={Utils.className(
+      'BA__packAccordionItem',
+      { 'BA__packAccordionItem--partial': pack.partial }
+    )}>
       <Common.Clickable tag="div" className="BA__packAccordionItemHeader" onClick={onToggle}>
         <div className="BA__packAccordionItemHeading">
           <Common.Text
             variant="heading-md/semibold"
             color={isOpen ? 'header-primary' : 'header-muted'}
           >{pack.name}</Common.Text>
-          <Common.Text
-            variant="text-xs/normal"
-            color={isOpen ? 'text-normal' : 'text-muted'}
-          >v{pack.version} by {pack.author}</Common.Text>
+          {pack.version || pack.author ? (
+            <Common.Text
+              variant="text-xs/normal"
+              color={isOpen ? 'text-normal' : 'text-muted'}
+            >
+              {
+                [pack.version && `v${pack.version}`, pack.author && `by ${pack.author}`]
+                  .filter(Boolean).join(' ')
+              }
+            </Common.Text>
+          ) : null}
         </div>
-        <div className="BA__packAccordionItemArrow">
+        <div className="BA__packAccordionItemIcon">
           {
-            isOpen
-              ? <ChevronSmallUpIcon />
-              : <ChevronSmallDownIcon />
+            pack.partial
+              ? (
+                <IconButton
+                  tooltip="An error occurred"
+                  onClick={() => ErrorManager.showModal([pack.error])}
+                >
+                  <CircleAlertIcon color={colors.STATUS_DANGER} />
+                </IconButton>
+              )
+              : isOpen
+                ? <ChevronSmallUpIcon />
+                : <ChevronSmallDownIcon />
           }
         </div>
       </Common.Clickable>
@@ -48,7 +71,7 @@ css
     cursor: pointer;
     transition: background-color .2s;
 }
-.BA__packAccordionItemHeader:hover {
+.BA__packAccordionItem:not(.BA__packAccordionItem--partial) .BA__packAccordionItemHeader:hover {
     background-color: var(--background-secondary-alt);
 }
 
@@ -58,5 +81,9 @@ css
 
 .BA__packAccordionItemContent {
     padding-top: 8px;
+}
+
+.BA__packAccordionItem--partial .BA__packAccordionItemHeader {
+    cursor: default;
 }`
 `PackAccordionItem`

@@ -18,7 +18,7 @@ function ModuleSettings ({ moduleId, refToScroller }) {
 
   const selected = module.getAnimations()
 
-  const packs = PackManager.getAllPacks()
+  const packs = PackManager.getAllPacks(true)
 
   return (
     <ModuleContext.Provider value={module}>

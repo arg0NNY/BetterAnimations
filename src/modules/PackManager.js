@@ -45,13 +45,16 @@ export default new class PackManager extends AddonManager {
 
   getAllPacks (includePartial = false) {
     return this.addonList.filter(p => includePartial || !p.partial)
-      .sort((a, b) => a.name.localeCompare(b.name))
+      .sort((a, b) => {
+        if (a.partial !== b.partial) return a.partial ? 1 : -1
+        return a.name.localeCompare(b.name)
+      })
   }
-  getPack (slug) {
-    return this.getAllPacks().find(p => p.slug === slug)
+  getPack (slug, includePartial = false) {
+    return this.getAllPacks(includePartial).find(p => p.slug === slug)
   }
-  getPackByFile (filename) {
-    return this.getAllPacks().find(p => p.filename === filename)
+  getPackByFile (filename, includePartial = false) {
+    return this.getAllPacks(includePartial).find(p => p.filename === filename)
   }
   getAnimation (packOrSlug, key) {
     return (typeof packOrSlug === 'string' ? this.getPack(packOrSlug) : packOrSlug)

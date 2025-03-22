@@ -170,7 +170,7 @@ export default class AddonManager {
       const { addon: partialAddon } = e
       if (partialAddon) {
         partialAddon.partial = true
-        this.state[partialAddon.id] = false
+        partialAddon.error = e
         this.emit('loaded', partialAddon)
       }
       return e
@@ -178,8 +178,8 @@ export default class AddonManager {
 
     const error = this.initializeAddon(addon)
     if (error) {
-      this.state[addon.id] = false
       addon.partial = true
+      addon.error = error
       this.emit('loaded', addon)
       return error
     }
@@ -226,7 +226,7 @@ export default class AddonManager {
 
   isEnabled (idOrFile) {
     const addon = this.addonList.find(c => c.id == idOrFile || c.filename == idOrFile)
-    if (!addon) return false
+    if (!addon || addon.partial) return false
     return this.state[addon.id]
   }
 
