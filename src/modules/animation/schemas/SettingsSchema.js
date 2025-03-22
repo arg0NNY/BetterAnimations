@@ -31,7 +31,10 @@ const SettingsSchema = z.object({
     ),
   [Setting.Easing]: z.literal(true).optional(),
   [Setting.Variant]: z.object({
-    key: z.string(),
+    key: z.string().refine(
+      key => key !== 'inject',
+      key => ({ message: `Forbidden variant key: '${key}'` })
+    ),
     name: z.string()
   }).strict().array().nonempty().optional(),
   [Setting.Position]: z.union([
