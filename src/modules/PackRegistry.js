@@ -1,10 +1,9 @@
-import { Net } from '@/BdApi'
+import { Net, Utils } from '@/BdApi'
 import Logger from '@/modules/Logger'
 import Toasts from '@/modules/Toasts'
 import Emitter from '@/modules/Emitter'
 import Events from '@/enums/Events'
 import PackManager from '@/modules/PackManager'
-import semverGt from 'semver/functions/gt'
 import Notices from '@/modules/Notices'
 import Settings from '@/modules/Settings'
 import meta from '@/meta'
@@ -85,7 +84,7 @@ export default new class PackRegistry {
 
     let hasUpdate
     try {
-      hasUpdate = semverGt(latest.version, pack.version)
+      hasUpdate = Utils.semverCompare(pack.version, latest.version) > 0
     }
     catch (e) {
       Logger.warn(this.name, `Failed to compare versions for "${pack.filename}":`, e)

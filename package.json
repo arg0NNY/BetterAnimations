@@ -25,7 +25,6 @@
     "json-source-map": "^0.6.1",
     "lodash-es": "^4.17.21",
     "object-inspect": "^1.13.2",
-    "semver": "^7.6.2",
     "spelling": "^2.0.2",
     "use-sync-external-store": "^1.4.0",
     "zod": "^3.22.4"
