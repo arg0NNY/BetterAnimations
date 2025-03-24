@@ -1,6 +1,6 @@
 import Axis from '@/enums/Axis'
 import Direction from '@/enums/Direction'
-import { toDirection } from '@/helpers/position'
+import { toDirection } from '@/utils/position'
 
 export function getDirectionsByAxis (axis) {
   switch (axis) {

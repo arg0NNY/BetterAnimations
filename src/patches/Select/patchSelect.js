@@ -1,7 +1,7 @@
 import { Patcher } from '@/BdApi'
 import { Common, Select, SingleSelect } from '@/modules/DiscordModules'
 import Position from '@/enums/Position'
-import findInReactTree from '@/helpers/findInReactTree'
+import findInReactTree from '@/utils/findInReactTree'
 
 function patchSearchableSelect () {
   Patcher.after(Common.SearchableSelect, 'render', (self, args, value) => {

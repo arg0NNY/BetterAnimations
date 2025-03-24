@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import { indent } from '@/helpers/text'
-import { toPath, visualizeAddonPath } from '@/helpers/json'
-import { getPath } from '@/helpers/object'
+import { indent } from '@/utils/text'
+import { toPath, visualizeAddonPath } from '@/utils/json'
+import { getPath } from '@/utils/object'
 import objectInspect from 'object-inspect'
 
 export function visualizeAddonZodIssue (addon, issue, options = {}) {

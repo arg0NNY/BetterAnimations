@@ -5,7 +5,7 @@ import AddonError from '@/structs/AddonError'
 import PackSchema from '@/modules/animation/schemas/PackSchema'
 import meta from '@/meta'
 import ErrorManager from '@/modules/ErrorManager'
-import { formatZodError } from '@/helpers/zod'
+import { formatZodError } from '@/utils/zod'
 
 export default new class PackManager extends AddonManager {
   get name () {return 'PackManager'}

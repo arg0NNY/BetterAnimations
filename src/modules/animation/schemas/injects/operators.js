@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { InjectSchema } from '@/modules/animation/schemas/utils'
 import Inject from '@/enums/Inject'
-import { zodTransformErrorBoundary } from '@/helpers/zod'
+import { zodTransformErrorBoundary } from '@/utils/zod'
 
 const OperatorInjectSchema = (inject, fn) => InjectSchema(inject).extend({
   a: z.any(),

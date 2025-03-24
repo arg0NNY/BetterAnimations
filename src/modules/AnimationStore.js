@@ -3,7 +3,7 @@ import ModuleType from '@/enums/ModuleType'
 import Config from '@/modules/Config'
 import ErrorManager from '@/modules/ErrorManager'
 import AnimationError from '@/structs/AnimationError'
-import { formatSeconds } from '@/helpers/time'
+import { formatSeconds } from '@/utils/time'
 
 class Animation {
 

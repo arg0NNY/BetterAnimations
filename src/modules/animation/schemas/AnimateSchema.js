@@ -1,6 +1,6 @@
 import { z, ZodError } from 'zod'
 import InjectableSchema from '@/modules/animation/schemas/InjectableSchema'
-import { ArrayOrSingleSchema } from '@/helpers/schemas'
+import { ArrayOrSingleSchema } from '@/utils/schemas'
 import Inject from '@/enums/Inject'
 import SettingsSchema from '@/modules/animation/schemas/SettingsSchema'
 import MetaSchema from '@/modules/animation/schemas/MetaSchema'

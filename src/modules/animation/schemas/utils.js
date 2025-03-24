@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { buildSwitchSchema, Defined, formatValuesList, hasInSettings } from '@/helpers/schemas'
+import { buildSwitchSchema, Defined, formatValuesList, hasInSettings } from '@/utils/schemas'
 import { wrapWithPlaceholderIfNeeded } from '@/modules/animation/schemas/injects/placeholder.js'
 
 export const InjectSchema = type => z.object({ inject: z.literal(type) }).strict()

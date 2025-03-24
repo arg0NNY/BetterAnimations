@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import { InjectSchema, InjectWithMeta } from '@/modules/animation/schemas/utils'
 import Inject from '@/enums/Inject'
-import { ArrayOrSingleSchema } from '@/helpers/schemas'
-import { zodTransformErrorBoundary } from '@/helpers/zod'
+import { ArrayOrSingleSchema } from '@/utils/schemas'
+import { zodTransformErrorBoundary } from '@/utils/zod'
 
 const MathConstantInjectSchema = (inject, value) => InjectWithMeta(
   InjectSchema(inject).transform(() => value),

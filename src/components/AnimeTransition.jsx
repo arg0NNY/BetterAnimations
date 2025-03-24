@@ -4,7 +4,7 @@ import Freeze from '@/components/Freeze'
 import AnimationType from '@/enums/AnimationType'
 import { css } from '@/modules/Style'
 import AnimationStore from '@/modules/AnimationStore'
-import { createAwaitableRef } from '@/helpers/react'
+import { createAwaitableRef } from '@/utils/react'
 import AnimeContainer from '@/components/AnimeContainer'
 
 class AnimeTransition extends React.Component {

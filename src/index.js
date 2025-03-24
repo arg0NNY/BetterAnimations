@@ -1,6 +1,6 @@
 import anime from 'animejs'
 import { Patcher } from '@/BdApi'
-import { forceAppUpdate } from '@/helpers/forceUpdate'
+import { forceAppUpdate } from '@/utils/forceUpdate'
 import patchAppView from '@/patches/AppView/patchAppView'
 import patchContextMenu from '@/patches/ContextMenu/patchContextMenu'
 import patchBasePopout from '@/patches/BasePopout/patchBasePopout'

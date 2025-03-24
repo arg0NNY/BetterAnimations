@@ -1,6 +1,6 @@
 import { Patcher } from '@/BdApi'
 import { Common } from '@/modules/DiscordModules'
-import findInReactTree from '@/helpers/findInReactTree'
+import findInReactTree from '@/utils/findInReactTree'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'

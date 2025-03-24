@@ -2,7 +2,7 @@ import { z } from 'zod'
 import Setting from '@/enums/AnimationSetting'
 import Position from '@/enums/Position'
 import Direction from '@/enums/Direction'
-import { formatValuesList } from '@/helpers/schemas'
+import { formatValuesList } from '@/utils/schemas'
 import AnimationType from '@/enums/AnimationType'
 
 const EnumSchema = values => z.union([z.literal(true), z.enum(values).array()])

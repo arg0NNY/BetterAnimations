@@ -4,7 +4,7 @@ import AnimeTransition from '@/components/AnimeTransition'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
-import { avoidClickTrap } from '@/helpers/transition'
+import { avoidClickTrap } from '@/utils/transition'
 
 function TooltipTransition (props) {
   const { module, isVisible, onAnimationRest, ...rest } = props

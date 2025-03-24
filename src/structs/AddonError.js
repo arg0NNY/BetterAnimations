@@ -1,5 +1,5 @@
 import BaseError from '@/structs/BaseError'
-import { capitalize } from '@/helpers/text'
+import { capitalize } from '@/utils/text'
 
 export default class AddonError extends BaseError {
   constructor (type, addon, message, options = {}) {

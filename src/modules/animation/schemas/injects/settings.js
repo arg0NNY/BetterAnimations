@@ -1,11 +1,11 @@
 import { z } from 'zod'
-import { hasInSettings } from '@/helpers/schemas'
+import { hasInSettings } from '@/utils/schemas'
 import { InjectSchema, InjectWithMeta, SwitchSchema } from '@/modules/animation/schemas/utils'
 import Position from '@/enums/Position'
 import Inject from '@/enums/Inject'
 import Setting from '@/enums/AnimationSetting'
 import Direction from '@/enums/Direction'
-import { getCenter, toPercent, toUnit } from '@/helpers/position'
+import { getCenter, toPercent, toUnit } from '@/utils/position'
 import Mouse from '@/modules/Mouse'
 
 export const DurationInjectSchema = InjectWithMeta(

@@ -1,7 +1,7 @@
 import IconButton from '@/modules/settingsRefresh/components/IconButton'
 import AnimationToggleControl from '@/modules/settingsRefresh/components/AnimationToggleControl'
 import { css } from '@/modules/Style'
-import { stop } from '@/modules/settingsRefresh/helpers/stopPropagation'
+import { stop } from '@/modules/settingsRefresh/utils/stopPropagation'
 import SettingsIcon from '@/modules/settingsRefresh/components/icons/SettingsIcon'
 import CollapseListIcon from '@/modules/settingsRefresh/components/icons/CollapseListIcon'
 import ErrorManager from '@/modules/ErrorManager'

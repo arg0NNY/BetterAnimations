@@ -1,7 +1,7 @@
 import { z, ZodError } from 'zod'
-import { formatValuesList, Literal, parseInjectSchemas } from '@/helpers/schemas'
+import { formatValuesList, Literal, parseInjectSchemas } from '@/utils/schemas'
 import { InjectPlaceholderSchema, isInjectPlaceholder } from '@/modules/animation/schemas/injects/placeholder'
-import { formatZodError, zodSubParse } from '@/helpers/zod'
+import { formatZodError, zodSubParse } from '@/utils/zod'
 import {
   generatedLazyInjectSymbol,
   isLazyInject,

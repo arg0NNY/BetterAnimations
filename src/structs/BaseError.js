@@ -1,4 +1,4 @@
-import { indent } from '@/helpers/text'
+import { indent } from '@/utils/text'
 import pluginMeta from '@/meta'
 
 export default class BaseError extends Error {

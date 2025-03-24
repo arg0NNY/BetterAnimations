@@ -1,6 +1,6 @@
 import { PrivateChannelSortStore, Router, Routes, StaticChannelRoute } from '@/modules/DiscordModules'
-import { getSortedGuildChannelIds, getSortedGuildTreeIds } from '@/helpers/guilds'
-import { getStaticDMRouteIndex } from '@/helpers/routes'
+import { getSortedGuildChannelIds, getSortedGuildTreeIds } from '@/utils/guilds'
+import { getStaticDMRouteIndex } from '@/utils/routes'
 import { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChannelList'
 
 // Keep up-to-date with the internal AppView component (`Webpack.getByStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY')`)

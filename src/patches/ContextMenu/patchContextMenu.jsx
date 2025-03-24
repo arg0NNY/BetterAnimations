@@ -2,13 +2,13 @@ import { Patcher, React } from '@/BdApi'
 import { ContextMenu, TransitionGroup } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
 import patchContextSubmenu from '@/patches/ContextMenu/patchContextSubmenu'
-import ensureOnce from '@/helpers/ensureOnce'
+import ensureOnce from '@/utils/ensureOnce'
 import Position from '@/enums/Position'
 import useModule, { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import { autoPosition } from '@/hooks/useAutoPosition'
-import { avoidClickTrap } from '@/helpers/transition'
+import { avoidClickTrap } from '@/utils/transition'
 
 function patchContextMenu () {
   const once = ensureOnce()

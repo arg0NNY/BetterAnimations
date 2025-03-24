@@ -1,7 +1,7 @@
 import { React } from '@/BdApi'
 import ButtonGroup from '@/modules/settingsRefresh/components/ButtonGroup'
 import { Common } from '@/modules/DiscordModules'
-import { stop } from '@/modules/settingsRefresh/helpers/stopPropagation'
+import { stop } from '@/modules/settingsRefresh/utils/stopPropagation'
 import { useAdvancedMode } from '@/modules/settingsRefresh/hooks/useMode'
 import ModuleContext from '@/modules/settingsRefresh/context/ModuleContext'
 import ModuleType from '@/enums/ModuleType'

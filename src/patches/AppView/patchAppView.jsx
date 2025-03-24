@@ -1,6 +1,6 @@
 import { Patcher, React } from '@/BdApi'
 import { AppView, Router, Routes, TransitionGroup } from '@/modules/DiscordModules'
-import findInReactTree from '@/helpers/findInReactTree'
+import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
 import useLocationKey from '@/hooks/useLocationKey'
 import {
@@ -8,8 +8,8 @@ import {
   getSwitchContentDirection,
   shouldSwitchBase,
   shouldSwitchContent
-} from '@/helpers/locations'
-import { passAuto } from '@/helpers/transition'
+} from '@/utils/locations'
+import { passAuto } from '@/utils/transition'
 import ModuleKey from '@/enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'

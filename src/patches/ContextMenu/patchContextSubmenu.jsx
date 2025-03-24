@@ -5,7 +5,7 @@ import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Position from '@/enums/Position'
 import useAutoPosition from '@/hooks/useAutoPosition'
-import { avoidClickTrap } from '@/helpers/transition'
+import { avoidClickTrap } from '@/utils/transition'
 
 function patchContextSubmenu () {
   const callback = (self, [props], original) => {

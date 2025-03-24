@@ -1,6 +1,6 @@
 import { React } from '@/BdApi'
 import { Common } from '@/modules/DiscordModules'
-import { range } from '@/helpers/general'
+import { range } from '@/utils/general'
 import AnimationSetting from '@/enums/AnimationSetting'
 
 function DurationControl ({ animation, value, onChange, label = 'Duration', ...props }) {

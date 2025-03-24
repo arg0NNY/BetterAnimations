@@ -1,6 +1,6 @@
 import { useAdvancedMode } from '@/modules/settingsRefresh/hooks/useMode'
 import Setting from '@/enums/AnimationSetting'
-import { getAnimationDefaultSettings } from '@/helpers/animations'
+import { getAnimationDefaultSettings } from '@/utils/animations'
 import ModuleType from '@/enums/ModuleType'
 import AnimationType from '@/enums/AnimationType'
 import AnimationSettingContainer from '@/enums/AnimationSettingContainer'

@@ -5,7 +5,7 @@ import patchPopoutCSSAnimator from '@/patches/BasePopout/patchPopoutCSSAnimator'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import { autoPosition } from '@/hooks/useAutoPosition'
-import { avoidClickTrap } from '@/helpers/transition'
+import { avoidClickTrap } from '@/utils/transition'
 
 function patchBasePopout () {
   const Original = mangled(BasePopout)

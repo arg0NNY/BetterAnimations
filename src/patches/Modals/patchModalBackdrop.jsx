@@ -2,7 +2,7 @@ import { Patcher } from '@/BdApi'
 import { ModalBackdrop } from '@/modules/DiscordModules'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
-import findInReactTree from '@/helpers/findInReactTree'
+import findInReactTree from '@/utils/findInReactTree'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import AnimeTransition from '@/components/AnimeTransition'
 

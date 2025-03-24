@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import regex from '@/helpers/regex'
+import regex from '@/utils/regex'
 import AnimationSchema from '@/modules/animation/schemas/AnimationSchema'
 import Messages from '@/modules/Messages'
 

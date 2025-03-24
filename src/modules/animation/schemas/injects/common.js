@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { ArrayOrSingleSchema } from '@/helpers/schemas'
+import { ArrayOrSingleSchema } from '@/utils/schemas'
 import {
   ElementSchema,
   InjectSchema,
@@ -13,8 +13,8 @@ import ModuleKey from '@/enums/ModuleKey'
 import Logger from '@/modules/Logger'
 import Mouse from '@/modules/Mouse'
 import ModuleType from '@/enums/ModuleType'
-import { getPath } from '@/helpers/object'
-import { zodTransformErrorBoundary } from '@/helpers/zod'
+import { getPath } from '@/utils/object'
+import { zodTransformErrorBoundary } from '@/utils/zod'
 import Debug from '@/modules/Debug'
 
 export const ElementInjectSchema = ({ element }) => ElementSchema(Inject.Element, element)

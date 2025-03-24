@@ -1,5 +1,5 @@
 import { SortedGuildStore } from '@/modules/DiscordModules'
-import { communityRowToChannelRoute } from '@/helpers/routes'
+import { communityRowToChannelRoute } from '@/utils/routes'
 
 export function getSortedGuildTreeIds (node = SortedGuildStore.getGuildsTree().root) {
   if (node.children?.length)

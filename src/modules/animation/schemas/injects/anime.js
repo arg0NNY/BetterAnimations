@@ -1,11 +1,10 @@
-import { ArrayOrSingleSchema, Defined } from '@/helpers/schemas'
+import { ArrayOrSingleSchema, Defined } from '@/utils/schemas'
 import { InjectSchema, InjectWithMeta } from '@/modules/animation/schemas/utils'
 import anime from 'animejs'
 import { z } from 'zod'
-import { transformAnimeConfig } from '@/modules/animation/helpers'
 import Inject from '@/enums/Inject'
-import { zodTransformErrorBoundary } from '@/helpers/zod'
-import { zodErrorBoundary } from '@/modules/animation/utils'
+import { zodTransformErrorBoundary } from '@/utils/zod'
+import { transformAnimeConfig, zodErrorBoundary } from '@/modules/animation/utils'
 
 export const AnimeStaggerInjectSchema = context => InjectSchema(Inject.AnimeStagger).extend({
   value: Defined,

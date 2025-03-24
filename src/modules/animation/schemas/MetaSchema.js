@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import ModuleKey, { ModuleKeyAlias } from '@/enums/ModuleKey'
-import { ArrayOrSingleSchema } from '@/helpers/schemas'
+import { ArrayOrSingleSchema } from '@/utils/schemas'
 import { moduleAliases } from '@/data/modules'
 import AnimationType from '@/enums/AnimationType'
 

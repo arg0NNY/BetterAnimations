@@ -1,6 +1,6 @@
 import { Patcher } from '@/BdApi'
 import { ChannelView } from '@/modules/DiscordModules'
-import ensureOnce from '@/helpers/ensureOnce'
+import ensureOnce from '@/utils/ensureOnce'
 import AnimeTransition from '@/components/AnimeTransition'
 import SwitchTransition from '@/components/SwitchTransition'
 import patchVoiceChannelView from '@/patches/ChannelView/patchVoiceChannelView'

@@ -1,6 +1,6 @@
 import { Patcher } from '@/BdApi'
 import { Message } from '@/modules/DiscordModules'
-import findInReactTree from '@/helpers/findInReactTree'
+import findInReactTree from '@/utils/findInReactTree'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'

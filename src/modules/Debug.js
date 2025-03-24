@@ -1,7 +1,7 @@
 import Logger from '@/modules/Logger'
-import { sanitizeInjectable, snapshotContext } from '@/helpers/animations'
-import { toPath, visualizeAddonPath } from '@/helpers/json'
-import { capitalize } from '@/helpers/text'
+import { sanitizeInjectable, snapshotContext } from '@/utils/animations'
+import { toPath, visualizeAddonPath } from '@/utils/json'
+import { capitalize } from '@/utils/text'
 
 export default class Debug {
   constructor ({ animation, animationType }) {

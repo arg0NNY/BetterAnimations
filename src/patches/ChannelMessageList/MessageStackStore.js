@@ -1,4 +1,4 @@
-import { getMessageKey } from '@/patches/ChannelMessageList/helpers'
+import { getMessageKey } from '@/patches/ChannelMessageList/utils'
 import { Dispatcher, Flux } from '@/modules/DiscordModules'
 
 const toEnter = new Set()
