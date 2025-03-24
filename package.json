@@ -13,7 +13,7 @@
   "devDependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "vite": "^6.2.2",
+    "vite": "^5.4.15",
     "vite-plugin-banner": "^0.8.0"
   },
   "dependencies": {
