@@ -1,4 +1,3 @@
-import { React } from '@/BdApi'
 import AnimationSetting from '@/enums/AnimationSetting'
 import DurationControl from '@/modules/settingsRefresh/components/controls/DurationControl'
 import EasingControl from '@/modules/settingsRefresh/components/controls/EasingControl'
@@ -12,6 +11,7 @@ import IconButton from '@/modules/settingsRefresh/components/IconButton'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import RefreshIcon from '@/modules/settingsRefresh/components/icons/RefreshIcon'
 import AnimationSettingContainer from '@/enums/AnimationSettingContainer'
+import { createElement } from 'react'
 
 function SettingList ({ children, className = 'BA__animationSettingsList' }) {
   return (
@@ -38,7 +38,7 @@ function Setting ({ type, ...props }) {
 
   return (
     <div className="BA__animationSettingsItem">
-      {React.createElement(
+      {createElement(
         {
           [AnimationSetting.Duration]: DurationControl,
           [AnimationSetting.Easing]: EasingControl,

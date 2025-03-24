@@ -2,7 +2,6 @@ import { App, Button, Common } from '@/modules/DiscordModules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import Enum from '@/enums/Enum'
 import Data from '@/modules/Data'
-import meta from '@/meta'
 import Modal from '@/components/Modal'
 
 export default new class Prompt {

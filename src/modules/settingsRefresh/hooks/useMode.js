@@ -1,8 +1,8 @@
-import { React } from '@/BdApi'
 import SettingsMode from '@/enums/SettingsMode'
 import useEmitterEffect from '@/hooks/useEmitterEffect'
 import Events from '@/enums/Events'
 import Data from '@/modules/Data'
+import { useCallback } from 'react'
 
 const DATA_KEY = 'settingsMode'
 
@@ -11,7 +11,7 @@ function useMode () {
 
   return [
     Data[DATA_KEY] || SettingsMode.Simple,
-    React.useCallback(value => {
+    useCallback(value => {
       Data[DATA_KEY] = value
       emit(Events.SettingsModeChanged, value)
     }, [])

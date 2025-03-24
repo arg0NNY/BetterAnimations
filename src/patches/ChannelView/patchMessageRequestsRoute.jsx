@@ -1,4 +1,4 @@
-import { Patcher, React } from '@/BdApi'
+import { Patcher } from '@/BdApi'
 import ensureOnce from '@/utils/ensureOnce'
 import {
   ChannelSectionStore,

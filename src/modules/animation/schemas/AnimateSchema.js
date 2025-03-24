@@ -2,8 +2,6 @@ import { z, ZodError } from 'zod'
 import InjectableSchema from '@/modules/animation/schemas/InjectableSchema'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
 import Inject from '@/enums/Inject'
-import SettingsSchema from '@/modules/animation/schemas/SettingsSchema'
-import MetaSchema from '@/modules/animation/schemas/MetaSchema'
 import ParseStage from '@/enums/ParseStage'
 import { defaultSchema, sanitize } from 'hast-util-sanitize'
 import { toDom } from 'hast-util-to-dom'
@@ -11,7 +9,6 @@ import deepmerge from 'deepmerge'
 import { executeWithZod } from '@/modules/animation/utils'
 import { hookSymbol } from '@/modules/animation/schemas/SanitizeInjectableSchema'
 import { animeTimelineInjectSymbol } from '@/modules/animation/schemas/injects/anime'
-import AnimationType from '@/enums/AnimationType'
 
 // TODO: Update
 const safeInjects = [

@@ -1,4 +1,4 @@
-import { Patcher, React } from '@/BdApi'
+import { Patcher } from '@/BdApi'
 import { Layers, TransitionGroup } from '@/modules/DiscordModules'
 import ensureOnce from '@/utils/ensureOnce'
 import PassThrough from '@/components/PassThrough'

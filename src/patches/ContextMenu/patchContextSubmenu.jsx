@@ -1,4 +1,4 @@
-import { Patcher, React } from '@/BdApi'
+import { Patcher } from '@/BdApi'
 import { appLayerContext, Layer, MenuSubmenuItem, MenuSubmenuListItem } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
 import useModule from '@/hooks/useModule'

@@ -1,4 +1,3 @@
-import { React } from '@/BdApi'
 import { LayerActions, LayerStore, UserSettingsModal } from '@/modules/DiscordModules'
 import SettingsModal from '@/modules/settingsRefresh/SettingsModal'
 

@@ -1,5 +1,4 @@
 import { Common } from '@/modules/DiscordModules'
-import { React } from '@/BdApi'
 import AnimationSetting from '@/enums/AnimationSetting'
 
 function VariantControl ({ animation, value, onChange, defaultValue }) {

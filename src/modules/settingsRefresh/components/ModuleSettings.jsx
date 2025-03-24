@@ -1,4 +1,3 @@
-import { React } from '@/BdApi'
 import { Common } from '@/modules/DiscordModules'
 import PackAccordion from '@/modules/settingsRefresh/components/PackAccordion'
 import PackManager from '@/modules/PackManager'
@@ -6,15 +5,16 @@ import useModule from '@/hooks/useModule'
 import { css } from '@/modules/Style'
 import ModuleSettingsHeader from '@/modules/settingsRefresh/components/ModuleSettingsHeader'
 import ModuleContext from '@/modules/settingsRefresh/context/ModuleContext'
+import { useCallback } from 'react'
 
 function ModuleSettings ({ moduleId, refToScroller }) {
   const module = useModule(moduleId, true)
 
-  const onSelect = React.useCallback((type, pack, animation) => {
+  const onSelect = useCallback((type, pack, animation) => {
     if (!animation) module.setAnimation(type, null, null)
     else module.setAnimation(type, pack.slug, animation.key, {})
   }, [module])
-  const setIsEnabled = React.useCallback(value => module.setIsEnabled(value), [module])
+  const setIsEnabled = useCallback(value => module.setIsEnabled(value), [module])
 
   const selected = module.getAnimations()
 

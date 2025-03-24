@@ -1,5 +1,5 @@
-import { React } from '@/BdApi'
+import { createContext } from 'react'
 
-const MessageRequestSidebarContext = React.createContext()
+const MessageRequestSidebarContext = createContext()
 
 export default MessageRequestSidebarContext

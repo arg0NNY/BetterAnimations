@@ -3,19 +3,19 @@ import useAnimationSettings from '@/modules/settingsRefresh/hooks/useAnimationSe
 import AnimationType from '@/enums/AnimationType'
 import Config from '@/modules/Config'
 import AnimationCard from '@/modules/settingsRefresh/components/AnimationCard'
-import { React } from '@/BdApi'
 import Modules from '@/modules/Modules'
 import { Alert, AlertTypes, Common } from '@/modules/DiscordModules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import SectionContext from '@/modules/settingsRefresh/context/SectionContext'
 import Messages from '@/modules/Messages'
 import ArrowSmallRightIcon from '@/modules/settingsRefresh/components/icons/ArrowSmallRightIcon'
+import { useContext, useMemo } from 'react'
 
 function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect, ...props }) {
-  const { setSection } = React.useContext(SectionContext)
+  const { setSection } = useContext(SectionContext)
 
-  const parentModules = React.useMemo(() => Modules.getParentModules(module), [module])
-  const childModules = React.useMemo(() => Modules.getChildModules(module), [module])
+  const parentModules = useMemo(() => Modules.getParentModules(module), [module])
+  const childModules = useMemo(() => Modules.getChildModules(module), [module])
   const breadcrumbs = parentModules.concat(module).map(m => ({
     id: m.id,
     label: m.name

@@ -1,8 +1,8 @@
-import { React } from '@/BdApi'
+import { useEffect, useRef } from 'react'
 
 function usePrevious (value) {
-  const ref = React.useRef(value)
-  React.useEffect(() => {
+  const ref = useRef(value)
+  useEffect(() => {
     ref.current = value
   }, [value])
   return ref.current

@@ -1,4 +1,4 @@
-import { Patcher, React } from '@/BdApi'
+import { Patcher } from '@/BdApi'
 import { ChannelMessageList, TransitionGroup, useStateFromStores } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'

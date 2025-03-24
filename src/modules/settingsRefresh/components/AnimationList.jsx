@@ -1,13 +1,13 @@
-import { React } from '@/BdApi'
 import { css } from '@/modules/Style'
 import AnimationCard from '@/modules/settingsRefresh/components/AnimationCard'
 import Config from '@/modules/Config'
 import AnimationType from '@/enums/AnimationType'
 import useAnimationSettings from '@/modules/settingsRefresh/hooks/useAnimationSettings'
+import { useCallback, useMemo } from 'react'
 
 function AnimationList ({ module, pack, animations, selected, onSelect, ...props }) {
-  const packConfig = React.useMemo(() => Config.pack(pack.slug), [pack.slug])
-  const isActive = React.useCallback(
+  const packConfig = useMemo(() => Config.pack(pack.slug), [pack.slug])
+  const isActive = useCallback(
     (animation, type) => selected[type].packSlug === pack.slug && selected[type].animationKey === animation.key,
     [pack.slug, selected]
   )

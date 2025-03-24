@@ -1,8 +1,6 @@
-import { React } from '@/BdApi'
 import { css } from '@/modules/Style'
 import AnimationPreview, { getPreviewHeight } from '@/modules/settingsRefresh/components/AnimationPreview'
 import AnimationCardControls from '@/modules/settingsRefresh/components/AnimationCardControls'
-import BackgroundOptionRing from '@/modules/settingsRefresh/components/BackgroundOptionRing'
 import { useEventListener, useHover, useWindowSize } from '@reactuses/core'
 import { Common, CSSTransition, Dispatcher, Platform, TransitionGroup } from '@/modules/DiscordModules'
 import AnimationSettings from '@/modules/settingsRefresh/components/AnimationSettings'
@@ -10,6 +8,7 @@ import { DiscordClasses } from '@/modules/DiscordSelectors'
 import DispatcherEvents from '@/enums/DispatcherEvents'
 import useHint from '@/modules/settingsRefresh/hooks/useHint'
 import useElementBounding from '@/hooks/useElementBounding'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 export function getCardHeight (width) {
   return getPreviewHeight(width - 16) + 52
@@ -24,8 +23,8 @@ const BOTTOM_OFFSET = 72 + 20 // 72 is the height of the settings notice
 const POPOUT_GAP = 20
 
 function useAnimationCardExpand ({ positionerRef, popoutRef, refToScroller }) {
-  const [expanded, setExpanded] = React.useState(null)
-  const close = React.useCallback(() => setExpanded(null), [setExpanded])
+  const [expanded, setExpanded] = useState(null)
+  const close = useCallback(() => setExpanded(null), [setExpanded])
 
   const window = useWindowSize()
 
@@ -34,11 +33,11 @@ function useAnimationCardExpand ({ positionerRef, popoutRef, refToScroller }) {
 
   const popout = useElementBounding(popoutRef)
 
-  const update = React.useCallback(() => {
+  const update = useCallback(() => {
     positioner.update()
     popout.update()
   }, [positioner.update, popout.update])
-  React.useLayoutEffect(update, [expanded])
+  useLayoutEffect(update, [expanded])
 
   const popoutMaxHeight = window.height - (TOP_OFFSET + CARD_WIDE_HEIGHT + POPOUT_GAP + BOTTOM_OFFSET)
   const totalHeight = CARD_WIDE_HEIGHT + POPOUT_GAP + popout.height
@@ -81,9 +80,9 @@ function AnimationCard ({
   wide = false,
   errors
 }) {
-  const positionerRef = React.useRef()
-  const cardRef = React.useRef()
-  const popoutRef = React.useRef()
+  const positionerRef = useRef()
+  const cardRef = useRef()
+  const popoutRef = useRef()
 
   const {
     update,
@@ -100,13 +99,13 @@ function AnimationCard ({
     refToScroller
   })
 
-  React.useLayoutEffect(update, [animationSettings, modifiersSettings])
+  useLayoutEffect(update, [animationSettings, modifiersSettings])
 
   const cardHovered = useHover(cardRef)
 
   const [rightClickHint, setRightClickHint] = useHint('rightClickAnimationCard')
 
-  React.useEffect(() => {
+  useEffect(() => {
     const onKeyDown = e => {
       if (e.key !== 'Escape' || !expanded) return
       close()

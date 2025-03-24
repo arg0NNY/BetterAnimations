@@ -1,4 +1,5 @@
-import { React, Webpack } from '@/BdApi'
+import { Webpack } from '@/BdApi'
+import { createElement } from 'react'
 
 const { Filters } = Webpack
 
@@ -119,7 +120,7 @@ export const Router = Object.assign(
 export const Transition = Webpack.getByKeys('ENTERING', 'EXITING', 'contextType')
 export const CSSTransition = Webpack.getModule(m => m?.defaultProps?.classNames === '')
 export const TransitionGroup = Webpack.getModule(m => Filters.byPrototypeKeys('handleExited')(m) && !m.childContextTypes, { searchExports: true })
-export const TransitionGroupContext = new Transition({ children: React.createElement('div') }, {}).render().type._context
+export const TransitionGroupContext = new Transition({ children: createElement('div') }, {}).render().type._context
 export const Routes = Webpack.getModule(Filters.byKeys('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'), { searchExports: true })
 export const Constants = {
   DEFAULT_MESSAGE_REQUEST_SIDEBAR_WIDTH: 650,

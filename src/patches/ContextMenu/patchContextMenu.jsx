@@ -1,4 +1,4 @@
-import { Patcher, React } from '@/BdApi'
+import { Patcher } from '@/BdApi'
 import { ContextMenu, TransitionGroup } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
 import patchContextSubmenu from '@/patches/ContextMenu/patchContextSubmenu'

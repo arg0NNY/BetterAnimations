@@ -1,4 +1,3 @@
-import { React } from '@/BdApi'
 import {
   Constants,
   LayerActions,
@@ -14,18 +13,19 @@ import { css } from '@/modules/Style'
 import SettingsSections from '@/enums/SettingsSections'
 import SettingsStore from '@/modules/settingsRefresh/stores/SettingsStore'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
+import { useCallback, useMemo, useState, Suspense, lazy } from 'react'
 
-const StandardSidebarViewComponent = React.lazy(async () => ({ default: await StandardSidebarViewWrapper }))
+const StandardSidebarViewComponent = lazy(async () => ({ default: await StandardSidebarViewWrapper }))
 
 function SettingsModal ({ initialSection = SettingsSections.Home }) {
   const theme = useStateFromStores([ThemeStore], () => ThemeStore.theme)
   const sidebarTheme = useStateFromStores([ThemeStore], () => ThemeStore.darkSidebar ? Constants.Themes.DARK : undefined)
 
   const title = `${meta.name} Settings`
-  const sections = React.useMemo(getSections, [])
-  const [section, setSection] = React.useState(initialSection)
+  const sections = useMemo(getSections, [])
+  const [section, setSection] = useState(initialSection)
 
-  const onClose = React.useCallback(() => {
+  const onClose = useCallback(() => {
     if (SettingsStore.preventCloseIfNeeded()) return
     LayerActions.popLayer()
   }, [])
@@ -33,7 +33,7 @@ function SettingsModal ({ initialSection = SettingsSections.Home }) {
   return (
     <SectionContext.Provider value={{ section, setSection }}>
       <div className="BA__settingsModal">
-        <React.Suspense>
+        <Suspense>
           <StandardSidebarViewComponent
             title={title}
             theme={theme}
@@ -43,7 +43,7 @@ function SettingsModal ({ initialSection = SettingsSections.Home }) {
             onSetSection={setSection}
             onClose={onClose}
           />
-        </React.Suspense>
+        </Suspense>
       </div>
     </SectionContext.Provider>
   )

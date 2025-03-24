@@ -1,4 +1,3 @@
-import { React } from '@/BdApi'
 import directions from '@/data/directions'
 import Auto from '@/enums/Auto'
 import AnimationSetting from '@/enums/AnimationSetting'

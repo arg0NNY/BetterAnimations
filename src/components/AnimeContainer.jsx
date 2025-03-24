@@ -1,4 +1,4 @@
-import { React } from '@/BdApi'
+import { forwardRef } from 'react'
 
 function AnimeContainer ({ container, children }, ref) {
   if (!container) return children
@@ -8,4 +8,4 @@ function AnimeContainer ({ container, children }, ref) {
   )
 }
 
-export default React.forwardRef(AnimeContainer)
+export default forwardRef(AnimeContainer)

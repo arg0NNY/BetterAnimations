@@ -1,4 +1,3 @@
-import { React } from '@/BdApi'
 import { Transition } from '@/modules/DiscordModules'
 import Freeze from '@/components/Freeze'
 import AnimationType from '@/enums/AnimationType'
@@ -6,11 +5,12 @@ import { css } from '@/modules/Style'
 import AnimationStore from '@/modules/AnimationStore'
 import { createAwaitableRef } from '@/utils/react'
 import AnimeContainer from '@/components/AnimeContainer'
+import { Component, createRef } from 'react'
 
-class AnimeTransition extends React.Component {
+class AnimeTransition extends Component {
   doneCallback = createAwaitableRef()
-  containerRef = React.createRef()
-  instance = React.createRef()
+  containerRef = createRef()
+  instance = createRef()
 
   componentWillUnmount () {
     requestAnimationFrame(this.instance.current?.cancel() ?? (() => {}))

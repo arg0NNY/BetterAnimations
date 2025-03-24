@@ -1,4 +1,4 @@
-import { Patcher, React } from '@/BdApi'
+import { Patcher } from '@/BdApi'
 import { ChatSearchSidebar } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import ensureOnce from '@/utils/ensureOnce'

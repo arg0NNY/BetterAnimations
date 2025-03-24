@@ -1,8 +1,9 @@
-import { Patcher, React } from '@/BdApi'
+import { Patcher } from '@/BdApi'
 import useForceUpdate from '@/hooks/useForceUpdate'
 import Emitter from '@/modules/Emitter'
 import Events from '@/enums/Events'
 import Modules from '@/modules/Modules'
+import { useEffect } from 'react'
 
 export function moduleEffectFull (id, forceUpdate) {
   const events = [Events.PackLoaded, Events.PackUnloaded, Events.PackEnabled, Events.PackDisabled, Events.SettingsChanged]
@@ -43,7 +44,7 @@ export function injectModule (component, id, full = false) {
 function useModule (id, full = false) {
   const forceUpdate = useForceUpdate()
 
-  React.useEffect(() => moduleEffect(id, forceUpdate, full), [id])
+  useEffect(() => moduleEffect(id, forceUpdate, full), [id])
 
   return Modules.getModule(id)
 }

@@ -1,4 +1,4 @@
-import { Patcher, React } from '@/BdApi'
+import { Patcher } from '@/BdApi'
 import { ListThin, TransitionGroup, useStateFromStores } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
@@ -8,6 +8,7 @@ import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import { css } from '@/modules/Style'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
+import { Fragment } from 'react'
 
 function patchListThin () {
   Patcher.after(ListThin, 'render', (self, [props], value) => {
@@ -44,7 +45,7 @@ function patchListThin () {
             if (!item) return item
 
             const items = [].concat(
-              item.type === React.Fragment
+              item.type === Fragment
                 ? item.props.children
                 : item
             ).filter(i => !!i)

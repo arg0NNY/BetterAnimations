@@ -1,4 +1,3 @@
-import { React } from '@/BdApi'
 import easings from '@/data/easings'
 import { Common } from '@/modules/DiscordModules'
 

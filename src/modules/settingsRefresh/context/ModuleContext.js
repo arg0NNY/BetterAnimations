@@ -1,5 +1,5 @@
-import { React } from '@/BdApi'
+import { createContext } from 'react'
 
-const ModuleContext = React.createContext()
+const ModuleContext = createContext()
 
 export default ModuleContext

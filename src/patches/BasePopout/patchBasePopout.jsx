@@ -1,4 +1,4 @@
-import { Patcher, React, ReactDOM } from '@/BdApi'
+import { Patcher } from '@/BdApi'
 import { BasePopout, mangled, TransitionGroup } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
 import patchPopoutCSSAnimator from '@/patches/BasePopout/patchPopoutCSSAnimator'
@@ -6,6 +6,7 @@ import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import { autoPosition } from '@/hooks/useAutoPosition'
 import { avoidClickTrap } from '@/utils/transition'
+import { findDOMNode } from 'react-dom'
 
 function patchBasePopout () {
   const Original = mangled(BasePopout)
@@ -23,7 +24,7 @@ function patchBasePopout () {
     }
 
     renderLayer (...args) {
-      const anchor = this.domElementRef?.current ?? ReactDOM.findDOMNode(this)
+      const anchor = this.domElementRef?.current ?? findDOMNode(this)
 
       const value = super.renderLayer.call(
         Object.assign(

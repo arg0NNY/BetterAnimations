@@ -1,5 +1,5 @@
-import { React } from '@/BdApi'
 import { PropTypes, Transition, TransitionGroupContext } from '@/modules/DiscordModules'
+import { cloneElement, Component, isValidElement } from 'react'
 
 const { ENTERED, ENTERING, EXITING } = Transition
 
@@ -8,8 +8,8 @@ const { ENTERED, ENTERING, EXITING } = Transition
 function areChildrenDifferent (oldChildren, newChildren) {
   if (oldChildren === newChildren) return false
   if (
-    React.isValidElement(oldChildren) &&
-    React.isValidElement(newChildren) &&
+    isValidElement(oldChildren) &&
+    isValidElement(newChildren) &&
     oldChildren.key != null &&
     oldChildren.key === newChildren.key
   ) {
@@ -36,7 +36,7 @@ const callHook =
 
 const leaveRenders = {
   [modes.out]: ({ current, changeState }) =>
-    React.cloneElement(current, {
+    cloneElement(current, {
       in: false,
       onExited: callHook(current, 'onExited', () => {
         changeState(ENTERING, null)
@@ -44,7 +44,7 @@ const leaveRenders = {
     }),
   [modes.in]: ({ current, changeState, children }) => [
     current,
-    React.cloneElement(children, {
+    cloneElement(children, {
       in: true,
       onEntered: callHook(children, 'onEntered', () => {
         changeState(ENTERING)
@@ -55,20 +55,20 @@ const leaveRenders = {
 
 const enterRenders = {
   [modes.out]: ({ children, changeState }) =>
-    React.cloneElement(children, {
+    cloneElement(children, {
       in: true,
       onEntered: callHook(children, 'onEntered', () => {
-        changeState(ENTERED, React.cloneElement(children, { in: true }))
+        changeState(ENTERED, cloneElement(children, { in: true }))
       }),
     }),
   [modes.in]: ({ current, children, changeState }) => [
-    React.cloneElement(current, {
+    cloneElement(current, {
       in: false,
       onExited: callHook(current, 'onExited', () => {
-        changeState(ENTERED, React.cloneElement(children, { in: true }))
+        changeState(ENTERED, cloneElement(children, { in: true }))
       }),
     }),
-    React.cloneElement(children, {
+    cloneElement(children, {
       in: true,
     }),
   ],
@@ -130,7 +130,7 @@ const enterRenders = {
  * }
  * ```
  */
-class SwitchTransition extends React.Component {
+class SwitchTransition extends Component {
   state = {
     status: ENTERED,
     current: null,
@@ -158,7 +158,7 @@ class SwitchTransition extends React.Component {
     }
 
     return {
-      current: React.cloneElement(props.children, {
+      current: cloneElement(props.children, {
         in: true,
       }),
     }

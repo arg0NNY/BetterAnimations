@@ -1,20 +1,20 @@
-import { React } from '@/BdApi'
 import { SettingsNotice } from '@/modules/DiscordModules'
 import Config from '@/modules/Config'
+import { useCallback, Suspense, lazy } from 'react'
 
-const SettingsNoticeComponent = React.lazy(async () => ({ default: await SettingsNotice }))
+const SettingsNoticeComponent = lazy(async () => ({ default: await SettingsNotice }))
 
 function FormNotice () {
-  const onSave = React.useCallback(() => Config.save(), [])
-  const onReset = React.useCallback(() => Config.load(), [])
+  const onSave = useCallback(() => Config.save(), [])
+  const onReset = useCallback(() => Config.load(), [])
 
   return (
-    <React.Suspense>
+    <Suspense>
       <SettingsNoticeComponent
         onSave={onSave}
         onReset={onReset}
       />
-    </React.Suspense>
+    </Suspense>
   )
 }
 

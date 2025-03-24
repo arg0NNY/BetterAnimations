@@ -1,4 +1,4 @@
-import { React } from '@/BdApi'
+import { useEffect, Suspense, Fragment } from 'react'
 
 // https://github.com/software-mansion/react-freeze/blob/2e6ced224d72163d1890ce15fe87ebc4a987def9/src/index.tsx
 
@@ -8,11 +8,11 @@ function Suspender ({ freeze, children }) {
   if (freeze) {
     throw infiniteThenable
   }
-  return <React.Fragment>{children}</React.Fragment>
+  return <Fragment>{children}</Fragment>
 }
 
 function Freeze ({ freeze, children, placeholder = null, nodeRef }) {
-  React.useEffect(() => {
+  useEffect(() => {
     if (freeze && nodeRef?.current) {
       nodeRef.current.style.display = ''
       nodeRef.current.childNodes.forEach(n => n.style.display = '')
@@ -20,9 +20,9 @@ function Freeze ({ freeze, children, placeholder = null, nodeRef }) {
   }, [freeze])
 
   return (
-    <React.Suspense fallback={placeholder}>
+    <Suspense fallback={placeholder}>
       <Suspender freeze={freeze}>{children}</Suspender>
-    </React.Suspense>
+    </Suspense>
   )
 }
 

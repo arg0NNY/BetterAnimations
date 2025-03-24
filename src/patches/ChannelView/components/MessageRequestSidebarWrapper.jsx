@@ -1,4 +1,3 @@
-import { React } from '@/BdApi'
 import {
   ChatSidebar as _ChatSidebar,
   ChatSidebarType,
@@ -7,6 +6,7 @@ import {
   MESSAGE_REQUESTS_BASE_CHANNEL_ID,
   MessageRequestSidebar
 } from '@/modules/DiscordModules'
+import { memo } from 'react'
 
 function MessageRequestSidebarWrapper ({ pageWidth, onSidebarResize, channel }) {
   const ChatSidebar = mangled(_ChatSidebar)
@@ -25,4 +25,4 @@ function MessageRequestSidebarWrapper ({ pageWidth, onSidebarResize, channel }) 
   )
 }
 
-export default React.memo(MessageRequestSidebarWrapper)
+export default memo(MessageRequestSidebarWrapper)

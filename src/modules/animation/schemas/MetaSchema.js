@@ -2,7 +2,6 @@ import { z } from 'zod'
 import ModuleKey, { ModuleKeyAlias } from '@/enums/ModuleKey'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
 import { moduleAliases } from '@/data/modules'
-import AnimationType from '@/enums/AnimationType'
 
 const MetaSchema = z.object({
   modules: ArrayOrSingleSchema( z.enum(ModuleKey.values().concat(ModuleKeyAlias.values())) )

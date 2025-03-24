@@ -1,5 +1,4 @@
 import { css } from '@/modules/Style'
-import { React } from '@/BdApi'
 import IconBrand from '@/components/icons/IconBrand'
 import Divider from '@/components/Divider'
 import {
@@ -20,28 +19,29 @@ import AddonError from '@/structs/AddonError'
 import AnimationError from '@/structs/AnimationError'
 import BookCheckIcon from '@/components/icons/BookCheckIcon'
 import ErrorDetailsActions from '@/components/error/ErrorDetailsActions'
+import { useMemo } from 'react'
 
 function ErrorDetails ({ error, open = false }) {
-  const icon = React.useMemo(() => {
+  const icon = useMemo(() => {
     if (error instanceof AnimationError || error instanceof AddonError)
       return <BookCheckIcon size="md" />
     return <IconBrand size="lg" />
   }, [error])
 
-  const title = React.useMemo(() => {
+  const title = useMemo(() => {
     if (error instanceof InternalError) return 'Internal error'
     if (error.pack) return error.pack.name
     return 'Unclassified error'
   }, [error])
 
-  const hint = React.useMemo(() => {
+  const hint = useMemo(() => {
     if (error instanceof InternalError) return <>{meta.name} encountered an internal error. Some parts of the plugin may&nbsp;function incorrectly.</>
     if (error instanceof AddonError) return <>This pack cannot be&nbsp;loaded due to an&nbsp;unexpected error.</>
     if (error instanceof AnimationError) return <>An unexpected error occurred in the&nbsp;"{error.animation.name}"&nbsp;animation on&nbsp;{error.module.name}.</>
     return 'Unknown error occurred.'
   }, [error])
 
-  const code = React.useMemo(() => {
+  const code = useMemo(() => {
     if (error instanceof InternalError) return meta.invite
     return error.pack?.invite
   }, [error])
@@ -52,7 +52,7 @@ function ErrorDetails ({ error, open = false }) {
       : null
   ))
 
-  const alert = React.useMemo(() => {
+  const alert = useMemo(() => {
     if (invite) return 'Go to the Support Server to get help with this error:'
     if (error.pack) return `Reach out to the pack's author${error.pack.author ? ` (${error.pack.author})` : ''} to get help with this error.`
     return null

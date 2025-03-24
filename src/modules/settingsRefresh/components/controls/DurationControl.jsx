@@ -1,4 +1,3 @@
-import { React } from '@/BdApi'
 import { Common } from '@/modules/DiscordModules'
 import { range } from '@/utils/general'
 import AnimationSetting from '@/enums/AnimationSetting'

@@ -1,7 +1,7 @@
-import { React } from '@/BdApi'
+import { forwardRef } from 'react'
 
 function createPreview (component) {
-  return React.forwardRef((props, ref) => {
+  return forwardRef((props, ref) => {
     const { style, ...rest } = props
 
     const value = component(props, ref)

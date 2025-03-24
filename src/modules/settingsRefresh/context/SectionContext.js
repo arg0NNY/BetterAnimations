@@ -1,5 +1,5 @@
-import { React } from '@/BdApi'
+import { createContext } from 'react'
 
-const SectionContext = React.createContext({ section: null, setSection: null })
+const SectionContext = createContext({ section: null, setSection: null })
 
 export default SectionContext

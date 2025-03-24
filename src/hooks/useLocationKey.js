@@ -1,10 +1,10 @@
 import { Router } from '@/modules/DiscordModules'
-import { React } from '@/BdApi'
 import usePrevious from '@/hooks/usePrevious'
+import { useRef } from 'react'
 
 function useLocationKey (shouldSwitch, getSwitchDirection = () => 0, location = Router.useLocation()) {
   const prevLocation = usePrevious(location)
-  const key = React.useRef(0)
+  const key = useRef(0)
   let direction = 0
 
   if (prevLocation && !Object.is(prevLocation, location) && shouldSwitch(location, prevLocation)) {

@@ -1,6 +1,6 @@
-import { React } from '@/BdApi'
 import { useResizeObserver } from '@reactuses/core'
 import useForceUpdate from '@/hooks/useForceUpdate'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 
 function getTargetElement (target) {
   if (!target) return undefined
@@ -20,11 +20,11 @@ function useElementBounding (target, options = {}) {
 
   useResizeObserver(target, update)
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     if (immediate) update()
   }, [immediate, update])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (windowScroll) window.addEventListener('scroll', update, { passive: true })
     if (windowResize) window.addEventListener('resize', update, { passive: true })
 
@@ -36,7 +36,7 @@ function useElementBounding (target, options = {}) {
 
   const bounding = getTargetElement(target)?.getBoundingClientRect()
 
-  const boundingCached = React.useRef()
+  const boundingCached = useRef()
   if (bounding) boundingCached.current = bounding
 
   return {

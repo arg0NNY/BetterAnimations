@@ -1,4 +1,3 @@
-import { React } from '@/BdApi'
 import ButtonGroup from '@/modules/settingsRefresh/components/ButtonGroup'
 import { Common } from '@/modules/DiscordModules'
 import { stop } from '@/modules/settingsRefresh/utils/stopPropagation'
@@ -9,13 +8,14 @@ import { css } from '@/modules/Style'
 import Messages from '@/modules/Messages'
 import DoorEnterIcon from '@/modules/settingsRefresh/components/icons/DoorEnterIcon'
 import DoorExitIcon from '@/modules/settingsRefresh/components/icons/DoorExitIcon'
+import { useCallback, useContext, useMemo, useState } from 'react'
 
 function useToggleHint () {
-  const [hintShown, setHintShown] = React.useState(false)
-  const showHint = React.useCallback(() => setHintShown(true), [setHintShown])
-  const hideHint = React.useCallback(() => setHintShown(false), [setHintShown])
+  const [hintShown, setHintShown] = useState(false)
+  const showHint = useCallback(() => setHintShown(true), [setHintShown])
+  const hideHint = useCallback(() => setHintShown(false), [setHintShown])
 
-  const hintProps = React.useCallback((optionDisabled, text = Messages.SELECT_ANIMATION_TO_ENABLE) => {
+  const hintProps = useCallback((optionDisabled, text = Messages.SELECT_ANIMATION_TO_ENABLE) => {
     if (!optionDisabled) return {}
     return Object.assign(
       { onClick: stop(showHint) },
@@ -54,12 +54,12 @@ function AnimationToggleCheckbox ({ value, onChange, disabled }) {
 }
 
 function AnimationToggleControl ({ enter, exit, setEnter, setExit }) {
-  const module = React.useContext(ModuleContext)
+  const module = useContext(ModuleContext)
   const isAdvanced = useAdvancedMode(enter !== exit)
 
   const { hintProps } = useToggleHint()
 
-  const options = React.useMemo(() => [
+  const options = useMemo(() => [
     {
       value: 'enter',
       tooltip: 'Enter',

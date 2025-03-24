@@ -1,10 +1,11 @@
-import { Patcher, React } from '@/BdApi'
+import { Patcher } from '@/BdApi'
 import { ChatSidebar } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeContainer from '@/components/AnimeContainer'
 import Modules from '@/modules/Modules'
 import ModuleKey from '@/enums/ModuleKey'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
+import { Fragment } from 'react'
 
 function patchChatSidebar () {
   Patcher.before(...ChatSidebar, (self, [props]) => {
@@ -22,7 +23,7 @@ function patchChatSidebar () {
     const chatTarget = findInReactTree(value, m => m?.props?.className?.includes(DiscordClasses.ChatSidebar.chatTarget))
     if (chatTarget) {
       chatTarget.props = {}
-      chatTarget.type = React.Fragment
+      chatTarget.type = Fragment
     }
 
     return (

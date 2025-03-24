@@ -1,4 +1,4 @@
-import { Patcher, React } from '@/BdApi'
+import { Patcher } from '@/BdApi'
 import { AppView, Router, Routes, TransitionGroup } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
@@ -15,13 +15,14 @@ import useModule from '@/hooks/useModule'
 import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { css } from '@/modules/Style'
+import { useLayoutEffect, useRef } from 'react'
 
 function BaseView ({ module, children }) {
-  const baseRef = React.useRef()
+  const baseRef = useRef()
   const [key, direction] = useLocationKey(shouldSwitchBase, getSwitchBaseDirection)
   const auto = { direction }
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     if (!baseRef.current) return
 
     const bdNotices = document.getElementById('bd-notices')

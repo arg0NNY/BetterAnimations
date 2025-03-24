@@ -1,9 +1,9 @@
-import { React } from '@/BdApi'
 import Position from '@/enums/Position'
+import { createRef, useRef } from 'react'
 
 export function autoPosition (self, defaultPosition, source = { align: Position.Top }) {
   if (!self.__autoRef) {
-    self.__autoRef = React.createRef()
+    self.__autoRef = createRef()
     self.__autoRef.current = Object.assign({}, source, { position: defaultPosition })
   }
 
@@ -14,7 +14,7 @@ export function autoPosition (self, defaultPosition, source = { align: Position.
 }
 
 function useAutoPosition (defaultPosition, source = { align: Position.Top }) {
-  const autoRef = React.useRef(
+  const autoRef = useRef(
     Object.assign({}, source, { position: defaultPosition })
   )
 

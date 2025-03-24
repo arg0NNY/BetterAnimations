@@ -7,8 +7,6 @@ export const {
   Webpack,
   Utils,
   DOM,
-  React,
-  ReactDOM,
   Data,
   Plugins,
   UI,

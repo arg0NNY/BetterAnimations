@@ -1,27 +1,26 @@
-import { React } from '@/BdApi'
 import { css } from '@/modules/Style'
 import { Common } from '@/modules/DiscordModules'
 import ModuleContext from '@/modules/settingsRefresh/context/ModuleContext'
-import ModuleKey from '@/enums/ModuleKey'
 import { useRafFn } from '@reactuses/core'
+import { useContext, useMemo, useRef, useState } from 'react'
 
 export function getPreviewHeight (width) {
   return width * 9 / 16
 }
 
 function AnimationPreview ({ title, active = false }) {
-  const containerRef = React.useRef()
-  const previewRef = React.useRef()
+  const containerRef = useRef()
+  const previewRef = useRef()
 
-  const module = React.useContext(ModuleContext)
+  const module = useContext(ModuleContext)
 
-  const PreviewComponent = React.useMemo(() => {
+  const PreviewComponent = useMemo(() => {
     switch (module.id) {
       default: return () => null
     }
   }, [module.id])
 
-  const [scale, setScale] = React.useState(1)
+  const [scale, setScale] = useState(1)
   useRafFn(() => {
     if (!containerRef.current || !previewRef.current) return
 

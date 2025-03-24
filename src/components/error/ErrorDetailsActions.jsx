@@ -1,4 +1,4 @@
-import { React, Utils } from '@/BdApi'
+import { Utils } from '@/BdApi'
 import { Button, FormTitle, ModalActions } from '@/modules/DiscordModules'
 import { css } from '@/modules/Style'
 import useModule from '@/hooks/useModule'
