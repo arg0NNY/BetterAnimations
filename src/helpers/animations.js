@@ -1,5 +1,4 @@
-import pick from 'lodash-es/pick'
-import omit from 'lodash-es/omit'
+import { omit, pick } from '@/helpers/object'
 import cloneDeep from 'lodash-es/cloneDeep'
 import SanitizeInjectableSchema from '@/modules/animation/schemas/SanitizeInjectableSchema'
 
