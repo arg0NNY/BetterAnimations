@@ -28,7 +28,10 @@ export function getPath (obj, path) {
 
 export function toPath (path) {
   if (!path?.length) return ''
-  return '/' + path.join('/')
+  return '/' + path.map(
+    k => String(k).replaceAll('~', '~0')
+      .replaceAll('/', '~1')
+  ).join('/')
 }
 
 export function positionToLineColumn (content, position) {
