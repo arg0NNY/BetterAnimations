@@ -9,6 +9,7 @@ import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import { autoPosition } from '@/hooks/useAutoPosition'
 import { avoidClickTrap } from '@/utils/transition'
+import Mouse from '@/modules/Mouse'
 
 function patchContextMenu () {
   const once = ensureOnce()
@@ -16,6 +17,9 @@ function patchContextMenu () {
   Patcher.after(...ContextMenu, (self, args, value) => {
     once(() => {
       injectModule(value.type, ModuleKey.ContextMenu)
+      Patcher.after(value.type.prototype, 'componentDidMount', self => {
+        self.__anchor = Mouse.getAnchor()
+      })
       Patcher.after(value.type.prototype, 'render', (self, args, value) => {
         const module = Modules.getModule(ModuleKey.ContextMenu)
         if (!module.isEnabled()) return
@@ -40,6 +44,7 @@ function patchContextMenu () {
             targetContainer={avoidClickTrap}
             module={module}
             autoRef={autoRef}
+            anchor={self.__anchor}
           >
             {value}
           </AnimeTransition>

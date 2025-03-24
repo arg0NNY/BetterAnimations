@@ -50,7 +50,7 @@ export const PositionInjectSchema =
 
         if (anchor)
           return getCenter(
-            anchor.getBoundingClientRect(),
+            anchor instanceof Element ? anchor.getBoundingClientRect() : anchor,
             unit,
             containerRect
           )

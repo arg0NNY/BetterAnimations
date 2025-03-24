@@ -13,6 +13,15 @@ export default new class Mouse {
     }
   }
 
+  getAnchor () {
+    return {
+      x: this.x,
+      y: this.y,
+      width: 0,
+      height: 0
+    }
+  }
+
   initialize () {
     if (this.x === -1 && this.y === -1) {
       this.x = window.innerWidth / 2

@@ -150,7 +150,7 @@ const modules = [
     description: setSection => (
       <>
         Animates the&nbsp;appearance and disappearance of&nbsp;a&nbsp;context menu that is activated by&nbsp;right-clicking on&nbsp;various UI elements.
-        Supports auto-position and auto-direction for&nbsp;applicable animations determined by&nbsp;the&nbsp;location of&nbsp;the&nbsp;anchor element or a&nbsp;pointer.
+        Supports auto-position and auto-direction for&nbsp;applicable animations determined by&nbsp;the&nbsp;location of&nbsp;the&nbsp;pointer.
         Context Menus that have a&nbsp;strictly defined anchor element, with the exception of&nbsp;context submenus, are controlled by&nbsp;<Anchor onClick={() => setSection(ModuleKey.Popouts)}>Popouts</Anchor>.
       </>
     ),

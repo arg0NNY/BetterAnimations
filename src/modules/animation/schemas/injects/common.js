@@ -28,7 +28,7 @@ export const ContainerInjectSchema = InjectWithMeta(
 
 export const AnchorInjectSchema = InjectWithMeta(
   ({ anchor }) => InjectSchema(Inject.Anchor)
-    .transform(() => anchor),
+    .transform(() => anchor instanceof Element ? anchor : undefined),
   { immediate: ['anchor'] }
 )
 
