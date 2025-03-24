@@ -15,6 +15,19 @@ const PackSchema = z.object({
   website: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),
 
   animations: AnimationSchema.array()
+    .superRefine((animations, ctx) => {
+      const keys = {}
+      animations.forEach((a, i) => (keys[a.key] ??= []).push(i))
+      Object.entries(keys).filter(([, indexes]) => indexes.length > 1)
+        .forEach(([key, indexes]) => {
+          if (indexes.length <= 1) return
+          indexes.forEach(i => ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `Duplicate animation key: '${key}'`,
+            path: [i, 'key']
+          }))
+        })
+    })
 })
 
 export default PackSchema
