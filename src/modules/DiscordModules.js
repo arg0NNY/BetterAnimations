@@ -1,5 +1,6 @@
 import { Webpack } from '@/BdApi'
 import { createElement } from 'react'
+import Logger from '@/modules/Logger'
 
 const { Filters } = Webpack
 
@@ -26,7 +27,7 @@ function mapModule (module, gettersMap, options = {}) {
           return [key, Object.values(module).find(getter)]
         }
         catch (err) {
-          console.warn(`Failed to map the given module with key ${key}:`, err)
+          Logger.warn('DiscordModules', `Failed to map the given module with key ${key}:`, err)
           return [key, undefined]
         }
       })

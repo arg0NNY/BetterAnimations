@@ -1,7 +1,7 @@
 import { css } from '@/modules/Style'
 import { Common } from '@/modules/DiscordModules'
 import ModuleContext from '@/modules/settingsRefresh/context/ModuleContext'
-import { useRafFn } from '@reactuses/core'
+import useRafFn from '@/hooks/useRafFn'
 import { useContext, useMemo, useRef, useState } from 'react'
 
 export function getPreviewHeight (width) {

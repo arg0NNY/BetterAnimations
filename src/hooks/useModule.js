@@ -1,5 +1,5 @@
 import { Patcher } from '@/BdApi'
-import useForceUpdate from '@/hooks/useForceUpdate'
+import useUpdate from '@/hooks/useUpdate'
 import Emitter from '@/modules/Emitter'
 import Events from '@/enums/Events'
 import Modules from '@/modules/Modules'
@@ -42,9 +42,9 @@ export function injectModule (component, id, full = false) {
 }
 
 function useModule (id, full = false) {
-  const forceUpdate = useForceUpdate()
+  const update = useUpdate()
 
-  useEffect(() => moduleEffect(id, forceUpdate, full), [id])
+  useEffect(() => moduleEffect(id, update, full), [id])
 
   return Modules.getModule(id)
 }

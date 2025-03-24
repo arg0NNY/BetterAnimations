@@ -1,7 +1,9 @@
 import { css } from '@/modules/Style'
 import AnimationPreview, { getPreviewHeight } from '@/modules/settingsRefresh/components/AnimationPreview'
 import AnimationCardControls from '@/modules/settingsRefresh/components/AnimationCardControls'
-import { useEventListener, useHover, useWindowSize } from '@reactuses/core'
+import useEventListener from '@/hooks/useEventListener'
+import useHover from '@/hooks/useHover'
+import useWindowSize from '@/hooks/useWindowSize'
 import { Common, CSSTransition, Dispatcher, Platform, TransitionGroup } from '@/modules/DiscordModules'
 import AnimationSettings from '@/modules/settingsRefresh/components/AnimationSettings'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
@@ -29,7 +31,9 @@ function useAnimationCardExpand ({ positionerRef, popoutRef, refToScroller }) {
   const window = useWindowSize()
 
   const positioner = useElementBounding(positionerRef)
-  useEventListener('scroll', positioner.update, () => refToScroller.current?.getScrollerNode())
+
+  const getScrollerNode = useCallback(() => refToScroller.current?.getScrollerNode(), [refToScroller])
+  useEventListener('scroll', positioner.update, getScrollerNode)
 
   const popout = useElementBounding(popoutRef)
 

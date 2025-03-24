@@ -11,9 +11,6 @@ importers:
       '@emmetio/math-expression':
         specifier: ^1.0.5
         version: 1.0.5
-      '@reactuses/core':
-        specifier: ^5.0.18
-        version: 5.0.18(react@18.3.1)
       animejs:
         specifier: ^3.2.1
         version: 3.2.2
@@ -41,6 +38,9 @@ importers:
       spelling:
         specifier: ^2.0.2
         version: 2.0.2
+      use-sync-external-store:
+        specifier: ^1.4.0
+        version: 1.4.0(react@18.3.1)
       zod:
         specifier: ^3.22.4
         version: 3.23.6
@@ -237,11 +237,6 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@reactuses/core@5.0.18':
-    resolution: {integrity: sha512-DfkWN2OTDS9ShHS2gkmq0npuDm5stJL970Vbg9xhB7hgnUbGWi0idlrRMhfoAxYvBGjqXfhaNiJSA1CH5ABTVQ==}
-    peerDependencies:
-      react: ^16.8.0  || ^17.0.0 || ^18.0.0
-
   '@rollup/rollup-android-arm-eabi@4.30.1':
     resolution: {integrity: sha512-pSWY+EVt3rJ9fQ3IqlrEUtXh3cGqGtPDH1FQlNZehO2yYxCHEX1SPsz1M//NXwYfbTlcKr9WObLnJX9FsS9K1Q==}
     cpu: [arm]
@@ -386,10 +381,6 @@ packages:
   hast-util-to-dom@4.0.0:
     resolution: {integrity: sha512-oW7RScutPE58LfjuVUNvvH0+6rB89mAm/pkDqD3bdj9g6xKQlMcuW6yBmovbpDKkvYI2apPKmHZMtc9KiZTywA==}
 
-  js-cookie@3.0.5:
-    resolution: {integrity: sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==}
-    engines: {node: '>=14'}
-
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -439,10 +430,6 @@ packages:
   scheduler@0.23.2:
     resolution: {integrity: sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ==}
 
-  screenfull@5.2.0:
-    resolution: {integrity: sha512-9BakfsO2aUQN2K9Fdbj87RJIEZ82Q9IGim7FqM5OsebfoFC6ZHXgDq/KvniuLTPdeM8wY2o6Dj3WQ7KeQCj3cA==}
-    engines: {node: '>=0.10.0'}
-
   semver@7.6.2:
     resolution: {integrity: sha512-FNAIBWCx9qcRhoHcgcJ0gvU7SN1lYU2ZXuSfl04bSC5OpvDHFyJCjdNHomPXxjQlCBU67YW64PzY7/VIEH7F2w==}
     engines: {node: '>=10'}
@@ -474,10 +461,10 @@ packages:
   unist-util-position@5.0.0:
     resolution: {integrity: sha512-fucsC7HjXvkB5R3kTCO7kUjRdrS0BJt3M/FPxmHMBOm8JQi2BsHAHFsy27E0EolP8rp0NzXsJ+jNPyDWvOJZPA==}
 
-  use-sync-external-store@1.2.2:
-    resolution: {integrity: sha512-PElTlVMwpblvbNqQ82d2n6RjStvdSoNe9FG28kNfz3WiXilJm4DdNkEzRhCZuIDwY8U08WVihhGR5iRqAwfDiw==}
+  use-sync-external-store@1.4.0:
+    resolution: {integrity: sha512-9WXSPC5fMv61vaupRkCKCxsPxBocVnwakBEkMIHHpkTTg6icbJtg6jzgtLDm4bl3cSHAca52rYWih0k4K3PfHw==}
     peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   vite-plugin-banner@0.8.0:
     resolution: {integrity: sha512-JpDWDYxtrsytuvUOJCgJcTkBb6XM8yPOidjRtB6F5SW1JSzDd/Y+PD/44wR6ovWKXhSUiyDRqPvx7mMf8+8ELg==}
@@ -639,14 +626,6 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.0
     optional: true
 
-  '@reactuses/core@5.0.18(react@18.3.1)':
-    dependencies:
-      js-cookie: 3.0.5
-      lodash-es: 4.17.21
-      react: 18.3.1
-      screenfull: 5.2.0
-      use-sync-external-store: 1.2.2(react@18.3.1)
-
   '@rollup/rollup-android-arm-eabi@4.30.1':
     optional: true
 
@@ -775,8 +754,6 @@ snapshots:
       property-information: 6.5.0
       web-namespaces: 2.0.1
 
-  js-cookie@3.0.5: {}
-
   js-tokens@4.0.0: {}
 
   json-source-map@0.6.1: {}
@@ -840,8 +817,6 @@ snapshots:
     dependencies:
       loose-envify: 1.4.0
 
-  screenfull@5.2.0: {}
-
   semver@7.6.2: {}
 
   source-map-js@1.2.1: {}
@@ -872,7 +847,7 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.2
 
-  use-sync-external-store@1.2.2(react@18.3.1):
+  use-sync-external-store@1.4.0(react@18.3.1):
     dependencies:
       react: 18.3.1
 

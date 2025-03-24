@@ -1,13 +1,7 @@
-import { useResizeObserver } from '@reactuses/core'
-import useForceUpdate from '@/hooks/useForceUpdate'
+import useResizeObserver from '@/hooks/useResizeObserver'
+import useUpdate from '@/hooks/useUpdate'
 import { useEffect, useLayoutEffect, useRef } from 'react'
-
-function getTargetElement (target) {
-  if (!target) return undefined
-  if (typeof target === 'function') return target()
-  if ('current' in target) return target.current
-  return target
-}
+import { getTargetElement } from '@/utils/domTarget'
 
 function useElementBounding (target, options = {}) {
   const {
@@ -16,7 +10,7 @@ function useElementBounding (target, options = {}) {
     immediate = true
   } = options
 
-  const update = useForceUpdate()
+  const update = useUpdate()
 
   useResizeObserver(target, update)
 

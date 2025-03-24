@@ -92,7 +92,6 @@ export function visualizeAddonParseError (addon, error, rawContent, options = {}
   if (typeof position !== 'string') return
 
   const { line, column } = positionToLineColumn(rawContent, +position) ?? {}
-  console.log(line, column)
   if (typeof line !== 'number') return
 
   return visualizePosition(addon.fileContent, { line, column }, undefined, options)
