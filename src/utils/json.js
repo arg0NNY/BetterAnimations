@@ -6,7 +6,16 @@ function getKey (key) {
 }
 
 export function getPath (obj, path) {
-  if (typeof path === 'string') return getPath(obj, path.split('/'))
+  if (typeof path === 'string') {
+    if (!path.startsWith('/')) throw new Error('JSON Pointer must begin with `/`')
+    return getPath(
+      obj,
+      path.split('/').slice(1).map(
+        k => k.replaceAll('~0', '~')
+          .replaceAll('~1', '/')
+      )
+    )
+  }
   if (!path.length) return obj
   if (typeof obj !== 'object' || obj === null) return undefined
 

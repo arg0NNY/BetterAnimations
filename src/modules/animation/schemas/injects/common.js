@@ -12,7 +12,7 @@ import AnimationType from '@/enums/AnimationType'
 import ModuleKey from '@/enums/ModuleKey'
 import Mouse from '@/modules/Mouse'
 import ModuleType from '@/enums/ModuleType'
-import { getPath } from '@/utils/object'
+import { getPath } from '@/utils/json'
 import { zodTransformErrorBoundary } from '@/utils/zod'
 import Debug from '@/modules/Debug'
 
@@ -180,7 +180,7 @@ export const IsIntersectedInjectSchema = InjectWithMeta(
 export const GetInjectSchema = InjectSchema(Inject.Get).extend({
   target: z.instanceof(Object),
   key: z.string().optional(),
-  path: z.string().optional()
+  path: z.string().startsWith('/', 'JSON Pointer must begin with `/`').optional()
 }).transform(({ target, key, path }) => {
   if (key) return target[key]
   if (path) return getPath(target, path)
