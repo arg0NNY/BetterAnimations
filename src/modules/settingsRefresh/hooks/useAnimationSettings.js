@@ -4,9 +4,11 @@ import { getAnimationDefaultSettings } from '@/utils/animations'
 import ModuleType from '@/enums/ModuleType'
 import AnimationType from '@/enums/AnimationType'
 import AnimationSettingContainer from '@/enums/AnimationSettingContainer'
+import isEqual from 'lodash-es/isEqual'
+import { buildContext } from '@/modules/animation/parser'
 
 function isSame (array, key) {
-  return array.every(item => item?.[key] === array[0]?.[key])
+  return array.every(item => isEqual(item?.[key], array[0]?.[key]))
 }
 
 function canMerge (settings) {
@@ -16,6 +18,7 @@ function canMerge (settings) {
 
   const base = _isSame('animation') && _isSame('value')
   switch (settings[0].type) {
+    case Setting.Duration: return base && _isSame('computedBy')
     case Setting.Direction: return base && _isSame('axis') && _isSame('reverse') && _isSame('towards')
     default: return base
   }
@@ -35,8 +38,9 @@ function _useAnimationSettings (module, items, options = {}) {
   const { hideOverflow = false } = options
   const isAdvanced = useAdvancedMode()
 
-  const sets = items.map(({ animation, type, settings, setSettings: _setSettings }) => {
+  const sets = items.map(({ animation, type, settings, setSettings: _setSettings, context }) => {
     if (!animation) return []
+    if (!context) context = buildContext(null, animation, type, settings)
 
     const defaults = getAnimationDefaultSettings(animation, type)
     const setSettings = values => _setSettings({ ...settings, ...values })
@@ -52,8 +56,7 @@ function _useAnimationSettings (module, items, options = {}) {
     })
 
     return [
-      animation.settings?.[Setting.Duration] && buildSetting(Setting.Duration),
-      isAdvanced && animation.settings?.[Setting.Easing] && buildSetting(Setting.Easing),
+      animation.settings?.[Setting.Duration] && buildSetting(Setting.Duration, context.duration),
       animation.settings?.[Setting.Variant] && buildSetting(Setting.Variant),
       animation.settings?.[Setting.Position] && buildSetting(Setting.Position),
       animation.settings?.[Setting.Direction] && buildSetting(Setting.Direction, {
@@ -63,6 +66,9 @@ function _useAnimationSettings (module, items, options = {}) {
         onReverseChange: value => setSettings({ [Setting.DirectionReverse]: value }),
         towards: settings[Setting.DirectionTowards],
         onTowardsChange: value => setSettings({ [Setting.DirectionTowards]: value })
+      }),
+      isAdvanced && animation.settings?.[Setting.Easing] && buildSetting(Setting.Easing, {
+        exceedsDuration: context.duration?.computedBy === 'easing' ? context.duration.exceeds : 0
       }),
       isAdvanced && !hideOverflow && !module.meta?.settings?.hideOverflow && buildSetting(Setting.Overflow, {
         forced: animation.settings?.[Setting.Overflow] === false

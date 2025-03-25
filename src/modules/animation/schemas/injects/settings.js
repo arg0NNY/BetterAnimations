@@ -7,18 +7,22 @@ import Setting from '@/enums/AnimationSetting'
 import Direction from '@/enums/Direction'
 import { getCenter, toPercent, toUnit } from '@/utils/position'
 import Mouse from '@/modules/Mouse'
+import { toAnimeEasing } from '@/utils/easings'
 
 export const DurationInjectSchema = InjectWithMeta(
   ({ duration, settings }) => InjectSchema(Inject.Duration)
     .transform(hasInSettings(Inject.Duration, !!settings?.[Setting.Duration]))
-    .transform(() => duration),
+    .transform(() => duration.value),
   { immediate: [Setting.Duration, 'settings'] }
 )
 
 export const EasingInjectSchema = InjectWithMeta(
   ({ easing, settings }) => InjectSchema(Inject.Easing)
+    .extend({
+      raw: z.boolean().optional().default(false)
+    })
     .transform(hasInSettings(Inject.Easing, !!settings?.[Setting.Easing]))
-    .transform(() => easing),
+    .transform(({ raw }) => raw ? easing : toAnimeEasing(easing)),
   { immediate: [Setting.Easing, 'settings'] }
 )
 

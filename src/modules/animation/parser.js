@@ -8,6 +8,29 @@ import { formatZodError } from '@/utils/zod'
 import { buildCSS, executeWithZod, transformAnimeConfig } from '@/modules/animation/utils'
 import { z } from 'zod'
 import Debug from '@/modules/Debug'
+import Setting from '@/enums/AnimationSetting'
+import { EasingType } from '@/enums/Easing'
+import { getDuration } from '@/utils/easings'
+import { MAX_ANIMATION_DURATION, MIN_ANIMATION_DURATION } from '@/data/constants'
+
+function buildDurationContext (animation, settings) {
+  const easing = settings[Setting.Easing]
+  if (easing?.type === EasingType.Spring) {
+    const { from, to } = animation.settings?.[Setting.Duration] ?? { from: MIN_ANIMATION_DURATION, to: MAX_ANIMATION_DURATION }
+    const duration = getDuration(easing)
+    return {
+      value: Math.max(from, Math.min(to, duration)),
+      computedBy: 'easing',
+      exceeds: duration < from ? -1 : duration > to ? 1 : 0
+    }
+  }
+
+  return {
+    value: settings[Setting.Duration],
+    computedBy: null,
+    exceeds: 0
+  }
+}
 
 export function buildContext (pack, animation, type, settings = {}, context = {}) {
   return Object.assign(
@@ -20,6 +43,9 @@ export function buildContext (pack, animation, type, settings = {}, context = {}
       vars: {}
     },
     settings,
+    {
+      duration: buildDurationContext(animation, settings)
+    },
     context
   )
 }

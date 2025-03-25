@@ -28,7 +28,10 @@
         "defaults": {
           "variant": "black",
           "duration": 500,
-          "easing": "easeInOutQuad",
+          "easing": {
+            "type": "ease",
+            "style": "quad"
+          },
           "direction": "rightwards",
           "overflow": false
         }
@@ -159,13 +162,21 @@
           "enter": {
             "position": "center",
             "duration": 200,
-            "easing": "easeOutBack",
+            "easing": {
+              "type": "ease",
+              "bezier": "out",
+              "style": "back"
+            },
             "direction": "backwards"
           },
           "exit": {
             "position": "center",
             "duration": 200,
-            "easing": "easeOutBack",
+            "easing": {
+              "type": "ease",
+              "bezier": "out",
+              "style": "back"
+            },
             "direction": "forwards"
           }
         }
@@ -234,7 +245,10 @@
 
         "defaults": {
           "duration": 200,
-          "easing": "easeInOutQuart",
+          "easing": {
+            "type": "ease",
+            "style": "quart"
+          },
           "direction": "upwards"
         }
       },
@@ -334,7 +348,10 @@
 
         "defaults": {
           "duration": 400,
-          "easing": "easeInOutQuint"
+          "easing": {
+            "type": "ease",
+            "style": "quint"
+          }
         }
       },
       "animate": {
@@ -404,7 +421,7 @@
 
         "defaults": {
           "duration": 200,
-          "easing": "easeInOutSine",
+          "easing": { "type": "ease" },
           "position": "center"
         }
       },

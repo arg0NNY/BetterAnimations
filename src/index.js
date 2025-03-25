@@ -55,7 +55,8 @@ if (import.meta.env.MODE === 'development')
     Notices,
     Toasts,
     ErrorManager,
-    DiscordModules
+    DiscordModules,
+    anime
   }
 
 export default function (meta) {

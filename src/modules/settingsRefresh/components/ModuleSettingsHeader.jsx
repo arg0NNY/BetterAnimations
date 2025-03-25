@@ -42,6 +42,7 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
       setSettings: selected.enter.animation && handleSetSettings(selected.enter.pack, selected.enter.animation, AnimationType.Enter),
       enabled: !!selected.enter.animation,
       setEnabled: setEnterEnabled,
+      context: selected.enter.context,
       switchTooltip: !selected.enter.animation ? Messages.SELECT_ANIMATION_TO_ENABLE : null,
       onReset: selected.enter.animation && handleResetSettings(selected.enter.pack, selected.enter.animation, AnimationType.Enter)
     },
@@ -54,6 +55,7 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
       setSettings: selected.exit.animation && handleSetSettings(selected.exit.pack, selected.exit.animation, AnimationType.Exit),
       enabled: !!selected.exit.animation,
       setEnabled: setExitEnabled,
+      context: selected.exit.context,
       switchTooltip: !selected.exit.animation ? Messages.SELECT_ANIMATION_TO_ENABLE : null,
       onReset: selected.exit.animation && handleResetSettings(selected.exit.pack, selected.exit.animation, AnimationType.Exit)
     }

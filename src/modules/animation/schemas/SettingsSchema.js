@@ -4,12 +4,12 @@ import Position from '@/enums/Position'
 import Direction from '@/enums/Direction'
 import { formatValuesList } from '@/utils/schemas'
 import AnimationType from '@/enums/AnimationType'
-
-const EnumSchema = values => z.union([z.literal(true), z.enum(values).array()])
+import EasingSchema from '@/modules/animation/schemas/EasingSchema'
+import { MAX_ANIMATION_DURATION, MIN_ANIMATION_DURATION } from '@/data/constants'
 
 const DefaultsSchema = z.object({
   [Setting.Duration]: z.number().int().nonnegative(),
-  [Setting.Easing]: z.string(),
+  [Setting.Easing]: EasingSchema,
   [Setting.Variant]: z.string(),
   [Setting.Position]: z.string(),
   [Setting.Direction]: z.string(),
@@ -20,11 +20,11 @@ const SettingsSchema = z.object({
   [Setting.Duration]: z.union([
     z.literal(true),
     z.object({
-      from: z.number().int().min(100).multipleOf(100),
-      to: z.number().int().max(5000).multipleOf(100)
+      from: z.number().int().min(MIN_ANIMATION_DURATION).multipleOf(100),
+      to: z.number().int().max(MAX_ANIMATION_DURATION).multipleOf(100)
     }).strict()
   ]).optional()
-    .transform(v => v === true ? { from: 100, to: 2000 } : v)
+    .transform(v => v === true ? { from: MIN_ANIMATION_DURATION, to: 2000 } : v)
     .refine(
       value => !value || value.to > value.from,
       { message: `'to' must be greater than 'from'`, path: ['to'] }

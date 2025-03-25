@@ -1,5 +1,6 @@
 import anime from 'animejs'
 import AnimationType from '@/enums/AnimationType'
+import { toAnimeEasing } from '@/utils/easings'
 
 export const heightModifier = (type, { easing, duration }) => ({ container, element }) => ({
   execute: () => anime({
@@ -7,8 +8,8 @@ export const heightModifier = (type, { easing, duration }) => ({ container, elem
     height: type === AnimationType.Exit ? 0 : [0, anime.get(element, 'clientHeight')],
     marginTop: type === AnimationType.Exit ? 0 : [0, anime.get(container, 'marginTop')],
     marginBottom: type === AnimationType.Exit ? 0 : [0, anime.get(container, 'marginBottom')],
-    easing,
-    duration
+    easing: toAnimeEasing(easing),
+    duration: duration.value
   }),
   onBeforeBegin: () => element.style.visibility = 'hidden',
   onCompleted: type === AnimationType.Exit ? undefined : () => {
@@ -27,8 +28,8 @@ export const marginRightModifier = (type, { easing, duration }) => ({ container 
     return anime({
       targets: container,
       marginRight: type === AnimationType.Exit ? -width : [-width, 0],
-      duration,
-      easing
+      easing: toAnimeEasing(easing),
+      duration: duration.value
     })
   },
   onDestroyed: type === AnimationType.Exit ? undefined : () => container.style.removeProperty('margin-right')

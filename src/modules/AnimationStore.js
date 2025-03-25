@@ -3,7 +3,6 @@ import ModuleType from '@/enums/ModuleType'
 import Config from '@/modules/Config'
 import ErrorManager from '@/modules/ErrorManager'
 import AnimationError from '@/structs/AnimationError'
-import { formatSeconds } from '@/utils/time'
 
 class Animation {
 
@@ -128,7 +127,8 @@ class Animation {
   }
 
   computeTimeLimit () {
-    return 5000 + (typeof this.context.duration === 'number' ? this.context.duration : 0)
+    const { value = 0 } = this.context.duration ?? { value: 0 }
+    return 5000 + value
   }
 
   ensureTimeLimit (limit = this.computeTimeLimit()) {
@@ -137,7 +137,7 @@ class Animation {
       ErrorManager.registerAnimationError(
         new AnimationError(
           animation,
-          `Animation exceeded the execution time limit (${formatSeconds(limit)})`,
+          `Animation exceeded the execution time limit (${(limit / 1000).toFixed(1)}s)`,
           { module, pack, type, context: this.context }
         )
       )

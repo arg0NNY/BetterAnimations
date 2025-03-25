@@ -33,6 +33,7 @@ function AnimationList ({ module, pack, animations, selected, onSelect, ...props
         setSettings: handleSetSettings(animation, AnimationType.Enter),
         enabled: isActive(animation, AnimationType.Enter),
         setEnabled: handleSelect(AnimationType.Enter, animation),
+        context: isActive(animation, AnimationType.Enter) ? selected[AnimationType.Enter].context : null,
         onReset: handleResetSettings(animation, AnimationType.Enter)
       },
       {
@@ -42,6 +43,7 @@ function AnimationList ({ module, pack, animations, selected, onSelect, ...props
         setSettings: handleSetSettings(animation, AnimationType.Exit),
         enabled: isActive(animation, AnimationType.Exit),
         setEnabled: handleSelect(AnimationType.Exit, animation),
+        context: isActive(animation, AnimationType.Exit) ? selected[AnimationType.Exit].context : null,
         onReset: handleResetSettings(animation, AnimationType.Exit)
       }
     ])

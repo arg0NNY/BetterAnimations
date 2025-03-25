@@ -17,7 +17,7 @@
 
         "defaults": {
           "duration": 300,
-          "easing": "easeInOutSine"
+          "easing": { "type": "ease" }
         }
       },
       "animate": {

@@ -8,6 +8,7 @@ import { heightModifier, marginRightModifier } from '@/utils/modifiers'
 import DirectionAutoType from '@/enums/DirectionAutoType.js'
 import Messages from '@/modules/Messages'
 import { Anchor } from '@/modules/DiscordModules'
+import { EasingBezier, EasingStyle, EasingType } from '@/enums/Easing'
 
 export const moduleAliases = {
   [ModuleKeyAlias.Switch]: [
@@ -180,7 +181,11 @@ const modules = [
         create: heightModifier,
         defaults: {
           [Setting.Duration]: 200,
-          [Setting.Easing]: 'easeInOutQuad'
+          [Setting.Easing]: {
+            type: EasingType.Ease,
+            bezier: EasingBezier.InOut,
+            style: EasingStyle.Quad
+          }
         }
       },
       settings: {
@@ -206,7 +211,11 @@ const modules = [
         create: heightModifier,
         defaults: {
           [Setting.Duration]: 200,
-          [Setting.Easing]: 'easeInOutQuad'
+          [Setting.Easing]: {
+            type: EasingType.Ease,
+            bezier: EasingBezier.InOut,
+            style: EasingStyle.Quad
+          }
         }
       },
       settings: {
@@ -285,7 +294,11 @@ const modules = [
         create: marginRightModifier,
         defaults: {
           [Setting.Duration]: 400,
-          [Setting.Easing]: 'easeInOutQuint'
+          [Setting.Easing]: {
+            type: EasingType.Ease,
+            bezier: EasingBezier.InOut,
+            style: EasingStyle.Quint
+          }
         }
       }
     }
@@ -304,7 +317,11 @@ const modules = [
         create: marginRightModifier,
         defaults: {
           [Setting.Duration]: 400,
-          [Setting.Easing]: 'easeInOutQuint'
+          [Setting.Easing]: {
+            type: EasingType.Ease,
+            bezier: EasingBezier.InOut,
+            style: EasingStyle.Quint
+          }
         }
       }
     }

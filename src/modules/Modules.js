@@ -22,6 +22,7 @@ import ErrorManager from '@/modules/ErrorManager'
 import AnimationError from '@/structs/AnimationError'
 import { formatZodError } from '@/utils/zod'
 import Debug from '@/modules/Debug'
+import EasingSchema from '@/modules/animation/schemas/EasingSchema'
 
 class Module {
   constructor (id, name, meta = {}, { parent, description, alert } = {}) {
@@ -80,7 +81,7 @@ class Module {
     const path = animation ? ['animations', pack.animations.indexOf(animation), type in animation ? type : 'animate'] : []
 
     const settings = animation && this.buildSettings(animation, type, config, { auto: false })
-    const ctx = buildContext(pack, animation, type, settings, { module: this, path })
+    const ctx = animation && buildContext(pack, animation, type, settings, { module: this, path })
 
     const debug = Debug.animation(animation, type)
     const data = animation?.[type] ?? animation?.animate
@@ -126,7 +127,7 @@ class Module {
     const { pack, animation, path, config } = this.animations[type]
 
     const settings = animation && this.buildSettings(animation, type, config, options)
-    const ctx = buildContext(pack, animation, type, settings, { module: this, path, ...context })
+    const ctx = animation && buildContext(pack, animation, type, settings, { module: this, path, ...context })
 
     return {
       ...this.animations[type],
@@ -289,7 +290,9 @@ class Module {
         if (!values.includes(value)) return animationDefaults[setting] ?? values[0]
         return value
       }
-      case Setting.Easing: return String(value)
+      case Setting.Easing: {
+        return EasingSchema.catch(animationDefaults[setting]).parse(value)
+      }
       default: return undefined
     }
   }
@@ -365,15 +368,17 @@ class Module {
     const animation = this.getModifierAnimation()
     const config = this.settings.modifier?.[type] ?? {}
     const settings = this.buildSettings(animation, type, config.settings, options)
+    const context = buildContext(null, animation, type, settings)
 
     return {
-      animate: modifier.create(type, settings),
+      animate: modifier.create(type, context),
       forceDisabled,
       enabled: !forceDisabled && (config.enabled ?? true),
       setEnabled: forceDisabled ? null : enabled => this.updateModifier(type, { enabled }),
       settings,
       setSettings: settings => this.updateModifier(type, { settings }),
       defaults: getAnimationDefaultSettings(animation, type),
+      context,
       onReset: () => this.updateModifier(type, { settings: this.buildDefaultSettings(animation, type) })
     }
   }
