@@ -351,7 +351,7 @@ class Module {
     if (!modifier) return null
 
     return {
-      name: 'Smooth expand/collapse',
+      name: 'Smooth Expand/Collapse',
       settings: {
         [Setting.Overflow]: false,
         [Setting.Duration]: { from: 100, to: 2000 },

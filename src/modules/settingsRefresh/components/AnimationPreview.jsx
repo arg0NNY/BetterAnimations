@@ -52,7 +52,7 @@ css
     overflow: hidden;
     aspect-ratio: 16 / 9;
     border-radius: 8px;
-    background: var(--background-tertiary);
+    background: var(--background-base-low);
 }
 
 .BA__animationPreviewTitle {

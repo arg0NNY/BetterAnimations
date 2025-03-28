@@ -9,6 +9,7 @@ import DirectionAutoType from '@/enums/DirectionAutoType.js'
 import Messages from '@/modules/Messages'
 import { Anchor } from '@/modules/DiscordModules'
 import { EasingBezier, EasingStyle, EasingType } from '@/enums/Easing'
+import meta from '@/meta'
 
 export const moduleAliases = {
   [ModuleKeyAlias.Switch]: [
@@ -262,7 +263,7 @@ const modules = [
     name: 'Layers',
     description: () => (
       <>
-        Animates the&nbsp;transitions when switching between full-screen views of&nbsp;the&nbsp;Discord&nbsp;app, such as Settings, Shop, etc.
+        Animates the&nbsp;transitions when switching between full-screen views of&nbsp;the&nbsp;Discord&nbsp;app, such as User&nbsp;Settings, Server&nbsp;Settings, {meta.name} Settings, etc.
         Supports auto-direction for&nbsp;applicable animations determined by&nbsp;the&nbsp;user’s navigation history across layered views.
       </>
     ),

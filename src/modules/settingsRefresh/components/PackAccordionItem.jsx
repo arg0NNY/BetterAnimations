@@ -64,7 +64,8 @@ export default PackAccordionItem
 css
 `.BA__packAccordionItemHeader {
     border-radius: 8px;
-    background-color: var(--background-secondary);
+    background-color: var(--background-base-lowest);
+    border: 1px solid var(--border-subtle);
     display: flex;
     align-items: center;
     padding: 16px;
@@ -72,7 +73,7 @@ css
     transition: background-color .2s;
 }
 .BA__packAccordionItem:not(.BA__packAccordionItem--partial) .BA__packAccordionItemHeader:hover {
-    background-color: var(--background-secondary-alt);
+    background-color: var(--background-base-lower);
 }
 
 .BA__packAccordionItemHeading {

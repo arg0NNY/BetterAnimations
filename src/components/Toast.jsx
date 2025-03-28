@@ -49,12 +49,12 @@ export default Toast
 
 css
 `.BA__toastIcon {
-    width: 32px;
-    height: 32px;
+    width: 32px !important;
+    height: 32px !important;
     margin-right: 12px;
 }
 
 .BA__toastIconDefault {
-    margin-right: 8px;
+    margin-right: 4px;
 }`
 `Toast`

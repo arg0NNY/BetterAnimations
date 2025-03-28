@@ -7,12 +7,12 @@ export default class BaseError extends Error {
 
     const meta = [
       `${pluginMeta.name} ${pluginMeta.version}`,
+      module && `Module: ${module.name}`,
       pack && 'Pack: ' + [
         pack.name,
         pack.version && `v${pack.version}`,
         pack.author && `by ${pack.author}`
       ].filter(Boolean).join(' '),
-      module && `Module: ${module.name}`,
       ...additionalMeta
     ]
 

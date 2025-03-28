@@ -66,14 +66,14 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
     {
       animation: modifiers.animation,
       type: AnimationType.Enter,
-      title: 'Smooth expand',
+      title: 'Smooth Expand',
       switchTooltip: modifiers.enter.forceDisabled ? Messages.FORCE_DISABLED_BY_ANIMATION(selected.enter.animation?.name) : null,
       ...modifiers.enter
     },
     {
       animation: modifiers.animation,
       type: AnimationType.Exit,
-      title: 'Smooth collapse',
+      title: 'Smooth Collapse',
       switchTooltip: modifiers.exit.forceDisabled ? Messages.FORCE_DISABLED_BY_ANIMATION(selected.exit.animation?.name) : null,
       ...modifiers.exit
     }

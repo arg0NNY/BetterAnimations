@@ -132,18 +132,10 @@ export default ErrorDetails
 css
 `.BA__errorDetails {
     position: relative;
-    border-radius: 5px;
+    border-radius: 8px;
     padding: 0;
-    background: var(--deprecated-card-editable-bg);
-    border: 1px solid;
-}
-
-.theme-dark .BA__errorDetails {
-    border-color: var(--background-secondary-alt);
-}
-
-.theme-light .BA__errorDetails {
-    border-color: var(--background-tertiary);
+    background: var(--background-secondary);
+    border: 1px solid var(--border-subtle);
 }
 
 .BA__errorDetailsHeader {

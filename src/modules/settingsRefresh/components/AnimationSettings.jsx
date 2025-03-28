@@ -12,6 +12,7 @@ import { DiscordClasses } from '@/modules/DiscordSelectors'
 import RefreshIcon from '@/modules/settingsRefresh/components/icons/RefreshIcon'
 import AnimationSettingContainer from '@/enums/AnimationSettingContainer'
 import { createElement } from 'react'
+import { Utils } from '@/BdApi'
 
 function SettingList ({ children, className = 'BA__animationSettingsList' }) {
   return (
@@ -24,9 +25,9 @@ function SettingList ({ children, className = 'BA__animationSettingsList' }) {
   )
 }
 
-function SettingGroup ({ children }) {
+function SettingGroup ({ children, className }) {
   return (
-    <SettingList className="BA__animationSettingsGroup">
+    <SettingList className={Utils.className('BA__animationSettingsGroup', className)}>
       {children}
     </SettingList>
   )
@@ -55,7 +56,7 @@ function Setting ({ type, ...props }) {
 
 function AnimationSettingsHeader ({ headers }) {
   return (
-    <SettingGroup>
+    <SettingGroup className="BA__animationSettingsHeaderGroup">
       {() => headers.map(({ key, title, subtitle, enabled, setEnabled, onReset, switchTooltip }) => (
         <div className="BA__animationSettingsItem BA__animationSettingsHeader" key={key}>
           <Common.Text variant="heading-lg/semibold">
@@ -107,19 +108,20 @@ css
     position: relative;
     isolation: isolate;
 }
-.BA__animationSettings::before {
+.BA__animationSettings::before,
+.BA__animationSettingsHeaderGroup::before {
     content: '';
     position: absolute;
     top: 0;
+    bottom: 0;
     left: 50%;
-    height: 100%;
-    border-right: 1px solid var(--background-modifier-accent);
+    border-right: 1px solid var(--border-subtle);
     z-index: -1;
 }
 .BA__animationSettings, .BA__animationSettingsList {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
 }
 
 .BA__animationSettingsGroup {
@@ -132,15 +134,37 @@ css
 
 .BA__animationSettingsItem {
     background-color: var(--background-primary);
-    box-shadow: 0 -12px 0 var(--background-primary),
-                0 12px 0 var(--background-primary);
+    box-shadow: 0 -16px 0 var(--background-primary),
+                0 16px 0 var(--background-primary);
 }
 
+.BA__animationSettingsHeaderGroup {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    isolation: isolate;
+}
+.BA__animationSettingsHeaderGroup::before {
+    top: -20px;
+    bottom: -16px;
+}
+.BA__animationSettingsHeaderGroup::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -16px;
+    background-color: var(--background-primary);
+    z-index: -2;
+}
 .BA__animationSettingsHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 8px;
+    padding-bottom: 4px;
+    box-shadow: 0 -20px 0 var(--background-primary),
+                0 16px 0 var(--background-primary);
 }
 .BA__animationSettingsHeaderControls {
     display: flex;

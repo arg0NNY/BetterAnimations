@@ -19,7 +19,7 @@ export function getCardHeight (width) {
 const CARD_WIDE_WIDTH = 320
 const CARD_WIDE_HEIGHT = getCardHeight(CARD_WIDE_WIDTH)
 
-const TOP_BAR_HEIGHT = Platform.isWindows() ? 22 : 0
+const TOP_BAR_HEIGHT = 0
 const TOP_OFFSET = TOP_BAR_HEIGHT + 40
 const BOTTOM_OFFSET = 72 + 20 // 72 is the height of the settings notice
 const POPOUT_GAP = 20
@@ -237,15 +237,27 @@ css
 }
 .BA__animationCardPopout {
     background-color: var(--background-primary);
+    border: 1px solid var(--border-subtle);
     border-radius: 5px;
     overflow: hidden;
     flex: 1;
     display: flex;
 }
 .BA__animationCardPopoutScroller {
+    position: relative;
     overflow: hidden scroll;
     padding: 20px;
     padding-right: 12px;
+}
+.BA__animationCardPopoutScroller::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background-color: var(--background-primary);
+    z-index: 110;
 }
 
 .BA__animationCard {
@@ -255,14 +267,15 @@ css
     width: 100%;
     padding: 8px;
     border-radius: 8px;
-    background-color: var(--background-secondary);
+    background-color: var(--background-base-lowest);
+    border: 1px solid var(--border-subtle);
     cursor: pointer;
     transition: background-color .2s, transform .4s, width .4s, box-shadow .2s, z-index .4s step-end;
     z-index: 10;
     box-shadow: 0 0 0 0 var(--brand-500);
 }
 .BA__animationCard:hover {
-    background-color: var(--background-secondary-alt);
+    background-color: var(--background-base-lower);
 }
 .BA__animationCard:hover .BA__animationPreviewTitle,
 .BA__animationCard--expanded .BA__animationPreviewTitle {

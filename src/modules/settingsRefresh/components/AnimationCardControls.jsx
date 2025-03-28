@@ -32,7 +32,7 @@ function AnimationCardControls ({
         </IconButton>
         {hasModifiers && (
           <IconButton
-            tooltip="Smooth expand/collapse"
+            tooltip="Smooth Expand/Collapse"
             active={expanded === 'modifiers'}
             onClick={stop(() => setExpanded('modifiers'))}
           >
