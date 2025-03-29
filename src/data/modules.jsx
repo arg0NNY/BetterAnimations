@@ -41,7 +41,7 @@ const modules = [
     name: 'Servers',
     description: () => (
       <>
-        Animates the&nbsp;transitions when switching between servers and&nbsp;other full-screen pages.
+        Animates the&nbsp;transitions when switching between servers and&nbsp;other full-screen pages, such as DMs and Discover.
         Supports auto-direction for&nbsp;applicable animations determined by&nbsp;the&nbsp;order of&nbsp;elements in&nbsp;the&nbsp;server list.
       </>
     ),
