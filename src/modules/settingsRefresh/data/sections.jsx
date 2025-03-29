@@ -5,7 +5,7 @@ import ModeSwitch from '@/modules/settingsRefresh/components/ModeSwitch'
 import FormNotice from '@/modules/settingsRefresh/components/FormNotice'
 import SettingsStore from '@/modules/settingsRefresh/stores/SettingsStore'
 import SpineIcon from '@/modules/settingsRefresh/components/icons/SpineIcon'
-import SettingsSections from '@/enums/SettingsSections'
+import SettingsSection from '@/enums/SettingsSection'
 import HomeIcon from '@/modules/settingsRefresh/components/icons/HomeIcon'
 import ShopIcon from '@/modules/settingsRefresh/components/icons/ShopIcon'
 import BookCheckIcon from '@/components/icons/BookCheckIcon'
@@ -17,7 +17,7 @@ export function getSections () {
       element: SettingsSidebarHeader
     },
     {
-      section: SettingsSections.Home,
+      section: SettingsSection.Home,
       label: 'Home',
       icon: <HomeIcon size="xs" color="currentColor" />,
       element: () => {}
@@ -26,13 +26,13 @@ export function getSections () {
       section: 'DIVIDER'
     },
     {
-      section: SettingsSections.Catalog,
+      section: SettingsSection.Catalog,
       label: 'Catalog',
       icon: <ShopIcon size="xs" color="currentColor" />,
       element: () => {}
     },
     {
-      section: SettingsSections.Library,
+      section: SettingsSection.Library,
       label: 'Library',
       icon: <BookCheckIcon size="xs" color="currentColor" />,
       element: () => {}

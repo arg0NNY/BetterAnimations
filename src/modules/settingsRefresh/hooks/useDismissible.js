@@ -3,9 +3,9 @@ import Events from '@/enums/Events'
 import Data from '@/modules/Data'
 import { useCallback } from 'react'
 
-const DATA_KEY = 'hints'
+const DATA_KEY = 'dismissibles'
 
-function useHint (name) {
+function useDismissible (name) {
   const emit = useEmitterEffect(Events.HintUpdated)
 
   return [
@@ -17,4 +17,4 @@ function useHint (name) {
   ]
 }
 
-export default useHint
+export default useDismissible

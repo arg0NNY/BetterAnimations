@@ -10,20 +10,19 @@ import { getSections } from '@/modules/settingsRefresh/data/sections'
 import meta from '@/meta'
 import SectionContext from '@/modules/settingsRefresh/context/SectionContext'
 import { css } from '@/modules/Style'
-import SettingsSections from '@/enums/SettingsSections'
-import SettingsStore from '@/modules/settingsRefresh/stores/SettingsStore'
+import SettingsStore, { useSection } from '@/modules/settingsRefresh/stores/SettingsStore'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
 import { useCallback, useMemo, useState, Suspense, lazy } from 'react'
 
 const StandardSidebarViewComponent = lazy(async () => ({ default: await StandardSidebarViewWrapper }))
 
-function SettingsModal ({ initialSection = SettingsSections.Home }) {
+function SettingsModal () {
   const theme = useStateFromStores([ThemeStore], () => ThemeStore.theme)
   const sidebarTheme = useStateFromStores([ThemeStore], () => ThemeStore.darkSidebar ? Constants.Themes.DARK : undefined)
 
   const title = `${meta.name} Settings`
   const sections = useMemo(getSections, [])
-  const [section, setSection] = useState(initialSection)
+  const [section, setSection] = useSection()
 
   const onClose = useCallback(() => {
     if (SettingsStore.preventCloseIfNeeded()) return

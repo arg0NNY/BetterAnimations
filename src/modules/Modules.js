@@ -25,11 +25,13 @@ import Debug from '@/modules/Debug'
 import EasingSchema from '@/modules/animation/schemas/EasingSchema'
 
 class Module {
-  constructor (id, name, meta = {}, { parent, description, alert } = {}) {
+  constructor (id, name, meta = {}, { parent, description, controls, alert, onToggle } = {}) {
     this.id = id
     this.name = name
     this.description = description ?? 'No description provided.'
+    this.controls = controls
     this._alert = alert
+    this.onToggle = onToggle
     this.meta = meta
     this.parent = parent
     this.animations = {}

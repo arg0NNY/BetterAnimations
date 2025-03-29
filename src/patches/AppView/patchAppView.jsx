@@ -80,7 +80,8 @@ function patchAppView () {
       ?.props.children.find(r => r?.props?.path === Routes.MESSAGE_REQUESTS)
     if (messageRequestsRoute) patchMessageRequestsRoute(messageRequestsRoute)
 
-    if (false) return // Servers module and enhance layout enabled?
+    // Enhance layout
+    if (!serversModule.isEnabled() || !serversModule.settings.enhanceLayout) return
 
     base.props.className = Utils.className(base.props.className, 'BA__baseEnhancedLayout')
 

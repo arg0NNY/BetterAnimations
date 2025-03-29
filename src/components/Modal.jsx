@@ -86,7 +86,11 @@ function Modal ({
 export default Modal
 
 css
-`.BA__modalIcon {
+`.BA__modal {
+    min-height: unset;
+}
+
+.BA__modalIcon {
     margin-right: 4px;
 }
 

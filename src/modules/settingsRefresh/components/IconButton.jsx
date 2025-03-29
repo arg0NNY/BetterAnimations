@@ -1,18 +1,22 @@
 import { css } from '@/modules/Style'
 import { Common } from '@/modules/DiscordModules'
+import { Utils } from '@/BdApi'
 
-function IconButton ({ children, tooltip, disabled = false, active = false, ...props }) {
+function IconButton ({ children, tooltip, disabled = false, active = false, className, ...props }) {
   const button = _props => (
-    <div {..._props}>
-      <Common.Clickable
-        tag="button"
-        className={`BA__iconButton ${active ? 'BA__iconButton--active' : ''}`}
-        disabled={disabled}
-        {...props}
-      >
-        {children}
-      </Common.Clickable>
-    </div>
+    <Common.Clickable
+      tag="button"
+      className={Utils.className(
+        'BA__iconButton',
+        { 'BA__iconButton--active': active },
+        className
+      )}
+      disabled={disabled}
+      {..._props}
+      {...props}
+    >
+      {children}
+    </Common.Clickable>
   )
 
   if (!tooltip) return button({})

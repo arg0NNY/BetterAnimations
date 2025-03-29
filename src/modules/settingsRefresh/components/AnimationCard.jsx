@@ -4,13 +4,14 @@ import AnimationCardControls from '@/modules/settingsRefresh/components/Animatio
 import useEventListener from '@/hooks/useEventListener'
 import useHover from '@/hooks/useHover'
 import useWindowSize from '@/hooks/useWindowSize'
-import { Common, CSSTransition, Dispatcher, Platform, TransitionGroup } from '@/modules/DiscordModules'
+import { Common, CSSTransition, Dispatcher, TransitionGroup } from '@/modules/DiscordModules'
 import AnimationSettings from '@/modules/settingsRefresh/components/AnimationSettings'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import DispatcherEvents from '@/enums/DispatcherEvents'
-import useHint from '@/modules/settingsRefresh/hooks/useHint'
+import useDismissible from '@/modules/settingsRefresh/hooks/useDismissible'
 import useElementBounding from '@/hooks/useElementBounding'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import HintTooltip from '@/modules/settingsRefresh/components/HintTooltip'
 
 export function getCardHeight (width) {
   return getPreviewHeight(width - 16) + 52
@@ -107,7 +108,7 @@ function AnimationCard ({
 
   const cardHovered = useHover(cardRef)
 
-  const [rightClickHint, setRightClickHint] = useHint('rightClickAnimationCard')
+  const [rightClickHint, setRightClickHint] = useDismissible('rightClickAnimationCard')
 
   useEffect(() => {
     const onKeyDown = e => {
@@ -138,10 +139,9 @@ function AnimationCard ({
 
   return (
     <div className={`BA__animationCardWrapper ${expanded ? 'BA__animationCard--expanded' : ''} ${wide ? 'BA__animationCard--wide' : ''} ${active ? 'BA__animationCard--active' : ''}`}>
-      <Common.Tooltip
+      <HintTooltip
         text="Right-click the card to open the settings"
         shouldShow={!rightClickHint && !!expandSettings}
-        color={Common.Tooltip.Colors.BRAND}
       >
         {props => (
           <div
@@ -177,7 +177,7 @@ function AnimationCard ({
             </Common.Clickable>
           </div>
         )}
-      </Common.Tooltip>
+      </HintTooltip>
 
       <div className="BA__animationCardBackdrop" onClick={close}></div>
       <TransitionGroup component={null}>

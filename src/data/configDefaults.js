@@ -4,6 +4,7 @@ export const configDefaults = {
   modules: {
     [ModuleKey.Servers]: {
       enabled: true,
+      enhanceLayout: true,
       enter: {
         packSlug: 'test',
         animationKey: 'example'

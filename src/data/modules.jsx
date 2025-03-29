@@ -10,6 +10,8 @@ import Messages from '@/modules/Messages'
 import { Anchor } from '@/modules/DiscordModules'
 import { EasingBezier, EasingStyle, EasingType } from '@/enums/Easing'
 import meta from '@/meta'
+import ServerModuleControls from '@/components/ServerModuleControls'
+import { forceAppUpdate } from '@/utils/forceUpdate'
 
 export const moduleAliases = {
   [ModuleKeyAlias.Switch]: [
@@ -43,7 +45,9 @@ const modules = [
         Supports auto-direction for&nbsp;applicable animations determined by&nbsp;the&nbsp;order of&nbsp;elements in&nbsp;the&nbsp;server list.
       </>
     ),
+    controls: ServerModuleControls,
     alert: Messages.HEAVY_MODULE_ALERT,
+    onToggle: forceAppUpdate,
     meta: {
       type: ModuleType.Switch,
       settings: {

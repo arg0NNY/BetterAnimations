@@ -1,5 +1,7 @@
 import { LayerActions, LayerStore, UserSettingsModal } from '@/modules/DiscordModules'
 import SettingsModal from '@/modules/settingsRefresh/SettingsModal'
+import SettingsSection from '@/enums/SettingsSection'
+import { setSection } from '@/modules/settingsRefresh/stores/SettingsStore'
 
 export default new class Settings {
 
@@ -7,13 +9,14 @@ export default new class Settings {
     return !!LayerStore.getLayers().at(-1)?.__BA_isSettingsModal
   }
 
-  openSettingsModal (section) {
+  openSettingsModal (section = SettingsSection.Home) {
     if (this.isSettingsModalOpen()) return
 
     if (!LayerStore.getLayers().includes('USER_SETTINGS'))
       UserSettingsModal.open('plugins')
 
-    const component = () => <SettingsModal initialSection={section} />
+    setSection(section)
+    const component = () => <SettingsModal />
     component.__BA_isSettingsModal = true
     LayerActions.pushLayer(component)
   }

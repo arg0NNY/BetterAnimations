@@ -7,7 +7,7 @@ import PackManager from '@/modules/PackManager'
 import Notices from '@/modules/Notices'
 import Settings from '@/modules/Settings'
 import meta from '@/meta'
-import SettingsSections from '@/enums/SettingsSections'
+import SettingsSection from '@/enums/SettingsSection'
 
 export default new class PackRegistry {
   get name () { return 'PackRegistry' }
@@ -114,7 +114,7 @@ export default new class PackRegistry {
     this.showUpdatesNotice(updatesCount)
   }
 
-  showUpdatesNotice (updatesCount = 1, onClick = () => Settings.openSettingsModal(SettingsSections.Library)) {
+  showUpdatesNotice (updatesCount = 1, onClick = () => Settings.openSettingsModal(SettingsSection.Library)) {
     const closeNotice = Notices.info(`${meta.name} has found updates for ${updatesCount} of your packs!`, {
       buttons: [{
         label: 'View Library',

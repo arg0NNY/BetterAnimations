@@ -4,12 +4,14 @@ import AnimationType from '@/enums/AnimationType'
 import Config from '@/modules/Config'
 import AnimationCard from '@/modules/settingsRefresh/components/AnimationCard'
 import Modules from '@/modules/Modules'
-import { Alert, AlertTypes, Common } from '@/modules/DiscordModules'
+import { AlertTypes, Common } from '@/modules/DiscordModules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import SectionContext from '@/modules/settingsRefresh/context/SectionContext'
 import Messages from '@/modules/Messages'
 import ArrowSmallRightIcon from '@/modules/settingsRefresh/components/icons/ArrowSmallRightIcon'
 import { useContext, useMemo } from 'react'
+import DismissibleAlert from '@/modules/settingsRefresh/components/DismissibleAlert'
+import useDismissible from '@/modules/settingsRefresh/hooks/useDismissible'
 
 function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect, ...props }) {
   const { setSection } = useContext(SectionContext)
@@ -84,61 +86,76 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
     selected.exit.error
   ].filter(Boolean)
 
-  return (
-    <div className="BA__moduleSettingsHeader">
-      <AnimationCard
-        {...props}
-        enter={!!selected.enter.animation}
-        exit={!!selected.exit.animation}
-        setEnter={setEnterEnabled}
-        setExit={setExitEnabled}
-        animationSettings={animationSettings}
-        modifiersSettings={modifiersSettings}
-        active={false}
-        previewAlwaysActive
-        wide
-        errors={errors}
-      />
-      <div className="BA__moduleSettingsHeading">
-        <div className="BA__moduleSettingsTitle">
-          <Common.Breadcrumbs
-            breadcrumbs={breadcrumbs}
-            activeId={module.id}
-            renderCustomBreadcrumb={({ label }, active) => (
-              <Common.FormTitle
-                tag="h1"
-                className={`BA__moduleSettingsBreadcrumb ${active ? 'BA__moduleSettingsBreadcrumb--active' : ''}`}
-              >{label}</Common.FormTitle>
-            )}
-            onBreadcrumbClick={({ id }) => setSection(id)}
-          />
-          <Common.Tooltip text={`${enabled ? 'Disable' : 'Enable'} ${module.name} animations`} hideOnClick={false}>
-            {props => <div {...props}>{toggleSwitch}</div>}
-          </Common.Tooltip>
-        </div>
-        {module.description && (
-          <Common.FormText type={Common.FormText.Types.DESCRIPTION} className={DiscordClasses.Margins.marginTop8}>
-            {typeof module.description === 'function' ? module.description(setSection) : module.description}
-          </Common.FormText>
-        )}
-        {module.alert && (
-          <Alert messageType={AlertTypes.WARNING} className={DiscordClasses.Margins.marginTop8}>{module.alert}</Alert>
-        )}
+  const [alertDismissed, setAlertDismissed] = useDismissible(`moduleAlert:${module.id}`)
 
-        {childModules.map(m => (
-          <Common.Clickable tag="div" onClick={() => setSection(m.id)}>
-            <Common.FormTitle
-              key={m.id}
-              tag="label"
-              className="BA__moduleSettingsLink"
-            >
-              {m.name} animations
-              <ArrowSmallRightIcon size="xs" />
-            </Common.FormTitle>
-          </Common.Clickable>
-        ))}
+  return (
+    <>
+      {module.alert && !alertDismissed && (
+        <DismissibleAlert
+          messageType={AlertTypes.WARNING}
+          className={DiscordClasses.Margins.marginBottom8}
+          onDismiss={() => setAlertDismissed(true)}
+        >
+          {module.alert}
+        </DismissibleAlert>
+      )}
+      <div className="BA__moduleSettingsHeader">
+        <AnimationCard
+          {...props}
+          enter={!!selected.enter.animation}
+          exit={!!selected.exit.animation}
+          setEnter={setEnterEnabled}
+          setExit={setExitEnabled}
+          animationSettings={animationSettings}
+          modifiersSettings={modifiersSettings}
+          active={false}
+          previewAlwaysActive
+          wide
+          errors={errors}
+        />
+        <div className="BA__moduleSettingsHeading">
+          <div className="BA__moduleSettingsTitle">
+            <Common.Breadcrumbs
+              breadcrumbs={breadcrumbs}
+              activeId={module.id}
+              renderCustomBreadcrumb={({ label }, active) => (
+                <Common.FormTitle
+                  tag="h1"
+                  className={`BA__moduleSettingsBreadcrumb ${active ? 'BA__moduleSettingsBreadcrumb--active' : ''}`}
+                >{label}</Common.FormTitle>
+              )}
+              onBreadcrumbClick={({ id }) => setSection(id)}
+            />
+            <Common.Tooltip text={`${enabled ? 'Disable' : 'Enable'} ${module.name} animations`} hideOnClick={false}>
+              {props => <div {...props}>{toggleSwitch}</div>}
+            </Common.Tooltip>
+          </div>
+          {module.description && (
+            <Common.FormText type={Common.FormText.Types.DESCRIPTION} className={DiscordClasses.Margins.marginTop8}>
+              {typeof module.description === 'function' ? module.description(setSection) : module.description}
+            </Common.FormText>
+          )}
+          {module.controls && (
+            <div className={DiscordClasses.Margins.marginTop8}>
+              {module.controls({ module })}
+            </div>
+          )}
+
+          {childModules.map(m => (
+            <Common.Clickable tag="div" onClick={() => setSection(m.id)}>
+              <Common.FormTitle
+                key={m.id}
+                tag="label"
+                className="BA__moduleSettingsLink"
+              >
+                {m.name} animations
+                <ArrowSmallRightIcon size="xs" />
+              </Common.FormTitle>
+            </Common.Clickable>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
