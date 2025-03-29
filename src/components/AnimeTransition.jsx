@@ -93,6 +93,9 @@ css
     background: none;
 }
 
+[data-animation] {
+    display: contents;
+}
 [data-animation] > * {
     position: absolute;
 }
@@ -104,10 +107,10 @@ css
 [data-animation-container][data-animation-overflow="false"] {
     overflow: clip;
 }
-[data-animation-container][data-animation-switch] > :not([data-animation]) { /* Animating switch element */
+[data-animation-container][data-animation-switch]:not([data-default-layout-styles="false"]) > :not([data-animation]) { /* Animating switch element */
     contain: layout;
 }
-[data-animation-container][data-animation-switch][data-animation-type="exit"] { /* Exiting switch container */
+[data-animation-container][data-animation-switch][data-animation-type="exit"]:not([data-default-layout-styles="false"]) { /* Exiting switch container */
     position: absolute !important;
     inset: 0;
 }`

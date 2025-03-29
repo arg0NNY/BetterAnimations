@@ -1,13 +1,13 @@
-import { Patcher } from '@/BdApi'
-import { AppView, Router, Routes, TransitionGroup } from '@/modules/DiscordModules'
+import { Patcher, Utils } from '@/BdApi'
+import { AppPanels, AppView, Router, Routes, TransitionGroup } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
 import useLocationKey from '@/hooks/useLocationKey'
 import {
-  getSwitchBaseDirection,
   getSwitchContentDirection,
-  shouldSwitchBase,
-  shouldSwitchContent
+  getSwitchPageDirection,
+  shouldSwitchContent,
+  shouldSwitchPage
 } from '@/utils/locations'
 import { passAuto } from '@/utils/transition'
 import ModuleKey from '@/enums/ModuleKey'
@@ -15,110 +15,140 @@ import useModule from '@/hooks/useModule'
 import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { css } from '@/modules/Style'
-import { useLayoutEffect, useRef } from 'react'
+import { Fragment } from 'react'
 
-function BaseView ({ module, children }) {
-  const baseRef = useRef()
-  const [key, direction] = useLocationKey(shouldSwitchBase, getSwitchBaseDirection)
+function AppViewTransition ({ className, module, shouldSwitch, getSwitchDirection, children }) {
+  const [key, direction] = useLocationKey(shouldSwitch, getSwitchDirection)
   const auto = { direction }
 
-  useLayoutEffect(() => {
-    if (!baseRef.current) return
-
-    const bdNotices = document.getElementById('bd-notices')
-    if (bdNotices && bdNotices.parentElement !== baseRef.current) {
-      bdNotices.replaceWith(bdNotices.cloneNode(true))
-      baseRef.current.prepend(bdNotices)
-    }
-  })
-
   return (
-    <TransitionGroup component={null} childFactory={passAuto(auto)}>
+    <TransitionGroup className={className} childFactory={passAuto(auto)}>
       <AnimeTransition
         key={key}
-        container={{ className: 'BA__base' }}
+        container={{ className, defaultLayoutStyles: false }}
         freeze={true}
         module={module}
         auto={auto}
       >
-        <div className={DiscordClasses.AppView.base} ref={baseRef}>
-          {children}
-        </div>
+        {children}
       </AnimeTransition>
     </TransitionGroup>
   )
 }
 
-function ContentView ({ module, children }) {
-  const [key, direction] = useLocationKey(shouldSwitchContent, getSwitchContentDirection)
-  const auto = { direction }
-
-  return (
-    <TransitionGroup className={DiscordClasses.AppView.content} childFactory={passAuto(auto)}>
-      <AnimeTransition
-        key={key}
-        container={{ className: DiscordClasses.AppView.content }}
-        freeze={true}
-        module={module}
-        auto={auto}
-      >
-        <div className={DiscordClasses.AppView.content}>
-          <Router.Switch location={location}>
-            {children}
-          </Router.Switch>
-        </div>
-      </AnimeTransition>
-    </TransitionGroup>
-  )
-}
+const byClassName = className => m => m?.props?.className?.includes(className)
 
 function patchAppView () {
   Patcher.after(...AppView, (self, args, value) => {
     const serversModule = useModule(ModuleKey.Servers)
     const channelsModule = useModule(ModuleKey.Channels)
 
-    const base = findInReactTree(value, m => m?.className === DiscordClasses.AppView.base)
+    const base = findInReactTree(value, byClassName(DiscordClasses.AppView.base))
     if (!base) return
 
-    if (serversModule.isEnabled()) {
-      base.className = 'BA__base'
-      base.children = <BaseView module={serversModule}>{base.children}</BaseView>
-    }
+    const contentIndex = base.props.children.findIndex(byClassName(DiscordClasses.AppView.content))
+    if (contentIndex === -1) return
 
-    const content = findInReactTree(base, m => m?.props?.className === DiscordClasses.AppView.content)
-    if (!content) return
+    const content = base.props.children[contentIndex]
+    if (serversModule.isEnabled()) base.props.children[contentIndex] = (
+      <AppViewTransition
+        className="BA__content"
+        module={serversModule}
+        shouldSwitch={shouldSwitchContent}
+        getSwitchDirection={getSwitchContentDirection}
+      >
+        {content}
+      </AppViewTransition>
+    )
 
-    const view = findInReactTree(content, m => m?.children?.type === Router.Switch)
-    const routes = view.children.props.children
+    const pageIndex = content.props.children.findIndex(byClassName(DiscordClasses.AppView.page))
+    if (pageIndex === -1) return
 
-    const messageRequestsRoute = routes.find(r => r?.props?.path === Routes.MESSAGE_REQUESTS)
+    const page = content.props.children[pageIndex]
+    if (channelsModule.isEnabled()) content.props.children[pageIndex] = (
+      <AppViewTransition
+        className="BA__page"
+        module={channelsModule}
+        shouldSwitch={shouldSwitchPage}
+        getSwitchDirection={getSwitchPageDirection}
+      >
+        {page}
+      </AppViewTransition>
+    )
+
+    const messageRequestsRoute = findInReactTree(page, m => m?.type === Router.Switch)
+      ?.props.children.find(r => r?.props?.path === Routes.MESSAGE_REQUESTS)
     if (messageRequestsRoute) patchMessageRequestsRoute(messageRequestsRoute)
 
-    if (channelsModule.isEnabled())
-      view.children = <ContentView module={channelsModule}>{routes}</ContentView>
+    if (false) return // Servers module and enhance layout enabled?
+
+    base.props.className = Utils.className(base.props.className, 'BA__baseEnhancedLayout')
+
+    const sidebarIndex = content.props.children.findIndex(m => 'isSidebarOpen' in (m?.props ?? {}))
+    if (sidebarIndex === -1) return
+
+    // Render nested sidebar components
+    const sidebar = content.props.children[sidebarIndex]
+    let renderedSidebar = sidebar.type(sidebar.props)
+    renderedSidebar = renderedSidebar.type(renderedSidebar.props)
+
+    const sidebarContainer = findInReactTree(renderedSidebar, byClassName(DiscordClasses.AppView.sidebar))
+    if (sidebarContainer) {
+      // Get rid of fragments
+      sidebarContainer.props.children = sidebarContainer.props.children
+        .flatMap(m => m?.type === Fragment ? m.props.children : m)
+
+      // Move guilds list to base
+      const guildsIndex = sidebarContainer.props.children.findIndex(byClassName(DiscordClasses.AppView.guilds))
+      if (guildsIndex !== -1) {
+        base.props.children.splice(
+          contentIndex,
+          0,
+          ...sidebarContainer.props.children.splice(guildsIndex, 1)
+        )
+      }
+
+      // Move panels to base
+      const panelsIndex = sidebarContainer.props.children.findIndex(m => m?.type === AppPanels)
+      if (panelsIndex !== -1) {
+        base.props.children.push(
+          ...sidebarContainer.props.children.splice(panelsIndex, 1)
+        )
+      }
+    }
+
+    content.props.children[sidebarIndex] = renderedSidebar
   })
 }
 
 export default patchAppView
 
 css
-`${DiscordSelectors.AppView.container} {
-    overflow: clip; /* Fix whole app jumping with sidebar animations */
-}
-.BA__base {
-    /* Keep up-to-date with DiscordClasses.AppView.base */
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    position: relative;
-    flex-grow: 1;
-}
-${DiscordSelectors.AppView.base}, .BA__base {
+`.BA__content, .BA__page {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-template-rows: subgrid;
     min-width: 0;
     min-height: 0;
-    overflow: visible;
+    flex: 1;
 }
-${DiscordSelectors.AppView.content}:has(> [data-animation-type]) {
-    position: relative;
+.BA__content {
+    grid-column: start / end;
+    grid-row: titleBarEnd / end;
+}
+.BA__page {
+    grid-area: page;
+}
+
+.BA__baseEnhancedLayout :is(.BA__content, ${DiscordSelectors.AppView.content}) {
+    grid-column: guildsEnd / end;
+    grid-row: noticeEnd / end;
+}
+.BA__baseEnhancedLayout ${DiscordSelectors.AppView.sidebar} {
+    grid-area: channelsList;
+}
+.BA__baseEnhancedLayout ${DiscordSelectors.AppView.panels} {
+    width: calc(var(--custom-guild-sidebar-width) - var(--space-xs)*2);
+    z-index: 100;
 }`
 `AppView (Servers, Channels)`

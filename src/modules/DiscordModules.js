@@ -207,6 +207,7 @@ export const InviteEmbed = Webpack.getByStrings('Invite Button Embed', 'getInvit
 export const InviteStates = Webpack.getModule(Filters.byKeys('APP_NOT_OPENED', 'RESOLVING'), { searchExports: true })
 export const InviteStore = Webpack.getStore('InviteStore')
 export const TextInput = Webpack.getModule(m => Filters.byKeys('maxLength', 'type')(m?.defaultProps), { searchExports: true })
+export const AppPanels = Webpack.getModule(m => Filters.byStrings('AppPanels')(m?.type), { searchExports: true })
 
 export const Common = {
   ...ModalActions,

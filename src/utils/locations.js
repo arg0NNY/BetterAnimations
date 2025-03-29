@@ -19,7 +19,7 @@ function matchChannelRoutes (...locations) {
   return locations.map(l => matchExact(l.pathname, CHANNEL_PATH))
 }
 
-export function shouldSwitchBase (next, prev) {
+export function shouldSwitchContent (next, prev) {
   const [nextChannel, prevChannel] = matchChannelRoutes(next, prev)
 
   const nextOrPrev = (fn, n = next, p = prev) => fn(n) || fn(p)
@@ -41,8 +41,8 @@ export function shouldSwitchBase (next, prev) {
   return false
 }
 
-export function shouldSwitchContent (next, prev, isBaseSwitched = shouldSwitchBase(next, prev)) {
-  if (isBaseSwitched) return false
+export function shouldSwitchPage (next, prev, isContentSwitched = shouldSwitchContent(next, prev)) {
+  if (isContentSwitched) return false
 
   const [nextChannel, prevChannel] = matchChannelRoutes(next, prev)
   if (nextChannel && prevChannel && nextChannel.params.channelId === prevChannel.params.channelId)
@@ -51,7 +51,7 @@ export function shouldSwitchContent (next, prev, isBaseSwitched = shouldSwitchBa
   return true
 }
 
-export function getSwitchBaseDirection (next, prev) {
+export function getSwitchContentDirection (next, prev) {
   const [nextChannel, prevChannel] = matchChannelRoutes(next, prev)
 
   if (prevChannel?.params.guildId === '@me') return 1 // If from DMs, further
@@ -67,7 +67,7 @@ export function getSwitchBaseDirection (next, prev) {
   return +(indexOf(nextChannel) > indexOf(prevChannel))
 }
 
-export function getSwitchContentDirection (next, prev) {
+export function getSwitchPageDirection (next, prev) {
   const [nextChannel, prevChannel] = matchChannelRoutes(next, prev)
 
   if (nextChannel && prevChannel && nextChannel.params.guildId !== '@me'

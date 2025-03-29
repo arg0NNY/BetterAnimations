@@ -22,7 +22,7 @@ import Prompt from '@/modules/Prompt'
 import PackRegistry from '@/modules/PackRegistry'
 import { saveMeta } from '@/meta'
 import Style, { css } from '@/modules/Style'
-import { DiscordSelectors } from '@/modules/DiscordSelectors'
+import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import Modules from '@/modules/Modules'
 import TickThread from '@/modules/TickThread'
 import patchChatSearchSidebar from '@/patches/ChatSearchSidebar/patchChatSearchSidebar'
@@ -56,6 +56,7 @@ if (import.meta.env.MODE === 'development')
     Toasts,
     ErrorManager,
     DiscordModules,
+    DiscordClasses,
     anime
   }
 

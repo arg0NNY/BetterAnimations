@@ -2,9 +2,17 @@ import { forwardRef } from 'react'
 
 function AnimeContainer ({ container, children }, ref) {
   if (!container) return children
+  const { defaultLayoutStyles, ...props } = container
 
   return (
-    <div data-animation-container="" ref={ref} {...container}>{children}</div>
+    <div
+      ref={ref}
+      data-animation-container=""
+      data-default-layout-styles={defaultLayoutStyles}
+      {...props}
+    >
+      {children}
+    </div>
   )
 }
 
