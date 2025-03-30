@@ -107,8 +107,8 @@ css
 [data-animation-container][data-animation-overflow="false"] {
     overflow: clip;
 }
-[data-animation-container][data-animation-switch]:not([data-default-layout-styles="false"]) > :not([data-animation]) { /* Animating switch element */
-    contain: layout;
+[data-animation-container][data-animation-switch] > :not([data-animation]) { /* Animating switch element */
+    isolation: isolate;
 }
 [data-animation-container][data-animation-switch][data-animation-type="exit"]:not([data-default-layout-styles="false"]) { /* Exiting switch container */
     position: absolute !important;
