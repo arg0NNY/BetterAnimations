@@ -6,6 +6,7 @@ import CircleQuestionIcon from '@/modules/settingsRefresh/components/icons/Circl
 import Modal from '@/components/Modal'
 import meta from '@/meta'
 
+// TODO: Add preview of the animation when this option is disabled and enabled
 function EnhanceLayoutModal ({ module, ...props }) {
   return (
     <Modal
@@ -15,7 +16,8 @@ function EnhanceLayoutModal ({ module, ...props }) {
       {...props}
     >
       <Text variant="text-md/normal">
-        Discord’s default layout is&nbsp;poorly compatible with&nbsp;server-switching animations, forcing {meta.name} to&nbsp;awkwardly animate unrelated areas (like the&nbsp;Server List and User Panel).
+        Discord’s default layout is&nbsp;poorly compatible with&nbsp;server-switching animations, forcing {meta.name} to&nbsp;awkwardly animate unrelated areas
+        (Server List and User Panel) with&nbsp;huge performance losses.
         This&nbsp;option restructures Discord’s layout to&nbsp;isolate animations to&nbsp;only the&nbsp;server area with&nbsp;no&nbsp;visual changes.
         However, it may clash with&nbsp;other plugins or&nbsp;themes you have enabled. Try disabling this&nbsp;option if&nbsp;you encounter conflicts.
       </Text>
