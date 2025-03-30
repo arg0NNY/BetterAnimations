@@ -89,7 +89,7 @@ export const AnimeSchema = (context = null, env = {}) =>
         z.union([
           z.record(z.any()),
           z.instanceof(Function).refine(
-            fn => fn[animeTimelineInjectSymbol] === true,
+            fn => !!fn[animeTimelineInjectSymbol],
             { message: `Only '${Inject.AnimeTimeline}' is allowed as a function` }
           )
         ]).nullable().optional()

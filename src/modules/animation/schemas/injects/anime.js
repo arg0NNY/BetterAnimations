@@ -38,7 +38,7 @@ export const AnimeTimelineInjectSchema = InjectWithMeta(
       ))
       return tl
     }
-    fn[animeTimelineInjectSymbol] = true
+    fn[animeTimelineInjectSymbol] = params
     return fn
   }),
   {

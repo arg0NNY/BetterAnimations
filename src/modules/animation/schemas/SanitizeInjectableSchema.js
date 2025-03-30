@@ -34,10 +34,7 @@ const SanitizeInjectableSchema = z.lazy(
       )
 
     if (typeof value === 'function' && value[animeTimelineInjectSymbol])
-      return createFunctionPlaceholder(
-        Inject.AnimeTimeline,
-        `Omitted inject '${Inject.AnimeTimeline}' (awaiting execution)`
-      )
+      return value[animeTimelineInjectSymbol]
 
     if (isInjectPlaceholder(value))
       return value.value
