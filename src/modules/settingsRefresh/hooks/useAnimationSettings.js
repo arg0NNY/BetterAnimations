@@ -138,7 +138,7 @@ function useAnimationSettingsHeaders (module, items, settings = _useAnimationSet
     enabled,
     setEnabled,
     switchTooltip,
-    onReset: !isEqual(settings, defaults()) ? onReset : null
+    onReset: onReset && !isEqual(settings, defaults()) ? onReset : null
   }))
 
   if (!settings.some(s => s.type === AnimationSettingContainer.Group)) return [{

@@ -68,7 +68,7 @@ class Module {
 
   findAnimation (packOrSlug, key) {
     const animation = PackManager.getAnimation(packOrSlug, key)
-    return this.isSupportedBy(animation) ? animation : null
+    return animation && this.isSupportedBy(animation) ? animation : null
   }
 
   getAnimationSettings (pack, animation, type, options = {}) {
