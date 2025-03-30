@@ -3,12 +3,12 @@ import InjectableSchema from '@/modules/animation/schemas/InjectableSchema'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
 import Inject from '@/enums/Inject'
 import ParseStage from '@/enums/ParseStage'
-import { defaultSchema, sanitize } from 'hast-util-sanitize'
+import { sanitize } from 'hast-util-sanitize'
 import { toDom } from 'hast-util-to-dom'
-import deepmerge from 'deepmerge'
 import { executeWithZod } from '@/modules/animation/utils'
 import { hookSymbol } from '@/modules/animation/schemas/SanitizeInjectableSchema'
 import { animeTimelineInjectSymbol } from '@/modules/animation/schemas/injects/anime'
+import hastSanitizeSchema from '@/modules/animation/hastSanitizeSchema'
 
 // TODO: Update
 const safeInjects = [
@@ -51,7 +51,6 @@ export const HookSchema = (context = null, env = {}) => {
     })
 }
 
-const sanitizeSchema = deepmerge(defaultSchema, { attributes: {'*': ['className']} })
 export const HastSchema = (context = null, env = {}) =>
   (!context ? z.any() : InjectableSchema(context, env))
     .pipe(ArrayOrSingleSchema(z.record(z.any())))
@@ -62,7 +61,7 @@ export const HastSchema = (context = null, env = {}) =>
         if (!value) return value
 
         return [].concat(value).map((node, i) => {
-          const sanitized = sanitize(node, sanitizeSchema)
+          const sanitized = sanitize(node, hastSanitizeSchema)
           if (sanitized.type === 'root') {
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
