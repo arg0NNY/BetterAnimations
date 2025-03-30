@@ -25,7 +25,7 @@ function ModuleSettings ({ moduleId, refToScroller }) {
 
   return (
     <ModuleContext.Provider value={module}>
-      <div className="BA__moduleSettings">
+      <div key={moduleId} className="BA__moduleSettings">
         <ModuleSettingsHeader
           module={module}
           enabled={module.isEnabled()}

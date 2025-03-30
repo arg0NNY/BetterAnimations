@@ -3,78 +3,70 @@ import AnimationCard from '@/modules/settingsRefresh/components/AnimationCard'
 import Config from '@/modules/Config'
 import AnimationType from '@/enums/AnimationType'
 import useAnimationSettings from '@/modules/settingsRefresh/hooks/useAnimationSettings'
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 
-function AnimationList ({ module, pack, animations, selected, onSelect, ...props }) {
+function AnimationItem ({ module, pack, animation, selected, onSelect, ...props }) {
   const packConfig = useMemo(() => Config.pack(pack.slug), [pack.slug])
-  const isActive = useCallback(
-    (animation, type) => selected[type].packSlug === pack.slug && selected[type].animationKey === animation.key,
-    [pack.slug, selected]
+  const isActive = type => selected[type].packSlug === pack.slug && selected[type].animationKey === animation.key
+
+  const handleSelect = type => value => onSelect(type, value && animation && pack, value && animation)
+  const handleSelectAll = () => {
+    const value = !AnimationType.values().every(type => isActive(type))
+    AnimationType.values().forEach(type => handleSelect(type)(value))
+  }
+
+  const handleSetSettings = type => value => packConfig.setAnimationConfig(animation.key, module.id, type, value)
+
+  const defaultSettings = type => module.buildDefaultSettings(animation, type)
+  const handleResetSettings = type => {
+    const setSettings = handleSetSettings(type)
+    return () => setSettings(defaultSettings(type))
+  }
+  
+  const animationSettings = useAnimationSettings(
+    module,
+    AnimationType.values().map(type => ({
+      animation,
+      type: type,
+      settings: module.getAnimationSettings(pack, animation, type),
+      setSettings: handleSetSettings(type),
+      enabled: isActive(type),
+      setEnabled: handleSelect(type),
+      context: isActive(type) ? selected[type].context : null,
+      defaults: () => defaultSettings(type),
+      onReset: handleResetSettings(type)
+    }))
   )
 
-  const handleSelect = (type, animation) => value => onSelect(type, value && animation && pack, value && animation)
-  const handleSelectAll = animation => () => {
-    const value = !AnimationType.values().every(type => isActive(animation, type))
-    AnimationType.values().forEach(type => handleSelect(type, animation)(value))
-  }
-
-  const handleSetSettings = (animation, type) => value => packConfig.setAnimationConfig(animation.key, module.id, type, value)
-
-  const defaultSettings = (animation, type) => module.buildDefaultSettings(animation, type)
-  const handleResetSettings = (pack, animation, type) => {
-    const setSettings = handleSetSettings(pack, animation, type)
-    return () => setSettings(defaultSettings(animation, type))
-  }
-
-  function AnimationItem (animation) {
-    const animationSettings = useAnimationSettings(module, [
-      {
-        animation,
-        type: AnimationType.Enter,
-        settings: module.getAnimationSettings(pack, animation, AnimationType.Enter),
-        setSettings: handleSetSettings(animation, AnimationType.Enter),
-        enabled: isActive(animation, AnimationType.Enter),
-        setEnabled: handleSelect(AnimationType.Enter, animation),
-        context: isActive(animation, AnimationType.Enter) ? selected[AnimationType.Enter].context : null,
-        defaults: () => defaultSettings(animation, AnimationType.Enter),
-        onReset: handleResetSettings(animation, AnimationType.Enter)
-      },
-      {
-        animation,
-        type: AnimationType.Exit,
-        settings: module.getAnimationSettings(pack, animation, AnimationType.Exit),
-        setSettings: handleSetSettings(animation, AnimationType.Exit),
-        enabled: isActive(animation, AnimationType.Exit),
-        setEnabled: handleSelect(AnimationType.Exit, animation),
-        context: isActive(animation, AnimationType.Exit) ? selected[AnimationType.Exit].context : null,
-        defaults: () => defaultSettings(animation, AnimationType.Exit),
-        onReset: handleResetSettings(animation, AnimationType.Exit)
-      }
-    ])
-
-    const errors = AnimationType.values()
-      .map(type => isActive(animation, type) && selected[type].error)
-      .filter(Boolean)
-
-    return (
-      <AnimationCard
-        {...props}
-        key={animation.key}
-        name={animation.name}
-        enter={isActive(animation, AnimationType.Enter)}
-        exit={isActive(animation, AnimationType.Exit)}
-        setEnter={handleSelect(AnimationType.Enter, animation)}
-        setExit={handleSelect(AnimationType.Exit, animation)}
-        onClick={handleSelectAll(animation)}
-        animationSettings={animationSettings}
-        errors={errors}
-      />
-    )
-  }
+  const errors = AnimationType.values()
+    .map(type => isActive(type) && selected[type].error)
+    .filter(Boolean)
 
   return (
+    <AnimationCard
+      {...props}
+      key={animation.key}
+      name={animation.name}
+      enter={isActive(AnimationType.Enter)}
+      exit={isActive(AnimationType.Exit)}
+      setEnter={handleSelect(AnimationType.Enter)}
+      setExit={handleSelect(AnimationType.Exit)}
+      onClick={handleSelectAll}
+      animationSettings={animationSettings}
+      errors={errors}
+    />
+  )
+}
+
+function AnimationList ({ animations, ...props }) {
+  return (
     <div className="BA__animationList">
-      {animations.map(AnimationItem)}
+      {animations.map(animation => (
+        <AnimationItem
+          animation={animation}
+          {...props}
+        />
+      ))}
     </div>
   )
 }
