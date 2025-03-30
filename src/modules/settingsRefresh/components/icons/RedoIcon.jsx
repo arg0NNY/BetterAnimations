@@ -1,7 +1,7 @@
 import useIconSize from '@/hooks/useIconSize'
 import { colors } from '@/modules/DiscordModules'
 
-function RepeatIcon ({ size, width, height, color = colors.INTERACTIVE_NORMAL }) {
+function RedoIcon ({ size, width, height, color = colors.INTERACTIVE_NORMAL }) {
   return (
     <svg
       {...useIconSize(size, { width, height })}
@@ -16,12 +16,11 @@ function RepeatIcon ({ size, width, height, color = colors.INTERACTIVE_NORMAL })
         strokeLinejoin="round"
         strokeWidth="2"
       >
-        <path d="m17 2l4 4l-4 4" />
-        <path d="M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4l4-4" />
-        <path d="M21 13v1a4 4 0 0 1-4 4H3" />
+        <path d="m15 14l5-5l-5-5" />
+        <path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13" />
       </g>
     </svg>
   )
 }
 
-export default RepeatIcon
+export default RedoIcon

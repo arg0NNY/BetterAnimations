@@ -1,10 +1,11 @@
-import { colors, Common, FormItem, FormTitle, Slider, Text, TextInput } from '@/modules/DiscordModules'
+import { colors, Common, Slider, Text, TextInput, Tooltip } from '@/modules/DiscordModules'
 import { useEffect, useMemo, useState } from 'react'
 import { css } from '@/modules/Style'
 import { easingBeziers, easingStyles, easingTypes, easingValues } from '@/data/easings'
 import { EasingType } from '@/enums/Easing'
 import { prevent } from '@/modules/settingsRefresh/utils/eventModifiers'
 import CircleWarningIcon from '@/modules/settingsRefresh/components/icons/CircleWarningIcon'
+import SettingControl from '@/modules/settingsRefresh/components/controls/SettingControl'
 
 function EasingField ({ label, children }) {
   return (
@@ -143,7 +144,7 @@ function EasingStepsControl ({ easing }) {
   )
 }
 
-function EasingControl ({ value, onChange, exceedsDuration = 0 }) {
+function EasingControl ({ value, onChange, exceedsDuration = 0, onReset }) {
   const easing = useMemo(() => new Proxy(value, {
     set (obj, key, value) {
       onChange({ ...obj, [key]: value })
@@ -161,14 +162,14 @@ function EasingControl ({ value, onChange, exceedsDuration = 0 }) {
     [easing.type]
   )
 
+  const afterLabel = exceedsDuration !== 0 && (
+    <Tooltip text={`The resulting animation duration is ${exceedsDuration > 0 ? 'above' : 'below'} the limit`}>
+      {props => <CircleWarningIcon size="xs" color={colors.STATUS_DANGER} {...props} />}
+    </Tooltip>
+  )
+
   return (
-    <FormItem>
-      <FormTitle tag="h5">
-        <span>Easing</span>
-        {exceedsDuration !== 0 && (
-          <CircleWarningIcon size="xs" color={colors.STATUS_DANGER} />
-        )}
-      </FormTitle>
+    <SettingControl label="Easing" afterLabel={afterLabel} onReset={onReset}>
       <Common.SingleSelect
         options={easingTypes}
         value={easing.type}
@@ -177,7 +178,7 @@ function EasingControl ({ value, onChange, exceedsDuration = 0 }) {
       {AdditionalControl && (
         <AdditionalControl easing={easing} />
       )}
-    </FormItem>
+    </SettingControl>
   )
 }
 

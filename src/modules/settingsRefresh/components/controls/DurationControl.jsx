@@ -1,10 +1,10 @@
-import { FormItem, FormTitle } from '@/modules/DiscordModules'
 import { range } from '@/utils/general'
 import AnimationSetting from '@/enums/AnimationSetting'
 import { MAX_ANIMATION_DURATION } from '@/data/constants'
 import Slider from '@/components/Slider'
+import SettingControl from '@/modules/settingsRefresh/components/controls/SettingControl'
 
-function DurationControl ({ animation, value, onChange, computedBy, exceeds = 0, label = 'Duration', ...props }) {
+function DurationControl ({ animation, value, onChange, computedBy, exceeds = 0, label = 'Duration', onReset, ...props }) {
   const { to, from } = animation.settings[AnimationSetting.Duration]
   const dense = to - from <= 2000
 
@@ -20,8 +20,7 @@ function DurationControl ({ animation, value, onChange, computedBy, exceeds = 0,
     : value => (value / 1000).toFixed(dense ? 2 : 1) + 's'
 
   return (
-    <FormItem>
-      <FormTitle tag="h5">{label}</FormTitle>
+    <SettingControl label={label} onReset={onReset}>
       <Slider
         {...props}
         minValue={from}
@@ -35,7 +34,7 @@ function DurationControl ({ animation, value, onChange, computedBy, exceeds = 0,
         onValueRender={onValueRender}
         disabled={!!computedBy}
       />
-    </FormItem>
+    </SettingControl>
   )
 }
 

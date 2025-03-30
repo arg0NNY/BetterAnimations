@@ -9,10 +9,10 @@ import { css } from '@/modules/Style'
 import { Common } from '@/modules/DiscordModules'
 import IconButton from '@/modules/settingsRefresh/components/IconButton'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
-import RefreshIcon from '@/modules/settingsRefresh/components/icons/RefreshIcon'
 import AnimationSettingContainer from '@/enums/AnimationSettingContainer'
 import { createElement } from 'react'
 import { Utils } from '@/BdApi'
+import RedoIcon from '@/modules/settingsRefresh/components/icons/RedoIcon'
 
 function SettingList ({ children, className = 'BA__animationSettingsList' }) {
   return (
@@ -72,8 +72,8 @@ function AnimationSettingsHeader ({ headers }) {
           </Common.Text>
           <div className="BA__animationSettingsHeaderControls">
             {onReset && (
-              <IconButton tooltip="Reset" onClick={onReset}>
-                <RefreshIcon size="xs" color="currentColor" />
+              <IconButton tooltip="Reset all" onClick={onReset}>
+                <RedoIcon size="sm" color="currentColor" />
               </IconButton>
             )}
             {typeof enabled === 'boolean' && (

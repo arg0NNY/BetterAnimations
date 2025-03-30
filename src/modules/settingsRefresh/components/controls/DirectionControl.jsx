@@ -17,6 +17,7 @@ import Axis from '@/enums/Axis'
 import { css } from '@/modules/Style'
 import ArrowLeftToLineIcon from '@/modules/settingsRefresh/components/icons/ArrowLeftToLineIcon'
 import ArrowRightFromLineIcon from '@/modules/settingsRefresh/components/icons/ArrowRightFromLineIcon'
+import SettingControl from '@/modules/settingsRefresh/components/controls/SettingControl'
 
 function getAxisIcon (axis) {
   switch (axis) {
@@ -94,7 +95,7 @@ function DirectionAnchorControl ({ value, onChange }) {
   )
 }
 
-function DirectionControl ({ module, animation, value, onChange, defaultValue, axis, onAxisChange, reverse, onReverseChange, towards, onTowardsChange }) {
+function DirectionControl ({ module, animation, value, onChange, defaultValue, axis, onAxisChange, reverse, onReverseChange, towards, onTowardsChange, onReset }) {
   const options = directions.filter(
     d => d.value === Auto()
       ? module?.supportsAuto(animation, AnimationSetting.Direction)
@@ -122,8 +123,7 @@ function DirectionControl ({ module, animation, value, onChange, defaultValue, a
     : null
 
   return (
-    <Common.FormItem>
-      <Common.FormTitle tag="h5">Direction</Common.FormTitle>
+    <SettingControl label="Direction" onReset={onReset}>
       <Common.SingleSelect
         placeholder={defaultValue}
         options={options}
@@ -131,7 +131,7 @@ function DirectionControl ({ module, animation, value, onChange, defaultValue, a
         onChange={onChange}
       />
       {additionalControl}
-    </Common.FormItem>
+    </SettingControl>
   )
 }
 

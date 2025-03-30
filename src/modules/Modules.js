@@ -369,6 +369,7 @@ class Module {
     const forceDisabled = !!this.animations[type]?.animation?.meta?.forceDisableInternalExpandCollapseAnimations
     const animation = this.getModifierAnimation()
     const config = this.settings.modifier?.[type] ?? {}
+    const defaults = () => this.buildDefaultSettings(animation, type)
     const settings = this.buildSettings(animation, type, config.settings, options)
     const context = buildContext(null, animation, type, settings)
 
@@ -379,9 +380,9 @@ class Module {
       setEnabled: forceDisabled ? null : enabled => this.updateModifier(type, { enabled }),
       settings,
       setSettings: settings => this.updateModifier(type, { settings }),
-      defaults: getAnimationDefaultSettings(animation, type),
+      defaults,
       context,
-      onReset: () => this.updateModifier(type, { settings: this.buildDefaultSettings(animation, type) })
+      onReset: () => this.updateModifier(type, { settings: defaults() })
     }
   }
   getModifiers (options = {}) {

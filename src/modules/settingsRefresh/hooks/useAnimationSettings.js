@@ -1,11 +1,11 @@
 import { useAdvancedMode } from '@/modules/settingsRefresh/hooks/useMode'
 import Setting from '@/enums/AnimationSetting'
-import { getAnimationDefaultSettings } from '@/utils/animations'
 import ModuleType from '@/enums/ModuleType'
 import AnimationType from '@/enums/AnimationType'
 import AnimationSettingContainer from '@/enums/AnimationSettingContainer'
 import isEqual from 'lodash-es/isEqual'
 import { buildContext } from '@/modules/animation/parser'
+import { pick } from '@/utils/object'
 
 function isSame (array, key) {
   return array.every(item => isEqual(item?.[key], array[0]?.[key]))
@@ -38,35 +38,45 @@ function _useAnimationSettings (module, items, options = {}) {
   const { hideOverflow = false } = options
   const isAdvanced = useAdvancedMode()
 
-  const sets = items.map(({ animation, type, settings, setSettings: _setSettings, context }) => {
+  const sets = items.map(({ animation, type, settings, setSettings: _setSettings, context, defaults }) => {
     if (!animation) return []
     if (!context) context = buildContext(null, animation, type, settings)
 
-    const defaults = getAnimationDefaultSettings(animation, type)
     const setSettings = values => _setSettings({ ...settings, ...values })
 
-    const buildSetting = (setting, props = {}) => ({
-      module,
-      animation,
-      type: setting,
-      value: settings[setting],
-      defaultValue: defaults[setting],
-      onChange: value => setSettings({ [setting]: value }),
-      ...props
-    })
+    const buildSetting = (setting, props = {}) => {
+      const value = settings[setting]
+      const defaultValue = defaults()[setting]
+      return {
+        module,
+        animation,
+        type: setting,
+        value,
+        onChange: value => setSettings({ [setting]: value }),
+        defaultValue,
+        onReset: !isEqual(value, defaultValue) ? () => setSettings({ [setting]: defaults()[setting] }) : null,
+        ...props
+      }
+    }
 
     return [
       animation.settings?.[Setting.Duration] && buildSetting(Setting.Duration, context.duration),
       animation.settings?.[Setting.Variant] && buildSetting(Setting.Variant),
       animation.settings?.[Setting.Position] && buildSetting(Setting.Position),
-      animation.settings?.[Setting.Direction] && buildSetting(Setting.Direction, {
-        axis: settings[Setting.DirectionAxis],
-        onAxisChange: value => setSettings({ [Setting.DirectionAxis]: value }),
-        reverse: settings[Setting.DirectionReverse],
-        onReverseChange: value => setSettings({ [Setting.DirectionReverse]: value }),
-        towards: settings[Setting.DirectionTowards],
-        onTowardsChange: value => setSettings({ [Setting.DirectionTowards]: value })
-      }),
+      animation.settings?.[Setting.Direction] && (() => {
+        const keys = [Setting.Direction, Setting.DirectionAxis, Setting.DirectionReverse, Setting.DirectionTowards]
+        const values = pick(settings, keys)
+        const defaultValues = pick(defaults(), keys)
+        return buildSetting(Setting.Direction, {
+          axis: settings[Setting.DirectionAxis],
+          onAxisChange: value => setSettings({ [Setting.DirectionAxis]: value }),
+          reverse: settings[Setting.DirectionReverse],
+          onReverseChange: value => setSettings({ [Setting.DirectionReverse]: value }),
+          towards: settings[Setting.DirectionTowards],
+          onTowardsChange: value => setSettings({ [Setting.DirectionTowards]: value }),
+          onReset: !isEqual(values, defaultValues) ? () => setSettings(defaultValues) : null
+        })
+      })(),
       isAdvanced && animation.settings?.[Setting.Easing] && buildSetting(Setting.Easing, {
         exceedsDuration: context.duration?.computedBy === 'easing' ? context.duration.exceeds : 0
       }),
@@ -113,6 +123,8 @@ function useAnimationSettingsHeaders (module, items, settings = _useAnimationSet
     type,
     enabled,
     setEnabled,
+    settings,
+    defaults,
     onReset,
     title,
     subtitle,
@@ -126,7 +138,7 @@ function useAnimationSettingsHeaders (module, items, settings = _useAnimationSet
     enabled,
     setEnabled,
     switchTooltip,
-    onReset
+    onReset: !isEqual(settings, defaults()) ? onReset : null
   }))
 
   if (!settings.some(s => s.type === AnimationSettingContainer.Group)) return [{

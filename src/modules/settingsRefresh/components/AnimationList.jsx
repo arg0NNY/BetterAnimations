@@ -19,9 +19,11 @@ function AnimationList ({ module, pack, animations, selected, onSelect, ...props
   }
 
   const handleSetSettings = (animation, type) => value => packConfig.setAnimationConfig(animation.key, module.id, type, value)
-  const handleResetSettings = (animation, type) => {
-    const setSettings = handleSetSettings(animation, type)
-    return () => setSettings(module.buildDefaultSettings(animation, type))
+
+  const defaultSettings = (animation, type) => module.buildDefaultSettings(animation, type)
+  const handleResetSettings = (pack, animation, type) => {
+    const setSettings = handleSetSettings(pack, animation, type)
+    return () => setSettings(defaultSettings(animation, type))
   }
 
   function AnimationItem (animation) {
@@ -34,6 +36,7 @@ function AnimationList ({ module, pack, animations, selected, onSelect, ...props
         enabled: isActive(animation, AnimationType.Enter),
         setEnabled: handleSelect(AnimationType.Enter, animation),
         context: isActive(animation, AnimationType.Enter) ? selected[AnimationType.Enter].context : null,
+        defaults: () => defaultSettings(animation, AnimationType.Enter),
         onReset: handleResetSettings(animation, AnimationType.Enter)
       },
       {
@@ -44,6 +47,7 @@ function AnimationList ({ module, pack, animations, selected, onSelect, ...props
         enabled: isActive(animation, AnimationType.Exit),
         setEnabled: handleSelect(AnimationType.Exit, animation),
         context: isActive(animation, AnimationType.Exit) ? selected[AnimationType.Exit].context : null,
+        defaults: () => defaultSettings(animation, AnimationType.Exit),
         onReset: handleResetSettings(animation, AnimationType.Exit)
       }
     ])

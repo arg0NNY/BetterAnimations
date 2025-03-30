@@ -26,9 +26,11 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
   const toggleSwitch = <Common.Switch checked={enabled} onChange={setEnabled} />
 
   const handleSetSettings = (pack, animation, type) => value => Config.pack(pack.slug).setAnimationConfig(animation.key, module.id, type, value)
+
+  const defaultSettings = (animation, type) => module.buildDefaultSettings(animation, type)
   const handleResetSettings = (pack, animation, type) => {
     const setSettings = handleSetSettings(pack, animation, type)
-    return () => setSettings(module.buildDefaultSettings(animation, type))
+    return () => setSettings(defaultSettings(animation, type))
   }
 
   const setEnterEnabled = selected.enter.animation ? value => !value && onSelect(AnimationType.Enter, null, null) : null
@@ -46,6 +48,7 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
       setEnabled: setEnterEnabled,
       context: selected.enter.context,
       switchTooltip: !selected.enter.animation ? Messages.SELECT_ANIMATION_TO_ENABLE : null,
+      defaults: () => defaultSettings(selected.enter.animation, AnimationType.Enter),
       onReset: selected.enter.animation && handleResetSettings(selected.enter.pack, selected.enter.animation, AnimationType.Enter)
     },
     {
@@ -59,6 +62,7 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
       setEnabled: setExitEnabled,
       context: selected.exit.context,
       switchTooltip: !selected.exit.animation ? Messages.SELECT_ANIMATION_TO_ENABLE : null,
+      defaults: () => defaultSettings(selected.exit.animation, AnimationType.Exit),
       onReset: selected.exit.animation && handleResetSettings(selected.exit.pack, selected.exit.animation, AnimationType.Exit)
     }
   ])

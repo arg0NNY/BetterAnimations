@@ -1,13 +1,14 @@
 import useIconSize from '@/hooks/useIconSize'
 import { colors } from '@/modules/DiscordModules'
 
-function CircleWarningIcon ({ size, width, height, color = colors.INTERACTIVE_NORMAL, secondaryColor = 'transparent' }) {
+function CircleWarningIcon ({ size, width, height, color = colors.INTERACTIVE_NORMAL, secondaryColor = 'transparent', ...props }) {
   return (
     <svg
       {...useIconSize(size, { width, height })}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
+      {...props}
     >
       <circle
         cx="12"
