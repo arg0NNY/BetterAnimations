@@ -8,8 +8,10 @@ export default new class Mouse {
     this.y = -1
 
     this.onMouseMove = e => {
-      this.x = e.clientX
-      this.y = e.clientY
+      requestAnimationFrame(() => {
+        this.x = e.clientX
+        this.y = e.clientY
+      })
     }
   }
 
