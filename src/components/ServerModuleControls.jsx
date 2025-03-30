@@ -5,6 +5,8 @@ import { DiscordClasses } from '@/modules/DiscordSelectors'
 import CircleQuestionIcon from '@/modules/settingsRefresh/components/icons/CircleQuestionIcon'
 import Modal from '@/components/Modal'
 import meta from '@/meta'
+import Emitter from '@/modules/Emitter'
+import Events from '@/enums/Events'
 
 // TODO: Add preview of the animation when this option is disabled and enabled
 function EnhanceLayoutModal ({ module, ...props }) {
@@ -16,7 +18,7 @@ function EnhanceLayoutModal ({ module, ...props }) {
       {...props}
     >
       <Text variant="text-md/normal">
-        Discord’s default layout is&nbsp;poorly compatible with&nbsp;server-switching animations, forcing {meta.name} to&nbsp;awkwardly animate unrelated areas
+        Discord’s default layout is&nbsp;poorly compatible with&nbsp;server-switching animations, forcing {meta.name} to&nbsp;animate unrelated areas
         (Server List and User Panel) with&nbsp;huge performance losses.
         This&nbsp;option restructures Discord’s layout to&nbsp;isolate animations to&nbsp;only the&nbsp;server area with&nbsp;no&nbsp;visual changes.
         However, it may clash with&nbsp;other plugins or&nbsp;themes you have enabled. Try disabling this&nbsp;option if&nbsp;you encounter conflicts.
@@ -35,7 +37,8 @@ function ServerModuleControls ({ module }) {
       value={module.settings.enhanceLayout}
       onChange={(_, value) => {
         module.settings.enhanceLayout = value
-        forceAppUpdate()
+        if (module.isEnabled()) forceAppUpdate()
+        else Emitter.emit(Events.ModuleSettingsChanged, module.id)
       }}
     >
       <Flex>
