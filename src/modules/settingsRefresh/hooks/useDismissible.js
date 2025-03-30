@@ -6,13 +6,13 @@ import { useCallback } from 'react'
 const DATA_KEY = 'dismissibles'
 
 function useDismissible (name) {
-  const emit = useEmitterEffect(Events.HintUpdated)
+  const emit = useEmitterEffect(Events.DismissibleUpdated)
 
   return [
     !!Data[DATA_KEY]?.[name],
     useCallback(value => {
       Data[DATA_KEY] = { ...Data[DATA_KEY], [name]: value }
-      emit(Events.HintUpdated, name, value)
+      emit(Events.DismissibleUpdated, name, value)
     }, [])
   ]
 }
