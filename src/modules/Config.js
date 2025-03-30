@@ -6,6 +6,7 @@ import Events from '@/enums/Events'
 import { fs, path } from '@/modules/Node'
 import PackManager from '@/modules/PackManager'
 import Logger from '@/modules/Logger'
+import isEqual from 'lodash-es/isEqual'
 
 class PackConfig {
   get filePath () { return path.resolve(PackManager.addonFolder, `${this.slug}.config.json`) }
@@ -33,7 +34,7 @@ class PackConfig {
   }
 
   hasUnsavedChanges () {
-    return JSON.stringify(this.current) !== JSON.stringify(this.read())
+    return !isEqual(this.current, this.read())
   }
 
   getAnimationConfig (key, moduleId, type) {
@@ -82,7 +83,7 @@ export default new class Config {
   }
 
   hasUnsavedChanges () {
-    return JSON.stringify(this.current) !== JSON.stringify(this.read())
+    return !isEqual(this.current, this.read())
       || Array.from(this.packs.values()).some(pack => pack.hasUnsavedChanges())
   }
 
