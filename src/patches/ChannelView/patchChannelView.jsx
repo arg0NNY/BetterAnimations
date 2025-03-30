@@ -12,55 +12,56 @@ import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { css } from '@/modules/Style'
 import patchMembersModViewSidebar from '@/patches/ChannelView/patchMembersModViewSidebar'
 import SidebarTransition from '@/patches/ChannelView/components/SidebarTransition'
+import findInReactTree from '@/utils/findInReactTree'
 
 function patchChannelView () {
   const once = ensureOnce()
 
   Patcher.after(ChannelView, 'type', (self, args, value) => {
     Patcher.after(value.type, 'render', (self, args, value) => {
-      Patcher.after(value.props, 'children', (self, args, value) => {
+      const guildChannel = findInReactTree(value, m => 'guild' in (m?.props ?? {}))
+      if (!guildChannel) return
 
-        once(() => {
-          injectModule(value.type, [
-            ModuleKey.MembersSidebar,
-            ModuleKey.ThreadSidebar,
-            ModuleKey.ThreadSidebarSwitch
-          ])
-          Patcher.after(value.type.prototype, 'renderSidebar', (self, args, value) => {
-            const module = Modules.getModule(ModuleKey.MembersSidebar)
-            if (!module.isEnabled()) return value
+      once(() => {
+        injectModule(value.type, [
+          ModuleKey.MembersSidebar,
+          ModuleKey.ThreadSidebar,
+          ModuleKey.ThreadSidebarSwitch
+        ])
+        Patcher.after(guildChannel.type.prototype, 'renderSidebar', (self, args, value) => {
+          const module = Modules.getModule(ModuleKey.MembersSidebar)
+          if (!module.isEnabled()) return value
 
-            return (
-              <SwitchTransition>
-                <AnimeTransition
-                  key={self.props.section}
-                  container={{ className: DiscordClasses.ChannelView.content, style: { flex: '0 0 auto' } }}
-                  module={module}
-                >
-                  {value}
-                </AnimeTransition>
-              </SwitchTransition>
-            )
-          })
-          Patcher.after(value.type.prototype, 'renderThreadSidebar', (self, args, value) => {
-            const module = Modules.getModule(ModuleKey.ThreadSidebar)
-            const switchModule = Modules.getModule(ModuleKey.ThreadSidebarSwitch)
-            if (!module.isEnabled() && !switchModule.isEnabled()) return
-
-            const state = self.props.channelSidebarState ?? self.props.guildSidebarState
-
-            return (
-              <SidebarTransition
+          return (
+            <SwitchTransition>
+              <AnimeTransition
+                key={self.props.section}
+                container={{ className: 'BA__sidebar' }}
                 module={module}
-                switchModule={switchModule}
-                state={state}
+                freeze={true}
               >
                 {value}
-              </SidebarTransition>
-            )
-          })
+              </AnimeTransition>
+            </SwitchTransition>
+          )
         })
+        Patcher.after(guildChannel.type.prototype, 'renderThreadSidebar', (self, args, value) => {
+          const module = Modules.getModule(ModuleKey.ThreadSidebar)
+          const switchModule = Modules.getModule(ModuleKey.ThreadSidebarSwitch)
+          if (!module.isEnabled() && !switchModule.isEnabled()) return
 
+          const state = self.props.channelSidebarState ?? self.props.guildSidebarState
+
+          return (
+            <SidebarTransition
+              module={module}
+              switchModule={switchModule}
+              state={state}
+            >
+              {value}
+            </SidebarTransition>
+          )
+        })
       })
     })
   })
@@ -73,7 +74,21 @@ function patchChannelView () {
 export default patchChannelView
 
 css
-`${DiscordSelectors.ChannelView.chat} {
+`.BA__sidebar {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    height: 100%;
+}
+${DiscordSelectors.AppView.base} {
+    overflow: clip;
+}
+${DiscordSelectors.AppView.page} {
+    overflow: visible !important;
+    min-height: 0;
+    min-width: 0;
+}
+${DiscordSelectors.ChannelView.chat} {
     overflow: clip;
     isolation: isolate;
 }

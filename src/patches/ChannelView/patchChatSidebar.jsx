@@ -2,15 +2,16 @@ import { Patcher } from '@/BdApi'
 import { ChatSidebar } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeContainer from '@/components/AnimeContainer'
-import Modules from '@/modules/Modules'
 import ModuleKey from '@/enums/ModuleKey'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import { Fragment } from 'react'
+import useModule from '@/hooks/useModule'
+import Modules from '@/modules/Modules'
 
 function patchChatSidebar () {
   Patcher.before(...ChatSidebar, (self, [props]) => {
-    const module = Modules.getModule(ModuleKey.ThreadSidebar)
-    const switchModule = Modules.getModule(ModuleKey.ThreadSidebarSwitch)
+    const module = useModule(ModuleKey.ThreadSidebar)
+    const switchModule = useModule(ModuleKey.ThreadSidebarSwitch)
     if (!module.isEnabled() && !switchModule.isEnabled()) return
 
     props.maxWidth = Math.max(props.maxWidth, 451) // Disable floating state
@@ -27,8 +28,8 @@ function patchChatSidebar () {
     }
 
     return (
-      <AnimeContainer container={{ className: DiscordClasses.AppView.content, style: { flex: '0 0 auto' } }}>
-        <div className={DiscordClasses.AppView.content}>{value}</div>
+      <AnimeContainer container={{ className: 'BA__sidebar' }}>
+        <div className="BA__sidebar">{value}</div>
       </AnimeContainer>
     )
   })

@@ -1,6 +1,5 @@
 import SwitchTransition from '@/components/SwitchTransition'
 import AnimeTransition from '@/components/AnimeTransition'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
 import SwitchSidebarTransition from '@/patches/ChannelView/components/SwitchSidebarTransition'
 
 function SidebarTransition ({ module, switchModule, state, children }) {
@@ -10,7 +9,7 @@ function SidebarTransition ({ module, switchModule, state, children }) {
     <SwitchTransition>
       <AnimeTransition
         key={key}
-        container={{ className: DiscordClasses.AppView.content, style: { flex: '0 0 auto' } }}
+        container={{ className: 'BA__sidebar' }}
         module={module}
       >
         <SwitchSidebarTransition
