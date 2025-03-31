@@ -8,7 +8,6 @@ import meta from '@/meta'
 import Emitter from '@/modules/Emitter'
 import Events from '@/enums/Events'
 
-// TODO: Add preview of the animation when this option is disabled and enabled
 function EnhanceLayoutModal ({ module, ...props }) {
   return (
     <Modal

@@ -24,7 +24,6 @@ import { saveMeta } from '@/meta'
 import Style, { css } from '@/modules/Style'
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import Modules from '@/modules/Modules'
-import TickThread from '@/modules/TickThread'
 import patchChatSearchSidebar from '@/patches/ChatSearchSidebar/patchChatSearchSidebar'
 import patchReferencePositionLayer from '@/patches/ReferencePositionLayer/patchReferencePositionLayer'
 import patchSelect from '@/patches/Select/patchSelect'
@@ -48,7 +47,6 @@ if (import.meta.env.MODE === 'development')
     PackRegistry,
     Style,
     Modules,
-    TickThread,
     Mouse,
     AnimationStore,
     Emitter,
@@ -67,7 +65,6 @@ export default function (meta) {
     start () {
       Logger.info('Startup', 'Initializing modules...')
       ErrorManager.initialize()
-      TickThread.initialize()
       Mouse.initialize()
       Style.initialize()
       Prompt.onStartup()
@@ -101,7 +98,6 @@ export default function (meta) {
     stop () {
       Logger.info('Shutdown', 'Shutting down modules...')
       Modules.shutdown()
-      TickThread.shutdown()
       Mouse.shutdown()
       Style.shutdown()
       Config.shutdown()

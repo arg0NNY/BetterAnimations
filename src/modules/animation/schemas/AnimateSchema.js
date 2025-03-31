@@ -10,7 +10,6 @@ import { hookSymbol } from '@/modules/animation/schemas/SanitizeInjectableSchema
 import { animeTimelineInjectSymbol } from '@/modules/animation/schemas/injects/anime'
 import hastSanitizeSchema from '@/modules/animation/hastSanitizeSchema'
 
-// TODO: Update
 const safeInjects = [
   Inject.Module,
   Inject.Type,
