@@ -552,17 +552,348 @@
             }
           }
         },
-        "onDestroyed": [
+        "onDestroyed": {
+          "inject": "style.removeProperty",
+          "property": "clip-path"
+        }
+      }
+    },
+
+    {
+      "key": "circle+reveal",
+      "name": "Circle + Reveal",
+      "meta": {
+        "modules": "switch"
+      },
+      "settings": {
+        "duration": true,
+        "easing": true,
+        "position": true,
+        "direction": ["forwards", "backwards"],
+
+        "defaults": {
+          "duration": 400,
+          "easing": { "type": "ease" },
+          "position": "center",
+          "direction": "forwards"
+        }
+      },
+      "animate": {
+        "onBeforeCreate": [
           {
-            "inject": "style.removeProperty",
-            "property": "clip-path"
+            "inject": "var.set",
+            "name": "animation",
+            "value": {
+              "inject": "if",
+              "value": {
+                "inject": "||",
+                "a": {
+                  "inject": "&&",
+                  "a": { "inject": "===", "a": { "inject": "type" }, "b": "enter" },
+                  "b": { "inject": "===", "a": { "inject": "direction" }, "b": "forwards" }
+                },
+                "b": {
+                  "inject": "&&",
+                  "a": { "inject": "===", "a": { "inject": "type" }, "b": "exit" },
+                  "b": { "inject": "===", "a": { "inject": "direction" }, "b": "backwards" }
+                }
+              },
+              "then": "circle",
+              "else": "reveal"
+            }
           },
           {
-            "inject": "style.removeProperty",
-            "target": { "inject": "anchor" },
-            "property": "transform"
+            "inject": "function",
+            "functions": {
+              "inject": "switch",
+              "value": { "inject": "var.get", "name": "animation" },
+              "case": {
+                "circle": [
+                  {
+                    "inject": "var.set",
+                    "name": "radius",
+                    "value": {
+                      "inject": "string.template",
+                      "template": "${value}px",
+                      "values": {
+                        "value": {
+                          "inject": "Math.hypot",
+                          "values": [
+                            {
+                              "inject": "Math.max",
+                              "values": [
+                                {
+                                  "inject": "Math.abs",
+                                  "value": { "inject": "position", "value": "x", "clip": false }
+                                },
+                                {
+                                  "inject": "Math.abs",
+                                  "value": {
+                                    "inject": "math",
+                                    "expression": {
+                                      "inject": "string.template",
+                                      "template": "${0} - ${1}",
+                                      "values": [
+                                        { "inject": "position", "value": "x", "clip": false },
+                                        { "inject": "getBoundingClientRect", "value": "width" }
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "inject": "Math.max",
+                              "values": [
+                                {
+                                  "inject": "Math.abs",
+                                  "value": { "inject": "position", "value": "y", "clip": false }
+                                },
+                                {
+                                  "inject": "Math.abs",
+                                  "value": {
+                                    "inject": "math",
+                                    "expression": {
+                                      "inject": "string.template",
+                                      "template": "${0} - ${1}",
+                                      "values": [
+                                        { "inject": "position", "value": "y", "clip": false },
+                                        { "inject": "getBoundingClientRect", "value": "height" }
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "inject": "var.set",
+                    "name": "clipPathExpanded",
+                    "value": {
+                      "inject": "string.template",
+                      "template": "circle(${radius} at ${position})",
+                      "values": {
+                        "radius": { "inject": "var.get", "name": "radius" },
+                        "position": { "inject": "position", "clip": false }
+                      }
+                    }
+                  },
+                  {
+                    "inject": "var.set",
+                    "name": "clipPathCollapsed",
+                    "value": {
+                      "inject": "string.template",
+                      "template": "circle(0px at ${position})",
+                      "values": {
+                        "position": { "inject": "position", "clip": false }
+                      }
+                    }
+                  }
+                ],
+                "reveal": []
+              }
+            }
           }
-        ]
+        ],
+        "css": {
+          "inject": "switch",
+          "value": { "inject": "var.get", "name": "animation" },
+          "case": {
+            "circle": {
+              "{element}": {
+                "z-index": 10
+              }
+            },
+            "reveal": {
+              "{element}": {
+                "transform-origin": { "inject": "position" },
+                "z-index": 5
+              }
+            }
+          }
+        },
+        "anime": {
+          "inject": "Object.assign",
+          "target": {
+            "targets": { "inject": "element" },
+            "duration": { "inject": "duration" },
+            "easing": { "inject": "easing" }
+          },
+          "source": {
+            "inject": "switch",
+            "value": { "inject": "var.get", "name": "animation" },
+            "case": {
+              "circle": {
+                "clipPath": {
+                  "inject": "function",
+                  "return": {
+                    "inject": "type",
+                    "enter": [
+                      { "inject": "var.get", "name": "clipPathCollapsed" },
+                      { "inject": "var.get", "name": "clipPathExpanded" }
+                    ],
+                    "exit": [
+                      { "inject": "var.get", "name": "clipPathExpanded" },
+                      { "inject": "var.get", "name": "clipPathCollapsed" }
+                    ]
+                  }
+                }
+              },
+              "reveal": [
+                {
+                  "inject": "type",
+                  "enter": {
+                    "opacity": [0, 1]
+                  },
+                  "exit": {
+                    "opacity": [1, 0]
+                  }
+                },
+                {
+                  "inject": "type",
+                  "enter": {
+                    "inject": "direction",
+                    "backwards": { "scale": [1.1, 1] },
+                    "forwards": { "scale": [0.9, 1] }
+                  },
+                  "exit": {
+                    "inject": "direction",
+                    "backwards": { "scale": 0.9 },
+                    "forwards": { "scale": 1.1 }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "onDestroyed": {
+          "inject": "style.removeProperty",
+          "property": ["clip-path", "opacity", "transform"]
+        }
+      }
+    },
+
+    {
+      "key": "svg",
+      "name": "SVG",
+      "meta": {
+        "modules": "switch"
+      },
+      "settings": {
+        "duration": {
+          "from": 100,
+          "to": 5000
+        },
+
+        "defaults": {
+          "duration": 2150
+        }
+      },
+      "enter": {
+        "anime": {
+          "duration": { "inject": "duration" }
+        }
+      },
+      "exit": {
+        "hast": {
+          "type": "element",
+          "tagName": "svg",
+          "properties": {
+            "className": "overlay",
+            "width": "100%",
+            "height": "100%",
+            "viewBox": "0 0 100 100",
+            "preserveAspectRatio": "none"
+          },
+          "children": [
+            {
+              "type": "element",
+              "tagName": "path",
+              "properties": {
+                "className": "overlay__path",
+                "vectorEffect": "non-scaling-stroke",
+                "d": "M 0 0 h 0 c 0 50 0 50 0 100 H 0 V 0 Z",
+                "fill": "white"
+              }
+            }
+          ]
+        },
+        "css": {
+          ".overlay": {
+            "inset": 0,
+            "z-index": 100
+          }
+        },
+        "anime": {
+          "inject": "anime.timeline",
+          "parameters": {
+            "targets": ".overlay__path",
+            "easing": "easeInOutSine"
+          },
+          "children": [
+            {
+              "parameters": {
+                "duration": {
+                  "inject": "*",
+                  "a": 0.3720930233,
+                  "b": { "inject": "duration" }
+                },
+                "easing": "easeInQuart",
+                "d": [
+                  "M 0 0 h 0 c 0 50 0 50 0 100 H 0 V 0 Z",
+                  "M 0 0 h 43 c -60 55 140 65 0 100 H 0 V 0 Z"
+                ]
+              }
+            },
+            {
+              "parameters": {
+                "duration": {
+                  "inject": "*",
+                  "a": 0.0930232558,
+                  "b": { "inject": "duration" }
+                },
+                "easing": "easeOutSine",
+                "d": "M 0 0 h 100 c 0 50 0 50 0 100 H 0 V 0 Z",
+                "complete": {
+                  "inject": "anime.set",
+                  "target": { "inject": "element" },
+                  "properties": {
+                    "opacity": 0
+                  }
+                }
+              }
+            },
+            {
+              "parameters": {
+                "duration": {
+                  "inject": "*",
+                  "a": 0.0697674419,
+                  "b": { "inject": "duration" }
+                },
+                "easing": "easeInSine",
+                "d": [
+                  "M 100 0 H 0 c 0 50 0 50 0 100 h 100 V 50 Z",
+                  "M 100 0 H 50 c 28 43 4 81 0 100 h 50 V 0 Z"
+                ]
+              }
+            },
+            {
+              "parameters": {
+                "duration": {
+                  "inject": "*",
+                  "a": 0.4651162791,
+                  "b": { "inject": "duration" }
+                },
+                "easing": "easeOutExpo",
+                "d": "M 100 0 H 100 c 0 50 0 50 0 100 h 0 V 0 Z"
+              }
+            }
+          ]
+        }
       }
     }
 
