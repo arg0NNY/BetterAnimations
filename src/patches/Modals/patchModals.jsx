@@ -58,7 +58,6 @@ css
 }
 
 ${DiscordSelectors.ModalBackdrop.backdrop} {
-    z-index: -1;
     position: fixed !important;
 }
 ${DiscordSelectors.Layer.layerContainer} + ${DiscordSelectors.Layer.layerContainer} ${DiscordSelectors.ModalBackdrop.backdrop} {
