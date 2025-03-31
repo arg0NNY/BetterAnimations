@@ -27,7 +27,7 @@ export function formatZodError (error, options = {}) {
     const issuePath = path.concat(issue.path)
     let message = `• ${issue.message} at "${toPath(issuePath)}"`
 
-    if (received && !issue.params?.received) {
+    if (received && !('received' in (issue.params ?? {}))) {
       issue.params ??= {}
       issue.params.received = getPath(
         received,
