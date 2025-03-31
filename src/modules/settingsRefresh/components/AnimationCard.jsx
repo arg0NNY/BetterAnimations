@@ -12,6 +12,7 @@ import useDismissible from '@/modules/settingsRefresh/hooks/useDismissible'
 import useElementBounding from '@/hooks/useElementBounding'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import HintTooltip from '@/modules/settingsRefresh/components/HintTooltip'
+import { Utils } from '@/BdApi'
 
 export function getCardHeight (width) {
   return getPreviewHeight(width - 16) + 52
@@ -136,13 +137,27 @@ function AnimationCard ({
     e.preventDefault()
   }, cardRef)
 
-  const expandSettings = animationSettings.settings.length && !expanded ? (rightClick = false) => {
+  const [forceOpenSettingsTooltip, setForceOpenSettingsTooltip] = useState(false)
+  const expandSettings = (rightClick = false) => {
+    if (expanded) return
+    if (!animationSettings.settings.length) return setForceOpenSettingsTooltip(true)
+
     setExpanded('settings')
     if (rightClick === true && !rightClickHint) setRightClickHint(true)
-  } : undefined
+  }
 
   return (
-    <div className={`BA__animationCardWrapper ${expanded ? 'BA__animationCard--expanded' : ''} ${wide ? 'BA__animationCard--wide' : ''} ${active ? 'BA__animationCard--active' : ''}`}>
+    <div
+      className={Utils.className(
+        'BA__animationCardWrapper',
+        {
+          'BA__animationCard--expanded': expanded,
+          'BA__animationCard--wide': wide,
+          'BA__animationCard--active': active
+        }
+      )}
+      onMouseLeave={() => setForceOpenSettingsTooltip(false)}
+    >
       <HintTooltip
         text="Right-click the card to open the settings"
         shouldShow={!rightClickHint && !!expandSettings}
@@ -177,6 +192,7 @@ function AnimationCard ({
                 expanded={expanded}
                 setExpanded={setExpanded}
                 errors={errors}
+                forceOpenSettingsTooltip={forceOpenSettingsTooltip}
               />
             </Common.Clickable>
           </div>

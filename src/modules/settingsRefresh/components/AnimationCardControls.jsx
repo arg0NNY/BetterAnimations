@@ -17,13 +17,17 @@ function AnimationCardControls ({
   exit,
   setEnter,
   setExit,
-  errors = []
+  errors = [],
+  forceOpenSettingsTooltip = false
 }) {
   return (
     <div className="BA__animationCardControls">
       <div className="BA__animationCardControlsGroup">
         <IconButton
-          tooltip={hasSettings ? 'Settings' : 'No settings available'}
+          tooltip={{
+            text: hasSettings ? 'Settings' : 'No settings available',
+            forceOpen: forceOpenSettingsTooltip
+          }}
           disabled={!hasSettings}
           active={expanded === 'settings'}
           onClick={stop(() => setExpanded('settings'))}

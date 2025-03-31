@@ -1,11 +1,11 @@
 import { css } from '@/modules/Style'
-import { Common } from '@/modules/DiscordModules'
+import { Clickable, Tooltip } from '@/modules/DiscordModules'
 import { Utils } from '@/BdApi'
 
 function IconButton ({ children, tooltip, disabled = false, active = false, className, ...props }) {
   const button = _props => (
     <div className={className} {..._props}>
-      <Common.Clickable
+      <Clickable
         tag="button"
         className={Utils.className(
           'BA__iconButton',
@@ -15,16 +15,20 @@ function IconButton ({ children, tooltip, disabled = false, active = false, clas
         {...props}
       >
         {children}
-      </Common.Clickable>
+      </Clickable>
     </div>
   )
 
   if (!tooltip) return button({})
 
+  const tooltipProps = typeof tooltip === 'string'
+    ? { text: tooltip }
+    : tooltip
+
   return (
-    <Common.Tooltip text={tooltip}>
+    <Tooltip {...tooltipProps}>
       {button}
-    </Common.Tooltip>
+    </Tooltip>
   )
 }
 
