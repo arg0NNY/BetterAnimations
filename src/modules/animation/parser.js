@@ -83,38 +83,37 @@ export function buildAnimateAssets (data = null, context, options = {}) {
   const debug = Debug.animation(context.animation, context.type)
   debug.parseStart(data, context)
 
-  try {
-    data = data ? AnimateSchema(context, { stage: ParseStage.Layout })
-      .parse(data) : {}
-  }
-  catch (error) {
-    ErrorManager.registerAnimationError(
-      new AnimationError(
-        context.animation,
-        formatZodError(error, { pack: context.pack, path: context.path, received: data }),
-        { module: context.module, pack: context.pack, type: context.type, context, stage: 'Layout' }
+  const parseStage = (stage, stageName) => {
+    try {
+      data = data ? AnimateSchema(context, { stage })
+        .parse(data) : {}
+      return true
+    }
+    catch (error) {
+      ErrorManager.registerAnimationError(
+        new AnimationError(
+          context.animation,
+          formatZodError(error, { pack: context.pack, path: context.path, received: data }),
+          { module: context.module, pack: context.pack, type: context.type, context, stage: stageName }
+        )
       )
-    )
-    context.instance.cancel(true)
-    return {}
+      context.instance.cancel(true)
+      return false
+    }
   }
 
+  if (!parseStage(ParseStage.BeforeCreate, 'BeforeCreate')) return {}
+
+  debug.hook('onBeforeCreate', context)
+  data.onBeforeCreate?.()
+  // No need to check the cancellation here because we still need to parse `onBeforeDestroy` and `onDestroyed`
+  // `AnimationStore` will detect the cancellation as soon as we stop parsing
+
+  if (!parseStage(ParseStage.Layout, 'Layout')) return {}
+
   context.wrapper = data ? buildWrapper(data, context) : null
-  try {
-    data = data ? AnimateSchema(context, { stage: ParseStage.Execute })
-      .parse(data) : {}
-  }
-  catch (error) {
-    ErrorManager.registerAnimationError(
-      new AnimationError(
-        context.animation,
-        formatZodError(error, { pack: context.pack, path: context.path, received: data }),
-        { module: context.module, pack: context.pack, type: context.type, context, stage: 'Execute' }
-      )
-    )
-    context.instance.cancel(true)
-    return {}
-  }
+
+  if (!parseStage(ParseStage.Execute, 'Execute')) return {}
 
   debug.parseEnd(data, context)
 
@@ -136,7 +135,6 @@ export function buildAnimateAssets (data = null, context, options = {}) {
 
   return {
     wrapper: context.wrapper,
-    onBeforeCreate: exposedHook('onBeforeCreate'),
     onBeforeDestroy: exposedHook('onBeforeDestroy'),
     onDestroyed: exposedHook('onDestroyed'),
     execute: () => {

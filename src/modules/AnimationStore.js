@@ -64,16 +64,13 @@ class Animation {
       )
       this.context = context
 
-      const { execute, wrapper, onBeforeCreate, onBeforeDestroy, onDestroyed }
+      const { execute, wrapper, onBeforeDestroy, onDestroyed }
         = buildAnimateAssets(animate, context, this.module.buildOptions())
       if (this.cancelled) return
 
       this.wrapper = wrapper
       this.onBeforeDestroy = onBeforeDestroy
       this.onDestroyed = onDestroyed
-
-      onBeforeCreate?.()
-      if (this.cancelled) return
 
       const { instances, onBeforeBegin, finished } = execute()
       if (this.cancelled) return

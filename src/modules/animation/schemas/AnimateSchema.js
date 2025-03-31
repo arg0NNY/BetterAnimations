@@ -20,97 +20,97 @@ const safeInjects = [
   Inject.ObjectAssign,
   Inject.StringTemplate,
   Inject.Math,
-  Inject.AnimeRandom
+  Inject.AnimeRandom,
+  Inject.VarGet, // ?
+  Inject.Switch
 ]
 
-export const HookSchema = (context = null, env = {}) => {
-  // If parsing on load or on initialize stage, expect an unparsed data
-  if (!env.stage || env.stage === ParseStage.Initialize || !context)
-    return !context ? z.any() : InjectableSchema(context, env)
+const ParsableSchema = (stage, schema) => (context, env) =>
+  (![ParseStage.Initialize, stage].includes(env.stage) ? z.any() : InjectableSchema(context, env))
+    .pipe(
+      env.stage === stage
+        ? (typeof schema === 'function' ? schema(context, env) : schema)
+        : z.any()
+    )
 
-  // Otherwise, expect a lazy inject, which turned into a generator function, awaiting a complete context
-  return InjectableSchema(context, env)
-    .pipe(ArrayOrSingleSchema(z.function()))
+export const HookSchema = (context, env, stage = ParseStage.Execute) => ParsableSchema(
+  stage,
+  context => ArrayOrSingleSchema(z.function())
     .transform((value, ctx) => {
       const hook = () => executeWithZod(value, (value, ctx) => {
-          [].concat(value).forEach((fn, i) => {
-            try { fn() }
-            catch (error) {
-              if (error instanceof ZodError) throw error
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: error.message,
-                path: Array.isArray(value) ? [i] : [],
-                params: { error, received: fn }
-              })
-            }
-          })
-        }, context, ctx)
+        [].concat(value).forEach((fn, i) => {
+          try { fn() }
+          catch (error) {
+            if (error instanceof ZodError) throw error
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: error.message,
+              path: Array.isArray(value) ? [i] : [],
+              params: { error, received: fn }
+            })
+          }
+        })
+      }, context, ctx)
       hook[hookSymbol] = true
       return hook
     })
-}
-
-export const HastSchema = (context = null, env = {}) =>
-  (!context ? z.any() : InjectableSchema(context, env))
-    .pipe(ArrayOrSingleSchema(z.record(z.any())))
     .optional()
-    .transform(!context || env.stage !== ParseStage.Layout
-      ? v => v
-      : (value, ctx) => {
-        if (!value) return value
+)(context, env)
 
-        return [].concat(value).map((node, i) => {
-          const sanitized = sanitize(node, hastSanitizeSchema)
-          if (sanitized.type === 'root') {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: 'Invalid or forbidden hast node',
-              path: Array.isArray(value) ? [i] : [],
-              params: { received: node }
-            })
-            return z.NEVER
-          }
+export const HastSchema = ParsableSchema(
+  ParseStage.Layout,
+  ArrayOrSingleSchema(z.record(z.any()))
+    .transform((value, ctx) => {
+      return [].concat(value).map((node, i) => {
+        const sanitized = sanitize(node, hastSanitizeSchema)
+        if (sanitized.type === 'root') {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Invalid or forbidden hast node',
+            path: Array.isArray(value) ? [i] : [],
+            params: { received: node }
+          })
+          return z.NEVER
+        }
 
-          return toDom(sanitized)
-        })
+        return toDom(sanitized)
       })
-
-export const CssSchema = (context = null, env = {}) =>
-  z.record(z.record(z.any()))
-    .pipe(!context ? z.any() : InjectableSchema(context, env))
+    })
     .optional()
+)
 
-export const AnimeSchema = (context = null, env = {}) =>
-  (!context ? z.any() : InjectableSchema(context, env))
-    .pipe(
-      ArrayOrSingleSchema(
-        z.union([
-          z.record(z.any()),
-          z.instanceof(Function).refine(
-            fn => !!fn[animeTimelineInjectSymbol],
-            { message: `Only '${Inject.AnimeTimeline}' is allowed as a function` }
-          )
-        ]).nullable().optional()
+
+export const CssSchema = ParsableSchema(
+  ParseStage.Layout,
+  z.record(z.record(z.any())).optional()
+)
+
+export const AnimeSchema = ParsableSchema(
+  ParseStage.Execute,
+  ArrayOrSingleSchema(
+    z.union([
+      z.record(z.any()),
+      z.instanceof(Function).refine(
+        fn => !!fn[animeTimelineInjectSymbol],
+        { message: `Only '${Inject.AnimeTimeline}' is allowed as a function` }
       )
-    )
+    ]).nullable().optional()
+  )
+)
 
-export const AnimateSchema = (context = null, env = {}) => {
-  const layoutContext = context
+export const AnimateSchema = (context, env) => {
   const layoutEnv = Object.assign({ allowed: safeInjects }, env)
 
-  context = env.stage === ParseStage.Layout ? null : context
-
   return z.object({
-    hast: env.stage === ParseStage.Execute ? z.any() : HastSchema(layoutContext, layoutEnv),
-    css: env.stage === ParseStage.Execute ? z.any() : CssSchema(layoutContext, layoutEnv),
+    onBeforeCreate: HookSchema(context, env, ParseStage.BeforeCreate),
+    hast: HastSchema(context, layoutEnv),
+    css: CssSchema(context, layoutEnv),
     anime: AnimeSchema(context, env),
-    onBeforeCreate: HookSchema(context, env).optional(),
-    onCreated: HookSchema(context, env).optional(),
-    onBeforeBegin: HookSchema(context, env).optional(),
-    onCompleted: HookSchema(context, env).optional(),
-    onBeforeDestroy: HookSchema(context, env).optional(),
-    onDestroyed: HookSchema(context, env).optional(),
+    onCreated: HookSchema(context, env),
+    onBeforeBegin: HookSchema(context, env),
+    onCompleted: HookSchema(context, env),
+    onBeforeDestroy: HookSchema(context, env),
+    onDestroyed: HookSchema(context, env),
   }).strict()
 }
 
