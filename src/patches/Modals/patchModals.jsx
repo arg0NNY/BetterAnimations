@@ -64,6 +64,11 @@ ${DiscordSelectors.Layer.layerContainer} + ${DiscordSelectors.Layer.layerContain
     display: none;
 }
 
+${DiscordSelectors.Modal.focusLock}:has(> [class*="carouselModal"]) {
+    position: absolute;
+    inset: 0;
+}
+
 .BA__modalBackdrop {
     position: absolute;
     inset: 0;
