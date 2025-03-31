@@ -6,7 +6,6 @@ import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import { autoPosition } from '@/hooks/useAutoPosition'
 import { avoidClickTrap } from '@/utils/transition'
-import { findDOMNode } from 'react-dom'
 
 function patchBasePopout () {
   const Original = mangled(BasePopout)
@@ -24,7 +23,11 @@ function patchBasePopout () {
     }
 
     renderLayer (...args) {
-      const anchor = this.domElementRef?.current ?? findDOMNode(this)
+      let anchor = this.domElementRef?.current
+      if (!anchor) {
+        try { anchor = this.getDomElement() }
+        catch {}
+      }
 
       const value = super.renderLayer.call(
         Object.assign(

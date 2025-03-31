@@ -56,7 +56,9 @@ class Animation {
           instance: this,
           container: this.container,
           element: this.node,
-          anchor: this.anchor?.current ?? this.anchor,
+          anchor: typeof this.anchor === 'function'
+            ? this.anchor()
+            : (this.anchor?.current ?? this.anchor),
           isIntersected: intersect
         }
       )
