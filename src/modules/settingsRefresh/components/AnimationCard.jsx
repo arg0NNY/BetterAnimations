@@ -4,10 +4,9 @@ import AnimationCardControls from '@/modules/settingsRefresh/components/Animatio
 import useEventListener from '@/hooks/useEventListener'
 import useHover from '@/hooks/useHover'
 import useWindowSize from '@/hooks/useWindowSize'
-import { Common, CSSTransition, Dispatcher, TransitionGroup } from '@/modules/DiscordModules'
+import { Common, CSSTransition, TransitionGroup } from '@/modules/DiscordModules'
 import AnimationSettings from '@/modules/settingsRefresh/components/AnimationSettings'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
-import DispatcherEvents from '@/enums/DispatcherEvents'
 import useDismissible from '@/modules/settingsRefresh/hooks/useDismissible'
 import useElementBounding from '@/hooks/useElementBounding'
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
@@ -123,11 +122,9 @@ function AnimationCard ({
       e.stopPropagation()
     }
     document.addEventListener('keydown', onKeyDown)
-    if (expanded) Dispatcher.dispatch({ type: DispatcherEvents.ADD_PREVENT_SETTINGS_CLOSE, callback: close })
 
     return () => {
       document.removeEventListener('keydown', onKeyDown)
-      Dispatcher.dispatch({ type: DispatcherEvents.REMOVE_PREVENT_SETTINGS_CLOSE, callback: close })
     }
   }, [expanded, close])
 

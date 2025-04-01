@@ -6,20 +6,10 @@ import DispatcherEvents from '@/enums/DispatcherEvents'
 import SettingsSection from '@/enums/SettingsSection'
 
 let section = SettingsSection.Home
-const preventCloseEvents = new Set()
 
 function handleSetSection ({ section: _section }) {
   section = _section
 }
-
-function handleAddPreventSettingsClose ({ callback }) {
-  preventCloseEvents.add(callback)
-}
-
-function handleRemovePreventSettingsClose ({ callback }) {
-  preventCloseEvents.delete(callback)
-}
-
 const SettingsStore = new class SettingsStore extends Flux.Store {
   initialize () {
     [
@@ -38,25 +28,7 @@ const SettingsStore = new class SettingsStore extends Flux.Store {
   showNotice () {
     return Config.hasUnsavedChanges()
   }
-
-  shouldPreventClose () {
-    return preventCloseEvents.size > 0
-  }
-
-  preventCloseIfNeeded () {
-    if (!this.shouldPreventClose()) return false
-
-    preventCloseEvents.forEach(callback => callback())
-    return true
-  }
-
-  // Used by StandardSidebarView
-  canCloseEarly () {
-    return this.shouldPreventClose()
-  }
 }(Dispatcher, {
-  [DispatcherEvents.ADD_PREVENT_SETTINGS_CLOSE]: handleAddPreventSettingsClose,
-  [DispatcherEvents.REMOVE_PREVENT_SETTINGS_CLOSE]: handleRemovePreventSettingsClose,
   [DispatcherEvents.SET_SETTINGS_SECTION]: handleSetSection
 })
 

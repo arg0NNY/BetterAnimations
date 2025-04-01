@@ -10,9 +10,9 @@ import { getSections } from '@/modules/settingsRefresh/data/sections'
 import meta from '@/meta'
 import SectionContext from '@/modules/settingsRefresh/context/SectionContext'
 import { css } from '@/modules/Style'
-import SettingsStore, { useSection } from '@/modules/settingsRefresh/stores/SettingsStore'
+import { useSection } from '@/modules/settingsRefresh/stores/SettingsStore'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
-import { useCallback, useMemo, useState, Suspense, lazy } from 'react'
+import { useCallback, useMemo, Suspense, lazy } from 'react'
 
 const StandardSidebarViewComponent = lazy(async () => ({ default: await StandardSidebarViewWrapper }))
 
@@ -24,10 +24,7 @@ function SettingsModal () {
   const sections = useMemo(getSections, [])
   const [section, setSection] = useSection()
 
-  const onClose = useCallback(() => {
-    if (SettingsStore.preventCloseIfNeeded()) return
-    LayerActions.popLayer()
-  }, [])
+  const onClose = useCallback(() => LayerActions.popLayer(), [])
 
   return (
     <SectionContext.Provider value={{ section, setSection }}>
@@ -52,11 +49,7 @@ export default SettingsModal
 
 StandardSidebarView.then(() =>
 css
-`.BA__settingsModal ${DiscordSelectors.StandardSidebarView.tools} {
-    z-index: 100;
-}
-
-.BA__settingsModal ${DiscordSelectors.StandardSidebarView.noticeRegion} {
+`.BA__settingsModal ${DiscordSelectors.StandardSidebarView.noticeRegion} {
     padding-left: 40px;
     padding-right: 40px;
     z-index: 200;
