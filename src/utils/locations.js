@@ -3,7 +3,7 @@ import { getSortedGuildChannelIds, getSortedGuildTreeIds } from '@/utils/guilds'
 import { getStaticDMRouteIndex } from '@/utils/routes'
 import { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChannelList'
 
-// Keep up-to-date with the internal AppView component (`Webpack.getByStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY')`)
+// Keep up-to-date with the internal `AppView` component
 
 // Keep up-to-date: (`impressionName: ImpressionNames.GUILD_CHANNEL` in AppView)
 const CHANNEL_PATH = [
@@ -22,10 +22,11 @@ function matchChannelRoutes (...locations) {
 export function shouldSwitchContent (next, prev) {
   const [nextChannel, prevChannel] = matchChannelRoutes(next, prev)
 
-  const nextOrPrev = (fn, n = next, p = prev) => fn(n) || fn(p)
+  const nextOrPrev = (fn, n = next, p = prev) => fn(n) + fn(p)
   if (
+    nextOrPrev(l => l.pathname.startsWith(Routes.GLOBAL_DISCOVERY)) === 1 // Only if one of the routes is in Discovery
     // Keep up-to-date: list everything that hides the sidebar (`hideSidebar` in AppView)
-    nextOrPrev(l => l.pathname.startsWith(Routes.GUILD_MEMBER_VERIFICATION('')))
+    || nextOrPrev(l => l.pathname.startsWith(Routes.GUILD_MEMBER_VERIFICATION('')))
     || nextOrPrev(l => l.pathname.startsWith(Routes.GUILD_MEMBER_VERIFICATION_FOR_HUB('')))
     || nextOrPrev(l => matchExact(l.pathname, Routes.GUILD_BOOSTING_MARKETING(':guildId')))
     || nextOrPrev(l => matchExact(l.pathname, Routes.COLLECTIBLES_SHOP_FULLSCREEN))
@@ -44,6 +45,11 @@ export function shouldSwitchContent (next, prev) {
 export function shouldSwitchPage (next, prev, isContentSwitched = shouldSwitchContent(next, prev)) {
   if (isContentSwitched) return false
 
+  // Disable animations in Discovery
+  const nextOrPrev = (fn, n = next, p = prev) => fn(n) + fn(p)
+  if (nextOrPrev(l => l.pathname.startsWith(Routes.GLOBAL_DISCOVERY)))
+    return false
+
   const [nextChannel, prevChannel] = matchChannelRoutes(next, prev)
   if (nextChannel && prevChannel && nextChannel.params.channelId === prevChannel.params.channelId)
     return false
@@ -56,8 +62,8 @@ export function getSwitchContentDirection (next, prev) {
 
   if (prevChannel?.params.guildId === '@me') return 1 // If from DMs, further
   if (nextChannel?.params.guildId === '@me') return 0 // If to DMs, back
-  if (matchExact(prev.pathname, Routes.GUILD_DISCOVERY)) return 0 // If from guild discovery, back
-  if (matchExact(next.pathname, Routes.GUILD_DISCOVERY)) return 1 // If to guild discovery, further
+  if (prev.pathname.startsWith(Routes.GLOBAL_DISCOVERY)) return 0 // If from Discovery, back
+  if (next.pathname.startsWith(Routes.GLOBAL_DISCOVERY)) return 1 // If to Discovery, further
   if (!nextChannel) return 0 // If from server, back; This condition also covers uncovered cases
   if (!prevChannel) return 1 // If to server, further
 
