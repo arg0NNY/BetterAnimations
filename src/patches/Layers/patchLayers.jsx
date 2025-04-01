@@ -77,10 +77,7 @@ function patchLayers () {
 export default patchLayers
 
 css
-`.platform-win ${DiscordSelectors.Layers.layer} {
-    top: -22px !important;
-}
-${DiscordSelectors.Layers.layers} > ${DiscordSelectors.Layers.layer} {
+`${DiscordSelectors.Layers.layers} > ${DiscordSelectors.Layers.layer} {
     contain: strict;
 }`
 `Layers`
