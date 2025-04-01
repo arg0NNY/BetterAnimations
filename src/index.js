@@ -11,7 +11,7 @@ import patchStandardSidebarView from '@/patches/StandardSidebarView/patchStandar
 import patchModals from '@/patches/Modals/patchModals'
 import patchLayers from '@/patches/Layers/patchLayers'
 import patchListThin from '@/patches/ListThin/patchListThin'
-import patchGuildChannelList from '@/patches/GuildChannelList/patchGuildChannelList'
+import patchGuildChannelList, { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChannelList'
 import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
 import PackManager from '@/modules/PackManager'
 import Logger from '@/modules/Logger'
@@ -55,7 +55,8 @@ if (import.meta.env.MODE === 'development')
     ErrorManager,
     DiscordModules,
     DiscordClasses,
-    anime
+    anime,
+    getCurrentGuildChannels: () => currentGuildChannels
   }
 
 export default function (meta) {

@@ -1,5 +1,5 @@
 import { SortedGuildStore } from '@/modules/DiscordModules'
-import { communityRowToChannelRoute } from '@/utils/routes'
+import { guildActionRowToChannelRoute } from '@/utils/routes'
 
 export function getSortedGuildTreeIds (node = SortedGuildStore.getGuildsTree().root) {
   if (node.children?.length)
@@ -10,8 +10,8 @@ export function getSortedGuildTreeIds (node = SortedGuildStore.getGuildsTree().r
 
 export function getSortedGuildChannelIds (guildChannels) {
   return [
-    (guildChannels.communitySection?.communityRows ?? [])
-      .map(communityRowToChannelRoute),
+    (guildChannels.guildActionSection?.guildActionRows ?? [])
+      .map(guildActionRowToChannelRoute),
     guildChannels.getSortedCategories().flatMap(c =>
       (c.shownChannelIds ?? []).flatMap(id => [id, ...c.channels[id].threadIds])
     )

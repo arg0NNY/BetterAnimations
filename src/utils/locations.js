@@ -1,22 +1,25 @@
-import { PrivateChannelSortStore, Router, Routes, StaticChannelRoute } from '@/modules/DiscordModules'
+import {
+  GuildChannelRouteParams,
+  PrivateChannelSortStore,
+  Router,
+  Routes,
+  StaticChannelRoute
+} from '@/modules/DiscordModules'
 import { getSortedGuildChannelIds, getSortedGuildTreeIds } from '@/utils/guilds'
 import { getStaticDMRouteIndex } from '@/utils/routes'
 import { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChannelList'
-
-// Keep up-to-date with the internal `AppView` component
-
-// Keep up-to-date: (`impressionName: ImpressionNames.GUILD_CHANNEL` in AppView)
-const CHANNEL_PATH = [
-  Routes.CHANNEL_THREAD_VIEW(':guildId', ':channelId', ':threadId', ':messageId?'),
-  Routes.CHANNEL(':guildId', ':channelId?', ':messageId?')
-]
+import { guildChannelPath } from '@/patches/AppView/patchAppView'
 
 function matchExact (pathname, path) {
   return Router.matchPath(pathname, { path, exact: true })
 }
 
 function matchChannelRoutes (...locations) {
-  return locations.map(l => matchExact(l.pathname, CHANNEL_PATH))
+  return locations.map(l => {
+    const channel = matchExact(l.pathname, guildChannelPath)
+    if (channel && !channel.params.guildId) channel.params.guildId = '@me'
+    return channel
+  })
 }
 
 export function shouldSwitchContent (next, prev) {
@@ -25,10 +28,10 @@ export function shouldSwitchContent (next, prev) {
   const nextOrPrev = (fn, n = next, p = prev) => fn(n) + fn(p)
   if (
     nextOrPrev(l => l.pathname.startsWith(Routes.GLOBAL_DISCOVERY)) === 1 // Only if one of the routes is in Discovery
-    // Keep up-to-date: list everything that hides the sidebar (`hideSidebar` in AppView)
+    // Keep up-to-date: list everything that hides the sidebar (`hideChannelList` in AppView)
     || nextOrPrev(l => l.pathname.startsWith(Routes.GUILD_MEMBER_VERIFICATION('')))
     || nextOrPrev(l => l.pathname.startsWith(Routes.GUILD_MEMBER_VERIFICATION_FOR_HUB('')))
-    || nextOrPrev(l => matchExact(l.pathname, Routes.GUILD_BOOSTING_MARKETING(':guildId')))
+    || nextOrPrev(l => matchExact(l.pathname, Routes.GUILD_BOOSTING_MARKETING(GuildChannelRouteParams.guildId())))
     || nextOrPrev(l => matchExact(l.pathname, Routes.COLLECTIBLES_SHOP_FULLSCREEN))
     || nextOrPrev(l => matchExact(l.pathname, Routes.GUILD_DISCOVERY))
     || nextOrPrev(l => l?.params?.channelId === StaticChannelRoute.GUILD_ONBOARDING, nextChannel, prevChannel)
@@ -43,7 +46,7 @@ export function shouldSwitchContent (next, prev) {
 }
 
 export function shouldSwitchPage (next, prev, isContentSwitched = shouldSwitchContent(next, prev)) {
-  if (isContentSwitched) return false
+  if (isContentSwitched || next.pathname === prev.pathname) return false
 
   // Disable animations in Discovery
   const nextOrPrev = (fn, n = next, p = prev) => fn(n) + fn(p)

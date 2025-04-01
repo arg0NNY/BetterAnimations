@@ -1,5 +1,5 @@
 import { Patcher, Utils } from '@/BdApi'
-import { AppPanels, AppView, Router, Routes, TransitionGroup } from '@/modules/DiscordModules'
+import { AppPanels, AppView, ImpressionNames, Router, Routes, TransitionGroup } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
 import useLocationKey from '@/hooks/useLocationKey'
@@ -16,6 +16,8 @@ import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequest
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { css } from '@/modules/Style'
 import { Fragment } from 'react'
+
+export let guildChannelPath = []
 
 function AppViewTransition ({ className, module, shouldSwitch, getSwitchDirection, children }) {
   const [key, direction] = useLocationKey(shouldSwitch, getSwitchDirection)
@@ -76,9 +78,13 @@ function patchAppView () {
       </AppViewTransition>
     )
 
-    const messageRequestsRoute = findInReactTree(page, m => m?.type === Router.Switch)
-      ?.props.children.find(r => r?.props?.path === Routes.MESSAGE_REQUESTS)
+    const routes = findInReactTree(page, m => m?.type === Router.Switch)?.props.children
+
+    const messageRequestsRoute = routes?.find(r => r?.props?.path === Routes.MESSAGE_REQUESTS)
     if (messageRequestsRoute) patchMessageRequestsRoute(messageRequestsRoute)
+
+    const guildChannelRoute = routes?.find(r => r?.props?.impressionName === ImpressionNames.GUILD_CHANNEL)
+    if (guildChannelRoute) guildChannelPath = guildChannelRoute.props.path
 
     // Enhance layout
     if (!serversModule.isEnabled() || !serversModule.settings.enhanceLayout) return

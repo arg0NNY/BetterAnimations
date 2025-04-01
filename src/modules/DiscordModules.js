@@ -155,7 +155,7 @@ export const VoiceChannelView = getMangled(Filters.byStrings('shouldUseVoiceEffe
 export const { Easing } = Webpack.getByKeys('Easing')
 export const SortedGuildStore = Webpack.getStore('SortedGuildStore')
 export const { GuildChannelList } = mapModule(Filters.byStrings('favorites-channel-list'), { GuildChannelList: Filters.byStrings('getGuild', 'guildId') }, { withKeys: true })
-export const ChannelListCommunityRow = Webpack.getModule(Filters.byKeys('GUILD_ROLE_SUBSCRIPTIONS', 'CHANNELS_AND_ROLES'), { searchExports: true })
+export const GuildActionRow = Webpack.getModule(Filters.byKeys('GUILD_ROLE_SUBSCRIPTIONS', 'CHANNELS_AND_ROLES'), { searchExports: true })
 export const PrivateChannelSortStore = Webpack.getStore('PrivateChannelSortStore')
 export const { ChannelSectionStore, MESSAGE_REQUESTS_BASE_CHANNEL_ID } = mapModule(Filters.byStoreName('ChannelSectionStore'), {
   ChannelSectionStore: Filters.byStoreName('ChannelSectionStore'),
@@ -208,6 +208,8 @@ export const InviteStates = Webpack.getModule(Filters.byKeys('APP_NOT_OPENED', '
 export const InviteStore = Webpack.getStore('InviteStore')
 export const TextInput = Webpack.getModule(m => Filters.byKeys('maxLength', 'type')(m?.defaultProps), { searchExports: true })
 export const AppPanels = Webpack.getModule(m => Filters.byStrings('AppPanels')(m?.type), { searchExports: true })
+export const { ImpressionNames } = Webpack.getByKeys('ImpressionNames')
+export const GuildChannelRouteParams = Webpack.getModule(m => Filters.byStrings('escapeRegExp')(m?.guildId), { searchExports: true })
 
 export const Common = {
   ...ModalActions,
