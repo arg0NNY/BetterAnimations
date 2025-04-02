@@ -157,7 +157,7 @@ function AnimationCard ({
     >
       <HintTooltip
         text="Right-click the card to open the settings"
-        shouldShow={!rightClickHint && !!expandSettings}
+        shouldShow={!rightClickHint && !!expandSettings && !expanded}
       >
         {props => (
           <div

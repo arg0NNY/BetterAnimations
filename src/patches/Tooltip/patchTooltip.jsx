@@ -46,6 +46,9 @@ function patchTooltip () {
     const module = Modules.getModule(ModuleKey.Tooltips)
     if (!module.isEnabled()) return
 
+    const { text } = self.props
+    value.props.children = typeof text === 'function' ? text() : text
+
     value.props.module = module
     value.type = TooltipTransition
   })
