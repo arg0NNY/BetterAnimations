@@ -21,6 +21,9 @@ function patchChatSidebar () {
     const switchModule = Modules.getModule(ModuleKey.ThreadSidebarSwitch)
     if (!module.isEnabled() && !switchModule.isEnabled()) return
 
+    const channelCallChatLayer = findInReactTree(value, m => m?.type?.displayName === 'ChannelCallChatLayer')
+    if (channelCallChatLayer) return // Disable for voice chat sidebar (not worth to patch for the complexity)
+
     const chatTarget = findInReactTree(value, m => m?.props?.className?.includes(DiscordClasses.ChatSidebar.chatTarget))
     if (chatTarget) {
       chatTarget.props = {}

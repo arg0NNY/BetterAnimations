@@ -3,12 +3,11 @@ import { ChannelView } from '@/modules/DiscordModules'
 import ensureOnce from '@/utils/ensureOnce'
 import AnimeTransition from '@/components/AnimeTransition'
 import SwitchTransition from '@/components/SwitchTransition'
-import patchVoiceChannelView from '@/patches/ChannelView/patchVoiceChannelView'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import patchChatSidebar from '@/patches/ChannelView/patchChatSidebar'
-import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
+import { DiscordSelectors } from '@/modules/DiscordSelectors'
 import { css } from '@/modules/Style'
 import patchMembersModViewSidebar from '@/patches/ChannelView/patchMembersModViewSidebar'
 import SidebarTransition from '@/patches/ChannelView/components/SidebarTransition'
@@ -67,7 +66,6 @@ function patchChannelView () {
   })
 
   patchChatSidebar()
-  patchVoiceChannelView()
   patchMembersModViewSidebar()
 }
 

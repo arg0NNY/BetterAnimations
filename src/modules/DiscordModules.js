@@ -151,7 +151,6 @@ export const StandardSidebarView = getMangled(Filters.byStrings('standardSidebar
 export const Modals = getMangled(Filters.byStrings('modalKey', '"layer-"'))
 export const Layers = getMangled(Filters.byStrings('hasFullScreenLayer'))
 export const ChannelStore = Webpack.getStore('ChannelStore')
-export const VoiceChannelView = getMangled(Filters.byStrings('shouldUseVoiceEffectsActionBar'))
 export const { Easing } = Webpack.getByKeys('Easing')
 export const SortedGuildStore = Webpack.getStore('SortedGuildStore')
 export const { GuildChannelList } = mapModule(Filters.byStrings('favorites-channel-list'), { GuildChannelList: Filters.byStrings('getGuild', 'guildId') }, { withKeys: true })
