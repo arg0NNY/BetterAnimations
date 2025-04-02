@@ -46,13 +46,14 @@ function useAnimationCardExpand ({ positionerRef, popoutRef, refToScroller }) {
     positioner.update()
     popout.update()
   }, [positioner.update, popout.update])
-  useLayoutEffect(update, [expanded])
 
   const popoutMaxHeight = window.height - (TOP_OFFSET + CARD_WIDE_HEIGHT + POPOUT_GAP + BOTTOM_OFFSET)
   const totalHeight = CARD_WIDE_HEIGHT + POPOUT_GAP + popout.height
 
   const top = Math.max(TOP_OFFSET, Math.min(window.height - (BOTTOM_OFFSET + totalHeight), positioner.top))
 
+  useLayoutEffect(update, [expanded, top])
+  
   return {
     update,
     expanded,
