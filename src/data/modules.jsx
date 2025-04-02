@@ -111,7 +111,7 @@ const modules = [
     name: 'Popouts',
     description: () => (
       <>
-        Animates the&nbsp;appearance and disappearance of&nbsp;interactive floating UI elements application-wide, such as User Profiles, Inbox, etc.
+        Animates the&nbsp;appearance and disappearance of&nbsp;interactive floating UI elements application-wide, such as User Profiles, Select Inputs, Pinned Messages, etc.
         Supports auto-position and auto-direction for&nbsp;applicable animations determined by&nbsp;the&nbsp;location of&nbsp;the&nbsp;anchor element.
         Context Menus that have a&nbsp;strictly defined anchor element are&nbsp;controlled by&nbsp;this&nbsp;module.
       </>
