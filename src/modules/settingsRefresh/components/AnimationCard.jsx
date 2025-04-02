@@ -175,7 +175,6 @@ function AnimationCard ({
               onClick={onClick ?? expandSettings}
               onContextMenu={() => expandSettings?.(true)}
             >
-              {/*{active && <BackgroundOptionRing/>}*/}
               <AnimationPreview
                 title={name}
                 active={previewAlwaysActive || cardHovered || !!expanded}
