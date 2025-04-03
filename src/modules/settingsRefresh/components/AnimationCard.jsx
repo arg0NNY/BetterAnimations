@@ -154,7 +154,6 @@ function AnimationCard ({
           'BA__animationCard--active': active
         }
       )}
-      onMouseLeave={() => setForceOpenSettingsTooltip(false)}
     >
       <HintTooltip
         text="Right-click the card to open the settings"
@@ -174,6 +173,7 @@ function AnimationCard ({
               style={cardStyle}
               onClick={onClick ?? expandSettings}
               onContextMenu={() => expandSettings?.(true)}
+              onMouseLeave={() => setForceOpenSettingsTooltip(false)}
             >
               <AnimationPreview
                 title={name}
