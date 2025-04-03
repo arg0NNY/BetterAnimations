@@ -10,9 +10,13 @@ export function avoidClickTrap (node) {
     : node
 }
 
-export function passAuto (auto) {
+export function pass (props) {
   return e => {
-    if (e?.props) e.props.auto = auto
+    if (e?.props) Object.assign(e.props, props)
     return e
   }
+}
+
+export function passAuto (auto) {
+  return pass({ auto })
 }

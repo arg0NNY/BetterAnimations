@@ -1,14 +1,15 @@
 import { Patcher } from '@/BdApi'
 import { Layers, TransitionGroup } from '@/modules/DiscordModules'
 import ensureOnce from '@/utils/ensureOnce'
-import PassThrough from '@/components/PassThrough'
 import AnimeTransition from '@/components/AnimeTransition'
-import { passAuto } from '@/utils/transition'
+import { pass } from '@/utils/transition'
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import { css } from '@/modules/Style'
+import Mouse from '@/modules/Mouse'
+import { getWindowCenterAnchor } from '@/utils/anchor'
 
 function LayerContainer ({ baseLayer, hidden, children }) {
   return (
@@ -21,48 +22,101 @@ function LayerContainer ({ baseLayer, hidden, children }) {
   )
 }
 
+function LayerTransition ({ module, auto, layer, ...props }) {
+  return (
+    <AnimeTransition
+      module={module}
+      auto={auto}
+      {...props}
+      in={layer.props.mode === 'SHOWN' && props.in}
+      mountOnEnter={false}
+      unmountOnExit={false}
+    >
+      {state => (
+        <LayerContainer
+          {...layer.props}
+          key={layer.key}
+          hidden={state === 'exited'}
+        />
+      )}
+    </AnimeTransition>
+  )
+}
+
+class LayerStore {
+  constructor () {
+    this.anchors = []
+    this.currentAnchor = null
+    this.currentDirection = 0
+  }
+
+  get count () {
+    return this.anchors.length
+  }
+
+  getLastAnchor () {
+    return this.anchors[this.anchors.length - 1]
+  }
+
+  report () {
+    return {
+      direction: this.currentDirection,
+      anchor: this.currentAnchor ?? getWindowCenterAnchor()
+    }
+  }
+
+  update (count) {
+    this.anchors = Array.from({ length: count }).map(
+      this.count === 0
+        ? () => null
+        : (_, i) => this.anchors[i] === undefined ? Mouse.getAnchor() : this.anchors[i]
+    )
+  }
+
+  onRender (count) {
+    if (this.count === count) return this.report()
+
+    if (count > this.count) {
+      this.currentDirection = 1
+      this.update(count)
+      this.currentAnchor = this.getLastAnchor()
+    }
+    else {
+      this.currentDirection = 0
+      this.currentAnchor = this.getLastAnchor()
+      this.update(count)
+    }
+
+    return this.report()
+  }
+}
+
 function patchLayers () {
   const once = ensureOnce()
 
   Patcher.after(...Layers, (self, args, value) => {
     once(
       () => {
-        let prevLength = 0
+        const layerStore = new LayerStore()
         injectModule(value.type, ModuleKey.Layers)
         Patcher.after(value.type.prototype, 'renderLayers', (self, args, value) => {
           const module = Modules.getModule(ModuleKey.Layers)
           if (!module.isEnabled()) return
 
-          const auto = {
-            direction: +(value.length > prevLength)
-          }
+          const { direction, anchor } = layerStore.onRender(value.length)
+          const auto = { direction }
 
-          prevLength = value.length
           return (
-            <TransitionGroup component={null} childFactory={passAuto(auto)}>
+            <TransitionGroup component={null} childFactory={pass({ auto, anchor })}>
               {
                 value.map(layer => (
-                  <PassThrough>
-                    {props => (
-                      <AnimeTransition
-                        module={module}
-                        auto={auto}
-                        {...props}
-                        in={layer.props.mode === 'SHOWN' && props.in}
-                        key={layer.key}
-                        mountOnEnter={false}
-                        unmountOnExit={false}
-                      >
-                        {state => (
-                          <LayerContainer
-                            {...layer.props}
-                            key={layer.key}
-                            hidden={state === 'exited'}
-                          />
-                        )}
-                      </AnimeTransition>
-                    )}
-                  </PassThrough>
+                  <LayerTransition
+                    key={layer.key}
+                    module={module}
+                    auto={auto}
+                    anchor={anchor}
+                    layer={layer}
+                  />
                 ))
               }
             </TransitionGroup>
