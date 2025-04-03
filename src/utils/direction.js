@@ -10,6 +10,11 @@ export function getDirectionsByAxis (axis) {
   }
 }
 
+export function getSupportedAxes (directions) {
+  return Axis.values()
+    .filter(axis => getDirectionsByAxis(axis).every(d => directions.includes(d)))
+}
+
 export function getDirection (axis, isMore) {
   return getDirectionsByAxis(axis)[+isMore]
 }

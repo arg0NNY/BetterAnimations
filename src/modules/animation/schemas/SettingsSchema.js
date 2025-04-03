@@ -2,24 +2,55 @@ import { z } from 'zod'
 import Setting from '@/enums/AnimationSetting'
 import Position from '@/enums/Position'
 import Direction from '@/enums/Direction'
-import { formatValuesList } from '@/utils/schemas'
 import AnimationType from '@/enums/AnimationType'
 import EasingSchema from '@/modules/animation/schemas/EasingSchema'
 import { MAX_ANIMATION_DURATION, MIN_ANIMATION_DURATION } from '@/data/constants'
-import Axis from '@/enums/Axis'
+import { getSupportedAxes } from '@/utils/direction'
 
-const DefaultsSchema = z.object({
-  [Setting.Duration]: z.number().int().nonnegative(),
-  [Setting.Easing]: EasingSchema,
-  [Setting.Variant]: z.string(),
-  [Setting.Position]: z.string(),
-  [Setting.PositionPreserve]: z.boolean(),
-  [Setting.Direction]: z.string(),
-  [Setting.DirectionAxis]: z.enum(Axis.values()),
-  [Setting.DirectionReverse]: z.boolean(),
-  [Setting.DirectionTowards]: z.boolean(),
-  [Setting.Overflow]: z.boolean()
-}).strict().partial()
+const DefaultsSchema = settings => {
+  const entries = []
+
+  if (Setting.Duration in settings) {
+    const { from, to } = settings[Setting.Duration]
+    entries.push([Setting.Duration, z.number().int().min(from).max(to)])
+  }
+
+  if (Setting.Easing in settings) entries.push(
+    [Setting.Easing, EasingSchema]
+  )
+
+  if (Setting.Variant in settings) entries.push(
+    [Setting.Variant, z.enum(settings[Setting.Variant].map(v => v.key))]
+  )
+
+  if (Setting.Position in settings) entries.push(
+    [Setting.Position, z.enum(settings[Setting.Position] === true ? Position.values() : settings[Setting.Position])],
+    [Setting.PositionPreserve, z.boolean().optional()]
+  )
+
+  if (Setting.Direction in settings) entries.push(
+    [Setting.Direction, z.enum(settings[Setting.Direction])],
+    [Setting.DirectionAxis, z.enum(getSupportedAxes(settings[Setting.Direction])).optional()],
+    [Setting.DirectionReverse, z.boolean().optional()],
+    [Setting.DirectionTowards, z.boolean().optional()]
+  )
+
+  if (Setting.Overflow in settings) entries.push(
+    [Setting.Overflow, z.boolean()]
+  )
+
+  const baseSchema = z.object(
+    Object.fromEntries(entries)
+  ).strict()
+
+  if (AnimationType.Enter in settings.defaults || AnimationType.Exit in settings.defaults)
+    return z.object({
+      [AnimationType.Enter]: baseSchema,
+      [AnimationType.Exit]: baseSchema
+    }).strict()
+
+  return baseSchema
+}
 
 const SettingsSchema = z.object({
   [Setting.Duration]: z.union([
@@ -66,60 +97,14 @@ const SettingsSchema = z.object({
       : value),
   [Setting.Overflow]: z.boolean().optional(),
 
-  defaults: DefaultsSchema.extend({
-    [AnimationType.Enter]: DefaultsSchema,
-    [AnimationType.Exit]: DefaultsSchema
-  }).strict().partial()
-    .pipe(
-      z.union([
-        z.object({
-          [AnimationType.Enter]: DefaultsSchema,
-          [AnimationType.Exit]: DefaultsSchema
-        }).strict(),
-        DefaultsSchema
-      ])
-    )
+  defaults: z.record(z.any())
 }).strict()
   .transform((settings, ctx) => {
-    const defaults = settings.defaults[AnimationType.Enter]
-      ? AnimationType.values().map(t => settings.defaults[t])
-      : [settings.defaults]
-    const missingDefaultKeys = [...new Set(
-      defaults.flatMap(obj => Object.keys(settings).filter(k => k !== 'defaults' && !(k in obj)))
-    )]
-    if (!missingDefaultKeys.length) return settings
-
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: `A default value must be specified for all the defined settings. Missing default values for: ${formatValuesList(missingDefaultKeys)}`,
-      path: ['defaults'],
-      params: { pointAt: 'key' }
-    })
-    return z.NEVER
-  })
-  .transform((settings, ctx) => {
-    if (
-      [
-        [Setting.Variant, settings[Setting.Variant]?.map(v => v.key)],
-        [Setting.Position, settings[Setting.Position] === true ? Position.values() : settings[Setting.Position]],
-        [Setting.Direction, settings[Setting.Direction]]
-      ].every(([key, values]) => {
-        if (!settings[key]) return true
-
-        return (settings.defaults[AnimationType.Enter] ? AnimationType.values() : [null]).map(t => {
-          const value = (t ? settings.defaults[t] : settings.defaults)[key]
-          if (values.includes(value)) return true
-
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: `Invalid default value for '${key}'. Expected ${formatValuesList(values, ' | ')}, received '${value}'`,
-            path: ['defaults', t, key].filter(Boolean)
-          })
-          return false
-        }).every(Boolean)
-      })
-    ) return settings
-    else return z.NEVER
+    settings.defaults = DefaultsSchema(settings).parse(
+      settings.defaults,
+      { path: [...ctx.path, 'defaults'] }
+    )
+    return settings
   })
 
 export default SettingsSchema

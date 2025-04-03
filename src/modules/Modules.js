@@ -4,7 +4,13 @@ import Auto from '@/enums/Auto'
 import Setting from '@/enums/AnimationSetting'
 import Position from '@/enums/Position'
 import Direction from '@/enums/Direction'
-import { getAnchorDirection, getDirection, getDirectionsByAxis, reverseDirection } from '@/utils/direction'
+import {
+  getAnchorDirection,
+  getDirection,
+  getDirectionsByAxis,
+  getSupportedAxes,
+  reverseDirection
+} from '@/utils/direction'
 import Axis from '@/enums/Axis'
 import { getPosition, reversePosition } from '@/utils/position'
 import Config from '@/modules/Config'
@@ -185,13 +191,7 @@ class Module {
       case Setting.Direction:
         switch (type) {
           case DirectionAutoType.Alternate:
-            return [
-              [Direction.Upwards, Direction.Downwards],
-              [Direction.Leftwards, Direction.Rightwards],
-              [Direction.Forwards, Direction.Backwards]
-            ].some(
-              pair => pair.every(v => animation.settings[setting]?.includes(v))
-            )
+            return getSupportedAxes(animation.settings[setting]).length > 0
           case DirectionAutoType.Anchor:
             return [
               Direction.Upwards,
