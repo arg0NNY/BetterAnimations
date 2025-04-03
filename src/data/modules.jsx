@@ -12,6 +12,7 @@ import { EasingBezier, EasingStyle, EasingType } from '@/enums/Easing'
 import meta from '@/meta'
 import ServerModuleControls from '@/components/ServerModuleControls'
 import { forceAppUpdate } from '@/utils/forceUpdate'
+import PositionAutoType from '@/enums/PositionAutoType'
 
 export const moduleAliases = {
   [ModuleKeyAlias.Switch]: [
@@ -52,6 +53,7 @@ const modules = [
       type: ModuleType.Switch,
       settings: {
         supportsAuto: {
+          [Setting.Position]: PositionAutoType.Precise,
           [Setting.Direction]: DirectionAutoType.Alternate
         },
         defaults: {
@@ -75,6 +77,7 @@ const modules = [
       type: ModuleType.Switch,
       settings: {
         supportsAuto: {
+          [Setting.Position]: PositionAutoType.Precise,
           [Setting.Direction]: DirectionAutoType.Alternate
         },
         defaults: {
@@ -97,6 +100,7 @@ const modules = [
       type: ModuleType.Switch,
       settings: {
         supportsAuto: {
+          [Setting.Position]: PositionAutoType.Precise,
           [Setting.Direction]: DirectionAutoType.Alternate
         },
         defaults: {
@@ -121,9 +125,6 @@ const modules = [
         supportsAuto: {
           [Setting.Position]: true,
           [Setting.Direction]: DirectionAutoType.Anchor
-        },
-        defaults: {
-          [Setting.DirectionTowards]: false
         }
       }
     }
@@ -143,9 +144,6 @@ const modules = [
         supportsAuto: {
           [Setting.Position]: true,
           [Setting.Direction]: DirectionAutoType.Anchor
-        },
-        defaults: {
-          [Setting.DirectionTowards]: false
         }
       }
     }
@@ -165,9 +163,6 @@ const modules = [
         supportsAuto: {
           [Setting.Position]: true,
           [Setting.Direction]: DirectionAutoType.Anchor
-        },
-        defaults: {
-          [Setting.DirectionTowards]: false
         }
       }
     }
@@ -240,6 +235,9 @@ const modules = [
     ),
     meta: {
       settings: {
+        supportsAuto: {
+          [Setting.Position]: [PositionAutoType.Precise, { asDefault: false }]
+        },
         defaults: {
           [Setting.Position]: Position.Center
         }
@@ -258,6 +256,9 @@ const modules = [
     parent: ModuleKey.Modals,
     meta: {
       settings: {
+        supportsAuto: {
+          [Setting.Position]: [PositionAutoType.Precise, { asDefault: false }]
+        },
         hideOverflow: true
       }
     }
@@ -275,6 +276,7 @@ const modules = [
       type: ModuleType.Switch,
       settings: {
         supportsAuto: {
+          [Setting.Position]: [PositionAutoType.Precise, { preservable: true, preserveLabel: 'Preserve for individual layers' }],
           [Setting.Direction]: DirectionAutoType.Alternate
         },
         defaults: {
@@ -295,6 +297,11 @@ const modules = [
       </>
     ),
     meta: {
+      settings: {
+        supportsAuto: {
+          [Setting.Position]: [PositionAutoType.Precise, { asDefault: false }]
+        },
+      },
       modifier: {
         create: marginRightModifier,
         defaults: {
@@ -318,6 +325,11 @@ const modules = [
       </>
     ),
     meta: {
+      settings: {
+        supportsAuto: {
+          [Setting.Position]: [PositionAutoType.Precise, { asDefault: false }]
+        },
+      },
       modifier: {
         create: marginRightModifier,
         defaults: {
@@ -343,6 +355,9 @@ const modules = [
     meta: {
       type: ModuleType.Switch,
       settings: {
+        supportsAuto: {
+          [Setting.Position]: [PositionAutoType.Precise, { asDefault: false }]
+        },
         defaults: {
           [Setting.Overflow]: false
         }

@@ -19,6 +19,7 @@ function canMerge (settings) {
   const base = _isSame('animation') && _isSame('value')
   switch (settings[0].type) {
     case Setting.Duration: return base && _isSame('computedBy')
+    case Setting.Position: return base && _isSame('preserve')
     case Setting.Direction: return base && _isSame('axis') && _isSame('reverse') && _isSame('towards')
     default: return base
   }
@@ -62,7 +63,16 @@ function _useAnimationSettings (module, items, options = {}) {
     return [
       animation.settings?.[Setting.Duration] && buildSetting(Setting.Duration, context.duration),
       animation.settings?.[Setting.Variant] && buildSetting(Setting.Variant),
-      animation.settings?.[Setting.Position] && buildSetting(Setting.Position),
+      animation.settings?.[Setting.Position] && (() => {
+        const keys = [Setting.Position, Setting.PositionPreserve]
+        const values = pick(settings, keys)
+        const defaultValues = pick(defaults(), keys)
+        return buildSetting(Setting.Position, {
+          preserve: settings[Setting.PositionPreserve],
+          onPreserveChange: value => setSettings({ [Setting.PositionPreserve]: value }),
+          onReset: !isEqual(values, defaultValues) ? () => setSettings(defaultValues) : null
+        })
+      })(),
       animation.settings?.[Setting.Direction] && (() => {
         const keys = [Setting.Direction, Setting.DirectionAxis, Setting.DirectionReverse, Setting.DirectionTowards]
         const values = pick(settings, keys)

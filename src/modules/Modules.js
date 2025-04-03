@@ -24,6 +24,7 @@ import { formatZodError } from '@/utils/zod'
 import Debug from '@/modules/Debug'
 import EasingSchema from '@/modules/animation/schemas/EasingSchema'
 import Mouse from '@/modules/Mouse'
+import PositionAutoType from '@/enums/PositionAutoType'
 
 class Module {
   constructor (id, name, meta = {}, { parent, description, controls, alert, onToggle } = {}) {
@@ -154,16 +155,26 @@ class Module {
     return animation.meta?.modules?.has(this.id)
   }
 
-  supportsAuto (animation, setting) {
+  getSupportsAuto (setting) {
+    const [type, options] = [].concat(this.meta.settings?.supportsAuto?.[setting])
+    return {
+      type,
+      options: {
+        asDefault: true,
+        ...options
+      }
+    }
+  }
+  supportsAuto (animation, setting, autoType = null) {
     if (!animation.settings?.[setting]) return false
-    if (setting === Setting.Position && animation.settings[setting] === true) return true
 
-    const type = this.meta.settings?.supportsAuto?.[setting]
-    if (!type) return false
+    const { type } = this.getSupportsAuto(setting)
+    if (autoType === null ? !type : type !== autoType) return false
     if (animation.settings[setting] === true) return true
 
     switch (setting) {
       case Setting.Position:
+        if (type === PositionAutoType.Precise) return false // Otherwise the condition above would have already returned `true`
         return [
           Position.Top,
           Position.Bottom,
@@ -192,11 +203,14 @@ class Module {
       default: return false
     }
   }
-  getAllSettingsSupportingAuto (animation) {
+  getAllSettingsSupportingAuto (animation, defaultOnly = false) {
     return [
       Setting.Position,
       Setting.Direction
-    ].filter(s => this.supportsAuto(animation, s))
+    ].filter(
+      s => this.supportsAuto(animation, s)
+        && (!defaultOnly || this.getSupportsAuto(s).options.asDefault)
+    )
   }
 
   buildModuleDefaultSettings (animation) {
@@ -216,7 +230,7 @@ class Module {
       getAnimationDefaultSettings(animation, type),
       this.buildModuleDefaultSettings(animation),
       Object.fromEntries(
-        this.getAllSettingsSupportingAuto(animation).map(s => [s, Auto()])
+        this.getAllSettingsSupportingAuto(animation, true).map(s => [s, Auto()])
       )
     )
 
@@ -241,9 +255,16 @@ class Module {
     const animationDefaults = getAnimationDefaultSettings(animation, type)
 
     switch (setting) {
+      case Setting.PositionPreserve: {
+        if (allSettings[Setting.Position] !== Auto()
+          || !this.supportsAuto(animation, Setting.Position, PositionAutoType.Precise)
+          || !this.getSupportsAuto(Setting.Position).options.preservable)
+          return undefined
+        return Boolean(value)
+      }
       case Setting.DirectionAxis: {
         if (allSettings[Setting.Direction] !== Auto()
-          || this.meta.settings?.supportsAuto?.[Setting.Direction] !== DirectionAutoType.Alternate)
+          || !this.supportsAuto(animation, Setting.Direction, DirectionAutoType.Alternate))
           return undefined
 
         const directions = animation.settings[Setting.Direction] ?? []
@@ -252,13 +273,13 @@ class Module {
       }
       case Setting.DirectionReverse: {
         if (allSettings[Setting.Direction] !== Auto()
-          || this.meta.settings?.supportsAuto?.[Setting.Direction] !== DirectionAutoType.Alternate)
+          || !this.supportsAuto(animation, Setting.Direction, DirectionAutoType.Alternate))
           return undefined
         return Boolean(value)
       }
       case Setting.DirectionTowards: {
         if (allSettings[Setting.Direction] !== Auto()
-          || this.meta.settings?.supportsAuto?.[Setting.Direction] !== DirectionAutoType.Anchor)
+          || !this.supportsAuto(animation, Setting.Direction, DirectionAutoType.Anchor))
           return undefined
         return Boolean(value)
       }
@@ -317,7 +338,7 @@ class Module {
 
     if (settings[Setting.Position] === Auto()) {
       if (!values.position)
-        settings[Setting.Position] = { isAuto: true, mouse: Mouse.getAnchor() }
+        settings[Setting.Position] = { isAuto: true, mouse: settings[Setting.PositionPreserve] ? values.mouse : Mouse.getAnchor() }
       else {
         const position = reversePosition(values.position)
         const mergedPosition = getPosition(position, values.align)
@@ -332,7 +353,7 @@ class Module {
     }
 
     if (settings[Setting.Direction] === Auto())
-      switch (this.meta.settings.supportsAuto[Setting.Direction]) {
+      switch (this.getSupportsAuto(Setting.Direction).type) {
         case DirectionAutoType.Alternate: {
           const direction = getDirection(settings[Setting.DirectionAxis], values.direction)
           settings[Setting.Direction] = settings[Setting.DirectionReverse] ? reverseDirection(direction) : direction

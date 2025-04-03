@@ -2,7 +2,7 @@ import { Patcher } from '@/BdApi'
 import { Layers, TransitionGroup } from '@/modules/DiscordModules'
 import ensureOnce from '@/utils/ensureOnce'
 import AnimeTransition from '@/components/AnimeTransition'
-import { pass } from '@/utils/transition'
+import { passAuto } from '@/utils/transition'
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
@@ -104,17 +104,16 @@ function patchLayers () {
           if (!module.isEnabled()) return
 
           const { direction, anchor } = layerStore.onRender(value.length)
-          const auto = { direction }
+          const auto = { direction, mouse: anchor }
 
           return (
-            <TransitionGroup component={null} childFactory={pass({ auto, anchor })}>
+            <TransitionGroup component={null} childFactory={passAuto(auto)}>
               {
                 value.map(layer => (
                   <LayerTransition
                     key={layer.key}
                     module={module}
                     auto={auto}
-                    anchor={anchor}
                     layer={layer}
                   />
                 ))

@@ -119,7 +119,7 @@ function DirectionControl ({ module, animation, value, onChange, defaultValue, a
             onChange={onTowardsChange}
           />
         )
-      }[module?.meta.settings?.supportsAuto?.[AnimationSetting.Direction]]
+      }[module?.getSupportsAuto(AnimationSetting.Direction).type]
     : null
 
   return (
