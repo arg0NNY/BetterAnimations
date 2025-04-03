@@ -269,7 +269,7 @@ class Module {
 
         const directions = animation.settings[Setting.Direction] ?? []
         if (getDirectionsByAxis(value)?.every(d => directions.includes(d))) return value
-        return [Axis.Y, Axis.Z, Axis.X].find(axis => getDirectionsByAxis(axis).every(d => directions.includes(d)))
+        return animationDefaults[setting] ?? [Axis.Y, Axis.Z, Axis.X].find(axis => getDirectionsByAxis(axis).every(d => directions.includes(d)))
       }
       case Setting.DirectionReverse: {
         if (allSettings[Setting.Direction] !== Auto()
