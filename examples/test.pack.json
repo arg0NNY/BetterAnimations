@@ -575,6 +575,7 @@
           "duration": 400,
           "easing": { "type": "ease" },
           "position": "center",
+          "positionPreserve": true,
           "direction": "forwards"
         }
       },
