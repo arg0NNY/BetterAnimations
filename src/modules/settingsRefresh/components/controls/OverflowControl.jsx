@@ -17,12 +17,10 @@ function OverflowControl ({ value, onChange, forced = false, onReset }) {
     </div>
   )
 
-  const text = () => <>Force {value ? 'enabled' : 'disabled'} by&nbsp;the&nbsp;animation</>
-
   return (
     <div className="BA__overflowControl">
       {forced ? (
-        <Tooltip text={text} hideOnClick={false}>
+        <Tooltip text="Forced by the animation" hideOnClick={false}>
           {control}
         </Tooltip>
       ) : control()}
