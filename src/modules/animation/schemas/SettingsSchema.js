@@ -6,13 +6,18 @@ import { formatValuesList } from '@/utils/schemas'
 import AnimationType from '@/enums/AnimationType'
 import EasingSchema from '@/modules/animation/schemas/EasingSchema'
 import { MAX_ANIMATION_DURATION, MIN_ANIMATION_DURATION } from '@/data/constants'
+import Axis from '@/enums/Axis'
 
 const DefaultsSchema = z.object({
   [Setting.Duration]: z.number().int().nonnegative(),
   [Setting.Easing]: EasingSchema,
   [Setting.Variant]: z.string(),
   [Setting.Position]: z.string(),
+  [Setting.PositionPreserve]: z.boolean(),
   [Setting.Direction]: z.string(),
+  [Setting.DirectionAxis]: z.enum(Axis.values()),
+  [Setting.DirectionReverse]: z.boolean(),
+  [Setting.DirectionTowards]: z.boolean(),
   [Setting.Overflow]: z.boolean()
 }).strict().partial()
 
