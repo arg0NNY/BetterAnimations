@@ -23,6 +23,7 @@ import AnimationError from '@/structs/AnimationError'
 import { formatZodError } from '@/utils/zod'
 import Debug from '@/modules/Debug'
 import EasingSchema from '@/modules/animation/schemas/EasingSchema'
+import Mouse from '@/modules/Mouse'
 
 class Module {
   constructor (id, name, meta = {}, { parent, description, controls, alert, onToggle } = {}) {
@@ -316,7 +317,7 @@ class Module {
 
     if (settings[Setting.Position] === Auto()) {
       if (!values.position)
-        settings[Setting.Position] = { isAuto: true, value: null }
+        settings[Setting.Position] = { isAuto: true, mouse: Mouse.getAnchor() }
       else {
         const position = reversePosition(values.position)
         const mergedPosition = getPosition(position, values.align)

@@ -6,7 +6,6 @@ import Inject from '@/enums/Inject'
 import Setting from '@/enums/AnimationSetting'
 import Direction from '@/enums/Direction'
 import { getCenter, toPercent, toUnit } from '@/utils/position'
-import Mouse from '@/modules/Mouse'
 import { toAnimeEasing } from '@/utils/easings'
 
 export const DurationInjectSchema = InjectWithMeta(
@@ -63,8 +62,8 @@ export const PositionInjectSchema =
           return toUnit(position.value, unit, containerRect)
 
         const mouse = [
-          Mouse.x - containerRect.x,
-          Mouse.y - containerRect.y
+          position.mouse.x - containerRect.x,
+          position.mouse.y - containerRect.y
         ]
         if (unit === '%') return toPercent(mouse, containerRect)
         return mouse
