@@ -1,11 +1,12 @@
 import { Patcher } from '@/BdApi'
-import { BasePopout, mangled, TransitionGroup } from '@/modules/DiscordModules'
+import { BasePopout, TransitionGroup } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
 import patchPopoutCSSAnimator from '@/patches/BasePopout/patchPopoutCSSAnimator'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import { autoPosition } from '@/hooks/useAutoPosition'
 import { avoidClickTrap } from '@/utils/transition'
+import { mangled } from '@/utils/webpack'
 
 function patchBasePopout () {
   const Original = mangled(BasePopout)

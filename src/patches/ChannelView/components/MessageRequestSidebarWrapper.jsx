@@ -2,11 +2,11 @@ import {
   ChatSidebar as _ChatSidebar,
   ChatSidebarType,
   Constants,
-  mangled,
   MESSAGE_REQUESTS_BASE_CHANNEL_ID,
   MessageRequestSidebar
 } from '@/modules/DiscordModules'
 import { memo } from 'react'
+import { mangled } from '@/utils/webpack'
 
 function MessageRequestSidebarWrapper ({ pageWidth, onSidebarResize, channel }) {
   const ChatSidebar = mangled(_ChatSidebar)
