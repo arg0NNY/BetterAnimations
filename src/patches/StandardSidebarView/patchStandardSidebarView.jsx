@@ -1,5 +1,5 @@
 import { Patcher } from '@/BdApi'
-import { StandardSidebarView, StandardSidebarViewWrapper, TransitionGroup } from '@/modules/DiscordModules'
+import { StandardSidebarViewKeyed, StandardSidebarViewWrapper, TransitionGroup } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
 import { passAuto } from '@/utils/transition'
@@ -17,7 +17,7 @@ async function patchStandardSidebarView () {
     view.props.sections = self.getPredicateSections().map(s => s.section)
   })
 
-  Patcher.after(...await StandardSidebarView, (self, [props], value) => {
+  Patcher.after(...await StandardSidebarViewKeyed, (self, [props], value) => {
     const direction = useDirection(props.sections, props.section)
     const module = useModule(ModuleKey.Settings)
     if (!module.isEnabled()) return
@@ -57,7 +57,7 @@ async function patchStandardSidebarView () {
 
 export default patchStandardSidebarView
 
-StandardSidebarView.then(() =>
+StandardSidebarViewKeyed.then(() =>
 css
 `${DiscordSelectors.StandardSidebarView.contentRegion} > ${DiscordSelectors.StandardSidebarView.contentRegion} {
     height: 100%;

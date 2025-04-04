@@ -1,11 +1,11 @@
 import { Patcher } from '@/BdApi'
-import { ChannelSectionStore, MembersModViewSidebar, useStateFromStores } from '@/modules/DiscordModules'
+import { ChannelSectionStore, MembersModViewSidebarKeyed, useStateFromStores } from '@/modules/DiscordModules'
 import ModuleKey from '@/enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 import SidebarTransition from '@/patches/ChannelView/components/SidebarTransition'
 
 function patchMembersModViewSidebar () {
-  Patcher.after(...MembersModViewSidebar, (self, [{ guildId }], value) => {
+  Patcher.after(...MembersModViewSidebarKeyed, (self, [{ guildId }], value) => {
     const module = useModule(ModuleKey.ThreadSidebar)
     const switchModule = useModule(ModuleKey.ThreadSidebarSwitch)
     if (!module.isEnabled() && !switchModule.isEnabled()) return

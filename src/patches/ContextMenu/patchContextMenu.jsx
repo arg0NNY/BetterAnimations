@@ -1,5 +1,5 @@
 import { Patcher } from '@/BdApi'
-import { ContextMenu, TransitionGroup } from '@/modules/DiscordModules'
+import { ContextMenuKeyed, TransitionGroup } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
 import patchContextSubmenu from '@/patches/ContextMenu/patchContextSubmenu'
 import ensureOnce from '@/utils/ensureOnce'
@@ -14,7 +14,7 @@ import Mouse from '@/modules/Mouse'
 function patchContextMenu () {
   const once = ensureOnce()
 
-  Patcher.after(...ContextMenu, (self, args, value) => {
+  Patcher.after(...ContextMenuKeyed, (self, args, value) => {
     once(() => {
       injectModule(value.type, ModuleKey.ContextMenu)
       Patcher.after(value.type.prototype, 'componentDidMount', self => {

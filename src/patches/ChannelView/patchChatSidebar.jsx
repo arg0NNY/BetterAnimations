@@ -1,5 +1,5 @@
 import { Patcher } from '@/BdApi'
-import { ChatSidebar } from '@/modules/DiscordModules'
+import { ChatSidebarKeyed } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeContainer from '@/components/AnimeContainer'
 import ModuleKey from '@/enums/ModuleKey'
@@ -9,14 +9,14 @@ import useModule from '@/hooks/useModule'
 import Modules from '@/modules/Modules'
 
 function patchChatSidebar () {
-  Patcher.before(...ChatSidebar, (self, [props]) => {
+  Patcher.before(...ChatSidebarKeyed, (self, [props]) => {
     const module = useModule(ModuleKey.ThreadSidebar)
     const switchModule = useModule(ModuleKey.ThreadSidebarSwitch)
     if (!module.isEnabled() && !switchModule.isEnabled()) return
 
     props.maxWidth = Math.max(props.maxWidth, 451) // Disable floating state
   })
-  Patcher.after(...ChatSidebar, (self, args, value) => {
+  Patcher.after(...ChatSidebarKeyed, (self, args, value) => {
     const module = Modules.getModule(ModuleKey.ThreadSidebar)
     const switchModule = Modules.getModule(ModuleKey.ThreadSidebarSwitch)
     if (!module.isEnabled() && !switchModule.isEnabled()) return

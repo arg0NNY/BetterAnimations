@@ -1,5 +1,5 @@
 import { Patcher } from '@/BdApi'
-import { Modals, TransitionGroup } from '@/modules/DiscordModules'
+import { ModalsKeyed, TransitionGroup } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
 import PassThrough from '@/components/PassThrough'
 import patchModalItem from '@/patches/Modals/patchModalItem'
@@ -14,7 +14,7 @@ import { DiscordSelectors } from '@/modules/DiscordSelectors'
 function patchModals () {
   const once = ensureOnce()
 
-  Patcher.after(...Modals, (self, args, value) => {
+  Patcher.after(...ModalsKeyed, (self, args, value) => {
     const modals = value.props.children[1]
     if (modals?.length) once(() => patchModalItem(modals[0].type))
 

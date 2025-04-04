@@ -1,5 +1,5 @@
 import { Patcher, Utils } from '@/BdApi'
-import { AppPanels, AppView, ImpressionNames, Router, Routes, TransitionGroup } from '@/modules/DiscordModules'
+import { AppPanels, AppViewKeyed, ImpressionNames, Router, Routes, TransitionGroup } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
 import useLocationKey from '@/hooks/useLocationKey'
@@ -41,7 +41,7 @@ function AppViewTransition ({ className, module, shouldSwitch, getSwitchDirectio
 const byClassName = className => m => m?.props?.className?.includes(className)
 
 function patchAppView () {
-  Patcher.after(...AppView, (self, args, value) => {
+  Patcher.after(...AppViewKeyed, (self, args, value) => {
     const serversModule = useModule(ModuleKey.Servers)
     const channelsModule = useModule(ModuleKey.Channels)
 

@@ -1,5 +1,5 @@
 import { Patcher } from '@/BdApi'
-import { SearchableSelect, Select, SingleSelect } from '@/modules/DiscordModules'
+import { SearchableSelect, SelectKeyed, SingleSelectKeyed } from '@/modules/DiscordModules'
 import Position from '@/enums/Position'
 import findInReactTree from '@/utils/findInReactTree'
 import { useLayoutEffect, useState } from 'react'
@@ -39,8 +39,8 @@ function createPatcher () {
 function patchSelect () {
   const patcher = createPatcher()
 
-  Patcher.after(...Select, patcher)
-  Patcher.after(...SingleSelect, (...[,, value]) => {
+  Patcher.after(...SelectKeyed, patcher)
+  Patcher.after(...SingleSelectKeyed, (...[,, value]) => {
     Patcher.after(value, 'type', patcher)
   })
 

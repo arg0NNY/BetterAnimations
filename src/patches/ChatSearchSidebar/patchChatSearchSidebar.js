@@ -1,5 +1,5 @@
 import { Patcher } from '@/BdApi'
-import { ChatSearchSidebar } from '@/modules/DiscordModules'
+import { ChatSearchSidebarKeyed } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import ensureOnce from '@/utils/ensureOnce'
 
@@ -8,7 +8,7 @@ const once = ensureOnce()
 function patchChatSearchSidebar () {
   let cachedScrolls = new Map()
 
-  Patcher.after(...ChatSearchSidebar, (self, args, value) => {
+  Patcher.after(...ChatSearchSidebarKeyed, (self, args, value) => {
     once(() => {
       Patcher.after(value.type.prototype, 'componentDidMount', (self) => {
         self.scrollerRef.current?.scrollTo({ to: cachedScrolls.get(self.props.searchAnalyticsId) ?? 0 })

@@ -1,15 +1,15 @@
 import { Patcher } from '@/BdApi'
-import { BasePopout, TransitionGroup } from '@/modules/DiscordModules'
+import { BasePopoutKeyed, TransitionGroup } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
 import patchPopoutCSSAnimator from '@/patches/BasePopout/patchPopoutCSSAnimator'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import { autoPosition } from '@/hooks/useAutoPosition'
 import { avoidClickTrap } from '@/utils/transition'
-import { mangled } from '@/utils/webpack'
+import { unkeyed } from '@/utils/webpack'
 
 function patchBasePopout () {
-  const Original = mangled(BasePopout)
+  const Original = unkeyed(BasePopoutKeyed)
 
   class AnimatedBasePopout extends Original {
     constructor (...args) {
@@ -70,7 +70,7 @@ function patchBasePopout () {
     }
   }
 
-  Patcher.instead(...BasePopout, (self, [props, ...rest]) => {
+  Patcher.instead(...BasePopoutKeyed, (self, [props, ...rest]) => {
     const module = useModule(ModuleKey.Popouts)
     if (!module.isEnabled()) return <Original {...props} />
 

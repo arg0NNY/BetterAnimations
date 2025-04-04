@@ -1,7 +1,7 @@
 import {
   Constants,
   LayerActions,
-  StandardSidebarView,
+  StandardSidebarViewKeyed,
   StandardSidebarViewWrapper,
   ThemeStore,
   useStateFromStores
@@ -47,7 +47,7 @@ function SettingsModal () {
 
 export default SettingsModal
 
-StandardSidebarView.then(() =>
+StandardSidebarViewKeyed.then(() =>
 css
 `.BA__settingsModal ${DiscordSelectors.StandardSidebarView.noticeRegion} {
     padding-left: 40px;

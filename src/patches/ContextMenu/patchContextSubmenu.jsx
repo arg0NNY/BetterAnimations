@@ -1,5 +1,5 @@
 import { Patcher } from '@/BdApi'
-import { appLayerContext, Layer, MenuSubmenuItem, MenuSubmenuListItem } from '@/modules/DiscordModules'
+import { appLayerContext, Layer, MenuSubmenuItemKeyed, MenuSubmenuListItemKeyed } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
@@ -38,8 +38,8 @@ function patchContextSubmenu () {
     return value
   }
 
-  Patcher.instead(...MenuSubmenuItem, callback)
-  Patcher.instead(...MenuSubmenuListItem, callback)
+  Patcher.instead(...MenuSubmenuItemKeyed, callback)
+  Patcher.instead(...MenuSubmenuListItemKeyed, callback)
 }
 
 export default patchContextSubmenu

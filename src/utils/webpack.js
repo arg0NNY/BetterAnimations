@@ -39,6 +39,10 @@ export function getMangled (filter, options = {}) {
   return [module, findKey(module)]
 }
 
-export function mangled (mangled) {
-  return mangled[0][mangled[1]]
+export function unkeyed (keyed) {
+  return keyed[0][keyed[1]]
+}
+
+export function UnkeyedComponent (keyedComponent) {
+  return (...args) => unkeyed(keyedComponent)(...args)
 }

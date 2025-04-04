@@ -1,6 +1,6 @@
 import { Webpack } from '@/BdApi'
 import { createElement } from 'react'
-import { getMangled, mangled, mapModule } from '@/utils/webpack'
+import { getMangled, mapModule, UnkeyedComponent } from '@/utils/webpack'
 const { Filters } = Webpack
 
 export const ModalActions = Webpack.getMangled(Filters.bySource('POPOUT', 'OVERLAY', 'modalKey'), {
@@ -50,7 +50,7 @@ export const { Anchor } = Webpack.getByKeys('Anchor')
 
 export const LocaleStore = Webpack.getModule(m => m.Messages?.IMAGE)
 export const Dispatcher = Webpack.getByKeys('dispatch', 'subscribe')
-export const AppView = getMangled(Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'))
+export const AppViewKeyed = getMangled(Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'))
 export const Router = Object.assign(
   Webpack.getMangled(m => m?.computeRootMatch, {
     Router: m => m?.computeRootMatch,
@@ -75,15 +75,15 @@ export const Constants = {
   Themes: Webpack.getByKeys('DARK', 'LIGHT')
 }
 export const StaticChannelRoute = Webpack.getModule(Filters.byKeys('ROLE_SUBSCRIPTIONS', 'CHANNEL_BROWSER'), { searchExports: true })
-export const ContextMenu = getMangled(Filters.byStrings('getContextMenu', 'isOpen'))
+export const ContextMenuKeyed = getMangled(Filters.byStrings('getContextMenu', 'isOpen'))
 export const Flux = Webpack.getByKeys('Store', 'connectStores')
 export const useStateFromStores = Webpack.getModule(Filters.byStrings('useStateFromStores'), { searchExports: true })
-export const MenuSubmenuItem = getMangled(Filters.byStrings('subMenuClassName', 'submenuPaddingContainer'))
-export const MenuSubmenuListItem = getMangled(Filters.byStrings('menuSubmenuProps', 'listClassName', 'submenuPaddingContainer'))
+export const MenuSubmenuItemKeyed = getMangled(Filters.byStrings('subMenuClassName', 'submenuPaddingContainer'))
+export const MenuSubmenuListItemKeyed = getMangled(Filters.byStrings('menuSubmenuProps', 'listClassName', 'submenuPaddingContainer'))
 export const { updateTheme } = Webpack.getByKeys('updateTheme')
 export const ThemeStore = Webpack.getStore('ThemeStore')
-export const BasePopout = getMangled(m => m?.defaultProps?.loadingComponent)
-export const PopoutCSSAnimator = getMangled(m => Filters.byKeys('TRANSLATE', 'SCALE')(m?.Types))
+export const BasePopoutKeyed = getMangled(m => m?.defaultProps?.loadingComponent)
+export const PopoutCSSAnimatorKeyed = getMangled(m => Filters.byKeys('TRANSLATE', 'SCALE')(m?.Types))
 export const SpringTransitionPhases = Webpack.getModule(Filters.byKeys('ENTER', 'LEAVE'), { searchExports: true })
 export const { Layer, appLayerContext } = mapModule(Filters.byDisplayName('AppLayer'), {
   Layer: Filters.byDisplayName('AppLayer'),
@@ -93,9 +93,9 @@ export const ChannelMessageList = Webpack.getModule(m => Filters.byStrings('chan
 export const ChannelView = Webpack.getModule(m => Filters.byStrings('providedChannel')(m?.type))
 export const PropTypes = Webpack.getByKeys('PropTypes')
 export const StandardSidebarViewWrapper = Webpack.waitForModule(Filters.byPrototypeKeys('getPredicateSections', 'renderSidebar'))
-export const StandardSidebarView = getMangled(Filters.byStrings('standardSidebarView', 'section'), { lazy: true })
-export const Modals = getMangled(Filters.byStrings('modalKey', '"layer-"'))
-export const Layers = getMangled(Filters.byStrings('hasFullScreenLayer'))
+export const StandardSidebarViewKeyed = getMangled(Filters.byStrings('standardSidebarView', 'section'), { lazy: true })
+export const ModalsKeyed = getMangled(Filters.byStrings('modalKey', '"layer-"'))
+export const LayersKeyed = getMangled(Filters.byStrings('hasFullScreenLayer'))
 export const ChannelStore = Webpack.getStore('ChannelStore')
 export const { Easing } = Webpack.getByKeys('Easing')
 export const SortedGuildStore = Webpack.getStore('SortedGuildStore')
@@ -106,20 +106,22 @@ export const { ChannelSectionStore, MESSAGE_REQUESTS_BASE_CHANNEL_ID } = mapModu
   ChannelSectionStore: Filters.byStoreName('ChannelSectionStore'),
   MESSAGE_REQUESTS_BASE_CHANNEL_ID: m => typeof m === 'string'
 })
-export const ChatSidebar = getMangled(Filters.byStrings('sidebarType', 'postSidebarWidth'))
+export const ChatSidebarKeyed = getMangled(Filters.byStrings('sidebarType', 'postSidebarWidth'))
 export const ChatSidebarType = Webpack.getModule(Filters.byKeys('MessageRequestSidebar', 'ThreadSidebar'), { searchExports: true })
 export const MessageRequestSidebar = Webpack.getByStrings('isMessageRequest', 'closeChannelSidebar')
 export const SidebarType = Webpack.getModule(Filters.byKeys('VIEW_MESSAGE_REQUEST', 'VIEW_THREAD'), { searchExports: true })
-export const useMessageRequestSidebarState = getMangled(Filters.byStrings('getSidebarState', 'VIEW_MESSAGE_REQUEST'))
+export const useMessageRequestSidebarStateKeyed = getMangled(Filters.byStrings('getSidebarState', 'VIEW_MESSAGE_REQUEST'))
 export const App = Webpack.getByKeys('setEnableHardwareAcceleration', 'releaseChannel')
 export const Message = Webpack.getModule(m => Filters.byStrings('must not be a thread starter message')(m?.type), { searchExports: true })
 export const MessageDivider = Webpack.getModule(m => Filters.byStrings('divider', 'unreadPill')(m?.render))
-export const ChatSearchSidebar = getMangled(Filters.byStrings('getResultsState', 'searchAnalyticsId'))
-export const { Select, SingleSelect } = mapModule(Filters.byStrings('listbox', 'renderPopout', 'closeOnSelect'), {
+export const ChatSearchSidebarKeyed = getMangled(Filters.byStrings('getResultsState', 'searchAnalyticsId'))
+export const { Select: SelectKeyed, SingleSelect: SingleSelectKeyed } = mapModule(Filters.byStrings('listbox', 'renderPopout', 'closeOnSelect'), {
   Select: Filters.byStrings('listbox', 'renderPopout', 'closeOnSelect'),
   SingleSelect: m => Filters.byStrings('value', 'onChange')(m) && !Filters.byStrings('isSelected')(m)
 }, { withKeys: true })
-export const MembersModViewSidebar = getMangled(Filters.byStrings('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))
+export const Select = UnkeyedComponent(SelectKeyed)
+export const SingleSelect = UnkeyedComponent(SingleSelectKeyed)
+export const MembersModViewSidebarKeyed = getMangled(Filters.byStrings('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))
 export const LayerActions = mapModule(Filters.byStrings('LAYER_PUSH', 'component'), {
   pushLayer: Filters.byStrings('"LAYER_PUSH"'),
   popLayer: Filters.byStrings('"LAYER_POP"'),
@@ -179,8 +181,8 @@ export const Common = {
   Breadcrumbs,
   RadioGroup,
   FormItem,
-  get Select () { return mangled(Select) },
-  get SingleSelect () { return mangled(SingleSelect) },
+  Select,
+  SingleSelect,
   Slider,
   ModalTransitionState,
   ReferencePositionLayer,

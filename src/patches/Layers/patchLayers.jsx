@@ -1,5 +1,5 @@
 import { Patcher } from '@/BdApi'
-import { Layers, TransitionGroup } from '@/modules/DiscordModules'
+import { LayersKeyed, TransitionGroup } from '@/modules/DiscordModules'
 import ensureOnce from '@/utils/ensureOnce'
 import AnimeTransition from '@/components/AnimeTransition'
 import { passAuto } from '@/utils/transition'
@@ -94,7 +94,7 @@ class LayerStore {
 function patchLayers () {
   const once = ensureOnce()
 
-  Patcher.after(...Layers, (self, args, value) => {
+  Patcher.after(...LayersKeyed, (self, args, value) => {
     once(
       () => {
         const layerStore = new LayerStore()
