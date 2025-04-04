@@ -5,7 +5,7 @@ function avoidCommon (module) {
   return module === null || typeof module !== 'object' || Object.keys(module).length <= 100
 }
 
-export function mapModule (module, gettersMap, options = {}) {
+export function getMangled (module, gettersMap, options = {}) {
   const { withKeys = false, avoidCommon: _avoidCommon = true } = options
 
   if (typeof module === 'function')
@@ -25,7 +25,7 @@ export function mapModule (module, gettersMap, options = {}) {
   )
 }
 
-export function getMangled (filter, options = {}) {
+export function getWithKey (filter, options = {}) {
   const { avoidCommon: _avoidCommon = true, lazy = false, ...rest } = options
   const predicate = m => Object.values(m).some(e => filter(e, m)) && (!_avoidCommon || avoidCommon(m))
   const findKey = module => module && Object.keys(module).find(k => filter(module[k], module))

@@ -1,6 +1,6 @@
 import { Webpack } from '@/BdApi'
 import { createElement } from 'react'
-import { getMangled, mapModule, UnkeyedComponent } from '@/utils/webpack'
+import { getWithKey, getMangled, UnkeyedComponent } from '@/utils/webpack'
 const { Filters } = Webpack
 
 export const ModalActions = Webpack.getMangled(Filters.bySource('POPOUT', 'OVERLAY', 'modalKey'), {
@@ -50,7 +50,7 @@ export const { Anchor } = Webpack.getByKeys('Anchor')
 
 export const LocaleStore = Webpack.getModule(m => m.Messages?.IMAGE)
 export const Dispatcher = Webpack.getByKeys('dispatch', 'subscribe')
-export const AppViewKeyed = getMangled(Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'))
+export const AppViewKeyed = getWithKey(Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'))
 export const Router = Object.assign(
   Webpack.getMangled(m => m?.computeRootMatch, {
     Router: m => m?.computeRootMatch,
@@ -75,17 +75,17 @@ export const Constants = {
   Themes: Webpack.getByKeys('DARK', 'LIGHT')
 }
 export const StaticChannelRoute = Webpack.getModule(Filters.byKeys('ROLE_SUBSCRIPTIONS', 'CHANNEL_BROWSER'), { searchExports: true })
-export const ContextMenuKeyed = getMangled(Filters.byStrings('getContextMenu', 'isOpen'))
+export const ContextMenuKeyed = getWithKey(Filters.byStrings('getContextMenu', 'isOpen'))
 export const Flux = Webpack.getByKeys('Store', 'connectStores')
 export const useStateFromStores = Webpack.getModule(Filters.byStrings('useStateFromStores'), { searchExports: true })
-export const MenuSubmenuItemKeyed = getMangled(Filters.byStrings('subMenuClassName', 'submenuPaddingContainer'))
-export const MenuSubmenuListItemKeyed = getMangled(Filters.byStrings('menuSubmenuProps', 'listClassName', 'submenuPaddingContainer'))
+export const MenuSubmenuItemKeyed = getWithKey(Filters.byStrings('subMenuClassName', 'submenuPaddingContainer'))
+export const MenuSubmenuListItemKeyed = getWithKey(Filters.byStrings('menuSubmenuProps', 'listClassName', 'submenuPaddingContainer'))
 export const { updateTheme } = Webpack.getByKeys('updateTheme')
 export const ThemeStore = Webpack.getStore('ThemeStore')
-export const BasePopoutKeyed = getMangled(m => m?.defaultProps?.loadingComponent)
-export const PopoutCSSAnimatorKeyed = getMangled(m => Filters.byKeys('TRANSLATE', 'SCALE')(m?.Types))
+export const BasePopoutKeyed = getWithKey(m => m?.defaultProps?.loadingComponent)
+export const PopoutCSSAnimatorKeyed = getWithKey(m => Filters.byKeys('TRANSLATE', 'SCALE')(m?.Types))
 export const SpringTransitionPhases = Webpack.getModule(Filters.byKeys('ENTER', 'LEAVE'), { searchExports: true })
-export const { Layer, appLayerContext } = mapModule(Filters.byDisplayName('AppLayer'), {
+export const { Layer, appLayerContext } = getMangled(Filters.byDisplayName('AppLayer'), {
   Layer: Filters.byDisplayName('AppLayer'),
   appLayerContext: m => m?.Provider
 })
@@ -93,45 +93,45 @@ export const ChannelMessageList = Webpack.getModule(m => Filters.byStrings('chan
 export const ChannelView = Webpack.getModule(m => Filters.byStrings('providedChannel')(m?.type))
 export const PropTypes = Webpack.getByKeys('PropTypes')
 export const StandardSidebarViewWrapper = Webpack.waitForModule(Filters.byPrototypeKeys('getPredicateSections', 'renderSidebar'))
-export const StandardSidebarViewKeyed = getMangled(Filters.byStrings('standardSidebarView', 'section'), { lazy: true })
-export const ModalsKeyed = getMangled(Filters.byStrings('modalKey', '"layer-"'))
-export const LayersKeyed = getMangled(Filters.byStrings('hasFullScreenLayer'))
+export const StandardSidebarViewKeyed = getWithKey(Filters.byStrings('standardSidebarView', 'section'), { lazy: true })
+export const ModalsKeyed = getWithKey(Filters.byStrings('modalKey', '"layer-"'))
+export const LayersKeyed = getWithKey(Filters.byStrings('hasFullScreenLayer'))
 export const ChannelStore = Webpack.getStore('ChannelStore')
 export const { Easing } = Webpack.getByKeys('Easing')
 export const SortedGuildStore = Webpack.getStore('SortedGuildStore')
-export const { GuildChannelList } = mapModule(Filters.byStrings('favorites-channel-list'), { GuildChannelList: Filters.byStrings('getGuild', 'guildId') }, { withKeys: true })
+export const { GuildChannelList } = getMangled(Filters.byStrings('favorites-channel-list'), { GuildChannelList: Filters.byStrings('getGuild', 'guildId') }, { withKeys: true })
 export const GuildActionRow = Webpack.getModule(Filters.byKeys('GUILD_ROLE_SUBSCRIPTIONS', 'CHANNELS_AND_ROLES'), { searchExports: true })
 export const PrivateChannelSortStore = Webpack.getStore('PrivateChannelSortStore')
-export const { ChannelSectionStore, MESSAGE_REQUESTS_BASE_CHANNEL_ID } = mapModule(Filters.byStoreName('ChannelSectionStore'), {
+export const { ChannelSectionStore, MESSAGE_REQUESTS_BASE_CHANNEL_ID } = getMangled(Filters.byStoreName('ChannelSectionStore'), {
   ChannelSectionStore: Filters.byStoreName('ChannelSectionStore'),
   MESSAGE_REQUESTS_BASE_CHANNEL_ID: m => typeof m === 'string'
 })
-export const ChatSidebarKeyed = getMangled(Filters.byStrings('sidebarType', 'postSidebarWidth'))
+export const ChatSidebarKeyed = getWithKey(Filters.byStrings('sidebarType', 'postSidebarWidth'))
 export const ChatSidebarType = Webpack.getModule(Filters.byKeys('MessageRequestSidebar', 'ThreadSidebar'), { searchExports: true })
 export const MessageRequestSidebar = Webpack.getByStrings('isMessageRequest', 'closeChannelSidebar')
 export const SidebarType = Webpack.getModule(Filters.byKeys('VIEW_MESSAGE_REQUEST', 'VIEW_THREAD'), { searchExports: true })
-export const useMessageRequestSidebarStateKeyed = getMangled(Filters.byStrings('getSidebarState', 'VIEW_MESSAGE_REQUEST'))
+export const useMessageRequestSidebarStateKeyed = getWithKey(Filters.byStrings('getSidebarState', 'VIEW_MESSAGE_REQUEST'))
 export const App = Webpack.getByKeys('setEnableHardwareAcceleration', 'releaseChannel')
 export const Message = Webpack.getModule(m => Filters.byStrings('must not be a thread starter message')(m?.type), { searchExports: true })
 export const MessageDivider = Webpack.getModule(m => Filters.byStrings('divider', 'unreadPill')(m?.render))
-export const ChatSearchSidebarKeyed = getMangled(Filters.byStrings('getResultsState', 'searchAnalyticsId'))
-export const { Select: SelectKeyed, SingleSelect: SingleSelectKeyed } = mapModule(Filters.byStrings('listbox', 'renderPopout', 'closeOnSelect'), {
+export const ChatSearchSidebarKeyed = getWithKey(Filters.byStrings('getResultsState', 'searchAnalyticsId'))
+export const { Select: SelectKeyed, SingleSelect: SingleSelectKeyed } = getMangled(Filters.byStrings('listbox', 'renderPopout', 'closeOnSelect'), {
   Select: Filters.byStrings('listbox', 'renderPopout', 'closeOnSelect'),
   SingleSelect: m => Filters.byStrings('value', 'onChange')(m) && !Filters.byStrings('isSelected')(m)
 }, { withKeys: true })
 export const Select = UnkeyedComponent(SelectKeyed)
 export const SingleSelect = UnkeyedComponent(SingleSelectKeyed)
-export const MembersModViewSidebarKeyed = getMangled(Filters.byStrings('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))
-export const LayerActions = mapModule(Filters.byStrings('LAYER_PUSH', 'component'), {
+export const MembersModViewSidebarKeyed = getWithKey(Filters.byStrings('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))
+export const LayerActions = getMangled(Filters.byStrings('LAYER_PUSH', 'component'), {
   pushLayer: Filters.byStrings('"LAYER_PUSH"'),
   popLayer: Filters.byStrings('"LAYER_POP"'),
   popAllLayers: Filters.byStrings('"LAYER_POP_ALL"')
 })
 export const LayerStore = Webpack.getStore('LayerStore')
 export const Platform = Webpack.getByKeys('isWindows', 'isMac')
-export const { LocalStorage } = mapModule(Filters.byPrototypeKeys('setRaw'), { LocalStorage: Filters.byKeys('setRaw') })
+export const { LocalStorage } = getMangled(Filters.byPrototypeKeys('setRaw'), { LocalStorage: Filters.byKeys('setRaw') })
 export const SettingsNotice = Webpack.waitForModule(Filters.byStrings('resetButton', 'EMPHASIZE_NOTICE'))
-export const { Alert, AlertTypes } = mapModule(Filters.byStrings('messageType', 'iconDiv'), {
+export const { Alert, AlertTypes } = getMangled(Filters.byStrings('messageType', 'iconDiv'), {
   Alert: Filters.byStrings('messageType', 'iconDiv'),
   AlertTypes: Filters.byKeys('WARNING', 'ERROR')
 })
