@@ -1,4 +1,4 @@
-import { Common, Tooltip } from '@/modules/DiscordModules'
+import { Checkbox, Text, Tooltip } from '@/modules/DiscordModules'
 import IconButton from '@/modules/settingsRefresh/components/IconButton'
 import RedoIcon from '@/modules/settingsRefresh/components/icons/RedoIcon'
 import { css } from '@/modules/Style'
@@ -6,14 +6,14 @@ import { css } from '@/modules/Style'
 function OverflowControl ({ value, onChange, forced = false, onReset }) {
   const control = props => (
     <div {...props}>
-      <Common.Checkbox
+      <Checkbox
         value={value}
         onChange={(_, value) => onChange(value)}
-        type={Common.Checkbox.Types.INVERTED}
+        type={Checkbox.Types.INVERTED}
         disabled={forced}
       >
-        <Common.Text variant="text-sm/normal">Enable overflow</Common.Text>
-      </Common.Checkbox>
+        <Text variant="text-sm/normal">Enable overflow</Text>
+      </Checkbox>
     </div>
   )
 

@@ -6,7 +6,7 @@ import PositionControl from '@/modules/settingsRefresh/components/controls/Posit
 import DirectionControl from '@/modules/settingsRefresh/components/controls/DirectionControl'
 import OverflowControl from '@/modules/settingsRefresh/components/controls/OverflowControl'
 import { css } from '@/modules/Style'
-import { Common } from '@/modules/DiscordModules'
+import { Switch, Text, Tooltip } from '@/modules/DiscordModules'
 import IconButton from '@/modules/settingsRefresh/components/IconButton'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import AnimationSettingContainer from '@/enums/AnimationSettingContainer'
@@ -59,17 +59,17 @@ function AnimationSettingsHeader ({ headers }) {
     <SettingGroup className="BA__animationSettingsHeaderGroup">
       {() => headers.map(({ key, title, subtitle, enabled, setEnabled, onReset, switchTooltip }) => (
         <div className="BA__animationSettingsItem BA__animationSettingsHeader" key={key}>
-          <Common.Text variant="heading-lg/semibold">
+          <Text variant="heading-lg/semibold">
             {title}
             {subtitle && (
-              <Common.Text
+              <Text
                 tag="span"
                 variant="heading-md/normal"
                 color="header-muted"
                 className={DiscordClasses.Margins.marginLeft8}
-              >{subtitle}</Common.Text>
+              >{subtitle}</Text>
             )}
-          </Common.Text>
+          </Text>
           <div className="BA__animationSettingsHeaderControls">
             {onReset && (
               <IconButton tooltip="Reset all" onClick={onReset}>
@@ -77,13 +77,13 @@ function AnimationSettingsHeader ({ headers }) {
               </IconButton>
             )}
             {typeof enabled === 'boolean' && (
-              <Common.Tooltip text={switchTooltip} hideOnClick={false}>
+              <Tooltip text={switchTooltip} hideOnClick={false}>
                 {props => (
                   <div {...props}>
-                    <Common.Switch checked={enabled} disabled={!setEnabled} onChange={setEnabled} />
+                    <Switch checked={enabled} disabled={!setEnabled} onChange={setEnabled} />
                   </div>
                 )}
-              </Common.Tooltip>
+              </Tooltip>
             )}
           </div>
         </div>

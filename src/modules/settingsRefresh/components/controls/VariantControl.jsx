@@ -1,4 +1,4 @@
-import { Common } from '@/modules/DiscordModules'
+import { SingleSelect } from '@/modules/DiscordModules'
 import AnimationSetting from '@/enums/AnimationSetting'
 import SettingControl from '@/modules/settingsRefresh/components/controls/SettingControl'
 
@@ -7,7 +7,7 @@ function VariantControl ({ animation, value, onChange, defaultValue, onReset }) 
 
   return (
     <SettingControl label="Variant" onReset={onReset}>
-      <Common.SingleSelect
+      <SingleSelect
         placeholder={defaultValue}
         options={options}
         value={value}

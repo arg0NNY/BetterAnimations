@@ -1,4 +1,4 @@
-import { colors, Common } from '@/modules/DiscordModules'
+import { Clickable, colors, Text } from '@/modules/DiscordModules'
 import { css } from '@/modules/Style'
 import ChevronSmallUpIcon from '@/modules/settingsRefresh/components/icons/ChevronSmallUpIcon'
 import ChevronSmallDownIcon from '@/modules/settingsRefresh/components/icons/ChevronSmallDownIcon'
@@ -13,14 +13,14 @@ function PackAccordionItem ({ pack, children, isOpen, onToggle }) {
       'BA__packAccordionItem',
       { 'BA__packAccordionItem--partial': pack.partial }
     )}>
-      <Common.Clickable tag="div" className="BA__packAccordionItemHeader" onClick={onToggle}>
+      <Clickable tag="div" className="BA__packAccordionItemHeader" onClick={onToggle}>
         <div className="BA__packAccordionItemHeading">
-          <Common.Text
+          <Text
             variant="heading-md/semibold"
             color={isOpen ? 'header-primary' : 'header-muted'}
-          >{pack.name}</Common.Text>
+          >{pack.name}</Text>
           {pack.version || pack.author ? (
-            <Common.Text
+            <Text
               variant="text-xs/normal"
               color={isOpen ? 'text-normal' : 'text-muted'}
             >
@@ -28,7 +28,7 @@ function PackAccordionItem ({ pack, children, isOpen, onToggle }) {
                 [pack.version && `v${pack.version}`, pack.author && `by ${pack.author}`]
                   .filter(Boolean).join(' ')
               }
-            </Common.Text>
+            </Text>
           ) : null}
         </div>
         <div className="BA__packAccordionItemIcon">
@@ -47,7 +47,7 @@ function PackAccordionItem ({ pack, children, isOpen, onToggle }) {
                 : <ChevronSmallDownIcon />
           }
         </div>
-      </Common.Clickable>
+      </Clickable>
       {isOpen ? (
         <div className="BA__packAccordionItemContentWrapper">
           <div className="BA__packAccordionItemContent">

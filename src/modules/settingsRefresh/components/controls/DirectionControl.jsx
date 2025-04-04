@@ -3,7 +3,7 @@ import Auto from '@/enums/Auto'
 import AnimationSetting from '@/enums/AnimationSetting'
 import directionAxes from '@/data/directionAxes'
 import { getDirectionsByAxis } from '@/utils/direction'
-import { Common } from '@/modules/DiscordModules'
+import { SingleSelect } from '@/modules/DiscordModules'
 import Direction from '@/enums/Direction'
 import DirectionAutoType from '@/enums/DirectionAutoType'
 import directionAnchorOptions from '@/data/directionAnchorOptions'
@@ -124,7 +124,7 @@ function DirectionControl ({ module, animation, value, onChange, defaultValue, a
 
   return (
     <SettingControl label="Direction" onReset={onReset}>
-      <Common.SingleSelect
+      <SingleSelect
         placeholder={defaultValue}
         options={options}
         value={value}

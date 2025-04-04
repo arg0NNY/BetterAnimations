@@ -1,4 +1,4 @@
-import { Common } from '@/modules/DiscordModules'
+import { Text } from '@/modules/DiscordModules'
 import PackAccordion from '@/modules/settingsRefresh/components/PackAccordion'
 import PackManager from '@/modules/PackManager'
 import useModule from '@/hooks/useModule'
@@ -35,16 +35,16 @@ function ModuleSettings ({ moduleId, refToScroller }) {
           refToScroller={refToScroller}
         />
 
-        <Common.Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
+        <Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
           <span>ANIMATIONS</span>
-        </Common.Text>
-        <Common.Text>*Preinstalled animations*</Common.Text>
+        </Text>
+        <Text>*Preinstalled animations*</Text>
 
         {packs.length ? (
           <>
-            <Common.Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
+            <Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
               <span>PACKS</span>
-            </Common.Text>
+            </Text>
             <PackAccordion
               module={module}
               packs={packs}

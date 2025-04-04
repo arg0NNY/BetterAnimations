@@ -14,7 +14,6 @@ import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import AnimeTransition from '@/components/AnimeTransition'
 import SwitchSidebarTransition from '@/patches/ChannelView/components/SwitchSidebarTransition'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
 import usePrevious from '@/hooks/usePrevious'
 import findInReactTree from '@/utils/findInReactTree'
 

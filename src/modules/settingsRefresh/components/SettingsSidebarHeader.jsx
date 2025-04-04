@@ -1,12 +1,12 @@
 import IconBrand from '@/components/icons/IconBrand'
 import { css } from '@/modules/Style'
-import { Common } from '@/modules/DiscordModules'
+import { Text } from '@/modules/DiscordModules'
 
 function SettingsSidebarHeader () {
   return (
     <div className="BA__settingsSidebarHeader">
       <IconBrand />
-      <Common.Text variant="text-md/semibold">etterAnimations</Common.Text>
+      <Text variant="text-md/semibold">etterAnimations</Text>
     </div>
   )
 }

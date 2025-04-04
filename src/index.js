@@ -16,7 +16,7 @@ import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequest
 import PackManager from '@/modules/PackManager'
 import Logger from '@/modules/Logger'
 import Settings from '@/modules/Settings'
-import { Common } from '@/modules/DiscordModules'
+import { ModalActions } from '@/modules/DiscordModules'
 import Config from '@/modules/Config'
 import Prompt from '@/modules/Prompt'
 import PackRegistry from '@/modules/PackRegistry'
@@ -117,7 +117,7 @@ export default function (meta) {
     },
     getSettingsPanel () {
       queueMicrotask(() => {
-        Common.closeAllModals()
+        ModalActions.closeAllModals()
         Settings.openSettingsModal()
       })
     }

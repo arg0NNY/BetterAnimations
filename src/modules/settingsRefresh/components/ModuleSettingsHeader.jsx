@@ -4,7 +4,15 @@ import AnimationType from '@/enums/AnimationType'
 import Config from '@/modules/Config'
 import AnimationCard from '@/modules/settingsRefresh/components/AnimationCard'
 import Modules from '@/modules/Modules'
-import { AlertTypes, Common } from '@/modules/DiscordModules'
+import {
+  AlertTypes,
+  Breadcrumbs,
+  Clickable,
+  FormText,
+  FormTitle,
+  Switch,
+  Tooltip
+} from '@/modules/DiscordModules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import SectionContext from '@/modules/settingsRefresh/context/SectionContext'
 import Messages from '@/modules/Messages'
@@ -23,7 +31,7 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
     label: m.name
   }))
 
-  const toggleSwitch = <Common.Switch checked={enabled} onChange={setEnabled} />
+  const toggleSwitch = <Switch checked={enabled} onChange={setEnabled} />
 
   const handleSetSettings = (pack, animation, type) => value => Config.pack(pack.slug).setAnimationConfig(animation.key, module.id, type, value)
 
@@ -119,25 +127,25 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
         />
         <div className="BA__moduleSettingsHeading">
           <div className="BA__moduleSettingsTitle">
-            <Common.Breadcrumbs
+            <Breadcrumbs
               breadcrumbs={breadcrumbs}
               activeId={module.id}
               renderCustomBreadcrumb={({ label }, active) => (
-                <Common.FormTitle
+                <FormTitle
                   tag="h1"
                   className={`BA__moduleSettingsBreadcrumb ${active ? 'BA__moduleSettingsBreadcrumb--active' : ''}`}
-                >{label}</Common.FormTitle>
+                >{label}</FormTitle>
               )}
               onBreadcrumbClick={({ id }) => setSection(id)}
             />
-            <Common.Tooltip text={`${enabled ? 'Disable' : 'Enable'} ${module.name} animations`} hideOnClick={false}>
+            <Tooltip text={`${enabled ? 'Disable' : 'Enable'} ${module.name} animations`} hideOnClick={false}>
               {props => <div {...props}>{toggleSwitch}</div>}
-            </Common.Tooltip>
+            </Tooltip>
           </div>
           {module.description && (
-            <Common.FormText type={Common.FormText.Types.DESCRIPTION} className={DiscordClasses.Margins.marginTop8}>
+            <FormText type={FormText.Types.DESCRIPTION} className={DiscordClasses.Margins.marginTop8}>
               {typeof module.description === 'function' ? module.description(setSection) : module.description}
-            </Common.FormText>
+            </FormText>
           )}
           {module.controls && (
             <div className={DiscordClasses.Margins.marginTop8}>
@@ -146,16 +154,16 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
           )}
 
           {childModules.map(m => (
-            <Common.Clickable tag="div" onClick={() => setSection(m.id)}>
-              <Common.FormTitle
+            <Clickable tag="div" onClick={() => setSection(m.id)}>
+              <FormTitle
                 key={m.id}
                 tag="label"
                 className="BA__moduleSettingsLink"
               >
                 {m.name} animations
                 <ArrowSmallRightIcon size="xs" />
-              </Common.FormTitle>
-            </Common.Clickable>
+              </FormTitle>
+            </Clickable>
           ))}
         </div>
       </div>

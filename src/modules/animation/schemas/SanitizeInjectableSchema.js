@@ -3,7 +3,6 @@ import { InjectableBaseSchema } from '@/modules/animation/schemas/InjectableSche
 import { generatedLazyInjectSymbol, isLazyInject } from '@/modules/animation/schemas/injects/lazy'
 import { isInjectPlaceholder } from '@/modules/animation/schemas/injects/placeholder'
 import { animeTimelineInjectSymbol } from '@/modules/animation/schemas/injects/anime'
-import Inject from '@/enums/Inject'
 
 export const hookSymbol = Symbol('hook')
 

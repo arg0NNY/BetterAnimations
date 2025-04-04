@@ -1,6 +1,6 @@
 import IconBrand from '@/components/icons/IconBrand'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
-import { Common } from '@/modules/DiscordModules'
+import { Text } from '@/modules/DiscordModules'
 import { css } from '@/modules/Style'
 import IconBrandInfo from '@/components/icons/IconBrandInfo'
 import IconBrandSuccess from '@/components/icons/IconBrandSuccess'
@@ -33,12 +33,12 @@ function Toast ({ children, text, type = ToastTypes.INFO }) {
         className={`${DiscordClasses.Toast.icon} BA__toastIcon`}
       />
       {text && (
-        <Common.Text
+        <Text
           color="header-primary"
           variant="text-md/normal"
         >
           {text}
-        </Common.Text>
+        </Text>
       )}
       {children}
     </div>

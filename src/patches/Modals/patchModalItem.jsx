@@ -1,5 +1,5 @@
 import { Patcher } from '@/BdApi'
-import { Common } from '@/modules/DiscordModules'
+import { ModalTransitionState } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
@@ -13,7 +13,7 @@ function patchModalItem (component) {
 
     // Disable Discord's internal modal animations
     const props = findInReactTree(value, m => 'transitionState' in (m ?? {}))
-    if (props) props.transitionState = Common.ModalTransitionState.ENTERED
+    if (props) props.transitionState = ModalTransitionState.ENTERED
   })
 }
 

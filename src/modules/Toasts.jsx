@@ -1,4 +1,4 @@
-import { Common } from '@/modules/DiscordModules'
+import { createToast, showToast } from '@/modules/DiscordModules'
 import Toast, { ToastTypes } from '@/components/Toast'
 
 export default class Toasts {
@@ -12,8 +12,8 @@ export default class Toasts {
 
   static show (content, options = {}) {
     const { type = Toasts.Types.DEFAULT, ...rest } = options
-    Common.showToast(
-      Common.createToast(null, null, {
+    showToast(
+      createToast(null, null, {
         component: <Toast type={type} text={content} />,
         ...rest
       })

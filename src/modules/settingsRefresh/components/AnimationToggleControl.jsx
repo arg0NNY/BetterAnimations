@@ -1,5 +1,5 @@
 import ButtonGroup from '@/modules/settingsRefresh/components/ButtonGroup'
-import { Common } from '@/modules/DiscordModules'
+import { Checkbox, Tooltip } from '@/modules/DiscordModules'
 import { stop } from '@/modules/settingsRefresh/utils/eventModifiers'
 import { useAdvancedMode } from '@/modules/settingsRefresh/hooks/useMode'
 import ModuleContext from '@/modules/settingsRefresh/context/ModuleContext'
@@ -37,9 +37,9 @@ function useToggleHint () {
 function AnimationToggleCheckbox ({ value, onChange, disabled }) {
   const checkbox = props => (
     <div {...props} onClick={stop()}>
-      <Common.Checkbox
+      <Checkbox
         className="BA__animationToggleCheckbox"
-        type={Common.Checkbox.Types.INVERTED}
+        type={Checkbox.Types.INVERTED}
         size={22}
         value={value}
         onChange={onChange}
@@ -49,7 +49,7 @@ function AnimationToggleCheckbox ({ value, onChange, disabled }) {
   )
 
   return disabled
-    ? <Common.Tooltip text={Messages.SELECT_ANIMATION_TO_ENABLE}>{checkbox}</Common.Tooltip>
+    ? <Tooltip text={Messages.SELECT_ANIMATION_TO_ENABLE}>{checkbox}</Tooltip>
     : checkbox({})
 }
 

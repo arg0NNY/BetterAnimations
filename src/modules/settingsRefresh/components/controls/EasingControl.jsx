@@ -1,4 +1,4 @@
-import { colors, Common, Slider, Text, TextInput, Tooltip } from '@/modules/DiscordModules'
+import { colors, SingleSelect, Slider, Text, TextInput, Tooltip } from '@/modules/DiscordModules'
 import { useEffect, useMemo, useState } from 'react'
 import { css } from '@/modules/Style'
 import { easingBeziers, easingStyles, easingTypes, easingValues } from '@/data/easings'
@@ -84,14 +84,14 @@ function EasingEaseControl ({ easing }) {
   return (
     <>
       <EasingField label="Bezier">
-        <Common.SingleSelect
+        <SingleSelect
           options={easingBeziers}
           value={easing.bezier}
           onChange={bezier => easing.bezier = bezier}
         />
       </EasingField>
       <EasingField label="Style">
-        <Common.SingleSelect
+        <SingleSelect
           options={easingStyles}
           value={easing.style}
           onChange={style => easing.style = style}
@@ -118,7 +118,7 @@ function EasingElasticControl ({ easing }) {
   return (
     <>
       <EasingField label="Bezier">
-        <Common.SingleSelect
+        <SingleSelect
           options={easingBeziers}
           value={easing.bezier}
           onChange={bezier => easing.bezier = bezier}
@@ -170,7 +170,7 @@ function EasingControl ({ value, onChange, exceedsDuration = 0, onReset }) {
 
   return (
     <SettingControl label="Easing" afterLabel={afterLabel} onReset={onReset}>
-      <Common.SingleSelect
+      <SingleSelect
         options={easingTypes}
         value={easing.type}
         onChange={type => onChange({ type })}

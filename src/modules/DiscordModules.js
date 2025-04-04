@@ -119,7 +119,6 @@ export const { Select: SelectKeyed, SingleSelect: SingleSelectKeyed } = getMangl
   Select: Filters.byStrings('listbox', 'renderPopout', 'closeOnSelect'),
   SingleSelect: m => Filters.byStrings('value', 'onChange')(m) && !Filters.byStrings('isSelected')(m)
 }, { withKeys: true })
-export const Select = UnkeyedComponent(SelectKeyed)
 export const SingleSelect = UnkeyedComponent(SingleSelectKeyed)
 export const MembersModViewSidebarKeyed = getWithKey(Filters.byStrings('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))
 export const LayerActions = getMangled(Filters.byStrings('LAYER_PUSH', 'component'), {
@@ -128,8 +127,6 @@ export const LayerActions = getMangled(Filters.byStrings('LAYER_PUSH', 'componen
   popAllLayers: Filters.byStrings('"LAYER_POP_ALL"')
 })
 export const LayerStore = Webpack.getStore('LayerStore')
-export const Platform = Webpack.getByKeys('isWindows', 'isMac')
-export const { LocalStorage } = getMangled(Filters.byPrototypeKeys('setRaw'), { LocalStorage: Filters.byKeys('setRaw') })
 export const SettingsNotice = Webpack.waitForModule(Filters.byStrings('resetButton', 'EMPHASIZE_NOTICE'))
 export const { Alert, AlertTypes } = getMangled(Filters.byStrings('messageType', 'iconDiv'), {
   Alert: Filters.byStrings('messageType', 'iconDiv'),
@@ -157,34 +154,3 @@ export const TextInput = Webpack.getModule(m => Filters.byKeys('maxLength', 'typ
 export const AppPanels = Webpack.getModule(m => Filters.byStrings('AppPanels')(m?.type), { searchExports: true })
 export const { ImpressionNames } = Webpack.getByKeys('ImpressionNames')
 export const GuildChannelRouteParams = Webpack.getModule(m => Filters.byStrings('escapeRegExp')(m?.guildId), { searchExports: true })
-
-export const Common = {
-  ...ModalActions,
-  Text,
-  Heading,
-  ConfirmModal,
-  Tooltip,
-  TooltipLayer,
-  Backdrop: ModalBackdrop,
-  List: ListThin,
-  ListThin,
-  ToastPosition,
-  showToast,
-  popToast,
-  Toast,
-  createToast,
-  Clickable,
-  Switch,
-  Checkbox,
-  FormTitle,
-  FormText,
-  Breadcrumbs,
-  RadioGroup,
-  FormItem,
-  Select,
-  SingleSelect,
-  Slider,
-  ModalTransitionState,
-  ReferencePositionLayer,
-  SearchableSelect
-}

@@ -1,4 +1,4 @@
-import { Common } from '@/modules/DiscordModules'
+import { Clickable, Tooltip } from '@/modules/DiscordModules'
 import { css } from '@/modules/Style'
 import { Utils } from '@/BdApi'
 
@@ -9,22 +9,22 @@ const Sizes = {
 
 function ButtonGroupItem ({ children, tooltip, selected, disabled, onClick }) {
   const button = props => (
-    <Common.Clickable
+    <Clickable
       {...props}
       tag="button"
       className={`BA__buttonGroupItem ${selected ? 'BA__buttonGroupItem--selected' : ''} ${disabled ? 'BA__buttonGroupItem--disabled' : ''}`}
       onClick={onClick}
     >
       {children}
-    </Common.Clickable>
+    </Clickable>
   )
 
   if (!tooltip) return button({})
 
   return (
-    <Common.Tooltip {...(typeof tooltip === 'string' ? { text: tooltip } : tooltip)}>
+    <Tooltip {...(typeof tooltip === 'string' ? { text: tooltip } : tooltip)}>
       {button}
-    </Common.Tooltip>
+    </Tooltip>
   )
 }
 

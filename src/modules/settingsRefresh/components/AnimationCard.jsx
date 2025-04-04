@@ -4,7 +4,7 @@ import AnimationCardControls from '@/modules/settingsRefresh/components/Animatio
 import useEventListener from '@/hooks/useEventListener'
 import useHover from '@/hooks/useHover'
 import useWindowSize from '@/hooks/useWindowSize'
-import { Common, CSSTransition, TransitionGroup } from '@/modules/DiscordModules'
+import { Clickable, CSSTransition, TransitionGroup } from '@/modules/DiscordModules'
 import AnimationSettings from '@/modules/settingsRefresh/components/AnimationSettings'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import useDismissible from '@/modules/settingsRefresh/hooks/useDismissible'
@@ -166,7 +166,7 @@ function AnimationCard ({
             style={positionerStyle}
             {...props}
           >
-            <Common.Clickable
+            <Clickable
               innerRef={cardRef}
               tag="div"
               className="BA__animationCard"
@@ -191,7 +191,7 @@ function AnimationCard ({
                 errors={errors}
                 forceOpenSettingsTooltip={forceOpenSettingsTooltip}
               />
-            </Common.Clickable>
+            </Clickable>
           </div>
         )}
       </HintTooltip>

@@ -1,7 +1,7 @@
 import positions from '@/data/positions'
 import Auto from '@/enums/Auto'
 import AnimationSetting from '@/enums/AnimationSetting'
-import { Checkbox, Common, Text } from '@/modules/DiscordModules'
+import { Checkbox, SingleSelect, Text } from '@/modules/DiscordModules'
 import SettingControl from '@/modules/settingsRefresh/components/controls/SettingControl'
 import Position from '@/enums/Position'
 import PositionAutoType from '@/enums/PositionAutoType'
@@ -42,7 +42,7 @@ function PositionControl ({ module, animation, value, onChange, defaultValue, pr
 
   return (
     <SettingControl label="Position" onReset={onReset}>
-      <Common.SingleSelect
+      <SingleSelect
         placeholder={defaultValue}
         options={options}
         value={value}

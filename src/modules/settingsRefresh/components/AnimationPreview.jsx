@@ -1,5 +1,5 @@
 import { css } from '@/modules/Style'
-import { Common } from '@/modules/DiscordModules'
+import { Text } from '@/modules/DiscordModules'
 import ModuleContext from '@/modules/settingsRefresh/context/ModuleContext'
 import useRafFn from '@/hooks/useRafFn'
 import { useContext, useMemo, useRef, useState } from 'react'
@@ -37,7 +37,7 @@ function AnimationPreview ({ title, active = false }) {
       />
       {title && (
         <div className="BA__animationPreviewTitle">
-          <Common.Text variant="heading-sm/medium" lineClamp={2} color="always-white">{title}</Common.Text>
+          <Text variant="heading-sm/medium" lineClamp={2} color="always-white">{title}</Text>
         </div>
       )}
     </div>
