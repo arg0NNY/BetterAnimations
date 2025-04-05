@@ -8,7 +8,6 @@ import OverflowControl from '@/modules/settings/components/controls/OverflowCont
 import { css } from '@/modules/Style'
 import { Switch, Text, Tooltip } from '@/modules/DiscordModules'
 import IconButton from '@/modules/settings/components/IconButton'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
 import AnimationSettingContainer from '@/enums/AnimationSettingContainer'
 import { createElement } from 'react'
 import { Utils } from '@/BdApi'

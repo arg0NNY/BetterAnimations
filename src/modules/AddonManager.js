@@ -138,11 +138,12 @@ export default class AddonManager {
       addon.pointers = pointers
     }
     catch (e) {
-      addon = { name: slug }
+      addon = {}
       parseError = e
     }
     addon.slug = slug
     addon.id = addon.slug
+    addon.name = slug
     addon.filename = path.basename(filename)
     addon.added = stats.atimeMs
     addon.modified = stats.mtimeMs

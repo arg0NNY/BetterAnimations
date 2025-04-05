@@ -4,10 +4,10 @@ import AnimationSchema from '@/modules/animation/schemas/AnimationSchema'
 import Messages from '@/modules/Messages'
 
 const PackSchema = z.object({
-  name: z.string().trim().min(2).max(255),
+  name: z.string().trim().min(1),
   author: z.string().trim().min(1),
   version: z.string().regex(regex.semver, 'Should match semver format'),
-  description: z.string().optional(),
+  description: z.string().min(1).optional(),
   invite: z.string().optional(),
   authorLink: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),
   donate: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),

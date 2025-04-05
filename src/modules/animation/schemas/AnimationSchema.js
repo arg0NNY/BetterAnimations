@@ -5,7 +5,7 @@ import AnimationType from '@/enums/AnimationType'
 
 const AnimationSchema = z.object({
   key: z.string().min(1).trim(),
-  name: z.string().trim(),
+  name: z.string().min(1).trim(),
   meta: MetaSchema.optional().default({}),
   settings: SettingsSchema.optional().default({ defaults: {} }),
   debug: z.union([
