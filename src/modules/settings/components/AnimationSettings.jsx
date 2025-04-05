@@ -59,17 +59,18 @@ function AnimationSettingsHeader ({ headers }) {
     <SettingGroup className="BA__animationSettingsHeaderGroup">
       {() => headers.map(({ key, title, subtitle, enabled, setEnabled, onReset, switchTooltip }) => (
         <div className="BA__animationSettingsItem BA__animationSettingsHeader" key={key}>
-          <Text variant="heading-lg/semibold">
-            {title}
+          <div className="BA__animationSettingsHeading">
+            <Text variant="heading-lg/semibold" lineClamp={1}>
+              {title}
+            </Text>
             {subtitle && (
               <Text
                 tag="span"
                 variant="heading-md/normal"
                 color="header-muted"
-                className={DiscordClasses.Margins.marginLeft8}
               >{subtitle}</Text>
             )}
-          </Text>
+          </div>
           <div className="BA__animationSettingsHeaderControls">
             {onReset && (
               <IconButton tooltip="Reset all" onClick={onReset}>
@@ -162,9 +163,17 @@ css
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 16px;
     padding-bottom: 4px;
     box-shadow: 0 -20px 0 var(--background-primary),
                 0 16px 0 var(--background-primary);
+    min-width: 0;
+}
+.BA__animationSettingsHeading {
+    display: flex;
+    gap: 8px;
+    min-width: 0;
+    align-items: flex-end;
 }
 .BA__animationSettingsHeaderControls {
     display: flex;
