@@ -9,9 +9,30 @@ import { useSection } from '@/modules/settings/stores/SettingsStore'
 import SettingsSection from '@/enums/SettingsSection'
 import IconAuthor from '@/components/icons/IconAuthor'
 import SpotlightAnimation from '@/modules/settings/components/SpotlightAnimation'
+import { useMemo } from 'react'
+
+const madeByPhrases = [
+  'Made by',
+  'Developed by',
+  'Created by',
+  'Authored by',
+  'Brought to you by',
+  'Crafted by',
+  'Produced by',
+  'Built by',
+  'Designed by',
+  'Brought to life by',
+  'Cultivated by',
+  'Established by'
+]
 
 function Home () {
   const [section, setSection] = useSection()
+
+  const madeBy = useMemo(
+    () => madeByPhrases[Math.floor(Math.random() * madeByPhrases.length)],
+    []
+  )
 
   return (
     <div className="BA__home">
@@ -62,7 +83,7 @@ function Home () {
           variant="text-sm/normal"
           color="text-muted"
         >
-          Brought to you by
+          {madeBy}
         </Text>
         <div className="BA__homeAuthor">
           <IconAuthor
