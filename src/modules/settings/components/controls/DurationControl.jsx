@@ -2,7 +2,7 @@ import { range } from '@/utils/general'
 import AnimationSetting from '@/enums/AnimationSetting'
 import { MAX_ANIMATION_DURATION } from '@/data/constants'
 import Slider from '@/components/Slider'
-import SettingControl from '@/modules/settingsRefresh/components/controls/SettingControl'
+import SettingControl from '@/modules/settings/components/controls/SettingControl'
 
 function DurationControl ({ animation, value, onChange, computedBy, exceeds = 0, label = 'Duration', onReset, ...props }) {
   const { to, from } = animation.settings[AnimationSetting.Duration]

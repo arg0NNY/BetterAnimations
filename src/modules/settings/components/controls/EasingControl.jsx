@@ -3,9 +3,9 @@ import { useEffect, useMemo, useState } from 'react'
 import { css } from '@/modules/Style'
 import { easingBeziers, easingStyles, easingTypes, easingValues } from '@/data/easings'
 import { EasingType } from '@/enums/Easing'
-import { prevent } from '@/modules/settingsRefresh/utils/eventModifiers'
-import CircleWarningIcon from '@/modules/settingsRefresh/components/icons/CircleWarningIcon'
-import SettingControl from '@/modules/settingsRefresh/components/controls/SettingControl'
+import { prevent } from '@/modules/settings/utils/eventModifiers'
+import CircleWarningIcon from '@/modules/settings/components/icons/CircleWarningIcon'
+import SettingControl from '@/modules/settings/components/controls/SettingControl'
 
 function EasingField ({ label, children }) {
   return (

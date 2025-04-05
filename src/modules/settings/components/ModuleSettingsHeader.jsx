@@ -1,8 +1,8 @@
 import { css } from '@/modules/Style'
-import useAnimationSettings from '@/modules/settingsRefresh/hooks/useAnimationSettings'
+import useAnimationSettings from '@/modules/settings/hooks/useAnimationSettings'
 import AnimationType from '@/enums/AnimationType'
 import Config from '@/modules/Config'
-import AnimationCard from '@/modules/settingsRefresh/components/AnimationCard'
+import AnimationCard from '@/modules/settings/components/AnimationCard'
 import Modules from '@/modules/Modules'
 import {
   AlertTypes,
@@ -14,12 +14,12 @@ import {
   Tooltip
 } from '@/modules/DiscordModules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
-import SectionContext from '@/modules/settingsRefresh/context/SectionContext'
+import SectionContext from '@/modules/settings/context/SectionContext'
 import Messages from '@/modules/Messages'
-import ArrowSmallRightIcon from '@/modules/settingsRefresh/components/icons/ArrowSmallRightIcon'
+import ArrowSmallRightIcon from '@/modules/settings/components/icons/ArrowSmallRightIcon'
 import { useContext, useMemo } from 'react'
-import DismissibleAlert from '@/modules/settingsRefresh/components/DismissibleAlert'
-import useDismissible from '@/modules/settingsRefresh/hooks/useDismissible'
+import DismissibleAlert from '@/modules/settings/components/DismissibleAlert'
+import useDismissible from '@/modules/settings/hooks/useDismissible'
 
 function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect, ...props }) {
   const { setSection } = useContext(SectionContext)

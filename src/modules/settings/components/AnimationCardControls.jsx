@@ -1,12 +1,12 @@
-import IconButton from '@/modules/settingsRefresh/components/IconButton'
-import AnimationToggleControl from '@/modules/settingsRefresh/components/AnimationToggleControl'
+import IconButton from '@/modules/settings/components/IconButton'
+import AnimationToggleControl from '@/modules/settings/components/AnimationToggleControl'
 import { css } from '@/modules/Style'
-import { stop } from '@/modules/settingsRefresh/utils/eventModifiers'
-import SettingsIcon from '@/modules/settingsRefresh/components/icons/SettingsIcon'
-import CollapseListIcon from '@/modules/settingsRefresh/components/icons/CollapseListIcon'
+import { stop } from '@/modules/settings/utils/eventModifiers'
+import SettingsIcon from '@/modules/settings/components/icons/SettingsIcon'
+import CollapseListIcon from '@/modules/settings/components/icons/CollapseListIcon'
 import ErrorManager from '@/modules/ErrorManager'
 import { colors } from '@/modules/DiscordModules'
-import CircleWarningIcon from '@/modules/settingsRefresh/components/icons/CircleWarningIcon'
+import CircleWarningIcon from '@/modules/settings/components/icons/CircleWarningIcon'
 
 function AnimationCardControls ({
   hasSettings,

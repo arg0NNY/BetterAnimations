@@ -1,6 +1,6 @@
 import { Checkbox, Text, Tooltip } from '@/modules/DiscordModules'
-import IconButton from '@/modules/settingsRefresh/components/IconButton'
-import RedoIcon from '@/modules/settingsRefresh/components/icons/RedoIcon'
+import IconButton from '@/modules/settings/components/IconButton'
+import RedoIcon from '@/modules/settings/components/icons/RedoIcon'
 import { css } from '@/modules/Style'
 
 function OverflowControl ({ value, onChange, forced = false, onReset }) {

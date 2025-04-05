@@ -1,10 +1,10 @@
 import { Text } from '@/modules/DiscordModules'
-import PackAccordion from '@/modules/settingsRefresh/components/PackAccordion'
+import PackAccordion from '@/modules/settings/components/PackAccordion'
 import PackManager from '@/modules/PackManager'
 import useModule from '@/hooks/useModule'
 import { css } from '@/modules/Style'
-import ModuleSettingsHeader from '@/modules/settingsRefresh/components/ModuleSettingsHeader'
-import ModuleContext from '@/modules/settingsRefresh/context/ModuleContext'
+import ModuleSettingsHeader from '@/modules/settings/components/ModuleSettingsHeader'
+import ModuleContext from '@/modules/settings/context/ModuleContext'
 import { useCallback } from 'react'
 
 function ModuleSettings ({ moduleId, refToScroller }) {

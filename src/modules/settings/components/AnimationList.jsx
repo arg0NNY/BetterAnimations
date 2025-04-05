@@ -1,8 +1,8 @@
 import { css } from '@/modules/Style'
-import AnimationCard from '@/modules/settingsRefresh/components/AnimationCard'
+import AnimationCard from '@/modules/settings/components/AnimationCard'
 import Config from '@/modules/Config'
 import AnimationType from '@/enums/AnimationType'
-import useAnimationSettings from '@/modules/settingsRefresh/hooks/useAnimationSettings'
+import useAnimationSettings from '@/modules/settings/hooks/useAnimationSettings'
 import { useMemo } from 'react'
 
 function AnimationItem ({ module, pack, animation, selected, onSelect, ...props }) {

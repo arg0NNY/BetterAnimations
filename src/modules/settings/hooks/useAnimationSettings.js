@@ -1,4 +1,4 @@
-import { useAdvancedMode } from '@/modules/settingsRefresh/hooks/useMode'
+import { useAdvancedMode } from '@/modules/settings/hooks/useMode'
 import Setting from '@/enums/AnimationSetting'
 import ModuleType from '@/enums/ModuleType'
 import AnimationType from '@/enums/AnimationType'

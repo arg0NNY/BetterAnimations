@@ -1,6 +1,6 @@
 import { css } from '@/modules/Style'
 import { Text } from '@/modules/DiscordModules'
-import ModuleContext from '@/modules/settingsRefresh/context/ModuleContext'
+import ModuleContext from '@/modules/settings/context/ModuleContext'
 import useRafFn from '@/hooks/useRafFn'
 import { useContext, useMemo, useRef, useState } from 'react'
 

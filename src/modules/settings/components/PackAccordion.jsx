@@ -1,7 +1,7 @@
-import PackAccordionItem from '@/modules/settingsRefresh/components/PackAccordionItem'
+import PackAccordionItem from '@/modules/settings/components/PackAccordionItem'
 import PackManager from '@/modules/PackManager'
 import { css } from '@/modules/Style'
-import AnimationList from '@/modules/settingsRefresh/components/AnimationList'
+import AnimationList from '@/modules/settings/components/AnimationList'
 
 function PackAccordion ({ module, packs, ...props }) {
   return (

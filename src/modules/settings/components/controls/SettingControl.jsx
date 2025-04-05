@@ -1,7 +1,7 @@
 import { FormItem, FormTitle } from '@/modules/DiscordModules'
 import { css } from '@/modules/Style'
-import IconButton from '@/modules/settingsRefresh/components/IconButton'
-import RedoIcon from '@/modules/settingsRefresh/components/icons/RedoIcon'
+import IconButton from '@/modules/settings/components/IconButton'
+import RedoIcon from '@/modules/settings/components/icons/RedoIcon'
 
 function SettingControl ({ label, afterLabel, onReset, children }) {
   return (

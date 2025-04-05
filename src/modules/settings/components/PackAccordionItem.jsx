@@ -1,11 +1,11 @@
 import { Clickable, colors, Text } from '@/modules/DiscordModules'
 import { css } from '@/modules/Style'
-import ChevronSmallUpIcon from '@/modules/settingsRefresh/components/icons/ChevronSmallUpIcon'
-import ChevronSmallDownIcon from '@/modules/settingsRefresh/components/icons/ChevronSmallDownIcon'
+import ChevronSmallUpIcon from '@/modules/settings/components/icons/ChevronSmallUpIcon'
+import ChevronSmallDownIcon from '@/modules/settings/components/icons/ChevronSmallDownIcon'
 import { Utils } from '@/BdApi'
-import IconButton from '@/modules/settingsRefresh/components/IconButton'
+import IconButton from '@/modules/settings/components/IconButton'
 import ErrorManager from '@/modules/ErrorManager'
-import CircleWarningIcon from '@/modules/settingsRefresh/components/icons/CircleWarningIcon'
+import CircleWarningIcon from '@/modules/settings/components/icons/CircleWarningIcon'
 
 function PackAccordionItem ({ pack, children, isOpen, onToggle }) {
   return (

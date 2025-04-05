@@ -1,6 +1,6 @@
 import { Alert } from '@/modules/DiscordModules'
-import XIcon from '@/modules/settingsRefresh/components/icons/XIcon'
-import IconButton from '@/modules/settingsRefresh/components/IconButton'
+import XIcon from '@/modules/settings/components/icons/XIcon'
+import IconButton from '@/modules/settings/components/IconButton'
 import { css } from '@/modules/Style'
 
 function DismissibleAlert ({ children, onDismiss, ...props }) {
