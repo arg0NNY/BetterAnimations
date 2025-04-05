@@ -1,5 +1,5 @@
 import { Common } from '@/modules/DiscordModules'
-import AnimationItem from '@/modules/settings/components/AnimationItem'
+import AnimationItem from '@/modules/settingsLegacy/components/AnimationItem'
 import Config from '@/modules/Config'
 import AnimationType from '@/enums/AnimationType'
 

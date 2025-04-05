@@ -1,5 +1,5 @@
 import { Common } from '@/modules/DiscordModules'
-import DurationControl from '@/modules/settings/components/controls/DurationControl'
+import DurationControl from '@/modules/settingsLegacy/components/controls/DurationControl'
 import Config from '@/modules/Config'
 
 function GeneralSettings () {

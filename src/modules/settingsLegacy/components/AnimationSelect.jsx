@@ -1,5 +1,5 @@
-import AddonList from '@/modules/settings/components/AddonList'
-import AnimationList from '@/modules/settings/components/AnimationList'
+import AddonList from '@/modules/settingsLegacy/components/AddonList'
+import AnimationList from '@/modules/settingsLegacy/components/AnimationList'
 
 export default function AnimationSelect ({ module, selected, onSelect, onChange }) {
   const handleSelect = pack => (type, animation) => onSelect(type, animation && pack, animation)

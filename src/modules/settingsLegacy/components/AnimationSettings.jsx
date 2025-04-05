@@ -1,12 +1,12 @@
 import { React } from '@/BdApi'
-import DurationControl from '@/modules/settings/components/controls/DurationControl'
-import EasingControl from '@/modules/settings/components/controls/EasingControl'
-import VariantControl from '@/modules/settings/components/controls/VariantControl'
-import PositionControl from '@/modules/settings/components/controls/PositionControl'
-import DirectionControl from '@/modules/settings/components/controls/DirectionControl'
+import DurationControl from '@/modules/settingsLegacy/components/controls/DurationControl'
+import EasingControl from '@/modules/settingsLegacy/components/controls/EasingControl'
+import VariantControl from '@/modules/settingsLegacy/components/controls/VariantControl'
+import PositionControl from '@/modules/settingsLegacy/components/controls/PositionControl'
+import DirectionControl from '@/modules/settingsLegacy/components/controls/DirectionControl'
 import { getAnimationDefaultSettings } from '@/helpers/animations'
-import OverflowControl from '@/modules/settings/components/controls/OverflowControl'
-import ModuleContext from '@/modules/settings/context/ModuleContext'
+import OverflowControl from '@/modules/settingsLegacy/components/controls/OverflowControl'
+import ModuleContext from '@/modules/settingsLegacy/context/ModuleContext'
 
 export default function AnimationSettings ({ animation, type, settings, onChange }) {
   const module = React.useContext(ModuleContext)

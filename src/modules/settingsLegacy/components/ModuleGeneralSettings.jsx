@@ -1,6 +1,6 @@
 import { React } from '@/BdApi'
 import { Common } from '@/modules/DiscordModules'
-import AnimationItem from '@/modules/settings/components/AnimationItem'
+import AnimationItem from '@/modules/settingsLegacy/components/AnimationItem'
 import AnimationType from '@/enums/AnimationType'
 
 function ModifiersSettings ({ modifiers, onUpdate }) {

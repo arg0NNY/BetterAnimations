@@ -1,5 +1,5 @@
 import { React } from '@/BdApi'
-import ModuleContext from '@/modules/settings/context/ModuleContext'
+import ModuleContext from '@/modules/settingsLegacy/context/ModuleContext'
 import positions from '@/data/positions'
 import Auto from '@/enums/Auto'
 import AnimationSetting from '@/enums/AnimationSetting'

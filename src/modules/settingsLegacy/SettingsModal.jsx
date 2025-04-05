@@ -1,6 +1,6 @@
 import { Common } from '@/modules/DiscordModules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
-import SettingsPanel from '@/modules/settings/SettingsPanel'
+import SettingsPanel from '@/modules/settingsLegacy/SettingsPanel'
 import Emitter from '@/modules/Emitter'
 import Events from '@/enums/Events'
 import Config from '@/modules/Config'

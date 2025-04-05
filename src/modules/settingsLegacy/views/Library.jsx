@@ -1,6 +1,6 @@
 import { Common } from '@/modules/DiscordModules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
-import AddonList from '@/modules/settings/components/AddonList'
+import AddonList from '@/modules/settingsLegacy/components/AddonList'
 import PackRegistry from '@/modules/PackRegistry'
 import PackManager from '@/modules/PackManager'
 

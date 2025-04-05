@@ -1,12 +1,12 @@
 import { Router, Common } from '@/modules/DiscordModules'
-import AnimationSelect from '@/modules/settings/components/AnimationSelect'
-import ModuleContext from '@/modules/settings/context/ModuleContext'
+import AnimationSelect from '@/modules/settingsLegacy/components/AnimationSelect'
+import ModuleContext from '@/modules/settingsLegacy/context/ModuleContext'
 import Emitter from '@/modules/Emitter'
 import Events from '@/enums/Events'
 import useModule from '@/hooks/useModule'
-import ModuleGeneralSettings from '@/modules/settings/components/ModuleGeneralSettings'
+import ModuleGeneralSettings from '@/modules/settingsLegacy/components/ModuleGeneralSettings'
 import Modules from '@/modules/Modules'
-import ModuleList from '@/modules/settings/components/ModuleList'
+import ModuleList from '@/modules/settingsLegacy/components/ModuleList'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 
 export default function ModuleSettings () {

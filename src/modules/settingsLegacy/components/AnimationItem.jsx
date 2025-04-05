@@ -1,7 +1,7 @@
 import { React } from '@/BdApi'
 import { Common, Tooltip } from '@/modules/DiscordModules'
-import ModuleContext from '@/modules/settings/context/ModuleContext'
-import AnimationSettings from '@/modules/settings/components/AnimationSettings'
+import ModuleContext from '@/modules/settingsLegacy/context/ModuleContext'
+import AnimationSettings from '@/modules/settingsLegacy/components/AnimationSettings'
 import AnimationType from '@/enums/AnimationType'
 import { getAnimationDefaultSettings } from '@/helpers/animations'
 

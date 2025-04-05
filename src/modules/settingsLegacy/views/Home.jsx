@@ -1,6 +1,6 @@
 import { Common, Router } from '@/modules/DiscordModules'
 import Modules from '@/modules/Modules'
-import ModuleList from '@/modules/settings/components/ModuleList'
+import ModuleList from '@/modules/settingsLegacy/components/ModuleList'
 
 export default function Home () {
   return (
