@@ -13,7 +13,7 @@ class AnimeTransition extends Component {
   instance = createRef()
 
   componentWillUnmount () {
-    requestAnimationFrame(this.instance.current?.cancel() ?? (() => {}))
+    this.instance.current?.cancel()
   }
 
   getTargetNodes (container) {
