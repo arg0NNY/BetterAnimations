@@ -98,10 +98,11 @@ export const AnimeSchema = ParsableSchema(
 )
 
 export const AnimateSchema = (context, env) => {
+  const beforeCreateEnv = Object.assign({ disallowed: [Inject.Hast] }, env)
   const layoutEnv = Object.assign({ allowed: safeInjects }, env)
 
   return z.object({
-    onBeforeCreate: HookSchema(context, env, ParseStage.BeforeCreate),
+    onBeforeCreate: HookSchema(context, beforeCreateEnv, ParseStage.BeforeCreate),
     hast: HastSchema(context, layoutEnv),
     css: CssSchema(context, layoutEnv),
     anime: AnimeSchema(context, env),
