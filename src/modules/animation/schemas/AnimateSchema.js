@@ -1,6 +1,6 @@
 import { z, ZodError } from 'zod'
 import InjectableSchema from '@/modules/animation/schemas/InjectableSchema'
-import { ArrayOrSingleSchema } from '@/utils/schemas'
+import { ArrayOrSingleSchema, parseInjectSchemas } from '@/utils/schemas'
 import Inject from '@/enums/Inject'
 import ParseStage from '@/enums/ParseStage'
 import { sanitize } from 'hast-util-sanitize'
@@ -9,19 +9,39 @@ import { executeWithZod } from '@/modules/animation/utils'
 import { hookSymbol } from '@/modules/animation/schemas/SanitizeInjectableSchema'
 import { animeTimelineInjectSymbol } from '@/modules/animation/schemas/injects/anime'
 import hastSanitizeSchema from '@/modules/animation/hastSanitizeSchema'
+import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/settings'
+import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
+import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/operators'
 
 const safeInjects = [
+  ...Object.keys(parseInjectSchemas(SettingsInjectSchemas)),
+  ...Object.keys(parseInjectSchemas(MathInjectSchemas)),
+  ...Object.keys(parseInjectSchemas(OperatorsInjectSchemas)),
+  // Anime
+  Inject.AnimeRandom,
+  Inject.AnimeGet,
+  // Common
+  Inject.Element,
+  Inject.Hast,
+  Inject.Container,
+  Inject.Anchor,
   Inject.Module,
+  Inject.ModuleType,
   Inject.Type,
-  Inject.Variant,
-  Inject.Position,
-  Inject.Direction,
   Inject.ObjectAssign,
   Inject.StringTemplate,
   Inject.Math,
-  Inject.AnimeRandom,
-  Inject.VarGet, // ?
+  Inject.Undefined,
+  Inject.VarGet,
+  Inject.GetBoundingClientRect,
+  Inject.Mouse,
+  Inject.IsIntersected,
+  Inject.If,
   Inject.Switch
+]
+
+const executeOnlyInjects = [
+  Inject.Hast
 ]
 
 const ParsableSchema = (stage, schema) => (context, env) =>
@@ -98,8 +118,8 @@ export const AnimeSchema = ParsableSchema(
 )
 
 export const AnimateSchema = (context, env) => {
-  const beforeCreateEnv = Object.assign({ disallowed: [Inject.Hast] }, env)
-  const layoutEnv = Object.assign({ allowed: safeInjects }, env)
+  const beforeCreateEnv = Object.assign({ disallowed: executeOnlyInjects }, env)
+  const layoutEnv = Object.assign({ allowed: safeInjects, disallowed: executeOnlyInjects }, env)
 
   return z.object({
     onBeforeCreate: HookSchema(context, beforeCreateEnv, ParseStage.BeforeCreate),
