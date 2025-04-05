@@ -10,6 +10,7 @@ import SettingsSection from '@/enums/SettingsSection'
 import IconAuthor from '@/components/icons/IconAuthor'
 import SpotlightAnimation from '@/modules/settings/components/SpotlightAnimation'
 import { useMemo } from 'react'
+import { sanitize } from '@/utils/text'
 
 const madeByPhrases = [
   'Made by',
@@ -57,7 +58,7 @@ function Home () {
           variant="text-md/normal"
           color="header-primary"
         >
-          {meta.description}
+          {sanitize(meta.description)}
         </Text>
         <div className="BA__homeHeadingActions">
           <Button
