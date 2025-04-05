@@ -10,7 +10,7 @@ function toStyle (state) {
   }
 }
 
-function SpotlightAnimation ({ count = 10, size = 450, areaSize = 250, speed = 50, className }) {
+function SpotlightAnimation ({ count = 8, size = 400, areaSize = 200, speed = 50, className }) {
   const getRandomPosition = useCallback(() => ({
     x: Math.random() * areaSize,
     y: Math.random() * areaSize
@@ -77,10 +77,12 @@ css
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    translate: -50% -50%;
     pointer-events: none;
     aspect-ratio: 1;
     opacity: .3;
+    filter: blur(30px);
+    animation: BA__rotate 30s linear infinite;
 }
 
 .BA__spotlightAnimationItem {
@@ -90,6 +92,11 @@ css
     width: var(--ba--spotlight-animation-size);
     height: var(--ba--spotlight-animation-size);
     translate: -50% -50%;
-    background: radial-gradient(circle, var(--brand-500) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--brand-500) 30%, transparent 70%);
+}
+
+@keyframes BA__rotate {
+    0% { rotate: 0deg; }
+    100% { rotate: 360deg; }
 }`
 `SpotlightAnimation`
