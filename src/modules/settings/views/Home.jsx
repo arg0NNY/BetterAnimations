@@ -88,7 +88,7 @@ function Home () {
             innerClassName="BA__homeButtonContents"
             onClick={() => handleClick({ href: meta.authorLink })}
           >
-            Other plugins made by {meta.author}
+            Plugins made by {meta.author}
             <ExternalLinkIcon size="xs" color="currentColor" />
           </Button>
         </div>
