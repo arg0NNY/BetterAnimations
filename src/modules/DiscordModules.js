@@ -154,3 +154,4 @@ export const TextInput = Webpack.getModule(m => Filters.byKeys('maxLength', 'typ
 export const AppPanels = Webpack.getModule(m => Filters.byStrings('AppPanels')(m?.type), { searchExports: true })
 export const { ImpressionNames } = Webpack.getByKeys('ImpressionNames')
 export const GuildChannelRouteParams = Webpack.getModule(m => Filters.byStrings('escapeRegExp')(m?.guildId), { searchExports: true })
+export const handleClick = Webpack.getModule(Filters.byStrings('sanitizeUrl', 'shouldConfirm'), { searchExports: true })

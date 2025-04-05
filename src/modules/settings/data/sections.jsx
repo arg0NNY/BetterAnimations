@@ -1,5 +1,5 @@
 import Modules from '@/modules/Modules'
-import ModuleSettings from '@/modules/settings/components/ModuleSettings'
+import ModuleSettings from '@/modules/settings/views/ModuleSettings'
 import SettingsSidebarHeader from '@/modules/settings/components/SettingsSidebarHeader'
 import ModeSwitch from '@/modules/settings/components/ModeSwitch'
 import FormNotice from '@/modules/settings/components/FormNotice'
@@ -9,6 +9,7 @@ import SettingsSection from '@/enums/SettingsSection'
 import HomeIcon from '@/modules/settings/components/icons/HomeIcon'
 import ShopIcon from '@/modules/settings/components/icons/ShopIcon'
 import BookCheckIcon from '@/components/icons/BookCheckIcon'
+import Home from '@/modules/settings/views/Home'
 
 export function getSections () {
   return [
@@ -20,7 +21,7 @@ export function getSections () {
       section: SettingsSection.Home,
       label: 'Home',
       icon: <HomeIcon size="xs" color="currentColor" />,
-      element: () => {}
+      element: Home
     },
     {
       section: 'DIVIDER'
