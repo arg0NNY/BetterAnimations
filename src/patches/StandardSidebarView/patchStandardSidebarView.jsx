@@ -61,6 +61,10 @@ StandardSidebarViewKeyed.then(() =>
 css
 `${DiscordSelectors.StandardSidebarView.contentRegion} > ${DiscordSelectors.StandardSidebarView.contentRegion} {
     height: 100%;
+}
+
+${DiscordSelectors.StandardSidebarView.contentRegionScroller}:has(.BA__home) {
+    overflow: visible !important;
 }`
 `StandardSidebarView (Settings)`
 )

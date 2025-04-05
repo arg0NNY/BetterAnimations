@@ -8,6 +8,7 @@ import CircleDollarSignIcon from '@/modules/settings/components/icons/CircleDoll
 import { useSection } from '@/modules/settings/stores/SettingsStore'
 import SettingsSection from '@/enums/SettingsSection'
 import IconAuthor from '@/components/icons/IconAuthor'
+import SpotlightAnimation from '@/modules/settings/components/SpotlightAnimation'
 
 function Home () {
   const [section, setSection] = useSection()
@@ -15,6 +16,7 @@ function Home () {
   return (
     <div className="BA__home">
       <div className="BA__homeHeading">
+        <SpotlightAnimation className="BA__homeSpotlightAnimation" />
         <IconBrand
           size="custom"
           width={120}
@@ -25,12 +27,14 @@ function Home () {
           className="BA__homeTitle"
           variant="heading-xxl/bold"
           tag="h3"
+          color="header-primary"
         >
           {meta.name}
         </Text>
         <Text
           className="BA__homeDescription"
           variant="text-md/normal"
+          color="header-primary"
         >
           {meta.description}
         </Text>
@@ -107,7 +111,7 @@ css
 `.BA__home {
     position: absolute;
     inset: 0;
-    padding: 60px 40px 160px;
+    padding: 60px 40px 80px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -125,7 +129,9 @@ css
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 8vh;
+    margin-top: 8vh;
+    position: relative;
+    isolation: isolate;
 }
 .BA__homeDescription {
     margin-top: 12px;
@@ -136,8 +142,12 @@ css
     gap: 8px;
     margin-top: 24px;
 }
+.BA__homeSpotlightAnimation {
+    z-index: -1;
+}
 
 .BA__homeAuthorSection {
+    position: relative;
     margin-top: 11vh;
     display: flex;
     flex-direction: column;
