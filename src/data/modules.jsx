@@ -111,13 +111,37 @@ const modules = [
     }
   },
   {
-    id: ModuleKey.Popouts,
-    name: 'Popouts',
+    id: ModuleKey.Layers,
+    name: 'Layers',
     description: () => (
       <>
-        Animates the&nbsp;appearance and disappearance of&nbsp;interactive floating UI elements application-wide, such as User Profiles, Select Inputs, Pinned Messages, etc.
+        Animates the&nbsp;transitions when switching between full-screen views of&nbsp;the&nbsp;Discord&nbsp;app, such as User&nbsp;Settings, Server&nbsp;Settings, {meta.name} Settings, etc.
+        Supports auto-direction for&nbsp;applicable animations determined by&nbsp;the&nbsp;user’s navigation history across layered views.
+      </>
+    ),
+    meta: {
+      type: ModuleType.Switch,
+      settings: {
+        supportsAuto: {
+          [Setting.Position]: [PositionAutoType.Precise, { preservable: true, preserveLabel: 'Preserve for individual layers' }],
+          [Setting.Direction]: DirectionAutoType.Alternate
+        },
+        defaults: {
+          [Setting.DirectionAxis]: Axis.Z,
+          [Setting.Overflow]: false
+        },
+        hideOverflow: true
+      }
+    }
+  },
+  {
+    id: ModuleKey.Tooltips,
+    name: 'Tooltips',
+    description: () => (
+      <>
+        Animates the&nbsp;appearance and disappearance of&nbsp;informative floating UI elements application-wide,
+        such as various control descriptions, server titles in&nbsp;the&nbsp;server list and other non-interactive elements that provide clarity to&nbsp;Discord's interfaces.
         Supports auto-position and auto-direction for&nbsp;applicable animations determined by&nbsp;the&nbsp;location of&nbsp;the&nbsp;anchor element.
-        Context Menus that have a&nbsp;strictly defined anchor element are&nbsp;controlled by&nbsp;this&nbsp;module.
       </>
     ),
     meta: {
@@ -130,13 +154,13 @@ const modules = [
     }
   },
   {
-    id: ModuleKey.Tooltips,
-    name: 'Tooltips',
+    id: ModuleKey.Popouts,
+    name: 'Popouts',
     description: () => (
       <>
-        Animates the&nbsp;appearance and disappearance of&nbsp;informative floating UI elements application-wide,
-        such as various control descriptions, server titles in&nbsp;the&nbsp;server list and other non-interactive elements that provide clarity to&nbsp;Discord's interfaces.
+        Animates the&nbsp;appearance and disappearance of&nbsp;interactive floating UI elements application-wide, such as User Profiles, Select Inputs, Pinned Messages, etc.
         Supports auto-position and auto-direction for&nbsp;applicable animations determined by&nbsp;the&nbsp;location of&nbsp;the&nbsp;anchor element.
+        Context Menus that have a&nbsp;strictly defined anchor element are&nbsp;controlled by&nbsp;this&nbsp;module.
       </>
     ),
     meta: {
@@ -258,30 +282,6 @@ const modules = [
       settings: {
         supportsAuto: {
           [Setting.Position]: [PositionAutoType.Precise, { asDefault: false }]
-        },
-        hideOverflow: true
-      }
-    }
-  },
-  {
-    id: ModuleKey.Layers,
-    name: 'Layers',
-    description: () => (
-      <>
-        Animates the&nbsp;transitions when switching between full-screen views of&nbsp;the&nbsp;Discord&nbsp;app, such as User&nbsp;Settings, Server&nbsp;Settings, {meta.name} Settings, etc.
-        Supports auto-direction for&nbsp;applicable animations determined by&nbsp;the&nbsp;user’s navigation history across layered views.
-      </>
-    ),
-    meta: {
-      type: ModuleType.Switch,
-      settings: {
-        supportsAuto: {
-          [Setting.Position]: [PositionAutoType.Precise, { preservable: true, preserveLabel: 'Preserve for individual layers' }],
-          [Setting.Direction]: DirectionAutoType.Alternate
-        },
-        defaults: {
-          [Setting.DirectionAxis]: Axis.Z,
-          [Setting.Overflow]: false
         },
         hideOverflow: true
       }
