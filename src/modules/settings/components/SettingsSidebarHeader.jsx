@@ -48,6 +48,6 @@ css
 
 .BA__settingsSidebarHeader--hidden {
     opacity: 0;
-    transform: translateY(2px);
+    transform: translateX(-2px);
 }`
 `SettingsSidebarHeader`
