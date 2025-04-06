@@ -101,7 +101,9 @@ export const HastSchema = ParsableSchema(
 
 export const CssSchema = ParsableSchema(
   ParseStage.Layout,
-  z.record(z.record(z.any())).optional()
+  ArrayOrSingleSchema(
+    z.record(z.record(z.any()))
+  ).optional()
 )
 
 export const AnimeSchema = ParsableSchema(
