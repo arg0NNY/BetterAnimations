@@ -2,6 +2,7 @@ import { z } from 'zod'
 import MetaSchema from '@/modules/animation/schemas/MetaSchema'
 import SettingsSchema from '@/modules/animation/schemas/SettingsSchema'
 import AnimationType from '@/enums/AnimationType'
+import AnimateSchema from '@/modules/animation/schemas/AnimateSchema'
 
 const AnimationSchema = z.object({
   key: z.string().min(1).trim(),
@@ -12,9 +13,9 @@ const AnimationSchema = z.object({
     z.boolean(),
     z.enum(AnimationType.values())
   ]).optional(),
-  animate: z.record(z.any()).optional(),
-  enter: z.record(z.any()).optional(),
-  exit: z.record(z.any()).optional(),
+  animate: AnimateSchema.optional(),
+  enter: AnimateSchema.optional(),
+  exit: AnimateSchema.optional(),
 }).strict().refine(
   v => v.animate ? !(v.enter || v.exit) : (v.enter && v.exit),
   v => ({
