@@ -19,7 +19,7 @@ import AnimationType from '@/enums/AnimationType'
 import ModuleType from '@/enums/ModuleType'
 import { buildContext } from '@/modules/animation/parser'
 import ParseStage from '@/enums/ParseStage'
-import AnimateSchema from '@/modules/animation/schemas/AnimateSchema'
+import ParsableAnimateSchema from '@/modules/animation/schemas/ParsableAnimateSchema'
 import Events from '@/enums/Events'
 import Emitter from '@/modules/Emitter'
 import Logger from '@/modules/Logger'
@@ -100,7 +100,7 @@ class Module {
 
     let animate, error
     try {
-      animate = animation && AnimateSchema(ctx, { stage: ParseStage.Initialize })
+      animate = animation && ParsableAnimateSchema(ctx, { stage: ParseStage.Initialize })
         .parse(data)
     }
     catch (err) {

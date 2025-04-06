@@ -1,6 +1,6 @@
 import anime from 'animejs'
 import AnimationType from '@/enums/AnimationType'
-import AnimateSchema from '@/modules/animation/schemas/AnimateSchema'
+import ParsableAnimateSchema from '@/modules/animation/schemas/ParsableAnimateSchema'
 import ParseStage from '@/enums/ParseStage'
 import ErrorManager from '@/modules/ErrorManager'
 import AnimationError from '@/structs/AnimationError'
@@ -86,7 +86,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
 
   const parseStage = (stage, stageName) => {
     try {
-      data = data ? AnimateSchema(context, { stage })
+      data = data ? ParsableAnimateSchema(context, { stage })
         .parse(data) : {}
       return true
     }

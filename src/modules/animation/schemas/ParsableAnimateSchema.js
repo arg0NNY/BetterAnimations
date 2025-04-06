@@ -117,7 +117,7 @@ export const AnimeSchema = ParsableSchema(
   )
 )
 
-export const AnimateSchema = (context, env) => {
+export const ParsableAnimateSchema = (context, env) => {
   const beforeCreateEnv = Object.assign({ disallowed: executeOnlyInjects }, env)
   const layoutEnv = Object.assign({ allowed: safeInjects, disallowed: executeOnlyInjects }, env)
 
@@ -134,4 +134,4 @@ export const AnimateSchema = (context, env) => {
   }).strict()
 }
 
-export default AnimateSchema
+export default ParsableAnimateSchema
