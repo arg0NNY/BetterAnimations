@@ -137,7 +137,7 @@ class Module {
     const { pack, animation, path, config } = this.animations[type]
 
     const settings = animation && this.buildSettings(animation, type, config, options)
-    const ctx = animation && buildContext(pack, animation, type, settings, { module: this, path, ...context })
+    const ctx = buildContext(pack, animation, type, settings, { module: this, path, ...context })
 
     return {
       ...this.animations[type],

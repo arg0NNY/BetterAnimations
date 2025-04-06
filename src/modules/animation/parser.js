@@ -14,7 +14,7 @@ import { getDuration } from '@/utils/easings'
 import { MAX_ANIMATION_DURATION, MIN_ANIMATION_DURATION } from '@/data/constants'
 
 function buildDurationContext (animation, settings) {
-  const easing = settings[Setting.Easing]
+  const easing = settings?.[Setting.Easing]
   if (easing?.type === EasingType.Spring) {
     const { from, to } = animation.settings?.[Setting.Duration] ?? { from: MIN_ANIMATION_DURATION, to: MAX_ANIMATION_DURATION }
     const duration = getDuration(easing)
@@ -26,7 +26,7 @@ function buildDurationContext (animation, settings) {
   }
 
   return {
-    value: settings[Setting.Duration],
+    value: settings?.[Setting.Duration],
     computedBy: null,
     exceeds: 0
   }
@@ -80,8 +80,9 @@ export function buildWrapper (data, context) {
 }
 
 export function buildAnimateAssets (data = null, context, options = {}) {
-  const debug = Debug.animation(context.animation, context.type)
-  debug.parseStart(data, context)
+  context = context ?? {}
+  const debug = context.animation ? Debug.animation(context.animation, context.type) : null
+  debug?.parseStart(data, context)
 
   const parseStage = (stage, stageName) => {
     try {
@@ -104,7 +105,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
 
   if (!parseStage(ParseStage.BeforeCreate, 'BeforeCreate')) return {}
 
-  debug.hook('onBeforeCreate', context)
+  debug?.hook('onBeforeCreate', context)
   data.onBeforeCreate?.()
   // No need to check the cancellation here because we still need to parse `onBeforeDestroy` and `onDestroyed`
   // `AnimationStore` will detect the cancellation as soon as we stop parsing
@@ -115,7 +116,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
 
   if (!parseStage(ParseStage.Execute, 'Execute')) return {}
 
-  debug.parseEnd(data, context)
+  debug?.parseEnd(data, context)
 
   const before = options.before && context.type === AnimationType.Enter
     ? options.before(context)
@@ -127,7 +128,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
   instance?.pause()
 
   const exposedHook = hook => () => {
-    debug.hook(hook, context)
+    debug?.hook(hook, context)
     data[hook]?.()
     before?.[hook]?.()
     after?.[hook]?.()
@@ -165,7 +166,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
       context.instance.pause = pauseAll
       if (context.instance.cancelled) return {}
 
-      debug.hook('onCreated', context)
+      debug?.hook('onCreated', context)
       data.onCreated?.()
       if (context.instance.cancelled) return {}
 
@@ -174,7 +175,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
 
         instance.finished.then(() => {
           before.onCompleted?.()
-          debug.hook('onBeforeBegin', context)
+          debug?.hook('onBeforeBegin', context)
           data.onBeforeBegin?.()
           instances.slice(1).forEach(i => {
             i.reset()
@@ -195,13 +196,13 @@ export function buildAnimateAssets (data = null, context, options = {}) {
       return {
         instances,
         onBeforeBegin: !before ? () => {
-          debug.hook('onBeforeBegin', context)
+          debug?.hook('onBeforeBegin', context)
           data.onBeforeBegin?.()
         } : null,
         pause: pauseAll,
         finished: finished
           .then(() => {
-            debug.hook('onCompleted', context)
+            debug?.hook('onCompleted', context)
             data.onCompleted?.()
             if (context.instance.cancelled) return
 
