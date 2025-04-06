@@ -61,14 +61,17 @@ export function buildWrapper (data, context) {
   let style
   if (data.css) {
     const parent = `[data-animation="${id}"]`
-    style = document.createElement('style')
-    style.appendChild(document.createTextNode(
-      buildCSS(data.css, s => {
-        if (s.startsWith('{element}')) return s.replace('{element}', `${parent} + *`)
-        if (s === '{container}') return `[data-animation-container]:has(> ${parent})`
-        return `${parent} :is(${s})`
-      })
-    ))
+    style = [].concat(data.css).map(css => {
+      const element = document.createElement('style')
+      element.appendChild(document.createTextNode(
+        buildCSS(css, s => {
+          if (s.startsWith('{element}')) return s.replace('{element}', `${parent} + *`)
+          if (s === '{container}') return `[data-animation-container]:has(> ${parent})`
+          return `${parent} :is(${s})`
+        })
+      ))
+      return element
+    })
   }
 
   wrapper.append(

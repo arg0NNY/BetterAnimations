@@ -3,19 +3,16 @@ import ErrorManager from '@/modules/ErrorManager'
 import AnimationError from '@/structs/AnimationError'
 import { formatZodError } from '@/utils/zod'
 
-function buildStyles (entries) {
-  return entries.reduce(
+function buildStyles (styles) {
+  return Object.entries(styles).reduce(
     (str, [name, value]) => str + `    ${name.trim()}: ${String(value).trim()};\n`,
     ''
   )
 }
 
 export function buildCSS (data, transformSelector = s => s) {
-  data = [].concat(data)
-  return [...new Set(data.flatMap(Object.keys))].reduce(
-    (css, selector) => css + `${transformSelector(selector.trim())} {\n${(
-      buildStyles(data.flatMap(i => i[selector] ? Object.entries(i[selector]) : []))
-    )}}\n`,
+  return Object.entries(data).reduce(
+    (css, [selector, styles]) => css + `${transformSelector(selector.trim())} {\n${buildStyles(styles)}}\n`,
     '\n'
   )
 }
