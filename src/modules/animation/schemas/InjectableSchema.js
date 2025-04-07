@@ -36,7 +36,7 @@ function assertInjectType (type) {
 
 function parseInject ({ schema, context, env, value, ctx }) {
   const report = Debug.animation(context.animation, context.type)
-    .inject(value.inject, context.path.concat(ctx.path), context, value)
+    .inject(value.inject, ctx.path, context, value)
 
   const parsed = zodSubParse(
     typeof schema === 'function'
@@ -121,7 +121,7 @@ const InjectableSchema = (context, env = {}) => {
                 value.inject,
                 (context, env) => (...args) => {
                   Debug.animation(context.animation, context.type)
-                    .lazyInjectCall(value.inject, context.path.concat(ctx.path), args, context)
+                    .lazyInjectCall(value.inject, ctx.path, args, context)
 
                   try {
                     return InjectableSchema(context, {
@@ -134,7 +134,7 @@ const InjectableSchema = (context, env = {}) => {
                     ErrorManager.registerAnimationError(
                       new AnimationError(
                         context.animation,
-                        formatZodError(error, { pack: context.pack, path: context.path, received: value }),
+                        formatZodError(error, { pack: context.pack }),
                         { module: context.module, pack: context.pack, type: context.type, context, stage: 'Lazy' }
                       )
                     )

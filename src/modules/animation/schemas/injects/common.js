@@ -117,7 +117,7 @@ export const DebugInjectSchema = InjectWithMeta(
     data: z.any().optional()
   }).transform(
     ({ data }, ctx) => Debug.animation(context.animation, context.type)
-      .debug(Inject.Debug, context.path.concat(ctx.path), context, data)
+      .debug(Inject.Debug, ctx.path, context, data)
   ),
   { lazy: true }
 )

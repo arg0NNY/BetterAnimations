@@ -42,9 +42,12 @@ export const AnimeTimelineInjectSchema = InjectWithMeta(
     return fn
   }),
   {
-    allowed: ({ ctx }) => ctx.path.length <= 2
-      && ctx.path[0] === 'anime'
-      && ['number', 'undefined'].includes(typeof ctx.path[1])
+    allowed: ({ context, ctx }) => {
+      const path = ctx.path.slice(context.path.length)
+      return path.length <= 2
+        && path[0] === 'anime'
+        && ['number', 'undefined'].includes(typeof path[1])
+    }
   }
 )
 

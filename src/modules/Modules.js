@@ -91,28 +91,28 @@ class Module {
     const path = animation ? ['animations', pack.animations.indexOf(animation), type in animation ? type : 'animate'] : []
 
     const settings = animation && this.buildSettings(animation, type, config, { auto: false })
-    const ctx = animation && buildContext(pack, animation, type, settings, { module: this, path })
+    const context = animation && buildContext(pack, animation, type, settings, { module: this, path })
 
     const debug = Debug.animation(animation, type)
     const data = animation?.[type] ?? animation?.animate
 
-    if (animation) debug.initializeStart(data, ctx)
+    if (animation) debug.initializeStart(data, context)
 
     let animate, error
     try {
-      animate = animation && ParsableAnimateSchema(ctx, { stage: ParseStage.Initialize })
-        .parse(data)
+      animate = animation && ParsableAnimateSchema(context, { stage: ParseStage.Initialize })
+        .parse(data, { path })
     }
     catch (err) {
       error = new AnimationError(
         animation,
-        formatZodError(err, { pack, path, received: animation[type] ?? animation.animate }),
-        { module: this, pack, type, context: ctx, stage: 'Initialize' }
+        formatZodError(err, { pack }),
+        { module: this, pack, type, context, stage: 'Initialize' }
       )
       ErrorManager.registerAnimationError(error)
     }
 
-    if (animation) debug.initializeEnd(animate, ctx)
+    if (animation) debug.initializeEnd(animate, context)
 
     return {
       packSlug: pointer.packSlug ?? null,

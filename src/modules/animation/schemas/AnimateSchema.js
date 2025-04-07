@@ -13,6 +13,6 @@ const AnimateSchema = z.object({
   onCompleted: ArrayOrSingleObjectSchema,
   onBeforeDestroy: ArrayOrSingleObjectSchema,
   onDestroyed: ArrayOrSingleObjectSchema
-}).partial()
+}).partial().strict()
 
 export default AnimateSchema

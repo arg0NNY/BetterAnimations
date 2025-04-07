@@ -21,31 +21,31 @@ export function visualizeAddonZodIssue (addon, issue, options = {}) {
 }
 
 export function formatZodError (error, options = {}) {
-  const { pack, path = [], received } = options
+  const { pack, received, context } = options
 
   return '\n' + error.issues.map(issue => {
-    const issuePath = path.concat(issue.path)
-    let message = `• ${issue.message} at "${toPath(issuePath)}"`
+    let message = `• ${issue.message} at "${toPath(issue.path)}"`
 
     if (received && !('received' in (issue.params ?? {}))) {
+      const path = context ? issue.path.slice(context.path.length) : issue.path
       issue.params ??= {}
       issue.params.received = getPath(
         received,
-        issue.path[issue.path.length - 1] === 'inject'
-          ? issue.path.slice(0, -1)
-          : issue.path
+        path[path.length - 1] === 'inject'
+          ? path.slice(0, -1)
+          : path
       )
     }
 
     if (issue.unionErrors)
       message += indent(
         issue.unionErrors
-          .map(e => formatZodError(e, { pack, path }))
+          .map(e => formatZodError(e, { pack }))
           .join(`\nOR`)
       )
 
     if (!issue.unionErrors && pack) {
-      const visualized = visualizeAddonZodIssue(pack, issue, { path: issuePath })
+      const visualized = visualizeAddonZodIssue(pack, issue)
       if (visualized) message += indent('\n' + visualized)
     }
 

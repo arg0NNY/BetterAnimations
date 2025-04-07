@@ -90,14 +90,14 @@ export function buildAnimateAssets (data = null, context, options = {}) {
   const parseStage = (stage, stageName) => {
     try {
       data = data ? ParsableAnimateSchema(context, { stage })
-        .parse(data) : {}
+        .parse(data, { path: context.path }) : {}
       return true
     }
     catch (error) {
       ErrorManager.registerAnimationError(
         new AnimationError(
           context.animation,
-          formatZodError(error, { pack: context.pack, path: context.path, received: data }),
+          formatZodError(error, { pack: context.pack, received: data, context }),
           { module: context.module, pack: context.pack, type: context.type, context, stage: stageName }
         )
       )
@@ -159,7 +159,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
               })
               return z.NEVER
             }
-          }, context, { path: ['anime'].concat(Array.isArray(data.anime) ? [i] : []) })
+          }, context, { path: [...context.path, 'anime'].concat(Array.isArray(data.anime) ? [i] : []) })
         }
       ).filter(Boolean)
 
