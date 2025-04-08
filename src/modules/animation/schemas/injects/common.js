@@ -18,8 +18,9 @@ import Debug from '@/modules/Debug'
 import {
   clearSourceMap,
   clearSourceMapDeep,
+  getSourcePath,
   objectAssignSourceMapped,
-  toSourcePath
+  SELF_KEY
 } from '@/modules/animation/sourceMap'
 
 export const ElementInjectSchema = ({ element }) => ElementSchema(Inject.Element, element)
@@ -126,7 +127,7 @@ export const DebugInjectSchema = InjectWithMeta(
     data: z.any().optional()
   }).transform(
     value => Debug.animation(context.animation, context.type)
-      .debug(Inject.Debug, toSourcePath(value), context, value.data)
+      .debug(Inject.Debug, getSourcePath(value, SELF_KEY), context, value.data)
   ),
   { lazy: true }
 )

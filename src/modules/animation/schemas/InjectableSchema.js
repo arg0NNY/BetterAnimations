@@ -17,7 +17,7 @@ import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/sett
 import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
 import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/operators'
 import Debug from '@/modules/Debug'
-import { getSourcePath, isSourceMap, SourceMapSchema, toSourcePath } from '@/modules/animation/sourceMap'
+import { getSourcePath, isSourceMap, SELF_KEY, SourceMapSchema } from '@/modules/animation/sourceMap'
 
 const injectSchemas = {
   ...parseInjectSchemas(CommonInjectSchemas),
@@ -36,7 +36,7 @@ function assertInjectType (type) {
 
 function parseInject ({ schema, context, env, value, ctx }) {
   const report = Debug.animation(context.animation, context.type)
-    .inject(value.inject, getSourcePath(value), context, value)
+    .inject(value.inject, getSourcePath(value, SELF_KEY), context, value)
 
   try {
     const parsed = (
@@ -121,7 +121,7 @@ const InjectableSchema = (context, env = {}) => {
                 value.inject,
                 (context, env) => (...args) => {
                   Debug.animation(context.animation, context.type)
-                    .lazyInjectCall(value.inject, toSourcePath(value), args, context)
+                    .lazyInjectCall(value.inject, getSourcePath(value, SELF_KEY), args, context)
 
                   try {
                     return InjectableSchema(context, {

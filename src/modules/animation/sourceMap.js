@@ -3,9 +3,9 @@ import { Literal } from '@/utils/schemas'
 import { getPath } from '@/utils/object'
 import { InjectableBaseSchema } from '@/modules/animation/schemas/InjectableSchema'
 
-const SOURCE_MAP_KEY = '__sourceMap'
-const IS_SOURCE_MAP_KEY = '__isSourceMap'
-const SELF_KEY = '__self'
+export const SOURCE_MAP_KEY = '__sourceMap'
+export const IS_SOURCE_MAP_KEY = '__isSourceMap'
+export const SELF_KEY = '__self'
 
 export const reservedKeys = [SOURCE_MAP_KEY, IS_SOURCE_MAP_KEY, SELF_KEY]
 
@@ -70,7 +70,7 @@ export function getSourceMap (value) {
   return hasSourceMap(value) ? value[SOURCE_MAP_KEY] : undefined
 }
 
-export function getSourcePath (target, key = SELF_KEY) {
+export function getSourcePath (target, key) {
   return getSourceMap(target)?.[key]
 }
 
