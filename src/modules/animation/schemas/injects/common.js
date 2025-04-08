@@ -140,7 +140,7 @@ export const VarSetInjectSchema = InjectWithMeta(
   ({ vars }) => InjectSchema(Inject.VarSet).extend({
     name: z.string(),
     value: z.any()
-  }).transform(({ name, value }) => { vars[name] = clearSourceMapDeep(value) }),
+  }).transform(({ name, value }) => { vars[name] = value }),
   { lazy: true }
 )
 
