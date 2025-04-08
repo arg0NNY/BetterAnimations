@@ -99,24 +99,24 @@ export function clearSourceMapDeep (value) {
   return ClearSourceMapDeepSchema.parse(value)
 }
 
-export function objectKeysSourceMapped (value) {
+export function sourceMappedObjectKeys (value) {
   return Object.keys(value).filter(key => key !== SOURCE_MAP_KEY)
 }
 
-export function objectValuesSourceMapped (value) {
+export function sourceMappedObjectValues (value) {
   return Object.values(value).filter(value => !isSourceMap(value))
 }
 
-export function objectEntriesSourceMapped (value) {
+export function sourceMappedObjectEntries (value) {
   return Object.entries(value).filter(([key]) => key !== SOURCE_MAP_KEY)
 }
 
-export function objectAssignSourceMapped (target, ...source) {
+export function sourceMappedObjectAssign (target, ...source) {
   if (!hasSourceMap(target)) target[SOURCE_MAP_KEY] = buildSourceMap()
 
   source.forEach(source => {
     const sourceMap = getSourceMap(source)
-    objectEntriesSourceMapped(source).forEach(([key, value]) => {
+    sourceMappedObjectEntries(source).forEach(([key, value]) => {
       target[key] = value
       const sourcePath = sourceMap?.[key]
       if (sourcePath === undefined) delete target[SOURCE_MAP_KEY][key]

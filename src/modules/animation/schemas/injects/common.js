@@ -19,7 +19,7 @@ import {
   clearSourceMap,
   clearSourceMapDeep,
   getSourcePath,
-  objectAssignSourceMapped,
+  sourceMappedObjectAssign,
   SELF_KEY
 } from '@/modules/animation/sourceMap'
 
@@ -60,7 +60,7 @@ export const TypeInjectSchema = InjectWithMeta(
 export const ObjectAssignInjectSchema = InjectSchema(Inject.ObjectAssign).extend({
   target: z.record(z.any()),
   source: ArrayOrSingleSchema(z.record(z.any())),
-}).transform(params => objectAssignSourceMapped(params.target, ...[].concat(params.source)))
+}).transform(params => sourceMappedObjectAssign(params.target, ...[].concat(params.source)))
 
 export const StringTemplateInjectSchema = InjectSchema(Inject.StringTemplate).extend({
   template: z.string(),
