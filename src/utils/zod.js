@@ -59,7 +59,7 @@ export function formatZodError (error, options = {}) {
       if (visualized) message += indent('\n' + visualized)
     }
 
-    if (import.meta.env.MODE === 'development')
+    if (import.meta.env.VITE_ZOD_ERROR_OUTPUT_ORIGINAL_PATH === 'true')
       message += indent(
         `\n↪ Original path: "${toPath(issue.path)}"`
           + (toPath(sourcePath) === toPath(issue.path) ? ' (same as source)' : '')
