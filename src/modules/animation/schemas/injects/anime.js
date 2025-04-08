@@ -5,14 +5,15 @@ import { z } from 'zod'
 import Inject from '@/enums/Inject'
 import { zodTransformErrorBoundary } from '@/utils/zod'
 import { transformAnimeConfig, zodErrorBoundary } from '@/modules/animation/utils'
+import { clearSourceMapDeep, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 
 export const AnimeStaggerInjectSchema = context => InjectSchema(Inject.AnimeStagger).extend({
   value: Defined,
   options: Defined.optional()
 }).transform(
-  zodTransformErrorBoundary((params, ctx) =>
+  zodTransformErrorBoundary(({ value, options }, ctx) =>
     zodErrorBoundary(
-      anime.stagger(params.value, params.options),
+      anime.stagger(clearSourceMapDeep(value), clearSourceMapDeep(options)),
       context,
       { path: ctx.path, name: 'anime.stagger' }
     )
@@ -23,11 +24,12 @@ export const animeTimelineInjectSymbol = Symbol('animeTimelineInject')
 export const AnimeTimelineInjectSchema = InjectWithMeta(
   InjectSchema(Inject.AnimeTimeline).extend({
     parameters: Defined.optional(),
-    children: z.object({
+    children: SourceMappedObjectSchema.extend({
       parameters: Defined,
       offset: Defined.optional()
     }).array().optional()
   }).transform(params => {
+    params = clearSourceMapDeep(params)
     const fn = (...args) => {
       const tl = anime.timeline(
         params.parameters && transformAnimeConfig(params.parameters, ...args)
@@ -74,7 +76,10 @@ export const AnimeSetInjectSchema = InjectWithMeta(
     target: ArrayOrSingleSchema(z.instanceof(Element)).optional().default(element),
     properties: z.record(z.any())
   }).transform(
-    zodTransformErrorBoundary(({ target, properties }) => anime.set(target, properties))
+    zodTransformErrorBoundary(({ target, properties }) => anime.set(
+      target,
+      clearSourceMapDeep(properties)
+    ))
   ),
   { lazy: true }
 )

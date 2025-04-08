@@ -3,6 +3,14 @@ import { indent } from '@/utils/text'
 import { toPath, visualizeAddonPath } from '@/utils/json'
 import { getPath } from '@/utils/object'
 import objectInspect from 'object-inspect'
+import { toSourcePath } from '@/modules/animation/sourceMap'
+import { sanitizeInjectable } from '@/utils/animations'
+
+function stripInject (path) {
+  return path[path.length - 1] === 'inject'
+    ? path.slice(0, -1)
+    : path
+}
 
 export function visualizeAddonZodIssue (addon, issue, options = {}) {
   const { path = issue.path, maxCodeBlocks = 2 } = options
@@ -21,33 +29,41 @@ export function visualizeAddonZodIssue (addon, issue, options = {}) {
 }
 
 export function formatZodError (error, options = {}) {
-  const { pack, received, context } = options
+  const {
+    pack,
+    data = pack,
+    context,
+    path = context?.path ?? [],
+    received = !!data
+  } = options
 
   return '\n' + error.issues.map(issue => {
-    let message = `• ${issue.message} at "${toPath(issue.path)}"`
+    const relativePath = issue.path.slice(path.length)
+    const sourcePath = toSourcePath(data, relativePath) ?? issue.path
+    let message = `• ${issue.message} at "${toPath(sourcePath)}"`
 
     if (received && !('received' in (issue.params ?? {}))) {
-      const path = context ? issue.path.slice(context.path.length) : issue.path
       issue.params ??= {}
-      issue.params.received = getPath(
-        received,
-        path[path.length - 1] === 'inject'
-          ? path.slice(0, -1)
-          : path
-      )
+      issue.params.received = getPath(data, stripInject(relativePath))
     }
 
     if (issue.unionErrors)
       message += indent(
         issue.unionErrors
-          .map(e => formatZodError(e, { pack }))
+          .map(e => formatZodError(e, { ...options, received: false }))
           .join(`\nOR`)
       )
 
     if (!issue.unionErrors && pack) {
-      const visualized = visualizeAddonZodIssue(pack, issue)
+      const visualized = visualizeAddonZodIssue(pack, issue, { path: sourcePath })
       if (visualized) message += indent('\n' + visualized)
     }
+
+    if (import.meta.env.MODE === 'development')
+      message += indent(
+        `\n↪ Original path: "${toPath(issue.path)}"`
+          + (toPath(sourcePath) === toPath(issue.path) ? ' (same as source)' : '')
+      )
 
     if ('args' in (issue.params ?? {}))
       message += indent(
@@ -59,7 +75,12 @@ export function formatZodError (error, options = {}) {
     else if ('received' in (issue.params ?? {}))
       message += indent(
         `\n↪ Received: `
-        + indent(objectInspect(issue.params.received, { indent: 2 })).trim()
+        + indent(
+          objectInspect(
+            sanitizeInjectable(issue.params.received),
+            { indent: 2 }
+          )
+        ).trim()
       )
 
     if (issue.params?.error)
@@ -70,22 +91,6 @@ export function formatZodError (error, options = {}) {
 
     return message
   }).join('\n')
-}
-
-export function zodSubParse (schema, value, options = {}) {
-  const { path = [], received = true } = options
-  const { success, data, error } = schema.safeParse(value, { path })
-
-  if (!success) {
-    if (received)
-      error.issues.forEach(i => {
-        const issuePath = i.path.slice(path.length)
-        i.params ??= {}
-        i.params.received = getPath(value, issuePath[issuePath.length - 1] === 'inject' ? issuePath.slice(0, -1) : issuePath)
-      })
-    throw error
-  }
-  return data
 }
 
 export function zodTransformErrorBoundary (transformFn) {

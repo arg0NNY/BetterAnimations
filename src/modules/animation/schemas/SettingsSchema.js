@@ -6,6 +6,7 @@ import AnimationType from '@/enums/AnimationType'
 import EasingSchema from '@/modules/animation/schemas/EasingSchema'
 import { MAX_ANIMATION_DURATION, MIN_ANIMATION_DURATION } from '@/data/constants'
 import { getSupportedAxes } from '@/utils/direction'
+import { reservedKeys } from '@/modules/animation/keys'
 
 const DefaultsSchema = settings => {
   const entries = []
@@ -68,7 +69,7 @@ const SettingsSchema = z.object({
   [Setting.Easing]: z.literal(true).optional(),
   [Setting.Variant]: z.object({
     key: z.string().refine(
-      key => key !== 'inject',
+      key => !reservedKeys.includes(key),
       key => ({ message: `Forbidden variant key: '${key}'` })
     ),
     name: z.string()

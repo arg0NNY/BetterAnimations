@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import { InjectableBaseSchema } from '@/modules/animation/schemas/InjectableSchema'
 import { generatedLazyInjectSymbol, isLazyInject } from '@/modules/animation/schemas/injects/lazy'
-import { isInjectPlaceholder } from '@/modules/animation/schemas/injects/placeholder'
 import { animeTimelineInjectSymbol } from '@/modules/animation/schemas/injects/anime'
+import { clearSourceMap, isSourceMap } from '@/modules/animation/sourceMap'
 
 export const hookSymbol = Symbol('hook')
 
@@ -15,6 +15,10 @@ function createFunctionPlaceholder (name, readme) {
 
 const SanitizeInjectableSchema = z.lazy(
   () => InjectableBaseSchema(SanitizeInjectableSchema).transform(value => {
+    if (isSourceMap(value)) return value
+
+    clearSourceMap(value)
+
     if (
       isLazyInject(value)
       || (typeof value === 'function' && value[generatedLazyInjectSymbol])
@@ -34,9 +38,6 @@ const SanitizeInjectableSchema = z.lazy(
 
     if (typeof value === 'function' && value[animeTimelineInjectSymbol])
       return value[animeTimelineInjectSymbol]
-
-    if (isInjectPlaceholder(value))
-      return value.value
 
     return value
   })

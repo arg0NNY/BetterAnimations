@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { useSyncExternalStore } from 'use-sync-external-store/shim/index.js'
+import { useSyncExternalStore } from 'use-sync-external-store/shim'
 
 function subscribe (callback) {
   window.addEventListener('resize', callback)

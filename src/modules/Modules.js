@@ -104,9 +104,9 @@ class Module {
         .parse(data, { path })
     }
     catch (err) {
-      error = new AnimationError(
+      error = err instanceof AnimationError ? err : new AnimationError(
         animation,
-        formatZodError(err, { pack }),
+        formatZodError(err, { pack, data, context, received: false }),
         { module: this, pack, type, context, stage: 'Initialize' }
       )
       ErrorManager.registerAnimationError(error)

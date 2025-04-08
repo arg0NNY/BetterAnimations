@@ -1,8 +1,9 @@
 import { z } from 'zod'
 import { EasingBezier, EasingStyle, EasingType } from '@/enums/Easing'
 import { easingValues } from '@/data/easings'
+import { SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 
-const EasingBaseSchema = type => z.object({
+const EasingBaseSchema = type => SourceMappedObjectSchema.extend({
   type: z.literal(type)
 }).strict()
 

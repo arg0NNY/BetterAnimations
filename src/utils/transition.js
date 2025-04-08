@@ -1,4 +1,4 @@
-import { DiscordClasses } from '@/modules/DiscordSelectors.js'
+import { DiscordClasses } from '@/modules/DiscordSelectors'
 
 export function directChild (node) {
   return node && [].find.call(node.children, e => !e.getAttribute('data-animation'))

@@ -1,4 +1,4 @@
-import { z, ZodError } from 'zod'
+import { z } from 'zod'
 import InjectableSchema from '@/modules/animation/schemas/InjectableSchema'
 import { ArrayOrSingleSchema, parseInjectSchemas } from '@/utils/schemas'
 import Inject from '@/enums/Inject'
@@ -12,6 +12,9 @@ import hastSanitizeSchema from '@/modules/animation/hastSanitizeSchema'
 import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/settings'
 import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
 import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/operators'
+import { clearSourceMapDeep, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
+import AnimationError from '@/structs/AnimationError'
+import { formatZodError } from '@/utils/zod'
 
 const safeInjects = [
   ...Object.keys(parseInjectSchemas(SettingsInjectSchemas)),
@@ -46,11 +49,22 @@ const executeOnlyInjects = [
 
 const ParsableSchema = (stage, schema) => (context, env) =>
   (![ParseStage.Initialize, stage].includes(env.stage) ? z.any() : InjectableSchema(context, env))
-    .pipe(
-      env.stage === stage
-        ? (typeof schema === 'function' ? schema(context, env) : schema)
-        : z.any()
-    )
+    .transform((value, ctx) => {
+      try {
+        return (
+          env.stage === stage
+            ? (typeof schema === 'function' ? schema(context, env) : schema)
+            : z.any()
+        ).parse(value, { path: ctx.path })
+      }
+      catch (error) {
+        throw new AnimationError(
+          context.animation,
+          formatZodError(error, { pack: context.pack, data: value, context, path: ctx.path }),
+          { module: context.module, pack: context.pack, type: context.type, context }
+        )
+      }
+    })
 
 export const HookSchema = (context, env, stage = ParseStage.Execute) => ParsableSchema(
   stage,
@@ -60,7 +74,6 @@ export const HookSchema = (context, env, stage = ParseStage.Execute) => Parsable
         [].concat(value).forEach((fn, i) => {
           try { fn() }
           catch (error) {
-            if (error instanceof ZodError) throw error
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
               message: error.message,
@@ -80,6 +93,7 @@ export const HastSchema = ParsableSchema(
   ParseStage.Layout,
   ArrayOrSingleSchema(z.record(z.any()))
     .transform((value, ctx) => {
+      value = clearSourceMapDeep(value)
       return [].concat(value).map((node, i) => {
         const sanitized = sanitize(node, hastSanitizeSchema)
         if (sanitized.type === 'root') {
@@ -123,7 +137,7 @@ export const ParsableAnimateSchema = (context, env) => {
   const beforeCreateEnv = Object.assign({ disallowed: executeOnlyInjects }, env)
   const layoutEnv = Object.assign({ allowed: safeInjects, disallowed: executeOnlyInjects }, env)
 
-  return z.object({
+  return SourceMappedObjectSchema.extend({
     onBeforeCreate: HookSchema(context, beforeCreateEnv, ParseStage.BeforeCreate),
     hast: HastSchema(context, layoutEnv),
     css: CssSchema(context, layoutEnv),

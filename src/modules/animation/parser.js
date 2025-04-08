@@ -12,6 +12,7 @@ import Setting from '@/enums/AnimationSetting'
 import { EasingType } from '@/enums/Easing'
 import { getDuration } from '@/utils/easings'
 import { MAX_ANIMATION_DURATION, MIN_ANIMATION_DURATION } from '@/data/constants'
+import { clearSourceMapDeep } from '@/modules/animation/sourceMap'
 
 function buildDurationContext (animation, settings) {
   const easing = settings?.[Setting.Easing]
@@ -61,7 +62,9 @@ export function buildWrapper (data, context) {
   let style
   if (data.css) {
     const parent = `[data-animation="${id}"]`
-    style = [].concat(data.css).map(css => {
+    style = [].concat(
+      clearSourceMapDeep(data.css)
+    ).map(css => {
       const element = document.createElement('style')
       element.appendChild(document.createTextNode(
         buildCSS(css, s => {
@@ -95,9 +98,9 @@ export function buildAnimateAssets (data = null, context, options = {}) {
     }
     catch (error) {
       ErrorManager.registerAnimationError(
-        new AnimationError(
+        error instanceof AnimationError ? error : new AnimationError(
           context.animation,
-          formatZodError(error, { pack: context.pack, received: data, context }),
+          formatZodError(error, { pack: context.pack, data, context }),
           { module: context.module, pack: context.pack, type: context.type, context, stage: stageName }
         )
       )
@@ -142,7 +145,8 @@ export function buildAnimateAssets (data = null, context, options = {}) {
     onBeforeDestroy: exposedHook('onBeforeDestroy'),
     onDestroyed: exposedHook('onDestroyed'),
     execute: () => {
-      const instances = [].concat(data.anime ?? []).map(
+      const config = clearSourceMapDeep(data.anime)
+      const instances = [].concat(config ?? []).map(
         (value, i) => {
           if (!value) return null
           return executeWithZod(value, (value, ctx) => {
@@ -159,7 +163,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
               })
               return z.NEVER
             }
-          }, context, { path: [...context.path, 'anime'].concat(Array.isArray(data.anime) ? [i] : []) })
+          }, context, { path: [...context.path, 'anime'].concat(Array.isArray(config) ? [i] : []) })
         }
       ).filter(Boolean)
 

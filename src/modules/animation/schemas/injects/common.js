@@ -15,6 +15,12 @@ import ModuleType from '@/enums/ModuleType'
 import { getPath } from '@/utils/json'
 import { zodTransformErrorBoundary } from '@/utils/zod'
 import Debug from '@/modules/Debug'
+import {
+  clearSourceMap,
+  clearSourceMapDeep,
+  objectAssignSourceMapped,
+  toSourcePath
+} from '@/modules/animation/sourceMap'
 
 export const ElementInjectSchema = ({ element }) => ElementSchema(Inject.Element, element)
 
@@ -53,15 +59,18 @@ export const TypeInjectSchema = InjectWithMeta(
 export const ObjectAssignInjectSchema = InjectSchema(Inject.ObjectAssign).extend({
   target: z.record(z.any()),
   source: ArrayOrSingleSchema(z.record(z.any())),
-}).transform(params => Object.assign(params.target, ...[].concat(params.source)))
+}).transform(params => objectAssignSourceMapped(params.target, ...[].concat(params.source)))
 
 export const StringTemplateInjectSchema = InjectSchema(Inject.StringTemplate).extend({
   template: z.string(),
   values: z.union([z.record(z.any()), z.any().array()])
-}).transform(({ template, values }) => template.replaceAll(
-  /\${([^\${}\s]+)}/g,
-  (_, key) => String(values[Array.isArray(values) ? +key : key]) ?? ''
-))
+}).transform(({ template, values }) => {
+  values = clearSourceMap(values)
+  return template.replaceAll(
+    /\${([^\${}\s]+)}/g,
+    (_, key) => String(values[Array.isArray(values) ? +key : key]) ?? ''
+  )
+})
 
 export const MathInjectSchema = InjectSchema(Inject.Math).extend({
   expression: z.string()
@@ -99,7 +108,7 @@ export const FunctionInjectSchema = InjectWithMeta(
   }).transform(zodTransformErrorBoundary(
     ({ functions, 'return': returnValue }) => {
       functions?.forEach(f => f())
-      return returnValue
+      return clearSourceMapDeep(returnValue)
     }
   )),
   { lazy: true }
@@ -116,8 +125,8 @@ export const DebugInjectSchema = InjectWithMeta(
   context => InjectSchema(Inject.Debug).extend({
     data: z.any().optional()
   }).transform(
-    ({ data }, ctx) => Debug.animation(context.animation, context.type)
-      .debug(Inject.Debug, ctx.path, context, data)
+    value => Debug.animation(context.animation, context.type)
+      .debug(Inject.Debug, toSourcePath(value), context, value.data)
   ),
   { lazy: true }
 )
@@ -130,7 +139,7 @@ export const VarSetInjectSchema = InjectWithMeta(
   ({ vars }) => InjectSchema(Inject.VarSet).extend({
     name: z.string(),
     value: z.any()
-  }).transform(({ name, value }) => { vars[name] = value }),
+  }).transform(({ name, value }) => { vars[name] = clearSourceMapDeep(value) }),
   { lazy: true }
 )
 
@@ -138,7 +147,9 @@ export const CallInjectSchema = InjectSchema(Inject.Call).extend({
   function: z.function(),
   args: ArrayOrSingleSchema(z.any()).optional()
 }).transform(zodTransformErrorBoundary(
-  ({ function: fn, args }) => fn(...[].concat(args))
+  ({ function: fn, args }) => fn(
+    ...[].concat(clearSourceMapDeep(args))
+  )
 ))
 
 export const GetBoundingClientRectInjectSchema = ({ element }) => InjectSchema(Inject.GetBoundingClientRect).extend({
@@ -178,10 +189,11 @@ export const IsIntersectedInjectSchema = InjectWithMeta(
 )
 
 export const GetInjectSchema = InjectSchema(Inject.Get).extend({
-  target: z.instanceof(Object),
+  target: z.record(z.any()),
   key: z.string().optional(),
   path: z.string().startsWith('/', 'JSON Pointer must begin with `/`').optional()
 }).transform(({ target, key, path }) => {
+  target = clearSourceMapDeep(target)
   if (key) return target[key]
   if (path) return getPath(target, path)
   return target
@@ -201,6 +213,7 @@ export const SwitchInjectSchema = InjectSchema(Inject.Switch).extend({
   ]),
   default: z.any().optional()
 }).transform(({ value, case: cases, default: defaultValue }) => {
+  cases = clearSourceMap(cases)
   return new Map(
     Array.isArray(cases) ? cases : Object.entries(cases)
   ).get(value) ?? defaultValue

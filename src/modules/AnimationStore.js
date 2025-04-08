@@ -140,7 +140,7 @@ class Animation {
           { module, pack, type, context: this.context }
         )
       )
-      this.destroy(true)
+      this.cancel(true)
     }, limit)
   }
 

@@ -36,7 +36,7 @@ export function executeWithZod (value, fn, context, options = {}) {
     ErrorManager.registerAnimationError(
       new AnimationError(
         context.animation,
-        formatZodError(error, { pack: context.pack, received: value, context }),
+        formatZodError(error, { pack: context.pack, data: value, context, path }),
         { module: context.module, pack: context.pack, type: context.type, context }
       )
     )

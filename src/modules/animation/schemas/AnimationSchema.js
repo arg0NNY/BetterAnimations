@@ -3,6 +3,7 @@ import MetaSchema from '@/modules/animation/schemas/MetaSchema'
 import SettingsSchema from '@/modules/animation/schemas/SettingsSchema'
 import AnimationType from '@/enums/AnimationType'
 import AnimateSchema from '@/modules/animation/schemas/AnimateSchema'
+import { StoreSourceMapDeepSchema } from '@/modules/animation/sourceMap'
 
 const AnimationSchema = z.object({
   key: z.string().min(1).trim(),
@@ -13,9 +14,9 @@ const AnimationSchema = z.object({
     z.boolean(),
     z.enum(AnimationType.values())
   ]).optional(),
-  animate: AnimateSchema.optional(),
-  enter: AnimateSchema.optional(),
-  exit: AnimateSchema.optional(),
+  animate: AnimateSchema.pipe(StoreSourceMapDeepSchema).optional(),
+  enter: AnimateSchema.pipe(StoreSourceMapDeepSchema).optional(),
+  exit: AnimateSchema.pipe(StoreSourceMapDeepSchema).optional(),
 }).strict().refine(
   v => v.animate ? !(v.enter || v.exit) : (v.enter && v.exit),
   v => ({

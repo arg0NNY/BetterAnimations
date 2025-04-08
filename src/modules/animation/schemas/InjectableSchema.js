@@ -1,7 +1,6 @@
-import { z, ZodError } from 'zod'
+import { z } from 'zod'
 import { formatValuesList, Literal, parseInjectSchemas } from '@/utils/schemas'
-import { InjectPlaceholderSchema, isInjectPlaceholder } from '@/modules/animation/schemas/injects/placeholder'
-import { formatZodError, zodSubParse } from '@/utils/zod'
+import { formatZodError } from '@/utils/zod'
 import {
   generatedLazyInjectSymbol,
   isLazyInject,
@@ -18,6 +17,7 @@ import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/sett
 import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
 import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/operators'
 import Debug from '@/modules/Debug'
+import { getSourcePath, isSourceMap, SourceMapSchema, toSourcePath } from '@/modules/animation/sourceMap'
 
 const injectSchemas = {
   ...parseInjectSchemas(CommonInjectSchemas),
@@ -36,26 +36,34 @@ function assertInjectType (type) {
 
 function parseInject ({ schema, context, env, value, ctx }) {
   const report = Debug.animation(context.animation, context.type)
-    .inject(value.inject, ctx.path, context, value)
+    .inject(value.inject, getSourcePath(value), context, value)
 
-  const parsed = zodSubParse(
-    typeof schema === 'function'
-      ? schema(context, env)
-      : schema,
-    value,
-    { path: ctx.path }
-  )
-  report(parsed)
-  return parsed
+  try {
+    const parsed = (
+      typeof schema === 'function'
+        ? schema(context, env)
+        : schema
+    ).parse(value, { path: ctx.path })
+    report(parsed)
+    return parsed
+  }
+  catch (error) {
+    throw new AnimationError(
+      context.animation,
+      formatZodError(error, { pack: context.pack, data: value, context, path: ctx.path }),
+      { module: context.module, pack: context.pack, type: context.type, context }
+    )
+  }
 }
 
 export const InjectableBaseSchema = (schema, extend = []) => z.union([
-  ...extend,
   Literal,
-  z.undefined(),
   z.symbol(),
   z.instanceof(Function), // Some injects return functions (anime.timeline, anime.setDashoffset, etc.)
   z.instanceof(Element), // Prevent Zod from parsing Element
+  SourceMapSchema, // Prevent Zod from parsing SourceMap
+  LazyInjectSchema, // Prevent Zod from parsing LazyInject
+  ...extend,
   z.array(schema),
   z.record(schema)
 ])
@@ -64,23 +72,15 @@ const InjectableSchema = (context, env = {}) => {
   const { allowed, disallowed, stage } = env
 
   const schema = z.lazy(
-    () => InjectableBaseSchema(schema, [
-      InjectPlaceholderSchema, // Prevent Zod from parsing InjectPlaceholder
-      LazyInjectSchema // Prevent Zod from parsing LazyInject
-    ]).transform((value, ctx) => {
+    () => InjectableBaseSchema(schema).transform((value, ctx) => {
       try {
+        if (isSourceMap(value)) return value
+
         if (isLazyInject(value)) { // A parsed lazy inject, which turned into a generator function, awaiting a complete context
           const generated = value.generator(context, env)
           generated[generatedLazyInjectSymbol] = value.name
           return generated
         }
-
-        if (isInjectPlaceholder(value))
-          return zodSubParse(
-            InjectableSchema(context, env),
-            value.value,
-            { path: ctx.path.concat(value.path) }
-          )
 
         if (value?.inject === undefined)
           return value
@@ -121,7 +121,7 @@ const InjectableSchema = (context, env = {}) => {
                 value.inject,
                 (context, env) => (...args) => {
                   Debug.animation(context.animation, context.type)
-                    .lazyInjectCall(value.inject, ctx.path, args, context)
+                    .lazyInjectCall(value.inject, toSourcePath(value), args, context)
 
                   try {
                     return InjectableSchema(context, {
@@ -132,9 +132,9 @@ const InjectableSchema = (context, env = {}) => {
                   }
                   catch (error) {
                     ErrorManager.registerAnimationError(
-                      new AnimationError(
+                      error instanceof AnimationError ? error : new AnimationError(
                         context.animation,
-                        formatZodError(error, { pack: context.pack }),
+                        formatZodError(error, { pack: context.pack, data: value, context, path: ctx.path }),
                         { module: context.module, pack: context.pack, type: context.type, context, stage: 'Lazy' }
                       )
                     )
@@ -149,7 +149,7 @@ const InjectableSchema = (context, env = {}) => {
           return parseInject({ schema, context, env, value, ctx })
         }
         catch (error) {
-          if (error instanceof ZodError) throw error
+          if (error instanceof AnimationError) throw error
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: error.message,
@@ -159,7 +159,7 @@ const InjectableSchema = (context, env = {}) => {
         }
       }
       catch (error) {
-        if (error instanceof ZodError) throw error
+        if (error instanceof AnimationError) throw error
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: error.message,

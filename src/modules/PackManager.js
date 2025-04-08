@@ -39,7 +39,7 @@ export default new class PackManager extends AddonManager {
       Object.assign(addon, PackSchema.parse(addon))
     }
     catch (e) {
-      return new AddonError(this.prefix, addon, formatZodError(e, { pack: addon }))
+      return new AddonError(this.prefix, addon, formatZodError(e, { pack: addon, received: false }))
     }
   }
 

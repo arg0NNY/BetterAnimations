@@ -1,13 +1,15 @@
 import { z } from 'zod'
 import { buildSwitchSchema, Defined, formatValuesList, hasInSettings } from '@/utils/schemas'
-import { wrapWithPlaceholderIfNeeded } from '@/modules/animation/schemas/injects/placeholder.js'
+import { clearSourceMap, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 
-export const InjectSchema = type => z.object({ inject: z.literal(type) }).strict()
+export const InjectSchema = type => SourceMappedObjectSchema.extend({
+  inject: z.literal(type)
+}).strict()
 
 export function SwitchSchema (inject, valueList, options = {}) {
   const { currentValue, defaultValue, possibleValues, setting } = options
 
-  return (context, env) => {
+  return context => {
     const get = value => typeof value === 'function' ? value(context) : value
 
     let values = get(valueList)
@@ -18,6 +20,8 @@ export function SwitchSchema (inject, valueList, options = {}) {
     if (setting) schema = schema.transform(hasInSettings(inject, !!context.settings?.[setting]))
 
     return schema.transform((params, ctx) => {
+      params = clearSourceMap(params)
+
       if (get(possibleValues))
         values = values.filter(v => get(possibleValues).includes(v))
       else if (setting && context.settings[setting] !== true)
@@ -27,7 +31,7 @@ export function SwitchSchema (inject, valueList, options = {}) {
       if (!values.includes(value)) value = defaultValue
 
       if (values.some(k => k in params))
-        if (values.every(k => k in params)) return wrapWithPlaceholderIfNeeded(env, params[value], [value])
+        if (values.every(k => k in params)) return params[value]
         else {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,

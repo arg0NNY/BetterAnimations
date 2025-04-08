@@ -2,11 +2,17 @@ import { z } from 'zod'
 import { InjectSchema } from '@/modules/animation/schemas/utils'
 import Inject from '@/enums/Inject'
 import { zodTransformErrorBoundary } from '@/utils/zod'
+import { clearSourceMap } from '@/modules/animation/sourceMap'
 
 const OperatorInjectSchema = (inject, fn) => InjectSchema(inject).extend({
   a: z.any(),
   b: z.any()
-}).transform(zodTransformErrorBoundary(({ a, b }) => fn(a, b)))
+}).transform(
+  zodTransformErrorBoundary(({ a, b }) => fn(
+    clearSourceMap(a),
+    clearSourceMap(b)
+  ))
+)
 
 export const AdditionOperatorInjectSchema = OperatorInjectSchema(Inject.AdditionOperator, (a, b) => a + b)
 export const DivisionOperatorInjectSchema = OperatorInjectSchema(Inject.DivisionOperator, (a, b) => a / b)

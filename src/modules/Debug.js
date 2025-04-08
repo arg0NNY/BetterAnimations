@@ -46,11 +46,19 @@ export default class Debug {
     )
   }
 
-  debug (name, path, context, data) {
+  _inject (event, name, path, context, meta = {}) {
+    const visualized = visualizeAddonPath(context.pack, path.concat('inject'))
     return this._system(
+      event,
+      `'${name}' at "${toPath(path)}"` + (visualized ? '\n' + visualized : ''),
+      meta
+    )
+  }
+
+  debug (name, path, context, data) {
+    return this._inject(
       'Debug',
-      `'${name}' at "${toPath(path)}"\n`
-      + visualizeAddonPath(context.pack, path.concat('inject')),
+      name, path, context,
       {
         context: snapshotContext(context),
         data: sanitizeInjectable(data)
@@ -63,10 +71,9 @@ export default class Debug {
 
     const contextSnapshot = snapshotContext(context)
 
-    const report = output => this._system(
+    const report = output => this._inject(
       'Inject parsed',
-      `'${name}' at "${toPath(path)}"\n`
-      + visualizeAddonPath(context.pack, path.concat('inject')),
+      name, path, context,
       {
         context: contextSnapshot,
         received: sanitizeInjectable(received),
@@ -80,10 +87,9 @@ export default class Debug {
   lazyInjectCall (name, path, args, context) {
     if (!this.isEnabled) return
 
-    return this._system(
+    return this._inject(
       'Lazy inject called',
-      `'${name}' at "${toPath(path)}"\n`
-      + visualizeAddonPath(context.pack, path.concat('inject')),
+      name, path, context,
       {
         context: snapshotContext(context),
         arguments: args
