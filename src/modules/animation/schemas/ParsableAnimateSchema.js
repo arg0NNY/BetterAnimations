@@ -43,7 +43,7 @@ const safeInjects = [
   Inject.Switch
 ]
 
-const executeOnlyInjects = [
+const layoutDependentInjects = [
   Inject.Hast
 ]
 
@@ -134,19 +134,19 @@ export const AnimeSchema = ParsableSchema(
 )
 
 export const ParsableAnimateSchema = (context, env) => {
-  const beforeCreateEnv = Object.assign({ disallowed: executeOnlyInjects }, env)
-  const layoutEnv = Object.assign({ allowed: safeInjects, disallowed: executeOnlyInjects }, env)
+  const preLayoutEnv = Object.assign({ disallowed: layoutDependentInjects }, env)
+  const layoutEnv = Object.assign({ allowed: safeInjects, disallowed: layoutDependentInjects }, env)
 
   return SourceMappedObjectSchema.extend({
-    onBeforeCreate: HookSchema(context, beforeCreateEnv, ParseStage.BeforeCreate),
+    onBeforeCreate: HookSchema(context, preLayoutEnv, ParseStage.BeforeCreate),
     hast: HastSchema(context, layoutEnv),
     css: CssSchema(context, layoutEnv),
     anime: AnimeSchema(context, env),
     onCreated: HookSchema(context, env, ParseStage.Created),
     onBeforeBegin: HookSchema(context, env, ParseStage.BeforeBegin),
     onCompleted: HookSchema(context, env, ParseStage.Completed),
-    onBeforeDestroy: HookSchema(context, env, ParseStage.BeforeDestroy),
-    onDestroyed: HookSchema(context, env, ParseStage.Destroyed),
+    onBeforeDestroy: HookSchema(context, preLayoutEnv, ParseStage.BeforeDestroy),
+    onDestroyed: HookSchema(context, preLayoutEnv, ParseStage.Destroyed),
   }).strict()
 }
 
