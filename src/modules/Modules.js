@@ -107,7 +107,7 @@ class Module {
       error = err instanceof AnimationError ? err : new AnimationError(
         animation,
         formatZodError(err, { pack, data, context, received: false }),
-        { module: this, pack, type, context, stage: 'Initialize' }
+        { module: this, pack, type, context }
       )
       ErrorManager.registerAnimationError(error)
     }

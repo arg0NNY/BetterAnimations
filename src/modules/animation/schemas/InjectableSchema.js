@@ -135,7 +135,7 @@ const InjectableSchema = (context, env = {}) => {
                       error instanceof AnimationError ? error : new AnimationError(
                         context.animation,
                         formatZodError(error, { pack: context.pack, data: value, context, path: ctx.path }),
-                        { module: context.module, pack: context.pack, type: context.type, context, stage: 'Lazy' }
+                        { module: context.module, pack: context.pack, type: context.type, context }
                       )
                     )
                     context.instance.cancel(true)

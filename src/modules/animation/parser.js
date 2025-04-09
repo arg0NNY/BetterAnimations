@@ -90,7 +90,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
   const debug = context.animation ? Debug.animation(context.animation, context.type) : null
   debug?.parseStart(data, context)
 
-  const parseStage = (stage, stageName) => {
+  const parseStage = stage => {
     try {
       data = data ? ParsableAnimateSchema(context, { stage })
         .parse(data, { path: context.path }) : {}
@@ -101,7 +101,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
         error instanceof AnimationError ? error : new AnimationError(
           context.animation,
           formatZodError(error, { pack: context.pack, data, context }),
-          { module: context.module, pack: context.pack, type: context.type, context, stage: stageName }
+          { module: context.module, pack: context.pack, type: context.type, context }
         )
       )
       context.instance.cancel(true)
@@ -109,18 +109,22 @@ export function buildAnimateAssets (data = null, context, options = {}) {
     }
   }
 
-  if (!parseStage(ParseStage.BeforeCreate, 'BeforeCreate')) return {}
+  const hook = (name, stage) => {
+    debug?.hook(name, context)
+    if (!parseStage(stage)) return false
+    data[name]?.()
+    return !context.instance.cancelled
+  }
 
-  debug?.hook('onBeforeCreate', context)
-  data.onBeforeCreate?.()
-  // No need to check the cancellation here because we still need to parse `onBeforeDestroy` and `onDestroyed`
-  // `AnimationStore` will detect the cancellation as soon as we stop parsing
+  parsing: {
+    if (!hook('onBeforeCreate', ParseStage.BeforeCreate)) break parsing
 
-  if (!parseStage(ParseStage.Layout, 'Layout')) return {}
+    if (!parseStage(ParseStage.Layout)) break parsing
 
-  context.wrapper = data ? buildWrapper(data, context) : null
+    context.wrapper = data ? buildWrapper(data, context) : null
 
-  if (!parseStage(ParseStage.Execute, 'Execute')) return {}
+    if (!parseStage(ParseStage.Anime)) break parsing
+  }
 
   debug?.parseEnd(data, context)
 
@@ -133,17 +137,16 @@ export function buildAnimateAssets (data = null, context, options = {}) {
   const instance = before?.execute() ?? after?.execute() ?? null
   instance?.pause()
 
-  const exposedHook = hook => () => {
-    debug?.hook(hook, context)
-    data[hook]?.()
-    before?.[hook]?.()
-    after?.[hook]?.()
+  const sharedHook = (name, stage) => () => {
+    before?.[name]?.()
+    after?.[name]?.()
+    return hook(name, stage)
   }
 
   return {
     wrapper: context.wrapper,
-    onBeforeDestroy: exposedHook('onBeforeDestroy'),
-    onDestroyed: exposedHook('onDestroyed'),
+    onBeforeDestroy: sharedHook('onBeforeDestroy', ParseStage.BeforeDestroy),
+    onDestroyed: sharedHook('onDestroyed', ParseStage.Destroyed),
     execute: () => {
       const config = clearSourceMapDeep(data.anime)
       const instances = [].concat(config ?? []).map(
@@ -173,17 +176,14 @@ export function buildAnimateAssets (data = null, context, options = {}) {
       context.instance.pause = pauseAll
       if (context.instance.cancelled) return {}
 
-      debug?.hook('onCreated', context)
-      data.onCreated?.()
-      if (context.instance.cancelled) return {}
+      if (!hook('onCreated', ParseStage.Created)) return {}
 
       if (before) {
         pauseAll()
 
         instance.finished.then(() => {
           before.onCompleted?.()
-          debug?.hook('onBeforeBegin', context)
-          data.onBeforeBegin?.()
+          hook('onBeforeBegin', ParseStage.BeforeBegin)
           instances.slice(1).forEach(i => {
             i.reset()
             i.play()
@@ -202,16 +202,11 @@ export function buildAnimateAssets (data = null, context, options = {}) {
 
       return {
         instances,
-        onBeforeBegin: !before ? () => {
-          debug?.hook('onBeforeBegin', context)
-          data.onBeforeBegin?.()
-        } : null,
+        onBeforeBegin: !before ? () => hook('onBeforeBegin', ParseStage.BeforeBegin) : null,
         pause: pauseAll,
         finished: finished
           .then(() => {
-            debug?.hook('onCompleted', context)
-            data.onCompleted?.()
-            if (context.instance.cancelled) return
+            if (!hook('onCompleted', ParseStage.Completed)) return
 
             if (after) {
               instance.reset()

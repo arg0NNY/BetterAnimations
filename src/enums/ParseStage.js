@@ -4,6 +4,11 @@ export default Enum([
   'Initialize',
   'BeforeCreate',
   'Layout',
-  'Execute',
+  'Anime',
+  'Created',
+  'BeforeBegin',
+  'Completed',
+  'BeforeDestroy',
+  'Destroyed',
   'Lazy'
 ])

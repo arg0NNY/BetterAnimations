@@ -66,7 +66,7 @@ const ParsableSchema = (stage, schema) => (context, env) =>
       }
     })
 
-export const HookSchema = (context, env, stage = ParseStage.Execute) => ParsableSchema(
+export const HookSchema = (context, env, stage) => ParsableSchema(
   stage,
   context => ArrayOrSingleSchema(z.function())
     .transform((value, ctx) => {
@@ -121,7 +121,7 @@ export const CssSchema = ParsableSchema(
 )
 
 export const AnimeSchema = ParsableSchema(
-  ParseStage.Execute,
+  ParseStage.Anime,
   ArrayOrSingleSchema(
     z.union([
       z.record(z.any()),
@@ -142,11 +142,11 @@ export const ParsableAnimateSchema = (context, env) => {
     hast: HastSchema(context, layoutEnv),
     css: CssSchema(context, layoutEnv),
     anime: AnimeSchema(context, env),
-    onCreated: HookSchema(context, env),
-    onBeforeBegin: HookSchema(context, env),
-    onCompleted: HookSchema(context, env),
-    onBeforeDestroy: HookSchema(context, env),
-    onDestroyed: HookSchema(context, env),
+    onCreated: HookSchema(context, env, ParseStage.Created),
+    onBeforeBegin: HookSchema(context, env, ParseStage.BeforeBegin),
+    onCompleted: HookSchema(context, env, ParseStage.Completed),
+    onBeforeDestroy: HookSchema(context, env, ParseStage.BeforeDestroy),
+    onDestroyed: HookSchema(context, env, ParseStage.Destroyed),
   }).strict()
 }
 
