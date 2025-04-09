@@ -12,7 +12,7 @@ import AnimationType from '@/enums/AnimationType'
 import ModuleKey from '@/enums/ModuleKey'
 import Mouse from '@/modules/Mouse'
 import ModuleType from '@/enums/ModuleType'
-import { getPath } from '@/utils/json'
+import { getPath, parsePath } from '@/utils/json'
 import { zodTransformErrorBoundary } from '@/utils/zod'
 import Debug from '@/modules/Debug'
 import {
@@ -22,6 +22,7 @@ import {
   sourceMappedObjectAssign,
   SELF_KEY
 } from '@/modules/animation/sourceMap'
+import { restrictForbiddenKeys } from '@/modules/animation/keys'
 
 export const ElementInjectSchema = ({ element }) => ElementSchema(Inject.Element, element)
 
@@ -133,12 +134,18 @@ export const DebugInjectSchema = InjectWithMeta(
 )
 
 export const VarGetInjectSchema = ({ vars }) => InjectSchema(Inject.VarGet).extend({
-  name: z.string()
+  name: z.string().refine(
+    restrictForbiddenKeys,
+    name => ({ message: `Forbidden variable name: '${name}'` })
+  )
 }).transform(({ name }) => vars[name])
 
 export const VarSetInjectSchema = InjectWithMeta(
   ({ vars }) => InjectSchema(Inject.VarSet).extend({
-    name: z.string(),
+    name: z.string().refine(
+      restrictForbiddenKeys,
+      name => ({ message: `Forbidden variable name: '${name}'` })
+    ),
     value: z.any()
   }).transform(({ name, value }) => { vars[name] = value }),
   { lazy: true }
@@ -191,10 +198,23 @@ export const IsIntersectedInjectSchema = InjectWithMeta(
 
 export const GetInjectSchema = InjectSchema(Inject.Get).extend({
   target: z.record(z.any()),
-  key: z.string().optional(),
-  path: z.string().startsWith('/', 'JSON Pointer must begin with `/`').optional()
+  key: z.string().refine(
+    restrictForbiddenKeys,
+    key => ({ message: `Forbidden key: '${key}'` })
+  ).optional(),
+  path: z.string()
+    .startsWith('/', 'JSON Pointer must begin with `/`')
+    .superRefine((path, ctx) => {
+      path = parsePath(path)
+      const index = path.findIndex(i => !restrictForbiddenKeys(i))
+      if (index === -1) return
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Forbidden key '${path[index]}' at index ${index} in JSON Pointer`
+      })
+    })
+    .optional()
 }).transform(({ target, key, path }) => {
-  target = clearSourceMapDeep(target)
   if (key) return target[key]
   if (path) return getPath(target, path)
   return target

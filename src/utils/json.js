@@ -5,17 +5,16 @@ function getKey (key) {
   return intKey.toString() === key ? intKey : key
 }
 
+export function parsePath (path) {
+  if (!path.startsWith('/')) throw new Error('JSON Pointer must begin with `/`')
+  return path.split('/').slice(1).map(
+    k => k.replaceAll('~0', '~')
+      .replaceAll('~1', '/')
+  )
+}
+
 export function getPath (obj, path) {
-  if (typeof path === 'string') {
-    if (!path.startsWith('/')) throw new Error('JSON Pointer must begin with `/`')
-    return getPath(
-      obj,
-      path.split('/').slice(1).map(
-        k => k.replaceAll('~0', '~')
-          .replaceAll('~1', '/')
-      )
-    )
-  }
+  if (typeof path === 'string') return getPath(obj, parsePath(path))
   if (!path.length) return obj
   if (typeof obj !== 'object' || obj === null) return undefined
 
