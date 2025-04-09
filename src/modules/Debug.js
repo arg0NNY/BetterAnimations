@@ -105,7 +105,7 @@ export default class Debug {
       null,
       {
         context: snapshotContext(context),
-        received
+        received: sanitizeInjectable(received)
       }
     )
   }
@@ -123,12 +123,12 @@ export default class Debug {
     )
   }
 
-  parseStart (received, context) {
+  parseStart (stage, received, context) {
     if (!this.isEnabled) return
 
     return this._system(
       'Parsing started',
-      null,
+      stage,
       {
         context: snapshotContext(context),
         received: sanitizeInjectable(received)
@@ -136,12 +136,12 @@ export default class Debug {
     )
   }
 
-  parseEnd (result, context) {
+  parseEnd (stage, result, context) {
     if (!this.isEnabled) return
 
     return this._system(
       'Parsing completed',
-      null,
+      stage,
       {
         context: snapshotContext(context),
         result: sanitizeInjectable(result)

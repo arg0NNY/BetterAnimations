@@ -88,12 +88,14 @@ export function buildWrapper (data, context) {
 export function buildAnimateAssets (data = null, context, options = {}) {
   context = context ?? {}
   const debug = context.animation ? Debug.animation(context.animation, context.type) : null
-  debug?.parseStart(data, context)
 
   const parseStage = stage => {
+    debug?.parseStart(stage, data, context)
     try {
       data = data ? ParsableAnimateSchema(context, { stage })
         .parse(data, { path: context.path }) : {}
+
+      debug?.parseEnd(stage, data, context)
       return true
     }
     catch (error) {
@@ -125,8 +127,6 @@ export function buildAnimateAssets (data = null, context, options = {}) {
 
     if (!parseStage(ParseStage.Anime)) break parsing
   }
-
-  debug?.parseEnd(data, context)
 
   const before = options.before && context.type === AnimationType.Enter
     ? options.before(context)
