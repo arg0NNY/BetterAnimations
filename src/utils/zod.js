@@ -34,12 +34,13 @@ export function formatZodError (error, options = {}) {
     data = pack,
     context,
     path = context?.path ?? [],
-    received = !!data
+    received = !!data,
+    sourceMap = {}
   } = options
 
   return '\n' + error.issues.map(issue => {
     const relativePath = issue.path.slice(path.length)
-    const sourcePath = toSourcePath(data, relativePath) ?? issue.path
+    const sourcePath = toSourcePath(data, relativePath, sourceMap) ?? issue.path
     let message = `• ${issue.message} at "${toPath(sourcePath)}"`
 
     if (received && !('received' in (issue.params ?? {}))) {

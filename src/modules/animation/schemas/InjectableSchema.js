@@ -51,7 +51,7 @@ function parseInject ({ schema, context, env, value, ctx }) {
   catch (error) {
     throw new AnimationError(
       context.animation,
-      formatZodError(error, { pack: context.pack, data: value, context, path: ctx.path }),
+      formatZodError(error, { pack: context.pack, data: value, context, path: ctx.path, sourceMap: { useSelf: true } }),
       { module: context.module, pack: context.pack, type: context.type, context }
     )
   }
@@ -139,7 +139,7 @@ const InjectableSchema = (context, env = {}) => {
                     ErrorManager.registerAnimationError(
                       error instanceof AnimationError ? error : new AnimationError(
                         context.animation,
-                        formatZodError(error, { pack: context.pack, data: value, context, path: ctx.path }),
+                        formatZodError(error, { pack: context.pack, data: value, context, path: ctx.path, sourceMap: { useSelf: true } }),
                         { module: context.module, pack: context.pack, type: context.type, context }
                       )
                     )

@@ -74,10 +74,11 @@ export function getSourcePath (target, key) {
   return getSourceMap(target)?.[key]
 }
 
-export function toSourcePath (data, path = []) {
+export function toSourcePath (data, path = [], options = {}) {
+  const { useSelf = false } = options
   return getSourcePath(
     getPath(data, path.slice(0, -1)),
-    path[path.length - 1]
+    path[path.length - 1] ?? (useSelf ? SELF_KEY : undefined)
   )
 }
 
