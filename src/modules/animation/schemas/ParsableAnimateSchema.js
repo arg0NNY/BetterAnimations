@@ -142,6 +142,7 @@ export const ParsableAnimateSchema = (context, env) => {
     onBeforeLayout: HookSchema(context, preLayoutEnv, ParseStage.BeforeLayout),
     hast: HastSchema(context, layoutEnv),
     css: CssSchema(context, layoutEnv),
+    onBeforeCreate: HookSchema(context, env, ParseStage.BeforeCreate),
     anime: AnimeSchema(context, env),
     onCreated: HookSchema(context, env, ParseStage.Created),
     onBeforeBegin: HookSchema(context, env, ParseStage.BeforeBegin),

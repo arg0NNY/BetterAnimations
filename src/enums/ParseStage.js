@@ -4,6 +4,7 @@ export default Enum({
   Initialize: 'Initialize',
   BeforeLayout: 'BeforeLayout',
   Layout: 'Layout',
+  BeforeCreate: 'BeforeCreate',
   Anime: 'Anime',
   Created: 'Created',
   BeforeBegin: 'BeforeBegin',

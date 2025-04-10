@@ -7,6 +7,7 @@ const AnimateSchema = z.object({
   onBeforeLayout: ArrayOrSingleObjectSchema,
   hast: ArrayOrSingleObjectSchema,
   css: ArrayOrSingleObjectSchema,
+  onBeforeCreate: ArrayOrSingleObjectSchema,
   anime: ArrayOrSingleObjectSchema,
   onCreated: ArrayOrSingleObjectSchema,
   onBeforeBegin: ArrayOrSingleObjectSchema,

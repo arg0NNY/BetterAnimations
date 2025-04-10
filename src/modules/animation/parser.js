@@ -136,8 +136,9 @@ export function buildAnimateAssets (data = null, context, options = {}) {
     if (!hook('onBeforeLayout', ParseStage.BeforeLayout)) break parsing
 
     if (!parseStage(ParseStage.Layout)) break parsing
-
     context.wrapper = data ? buildWrapper(data, context) : null
+
+    if (!hook('onBeforeCreate', ParseStage.BeforeCreate)) break parsing
 
     if (!parseStage(ParseStage.Anime)) break parsing
   }
