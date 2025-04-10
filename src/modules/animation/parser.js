@@ -112,8 +112,8 @@ export function buildAnimateAssets (data = null, context, options = {}) {
   }
 
   const hook = (name, stage) => {
-    if (!(name in (data ?? {}))) return true
     debug?.hook(name, context)
+    if (!(name in (data ?? {}))) return true
     if (!parseStage(stage)) return false
     data[name]?.()
     return !context.instance.cancelled
