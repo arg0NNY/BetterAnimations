@@ -32,10 +32,7 @@ const SanitizeInjectableSchema = z.lazy(
     }
 
     if (typeof value === 'function' && value[hookSymbol])
-      return createFunctionPlaceholder(
-        'hook',
-        'Omitted hook (awaiting execution)'
-      )
+      return sanitizeInjectable(value[hookSymbol])
 
     if (typeof value === 'function' && value[zodErrorBoundarySymbol])
       return createFunctionPlaceholder(
@@ -43,10 +40,18 @@ const SanitizeInjectableSchema = z.lazy(
       )
 
     if (typeof value === 'function' && value[animeTimelineInjectSymbol])
-      return value[animeTimelineInjectSymbol]
+      return sanitizeInjectable(value[animeTimelineInjectSymbol])
 
     return value
   })
 )
 
 export default SanitizeInjectableSchema
+
+export function sanitizeInjectable (injectable) {
+  try {
+    return SanitizeInjectableSchema.parse(injectable)
+  } catch {
+    return injectable
+  }
+}

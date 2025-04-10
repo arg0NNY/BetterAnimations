@@ -7,8 +7,8 @@ function AnimeContainer ({ container, children }, ref) {
   return (
     <div
       ref={ref}
-      data-animation-container=""
-      data-default-layout-styles={defaultLayoutStyles}
+      data-ba-container=""
+      data-ba-default-layout-styles={defaultLayoutStyles}
       {...props}
     >
       {children}

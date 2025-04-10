@@ -19,13 +19,13 @@ class AnimeTransition extends Component {
   getTargetNodes (container) {
     if (container && this.props.targetContainer) {
       container = this.props.targetContainer(container)
-      container?.setAttribute('data-animation-container', '')
+      container?.setAttribute('data-ba-container', '')
     }
 
     return {
       container: container,
-      node: container?.getAttribute('data-animation-container') === ''
-        ? [].find.call(container.childNodes, e => !e.getAttribute('data-animation'))
+      node: container?.getAttribute('data-ba-container') === ''
+        ? [].find.call(container.childNodes, e => !e.getAttribute('data-baa'))
         : container
     }
   }
@@ -88,29 +88,29 @@ class AnimeTransition extends Component {
 export default AnimeTransition
 
 css
-`[data-animation-container][data-animation-type] { /* Container while animation is running */
+`[data-ba-container][data-baa-type] { /* Container while animation is running */
     position: relative;
     background: none;
 }
 
-[data-animation] {
+[data-baa] {
     display: contents;
 }
-[data-animation] > * {
+[data-baa] > * {
     position: absolute;
 }
 
-[data-animation-type="exit"] {
+[data-baa-type="exit"] {
     pointer-events: none;
 }
 
-[data-animation-container][data-animation-overflow="false"] {
+[data-ba-container][data-baa-overflow="false"] {
     overflow: clip;
 }
-[data-animation-container][data-animation-switch] > :not([data-animation]) { /* Animating switch element */
+[data-ba-container][data-baa-switch] > :not([data-baa]) { /* Animating switch element */
     isolation: isolate;
 }
-[data-animation-container][data-animation-switch][data-animation-type="exit"]:not([data-default-layout-styles="false"]) { /* Exiting switch container */
+[data-ba-container][data-baa-switch][data-baa-type="exit"]:not([data-ba-default-layout-styles="false"]) { /* Exiting switch container */
     position: absolute !important;
     inset: 0;
 }`

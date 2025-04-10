@@ -25,9 +25,9 @@ class Animation {
   }
 
   applyAttributes () {
-    this.container.setAttribute('data-animation-type', this.type)
-    if (this.context) this.container.setAttribute('data-animation-overflow', this.context.overflow)
-    if (this.module.type) this.container.setAttribute(`data-animation-${this.module.type}`, '')
+    this.container.setAttribute('data-baa-type', this.type)
+    if (this.context) this.container.setAttribute('data-baa-overflow', this.context.overflow)
+    if (this.module.type) this.container.setAttribute(`data-baa-${this.module.type}`, '')
   }
 
   initialize (callback, allowed, intersect = false) {
@@ -115,7 +115,7 @@ class Animation {
     const callback = () => {
       this.wrapper?.remove()
 
-      ;[].filter.call(this.container.attributes, a => a.name !== 'data-animation-container' && a.name?.startsWith('data-animation'))
+      ;[].filter.call(this.container.attributes, a => a.name?.startsWith('data-baa'))
         .forEach(a => this.container.removeAttribute(a.name))
 
       this.onDestroyed?.()

@@ -1,7 +1,8 @@
 import Logger from '@/modules/Logger'
-import { sanitizeInjectable, snapshotContext } from '@/utils/animations'
+import { snapshotContext } from '@/utils/animations'
 import { toPath, visualizeAddonPath } from '@/utils/json'
 import { capitalize } from '@/utils/text'
+import { sanitizeInjectable } from '@/modules/animation/schemas/SanitizeInjectableSchema'
 
 export default class Debug {
   constructor ({ animation, animationType }) {
@@ -20,11 +21,11 @@ export default class Debug {
     return import.meta.env.MODE === 'development'
   }
 
-  _log (message, ...data) {
+  __log (type, message, ...data) {
     if (this.animation)
       return Logger.stylized(
         'Animation',
-        'log',
+        type,
         `%c${this.animation.key} (${this.animationType}) %c[DEBUG]%c ` + message,
         'color: #B8AF5E;',
         'color: #6BA6FF;',
@@ -32,11 +33,15 @@ export default class Debug {
         ...data
       )
 
-    return Logger.log('Debug', message, ...data)
+    return Logger[type]('Debug', message, ...data)
   }
 
-  _system (event, message = null, meta = {}) {
-    return this._log(
+  _log (message, ...data) { return this.__log('log', message, ...data) }
+  _warn (message, ...data) { return this.__log('warn', message, ...data) }
+  _error (message, ...data) { return this.__log('error', message, ...data) }
+
+  _system (event, message = null, meta = {}, type = 'log') {
+    return this[`_${type}`](
       `%c${event}%c` + (message ? `: ${message}` : ''),
       'font-weight: bold;',
       '',
@@ -46,13 +51,19 @@ export default class Debug {
     )
   }
 
-  _inject (event, name, path, context, meta = {}) {
-    const visualized = visualizeAddonPath(context.pack, path.concat('inject'))
+  _visualized (event, name, path, context, meta = {}, options = {}) {
+    const { type, ...visOptions } = options
+    const visualized = visualizeAddonPath(context.pack, path, visOptions)
     return this._system(
       event,
       `'${name}' at "${toPath(path)}"` + (visualized ? '\n' + visualized : ''),
-      meta
+      meta,
+      type
     )
+  }
+
+  _inject (event, name, path, context, meta = {}, options = {}) {
+    return this._visualized(event, name, path.concat('inject'), context, meta, options)
   }
 
   debug (name, path, context, data) {
@@ -63,6 +74,15 @@ export default class Debug {
         context: snapshotContext(context),
         data: sanitizeInjectable(data)
       }
+    )
+  }
+
+  invalidSelector (selector, path, context) {
+    return this._visualized(
+      'Invalid selector',
+      selector, path, context,
+      { context: snapshotContext(context) },
+      { type: 'warn', pointAt: 'key' }
     )
   }
 

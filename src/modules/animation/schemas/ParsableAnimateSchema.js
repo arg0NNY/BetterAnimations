@@ -84,7 +84,7 @@ export const HookSchema = (context, env, stage) => ParsableSchema(
           }
         })
       }, context, ctx)
-      hook[hookSymbol] = true
+      hook[hookSymbol] = value
       return hook
     })
     .optional()

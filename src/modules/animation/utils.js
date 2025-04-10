@@ -13,7 +13,7 @@ function buildStyles (styles) {
 
 export function buildCSS (data, transformSelector = s => s) {
   return Object.entries(data).reduce(
-    (css, [selector, styles]) => css + `${transformSelector(selector.trim())} {\n${buildStyles(styles)}}\n`,
+    (css, [selector, styles], index) => css + `${transformSelector(selector.trim(), index)} {\n${buildStyles(styles)}}\n`,
     '\n'
   )
 }

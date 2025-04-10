@@ -1,6 +1,6 @@
 import { omit, pick } from '@/utils/object'
 import cloneDeep from 'lodash-es/cloneDeep'
-import SanitizeInjectableSchema from '@/modules/animation/schemas/SanitizeInjectableSchema'
+import { sanitizeInjectable } from '@/modules/animation/schemas/SanitizeInjectableSchema'
 
 export function getAnimationDefaultSettings (animation, type) {
   return animation.settings?.defaults?.[type] ?? animation.settings?.defaults ?? {}
@@ -15,13 +15,4 @@ export function sanitizeContext (context) {
 
 export function snapshotContext (context) {
   return cloneDeep(sanitizeContext(context))
-}
-
-export function sanitizeInjectable (injectable) {
-  try {
-    return SanitizeInjectableSchema.parse(injectable)
-  }
-  catch {
-    return injectable
-  }
 }

@@ -12,7 +12,7 @@ import Setting from '@/enums/AnimationSetting'
 import { EasingType } from '@/enums/Easing'
 import { getDuration } from '@/utils/easings'
 import { MAX_ANIMATION_DURATION, MIN_ANIMATION_DURATION } from '@/data/constants'
-import { clearSourceMapDeep } from '@/modules/animation/sourceMap'
+import { clearSourceMapDeep, getSourcePath } from '@/modules/animation/sourceMap'
 
 function buildDurationContext (animation, settings) {
   const easing = settings?.[Setting.Easing]
@@ -57,31 +57,44 @@ export function buildWrapper (data, context) {
   const id = `${context.module.id}-${context.type}-${Date.now()}`
   const wrapper = document.createElement('div')
 
-  wrapper.setAttribute('data-animation', id)
-
-  let style
-  if (data.css) {
-    const parent = `[data-animation="${id}"]`
-    style = [].concat(
-      clearSourceMapDeep(data.css)
-    ).map(css => {
-      const element = document.createElement('style')
-      element.appendChild(document.createTextNode(
-        buildCSS(css, s => {
-          if (s.startsWith('{element}')) return s.replace('{element}', `${parent} + *`)
-          if (s === '{container}') return `[data-animation-container]:has(> ${parent})`
-          return `${parent} :is(${s})`
-        })
-      ))
-      return element
-    })
-  }
+  wrapper.setAttribute('data-baa', id)
 
   wrapper.append(
-    ...[].concat(data.hast)
-      .concat(style)
-      .filter(i => i instanceof Element)
+    ...[].concat(data.hast).filter(i => i instanceof Element)
   )
+
+  if (data.css) {
+    const parent = `[data-baa="${id}"]`
+    wrapper.append(
+      ...[].concat(
+        data.css
+      ).map((css, cssIndex) => {
+        const element = document.createElement('style')
+        element.appendChild(document.createTextNode(
+          buildCSS(
+            clearSourceMapDeep(css),
+            (selector, selectorIndex) => {
+              if (selector === '{element}') return `${parent} + *`
+              if (selector === '{container}') return `[data-ba-container]:has(> ${parent})`
+
+              const attribute = `data-baa-${id}-${cssIndex}-${selectorIndex}`
+              try {
+                wrapper.querySelectorAll(selector)
+                  .forEach(e => e.setAttribute(attribute, ''))
+              }
+              catch {
+                Debug.animation(context.animation, context.type)
+                  .invalidSelector(selector, getSourcePath(css, selector) ?? context.path.concat('css'), context)
+              }
+              return `[${attribute}]`
+            }
+          )
+        ))
+        return element
+      })
+    )
+  }
+
   return wrapper
 }
 
