@@ -3,13 +3,14 @@ import { generatedLazyInjectSymbol, isLazyInject } from '@/modules/animation/sch
 import { animeTimelineInjectSymbol } from '@/modules/animation/schemas/injects/anime'
 import { clearSourceMap, isSourceMap } from '@/modules/animation/sourceMap'
 import ObjectDeepSchema from '@/modules/animation/schemas/ObjectDeepSchema'
+import { zodErrorBoundarySymbol } from '@/modules/animation/utils'
 
 export const hookSymbol = Symbol('hook')
 
 function createFunctionPlaceholder (name, readme) {
   const fn = function () {}
   Object.defineProperty(fn, 'name', { value: name, writable: false })
-  fn.README = readme
+  if (readme) fn.README = readme
   return fn
 }
 
@@ -34,6 +35,11 @@ const SanitizeInjectableSchema = z.lazy(
       return createFunctionPlaceholder(
         'hook',
         'Omitted hook (awaiting execution)'
+      )
+
+    if (typeof value === 'function' && value[zodErrorBoundarySymbol])
+      return createFunctionPlaceholder(
+        value[zodErrorBoundarySymbol]
       )
 
     if (typeof value === 'function' && value[animeTimelineInjectSymbol])

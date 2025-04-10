@@ -45,22 +45,23 @@ export function executeWithZod (value, fn, context, options = {}) {
   }
 }
 
+export const zodErrorBoundarySymbol = Symbol('zodErrorBoundary')
 export function zodErrorBoundary (fn, context, options = {}) {
-  const { name, ...opts } = options
+  const { name = 'untitled', ...opts } = options
 
-  return trust(
-    (...args) => executeWithZod(args, (args, ctx) => {
-      try {
-        return fn(...args)
-      }
-      catch (error) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: `An error occurred while executing ${name ? `"${name}"` : 'an external function'}`,
-          params: { error, args }
-        })
-        return z.NEVER
-      }
-    }, context, opts)
-  )
+  const boundary = (...args) => executeWithZod(args, (args, ctx) => {
+    try {
+      return fn(...args)
+    }
+    catch (error) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `An error occurred while executing ${name ? `"${name}"` : 'an external function'}`,
+        params: { error, args }
+      })
+      return z.NEVER
+    }
+  }, context, opts)
+  boundary[zodErrorBoundarySymbol] = name
+  return trust(boundary)
 }

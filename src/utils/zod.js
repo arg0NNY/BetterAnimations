@@ -70,7 +70,12 @@ export function formatZodError (error, options = {}) {
       message += indent(
         `\n↪ Received arguments: `
         + indent(
-          '(' + objectInspect(issue.params.args, { indent: 2 }).slice(1, -1) + ')'
+          '('
+            + objectInspect(
+                sanitizeInjectable(issue.params.args),
+                { indent: 2 }
+              ).slice(1, -1)
+            + ')'
         ).trim()
       )
     else if ('received' in (issue.params ?? {}))
