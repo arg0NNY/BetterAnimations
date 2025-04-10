@@ -205,6 +205,7 @@ export const GetInjectSchema = InjectSchema(Inject.Get).extend({
   path: z.string()
     .startsWith('/', 'JSON Pointer must begin with `/`')
     .superRefine((path, ctx) => {
+      if (!path.startsWith('/')) return
       path = parsePath(path)
       const index = path.findIndex(i => !restrictForbiddenKeys(i))
       if (index === -1) return

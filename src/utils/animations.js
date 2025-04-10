@@ -18,5 +18,10 @@ export function snapshotContext (context) {
 }
 
 export function sanitizeInjectable (injectable) {
-  return SanitizeInjectableSchema.parse(injectable)
+  try {
+    return SanitizeInjectableSchema.parse(injectable)
+  }
+  catch {
+    return injectable
+  }
 }

@@ -68,6 +68,10 @@ export const InjectableBaseSchema = (schema, extend = []) => z.union([
   z.record(schema)
 ])
 
+export const InjectableValidateSchema = z.lazy(
+  () => InjectableBaseSchema(InjectableValidateSchema)
+)
+
 const InjectableSchema = (context, env = {}) => {
   const { allowed, disallowed, stage } = env
 
@@ -167,6 +171,14 @@ const InjectableSchema = (context, env = {}) => {
         })
       }
     })
+      .superRefine((value, ctx) => {
+        const { success } = InjectableValidateSchema.safeParse(value)
+        if (!success) ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Illegal value detected',
+          params: { received: value }
+        })
+      })
   )
 
   return schema
