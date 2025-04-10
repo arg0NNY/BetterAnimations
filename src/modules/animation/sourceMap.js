@@ -9,8 +9,10 @@ export const SELF_KEY = '__self'
 
 export const reservedKeys = [SOURCE_MAP_KEY, IS_SOURCE_MAP_KEY, SELF_KEY]
 
+const sourceMapSymbol = Symbol('sourceMap')
+
 export const SourceMapSchema = z.object({
-  [IS_SOURCE_MAP_KEY]: z.literal(true)
+  [IS_SOURCE_MAP_KEY]: z.literal(sourceMapSymbol)
 }).passthrough()
 
 export const SourceMappedObjectSchema = z.object({
@@ -46,7 +48,7 @@ export const StoreSourceMapDeepSchema = z.lazy(
 
 export function buildSourceMap (target = {}, path = undefined) {
   return Object.fromEntries([
-    [IS_SOURCE_MAP_KEY, true],
+    [IS_SOURCE_MAP_KEY, sourceMapSymbol],
     [SELF_KEY, path],
     ...Object.keys(target).map((key) => [key, (path ?? []).concat(key)])
   ])
@@ -58,7 +60,7 @@ export function storeSourceMap (target, path = undefined) {
 }
 
 export function isSourceMap (value) {
-  return value?.[IS_SOURCE_MAP_KEY] === true
+  return value?.[IS_SOURCE_MAP_KEY] === sourceMapSymbol
 }
 
 export function hasSourceMap (value) {

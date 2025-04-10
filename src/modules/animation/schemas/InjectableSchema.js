@@ -19,6 +19,7 @@ import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/ope
 import Debug from '@/modules/Debug'
 import { getSourcePath, isSourceMap, SELF_KEY, SourceMapSchema } from '@/modules/animation/sourceMap'
 import TrustedFunctionSchema, { trust } from '@/modules/animation/schemas/TrustedFunctionSchema'
+import { ObjectDeepBaseSchema } from '@/modules/animation/schemas/ObjectDeepSchema'
 
 const injectSchemas = {
   ...parseInjectSchemas(CommonInjectSchemas),
@@ -57,17 +58,8 @@ function parseInject ({ schema, context, env, value, ctx }) {
   }
 }
 
-export const InjectableBaseSchema = (schema, extend = []) => z.union([
-  Literal,
-  z.symbol(),
-  TrustedFunctionSchema, // Some injects return functions (anime.timeline, anime.setDashoffset, etc.)
-  z.instanceof(Element), // Prevent Zod from parsing Element
-  SourceMapSchema, // Prevent Zod from parsing SourceMap
-  LazyInjectSchema, // Prevent Zod from parsing LazyInject
-  ...extend,
-  z.array(schema),
-  z.record(schema)
-])
+export const InjectableBaseSchema = (schema, extend = []) =>
+  ObjectDeepBaseSchema(schema, [TrustedFunctionSchema, ...extend])
 
 export const InjectableValidateSchema = z.lazy(
   () => InjectableBaseSchema(InjectableValidateSchema)
