@@ -18,6 +18,7 @@ import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
 import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/operators'
 import Debug from '@/modules/Debug'
 import { getSourcePath, isSourceMap, SELF_KEY, SourceMapSchema } from '@/modules/animation/sourceMap'
+import TrustedFunctionSchema, { trust } from '@/modules/animation/schemas/TrustedFunctionSchema'
 
 const injectSchemas = {
   ...parseInjectSchemas(CommonInjectSchemas),
@@ -59,7 +60,7 @@ function parseInject ({ schema, context, env, value, ctx }) {
 export const InjectableBaseSchema = (schema, extend = []) => z.union([
   Literal,
   z.symbol(),
-  z.instanceof(Function), // Some injects return functions (anime.timeline, anime.setDashoffset, etc.)
+  TrustedFunctionSchema, // Some injects return functions (anime.timeline, anime.setDashoffset, etc.)
   z.instanceof(Element), // Prevent Zod from parsing Element
   SourceMapSchema, // Prevent Zod from parsing SourceMap
   LazyInjectSchema, // Prevent Zod from parsing LazyInject
@@ -83,7 +84,7 @@ const InjectableSchema = (context, env = {}) => {
         if (isLazyInject(value)) { // A parsed lazy inject, which turned into a generator function, awaiting a complete context
           const generated = value.generator(context, env)
           generated[generatedLazyInjectSymbol] = value.name
-          return generated
+          return trust(generated)
         }
 
         if (value?.inject === undefined)
@@ -175,7 +176,7 @@ const InjectableSchema = (context, env = {}) => {
         const { success } = InjectableValidateSchema.safeParse(value)
         if (!success) ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Illegal value detected',
+          message: 'Illegal value',
           params: { received: value }
         })
       })

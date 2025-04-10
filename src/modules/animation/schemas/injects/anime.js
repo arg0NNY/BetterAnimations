@@ -6,6 +6,7 @@ import Inject from '@/enums/Inject'
 import { zodTransformErrorBoundary } from '@/utils/zod'
 import { transformAnimeConfig, zodErrorBoundary } from '@/modules/animation/utils'
 import { clearSourceMapDeep, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
+import { trust } from '@/modules/animation/schemas/TrustedFunctionSchema'
 
 export const AnimeStaggerInjectSchema = context => InjectSchema(Inject.AnimeStagger).extend({
   value: Defined,
@@ -41,7 +42,7 @@ export const AnimeTimelineInjectSchema = InjectWithMeta(
       return tl
     }
     fn[animeTimelineInjectSymbol] = params
-    return fn
+    return trust(fn)
   }),
   {
     allowed: ({ context, ctx }) => {

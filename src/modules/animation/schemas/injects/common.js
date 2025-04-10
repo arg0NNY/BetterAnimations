@@ -23,6 +23,7 @@ import {
   SELF_KEY
 } from '@/modules/animation/sourceMap'
 import { restrictForbiddenKeys } from '@/modules/animation/keys'
+import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
 
 export const ElementInjectSchema = ({ element }) => ElementSchema(Inject.Element, element)
 
@@ -105,7 +106,7 @@ export const UndefinedInjectSchema = InjectWithMeta(
 
 export const FunctionInjectSchema = InjectWithMeta(
   InjectSchema(Inject.Function).extend({
-    functions: z.array(z.function()).optional(),
+    functions: z.array(TrustedFunctionSchema).optional(),
     'return': z.any().optional()
   }).transform(zodTransformErrorBoundary(
     ({ functions, 'return': returnValue }) => {
@@ -152,7 +153,7 @@ export const VarSetInjectSchema = InjectWithMeta(
 )
 
 export const CallInjectSchema = InjectSchema(Inject.Call).extend({
-  function: z.function(),
+  function: TrustedFunctionSchema,
   args: ArrayOrSingleSchema(z.any()).optional()
 }).transform(zodTransformErrorBoundary(
   ({ function: fn, args }) => fn(

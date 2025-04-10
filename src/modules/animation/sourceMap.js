@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { Literal } from '@/utils/schemas'
 import { getPath } from '@/utils/object'
-import { InjectableBaseSchema } from '@/modules/animation/schemas/InjectableSchema'
+import ObjectDeepSchema from '@/modules/animation/schemas/ObjectDeepSchema'
 
 export const SOURCE_MAP_KEY = '__sourceMap'
 export const IS_SOURCE_MAP_KEY = '__isSourceMap'
@@ -87,7 +87,7 @@ export function clearSourceMap (value) {
 }
 
 export const ClearSourceMapDeepSchema = z.lazy(
-  () => InjectableBaseSchema(ClearSourceMapDeepSchema)
+  () => ObjectDeepSchema(ClearSourceMapDeepSchema)
     .transform(value => {
       if (isSourceMap(value)) return value
       clearSourceMap(value)

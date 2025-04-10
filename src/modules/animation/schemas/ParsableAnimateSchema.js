@@ -15,6 +15,7 @@ import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/ope
 import { clearSourceMapDeep, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 import AnimationError from '@/structs/AnimationError'
 import { formatZodError } from '@/utils/zod'
+import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
 
 const safeInjects = [
   ...Object.keys(parseInjectSchemas(SettingsInjectSchemas)),
@@ -68,7 +69,7 @@ const ParsableSchema = (stage, schema) => (context, env) =>
 
 export const HookSchema = (context, env, stage) => ParsableSchema(
   stage,
-  context => ArrayOrSingleSchema(z.function())
+  context => ArrayOrSingleSchema(TrustedFunctionSchema)
     .transform((value, ctx) => {
       const hook = () => executeWithZod(value, (value, ctx) => {
         [].concat(value).forEach((fn, i) => {
@@ -125,7 +126,7 @@ export const AnimeSchema = ParsableSchema(
   ArrayOrSingleSchema(
     z.union([
       z.record(z.any()),
-      z.instanceof(Function).refine(
+      TrustedFunctionSchema.refine(
         fn => !!fn[animeTimelineInjectSymbol],
         { message: `Only '${Inject.AnimeTimeline}' is allowed as a function` }
       )

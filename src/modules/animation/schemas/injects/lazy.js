@@ -6,7 +6,7 @@ export const generatedLazyInjectSymbol = Symbol('generatedLazyInject')
 export const LazyInjectSchema = z.object({
   symbol: z.literal(lazyInjectSymbol),
   name: z.string(),
-  generator: z.function()
+  generator: z.instanceof(Function)
 })
 
 export function wrapLazyInject (name, generator) {

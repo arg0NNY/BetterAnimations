@@ -2,6 +2,7 @@ import { z } from 'zod'
 import ErrorManager from '@/modules/ErrorManager'
 import AnimationError from '@/structs/AnimationError'
 import { formatZodError } from '@/utils/zod'
+import { trust } from '@/modules/animation/schemas/TrustedFunctionSchema'
 
 function buildStyles (styles) {
   return Object.entries(styles).reduce(
@@ -47,17 +48,19 @@ export function executeWithZod (value, fn, context, options = {}) {
 export function zodErrorBoundary (fn, context, options = {}) {
   const { name, ...opts } = options
 
-  return (...args) => executeWithZod(args, (args, ctx) => {
-    try {
-      return fn(...args)
-    }
-    catch (error) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `An error occurred while executing ${name ? `"${name}"` : 'an external function'}`,
-        params: { error, args }
-      })
-      return z.NEVER
-    }
-  }, context, opts)
+  return trust(
+    (...args) => executeWithZod(args, (args, ctx) => {
+      try {
+        return fn(...args)
+      }
+      catch (error) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `An error occurred while executing ${name ? `"${name}"` : 'an external function'}`,
+          params: { error, args }
+        })
+        return z.NEVER
+      }
+    }, context, opts)
+  )
 }
