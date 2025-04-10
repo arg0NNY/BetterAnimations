@@ -2,7 +2,7 @@ import Enum from '@/enums/Enum'
 
 export default Enum({
   Initialize: 'Initialize',
-  BeforeCreate: 'BeforeCreate',
+  BeforeLayout: 'BeforeLayout',
   Layout: 'Layout',
   Anime: 'Anime',
   Created: 'Created',

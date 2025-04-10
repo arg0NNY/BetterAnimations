@@ -139,7 +139,7 @@ export const ParsableAnimateSchema = (context, env) => {
   const layoutEnv = Object.assign({ allowed: safeInjects, disallowed: layoutDependentInjects }, env)
 
   return SourceMappedObjectSchema.extend({
-    onBeforeCreate: HookSchema(context, preLayoutEnv, ParseStage.BeforeCreate),
+    onBeforeLayout: HookSchema(context, preLayoutEnv, ParseStage.BeforeLayout),
     hast: HastSchema(context, layoutEnv),
     css: CssSchema(context, layoutEnv),
     anime: AnimeSchema(context, env),

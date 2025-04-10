@@ -133,7 +133,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
   }
 
   parsing: {
-    if (!hook('onBeforeCreate', ParseStage.BeforeCreate)) break parsing
+    if (!hook('onBeforeLayout', ParseStage.BeforeLayout)) break parsing
 
     if (!parseStage(ParseStage.Layout)) break parsing
 

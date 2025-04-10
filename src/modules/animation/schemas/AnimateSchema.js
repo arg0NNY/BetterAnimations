@@ -4,7 +4,7 @@ import { ArrayOrSingleSchema } from '@/utils/schemas'
 const ArrayOrSingleObjectSchema = ArrayOrSingleSchema(z.record(z.any()))
 
 const AnimateSchema = z.object({
-  onBeforeCreate: ArrayOrSingleObjectSchema,
+  onBeforeLayout: ArrayOrSingleObjectSchema,
   hast: ArrayOrSingleObjectSchema,
   css: ArrayOrSingleObjectSchema,
   anime: ArrayOrSingleObjectSchema,

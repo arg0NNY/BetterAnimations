@@ -426,7 +426,7 @@
         }
       },
       "animate": {
-        "onBeforeCreate": [
+        "onBeforeLayout": [
           {
             "inject": "var.set",
             "name": "radius",
@@ -580,7 +580,7 @@
         }
       },
       "animate": {
-        "onBeforeCreate": [
+        "onBeforeLayout": [
           {
             "inject": "var.set",
             "name": "animation",
