@@ -20,7 +20,7 @@ export default Enum({
   Module: 'module',
   ModuleType: 'module.type',
   Type: 'type',
-  ObjectAssign: 'Object.assign',
+  Assign: 'assign',
   Pick: 'pick',
   Omit: 'omit',
   Wait: 'wait',

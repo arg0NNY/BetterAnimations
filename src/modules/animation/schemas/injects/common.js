@@ -61,10 +61,10 @@ export const TypeInjectSchema = InjectWithMeta(
   { immediate: ['type'] }
 )
 
-export const ObjectAssignInjectSchema = InjectSchema(Inject.ObjectAssign).extend({
+export const AssignInjectSchema = InjectSchema(Inject.Assign).extend({
   target: z.record(z.any()),
   source: ArrayOrSingleSchema(z.record(z.any())),
-}).transform(params => sourceMappedObjectAssign(params.target, ...[].concat(params.source)))
+}).transform(({ target, source }) => sourceMappedObjectAssign(target, ...[].concat(source)))
 
 export const PickInjectSchema = InjectSchema(Inject.Pick).extend({
   target: z.record(z.any()),

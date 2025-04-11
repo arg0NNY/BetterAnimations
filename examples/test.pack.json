@@ -89,7 +89,7 @@
         },
         "anime": [
           {
-            "inject": "Object.assign",
+            "inject": "assign",
             "target": {
               "targets": [".el", { "inject": "element" }],
               "delay": {
@@ -117,7 +117,7 @@
       },
       "exit": {
         "anime": {
-          "inject": "Object.assign",
+          "inject": "assign",
           "target": {
             "targets": { "inject": "element" },
             "duration": {
@@ -193,7 +193,7 @@
           }
         },
         "anime": {
-          "inject": "Object.assign",
+          "inject": "assign",
           "target": {
             "targets": { "inject": "element" },
             "duration": { "inject": "duration" },
@@ -254,7 +254,7 @@
       },
       "animate": {
         "anime": {
-          "inject": "Object.assign",
+          "inject": "assign",
           "target": {
             "targets": { "inject": "element" },
             "duration": { "inject": "duration" },
@@ -299,7 +299,7 @@
       "name": "Slip (No settings)",
       "animate": {
         "anime": {
-          "inject": "Object.assign",
+          "inject": "assign",
           "target": {
             "targets": { "inject": "element" },
             "duration": { "inject": "duration" },
@@ -607,7 +607,7 @@
           "value": { "inject": "var.get", "name": "animation" },
           "case": {
             "circle": {
-              "inject": "Object.assign",
+              "inject": "assign",
               "target": {
                 "inject": "omit",
                 "target": {
@@ -651,7 +651,7 @@
                 }
               },
               "anime": {
-                "inject": "Object.assign",
+                "inject": "assign",
                 "target": {
                   "targets": { "inject": "element" },
                   "duration": { "inject": "duration" },
