@@ -22,7 +22,7 @@ const ParsableExtendableAnimateSchema = (context, env) => {
 
 export const ParsableExtendsSchema = (context, env) =>
   ArrayOrSingleSchema(
-    ParsableExtendableAnimateSchema(context, env).nullish()
+    ParsableExtendableAnimateSchema(context, env).nullable()
   ).optional()
 
 export default ParsableExtendableAnimateSchema

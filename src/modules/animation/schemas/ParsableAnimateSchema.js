@@ -57,55 +57,56 @@ export function buildLayoutEnv (env) {
 
 export const HookSchema = (context, env, stage) => ParsableSchema(
   stage,
-  context => ArrayOrSingleSchema(TrustedFunctionSchema)
-    .transform((value, ctx) => {
-      const hook = () => executeWithZod(value, (value, ctx) => {
-        [].concat(value).forEach((fn, i) => {
-          try { fn() }
-          catch (error) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: error.message,
-              path: Array.isArray(value) ? [i] : [],
-              params: { error, received: fn }
-            })
-          }
-        })
-      }, context, ctx)
-      hook[hookSymbol] = value
-      return hook
-    })
-    .optional()
+  context => ArrayOrSingleSchema(
+    TrustedFunctionSchema.nullable()
+  ).transform((value, ctx) => {
+    const hook = () => executeWithZod(value, (value, ctx) => {
+      [].concat(value).forEach((fn, i) => {
+        if (!fn) return
+        try { fn() }
+        catch (error) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: error.message,
+            path: Array.isArray(value) ? [i] : [],
+            params: { error, received: fn }
+          })
+        }
+      })
+    }, context, ctx)
+    hook[hookSymbol] = value
+    return hook
+  }).optional()
 )(context, env)
 
 export const HastSchema = ParsableSchema(
   ParseStage.Layout,
-  ArrayOrSingleSchema(z.record(z.any()))
-    .transform((value, ctx) => {
-      value = clearSourceMapDeep(value)
-      return [].concat(value).map((node, i) => {
-        const sanitized = sanitize(node, hastSanitizeSchema)
-        if (sanitized.type === 'root') {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: 'Invalid or forbidden hast node',
-            path: Array.isArray(value) ? [i] : [],
-            params: { received: node }
-          })
-          return z.NEVER
-        }
+  ArrayOrSingleSchema(
+    z.record(z.any()).nullable()
+  ).transform((value, ctx) => {
+    value = clearSourceMapDeep(value)
+    return [].concat(value).filter(Boolean).map((node, i) => {
+      const sanitized = sanitize(node, hastSanitizeSchema)
+      if (sanitized.type === 'root') {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Invalid or forbidden hast node',
+          path: Array.isArray(value) ? [i] : [],
+          params: { received: node }
+        })
+        return z.NEVER
+      }
 
-        return toDom(sanitized)
-      })
+      return toDom(sanitized)
     })
-    .optional()
+  }).optional()
 )
 
 
 export const CssSchema = ParsableSchema(
   ParseStage.Layout,
   ArrayOrSingleSchema(
-    z.record(z.record(z.any()))
+    z.record(z.record(z.any())).nullable()
   ).optional()
 )
 
@@ -118,7 +119,7 @@ export const AnimeSchema = ParsableSchema(
         fn => !!fn[animeTimelineInjectSymbol],
         { message: `Only '${Inject.AnimeTimeline}' is allowed as a function` }
       )
-    ]).nullish()
+    ]).nullable()
   ).superRefine((value, ctx) => {
     const { success } = InjectableValidateSchema.safeParse(value)
     if (!success) ctx.addIssue({
@@ -126,7 +127,7 @@ export const AnimeSchema = ParsableSchema(
       message: 'Illegal value',
       params: { received: value }
     })
-  })
+  }).optional()
 )
 
 export const ParsableAnimateSchema = (context, env) => {

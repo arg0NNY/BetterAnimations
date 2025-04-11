@@ -70,7 +70,7 @@ export function buildWrapper (data, context) {
     wrapper.append(
       ...[].concat(
         data.css
-      ).map((css, cssIndex) => {
+      ).filter(Boolean).map((css, cssIndex) => {
         const element = document.createElement('style')
         element.appendChild(document.createTextNode(
           buildCSS(
@@ -175,6 +175,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
 
     data = omit(data, ['extends'])
     _extends.forEach(value => {
+      if (!value) return
       sourceMappedObjectEntries(value).forEach(([key, value]) => {
         if (!data[key]) data[key] = []
         data[key] = [].concat(value).concat(data[key])
