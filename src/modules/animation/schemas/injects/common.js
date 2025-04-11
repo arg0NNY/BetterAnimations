@@ -20,7 +20,9 @@ import {
   clearSourceMapDeep,
   getSourcePath,
   sourceMappedObjectAssign,
-  SELF_KEY
+  SELF_KEY,
+  sourceMappedPick,
+  sourceMappedOmit
 } from '@/modules/animation/sourceMap'
 import { restrictForbiddenKeys } from '@/modules/animation/keys'
 import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
@@ -63,6 +65,26 @@ export const ObjectAssignInjectSchema = InjectSchema(Inject.ObjectAssign).extend
   target: z.record(z.any()),
   source: ArrayOrSingleSchema(z.record(z.any())),
 }).transform(params => sourceMappedObjectAssign(params.target, ...[].concat(params.source)))
+
+export const PickInjectSchema = InjectSchema(Inject.Pick).extend({
+  target: z.record(z.any()),
+  keys: ArrayOrSingleSchema(
+    z.string().refine(
+      restrictForbiddenKeys,
+      key => ({ message: `Forbidden key: '${key}'` })
+    )
+  )
+}).transform(({ target, keys }) => sourceMappedPick(target, [].concat(keys)))
+
+export const OmitInjectSchema = InjectSchema(Inject.Omit).extend({
+  target: z.record(z.any()),
+  keys: ArrayOrSingleSchema(
+    z.string().refine(
+      restrictForbiddenKeys,
+      key => ({ message: `Forbidden key: '${key}'` })
+    )
+  )
+}).transform(({ target, keys }) => sourceMappedOmit(target, [].concat(keys)))
 
 export const StringTemplateInjectSchema = InjectSchema(Inject.StringTemplate).extend({
   template: z.string(),
@@ -240,4 +262,12 @@ export const SwitchInjectSchema = InjectSchema(Inject.Switch).extend({
   return new Map(
     Array.isArray(cases) ? cases : Object.entries(cases)
   ).get(value) ?? defaultValue
+})
+
+export const LoadInjectSchema = ({ pack, animation, type }) => InjectSchema(Inject.Load).extend({
+  animation: z.enum(pack.animations.map(a => a.key).filter(k => k !== animation.key)),
+  type: z.enum(AnimationType.values()).optional().default(type)
+}).transform(({ animation: key, type }) => {
+  const target = pack.animations.find(a => a.key === key)
+  return target?.[type] ?? target?.animate
 })

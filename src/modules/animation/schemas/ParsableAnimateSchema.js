@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import InjectableSchema from '@/modules/animation/schemas/InjectableSchema'
 import { ArrayOrSingleSchema, parseInjectSchemas } from '@/utils/schemas'
 import Inject from '@/enums/Inject'
 import ParseStage from '@/enums/ParseStage'
@@ -13,9 +12,9 @@ import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/sett
 import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
 import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/operators'
 import { clearSourceMapDeep, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
-import AnimationError from '@/structs/AnimationError'
-import { formatZodError } from '@/utils/zod'
 import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
+import ParsableSchema from '@/modules/animation/schemas/ParsableSchema'
+import { InjectableValidateSchema } from '@/modules/animation/schemas/InjectableSchema'
 
 const safeInjects = [
   ...Object.keys(parseInjectSchemas(SettingsInjectSchemas)),
@@ -48,24 +47,13 @@ const layoutDependentInjects = [
   Inject.Hast
 ]
 
-const ParsableSchema = (stage, schema) => (context, env) =>
-  (![ParseStage.Initialize, stage].includes(env.stage) ? z.any() : InjectableSchema(context, env))
-    .transform((value, ctx) => {
-      try {
-        return (
-          env.stage === stage
-            ? (typeof schema === 'function' ? schema(context, env) : schema)
-            : z.any()
-        ).parse(value, { path: ctx.path })
-      }
-      catch (error) {
-        throw new AnimationError(
-          context.animation,
-          formatZodError(error, { pack: context.pack, data: value, context, path: ctx.path }),
-          { module: context.module, pack: context.pack, type: context.type, context }
-        )
-      }
-    })
+export function buildPreLayoutEnv (env) {
+  return Object.assign({ disallowed: layoutDependentInjects }, env)
+}
+
+export function buildLayoutEnv (env) {
+  return Object.assign({ allowed: safeInjects, disallowed: layoutDependentInjects }, env)
+}
 
 export const HookSchema = (context, env, stage) => ParsableSchema(
   stage,
@@ -130,13 +118,20 @@ export const AnimeSchema = ParsableSchema(
         fn => !!fn[animeTimelineInjectSymbol],
         { message: `Only '${Inject.AnimeTimeline}' is allowed as a function` }
       )
-    ]).nullable().optional()
-  )
+    ]).nullish()
+  ).superRefine((value, ctx) => {
+    const { success } = InjectableValidateSchema.safeParse(value)
+    if (!success) ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Illegal value',
+      params: { received: value }
+    })
+  })
 )
 
 export const ParsableAnimateSchema = (context, env) => {
-  const preLayoutEnv = Object.assign({ disallowed: layoutDependentInjects }, env)
-  const layoutEnv = Object.assign({ allowed: safeInjects, disallowed: layoutDependentInjects }, env)
+  const preLayoutEnv = buildPreLayoutEnv(env)
+  const layoutEnv = buildLayoutEnv(env)
 
   return SourceMappedObjectSchema.extend({
     onBeforeLayout: HookSchema(context, preLayoutEnv, ParseStage.BeforeLayout),

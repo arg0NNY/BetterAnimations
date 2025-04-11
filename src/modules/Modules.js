@@ -19,7 +19,6 @@ import AnimationType from '@/enums/AnimationType'
 import ModuleType from '@/enums/ModuleType'
 import { buildContext } from '@/modules/animation/parser'
 import ParseStage from '@/enums/ParseStage'
-import ParsableAnimateSchema from '@/modules/animation/schemas/ParsableAnimateSchema'
 import Events from '@/enums/Events'
 import Emitter from '@/modules/Emitter'
 import Logger from '@/modules/Logger'
@@ -31,6 +30,7 @@ import Debug from '@/modules/Debug'
 import EasingSchema from '@/modules/animation/schemas/EasingSchema'
 import Mouse from '@/modules/Mouse'
 import PositionAutoType from '@/enums/PositionAutoType'
+import ParsableExtendableAnimateSchema from '@/modules/animation/schemas/ParsableExtendableAnimateSchema'
 
 class Module {
   constructor (id, name, meta = {}, { parent, description, controls, alert, onToggle } = {}) {
@@ -100,7 +100,7 @@ class Module {
 
     let animate, error
     try {
-      animate = animation && ParsableAnimateSchema(context, { stage: ParseStage.Initialize })
+      animate = animation && ParsableExtendableAnimateSchema(context, { stage: ParseStage.Initialize })
         .parse(data, { path })
     }
     catch (err) {

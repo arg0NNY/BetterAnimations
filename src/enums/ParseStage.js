@@ -2,6 +2,8 @@ import Enum from '@/enums/Enum'
 
 export default Enum({
   Initialize: 'Initialize',
+  BeforeExtend: 'BeforeExtend',
+  Extend: 'Extend',
   BeforeLayout: 'BeforeLayout',
   Layout: 'Layout',
   BeforeCreate: 'BeforeCreate',

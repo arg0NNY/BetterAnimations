@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { Literal } from '@/utils/schemas'
-import { getPath } from '@/utils/object'
+import { getPath, omit, pick } from '@/utils/object'
 import ObjectDeepSchema from '@/modules/animation/schemas/ObjectDeepSchema'
 
 export const SOURCE_MAP_KEY = '__sourceMap'
@@ -127,4 +127,24 @@ export function sourceMappedObjectAssign (target, ...source) {
     })
   })
   return target
+}
+
+export function sourceMappedPick (obj, keys = []) {
+  const value = pick(obj, [SOURCE_MAP_KEY].concat(keys))
+  if (hasSourceMap(value))
+    value[SOURCE_MAP_KEY] = pick(
+      getSourceMap(value),
+      [IS_SOURCE_MAP_KEY, SELF_KEY].concat(keys)
+    )
+  return value
+}
+
+export function sourceMappedOmit (obj, keys = []) {
+  const value = omit(obj, keys.filter(key => key !== SOURCE_MAP_KEY))
+  if (hasSourceMap(value))
+    value[SOURCE_MAP_KEY] = omit(
+      getSourceMap(value),
+      keys.filter(key => ![IS_SOURCE_MAP_KEY, SELF_KEY].includes(key))
+    )
+  return value
 }

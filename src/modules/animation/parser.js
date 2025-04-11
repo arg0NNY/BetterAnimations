@@ -12,7 +12,9 @@ import Setting from '@/enums/AnimationSetting'
 import { EasingType } from '@/enums/Easing'
 import { getDuration } from '@/utils/easings'
 import { MAX_ANIMATION_DURATION, MIN_ANIMATION_DURATION } from '@/data/constants'
-import { clearSourceMapDeep, getSourcePath } from '@/modules/animation/sourceMap'
+import { clearSourceMapDeep, getSourcePath, sourceMappedObjectEntries } from '@/modules/animation/sourceMap'
+import ParsableExtendableAnimateSchema, { ParsableExtendsSchema } from '@/modules/animation/schemas/ParsableExtendableAnimateSchema'
+import { omit } from '@/utils/object'
 
 function buildDurationContext (animation, settings) {
   const easing = settings?.[Setting.Easing]
@@ -102,37 +104,107 @@ export function buildAnimateAssets (data = null, context, options = {}) {
   context = context ?? {}
   const debug = context.animation ? Debug.animation(context.animation, context.type) : null
 
-  const parseStage = stage => {
+  const _parseStage = (stage, data, schema, path = []) => {
+    path = context.path.concat(path)
     debug?.parseStart(stage, data, context)
     try {
-      data = data ? ParsableAnimateSchema(context, { stage })
-        .parse(data, { path: context.path }) : {}
+      data = data ? schema(context, { stage })
+        .parse(data, { path }) : {}
 
       debug?.parseEnd(stage, data, context)
-      return true
+      return data
     }
     catch (error) {
       ErrorManager.registerAnimationError(
         error instanceof AnimationError ? error : new AnimationError(
           context.animation,
-          formatZodError(error, { pack: context.pack, data, context }),
+          formatZodError(error, { pack: context.pack, data, context, path }),
           { module: context.module, pack: context.pack, type: context.type, context }
         )
       )
       context.instance.cancel(true)
-      return false
+      return null
     }
   }
 
-  const hook = (name, stage) => {
+  const _hook = (name, stage, data, schema, path = []) => {
     debug?.hook(name, context)
-    if (!(name in (data ?? {}))) return true
-    if (!parseStage(stage)) return false
+    if (!(name in (data ?? {}))) return data
+
+    data = _parseStage(stage, data, schema, path)
+    if (data === null) return null
+
     data[name]?.()
+    return data
+  }
+
+  const extend = (data, path = [], _depth = 1) => {
+    if (_depth > 10) {
+      ErrorManager.registerAnimationError(
+        new AnimationError(
+          context.animation,
+          'Maximum extend depth exceeded',
+          { module: context.module, pack: context.pack, type: context.type, context }
+        )
+      )
+      context.instance.cancel(true)
+      return { success: false, data }
+    }
+
+    if (!('extends' in (data ?? {}))) return { success: true, data }
+
+    if (_hook('onBeforeExtend', ParseStage.BeforeExtend, data, ParsableExtendableAnimateSchema, path) === null) return { success: false, data }
+    data = omit(data, ['onBeforeExtend'])
+
+    let _data = _parseStage(ParseStage.Extend, data, ParsableExtendableAnimateSchema, path)
+    if (_data === null) return { success: false, data }
+
+    _data.extends = _parseStage(ParseStage.Initialize, _data.extends, ParsableExtendsSchema, path.concat('extends'))
+    if (_data.extends === null) return { success: false, data }
+
+    const _extends = []
+    for (const value of [].concat(_data.extends)) {
+      const { success, data } = extend(
+        value,
+        path.concat('extends', Array.isArray(_data.extends) ? _data.extends.indexOf(value) : []),
+        _depth + 1
+      )
+      if (!success) return { success: false, data }
+      _extends.unshift(data)
+    }
+
+    data = omit(data, ['extends'])
+    _extends.forEach(value => {
+      sourceMappedObjectEntries(value).forEach(([key, value]) => {
+        if (!data[key]) data[key] = []
+        data[key] = [].concat(value).concat(data[key])
+      })
+    })
+
+    return { success: true, data }
+  }
+
+  const parseStage = (stage, schema = ParsableAnimateSchema) => {
+    if (data === null) return true
+    const _data = _parseStage(stage, data, schema)
+    if (_data === null) return false
+    data = _data
+    return true
+  }
+
+  const hook = (name, stage, schema = ParsableAnimateSchema) => {
+    if (data === null) return true
+    const _data = _hook(name, stage, data, schema)
+    if (_data === null) return false
+    data = _data
     return !context.instance.cancelled
   }
 
   parsing: {
+    const { success, data: _data } = extend(data)
+    data = _data
+    if (!success) break parsing
+
     if (!hook('onBeforeLayout', ParseStage.BeforeLayout)) break parsing
 
     if (!parseStage(ParseStage.Layout)) break parsing
@@ -152,19 +224,19 @@ export function buildAnimateAssets (data = null, context, options = {}) {
   const instance = before?.execute() ?? after?.execute() ?? null
   instance?.pause()
 
-  const sharedHook = (name, stage) => () => {
+  const sharedHook = (name, stage, schema = ParsableAnimateSchema) => () => {
     before?.[name]?.()
     after?.[name]?.()
-    return hook(name, stage)
+    return hook(name, stage, schema)
   }
 
   return {
     wrapper: context.wrapper,
-    onBeforeDestroy: sharedHook('onBeforeDestroy', ParseStage.BeforeDestroy),
-    onDestroyed: sharedHook('onDestroyed', ParseStage.Destroyed),
+    onBeforeDestroy: sharedHook('onBeforeDestroy', ParseStage.BeforeDestroy, ParsableExtendableAnimateSchema),
+    onDestroyed: sharedHook('onDestroyed', ParseStage.Destroyed, ParsableExtendableAnimateSchema),
     execute: () => {
-      const config = clearSourceMapDeep(data.anime)
-      const instances = [].concat(config ?? []).map(
+      const config = clearSourceMapDeep(data?.anime ?? [])
+      const instances = [].concat(config).map(
         (value, i) => {
           if (!value) return null
           return executeWithZod(value, (value, ctx) => {

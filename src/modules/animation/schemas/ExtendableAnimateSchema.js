@@ -1,9 +1,10 @@
 import { z } from 'zod'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
+import { SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 
 const ArrayOrSingleObjectSchema = ArrayOrSingleSchema(z.record(z.any()))
 
-const AnimateSchema = z.object({
+export const AnimateSchema = SourceMappedObjectSchema.extend({
   onBeforeLayout: ArrayOrSingleObjectSchema,
   hast: ArrayOrSingleObjectSchema,
   css: ArrayOrSingleObjectSchema,
@@ -16,4 +17,9 @@ const AnimateSchema = z.object({
   onDestroyed: ArrayOrSingleObjectSchema
 }).partial().strict()
 
-export default AnimateSchema
+const ExtendableAnimateSchema = AnimateSchema.extend({
+  onBeforeExtend: ArrayOrSingleObjectSchema,
+  extends: ArrayOrSingleObjectSchema
+}).partial().strict()
+
+export default ExtendableAnimateSchema

@@ -1,10 +1,9 @@
 import { z } from 'zod'
-import { formatValuesList, Literal, parseInjectSchemas } from '@/utils/schemas'
+import { formatValuesList, parseInjectSchemas } from '@/utils/schemas'
 import { formatZodError } from '@/utils/zod'
 import {
   generatedLazyInjectSymbol,
   isLazyInject,
-  LazyInjectSchema,
   wrapLazyInject
 } from '@/modules/animation/schemas/injects/lazy'
 import ParseStage from '@/enums/ParseStage'
@@ -17,7 +16,7 @@ import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/sett
 import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
 import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/operators'
 import Debug from '@/modules/Debug'
-import { getSourcePath, isSourceMap, SELF_KEY, SourceMapSchema } from '@/modules/animation/sourceMap'
+import { getSourcePath, isSourceMap, SELF_KEY } from '@/modules/animation/sourceMap'
 import TrustedFunctionSchema, { trust } from '@/modules/animation/schemas/TrustedFunctionSchema'
 import { ObjectDeepBaseSchema } from '@/modules/animation/schemas/ObjectDeepSchema'
 
@@ -37,8 +36,9 @@ function assertInjectType (type) {
 }
 
 function parseInject ({ schema, context, env, value, ctx }) {
-  const report = Debug.animation(context.animation, context.type)
-    .inject(value.inject, getSourcePath(value, SELF_KEY), context, value)
+  const path = getSourcePath(value, SELF_KEY)
+  const report = path && Debug.animation(context.animation, context.type)
+    .inject(value.inject, path, context, value)
 
   try {
     const parsed = (
@@ -46,7 +46,7 @@ function parseInject ({ schema, context, env, value, ctx }) {
         ? schema(context, env)
         : schema
     ).parse(value, { path: ctx.path })
-    report(parsed)
+    report?.(parsed)
     return parsed
   }
   catch (error) {
@@ -117,8 +117,10 @@ const InjectableSchema = (context, env = {}) => {
               return wrapLazyInject(
                 value.inject,
                 (context, env) => (...args) => {
-                  Debug.animation(context.animation, context.type)
-                    .lazyInjectCall(value.inject, getSourcePath(value, SELF_KEY), args, context)
+                  const path = getSourcePath(value, SELF_KEY)
+                  if (path)
+                    Debug.animation(context.animation, context.type)
+                      .lazyInjectCall(value.inject, path, args, context)
 
                   try {
                     return InjectableSchema(context, {
@@ -164,14 +166,6 @@ const InjectableSchema = (context, env = {}) => {
         })
       }
     })
-      .superRefine((value, ctx) => {
-        const { success } = InjectableValidateSchema.safeParse(value)
-        if (!success) ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'Illegal value',
-          params: { received: value }
-        })
-      })
   )
 
   return schema
