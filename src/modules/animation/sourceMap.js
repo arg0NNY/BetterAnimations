@@ -11,11 +11,11 @@ export const reservedKeys = [SOURCE_MAP_KEY, IS_SOURCE_MAP_KEY, SELF_KEY]
 
 const sourceMapSymbol = Symbol('sourceMap')
 
-export const SourceMapSchema = z.object({
+export const SourceMapSchema = z.looseObject({
   [IS_SOURCE_MAP_KEY]: z.literal(sourceMapSymbol)
-}).passthrough()
+})
 
-export const SourceMappedObjectSchema = z.object({
+export const SourceMappedObjectSchema = z.looseObject({
   [SOURCE_MAP_KEY]: SourceMapSchema.optional()
 })
 

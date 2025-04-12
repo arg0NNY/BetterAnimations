@@ -2,9 +2,11 @@ import * as z from 'zod'
 import { buildSwitchSchema, Defined, formatValuesList, hasInSettings } from '@/utils/schemas'
 import { clearSourceMap, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 
-export const InjectSchema = type => SourceMappedObjectSchema.extend({
-  inject: z.literal(type)
-}).strict()
+export const InjectSchema = type => SourceMappedObjectSchema.extend(
+  z.strictObject({
+    inject: z.literal(type)
+  })
+)
 
 export function SwitchSchema (inject, valueList, options = {}) {
   const { currentValue, defaultValue, possibleValues, setting } = options

@@ -5,7 +5,7 @@ import AnimationType from '@/enums/AnimationType'
 import { StoreSourceMapDeepSchema } from '@/modules/animation/sourceMap'
 import ExtendableAnimateSchema from '@/modules/animation/schemas/ExtendableAnimateSchema'
 
-const AnimationSchema = z.object({
+const AnimationSchema = z.strictObject({
   key: z.string().min(1).trim(),
   name: z.string().min(1).trim(),
   meta: MetaSchema.optional().default({}),
@@ -17,7 +17,7 @@ const AnimationSchema = z.object({
   animate: ExtendableAnimateSchema.pipe(StoreSourceMapDeepSchema).optional(),
   enter: ExtendableAnimateSchema.pipe(StoreSourceMapDeepSchema).optional(),
   exit: ExtendableAnimateSchema.pipe(StoreSourceMapDeepSchema).optional(),
-}).strict().refine(
+}).refine(
   v => v.animate ? !(v.enter || v.exit) : (v.enter && v.exit),
   v => ({
     message: `Animation definition is required and must be either inside a single 'animate' property or inside 'enter' and 'exit' properties`,

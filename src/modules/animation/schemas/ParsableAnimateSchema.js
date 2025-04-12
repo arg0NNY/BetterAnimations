@@ -134,18 +134,20 @@ export const ParsableAnimateSchema = (context, env) => {
   const preLayoutEnv = buildPreLayoutEnv(env)
   const layoutEnv = buildLayoutEnv(env)
 
-  return SourceMappedObjectSchema.extend({
-    onBeforeLayout: HookSchema(context, preLayoutEnv, ParseStage.BeforeLayout),
-    hast: HastSchema(context, layoutEnv),
-    css: CssSchema(context, layoutEnv),
-    onBeforeCreate: HookSchema(context, env, ParseStage.BeforeCreate),
-    anime: AnimeSchema(context, env),
-    onCreated: HookSchema(context, env, ParseStage.Created),
-    onBeforeBegin: HookSchema(context, env, ParseStage.BeforeBegin),
-    onCompleted: HookSchema(context, env, ParseStage.Completed),
-    onBeforeDestroy: HookSchema(context, preLayoutEnv, ParseStage.BeforeDestroy),
-    onDestroyed: HookSchema(context, preLayoutEnv, ParseStage.Destroyed),
-  }).strict()
+  return SourceMappedObjectSchema.extend(
+    z.strictObject({
+      onBeforeLayout: HookSchema(context, preLayoutEnv, ParseStage.BeforeLayout),
+      hast: HastSchema(context, layoutEnv),
+      css: CssSchema(context, layoutEnv),
+      onBeforeCreate: HookSchema(context, env, ParseStage.BeforeCreate),
+      anime: AnimeSchema(context, env),
+      onCreated: HookSchema(context, env, ParseStage.Created),
+      onBeforeBegin: HookSchema(context, env, ParseStage.BeforeBegin),
+      onCompleted: HookSchema(context, env, ParseStage.Completed),
+      onBeforeDestroy: HookSchema(context, preLayoutEnv, ParseStage.BeforeDestroy),
+      onDestroyed: HookSchema(context, preLayoutEnv, ParseStage.Destroyed),
+    })
+  )
 }
 
 export default ParsableAnimateSchema

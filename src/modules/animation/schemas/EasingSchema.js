@@ -3,9 +3,11 @@ import { EasingBezier, EasingStyle, EasingType } from '@/enums/Easing'
 import { easingValues } from '@/data/easings'
 import { SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 
-const EasingBaseSchema = type => SourceMappedObjectSchema.extend({
-  type: z.literal(type)
-}).strict()
+const EasingBaseSchema = type => SourceMappedObjectSchema.extend(
+  z.strictObject({
+    type: z.literal(type)
+  })
+)
 
 const EasingValueSchema = options => {
   let schema = z.number()

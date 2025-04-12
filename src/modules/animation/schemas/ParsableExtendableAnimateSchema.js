@@ -14,10 +14,12 @@ const ExtendsSchema = ParsableSchema(
 
 const ParsableExtendableAnimateSchema = (context, env) => {
   env = buildPreLayoutEnv(env)
-  return ParsableAnimateSchema(context, env).extend({
-    onBeforeExtend: HookSchema(context, env, ParseStage.BeforeExtend),
-    extends: ArrayOrSingleSchema(ExtendsSchema(context, env)).optional()
-  }).strict()
+  return ParsableAnimateSchema(context, env).extend(
+    z.strictObject({
+      onBeforeExtend: HookSchema(context, env, ParseStage.BeforeExtend),
+      extends: ArrayOrSingleSchema(ExtendsSchema(context, env)).optional()
+    })
+  )
 }
 
 export const ParsableExtendsSchema = (context, env) =>

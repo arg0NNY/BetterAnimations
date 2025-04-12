@@ -40,26 +40,26 @@ const DefaultsSchema = settings => {
     [Setting.Overflow, z.boolean()]
   )
 
-  const baseSchema = z.object(
+  const baseSchema = z.strictObject(
     Object.fromEntries(entries)
-  ).strict()
+  )
 
   if (AnimationType.Enter in settings.defaults || AnimationType.Exit in settings.defaults)
-    return z.object({
+    return z.strictObject({
       [AnimationType.Enter]: baseSchema,
       [AnimationType.Exit]: baseSchema
-    }).strict()
+    })
 
   return baseSchema
 }
 
-const SettingsSchema = z.object({
+const SettingsSchema = z.strictObject({
   [Setting.Duration]: z.union([
     z.literal(true),
-    z.object({
+    z.strictObject({
       from: z.number().int().min(MIN_ANIMATION_DURATION).multipleOf(100),
       to: z.number().int().max(MAX_ANIMATION_DURATION).multipleOf(100)
-    }).strict()
+    })
   ]).optional()
     .transform(v => v === true ? { from: MIN_ANIMATION_DURATION, to: 2000 } : v)
     .refine(
@@ -67,13 +67,13 @@ const SettingsSchema = z.object({
       { message: `'to' must be greater than 'from'`, path: ['to'] }
     ),
   [Setting.Easing]: z.literal(true).optional(),
-  [Setting.Variant]: z.object({
+  [Setting.Variant]: z.strictObject({
     key: z.string().refine(
       restrictReservedKeys,
       key => ({ message: `Forbidden variant key: '${key}'` })
     ),
     name: z.string()
-  }).strict().array().nonempty().optional(),
+  }).array().nonempty().optional(),
   [Setting.Position]: z.union([
     z.literal(true),
     z.literal('precise'),
@@ -99,13 +99,12 @@ const SettingsSchema = z.object({
   [Setting.Overflow]: z.boolean().optional(),
 
   defaults: z.record(z.any())
-}).strict()
-  .transform((settings, ctx) => {
-    settings.defaults = DefaultsSchema(settings).parse(
-      settings.defaults,
-      { path: [...ctx.path, 'defaults'] }
-    )
-    return settings
-  })
+}).transform((settings, ctx) => {
+  settings.defaults = DefaultsSchema(settings).parse(
+    settings.defaults,
+    { path: [...ctx.path, 'defaults'] }
+  )
+  return settings
+})
 
 export default SettingsSchema
