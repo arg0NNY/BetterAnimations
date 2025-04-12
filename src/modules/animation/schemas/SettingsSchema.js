@@ -13,7 +13,7 @@ const DefaultsSchema = settings => {
 
   if (Setting.Duration in settings) {
     const { from, to } = settings[Setting.Duration]
-    entries.push([Setting.Duration, z.number().int().min(from).max(to)])
+    entries.push([Setting.Duration, z.int().min(from).max(to)])
   }
 
   if (Setting.Easing in settings) entries.push(
@@ -57,8 +57,8 @@ const SettingsSchema = z.strictObject({
   [Setting.Duration]: z.union([
     z.literal(true),
     z.strictObject({
-      from: z.number().int().min(MIN_ANIMATION_DURATION).multipleOf(100),
-      to: z.number().int().max(MAX_ANIMATION_DURATION).multipleOf(100)
+      from: z.int().min(MIN_ANIMATION_DURATION).multipleOf(100),
+      to: z.int().max(MAX_ANIMATION_DURATION).multipleOf(100)
     })
   ]).optional()
     .transform(v => v === true ? { from: MIN_ANIMATION_DURATION, to: 2000 } : v)
