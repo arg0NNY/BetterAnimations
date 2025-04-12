@@ -1,6 +1,5 @@
 import { z } from 'zod'
 import { generatedLazyInjectSymbol, isLazyInject } from '@/modules/animation/schemas/injects/lazy'
-import { animeTimelineInjectSymbol } from '@/modules/animation/schemas/injects/anime'
 import { clearSourceMap, isSourceMap } from '@/modules/animation/sourceMap'
 import ObjectDeepSchema from '@/modules/animation/schemas/ObjectDeepSchema'
 import { zodErrorBoundarySymbol } from '@/modules/animation/utils'
@@ -38,9 +37,6 @@ const SanitizeInjectableSchema = z.lazy(
       return createFunctionPlaceholder(
         value[zodErrorBoundarySymbol]
       )
-
-    if (typeof value === 'function' && value[animeTimelineInjectSymbol])
-      return sanitizeInjectable(value[animeTimelineInjectSymbol])
 
     return value
   })

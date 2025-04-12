@@ -1,10 +1,21 @@
 import { z } from 'zod'
 import { buildSwitchSchema, Defined, formatValuesList, hasInSettings } from '@/utils/schemas'
 import { clearSourceMap, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
+import { InjectableValidateSchema } from '@/modules/animation/schemas/InjectableSchema'
 
 export const InjectSchema = type => SourceMappedObjectSchema.extend({
   inject: z.literal(type)
 }).strict()
+
+export const ParametersSchema = z.record(z.string(), z.any())
+  .superRefine((value, ctx) => {
+    const { success } = InjectableValidateSchema.safeParse(value)
+    if (!success) ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Illegal value',
+      params: { received: value }
+    })
+  })
 
 export function SwitchSchema (inject, valueList, options = {}) {
   const { currentValue, defaultValue, possibleValues, setting } = options

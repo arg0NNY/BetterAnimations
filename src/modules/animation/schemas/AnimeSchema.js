@@ -3,8 +3,12 @@ import { animate, createTimeline, createTimer } from 'animejs'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
 import { zodTransformErrorBoundary } from '@/utils/zod'
 import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
-import { InjectableValidateSchema } from '@/modules/animation/schemas/InjectableSchema'
 import { clearSourceMapDeep } from '@/modules/animation/sourceMap'
+import { ParametersSchema } from '@/modules/animation/schemas/utils'
+
+const AnimeBaseSchema = (type, isDefault = false) => z.strictObject({
+  type: isDefault ? z.literal(type).optional() : z.literal(type)
+})
 
 // Targets
 const AnimeTargetSchema = z.union([
@@ -36,20 +40,6 @@ const AnimeTargetsSchema = context => ArrayOrSingleSchema(
     targets => targets.length > 0,
     { message: 'No targets specified' }
   )
-
-// Utilities
-const AnimeBaseSchema = (type, isDefault = false) => z.strictObject({
-  type: isDefault ? z.literal(type).optional() : z.literal(type)
-})
-const ParametersSchema = z.record(z.string(), z.any())
-  .superRefine((value, ctx) => {
-    const { success } = InjectableValidateSchema.safeParse(value)
-    if (!success) ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'Illegal value',
-      params: { received: value }
-    })
-  })
 
 // Timer
 const AnimeTimerSchema = AnimeBaseSchema('timer').extend({
