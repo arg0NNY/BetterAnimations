@@ -41,6 +41,7 @@ export default Enum({
   If: 'if',
   Switch: 'switch',
   Load: 'load',
+  Raw: 'raw',
   MathAbs: 'Math.abs',
   MathAcos: 'Math.acos',
   MathAcosh: 'Math.acosh',
