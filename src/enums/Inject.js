@@ -38,6 +38,7 @@ export default Enum({
   GetBoundingClientRect: 'getBoundingClientRect',
   IsIntersected: 'isIntersected',
   Get: 'get',
+  Set: 'set',
   If: 'if',
   Switch: 'switch',
   Load: 'load',

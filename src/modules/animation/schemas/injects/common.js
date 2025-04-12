@@ -250,6 +250,24 @@ export const GetInjectSchema = InjectSchema(Inject.Get).extend({
   return target
 })
 
+export const SetInjectSchema = InjectSchema(Inject.Set).extend({
+  target: z.union([
+    z.record(z.any()),
+    z.array(z.any())
+  ]),
+  key: z.union([
+    z.string(),
+    z.number()
+  ]).refine(
+    restrictForbiddenKeys,
+    key => ({ message: `Forbidden key: '${key}'` })
+  ),
+  value: z.any()
+}).transform(({ target, key, value }) => {
+  target[key] = value
+  return target
+})
+
 export const IfInjectSchema = InjectSchema(Inject.If).extend({
   value: z.any(),
   then: z.any(),
