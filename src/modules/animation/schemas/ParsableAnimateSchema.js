@@ -40,7 +40,8 @@ const safeInjects = [
   Inject.Mouse,
   Inject.IsIntersected,
   Inject.If,
-  Inject.Switch
+  Inject.Switch,
+  Inject.Raw
 ]
 
 const layoutDependentInjects = [
