@@ -98,7 +98,7 @@ const SettingsSchema = z.strictObject({
       : value),
   [Setting.Overflow]: z.boolean().optional(),
 
-  defaults: z.record(z.any())
+  defaults: z.record(z.string(), z.any())
 }).transform((settings, ctx) => {
   settings.defaults = DefaultsSchema(settings).parse(
     settings.defaults,

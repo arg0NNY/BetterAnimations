@@ -75,7 +75,7 @@ export const AnimeGetInjectSchema = ({ element }) => InjectSchema(Inject.AnimeGe
 export const AnimeSetInjectSchema = InjectWithMeta(
   ({ element }) => InjectSchema(Inject.AnimeSet).extend({
     target: ArrayOrSingleSchema(z.instanceof(Element)).optional().default(element),
-    properties: z.record(z.any())
+    properties: z.record(z.string(), z.any())
   }).transform(
     zodTransformErrorBoundary(({ target, properties }) => anime.set(
       target,

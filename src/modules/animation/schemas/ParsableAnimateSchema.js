@@ -82,7 +82,7 @@ export const HookSchema = (context, env, stage) => ParsableSchema(
 export const HastSchema = ParsableSchema(
   ParseStage.Layout,
   ArrayOrSingleSchema(
-    z.record(z.any()).nullable()
+    z.record(z.string(), z.any()).nullable()
   ).transform((value, ctx) => {
     value = clearSourceMapDeep(value)
     return [].concat(value).filter(Boolean).map((node, i) => {
@@ -106,7 +106,7 @@ export const HastSchema = ParsableSchema(
 export const CssSchema = ParsableSchema(
   ParseStage.Layout,
   ArrayOrSingleSchema(
-    z.record(z.record(z.any())).nullable()
+    z.record(z.string(), z.record(z.string(), z.any())).nullable()
   ).optional()
 )
 
@@ -114,7 +114,7 @@ export const AnimeSchema = ParsableSchema(
   ParseStage.Anime,
   ArrayOrSingleSchema(
     z.union([
-      z.record(z.any()),
+      z.record(z.string(), z.any()),
       TrustedFunctionSchema.refine(
         fn => !!fn[animeTimelineInjectSymbol],
         { message: `Only '${Inject.AnimeTimeline}' is allowed as a function` }

@@ -23,7 +23,7 @@ export const StoreSourceMapDeepSchema = z.lazy(
   () => z.union([
     Literal,
     z.array(StoreSourceMapDeepSchema),
-    z.record(StoreSourceMapDeepSchema)
+    z.record(z.string(), StoreSourceMapDeepSchema)
   ]).transform(
     (value, ctx) => {
       if (typeof value !== 'object' || value === null) return value

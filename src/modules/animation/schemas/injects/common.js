@@ -62,12 +62,12 @@ export const TypeInjectSchema = InjectWithMeta(
 )
 
 export const AssignInjectSchema = InjectSchema(Inject.Assign).extend({
-  target: z.record(z.any()),
-  source: ArrayOrSingleSchema(z.record(z.any())),
+  target: z.record(z.string(), z.any()),
+  source: ArrayOrSingleSchema(z.record(z.string(), z.any())),
 }).transform(({ target, source }) => sourceMappedObjectAssign(target, ...[].concat(source)))
 
 export const PickInjectSchema = InjectSchema(Inject.Pick).extend({
-  target: z.record(z.any()),
+  target: z.record(z.string(), z.any()),
   keys: ArrayOrSingleSchema(
     z.string().refine(
       restrictForbiddenKeys,
@@ -77,7 +77,7 @@ export const PickInjectSchema = InjectSchema(Inject.Pick).extend({
 }).transform(({ target, keys }) => sourceMappedPick(target, [].concat(keys)))
 
 export const OmitInjectSchema = InjectSchema(Inject.Omit).extend({
-  target: z.record(z.any()),
+  target: z.record(z.string(), z.any()),
   keys: ArrayOrSingleSchema(
     z.string().refine(
       restrictForbiddenKeys,
@@ -88,7 +88,7 @@ export const OmitInjectSchema = InjectSchema(Inject.Omit).extend({
 
 export const StringTemplateInjectSchema = InjectSchema(Inject.StringTemplate).extend({
   template: z.string(),
-  values: z.union([z.record(z.any()), z.any().array()])
+  values: z.union([z.record(z.string(), z.any()), z.any().array()])
 }).transform(({ template, values }) => {
   values = clearSourceMap(values)
   return template.replaceAll(
@@ -221,7 +221,7 @@ export const IsIntersectedInjectSchema = InjectWithMeta(
 
 export const GetInjectSchema = InjectSchema(Inject.Get).extend({
   target: z.union([
-    z.record(z.any()),
+    z.record(z.string(), z.any()),
     z.array(z.any())
   ]),
   key: z.union([
@@ -259,7 +259,7 @@ export const IfInjectSchema = InjectSchema(Inject.If).extend({
 export const SwitchInjectSchema = InjectSchema(Inject.Switch).extend({
   value: z.any(),
   case: z.union([
-    z.record(z.any()),
+    z.record(z.string(), z.any()),
     z.tuple([z.any(), z.any()]).array()
   ]),
   default: z.any().optional()
