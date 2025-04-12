@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 import ErrorManager from '@/modules/ErrorManager'
 import AnimationError from '@/structs/AnimationError'
 import { formatZodError } from '@/utils/zod'

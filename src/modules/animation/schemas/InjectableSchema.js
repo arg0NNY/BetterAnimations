@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 import { formatValuesList, parseInjectSchemas } from '@/utils/schemas'
 import { formatZodError } from '@/utils/zod'
 import {

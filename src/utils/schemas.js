@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 import Inject from '@/enums/Inject'
 
 export const Literal = z.union([z.string(), z.number(), z.boolean(), z.null(), z.undefined()])

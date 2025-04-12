@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 import { hasInSettings } from '@/utils/schemas'
 import { InjectSchema, InjectWithMeta, SwitchSchema } from '@/modules/animation/schemas/utils'
 import Position from '@/enums/Position'

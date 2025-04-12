@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 
 export const lazyInjectSymbol = Symbol('lazyInject')
 export const generatedLazyInjectSymbol = Symbol('generatedLazyInject')

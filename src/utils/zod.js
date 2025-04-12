@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 import { indent } from '@/utils/text'
 import { toPath, visualizeAddonPath } from '@/utils/json'
 import { getPath } from '@/utils/object'

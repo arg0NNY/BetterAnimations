@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 import { EasingBezier, EasingStyle, EasingType } from '@/enums/Easing'
 import { easingValues } from '@/data/easings'
 import { SourceMappedObjectSchema } from '@/modules/animation/sourceMap'

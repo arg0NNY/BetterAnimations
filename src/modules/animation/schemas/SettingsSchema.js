@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 import Setting from '@/enums/AnimationSetting'
 import Position from '@/enums/Position'
 import Direction from '@/enums/Direction'

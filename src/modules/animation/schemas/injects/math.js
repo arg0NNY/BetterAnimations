@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 import { InjectSchema, InjectWithMeta } from '@/modules/animation/schemas/utils'
 import Inject from '@/enums/Inject'
 import { ArrayOrSingleSchema } from '@/utils/schemas'

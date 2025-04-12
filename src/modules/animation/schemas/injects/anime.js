@@ -1,7 +1,7 @@
 import { ArrayOrSingleSchema, Defined } from '@/utils/schemas'
 import { InjectSchema, InjectWithMeta } from '@/modules/animation/schemas/utils'
 import anime from 'animejs'
-import { z } from 'zod'
+import * as z from 'zod'
 import Inject from '@/enums/Inject'
 import { zodTransformErrorBoundary } from '@/utils/zod'
 import { transformAnimeConfig, zodErrorBoundary } from '@/modules/animation/utils'

@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 import MetaSchema from '@/modules/animation/schemas/MetaSchema'
 import SettingsSchema from '@/modules/animation/schemas/SettingsSchema'
 import AnimationType from '@/enums/AnimationType'

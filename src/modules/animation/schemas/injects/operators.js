@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 import { InjectSchema } from '@/modules/animation/schemas/utils'
 import Inject from '@/enums/Inject'
 import { zodTransformErrorBoundary } from '@/utils/zod'

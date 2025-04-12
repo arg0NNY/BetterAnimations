@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 import { buildSwitchSchema, Defined, formatValuesList, hasInSettings } from '@/utils/schemas'
 import { clearSourceMap, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 

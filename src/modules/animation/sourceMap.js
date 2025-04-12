@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 import { Literal } from '@/utils/schemas'
 import { getPath, omit, pick } from '@/utils/object'
 import ObjectDeepSchema from '@/modules/animation/schemas/ObjectDeepSchema'

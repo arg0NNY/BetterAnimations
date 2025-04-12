@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
 import { SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 

@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 import { generatedLazyInjectSymbol, isLazyInject } from '@/modules/animation/schemas/injects/lazy'
 import { animeTimelineInjectSymbol } from '@/modules/animation/schemas/injects/anime'
 import { clearSourceMap, isSourceMap } from '@/modules/animation/sourceMap'

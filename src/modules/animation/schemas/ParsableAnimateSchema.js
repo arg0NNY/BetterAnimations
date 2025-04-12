@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z from 'zod'
 import { ArrayOrSingleSchema, parseInjectSchemas } from '@/utils/schemas'
 import Inject from '@/enums/Inject'
 import ParseStage from '@/enums/ParseStage'
