@@ -1,12 +1,10 @@
-import anime from 'animejs'
 import AnimationType from '@/enums/AnimationType'
 import ParsableAnimateSchema from '@/modules/animation/schemas/ParsableAnimateSchema'
 import ParseStage from '@/enums/ParseStage'
 import ErrorManager from '@/modules/ErrorManager'
 import AnimationError from '@/structs/AnimationError'
 import { formatZodError } from '@/utils/zod'
-import { buildCSS, executeWithZod, transformAnimeConfig } from '@/modules/animation/utils'
-import { z } from 'zod'
+import { buildCSS } from '@/modules/animation/utils'
 import Debug from '@/modules/Debug'
 import Setting from '@/enums/AnimationSetting'
 import { EasingType } from '@/enums/Easing'
@@ -236,30 +234,11 @@ export function buildAnimateAssets (data = null, context, options = {}) {
     onBeforeDestroy: sharedHook('onBeforeDestroy', ParseStage.BeforeDestroy, ParsableExtendableAnimateSchema),
     onDestroyed: sharedHook('onDestroyed', ParseStage.Destroyed, ParsableExtendableAnimateSchema),
     execute: () => {
-      const config = clearSourceMapDeep(data?.anime ?? [])
-      const instances = [].concat(config).map(
-        (value, i) => {
-          if (!value) return null
-          return executeWithZod(value, (value, ctx) => {
-            try {
-              return typeof value === 'function' // Can be a function because of "anime.timeline" inject
-                ? value(context.wrapper)
-                : anime(transformAnimeConfig(value, context.wrapper))
-            }
-            catch (error) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: error.message,
-                params: { error, received: value }
-              })
-              return z.NEVER
-            }
-          }, context, { path: [...context.path, 'anime'].concat(Array.isArray(config) ? [i] : []) })
-        }
-      ).filter(Boolean)
+      const instances = data?.anime ?? []
 
       const pauseAll = () => instances.forEach(i => i.pause())
-      const finishedAll = () => Promise.all(instances.map(i => i.finished))
+      const revertAll = () => instances.forEach(i => i.revert())
+      const finishedAll = () => Promise.all(instances)
       context.instance.instances = instances
       context.instance.pause = pauseAll
       if (context.instance.cancelled) return {}
@@ -269,19 +248,15 @@ export function buildAnimateAssets (data = null, context, options = {}) {
       if (before) {
         pauseAll()
 
-        instance.finished.then(() => {
+        instance.then(() => {
           before.onCompleted?.()
           hook('onBeforeBegin', ParseStage.BeforeBegin)
-          instances.slice(1).forEach(i => {
-            i.reset()
-            i.play()
-          })
+          instances.slice(1).forEach(i => i.restart())
         })
         instances.unshift(instance)
         Promise.resolve().then(() => {
           before.onBeforeBegin?.()
-          instance.reset()
-          instance.play()
+          instance.restart()
         })
       }
 
@@ -292,16 +267,16 @@ export function buildAnimateAssets (data = null, context, options = {}) {
         instances,
         onBeforeBegin: !before ? () => hook('onBeforeBegin', ParseStage.BeforeBegin) : null,
         pause: pauseAll,
+        revert: revertAll,
         finished: finished
           .then(() => {
             if (!hook('onCompleted', ParseStage.Completed)) return
 
             if (after) {
-              instance.reset()
-              instance.play()
+              instance.restart()
               after.onCreated?.()
               after.onBeforeBegin?.()
-              return instance.finished.then(() => after.onCompleted?.())
+              return instance.then(() => after.onCompleted?.())
             }
           })
       }

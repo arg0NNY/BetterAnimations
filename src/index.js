@@ -1,4 +1,4 @@
-import anime from 'animejs'
+import { engine } from 'animejs'
 import { Patcher } from '@/BdApi'
 import { forceAppUpdate } from '@/utils/forceUpdate'
 import patchAppView from '@/patches/AppView/patchAppView'
@@ -35,7 +35,7 @@ import Toasts from '@/modules/Toasts'
 import ErrorManager from '@/modules/ErrorManager'
 import * as DiscordModules from '@/modules/DiscordModules'
 
-anime.suspendWhenDocumentHidden = false
+engine.pauseOnDocumentHidden = false
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -55,7 +55,6 @@ if (import.meta.env.MODE === 'development')
     ErrorManager,
     DiscordModules,
     DiscordClasses,
-    anime,
     getCurrentGuildChannels: () => currentGuildChannels
   }
 

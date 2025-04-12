@@ -108,7 +108,7 @@ export function zodTransformErrorBoundary (transformFn) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: error.message,
-        params: { error }
+        params: { error, received: value }
       })
       return z.NEVER
     }

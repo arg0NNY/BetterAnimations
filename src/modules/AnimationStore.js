@@ -72,8 +72,11 @@ class Animation {
       this.onBeforeDestroy = onBeforeDestroy
       this.onDestroyed = onDestroyed
 
-      const { instances, onBeforeBegin, finished } = execute()
+      const { instances, onBeforeBegin, finished, pause, revert } = execute()
       if (this.cancelled) return
+
+      this.pause = pause
+      this.revert = revert
 
       if (intersect && callback) {
         callback()
@@ -108,7 +111,6 @@ class Animation {
     this.onBeforeDestroy?.()
 
     this.pause?.()
-    if (this.instances) this.instances.length = 0
     this.doneCallbackRef.current?.()
     this.destroy(dueToError)
 
@@ -118,6 +120,7 @@ class Animation {
       ;[].filter.call(this.container.attributes, a => a.name?.startsWith('data-baa'))
         .forEach(a => this.container.removeAttribute(a.name))
 
+      this.revert?.()
       this.onDestroyed?.()
     }
 

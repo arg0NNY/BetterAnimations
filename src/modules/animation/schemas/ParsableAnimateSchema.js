@@ -6,7 +6,6 @@ import { sanitize } from 'hast-util-sanitize'
 import { toDom } from 'hast-util-to-dom'
 import { executeWithZod } from '@/modules/animation/utils'
 import { hookSymbol } from '@/modules/animation/schemas/SanitizeInjectableSchema'
-import { animeTimelineInjectSymbol } from '@/modules/animation/schemas/injects/anime'
 import hastSanitizeSchema from '@/modules/animation/hastSanitizeSchema'
 import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/settings'
 import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
@@ -14,7 +13,7 @@ import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/ope
 import { clearSourceMapDeep, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
 import ParsableSchema from '@/modules/animation/schemas/ParsableSchema'
-import { InjectableValidateSchema } from '@/modules/animation/schemas/InjectableSchema'
+import AnimeSchema from '@/modules/animation/schemas/AnimeSchema'
 
 const safeInjects = [
   ...Object.keys(parseInjectSchemas(SettingsInjectSchemas)),
@@ -111,24 +110,9 @@ export const CssSchema = ParsableSchema(
   ).optional()
 )
 
-export const AnimeSchema = ParsableSchema(
+export const ParsableAnimeSchema = ParsableSchema(
   ParseStage.Anime,
-  ArrayOrSingleSchema(
-    z.union([
-      z.record(z.any()),
-      TrustedFunctionSchema.refine(
-        fn => !!fn[animeTimelineInjectSymbol],
-        { message: `Only '${Inject.AnimeTimeline}' is allowed as a function` }
-      )
-    ]).nullable()
-  ).superRefine((value, ctx) => {
-    const { success } = InjectableValidateSchema.safeParse(value)
-    if (!success) ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'Illegal value',
-      params: { received: value }
-    })
-  }).optional()
+  AnimeSchema
 )
 
 export const ParsableAnimateSchema = (context, env) => {
@@ -140,7 +124,7 @@ export const ParsableAnimateSchema = (context, env) => {
     hast: HastSchema(context, layoutEnv),
     css: CssSchema(context, layoutEnv),
     onBeforeCreate: HookSchema(context, env, ParseStage.BeforeCreate),
-    anime: AnimeSchema(context, env),
+    anime: ParsableAnimeSchema(context, env),
     onCreated: HookSchema(context, env, ParseStage.Created),
     onBeforeBegin: HookSchema(context, env, ParseStage.BeforeBegin),
     onCompleted: HookSchema(context, env, ParseStage.Completed),

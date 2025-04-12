@@ -18,13 +18,6 @@ export function buildCSS (data, transformSelector = s => s) {
   )
 }
 
-export function transformAnimeConfig (config, wrapper) {
-  if (config.targets) config.targets = [].concat(config.targets)
-    .map(t => typeof t === 'string' ? wrapper.querySelectorAll(t) : t)
-
-  return config
-}
-
 export function executeWithZod (value, fn, context, options = {}) {
   const { path = [] } = options
 
