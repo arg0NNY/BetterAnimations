@@ -19,7 +19,7 @@ import Debug from '@/modules/Debug'
 import { getSourcePath, isSourceMap, SELF_KEY } from '@/modules/animation/sourceMap'
 import TrustedFunctionSchema, { trust } from '@/modules/animation/schemas/TrustedFunctionSchema'
 import { ObjectDeepBaseSchema } from '@/modules/animation/schemas/ObjectDeepSchema'
-import { RawInjectSchemaBase } from '@/modules/animation/schemas/injects/common'
+import { RawInjectBaseSchema } from '@/modules/animation/schemas/injects/common'
 
 const injectSchemas = {
   ...parseInjectSchemas(CommonInjectSchemas),
@@ -72,7 +72,7 @@ const InjectableSchema = (context, env = {}) => {
   const schema = z.lazy(
     () => InjectableBaseSchema(
       schema,
-      [RawInjectSchemaBase]
+      [RawInjectBaseSchema]
     ).transform((value, ctx) => {
       try {
         if (isSourceMap(value)) return value

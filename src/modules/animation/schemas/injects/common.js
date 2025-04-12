@@ -296,7 +296,7 @@ export const LoadInjectSchema = ({ pack, animation, type }) => InjectSchema(Inje
   return target?.[type] ?? target?.animate
 })
 
-export const RawInjectSchemaBase = InjectSchema(Inject.Raw).extend({
+export const RawInjectBaseSchema = InjectSchema(Inject.Raw).extend({
   value: z.any()
 })
-export const RawInjectSchema = RawInjectSchemaBase.transform(({ value }) => value)
+export const RawInjectSchema = RawInjectBaseSchema.transform(({ value }) => value)
