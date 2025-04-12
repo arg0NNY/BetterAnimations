@@ -12,7 +12,7 @@ export const reservedKeys = [SOURCE_MAP_KEY, IS_SOURCE_MAP_KEY, SELF_KEY]
 const sourceMapSymbol = Symbol('sourceMap')
 
 export const SourceMapSchema = z.looseObject({
-  [IS_SOURCE_MAP_KEY]: z.literal(sourceMapSymbol)
+  [IS_SOURCE_MAP_KEY]: z.symbol().refine(v => v === sourceMapSymbol)
 })
 
 export const SourceMappedObjectSchema = z.looseObject({
