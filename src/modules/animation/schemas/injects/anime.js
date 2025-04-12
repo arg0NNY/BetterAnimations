@@ -13,7 +13,7 @@ export const StaggerInjectSchema = context => InjectSchema(Inject.Stagger).exten
     StaggerValueSchema,
     z.tuple([StaggerValueSchema, StaggerValueSchema])
   ]),
-  parameters: ParametersSchema
+  parameters: ParametersSchema.optional()
 }).transform(
   zodTransformErrorBoundary(({ value, options }, ctx) => {
     value = clearSourceMapDeep(value)
