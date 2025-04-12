@@ -52,8 +52,8 @@ export default class Debug {
   }
 
   _visualized (event, name, path, context, meta = {}, options = {}) {
-    const { type, ...visOptions } = options
-    const visualized = visualizeAddonPath(context.pack, path, visOptions)
+    const { type, visPath = path, ...visOptions } = options
+    const visualized = visualizeAddonPath(context.pack, visPath, visOptions)
     return this._system(
       event,
       `'${name}' at "${toPath(path)}"` + (visualized ? '\n' + visualized : ''),
@@ -63,7 +63,10 @@ export default class Debug {
   }
 
   _inject (event, name, path, context, meta = {}, options = {}) {
-    return this._visualized(event, name, path.concat('inject'), context, meta, options)
+    return this._visualized(event, name, path, context, meta, {
+      visPath: path.concat('inject'),
+      ...options
+    })
   }
 
   debug (name, path, context, data) {
