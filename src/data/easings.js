@@ -3,7 +3,6 @@ import { EasingBezier, EasingStyle, EasingType } from '@/enums/Easing'
 export const easingTypes = [
   { value: EasingType.Linear, label: 'Linear' },
   { value: EasingType.Ease, label: 'Ease' },
-  { value: EasingType.Spring, label: 'Spring' },
   { value: EasingType.Elastic, label: 'Elastic' },
   { value: EasingType.Steps, label: 'Steps' }
 ]
@@ -27,20 +26,7 @@ export const easingStyles = [
   { value: EasingStyle.Bounce, label: 'Bounce' },
 ]
 
-const easingSpringValue = defaultValue => ({
-  min: 0,
-  max: 100,
-  default: defaultValue,
-  fractionDigits: 1
-})
-
 export const easingValues = {
-  [EasingType.Spring]: {
-    mass: easingSpringValue(1),
-    stiffness: easingSpringValue(100),
-    damping: easingSpringValue(10),
-    velocity: easingSpringValue(0)
-  },
   [EasingType.Elastic]: {
     amplitude: {
       min: 1,

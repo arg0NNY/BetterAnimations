@@ -3,7 +3,6 @@ import Enum from '@/enums/Enum'
 export const EasingType = Enum({
   Linear: 'linear',
   Ease: 'ease',
-  Spring: 'spring',
   Elastic: 'elastic',
   Steps: 'steps'
 })

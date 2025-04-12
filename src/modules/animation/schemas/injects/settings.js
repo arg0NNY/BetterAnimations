@@ -11,7 +11,7 @@ import { toAnimeEasing } from '@/utils/easings'
 export const DurationInjectSchema = InjectWithMeta(
   ({ duration, settings }) => InjectSchema(Inject.Duration)
     .transform(hasInSettings(Inject.Duration, !!settings?.[Setting.Duration]))
-    .transform(() => duration.value),
+    .transform(() => duration),
   { immediate: [Setting.Duration, 'settings'] }
 )
 

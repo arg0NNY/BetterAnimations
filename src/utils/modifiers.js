@@ -8,7 +8,7 @@ export const heightModifier = (type, { easing, duration }) => ({ container, elem
     marginTop: type === AnimationType.Exit ? 0 : [0, utils.get(container, 'marginTop')],
     marginBottom: type === AnimationType.Exit ? 0 : [0, utils.get(container, 'marginBottom')],
     easing: toAnimeEasing(easing),
-    duration: duration.value
+    duration
   }),
   onBeforeBegin: () => element.style.visibility = 'hidden',
   onCompleted: type === AnimationType.Exit ? undefined : () => element.style.removeProperty('visibility'),
@@ -21,7 +21,7 @@ export const marginRightModifier = (type, { easing, duration }) => ({ container 
     return animate(container, {
       marginRight: type === AnimationType.Exit ? -width : [-width, 0],
       easing: toAnimeEasing(easing),
-      duration: duration.value
+      duration
     })
   },
   // onDestroyed: type === AnimationType.Exit ? undefined : () => container.style.removeProperty('margin-right')

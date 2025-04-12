@@ -4,7 +4,7 @@ import { MAX_ANIMATION_DURATION } from '@/data/constants'
 import Slider from '@/components/Slider'
 import SettingControl from '@/modules/settings/components/controls/SettingControl'
 
-function DurationControl ({ animation, value, onChange, computedBy, exceeds = 0, label = 'Duration', onReset, ...props }) {
+function DurationControl ({ animation, value, onChange, label = 'Duration', onReset, ...props }) {
   const { to, from } = animation.settings[AnimationSetting.Duration]
   const dense = to - from <= 2000
 
@@ -15,9 +15,7 @@ function DurationControl ({ animation, value, onChange, computedBy, exceeds = 0,
     ? (v / 1000).toFixed(1) + 's'
     : (to - from <= 3000 && v % 100 === 0) ? '' : null
 
-  const onValueRender = computedBy === 'easing'
-    ? () => `Computed by easing: ${exceeds > 0 ? '>' : exceeds < 0 ? '<' : ''}${(value / 1000).toFixed(2)}s`
-    : value => (value / 1000).toFixed(dense ? 2 : 1) + 's'
+  const onValueRender = value => (value / 1000).toFixed(dense ? 2 : 1) + 's'
 
   return (
     <SettingControl label={label} onReset={onReset}>
@@ -27,12 +25,11 @@ function DurationControl ({ animation, value, onChange, computedBy, exceeds = 0,
         maxValue={to}
         markers={markers}
         onMarkerRender={onMarkerRender}
-        stickToMarkers={!computedBy}
+        stickToMarkers={true}
         forceShowBubble={true}
         initialValue={value}
         onValueChange={onChange}
         onValueRender={onValueRender}
-        disabled={!!computedBy}
       />
     </SettingControl>
   )

@@ -6,32 +6,9 @@ import AnimationError from '@/structs/AnimationError'
 import { formatZodError } from '@/utils/zod'
 import { buildCSS } from '@/modules/animation/utils'
 import Debug from '@/modules/Debug'
-import Setting from '@/enums/AnimationSetting'
-import { EasingType } from '@/enums/Easing'
-import { getDuration } from '@/utils/easings'
-import { MAX_ANIMATION_DURATION, MIN_ANIMATION_DURATION } from '@/data/constants'
 import { clearSourceMapDeep, getSourcePath, sourceMappedObjectEntries } from '@/modules/animation/sourceMap'
 import ParsableExtendableAnimateSchema, { ParsableExtendsSchema } from '@/modules/animation/schemas/ParsableExtendableAnimateSchema'
 import { omit } from '@/utils/object'
-
-function buildDurationContext (animation, settings) {
-  const easing = settings?.[Setting.Easing]
-  if (easing?.type === EasingType.Spring) {
-    const { from, to } = animation.settings?.[Setting.Duration] ?? { from: MIN_ANIMATION_DURATION, to: MAX_ANIMATION_DURATION }
-    const duration = getDuration(easing)
-    return {
-      value: Math.max(from, Math.min(to, duration)),
-      computedBy: 'easing',
-      exceeds: duration < from ? -1 : duration > to ? 1 : 0
-    }
-  }
-
-  return {
-    value: settings?.[Setting.Duration],
-    computedBy: null,
-    exceeds: 0
-  }
-}
 
 export function buildContext (pack, animation, type, settings = {}, context = {}) {
   return Object.assign(
@@ -44,9 +21,6 @@ export function buildContext (pack, animation, type, settings = {}, context = {}
       vars: {}
     },
     settings,
-    {
-      duration: buildDurationContext(animation, settings)
-    },
     context
   )
 }

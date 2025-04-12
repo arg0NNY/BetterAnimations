@@ -4,7 +4,6 @@ import ModuleType from '@/enums/ModuleType'
 import AnimationType from '@/enums/AnimationType'
 import AnimationSettingContainer from '@/enums/AnimationSettingContainer'
 import isEqual from 'lodash-es/isEqual'
-import { buildContext } from '@/modules/animation/parser'
 import { pick } from '@/utils/object'
 
 function isSame (array, key) {
@@ -18,7 +17,6 @@ function canMerge (settings) {
 
   const base = _isSame('animation') && _isSame('value')
   switch (settings[0].type) {
-    case Setting.Duration: return base && _isSame('computedBy')
     case Setting.Position: return base && _isSame('preserve')
     case Setting.Direction: return base && _isSame('axis') && _isSame('reverse') && _isSame('towards')
     default: return base
@@ -39,9 +37,8 @@ function _useAnimationSettings (module, items, options = {}) {
   const { hideOverflow = false } = options
   const isAdvanced = useAdvancedMode()
 
-  const sets = items.map(({ animation, type, settings, setSettings: _setSettings, context, defaults }) => {
+  const sets = items.map(({ animation, settings, setSettings: _setSettings, defaults }) => {
     if (!animation) return []
-    if (!context) context = buildContext(null, animation, type, settings)
 
     const setSettings = values => _setSettings({ ...settings, ...values })
 
@@ -61,7 +58,7 @@ function _useAnimationSettings (module, items, options = {}) {
     }
 
     return [
-      animation.settings?.[Setting.Duration] && buildSetting(Setting.Duration, context.duration),
+      animation.settings?.[Setting.Duration] && buildSetting(Setting.Duration),
       animation.settings?.[Setting.Variant] && buildSetting(Setting.Variant),
       animation.settings?.[Setting.Position] && (() => {
         const keys = [Setting.Position, Setting.PositionPreserve]
@@ -87,9 +84,7 @@ function _useAnimationSettings (module, items, options = {}) {
           onReset: !isEqual(values, defaultValues) ? () => setSettings(defaultValues) : null
         })
       })(),
-      isAdvanced && animation.settings?.[Setting.Easing] && buildSetting(Setting.Easing, {
-        exceedsDuration: context.duration?.computedBy === 'easing' ? context.duration.exceeds : 0
-      }),
+      isAdvanced && animation.settings?.[Setting.Easing] && buildSetting(Setting.Easing),
       isAdvanced && !hideOverflow && !module.meta?.settings?.hideOverflow && buildSetting(Setting.Overflow, {
         forced: animation.settings?.[Setting.Overflow] === false
       })

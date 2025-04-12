@@ -129,8 +129,7 @@ class Animation {
   }
 
   computeTimeLimit () {
-    const { value = 0 } = this.context.duration ?? { value: 0 }
-    return 5000 + value
+    return 5000 + (this.context.duration ?? 0)
   }
 
   ensureTimeLimit (limit = this.computeTimeLimit()) {

@@ -24,13 +24,6 @@ export const EasingEaseSchema = EasingBaseSchema(EasingType.Ease).extend({
   style: z.enum(EasingStyle.values()).optional().default(EasingStyle.Sine)
 })
 
-export const EasingSpringSchema = EasingBaseSchema(EasingType.Spring).extend({
-  mass: EasingValueSchema(easingValues[EasingType.Spring]['mass']),
-  stiffness: EasingValueSchema(easingValues[EasingType.Spring]['stiffness']),
-  damping: EasingValueSchema(easingValues[EasingType.Spring]['damping']),
-  velocity: EasingValueSchema(easingValues[EasingType.Spring]['velocity']),
-})
-
 export const EasingElasticSchema = EasingBaseSchema(EasingType.Elastic).extend({
   bezier: z.enum(EasingBezier.values()).optional().default(EasingBezier.Out),
   amplitude: EasingValueSchema(easingValues[EasingType.Elastic]['amplitude']),
@@ -44,7 +37,6 @@ export const EasingStepsSchema = EasingBaseSchema(EasingType.Steps).extend({
 const EasingSchema = z.discriminatedUnion('type', [
   EasingLinearSchema,
   EasingEaseSchema,
-  EasingSpringSchema,
   EasingElasticSchema,
   EasingStepsSchema
 ])
