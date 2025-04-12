@@ -220,8 +220,14 @@ export const IsIntersectedInjectSchema = InjectWithMeta(
 )
 
 export const GetInjectSchema = InjectSchema(Inject.Get).extend({
-  target: z.record(z.any()),
-  key: z.string().refine(
+  target: z.union([
+    z.record(z.any()),
+    z.array(z.any())
+  ]),
+  key: z.union([
+    z.string(),
+    z.number()
+  ]).refine(
     restrictForbiddenKeys,
     key => ({ message: `Forbidden key: '${key}'` })
   ).optional(),
@@ -239,8 +245,8 @@ export const GetInjectSchema = InjectSchema(Inject.Get).extend({
     })
     .optional()
 }).transform(({ target, key, path }) => {
-  if (key) return target[key]
-  if (path) return getPath(target, path)
+  if (key != null) return target[key]
+  if (path != null) return getPath(target, path)
   return target
 })
 
