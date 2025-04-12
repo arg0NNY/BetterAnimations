@@ -94,7 +94,7 @@ const AnimeTimelineChildSchema = context => z.discriminatedUnion('type', [
   AnimeTimelineCallChildSchema
 ])
 const AnimeTimelineSchema = context => AnimeBaseSchema('timeline').extend({
-  parameters: ParametersSchema,
+  parameters: ParametersSchema.optional(),
   children: z.array(AnimeTimelineChildSchema(context)).nonempty()
 }).transform(
   zodTransformErrorBoundary(({ parameters, children }) => {
