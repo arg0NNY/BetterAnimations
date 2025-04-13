@@ -4,43 +4,12 @@ import { ArrayOrSingleSchema } from '@/utils/schemas'
 import { zodTransformErrorBoundary } from '@/utils/zod'
 import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
 import { clearSourceMapDeep, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
-import { ParametersSchema } from '@/modules/animation/schemas/utils'
+import { ParametersSchema, TargetsSchema } from '@/modules/animation/schemas/utils'
 import { apply } from '@/utils/anime'
 
 const AnimeBaseSchema = (type, isDefault = false) => SourceMappedObjectSchema.extend({
   type: isDefault ? z.literal(type).optional() : z.literal(type)
 }).strict()
-
-// Targets
-const AnimeTargetSchema = z.union([
-  z.string(),
-  z.instanceof(Element)
-])
-const AnimeTargetsSchema = context => ArrayOrSingleSchema(
-  AnimeTargetSchema.nullable()
-    .transform((target, ctx) => {
-      if (target == null) return null
-      if (typeof target === 'string') {
-        if (!context.wrapper) return null
-        try {
-          return context.wrapper.querySelectorAll(target)
-        }
-        catch {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: `Invalid selector: '${target}'`,
-            params: { received: target }
-          })
-          return z.NEVER
-        }
-      }
-      return target
-    })
-).transform(targets => [].concat(targets).filter(t => t != null))
-  .refine(
-    targets => targets.length > 0,
-    { message: 'No targets specified' }
-  )
 
 // Timer
 const AnimeTimerSchema = AnimeBaseSchema('timer').extend({
@@ -49,7 +18,7 @@ const AnimeTimerSchema = AnimeBaseSchema('timer').extend({
 
 // Animation
 const AnimeAnimationSchema = context => AnimeBaseSchema('animation', true).extend({
-  targets: AnimeTargetsSchema(context),
+  targets: TargetsSchema(context),
   parameters: ParametersSchema
 })
 
@@ -62,11 +31,11 @@ const AnimeTimelineChildBaseSchema = (type, isDefault = false) => AnimeBaseSchem
   ]).optional()
 })
 const AnimeTimelineAddChildSchema = context => AnimeTimelineChildBaseSchema('add', true).extend({
-  targets: AnimeTargetsSchema(context).optional(),
+  targets: TargetsSchema(context).optional(),
   parameters: ParametersSchema
 })
 const AnimeTimelineSetChildSchema = context => AnimeTimelineChildBaseSchema('set').extend({
-  targets: AnimeTargetsSchema(context),
+  targets: TargetsSchema(context),
   parameters: ParametersSchema
 })
 const AnimeTimelineLabelChildSchema = AnimeTimelineChildBaseSchema('label').extend({
@@ -138,7 +107,7 @@ const AnimeSchema = context => ArrayOrSingleSchema(
 ).transform(instances => [].concat(instances).filter(i => i != null))
   .refine(
     instances => instances.length > 0,
-    { message: 'No anime instances received' }
+    { message: 'No anime instances created' }
   )
 
 export default AnimeSchema

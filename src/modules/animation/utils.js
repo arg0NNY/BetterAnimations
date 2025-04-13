@@ -49,7 +49,7 @@ export function zodErrorBoundary (fn, context, options = {}) {
     catch (error) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: `An error occurred while executing ${name ? `"${name}"` : 'an external function'}`,
+        message: `An error occurred while executing ${name ? `'${name}'` : 'an external function'}`,
         params: { error, args }
       })
       return z.NEVER

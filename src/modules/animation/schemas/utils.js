@@ -1,21 +1,11 @@
 import { z } from 'zod'
-import { buildSwitchSchema, Defined, formatValuesList, hasInSettings } from '@/utils/schemas'
+import { ArrayOrSingleSchema, buildSwitchSchema, Defined, formatValuesList, hasInSettings } from '@/utils/schemas'
 import { clearSourceMap, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 import { InjectableValidateSchema } from '@/modules/animation/schemas/InjectableSchema'
 
 export const InjectSchema = type => SourceMappedObjectSchema.extend({
   inject: z.literal(type)
 }).strict()
-
-export const ParametersSchema = z.record(z.string(), z.any())
-  .superRefine((value, ctx) => {
-    const { success } = InjectableValidateSchema.safeParse(value)
-    if (!success) ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'Illegal value',
-      params: { received: value }
-    })
-  })
 
 export function SwitchSchema (inject, valueList, options = {}) {
   const { currentValue, defaultValue, possibleValues, setting } = options
@@ -93,3 +83,54 @@ export function ElementSchema (inject, element = null, allowDirect = true) {
       return element
     })
 }
+
+export const ParametersSchema = z.record(z.string(), z.any())
+  .superRefine((value, ctx) => {
+    const { success } = InjectableValidateSchema.safeParse(value)
+    if (!success) ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Illegal value',
+      params: { received: value }
+    })
+  })
+
+function queryTarget (target, context, multiple = false) {
+  if (!context.wrapper) return null
+  if (multiple) return Array.from(context.wrapper.querySelectorAll(target))
+  return context.wrapper.querySelector(target)
+}
+export const TargetSchema = (context, multiple = false) => z.union([
+  z.string(),
+  z.instanceof(Element)
+]).transform((target, ctx) => {
+  if (typeof target === 'string') {
+    try {
+      const matched = queryTarget(target, context, multiple)
+      if (Array.isArray(matched) ? !matched.length : !matched) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Couldn't find any target${multiple ? 's' : ''} matching selector: '${target}'`,
+          params: { received: target }
+        })
+        return z.NEVER
+      }
+      return matched
+    }
+    catch {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Invalid selector: '${target}'`,
+        params: { received: target }
+      })
+      return z.NEVER
+    }
+  }
+  return target
+})
+export const TargetsSchema = context => ArrayOrSingleSchema(
+  TargetSchema(context, true).nullable()
+).transform(targets => [].concat(targets).flat().filter(t => t != null))
+  .refine(
+    targets => targets.length > 0,
+    { message: 'No targets specified' }
+  )

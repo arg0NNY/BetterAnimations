@@ -1,6 +1,6 @@
 import { ArrayOrSingleSchema } from '@/utils/schemas'
-import { InjectSchema, InjectWithMeta, ParametersSchema } from '@/modules/animation/schemas/utils'
-import { stagger, utils } from 'animejs'
+import { InjectSchema, InjectWithMeta, ParametersSchema, TargetSchema } from '@/modules/animation/schemas/utils'
+import { stagger, svg, utils } from 'animejs'
 import { z } from 'zod'
 import Inject from '@/enums/Inject'
 import { zodTransformErrorBoundary } from '@/utils/zod'
@@ -15,13 +15,13 @@ export const StaggerInjectSchema = context => InjectSchema(Inject.Stagger).exten
   ]),
   parameters: ParametersSchema.optional()
 }).transform(
-  zodTransformErrorBoundary(({ value, options }, ctx) => {
+  zodTransformErrorBoundary(({ value, options }, { path }) => {
     value = clearSourceMapDeep(value)
     options = clearSourceMapDeep(options)
     return zodErrorBoundary(
       stagger(value, options),
       context,
-      { path: ctx.path, name: 'stagger' }
+      { path, name: 'stagger' }
     )
   })
 )
@@ -59,4 +59,17 @@ export const UtilsSetInjectSchema = InjectWithMeta(
     )
   ),
   { lazy: true }
+)
+
+export const SvgMorphToInjectSchema = context => InjectSchema(Inject.SvgMorphTo).extend({
+  target: TargetSchema(context),
+  precision: z.number().min(0).max(1).optional()
+}).transform(
+  zodTransformErrorBoundary(
+    ({ target, precision }, { path }) => zodErrorBoundary(
+      svg.morphTo(target, precision),
+      context,
+      { path, name: 'svg.morphTo' }
+    )
+  )
 )

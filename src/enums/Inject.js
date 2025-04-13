@@ -9,6 +9,7 @@ export default Enum({
   UtilsRandom: 'utils.random',
   UtilsGet: 'utils.get',
   UtilsSet: 'utils.set',
+  SvgMorphTo: 'svg.morphTo',
   Duration: 'duration',
   Easing: 'easing',
   Variant: 'variant',
