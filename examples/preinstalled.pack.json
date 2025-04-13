@@ -9,7 +9,8 @@
       "key": "backdropDark",
       "name": "Dark Blur",
       "meta": {
-        "modules": "modalsBackdrop"
+        "modules": "modalsBackdrop",
+        "revert": false
       },
       "settings": {
         "duration": true,
@@ -23,17 +24,19 @@
       "animate": {
         "anime": {
           "targets": { "inject": "element" },
-          "duration": { "inject": "duration" },
-          "easing": { "inject": "easing" },
-          "background": {
-            "inject": "type",
-            "enter": ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, .7)"],
-            "exit": "rgba(0, 0, 0, 0)"
-          },
-          "backdropFilter": {
-            "inject": "type",
-            "enter": ["blur(0px)", "blur(2px)"],
-            "exit": "blur(0px)"
+          "parameters": {
+            "duration": { "inject": "duration" },
+            "ease": { "inject": "easing" },
+            "background": {
+              "inject": "type",
+              "enter": ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, .7)"],
+              "exit": "rgba(0, 0, 0, 0)"
+            },
+            "backdropFilter": {
+              "inject": "type",
+              "enter": ["blur(0px)", "blur(2px)"],
+              "exit": "blur(0px)"
+            }
           }
         }
       }

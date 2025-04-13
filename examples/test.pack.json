@@ -87,17 +87,17 @@
             "background": "#5662f6"
           }
         },
-        "anime": [
-          {
+        "anime": {
+          "targets": [".el", { "inject": "element" }],
+          "parameters": {
             "inject": "assign",
             "target": {
-              "targets": [".el", { "inject": "element" }],
               "delay": {
-                "inject": "anime.stagger",
+                "inject": "stagger",
                 "value": 80
               },
               "duration": { "inject": "duration" },
-              "easing": { "inject": "easing" }
+              "ease": { "inject": "easing" }
             },
             "source": {
               "inject": "direction",
@@ -109,42 +109,36 @@
               "backwards": { "scale": [0.9, 1], "opacity": [0, 1] }
             }
           }
-        ],
-        "onDestroyed": {
-          "inject": "style.removeProperty",
-          "property": ["opacity", "transform"]
         }
       },
       "exit": {
         "anime": {
-          "inject": "assign",
-          "target": {
-            "targets": { "inject": "element" },
-            "duration": {
-              "inject": "math",
-              "expression": {
-                "inject": "string.template",
-                "template": "${duration} + (80 * 4)",
-                "values": {
-                  "duration": { "inject": "duration" }
+          "targets": { "inject": "element" },
+          "parameters": {
+            "inject": "assign",
+            "target": {
+              "duration": {
+                "inject": "math",
+                "expression": {
+                  "inject": "string.template",
+                  "template": "${duration} + (80 * 4)",
+                  "values": {
+                    "duration": { "inject": "duration" }
+                  }
                 }
-              }
+              },
+              "ease": { "inject": "easing" }
             },
-            "easing": { "inject": "easing" }
-          },
-          "source": {
-            "inject": "direction",
-            "upwards": { "translateY": "-30%" },
-            "downwards": { "translateY": "30%" },
-            "leftwards": { "translateX": "-30%" },
-            "rightwards": { "translateX": "30%" },
-            "forwards": { "scale": 0.9, "opacity": 0 },
-            "backwards": { "scale": 1.1, "opacity": 0 }
+            "source": {
+              "inject": "direction",
+              "upwards": { "translateY": "-30%" },
+              "downwards": { "translateY": "30%" },
+              "leftwards": { "translateX": "-30%" },
+              "rightwards": { "translateX": "30%" },
+              "forwards": { "scale": 0.9, "opacity": 0 },
+              "backwards": { "scale": 1.1, "opacity": 0 }
+            }
           }
-        },
-        "onDestroyed": {
-          "inject": "style.removeProperty",
-          "property": ["opacity", "transform"]
         }
       }
     },
@@ -193,44 +187,42 @@
           }
         },
         "anime": {
-          "inject": "assign",
-          "target": {
-            "targets": { "inject": "element" },
-            "duration": { "inject": "duration" },
-            "easing": { "inject": "easing" }
-          },
-          "source": [
-            {
-              "inject": "type",
-              "enter": {
-                "opacity": [0, 1]
-              },
-              "exit": {
-                "opacity": 0
-              }
+          "targets": { "inject": "element" },
+          "parameters": {
+            "inject": "assign",
+            "target": {
+              "duration": { "inject": "duration" },
+              "ease": { "inject": "easing" }
             },
-            {
-              "inject": "type",
-              "enter": {
-                "inject": "isIntersected",
-                "true": { "scale": 1 },
-                "false": {
-                  "inject": "direction",
-                  "forwards": { "scale": [1.1, 1] },
-                  "backwards": { "scale": [0.9, 1] }
+            "source": [
+              {
+                "inject": "type",
+                "enter": {
+                  "opacity": [0, 1]
+                },
+                "exit": {
+                  "opacity": 0
                 }
               },
-              "exit": {
-                "inject": "direction",
-                "forwards": { "scale": 0.9 },
-                "backwards": { "scale": 1.1 }
+              {
+                "inject": "type",
+                "enter": {
+                  "inject": "isIntersected",
+                  "true": { "scale": 1 },
+                  "false": {
+                    "inject": "direction",
+                    "forwards": { "scale": [1.1, 1] },
+                    "backwards": { "scale": [0.9, 1] }
+                  }
+                },
+                "exit": {
+                  "inject": "direction",
+                  "forwards": { "scale": 0.9 },
+                  "backwards": { "scale": 1.1 }
+                }
               }
-            }
-          ]
-        },
-        "onDestroyed": {
-          "inject": "style.removeProperty",
-          "property": ["opacity", "transform"]
+            ]
+          }
         }
       }
     },
@@ -254,42 +246,40 @@
       },
       "animate": {
         "anime": {
-          "inject": "assign",
-          "target": {
-            "targets": { "inject": "element" },
-            "duration": { "inject": "duration" },
-            "easing": { "inject": "easing" },
-            "opacity": {
+          "targets": { "inject": "element" },
+          "parameters": {
+            "inject": "assign",
+            "target": {
+              "duration": { "inject": "duration" },
+              "ease": { "inject": "easing" },
+              "opacity": {
+                "inject": "type",
+                "enter": {
+                  "inject": "module.type",
+                  "reveal": [0, 1],
+                  "switch": 1
+                },
+                "exit": 0
+              }
+            },
+            "source": {
               "inject": "type",
               "enter": {
-                "inject": "module.type",
-                "reveal": [0, 1],
-                "switch": 1
+                "inject": "direction",
+                "upwards": { "translateY": ["5px", 0] },
+                "downwards": { "translateY": ["-5px", 0] },
+                "leftwards": { "translateX": ["5px", 0] },
+                "rightwards": { "translateX": ["-5px", 0] }
               },
-              "exit": 0
-            }
-          },
-          "source": {
-            "inject": "type",
-            "enter": {
-              "inject": "direction",
-              "upwards": { "translateY": ["5px", 0] },
-              "downwards": { "translateY": ["-5px", 0] },
-              "leftwards": { "translateX": ["5px", 0] },
-              "rightwards": { "translateX": ["-5px", 0] }
-            },
-            "exit": {
-              "inject": "direction",
-              "upwards": { "translateY": "-5px" },
-              "downwards": { "translateY": "5px" },
-              "leftwards": { "translateX": "-5px" },
-              "rightwards": { "translateX": "5px" }
+              "exit": {
+                "inject": "direction",
+                "upwards": { "translateY": "-5px" },
+                "downwards": { "translateY": "5px" },
+                "leftwards": { "translateX": "-5px" },
+                "rightwards": { "translateX": "5px" }
+              }
             }
           }
-        },
-        "onDestroyed": {
-          "inject": "style.removeProperty",
-          "property": ["opacity", "transform"]
         }
       }
     },
@@ -299,38 +289,36 @@
       "name": "Slip (No settings)",
       "animate": {
         "anime": {
-          "inject": "assign",
-          "target": {
-            "targets": { "inject": "element" },
-            "duration": { "inject": "duration" },
-            "easing": { "inject": "easing" },
-            "opacity": {
-              "inject": "type",
-              "enter": [0, 1],
-              "exit": 0
-            }
-          },
-          "source": {
-            "inject": "type",
-            "enter": {
-              "inject": "direction",
-              "upwards": { "translateY": ["5px", 0] },
-              "downwards": { "translateY": ["-5px", 0] },
-              "leftwards": { "translateX": ["5px", 0] },
-              "rightwards": { "translateX": ["-5px", 0] }
+          "targets": { "inject": "element" },
+          "parameters": {
+            "inject": "assign",
+            "target": {
+              "duration": { "inject": "duration" },
+              "ease": { "inject": "easing" },
+              "opacity": {
+                "inject": "type",
+                "enter": [0, 1],
+                "exit": 0
+              }
             },
-            "exit": {
-              "inject": "direction",
-              "upwards": { "translateY": "-5px" },
-              "downwards": { "translateY": "5px" },
-              "leftwards": { "translateX": "-5px" },
-              "rightwards": { "translateX": "5px" }
+            "source": {
+              "inject": "type",
+              "enter": {
+                "inject": "direction",
+                "upwards": { "translateY": ["5px", 0] },
+                "downwards": { "translateY": ["-5px", 0] },
+                "leftwards": { "translateX": ["5px", 0] },
+                "rightwards": { "translateX": ["-5px", 0] }
+              },
+              "exit": {
+                "inject": "direction",
+                "upwards": { "translateY": "-5px" },
+                "downwards": { "translateY": "5px" },
+                "leftwards": { "translateX": "-5px" },
+                "rightwards": { "translateX": "5px" }
+              }
             }
           }
-        },
-        "onDestroyed": {
-          "inject": "style.removeProperty",
-          "property": ["opacity", "transform"]
         }
       }
     },
@@ -371,41 +359,34 @@
         "anime": [
           {
             "targets": { "inject": "container" },
-            "duration": { "inject": "duration" },
-            "easing": { "inject": "easing" },
-            "width": {
-              "inject": "type",
-              "enter": [0, {
-                "inject": "anime.get",
-                "property": "width"
-              }],
-              "exit": [{
-                "inject": "anime.get",
-                "target": { "inject": "container" },
-                "property": "width"
-              }, 0]
+            "parameters": {
+              "duration": { "inject": "duration" },
+              "ease": { "inject": "easing" },
+              "width": {
+                "inject": "type",
+                "enter": [0, {
+                  "inject": "utils.get",
+                  "property": "width"
+                }],
+                "exit": [{
+                  "inject": "utils.get",
+                  "target": { "inject": "container" },
+                  "property": "width"
+                }, 0]
+              }
             }
           },
           {
             "targets": { "inject": "element" },
-            "duration": { "inject": "duration" },
-            "easing": { "inject": "easing" },
-            "rotateY": {
-              "inject": "type",
-              "enter": ["-90deg", 0],
-              "exit": "-90deg"
+            "parameters": {
+              "duration": { "inject": "duration" },
+              "ease": { "inject": "easing" },
+              "rotateY": {
+                "inject": "type",
+                "enter": ["-90deg", 0],
+                "exit": "-90deg"
+              }
             }
-          }
-        ],
-        "onDestroyed": [
-          {
-            "inject": "style.removeProperty",
-            "target": { "inject": "container" },
-            "property": "width"
-          },
-          {
-            "inject": "style.removeProperty",
-            "property": "transform"
           }
         ]
       }
@@ -523,38 +504,36 @@
         },
         "anime": {
           "targets": { "inject": "element" },
-          "duration": { "inject": "duration" },
-          "easing": { "inject": "easing" },
-          "clipPath": {
-            "inject": "function",
-            "return": {
-              "inject": "type",
-              "enter": {
-                "inject": "isIntersected",
-                "true": { "inject": "var.get", "name": "clipPathExpanded" },
-                "false": [
-                  { "inject": "var.get", "name": "clipPathCollapsed" },
-                  { "inject": "var.get", "name": "clipPathExpanded" }
-                ]
-              },
-              "exit": {
-                "inject": "module.type",
-                "reveal": {
+          "parameters": {
+            "duration": { "inject": "duration" },
+            "ease": { "inject": "easing" },
+            "clipPath": {
+              "inject": "function",
+              "return": {
+                "inject": "type",
+                "enter": {
                   "inject": "isIntersected",
-                  "true": { "inject": "var.get", "name": "clipPathCollapsed" },
+                  "true": { "inject": "var.get", "name": "clipPathExpanded" },
                   "false": [
-                    { "inject": "var.get", "name": "clipPathExpanded" },
-                    { "inject": "var.get", "name": "clipPathCollapsed" }
+                    { "inject": "var.get", "name": "clipPathCollapsed" },
+                    { "inject": "var.get", "name": "clipPathExpanded" }
                   ]
                 },
-                "switch": []
+                "exit": {
+                  "inject": "module.type",
+                  "reveal": {
+                    "inject": "isIntersected",
+                    "true": { "inject": "var.get", "name": "clipPathCollapsed" },
+                    "false": [
+                      { "inject": "var.get", "name": "clipPathExpanded" },
+                      { "inject": "var.get", "name": "clipPathCollapsed" }
+                    ]
+                  },
+                  "switch": []
+                }
               }
             }
           }
-        },
-        "onDestroyed": {
-          "inject": "style.removeProperty",
-          "property": "clip-path"
         }
       }
     },
@@ -624,20 +603,22 @@
                 },
                 "anime": {
                   "targets": { "inject": "element" },
-                  "duration": { "inject": "duration" },
-                  "easing": { "inject": "easing" },
-                  "clipPath": {
-                    "inject": "function",
-                    "return": {
-                      "inject": "type",
-                      "enter": [
-                        { "inject": "var.get", "name": "clipPathCollapsed" },
-                        { "inject": "var.get", "name": "clipPathExpanded" }
-                      ],
-                      "exit": [
-                        { "inject": "var.get", "name": "clipPathExpanded" },
-                        { "inject": "var.get", "name": "clipPathCollapsed" }
-                      ]
+                  "parameters": {
+                    "duration": { "inject": "duration" },
+                    "ease": { "inject": "easing" },
+                    "clipPath": {
+                      "inject": "function",
+                      "return": {
+                        "inject": "type",
+                        "enter": [
+                          { "inject": "var.get", "name": "clipPathCollapsed" },
+                          { "inject": "var.get", "name": "clipPathExpanded" }
+                        ],
+                        "exit": [
+                          { "inject": "var.get", "name": "clipPathExpanded" },
+                          { "inject": "var.get", "name": "clipPathCollapsed" }
+                        ]
+                      }
                     }
                   }
                 }
@@ -651,40 +632,38 @@
                 }
               },
               "anime": {
-                "inject": "assign",
-                "target": {
-                  "targets": { "inject": "element" },
-                  "duration": { "inject": "duration" },
-                  "easing": { "inject": "easing" }
-                },
-                "source": [
-                  {
-                    "inject": "type",
-                    "enter": {
-                      "opacity": [0, 1]
-                    },
-                    "exit": {
-                      "opacity": [1, 0]
-                    }
+                "targets": { "inject": "element" },
+                "parameters": {
+                  "inject": "assign",
+                  "target": {
+                    "duration": { "inject": "duration" },
+                    "ease": { "inject": "easing" }
                   },
-                  {
-                    "inject": "type",
-                    "enter": {
-                      "inject": "direction",
-                      "backwards": { "scale": [1.1, 1] },
-                      "forwards": { "scale": [0.9, 1] }
+                  "source": [
+                    {
+                      "inject": "type",
+                      "enter": {
+                        "opacity": [0, 1]
+                      },
+                      "exit": {
+                        "opacity": [1, 0]
+                      }
                     },
-                    "exit": {
-                      "inject": "direction",
-                      "backwards": { "scale": 0.9 },
-                      "forwards": { "scale": 1.1 }
+                    {
+                      "inject": "type",
+                      "enter": {
+                        "inject": "direction",
+                        "backwards": { "scale": [1.1, 1] },
+                        "forwards": { "scale": [0.9, 1] }
+                      },
+                      "exit": {
+                        "inject": "direction",
+                        "backwards": { "scale": 0.9 },
+                        "forwards": { "scale": 1.1 }
+                      }
                     }
-                  }
-                ]
-              },
-              "onDestroyed": {
-                "inject": "style.removeProperty",
-                "property": ["opacity", "transform"]
+                  ]
+                }
               }
             }
           }
@@ -710,7 +689,10 @@
       },
       "enter": {
         "anime": {
-          "duration": { "inject": "duration" }
+          "type": "timer",
+          "parameters": {
+            "duration": { "inject": "duration" }
+          }
         }
       },
       "exit": {
@@ -744,20 +726,17 @@
           }
         },
         "anime": {
-          "inject": "anime.timeline",
-          "parameters": {
-            "targets": ".overlay__path",
-            "easing": "easeInOutSine"
-          },
+          "type": "timeline",
           "children": [
             {
+              "targets": ".overlay__path",
               "parameters": {
                 "duration": {
                   "inject": "*",
                   "a": 0.3720930233,
                   "b": { "inject": "duration" }
                 },
-                "easing": "easeInQuart",
+                "ease": "inQuart",
                 "d": [
                   "M 0 0 h 0 c 0 50 0 50 0 100 H 0 V 0 Z",
                   "M 0 0 h 43 c -60 55 140 65 0 100 H 0 V 0 Z"
@@ -765,31 +744,33 @@
               }
             },
             {
+              "targets": ".overlay__path",
               "parameters": {
                 "duration": {
                   "inject": "*",
                   "a": 0.0930232558,
                   "b": { "inject": "duration" }
                 },
-                "easing": "easeOutSine",
-                "d": "M 0 0 h 100 c 0 50 0 50 0 100 H 0 V 0 Z",
-                "complete": {
-                  "inject": "anime.set",
-                  "target": { "inject": "element" },
-                  "properties": {
-                    "opacity": 0
-                  }
-                }
+                "ease": "outSine",
+                "d": "M 0 0 h 100 c 0 50 0 50 0 100 H 0 V 0 Z"
               }
             },
             {
+              "type": "set",
+              "targets": { "inject": "element" },
+              "parameters": {
+                "opacity": 0
+              }
+            },
+            {
+              "targets": ".overlay__path",
               "parameters": {
                 "duration": {
                   "inject": "*",
                   "a": 0.0697674419,
                   "b": { "inject": "duration" }
                 },
-                "easing": "easeInSine",
+                "ease": "inSine",
                 "d": [
                   "M 100 0 H 0 c 0 50 0 50 0 100 h 100 V 50 Z",
                   "M 100 0 H 50 c 28 43 4 81 0 100 h 50 V 0 Z"
@@ -797,13 +778,14 @@
               }
             },
             {
+              "targets": ".overlay__path",
               "parameters": {
                 "duration": {
                   "inject": "*",
                   "a": 0.4651162791,
                   "b": { "inject": "duration" }
                 },
-                "easing": "easeOutExpo",
+                "ease": "outExpo",
                 "d": "M 100 0 H 100 c 0 50 0 50 0 100 h 0 V 0 Z"
               }
             }
