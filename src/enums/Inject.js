@@ -10,6 +10,7 @@ export default Enum({
   UtilsGet: 'utils.get',
   UtilsSet: 'utils.set',
   SvgMorphTo: 'svg.morphTo',
+  SvgCreateDrawable: 'svg.createDrawable',
   Duration: 'duration',
   Easing: 'easing',
   Variant: 'variant',

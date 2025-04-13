@@ -1,5 +1,11 @@
 import { ArrayOrSingleSchema } from '@/utils/schemas'
-import { InjectSchema, InjectWithMeta, ParametersSchema, TargetSchema } from '@/modules/animation/schemas/utils'
+import {
+  InjectSchema,
+  InjectWithMeta,
+  ParametersSchema,
+  TargetSchema,
+  TargetsSchema
+} from '@/modules/animation/schemas/utils'
 import { stagger, svg, utils } from 'animejs'
 import { z } from 'zod'
 import Inject from '@/enums/Inject'
@@ -71,5 +77,13 @@ export const SvgMorphToInjectSchema = context => InjectSchema(Inject.SvgMorphTo)
       context,
       { path, name: 'svg.morphTo' }
     )
+  )
+)
+
+export const SvgCreateDrawableInjectSchema = context => InjectSchema(Inject.SvgCreateDrawable).extend({
+  targets: TargetsSchema(context)
+}).transform(
+  zodTransformErrorBoundary(
+    ({ targets }) => targets.flatMap(target => svg.createDrawable(target))
   )
 )
