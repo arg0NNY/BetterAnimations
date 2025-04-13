@@ -279,6 +279,7 @@ const modules = [
     ),
     parent: ModuleKey.Modals,
     meta: {
+      revert: false,
       settings: {
         supportsAuto: {
           [Setting.Position]: [PositionAutoType.Precise, { asDefault: false }]

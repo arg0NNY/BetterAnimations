@@ -212,7 +212,11 @@ export function buildAnimateAssets (data = null, context, options = {}) {
       const instances = data?.anime ?? []
 
       const pauseAll = () => instances.forEach(i => i.pause())
-      const revertAll = () => instances.forEach(i => i.revert())
+      const revertAll = () => instances.forEach(
+        (context.module.meta.revert ?? true) || context.animation.meta.revert
+          ? i => i.revert()
+          : i => i.cancel()
+      )
       const finishedAll = () => Promise.all(instances.map(promisify))
       context.instance.instances = instances
       context.instance.pause = pauseAll
