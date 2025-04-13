@@ -13,10 +13,11 @@ const ExtendsSchema = ParsableSchema(
 )
 
 const ParsableExtendableAnimateSchema = (context, env) => {
-  env = buildPreLayoutEnv(env)
+  const preLayoutEnv = buildPreLayoutEnv(env)
+
   return ParsableAnimateSchema(context, env).extend({
-    onBeforeExtend: HookSchema(context, env, ParseStage.BeforeExtend),
-    extends: ArrayOrSingleSchema(ExtendsSchema(context, env)).optional()
+    onBeforeExtend: HookSchema(context, preLayoutEnv, ParseStage.BeforeExtend),
+    extends: ArrayOrSingleSchema(ExtendsSchema(context, preLayoutEnv)).optional()
   }).strict()
 }
 
