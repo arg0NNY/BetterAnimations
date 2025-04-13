@@ -9,6 +9,7 @@ import Debug from '@/modules/Debug'
 import { clearSourceMapDeep, getSourcePath, sourceMappedObjectEntries } from '@/modules/animation/sourceMap'
 import ParsableExtendableAnimateSchema, { ParsableExtendsSchema } from '@/modules/animation/schemas/ParsableExtendableAnimateSchema'
 import { omit } from '@/utils/object'
+import { promisify } from '@/utils/anime'
 
 export function buildContext (pack, animation, type, settings = {}, context = {}) {
   return Object.assign(
@@ -212,7 +213,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
 
       const pauseAll = () => instances.forEach(i => i.pause())
       const revertAll = () => instances.forEach(i => i.revert())
-      const finishedAll = () => Promise.all(instances)
+      const finishedAll = () => Promise.all(instances.map(promisify))
       context.instance.instances = instances
       context.instance.pause = pauseAll
       if (context.instance.cancelled) return {}
@@ -222,7 +223,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
       if (before) {
         pauseAll()
 
-        instance.then(() => {
+        promisify(instance).then(() => {
           before.onCompleted?.()
           hook('onBeforeBegin', ParseStage.BeforeBegin)
           instances.slice(1).forEach(i => i.restart())
@@ -250,7 +251,7 @@ export function buildAnimateAssets (data = null, context, options = {}) {
               instance.restart()
               after.onCreated?.()
               after.onBeforeBegin?.()
-              return instance.then(() => after.onCompleted?.())
+              return promisify(instance).then(() => after.onCompleted?.())
             }
           })
       }
