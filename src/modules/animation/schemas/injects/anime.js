@@ -1,4 +1,3 @@
-import { ArrayOrSingleSchema } from '@/utils/schemas'
 import {
   InjectSchema,
   InjectWithMeta,
@@ -12,7 +11,6 @@ import Inject from '@/enums/Inject'
 import { zodTransformErrorBoundary } from '@/utils/zod'
 import { zodErrorBoundary } from '@/modules/animation/utils'
 import { clearSourceMapDeep } from '@/modules/animation/sourceMap'
-import { trust } from '@/modules/animation/schemas/TrustedFunctionSchema'
 
 const StaggerValueSchema = z.union([z.number(), z.string()])
 export const StaggerInjectSchema = context => InjectSchema(Inject.Stagger).extend({
@@ -43,8 +41,8 @@ export const UtilsRandomInjectSchema = InjectSchema(Inject.UtilsRandom).extend({
   )
 )
 
-export const UtilsGetInjectSchema = ({ element }) => InjectSchema(Inject.UtilsGet).extend({
-  target: z.instanceof(Element).optional().default(element),
+export const UtilsGetInjectSchema = context => InjectSchema(Inject.UtilsGet).extend({
+  target: TargetSchema(context).optional().default(context.element),
   property: z.string(),
   unit: z.union([z.string(), z.literal(false)]).optional()
 }).transform(
@@ -54,15 +52,17 @@ export const UtilsGetInjectSchema = ({ element }) => InjectSchema(Inject.UtilsGe
 )
 
 export const UtilsSetInjectSchema = InjectWithMeta(
-  ({ element }) => InjectSchema(Inject.UtilsSet).extend({
-    target: ArrayOrSingleSchema(z.instanceof(Element)).optional().default(element),
+  context => InjectSchema(Inject.UtilsSet).extend({
+    targets: TargetsSchema(context).optional().default([context.element]),
     properties: ParametersSchema
   }).transform(
     zodTransformErrorBoundary(
-      ({ target, properties }) => utils.set(
-        target,
-        clearSourceMapDeep(properties)
-      )
+      ({ target, properties }) => {
+        utils.set(
+          target,
+          clearSourceMapDeep(properties)
+        )
+      }
     )
   ),
   { lazy: true }
