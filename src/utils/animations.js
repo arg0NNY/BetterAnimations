@@ -7,7 +7,7 @@ export function getAnimationDefaultSettings (animation, type) {
 }
 
 export function sanitizeContext (context) {
-  const ctx = omit(context, ['pack', 'animation', 'module', 'meta', 'settings', 'instance'])
+  const ctx = omit(context, ['pack', 'animation', 'module', 'meta', 'settings', 'instance', 'intersectWith'])
   if (context.module) ctx.module = pick(context.module, ['id', 'name'])
   if ('vars' in context) ctx.vars = sanitizeInjectable(context.vars)
   return ctx

@@ -30,7 +30,7 @@ class Animation {
     if (this.module.type) this.container.setAttribute(`data-baa-${this.module.type}`, '')
   }
 
-  initialize (callback, allowed, intersect = false) {
+  initialize (callback, allowed, intersectWith = null) {
     if (!allowed || !this.node) {
       this.doneCallbackRef.await(done => {
         done?.()
@@ -39,7 +39,7 @@ class Animation {
       return false
     }
 
-    if (!intersect) {
+    if (!intersectWith) {
       callback?.()
       if (this.cancelled) return false
     }
@@ -59,7 +59,8 @@ class Animation {
           anchor: typeof this.anchor === 'function'
             ? this.anchor()
             : (this.anchor?.current ?? this.anchor),
-          isIntersected: intersect
+          intersectWith,
+          isIntersected: !!intersectWith
         }
       )
       this.context = context
@@ -78,7 +79,7 @@ class Animation {
       this.pause = pause
       this.revert = revert
 
-      if (intersect && callback) {
+      if (intersectWith && callback) {
         callback()
         if (this.cancelled) return
 
@@ -182,7 +183,7 @@ export default new class AnimationStore {
         const intersect = conflicts.length === 1 && animation.raw?.id && animation.raw.id === conflicts[0].raw?.id
           && !animation.raw.animation?.meta?.disableSelfIntersect
 
-        return [this.cancelAnimations(conflicts), true, intersect]
+        return [this.cancelAnimations(conflicts), true, conflicts[0]]
       case ModuleType.Switch: {
         if (this.isCooldown()) {
           this.cooldown()
@@ -201,8 +202,8 @@ export default new class AnimationStore {
 
   requestAnimation (payload) {
     const animation = new Animation(this, payload)
-    const [callback, allowed, intersect = false] = this.processAnimation(animation)
-    if (!animation.initialize(callback, allowed, intersect)) return null
+    const [callback, allowed, intersectWith = null] = this.processAnimation(animation)
+    if (!animation.initialize(callback, allowed, intersectWith)) return null
 
     this.animations.push(animation)
     return animation

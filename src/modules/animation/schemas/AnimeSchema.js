@@ -5,7 +5,7 @@ import { zodTransformErrorBoundary } from '@/utils/zod'
 import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
 import { clearSourceMapDeep, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 import { ParametersSchema } from '@/modules/animation/schemas/utils'
-import { awaitFrame } from '@/utils/anime'
+import { apply } from '@/utils/anime'
 
 const AnimeBaseSchema = (type, isDefault = false) => SourceMappedObjectSchema.extend({
   type: isDefault ? z.literal(type).optional() : z.literal(type)
@@ -87,45 +87,50 @@ const AnimeTimelineSchema = context => AnimeBaseSchema('timeline').extend({
 })
 
 // Instance
+function buildInstance ({ type, targets, parameters, children }) {
+  switch (type) {
+    case 'timer':
+      return createTimer(
+        clearSourceMapDeep(parameters)
+      )
+    case 'timeline': {
+      const tl = createTimeline(
+        clearSourceMapDeep(parameters)
+      )
+      clearSourceMapDeep(children).forEach(child => {
+        switch (child.type) {
+          case 'set': return tl.set(child.targets, child.parameters, child.position)
+          case 'label': return tl.label(child.name, child.position)
+          case 'call': return tl.call(child.callback, child.position)
+          default:
+            return tl.add(
+              ...(child.targets ? [child.targets] : []).concat([child.parameters, child.position])
+            )
+        }
+      })
+      return tl
+    }
+    default:
+      return animate(
+        targets,
+        clearSourceMapDeep(parameters)
+      )
+  }
+}
 const AnimeInstanceSchema = context => z.discriminatedUnion('type', [
   AnimeTimerSchema,
   AnimeAnimationSchema(context),
   AnimeTimelineSchema(context)
 ]).transform(
-  zodTransformErrorBoundary(({ type, targets, parameters, children }) => {
-    switch (type) {
-      case 'timer':
-        return awaitFrame(
-          createTimer(
-            clearSourceMapDeep(parameters)
-          )
-        )
-      case 'timeline': {
-        const tl = createTimeline(
-          clearSourceMapDeep(parameters)
-        )
-        clearSourceMapDeep(children).forEach(child => {
-          switch (child.type) {
-            case 'set': return tl.set(child.targets, child.parameters, child.position)
-            case 'label': return tl.label(child.name, child.position)
-            case 'call': return tl.call(child.callback, child.position)
-            default:
-              return tl.add(
-                ...(child.targets ? [child.targets] : []).concat([child.parameters, child.position])
-              )
-          }
-        })
-        return awaitFrame(tl)
+  zodTransformErrorBoundary(
+    options => apply(
+      buildInstance(options),
+      {
+        awaitFrame: true,
+        intersectWith: context.intersectWith
       }
-      default:
-        return awaitFrame(
-          animate(
-            targets,
-            clearSourceMapDeep(parameters)
-          )
-        )
-    }
-  })
+    )
+  )
 )
 
 const AnimeSchema = context => ArrayOrSingleSchema(
