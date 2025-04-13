@@ -56,32 +56,43 @@ export function InjectWithMeta (
   return [schema, { immediate, lazy, allowed }]
 }
 
+function _queryElement(target, selector, multiple = false) {
+  if (!target) return null
+  if (multiple) return Array.from(target.querySelectorAll(selector))
+  return target.querySelector(selector)
+}
+export function queryElement (ctx, target, selector, multiple = false) {
+  try {
+    const matched = _queryElement(target, selector, multiple)
+    if (Array.isArray(matched) ? !matched.length : !matched) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Couldn't find any element${multiple ? 's' : ''} matching the selector: '${selector}'`
+      })
+      return z.NEVER
+    }
+    return matched
+  }
+  catch {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `Invalid selector: '${selector}'`
+    })
+    return z.NEVER
+  }
+}
+
 export function ElementSchema (inject, element = null, allowDirect = true) {
   return InjectSchema(inject)
     .extend({
-      querySelector: z.string().optional(),
-      querySelectorAll: z.string().optional()
+      selector: allowDirect ? z.string().optional() : z.string(),
+      multiple: z.boolean().optional().default(false)
     })
-    .transform((params, ctx) => {
-      if (!allowDirect && !('querySelector' in params || 'querySelectorAll' in params)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: `Inject '${inject}' can't be used directly and must define either 'querySelector' or 'querySelectorAll'`
-        })
-        return z.NEVER
-      }
-      if ('querySelector' in params && 'querySelectorAll' in params) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: `Inject '${inject}' can't have both 'querySelector' and 'querySelectorAll' defined in pair`
-        })
-        return z.NEVER
-      }
-      if (!element) return null
-      if (params.querySelectorAll) return Array.from(element.querySelectorAll(params.querySelectorAll))
-      if (params.querySelector) return element.querySelector(params.querySelector)
-      return element
-    })
+    .transform(
+      ({ selector, multiple }, ctx) => selector != null
+        ? queryElement(ctx, element, selector, multiple)
+        : element
+    )
 }
 
 export const ParametersSchema = z.record(z.string(), z.any())
@@ -94,42 +105,20 @@ export const ParametersSchema = z.record(z.string(), z.any())
     })
   })
 
-function queryTarget (target, context, multiple = false) {
-  if (!context.wrapper) return null
-  if (multiple) return Array.from(context.wrapper.querySelectorAll(target))
-  return context.wrapper.querySelector(target)
-}
 export const TargetSchema = (context, multiple = false) => z.union([
   z.string(),
   z.instanceof(Element)
-]).transform((target, ctx) => {
-  if (typeof target === 'string') {
-    try {
-      const matched = queryTarget(target, context, multiple)
-      if (Array.isArray(matched) ? !matched.length : !matched) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: `Couldn't find any target${multiple ? 's' : ''} matching selector: '${target}'`,
-          params: { received: target }
-        })
-        return z.NEVER
-      }
-      return matched
-    }
-    catch {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `Invalid selector: '${target}'`,
-        params: { received: target }
-      })
-      return z.NEVER
-    }
-  }
-  return target
-})
+]).transform(
+  (target, ctx) => typeof target === 'string'
+    ? queryElement(ctx, context.wrapper, target, multiple)
+    : target
+)
 export const TargetsSchema = context => ArrayOrSingleSchema(
-  TargetSchema(context, true).nullable()
-).transform(targets => [].concat(targets).flat().filter(t => t != null))
+  ArrayOrSingleSchema(
+    TargetSchema(context, true).nullable()
+  )
+)
+  .transform(targets => [].concat(targets).flat().filter(t => t != null))
   .refine(
     targets => targets.length > 0,
     { message: 'No targets specified' }
