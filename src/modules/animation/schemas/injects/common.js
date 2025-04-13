@@ -4,7 +4,9 @@ import {
   ElementSchema,
   InjectSchema,
   InjectWithMeta,
-  SwitchSchema
+  SwitchSchema,
+  TargetSchema,
+  TargetsSchema
 } from '@/modules/animation/schemas/utils'
 import evaluate from '@emmetio/math-expression'
 import Inject from '@/enums/Inject'
@@ -112,10 +114,10 @@ export const MathInjectSchema = InjectSchema(Inject.Math).extend({
 })
 
 export const StyleRemovePropertyInjectSchema = InjectWithMeta(
-  ({ element }) => InjectSchema(Inject.StyleRemoveProperty).extend({
-    target: ArrayOrSingleSchema(z.instanceof(Element)).optional().default(element),
+  context => InjectSchema(Inject.StyleRemoveProperty).extend({
+    targets: TargetsSchema(context).optional().default([context.element]),
     property: ArrayOrSingleSchema(z.string())
-  }).transform(({ target, property }) => [].concat(target).forEach(
+  }).transform(({ targets, property }) => targets.forEach(
       e => [].concat(property).forEach(p => e.style.removeProperty(p))
     )),
   { lazy: true }
@@ -183,8 +185,8 @@ export const CallInjectSchema = InjectSchema(Inject.Call).extend({
   )
 ))
 
-export const GetBoundingClientRectInjectSchema = ({ element }) => InjectSchema(Inject.GetBoundingClientRect).extend({
-  target: z.instanceof(Element).optional().default(element),
+export const GetBoundingClientRectInjectSchema = context => InjectSchema(Inject.GetBoundingClientRect).extend({
+  target: TargetSchema(context).optional().default(context.element),
   value: z.enum(['x', 'y', 'width', 'height']).optional()
 }).transform(({ target, value }) => {
   const rect = target.getBoundingClientRect()
