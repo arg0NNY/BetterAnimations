@@ -12,6 +12,7 @@ import Inject from '@/enums/Inject'
 import { zodTransformErrorBoundary } from '@/utils/zod'
 import { zodErrorBoundary } from '@/modules/animation/utils'
 import { clearSourceMapDeep } from '@/modules/animation/sourceMap'
+import { trust } from '@/modules/animation/schemas/TrustedFunctionSchema'
 
 const StaggerValueSchema = z.union([z.number(), z.string()])
 export const StaggerInjectSchema = context => InjectSchema(Inject.Stagger).extend({
@@ -85,5 +86,21 @@ export const SvgCreateDrawableInjectSchema = context => InjectSchema(Inject.SvgC
 }).transform(
   zodTransformErrorBoundary(
     ({ targets }) => targets.flatMap(target => svg.createDrawable(target))
+  )
+)
+
+export const SvgCreateMotionPathInjectSchema = context => InjectSchema(Inject.SvgCreateMotionPath).extend({
+  target: TargetSchema(context)
+}).transform(
+  zodTransformErrorBoundary(
+    ({ target }, { path }) => {
+      const { translateX, translateY, rotate } = svg.createMotionPath(target)
+      const boundary = fn => zodErrorBoundary(fn, context, { path, name: 'svg.createMotionPath' })
+      return {
+        translateX: boundary(translateX),
+        translateY: boundary(translateY),
+        rotate: boundary(rotate)
+      }
+    }
   )
 )

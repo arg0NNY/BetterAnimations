@@ -11,6 +11,7 @@ export default Enum({
   UtilsSet: 'utils.set',
   SvgMorphTo: 'svg.morphTo',
   SvgCreateDrawable: 'svg.createDrawable',
+  SvgCreateMotionPath: 'svg.createMotionPath',
   Duration: 'duration',
   Easing: 'easing',
   Variant: 'variant',
