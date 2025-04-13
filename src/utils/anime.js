@@ -5,3 +5,8 @@ export function promisify (instance) {
   instance.finished = Promise.resolve(instance)
   return instance.finished
 }
+
+export function awaitFrame (instance) {
+  requestAnimationFrame(() => !instance.paused && instance.restart())
+  return instance
+}

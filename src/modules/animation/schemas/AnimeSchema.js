@@ -5,6 +5,7 @@ import { zodTransformErrorBoundary } from '@/utils/zod'
 import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
 import { clearSourceMapDeep, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 import { ParametersSchema } from '@/modules/animation/schemas/utils'
+import { awaitFrame } from '@/utils/anime'
 
 const AnimeBaseSchema = (type, isDefault = false) => SourceMappedObjectSchema.extend({
   type: isDefault ? z.literal(type).optional() : z.literal(type)
@@ -94,8 +95,10 @@ const AnimeInstanceSchema = context => z.discriminatedUnion('type', [
   zodTransformErrorBoundary(({ type, targets, parameters, children }) => {
     switch (type) {
       case 'timer':
-        return createTimer(
-          clearSourceMapDeep(parameters)
+        return awaitFrame(
+          createTimer(
+            clearSourceMapDeep(parameters)
+          )
         )
       case 'timeline': {
         const tl = createTimeline(
@@ -112,12 +115,14 @@ const AnimeInstanceSchema = context => z.discriminatedUnion('type', [
               )
           }
         })
-        return tl
+        return awaitFrame(tl)
       }
       default:
-        return animate(
-          targets,
-          clearSourceMapDeep(parameters)
+        return awaitFrame(
+          animate(
+            targets,
+            clearSourceMapDeep(parameters)
+          )
         )
     }
   })
