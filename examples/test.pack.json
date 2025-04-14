@@ -156,21 +156,13 @@
           "enter": {
             "position": "center",
             "duration": 200,
-            "easing": {
-              "type": "ease",
-              "bezier": "out",
-              "style": "back"
-            },
+            "easing": { "type": "back" },
             "direction": "backwards"
           },
           "exit": {
             "position": "center",
             "duration": 200,
-            "easing": {
-              "type": "ease",
-              "bezier": "out",
-              "style": "back"
-            },
+            "easing": { "type": "back" },
             "direction": "forwards"
           }
         }

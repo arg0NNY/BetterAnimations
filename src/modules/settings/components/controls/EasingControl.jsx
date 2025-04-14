@@ -79,16 +79,25 @@ function buildEasingValueSliders (type, items, { easing }) {
   ))
 }
 
+function EasingBezierSelect ({ value, onChange }) {
+  return (
+    <EasingField label="Bezier">
+      <SingleSelect
+        options={easingBeziers}
+        value={value}
+        onChange={onChange}
+      />
+    </EasingField>
+  )
+}
+
 function EasingEaseControl ({ easing }) {
   return (
     <>
-      <EasingField label="Bezier">
-        <SingleSelect
-          options={easingBeziers}
-          value={easing.bezier}
-          onChange={bezier => easing.bezier = bezier}
-        />
-      </EasingField>
+      <EasingBezierSelect
+        value={easing.bezier}
+        onChange={bezier => easing.bezier = bezier}
+      />
       <EasingField label="Style">
         <SingleSelect
           options={easingStyles}
@@ -100,16 +109,27 @@ function EasingEaseControl ({ easing }) {
   )
 }
 
+function EasingBackControl ({ easing }) {
+  return (
+    <>
+      <EasingBezierSelect
+        value={easing.bezier}
+        onChange={bezier => easing.bezier = bezier}
+      />
+      {buildEasingValueSliders(EasingType.Back, [
+        ['overshoot', 'Overshoot']
+      ], { easing })}
+    </>
+  )
+}
+
 function EasingElasticControl ({ easing }) {
   return (
     <>
-      <EasingField label="Bezier">
-        <SingleSelect
-          options={easingBeziers}
-          value={easing.bezier}
-          onChange={bezier => easing.bezier = bezier}
-        />
-      </EasingField>
+      <EasingBezierSelect
+        value={easing.bezier}
+        onChange={bezier => easing.bezier = bezier}
+      />
       {buildEasingValueSliders(EasingType.Elastic, [
         ['amplitude', 'Amplitude'],
         ['period', 'Period']
@@ -141,6 +161,7 @@ function EasingControl ({ value, onChange, onReset }) {
   const AdditionalControl = useMemo(
     () => ({
       [EasingType.Ease]: EasingEaseControl,
+      [EasingType.Back]: EasingBackControl,
       [EasingType.Elastic]: EasingElasticControl,
       [EasingType.Steps]: EasingStepsControl
     })[easing.type] ?? null,
