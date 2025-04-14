@@ -118,7 +118,7 @@ class Animation {
     }
 
     if (provideCallback) return callback
-    requestAnimationFrame(callback)
+    this.callback = callback
   }
 
   computeTimeLimit () {
@@ -162,10 +162,8 @@ export default new class AnimationStore {
 
   cancelAnimations (animations, provideCallback = true) {
     const list = typeof animations === 'function' ? this.animations.filter(animations) : [].concat(animations)
-    const callbacks = list.map(animation => animation.cancel(false, true)).filter(c => typeof c === 'function')
-    const callback = () => callbacks.forEach(c => c())
-    if (provideCallback) return callback
-    requestAnimationFrame(callback)
+    const callbacks = list.map(animation => animation.cancel(false, provideCallback)).filter(c => typeof c === 'function')
+    if (provideCallback) return () => callbacks.forEach(c => c())
   }
 
   processAnimation (animation) {

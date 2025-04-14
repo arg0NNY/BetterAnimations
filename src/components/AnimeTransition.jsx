@@ -30,7 +30,7 @@ class AnimeTransition extends Component {
     }
   }
 
-  onAnimate (type) {
+  onAnimate (type, fn) {
     return (targetNode) => {
       const { container, node } = this.getTargetNodes(targetNode)
 
@@ -43,6 +43,15 @@ class AnimeTransition extends Component {
         auto: this.props.autoRef ?? { current: this.props.auto },
         doneCallbackRef: this.doneCallback
       })
+
+      fn?.()
+    }
+  }
+
+  onCallback (fn) {
+    return () => {
+      this.instance.current?.callback?.()
+      fn?.()
     }
   }
 
@@ -57,6 +66,10 @@ class AnimeTransition extends Component {
       enter = true,
       exit = true,
       containerRef,
+      onEntering,
+      onExiting,
+      onEntered,
+      onExited,
       ...props
     } = this.props
 
@@ -75,8 +88,10 @@ class AnimeTransition extends Component {
         exit={module.isEnabled(AnimationType.Exit) && exit}
         mountOnEnter={mountOnEnter}
         unmountOnExit={unmountOnExit}
-        onEntering={this.onAnimate(AnimationType.Enter)}
-        onExiting={this.onAnimate(AnimationType.Exit)}
+        onEntering={this.onAnimate(AnimationType.Enter, onEntering)}
+        onExiting={this.onAnimate(AnimationType.Exit, onExiting)}
+        onEntered={this.onCallback(onEntered)}
+        onExited={this.onCallback(onExited)}
         addEndListener={(_, done) => this.doneCallback.current = done}
       >
         {typeof children === 'function' ? contents : contents()}
