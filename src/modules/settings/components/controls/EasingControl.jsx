@@ -1,10 +1,11 @@
-import { SingleSelect, Slider, Text, TextInput } from '@/modules/DiscordModules'
+import { SingleSelect, Text, TextInput } from '@/modules/DiscordModules'
 import { useEffect, useMemo, useState } from 'react'
 import { css } from '@/modules/Style'
 import { easingBeziers, easingStyles, easingTypes, easingValues } from '@/data/easings'
 import { EasingType } from '@/enums/Easing'
 import { prevent } from '@/modules/settings/utils/eventModifiers'
 import SettingControl from '@/modules/settings/components/controls/SettingControl'
+import Slider from '@/components/Slider'
 
 function EasingField ({ label, children }) {
   return (
@@ -48,6 +49,7 @@ function EasingValueSlider ({ options, value, onChange, ...props }) {
         minValue={min}
         maxValue={max}
         onValueRender={value => value.toFixed(fractionDigits)}
+        value={value}
         initialValue={value}
         onValueChange={value => onChange(Number(value.toFixed(fractionDigits)))}
         {...props}

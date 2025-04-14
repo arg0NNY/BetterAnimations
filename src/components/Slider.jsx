@@ -3,6 +3,16 @@ import { Patcher } from '@/BdApi'
 import findInReactTree from '@/utils/findInReactTree'
 
 class Slider extends DiscordSlider {
+  static getDerivedStateFromProps (props, state) {
+    const original = super.getDerivedStateFromProps(props, state)
+    const derived = 'value' in props && props.value !== state.valueProp ? {
+      value: props.value,
+      valueProp: props.value
+    } : null
+    if (!original && !derived) return null
+    return Object.assign({}, original, derived)
+  }
+
   render () {
     const { forceShowBubble = false, onValueRender } = this.props
     const value = super.render()
