@@ -192,8 +192,9 @@ export function parse (data = null, context, options = {}) {
   }
 
   const before = options.before && context.type === AnimationType.Enter
-    ? options.before(context)
-    : null
+    && (!context.intersectWith?.accordion || context.intersectWith.accordion.began)
+      ? options.before(context)
+      : null
   const after = options.after && context.type === AnimationType.Exit
     ? options.after(context)
     : null
@@ -232,7 +233,11 @@ export function parse (data = null, context, options = {}) {
   const begin = () => {
     if (context.instance.cancelled) return
     onBeforeBegin = () => hook('onBeforeBegin', ParseStage.BeforeBegin)
-    raf(() => instances.forEach(i => i.play()))
+    raf(() => instances.forEach(
+      after && context.intersectWith?.accordion && !context.intersectWith.accordion.completed
+        ? i => i.complete()
+        : i => i.play()
+    ))
   }
 
   if (before) {

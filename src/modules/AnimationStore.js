@@ -171,11 +171,10 @@ export default new class AnimationStore {
   processAnimation (animation) {
     switch (animation.module.type) {
       case ModuleType.Reveal:
-        const conflicts = this.animations.filter(a => a.module.id === animation.module.id && a.node === animation.node)
-        const intersect = conflicts.length === 1 && animation.raw?.id && animation.raw.id === conflicts[0].raw?.id
-          && !animation.raw.animation?.meta?.disableSelfIntersect
+        const [conflict] = this.animations.filter(a => a.module.id === animation.module.id && a.node === animation.node)
+        const intersect = (animation.raw?.id ?? null) === (conflict?.raw?.id ?? null) && !animation.raw?.animation?.meta?.disableSelfIntersect
 
-        return [this.cancelAnimations(conflicts), true, conflicts[0]]
+        return [this.cancelAnimations(conflict ?? []), true, intersect ? conflict : null]
       case ModuleType.Switch: {
         if (this.isCooldown()) {
           this.cooldown()

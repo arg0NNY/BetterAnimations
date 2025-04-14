@@ -2,25 +2,34 @@ import { animate, utils } from 'animejs'
 import AnimationType from '@/enums/AnimationType'
 import { toAnimeEasing } from '@/utils/easings'
 
-export const heightModifier = (type, { easing, duration }) => ({ container, element }) => ({
-  execute: () => animate(container, {
-    height: type === AnimationType.Exit ? 0 : [0, utils.get(element, 'clientHeight')],
-    marginTop: type === AnimationType.Exit ? 0 : [0, utils.get(container, 'marginTop')],
-    marginBottom: type === AnimationType.Exit ? 0 : [0, utils.get(container, 'marginBottom')],
-    ease: toAnimeEasing(easing),
-    duration,
-    autoplay: false
-  }),
+export const heightModifier = (type, { easing, duration }) => ({ container, element, isIntersected }) => ({
+  execute: () => {
+    const property = (name, target = container) => type === AnimationType.Exit ? 0 : [
+      isIntersected ? utils.get(container, name) : 0,
+      utils.get(target, name)
+    ]
+    return animate(container, {
+      height: property('clientHeight', element),
+      marginTop: property('marginTop'),
+      marginBottom: property('marginBottom'),
+      ease: toAnimeEasing(easing),
+      duration,
+      autoplay: false
+    })
+  },
   onBeforeBegin: () => element.style.visibility = 'hidden',
   onCompleted: type === AnimationType.Exit ? undefined : () => element.style.removeProperty('visibility'),
   onDestroyed: () => element.style.removeProperty('visibility')
 })
 
-export const marginRightModifier = (type, { easing, duration }) => ({ container }) => ({
+export const marginRightModifier = (type, { easing, duration }) => ({ container, isIntersected }) => ({
   execute: () => {
     const width = Number.parseInt(utils.get(container, 'width'))
     return animate(container, {
-      marginRight: type === AnimationType.Exit ? -width : [-width, 0],
+      marginRight: type === AnimationType.Exit ? -width : [
+        -width,
+        isIntersected ? utils.get(container, 'marginRight') : 0
+      ],
       ease: toAnimeEasing(easing),
       duration,
       autoplay: false
