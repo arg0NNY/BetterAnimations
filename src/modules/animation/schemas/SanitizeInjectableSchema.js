@@ -3,8 +3,13 @@ import { generatedLazyInjectSymbol, isLazyInject } from '@/modules/animation/sch
 import { clearSourceMap, isSourceMap } from '@/modules/animation/sourceMap'
 import ObjectDeepSchema from '@/modules/animation/schemas/ObjectDeepSchema'
 import { zodErrorBoundarySymbol } from '@/modules/animation/utils'
+import { Timer } from 'animejs'
 
-export const hookSymbol = Symbol('hook')
+export const injectableSymbol = Symbol('injectable')
+export function storeInjectable (value, data) {
+  value[injectableSymbol] = data
+  return value
+}
 
 function createFunctionPlaceholder (name, readme) {
   const fn = function () {}
@@ -14,7 +19,9 @@ function createFunctionPlaceholder (name, readme) {
 }
 
 const SanitizeInjectableSchema = z.lazy(
-  () => ObjectDeepSchema(SanitizeInjectableSchema).transform(value => {
+  () => ObjectDeepSchema(SanitizeInjectableSchema, [
+    z.instanceof(Timer)
+  ]).transform(value => {
     if (isSourceMap(value)) return value
 
     clearSourceMap(value)
@@ -30,8 +37,8 @@ const SanitizeInjectableSchema = z.lazy(
       )
     }
 
-    if (typeof value === 'function' && value[hookSymbol])
-      return sanitizeInjectable(value[hookSymbol])
+    if (['function', 'object'].includes(typeof value) && injectableSymbol in value)
+      return sanitizeInjectable(value[injectableSymbol])
 
     if (typeof value === 'function' && value[zodErrorBoundarySymbol])
       return createFunctionPlaceholder(

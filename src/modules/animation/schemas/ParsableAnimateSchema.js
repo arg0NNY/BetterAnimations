@@ -5,7 +5,7 @@ import ParseStage from '@/enums/ParseStage'
 import { sanitize } from 'hast-util-sanitize'
 import { toDom } from 'hast-util-to-dom'
 import { executeWithZod } from '@/modules/animation/utils'
-import { hookSymbol } from '@/modules/animation/schemas/SanitizeInjectableSchema'
+import { storeInjectable } from '@/modules/animation/schemas/SanitizeInjectableSchema'
 import hastSanitizeSchema from '@/modules/animation/hastSanitizeSchema'
 import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/settings'
 import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
@@ -74,8 +74,7 @@ export const HookSchema = (context, env, stage) => ParsableSchema(
         }
       })
     }, context, ctx)
-    hook[hookSymbol] = value
-    return hook
+    return storeInjectable(hook, value)
   }).optional()
 )(context, env)
 
@@ -84,9 +83,8 @@ export const HastSchema = ParsableSchema(
   ArrayOrSingleSchema(
     z.record(z.any()).nullable()
   ).transform((value, ctx) => {
-    value = clearSourceMapDeep(value)
     return [].concat(value).filter(Boolean).map((node, i) => {
-      const sanitized = sanitize(node, hastSanitizeSchema)
+      const sanitized = sanitize(clearSourceMapDeep(node), hastSanitizeSchema)
       if (sanitized.type === 'root') {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -97,7 +95,10 @@ export const HastSchema = ParsableSchema(
         return z.NEVER
       }
 
-      return toDom(sanitized)
+      return storeInjectable(
+        toDom(sanitized),
+        value
+      )
     })
   }).optional()
 )

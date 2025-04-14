@@ -6,6 +6,7 @@ import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSc
 import { clearSourceMapDeep, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 import { ParametersSchema, TargetsSchema } from '@/modules/animation/schemas/utils'
 import { intersect } from '@/utils/anime'
+import { storeInjectable } from '@/modules/animation/schemas/SanitizeInjectableSchema'
 
 const AnimeBaseSchema = (type, isDefault = false) => SourceMappedObjectSchema.extend({
   type: isDefault ? z.literal(type).optional() : z.literal(type)
@@ -93,9 +94,12 @@ const AnimeInstanceSchema = context => z.discriminatedUnion('type', [
   AnimeTimelineSchema(context)
 ]).transform(
   zodTransformErrorBoundary(
-    options => intersect(
-      buildInstance(options),
-      context.intersectWith?.instances
+    options => storeInjectable(
+      intersect(
+        buildInstance(options),
+        context.intersectWith?.instances
+      ),
+      options
     )
   )
 )
