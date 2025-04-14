@@ -9,7 +9,7 @@ import Debug from '@/modules/Debug'
 import { clearSourceMapDeep, getSourcePath, sourceMappedObjectEntries } from '@/modules/animation/sourceMap'
 import ParsableExtendableAnimateSchema, { ParsableExtendsSchema } from '@/modules/animation/schemas/ParsableExtendableAnimateSchema'
 import { omit } from '@/utils/object'
-import { promisify } from '@/utils/anime'
+import { intersect, promisify } from '@/utils/anime'
 
 export function buildContext (pack, animation, type, settings = {}, context = {}) {
   return Object.assign(
@@ -73,7 +73,7 @@ export function buildWrapper (data, context) {
   return wrapper
 }
 
-export function buildAnimateAssets (data = null, context, options = {}) {
+export function parse (data = null, context, options = {}) {
   context = context ?? {}
   const debug = context.animation ? Debug.animation(context.animation, context.type) : null
 
@@ -187,6 +187,8 @@ export function buildAnimateAssets (data = null, context, options = {}) {
     if (!hook('onBeforeCreate', ParseStage.BeforeCreate)) break parsing
 
     if (!parseStage(ParseStage.Anime)) break parsing
+
+    if (!hook('onCreated', ParseStage.Created)) break parsing
   }
 
   const before = options.before && context.type === AnimationType.Enter
@@ -195,8 +197,10 @@ export function buildAnimateAssets (data = null, context, options = {}) {
   const after = options.after && context.type === AnimationType.Exit
     ? options.after(context)
     : null
-  const instance = before?.execute() ?? after?.execute() ?? null
-  instance?.pause()
+  const accordion = intersect(
+    before?.execute() ?? after?.execute() ?? null,
+    context.intersectWith
+  )
 
   const sharedHook = (name, stage, schema = ParsableAnimateSchema) => () => {
     before?.[name]?.()
@@ -204,61 +208,65 @@ export function buildAnimateAssets (data = null, context, options = {}) {
     return hook(name, stage, schema)
   }
 
+  const instances = !context.instance.cancelled
+    ? (data?.anime ?? [])
+    : []
+
+  const resetAll = () => instances.concat(accordion).forEach(i => i?.reset())
+  const pauseAll = () => instances.concat(accordion).forEach(i => i?.pause())
+  const revertAll = () => {
+    instances.forEach(
+      (context.module.meta.revert ?? true) || context.animation.meta.revert
+        ? i => i.revert()
+        : i => i.cancel()
+    )
+    accordion?.revert()
+  }
+  const finishedAll = Promise.all(instances.map(promisify))
+
+  const raf = fn => requestAnimationFrame(
+    () => !context.instance.cancelled && fn()
+  )
+  let onBeforeBegin
+
+  const begin = () => {
+    if (context.instance.cancelled) return
+    onBeforeBegin = () => hook('onBeforeBegin', ParseStage.BeforeBegin)
+    raf(() => instances.forEach(i => i.play()))
+  }
+
+  if (before) {
+    onBeforeBegin = () => before.onBeforeBegin?.()
+    raf(() => {
+      accordion.play()
+    })
+    promisify(accordion).then(() => {
+      before.onCompleted?.()
+      begin()
+    })
+  }
+  else begin()
+
   return {
     wrapper: context.wrapper,
+    onBeforeBegin,
     onBeforeDestroy: sharedHook('onBeforeDestroy', ParseStage.BeforeDestroy, ParsableExtendableAnimateSchema),
     onDestroyed: sharedHook('onDestroyed', ParseStage.Destroyed, ParsableExtendableAnimateSchema),
-    execute: () => {
-      const instances = data?.anime ?? []
+    accordion,
+    instances,
+    reset: resetAll,
+    pause: pauseAll,
+    revert: revertAll,
+    finished: finishedAll
+      .then(() => {
+        if (!hook('onCompleted', ParseStage.Completed)) return
 
-      const pauseAll = () => instances.forEach(i => i.pause())
-      const revertAll = () => instances.forEach(
-        (context.module.meta.revert ?? true) || context.animation.meta.revert
-          ? i => i.revert()
-          : i => i.cancel()
-      )
-      const finishedAll = () => Promise.all(instances.map(promisify))
-      context.instance.instances = instances
-      context.instance.pause = pauseAll
-      if (context.instance.cancelled) return {}
-
-      if (!hook('onCreated', ParseStage.Created)) return {}
-
-      if (before) {
-        pauseAll()
-
-        promisify(instance).then(() => {
-          before.onCompleted?.()
-          hook('onBeforeBegin', ParseStage.BeforeBegin)
-          instances.slice(1).forEach(i => i.restart())
-        })
-        instances.unshift(instance)
-        Promise.resolve().then(() => {
-          before.onBeforeBegin?.()
-          instance.restart()
-        })
-      }
-
-      const finished = finishedAll()
-      if (after) instances.push(instance)
-
-      return {
-        instances,
-        onBeforeBegin: !before ? () => hook('onBeforeBegin', ParseStage.BeforeBegin) : null,
-        pause: pauseAll,
-        revert: revertAll,
-        finished: finished
-          .then(() => {
-            if (!hook('onCompleted', ParseStage.Completed)) return
-
-            if (after) {
-              instance.restart()
-              after.onCreated?.()
-              after.onBeforeBegin?.()
-              return promisify(instance).then(() => after.onCompleted?.())
-            }
-          })
-      }
-    }
+        if (before) return promisify(accordion)
+        if (after) {
+          after.onBeforeBegin?.()
+          raf(() => accordion.play())
+          return promisify(accordion).then(() => after.onCompleted?.())
+        }
+      })
   }
 }

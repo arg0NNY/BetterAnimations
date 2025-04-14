@@ -1,4 +1,4 @@
-import { buildAnimateAssets } from '@/modules/animation/parser'
+import { parse } from '@/modules/animation/parser'
 import ModuleType from '@/enums/ModuleType'
 import Config from '@/modules/Config'
 import ErrorManager from '@/modules/ErrorManager'
@@ -47,7 +47,10 @@ class Animation {
     this.applyAttributes()
 
     requestAnimationFrame(() => {
-      if (this.cancelled) return
+      if (this.cancelled) {
+        if (intersectWith) callback?.()
+        return
+      }
 
       const { animate, context } = this.module.getAnimation(
         this.type,
@@ -65,33 +68,22 @@ class Animation {
       )
       this.context = context
 
-      const { execute, wrapper, onBeforeDestroy, onDestroyed }
-        = buildAnimateAssets(animate, context, this.module.buildOptions())
-      if (this.cancelled) return
+      const { wrapper, onBeforeBegin, onBeforeDestroy, onDestroyed, accordion, instances, reset, pause, revert, finished }
+        = parse(animate, context, this.module.buildOptions())
 
       this.wrapper = wrapper
       this.onBeforeDestroy = onBeforeDestroy
       this.onDestroyed = onDestroyed
-
-      const { instances, onBeforeBegin, finished, pause, revert } = execute()
-      if (this.cancelled) return
-
+      this.accordion = accordion
+      this.instances = instances
       this.pause = pause
       this.revert = revert
 
       if (intersectWith && callback) {
         callback()
         if (this.cancelled) return
-
-        // Force anime to re-apply styles because cancel callback might have removed some (prevent element flashing on 1 frame)
-        instances.forEach(i => {
-          const { paused } = i
-          i.reset()
-          i.paused = paused
-        })
+        reset() // Force anime to re-apply styles because cancel callback might have removed some (prevent element flashing on 1 frame)
       }
-
-      this.applyAttributes()
 
       onBeforeBegin?.()
       if (this.cancelled) return

@@ -5,7 +5,7 @@ import { zodTransformErrorBoundary } from '@/utils/zod'
 import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
 import { clearSourceMapDeep, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 import { ParametersSchema, TargetsSchema } from '@/modules/animation/schemas/utils'
-import { apply } from '@/utils/anime'
+import { intersect } from '@/utils/anime'
 
 const AnimeBaseSchema = (type, isDefault = false) => SourceMappedObjectSchema.extend({
   type: isDefault ? z.literal(type).optional() : z.literal(type)
@@ -56,34 +56,35 @@ const AnimeTimelineSchema = context => AnimeBaseSchema('timeline').extend({
 })
 
 // Instance
+function prepareParameters (parameters) {
+  return Object.assign(
+    parameters ? clearSourceMapDeep(parameters) : {},
+    { autoplay: false }
+  )
+}
 function buildInstance ({ type, targets, parameters, children }) {
+  parameters = prepareParameters(parameters)
   switch (type) {
     case 'timer':
-      return createTimer(
-        clearSourceMapDeep(parameters)
-      )
+      return createTimer(parameters)
     case 'timeline': {
-      const tl = createTimeline(
-        clearSourceMapDeep(parameters)
-      )
+      const tl = createTimeline(parameters)
       clearSourceMapDeep(children).forEach(child => {
         switch (child.type) {
-          case 'set': return tl.set(child.targets, child.parameters, child.position)
+          case 'set': return tl.set(child.targets, prepareParameters(child.parameters), child.position)
           case 'label': return tl.label(child.name, child.position)
           case 'call': return tl.call(child.callback, child.position)
           default:
             return tl.add(
-              ...(child.targets ? [child.targets] : []).concat([child.parameters, child.position])
+              ...(child.targets ? [child.targets] : [])
+                .concat([prepareParameters(child.parameters), child.position])
             )
         }
       })
       return tl
     }
     default:
-      return animate(
-        targets,
-        clearSourceMapDeep(parameters)
-      )
+      return animate(targets, parameters)
   }
 }
 const AnimeInstanceSchema = context => z.discriminatedUnion('type', [
@@ -92,12 +93,9 @@ const AnimeInstanceSchema = context => z.discriminatedUnion('type', [
   AnimeTimelineSchema(context)
 ]).transform(
   zodTransformErrorBoundary(
-    options => apply(
+    options => intersect(
       buildInstance(options),
-      {
-        awaitFrame: true,
-        intersectWith: context.intersectWith
-      }
+      context.intersectWith
     )
   )
 )
