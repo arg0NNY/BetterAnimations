@@ -85,6 +85,8 @@ class Animation {
         reset() // Force anime to re-apply styles because cancel callback might have removed some (prevent element flashing on 1 frame)
       }
 
+      this.applyAttributes()
+
       onBeforeBegin?.()
       if (this.cancelled) return
 
