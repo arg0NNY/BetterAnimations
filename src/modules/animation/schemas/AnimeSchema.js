@@ -95,7 +95,7 @@ const AnimeInstanceSchema = context => z.discriminatedUnion('type', [
   zodTransformErrorBoundary(
     options => intersect(
       buildInstance(options),
-      context.intersectWith
+      context.intersectWith?.instances
     )
   )
 )

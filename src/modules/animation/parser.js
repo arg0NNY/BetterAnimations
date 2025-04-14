@@ -200,7 +200,7 @@ export function parse (data = null, context, options = {}) {
     : null
   const accordion = intersect(
     before?.execute() ?? after?.execute() ?? null,
-    context.intersectWith
+    context.intersectWith?.accordion
   )
 
   const sharedHook = (name, stage, schema = ParsableAnimateSchema) => () => {

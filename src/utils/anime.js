@@ -6,14 +6,14 @@ export function promisify (instance) {
 }
 
 export function mergeInlineStyles (instances) {
-  return instances.reduce(
+  return [].concat(instances).reduce(
     (styles, instance) => Object.assign(styles, instance._inlineStyles),
     {}
   )
 }
 
-export function intersect (instance, intersectWith = null) {
+export function intersect (instance, withInstances = null) {
   if (!instance) return instance
-  if (intersectWith?.instances) instance._inlineStyles = mergeInlineStyles(intersectWith.instances)
+  if (withInstances) instance._inlineStyles = mergeInlineStyles(withInstances)
   return instance
 }
