@@ -130,11 +130,11 @@ export const UndefinedInjectSchema = InjectWithMeta(
 
 export const FunctionInjectSchema = InjectWithMeta(
   InjectSchema(Inject.Function).extend({
-    functions: z.array(TrustedFunctionSchema).optional(),
+    functions: ArrayOrSingleSchema(TrustedFunctionSchema).optional(),
     'return': z.any().optional()
   }).transform(zodTransformErrorBoundary(
     ({ functions, 'return': returnValue }) => {
-      functions?.forEach(f => f())
+      [].concat(functions).forEach(f => f?.())
       return clearSourceMapDeep(returnValue)
     }
   )),
