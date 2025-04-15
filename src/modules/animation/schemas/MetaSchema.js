@@ -9,7 +9,7 @@ const MetaSchema = z.object({
     .default(() => [ModuleKeyAlias.Switch, ModuleKeyAlias.Reveal, ModuleKeyAlias.Sidebars])
     .transform(value => new Set([].concat(value).flatMap(key => moduleAliases[key] ?? key))),
   forceDisableInternalExpandCollapseAnimations: z.boolean().optional(),
-  disableSelfIntersect: z.boolean().optional(),
+  intersect: z.boolean().optional().default(true),
   revert: z.boolean().optional().default(true)
 }).strict()
 
