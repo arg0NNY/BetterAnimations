@@ -57,10 +57,15 @@ export const UtilsSetInjectSchema = InjectWithMeta(
     properties: ParametersSchema
   }).transform(
     zodTransformErrorBoundary(
-      ({ targets, properties }) => {
-        utils.set(
+      ({ targets, properties }, { path }) => {
+        const instance = utils.set(
           targets,
           clearSourceMapDeep(properties)
+        )
+        return zodErrorBoundary(
+          instance.revert.bind(instance),
+          context,
+          { path, name: 'revert' }
         )
       }
     )
