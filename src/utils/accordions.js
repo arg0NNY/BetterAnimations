@@ -2,7 +2,7 @@ import { animate, utils } from 'animejs'
 import AnimationType from '@/enums/AnimationType'
 import { toAnimeEasing } from '@/utils/easings'
 
-export const heightModifier = (type, { easing, duration }) => ({ container, element, isIntersected }) => ({
+export const heightAccordion = (type, { easing, duration }) => ({ container, element, isIntersected }) => ({
   execute: () => {
     const property = (name, target = container) => type === AnimationType.Exit ? 0 : [
       isIntersected ? utils.get(container, name) : 0,
@@ -22,7 +22,7 @@ export const heightModifier = (type, { easing, duration }) => ({ container, elem
   onDestroyed: () => element.style.removeProperty('visibility')
 })
 
-export const marginRightModifier = (type, { easing, duration }) => ({ container, isIntersected }) => ({
+export const marginRightAccordion = (type, { easing, duration }) => ({ container, isIntersected }) => ({
   execute: () => {
     const width = Number.parseInt(utils.get(container, 'width'))
     return animate(container, {

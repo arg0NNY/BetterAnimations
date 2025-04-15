@@ -75,21 +75,21 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
     }
   ])
 
-  const modifiers = module.getModifiers()
-  const modifiersSettings = useAnimationSettings(module, modifiers ? [
+  const accordions = module.getAccordions()
+  const accordionsSettings = useAnimationSettings(module, accordions ? [
     {
-      animation: modifiers.animation,
+      animation: accordions.animation,
       type: AnimationType.Enter,
       title: 'Smooth Expand',
-      switchTooltip: modifiers.enter.forceDisabled ? Messages.FORCE_DISABLED_BY_ANIMATION(selected.enter.animation?.name) : null,
-      ...modifiers.enter
+      switchTooltip: accordions.enter.forceDisabled ? Messages.FORCE_DISABLED_BY_ANIMATION(selected.enter.animation?.name) : null,
+      ...accordions.enter
     },
     {
-      animation: modifiers.animation,
+      animation: accordions.animation,
       type: AnimationType.Exit,
       title: 'Smooth Collapse',
-      switchTooltip: modifiers.exit.forceDisabled ? Messages.FORCE_DISABLED_BY_ANIMATION(selected.exit.animation?.name) : null,
-      ...modifiers.exit
+      switchTooltip: accordions.exit.forceDisabled ? Messages.FORCE_DISABLED_BY_ANIMATION(selected.exit.animation?.name) : null,
+      ...accordions.exit
     }
   ] : [], { hideOverflow: true })
 
@@ -119,7 +119,7 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
           setEnter={setEnterEnabled}
           setExit={setExitEnabled}
           animationSettings={animationSettings}
-          modifiersSettings={modifiersSettings}
+          accordionsSettings={accordionsSettings}
           active={false}
           previewAlwaysActive
           wide

@@ -10,7 +10,7 @@ import CircleWarningIcon from '@/modules/settings/components/icons/CircleWarning
 
 function AnimationCardControls ({
   hasSettings,
-  hasModifiers,
+  hasAccordions,
   expanded,
   setExpanded,
   enter,
@@ -34,11 +34,11 @@ function AnimationCardControls ({
         >
           <SettingsIcon size="xs" color="currentColor" />
         </IconButton>
-        {hasModifiers && (
+        {hasAccordions && (
           <IconButton
             tooltip="Smooth Expand/Collapse"
-            active={expanded === 'modifiers'}
-            onClick={stop(() => setExpanded('modifiers'))}
+            active={expanded === 'accordions'}
+            onClick={stop(() => setExpanded('accordions'))}
           >
             <CollapseListIcon size="xs" color="currentColor" />
           </IconButton>

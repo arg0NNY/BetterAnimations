@@ -84,7 +84,7 @@ function AnimationCard ({
   onClick,
   refToScroller,
   animationSettings,
-  modifiersSettings,
+  accordionsSettings,
   active = enter || exit,
   previewAlwaysActive = false,
   wide = false,
@@ -109,7 +109,7 @@ function AnimationCard ({
     refToScroller
   })
 
-  useLayoutEffect(update, [animationSettings, modifiersSettings])
+  useLayoutEffect(update, [animationSettings, accordionsSettings])
 
   const cardHovered = useHover(cardRef)
 
@@ -185,7 +185,7 @@ function AnimationCard ({
                 setEnter={setEnter}
                 setExit={setExit}
                 hasSettings={!!animationSettings.settings.length}
-                hasModifiers={!!modifiersSettings?.settings?.length}
+                hasAccordions={!!accordionsSettings?.settings?.length}
                 expanded={expanded}
                 setExpanded={setExpanded}
                 errors={errors}
@@ -211,7 +211,7 @@ function AnimationCard ({
                 <div className={`BA__animationCardPopoutScroller ${DiscordClasses.Scroller.thin}`}>
                   <AnimationSettings {...{
                     settings: animationSettings,
-                    modifiers: modifiersSettings
+                    accordions: accordionsSettings
                   }[expanded]} />
                 </div>
               </div>

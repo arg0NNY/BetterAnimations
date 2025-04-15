@@ -4,7 +4,7 @@ import Axis from '@/enums/Axis'
 import Direction from '@/enums/Direction'
 import Position from '@/enums/Position'
 import ModuleType from '@/enums/ModuleType'
-import { heightModifier, marginRightModifier } from '@/utils/modifiers'
+import { heightAccordion, marginRightAccordion } from '@/utils/accordions'
 import DirectionAutoType from '@/enums/DirectionAutoType'
 import Messages from '@/modules/Messages'
 import { Anchor } from '@/modules/DiscordModules'
@@ -201,8 +201,8 @@ const modules = [
       </>
     ),
     meta: {
-      modifier: {
-        create: heightModifier,
+      accordion: {
+        create: heightAccordion,
         defaults: {
           [Setting.Duration]: 200,
           [Setting.Easing]: {
@@ -231,8 +231,8 @@ const modules = [
       </>
     ),
     meta: {
-      modifier: {
-        create: heightModifier,
+      accordion: {
+        create: heightAccordion,
         defaults: {
           [Setting.Duration]: 200,
           [Setting.Easing]: {
@@ -303,8 +303,8 @@ const modules = [
           [Setting.Position]: [PositionAutoType.Precise, { asDefault: false }]
         },
       },
-      modifier: {
-        create: marginRightModifier,
+      accordion: {
+        create: marginRightAccordion,
         defaults: {
           [Setting.Duration]: 400,
           [Setting.Easing]: {
@@ -331,8 +331,8 @@ const modules = [
           [Setting.Position]: [PositionAutoType.Precise, { asDefault: false }]
         },
       },
-      modifier: {
-        create: marginRightModifier,
+      accordion: {
+        create: marginRightAccordion,
         defaults: {
           [Setting.Duration]: 400,
           [Setting.Easing]: {

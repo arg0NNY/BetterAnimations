@@ -54,7 +54,7 @@ class Module {
     if (!type) return this.settings.enabled ?? true
 
     return (this.settings.enabled ?? true)
-      && (!!this.animations[type]?.animate || !!this.getModifier(type)?.enabled)
+      && (!!this.animations[type]?.animate || !!this.getAccordion(type)?.enabled)
   }
   enable () { this.settings.enabled = true }
   disable () { this.settings.enabled = false }
@@ -370,9 +370,9 @@ class Module {
     return settings
   }
 
-  getModifierAnimation () {
-    const { modifier } = this.meta
-    if (!modifier) return null
+  getAccordionAnimation () {
+    const { accordion } = this.meta
+    if (!accordion) return null
 
     return {
       name: 'Smooth Expand/Collapse',
@@ -380,53 +380,53 @@ class Module {
         [Setting.Overflow]: false,
         [Setting.Duration]: { from: 100, to: 2000 },
         [Setting.Easing]: true,
-        defaults: modifier.defaults
+        defaults: accordion.defaults
       }
     }
   }
-  getModifier (type, options = {}) {
-    const { modifier } = this.meta
-    if (!modifier) return null
+  getAccordion (type, options = {}) {
+    const { accordion } = this.meta
+    if (!accordion) return null
 
     const forceDisabled = !!this.animations[type]?.animation?.meta?.forceDisableInternalExpandCollapseAnimations
-    const animation = this.getModifierAnimation()
-    const config = this.settings.modifier?.[type] ?? {}
+    const animation = this.getAccordionAnimation()
+    const config = this.settings.accordion?.[type] ?? {}
     const defaults = () => this.buildDefaultSettings(animation, type)
     const settings = this.buildSettings(animation, type, config.settings, options)
     const context = buildContext(null, animation, type, settings)
 
     return {
-      animate: modifier.create(type, context),
+      animate: accordion.create(type, context),
       forceDisabled,
       enabled: !forceDisabled && (config.enabled ?? true),
-      setEnabled: forceDisabled ? null : enabled => this.updateModifier(type, { enabled }),
+      setEnabled: forceDisabled ? null : enabled => this.updateAccordion(type, { enabled }),
       settings,
-      setSettings: settings => this.updateModifier(type, { settings }),
+      setSettings: settings => this.updateAccordion(type, { settings }),
       defaults,
       context,
-      onReset: () => this.updateModifier(type, { settings: defaults() })
+      onReset: () => this.updateAccordion(type, { settings: defaults() })
     }
   }
-  getModifiers (options = {}) {
-    const animation = this.getModifierAnimation()
+  getAccordions (options = {}) {
+    const animation = this.getAccordionAnimation()
     if (!animation) return null
 
     return {
       animation,
-      enter: this.getModifier(AnimationType.Enter, options),
-      exit: this.getModifier(AnimationType.Exit, options)
+      enter: this.getAccordion(AnimationType.Enter, options),
+      exit: this.getAccordion(AnimationType.Exit, options)
     }
   }
-  updateModifier (type, values) {
-    const config = this.settings.modifier ??= {}
+  updateAccordion (type, values) {
+    const config = this.settings.accordion ??= {}
     Object.assign(config[type] ??= {}, values)
     Emitter.emit(Events.ModuleSettingsChanged, this.id)
   }
   buildOptions () {
     const options = {}
-    const modifiers = this.getModifiers()
-    if (modifiers?.enter?.enabled) options.before = modifiers.enter.animate
-    if (modifiers?.exit?.enabled) options.after = modifiers.exit.animate
+    const accordions = this.getAccordions()
+    if (accordions?.enter?.enabled) options.before = accordions.enter.animate
+    if (accordions?.exit?.enabled) options.after = accordions.exit.animate
     return options
   }
 }
