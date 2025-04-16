@@ -186,34 +186,33 @@
               "duration": { "inject": "duration" },
               "ease": { "inject": "easing" }
             },
-            "source": [
-              {
-                "inject": "type",
-                "enter": {
-                  "opacity": [0, 1]
-                },
-                "exit": {
-                  "opacity": 0
-                }
-              },
-              {
-                "inject": "type",
-                "enter": {
+            "source": {
+              "inject": "type",
+              "enter": {
+                "opacity": {
                   "inject": "isIntersected",
-                  "true": { "scale": 1 },
+                  "true": 1,
+                  "false": [0, 1]
+                },
+                "scale": {
+                  "inject": "isIntersected",
+                  "true": 1,
                   "false": {
                     "inject": "direction",
-                    "forwards": { "scale": [1.1, 1] },
-                    "backwards": { "scale": [0.9, 1] }
+                    "forwards": { "from": 1.1 },
+                    "backwards": { "from": 0.9 }
                   }
-                },
-                "exit": {
+                }
+              },
+              "exit": {
+                "opacity": 0,
+                "scale": {
                   "inject": "direction",
-                  "forwards": { "scale": 0.9 },
-                  "backwards": { "scale": 1.1 }
+                  "forwards": 0.9,
+                  "backwards": 1.1
                 }
               }
-            ]
+            }
           }
         }
       }
@@ -335,52 +334,31 @@
         }
       },
       "animate": {
+        "extends": {
+          "inject": "accordion",
+          "type": "marginLeft"
+        },
         "css": {
           "{container}": {
             "perspective": "1750px",
             "perspective-origin": "right center"
           },
           "{element}": {
-            "position": "absolute",
-            "top": 0,
-            "right": 0,
-            "height": "100%",
             "transform-origin": "right center"
           }
         },
-        "anime": [
-          {
-            "targets": { "inject": "container" },
-            "parameters": {
-              "duration": { "inject": "duration" },
-              "ease": { "inject": "easing" },
-              "width": {
-                "inject": "type",
-                "enter": [0, {
-                  "inject": "utils.get",
-                  "property": "width"
-                }],
-                "exit": [{
-                  "inject": "utils.get",
-                  "target": { "inject": "container" },
-                  "property": "width"
-                }, 0]
-              }
-            }
-          },
-          {
-            "targets": { "inject": "element" },
-            "parameters": {
-              "duration": { "inject": "duration" },
-              "ease": { "inject": "easing" },
-              "rotateY": {
-                "inject": "type",
-                "enter": ["-90deg", 0],
-                "exit": "-90deg"
-              }
+        "anime": {
+          "targets": { "inject": "element" },
+          "parameters": {
+            "duration": { "inject": "duration" },
+            "ease": { "inject": "easing" },
+            "rotateY": {
+              "inject": "type",
+              "enter": ["-90deg", 0],
+              "exit": "-90deg"
             }
           }
-        ]
+        }
       }
     },
 
@@ -962,7 +940,54 @@
           }
         }
       }
-    }
+    },
 
+    {
+      "key": "reveal-accordion",
+      "name": "Reveal Accordion",
+      "meta": {
+        "modules": ["messages", "channelList"],
+        "accordion": false
+      },
+      "settings": {
+        "position": true,
+        "duration": true,
+        "easing": true,
+        "direction": ["forwards", "backwards"],
+
+        "defaults": {
+          "enter": {
+            "position": "center",
+            "duration": 200,
+            "easing": {
+              "type": "ease",
+              "style": "cubic"
+            },
+            "direction": "backwards"
+          },
+          "exit": {
+            "position": "center",
+            "duration": 200,
+            "easing": {
+              "type": "ease",
+              "style": "cubic"
+            },
+            "direction": "forwards"
+          }
+        }
+      },
+      "animate": {
+        "extends": [
+          {
+            "inject": "accordion",
+            "type": "marginBottom"
+          },
+          {
+            "inject": "load",
+            "animation": "reveal"
+          }
+        ]
+      }
+    }
   ]
 }

@@ -9,9 +9,9 @@ const EasingBaseSchema = type => SourceMappedObjectSchema.extend({
 
 const EasingValueSchema = options => {
   let schema = z.number()
+  if (!options.fractionDigits) schema = schema.int()
   if ('min' in options) schema = schema.min(options.min)
   if ('max' in options) schema = schema.max(options.max)
-  if ('step' in options) schema = schema.multipleOf(options.step)
   schema = schema.optional()
   if ('default' in options) schema = schema.default(options.default)
   return schema

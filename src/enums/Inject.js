@@ -103,5 +103,6 @@ export default Enum({
   RemainderOperator: '%',
   StrictEqualityOperator: '===',
   StrictInequalityOperator: '!==',
-  SubtractionOperator: '-'
+  SubtractionOperator: '-',
+  Accordion: 'accordion'
 })

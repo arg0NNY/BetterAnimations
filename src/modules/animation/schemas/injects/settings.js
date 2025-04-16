@@ -10,7 +10,7 @@ import { toAnimeEasing } from '@/utils/easings'
 
 export const DurationInjectSchema = InjectWithMeta(
   ({ duration, settings }) => InjectSchema(Inject.Duration)
-    .transform(hasInSettings(Inject.Duration, !!settings?.[Setting.Duration]))
+    .transform(hasInSettings(Inject.Duration, Setting.Duration in settings))
     .transform(() => duration),
   { immediate: [Setting.Duration, 'settings'] }
 )
@@ -20,7 +20,7 @@ export const EasingInjectSchema = InjectWithMeta(
     .extend({
       raw: z.boolean().optional().default(false)
     })
-    .transform(hasInSettings(Inject.Easing, !!settings?.[Setting.Easing]))
+    .transform(hasInSettings(Inject.Easing, Setting.Easing in settings))
     .transform(({ raw }) => raw ? easing : toAnimeEasing(easing)),
   { immediate: [Setting.Easing, 'settings'] }
 )

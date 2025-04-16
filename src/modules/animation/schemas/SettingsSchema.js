@@ -8,12 +8,15 @@ import { MAX_ANIMATION_DURATION, MIN_ANIMATION_DURATION } from '@/data/constants
 import { getSupportedAxes } from '@/utils/direction'
 import { restrictReservedKeys } from '@/modules/animation/keys'
 
+export const DurationSchema = (from = MIN_ANIMATION_DURATION, to = MAX_ANIMATION_DURATION) =>
+  z.number().int().min(from).max(to)
+
 const DefaultsSchema = settings => {
   const entries = []
 
   if (Setting.Duration in settings) {
     const { from, to } = settings[Setting.Duration]
-    entries.push([Setting.Duration, z.number().int().min(from).max(to)])
+    entries.push([Setting.Duration, DurationSchema(from, to)])
   }
 
   if (Setting.Easing in settings) entries.push(

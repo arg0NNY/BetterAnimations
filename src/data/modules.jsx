@@ -4,7 +4,7 @@ import Axis from '@/enums/Axis'
 import Direction from '@/enums/Direction'
 import Position from '@/enums/Position'
 import ModuleType from '@/enums/ModuleType'
-import { heightAccordion, marginRightAccordion } from '@/utils/accordions'
+import { AccordionType, buildAccordionGenerator } from '@/utils/accordion'
 import DirectionAutoType from '@/enums/DirectionAutoType'
 import Messages from '@/modules/Messages'
 import { Anchor } from '@/modules/DiscordModules'
@@ -202,7 +202,7 @@ const modules = [
     ),
     meta: {
       accordion: {
-        create: heightAccordion,
+        create: buildAccordionGenerator(AccordionType.MarginBottom, { hideElement: true }),
         defaults: {
           [Setting.Duration]: 200,
           [Setting.Easing]: {
@@ -232,7 +232,7 @@ const modules = [
     ),
     meta: {
       accordion: {
-        create: heightAccordion,
+        create: buildAccordionGenerator(AccordionType.MarginBottom, { hideElement: true }),
         defaults: {
           [Setting.Duration]: 200,
           [Setting.Easing]: {
@@ -304,7 +304,7 @@ const modules = [
         },
       },
       accordion: {
-        create: marginRightAccordion,
+        create: buildAccordionGenerator(AccordionType.MarginRight),
         defaults: {
           [Setting.Duration]: 400,
           [Setting.Easing]: {
@@ -332,7 +332,7 @@ const modules = [
         },
       },
       accordion: {
-        create: marginRightAccordion,
+        create: buildAccordionGenerator(AccordionType.MarginRight),
         defaults: {
           [Setting.Duration]: 400,
           [Setting.Easing]: {

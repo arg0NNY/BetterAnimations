@@ -18,7 +18,7 @@ export function SwitchSchema (inject, valueList, options = {}) {
     let schema = InjectSchema(inject)
       .extend(buildSwitchSchema(values, Defined.optional()))
 
-    if (setting) schema = schema.transform(hasInSettings(inject, !!context.settings?.[setting]))
+    if (setting) schema = schema.transform(hasInSettings(inject, setting in context.settings))
 
     return schema.transform((params, ctx) => {
       params = clearSourceMap(params)

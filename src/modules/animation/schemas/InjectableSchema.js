@@ -15,6 +15,7 @@ import * as AnimeInjectSchemas from '@/modules/animation/schemas/injects/anime'
 import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/settings'
 import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
 import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/operators'
+import * as AccordionInjectSchemas from '@/modules/animation/schemas/injects/accordion'
 import Debug from '@/modules/Debug'
 import { getSourcePath, isSourceMap, SELF_KEY } from '@/modules/animation/sourceMap'
 import TrustedFunctionSchema, { trust } from '@/modules/animation/schemas/TrustedFunctionSchema'
@@ -26,7 +27,8 @@ const injectSchemas = {
   ...parseInjectSchemas(AnimeInjectSchemas),
   ...parseInjectSchemas(SettingsInjectSchemas),
   ...parseInjectSchemas(MathInjectSchemas),
-  ...parseInjectSchemas(OperatorsInjectSchemas)
+  ...parseInjectSchemas(OperatorsInjectSchemas),
+  ...parseInjectSchemas(AccordionInjectSchemas)
 }
 const injectTypes = Object.keys(injectSchemas)
 const injectDict = new Spelling(injectTypes)
