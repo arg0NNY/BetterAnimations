@@ -22,13 +22,13 @@ export const heightAccordion = (type, { easing, duration }) => ({ container, ele
   onDestroyed: () => element.style.removeProperty('visibility')
 })
 
-export const marginRightAccordion = (type, { easing, duration }) => ({ container, isIntersected }) => ({
+export const marginRightAccordion = (type, { easing, duration }) => ({ container, element, isIntersected }) => ({
   execute: () => {
-    const width = Number.parseInt(utils.get(container, 'clientWidth'))
+    const width = utils.get(element, 'clientWidth')
     return animate(container, {
       marginRight: type === AnimationType.Exit ? -width : [
-        -width,
-        isIntersected ? utils.get(container, 'marginRight') : 0
+        isIntersected ? utils.get(container, 'marginRight') : -width,
+        0
       ],
       ease: toAnimeEasing(easing),
       duration,
