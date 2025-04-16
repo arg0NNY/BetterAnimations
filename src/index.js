@@ -34,6 +34,7 @@ import Notices from '@/modules/Notices'
 import Toasts from '@/modules/Toasts'
 import ErrorManager from '@/modules/ErrorManager'
 import * as DiscordModules from '@/modules/DiscordModules'
+import * as anime from 'animejs'
 
 engine.pauseOnDocumentHidden = false
 
@@ -55,6 +56,7 @@ if (import.meta.env.MODE === 'development')
     ErrorManager,
     DiscordModules,
     DiscordClasses,
+    anime,
     getCurrentGuildChannels: () => currentGuildChannels
   }
 
