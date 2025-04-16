@@ -81,14 +81,14 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
       animation: accordions.animation,
       type: AnimationType.Enter,
       title: 'Smooth Expand',
-      switchTooltip: accordions.enter.forceDisabled ? Messages.FORCE_DISABLED_BY_ANIMATION(selected.enter.animation?.name) : null,
+      switchTooltip: accordions.enter.forceDisabled ? Messages.IMPLEMENTED_BY_ANIMATION(selected.enter.animation?.name) : null,
       ...accordions.enter
     },
     {
       animation: accordions.animation,
       type: AnimationType.Exit,
       title: 'Smooth Collapse',
-      switchTooltip: accordions.exit.forceDisabled ? Messages.FORCE_DISABLED_BY_ANIMATION(selected.exit.animation?.name) : null,
+      switchTooltip: accordions.exit.forceDisabled ? Messages.IMPLEMENTED_BY_ANIMATION(selected.exit.animation?.name) : null,
       ...accordions.exit
     }
   ] : [], { hideOverflow: true })
