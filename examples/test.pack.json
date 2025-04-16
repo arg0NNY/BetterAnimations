@@ -153,16 +153,16 @@
         "direction": ["forwards", "backwards"],
 
         "defaults": {
-          "enter": {
-            "position": "center",
-            "duration": 200,
-            "easing": { "type": "back" },
-            "direction": "backwards"
-          },
-          "exit": {
-            "position": "center",
-            "duration": 200,
-            "easing": { "type": "back" },
+          "duration": 200,
+          "easing": { "type": "back" },
+          "position": "center",
+          "direction": "backwards",
+
+          "override": {
+            "for": {
+              "type": "exit",
+              "module.type": "reveal"
+            },
             "direction": "forwards"
           }
         }
@@ -956,21 +956,18 @@
         "direction": ["forwards", "backwards"],
 
         "defaults": {
-          "enter": {
-            "position": "center",
-            "duration": 200,
-            "easing": {
-              "type": "ease",
-              "style": "cubic"
-            },
-            "direction": "backwards"
+          "duration": 200,
+          "easing": {
+            "type": "ease",
+            "style": "cubic"
           },
-          "exit": {
-            "position": "center",
-            "duration": 200,
-            "easing": {
-              "type": "ease",
-              "style": "cubic"
+          "position": "center",
+          "direction": "backwards",
+
+          "override": {
+            "for": {
+              "type": "exit",
+              "module.type": "reveal"
             },
             "direction": "forwards"
           }

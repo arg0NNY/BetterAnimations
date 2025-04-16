@@ -7,6 +7,9 @@ import EasingSchema from '@/modules/animation/schemas/EasingSchema'
 import { MAX_ANIMATION_DURATION, MIN_ANIMATION_DURATION } from '@/data/constants'
 import { getSupportedAxes } from '@/utils/direction'
 import { restrictReservedKeys } from '@/modules/animation/keys'
+import { ArrayOrSingleSchema } from '@/utils/schemas'
+import ModuleKey from '@/enums/ModuleKey'
+import ModuleType from '@/enums/ModuleType'
 
 export const DurationSchema = (from = MIN_ANIMATION_DURATION, to = MAX_ANIMATION_DURATION) =>
   z.number().int().min(from).max(to)
@@ -43,17 +46,21 @@ const DefaultsSchema = settings => {
     [Setting.Overflow, z.boolean()]
   )
 
-  const baseSchema = z.object(
+  const baseSchema = z.strictObject(
     Object.fromEntries(entries)
-  ).strict()
+  )
 
-  if (AnimationType.Enter in settings.defaults || AnimationType.Exit in settings.defaults)
-    return z.object({
-      [AnimationType.Enter]: baseSchema,
-      [AnimationType.Exit]: baseSchema
-    }).strict()
+  const overrideSchema = baseSchema.partial().extend({
+    for: z.strictObject({
+      type: ArrayOrSingleSchema(z.enum(AnimationType.values())),
+      module: ArrayOrSingleSchema(z.enum(ModuleKey.values())),
+      'module.type': ArrayOrSingleSchema(z.enum(ModuleType.values()))
+    }).partial()
+  })
 
-  return baseSchema
+  return baseSchema.extend({
+    override: ArrayOrSingleSchema(overrideSchema).optional()
+  })
 }
 
 const SettingsSchema = z.object({

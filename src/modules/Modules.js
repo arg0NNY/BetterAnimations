@@ -14,7 +14,6 @@ import {
 import Axis from '@/enums/Axis'
 import { getPosition, reversePosition } from '@/utils/position'
 import Config from '@/modules/Config'
-import { getAnimationDefaultSettings } from '@/utils/animations'
 import AnimationType from '@/enums/AnimationType'
 import ModuleType from '@/enums/ModuleType'
 import { buildContext } from '@/modules/animation/parser'
@@ -31,6 +30,7 @@ import EasingSchema from '@/modules/animation/schemas/EasingSchema'
 import Mouse from '@/modules/Mouse'
 import PositionAutoType from '@/enums/PositionAutoType'
 import ParsableExtendableAnimateSchema from '@/modules/animation/schemas/ParsableExtendableAnimateSchema'
+import { omit } from '@/utils/object'
 
 class Module {
   constructor (id, name, meta = {}, { parent, description, controls, alert, onToggle } = {}) {
@@ -213,6 +213,25 @@ class Module {
     )
   }
 
+  buildAnimationDefaultSettings (animation, type) {
+    const { defaults } = animation.settings
+    return Object.assign(
+      omit(defaults, ['override']),
+      ...[].concat(defaults.override)
+        .filter(
+          override => override != null && Object.entries(override.for).every(
+            ([property, values]) => [].concat(values).includes(
+              {
+                type,
+                module: this.id,
+                'module.type': this.type
+              }[property]
+            )
+          )
+        )
+        .map(v => omit(v, ['for']))
+    )
+  }
   buildModuleDefaultSettings (animation) {
     return Object.fromEntries(
       Object.entries(this.meta.settings?.defaults ?? {})
@@ -227,7 +246,7 @@ class Module {
   buildDefaultSettings (animation, type, normalized = true) {
     const settings = Object.assign(
       { [Setting.Overflow]: true },
-      getAnimationDefaultSettings(animation, type),
+      this.buildAnimationDefaultSettings(animation, type),
       this.buildModuleDefaultSettings(animation),
       Object.fromEntries(
         this.getAllSettingsSupportingAuto(animation, true).map(s => [s, Auto()])
@@ -251,9 +270,7 @@ class Module {
     return settings
   }
 
-  normalizeSetting (animation, type, setting, value, allSettings = {}) {
-    const animationDefaults = getAnimationDefaultSettings(animation, type)
-
+  normalizeSetting (animation, type, setting, value, allSettings, animationDefaults) {
     switch (setting) {
       case Setting.PositionPreserve: {
         if (allSettings[Setting.Position] !== Auto()
@@ -321,15 +338,17 @@ class Module {
     }
   }
   normalizeSettings (animation, type, settings) {
+    const animationDefaults = this.buildAnimationDefaultSettings(animation, type)
     return Object.fromEntries(
-      Setting.values().map(key => [key, this.normalizeSetting(animation, type, key, settings[key], settings)])
+      Setting.values()
+        .map(key => [key, this.normalizeSetting(animation, type, key, settings[key], settings, animationDefaults)])
         .filter(a => a[1] !== undefined)
     )
   }
 
   assignAutoValues (animation, type, normalizedSettings, values = {}) {
     const settings = normalizedSettings
-    const animationDefaults = getAnimationDefaultSettings(animation, type)
+    const animationDefaults = this.buildAnimationDefaultSettings(animation, type)
 
     if (values === false) {
       Object.keys(settings).forEach(key => settings[key] === Auto() && delete settings[key])
