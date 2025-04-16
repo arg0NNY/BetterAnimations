@@ -11,8 +11,7 @@ export const EasingType = Enum({
 export const EasingBezier = Enum({
   In: 'in',
   Out: 'out',
-  InOut: 'inOut',
-  OutIn: 'outIn'
+  InOut: 'inOut'
 })
 
 export const EasingStyle = Enum({
@@ -21,7 +20,7 @@ export const EasingStyle = Enum({
   Cubic: 'cubic',
   Quart: 'quart',
   Quint: 'quint',
-  Expo: 'expo',
   Circ: 'circ',
+  Expo: 'expo',
   Bounce: 'bounce'
 })

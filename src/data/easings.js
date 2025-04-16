@@ -11,8 +11,7 @@ export const easingTypes = [
 export const easingBeziers = [
   { value: EasingBezier.In, label: 'In' },
   { value: EasingBezier.Out, label: 'Out' },
-  { value: EasingBezier.InOut, label: 'In Out' },
-  { value: EasingBezier.OutIn, label: 'Out In' }
+  { value: EasingBezier.InOut, label: 'In Out' }
 ]
 
 export const easingStyles = [
@@ -21,9 +20,9 @@ export const easingStyles = [
   { value: EasingStyle.Cubic, label: 'Cubic' },
   { value: EasingStyle.Quart, label: 'Quart' },
   { value: EasingStyle.Quint, label: 'Quint' },
-  { value: EasingStyle.Expo, label: 'Expo' },
   { value: EasingStyle.Circ, label: 'Circ' },
-  { value: EasingStyle.Bounce, label: 'Bounce' },
+  { value: EasingStyle.Expo, label: 'Expo' },
+  { value: EasingStyle.Bounce, label: 'Bounce' }
 ]
 
 export const easingValues = {
