@@ -24,7 +24,7 @@ export const heightAccordion = (type, { easing, duration }) => ({ container, ele
 
 export const marginRightAccordion = (type, { easing, duration }) => ({ container, isIntersected }) => ({
   execute: () => {
-    const width = Number.parseInt(utils.get(container, 'width'))
+    const width = Number.parseInt(utils.get(container, 'clientWidth'))
     return animate(container, {
       marginRight: type === AnimationType.Exit ? -width : [
         -width,
