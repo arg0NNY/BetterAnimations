@@ -174,6 +174,17 @@ export function parse (data = null, context, options = {}) {
     return !context.instance.cancelled
   }
 
+  let before, after, accordion
+
+  const sharedHook = (name, stage, schema = ParsableExtendableAnimateSchema) => () => {
+    before?.[name]?.()
+    after?.[name]?.()
+    return hook(name, stage, schema)
+  }
+
+  context.instance.onBeforeDestroy = sharedHook('onBeforeDestroy', ParseStage.BeforeDestroy)
+  context.instance.onDestroyed = sharedHook('onDestroyed', ParseStage.Destroyed)
+
   parsing: {
     const { success, data: _data } = extend(data)
     data = _data
@@ -189,24 +200,18 @@ export function parse (data = null, context, options = {}) {
     if (!parseStage(ParseStage.Anime)) break parsing
 
     if (!hook('onCreated', ParseStage.Created)) break parsing
-  }
 
-  const before = options.before && context.type === AnimationType.Enter
-    && (!context.intersectWith?.accordion || context.intersectWith.accordion.began)
-      ? options.before(context)
+    before = options.before && context.type === AnimationType.Enter
+      && (!context.intersectWith?.accordion || context.intersectWith.accordion.began)
+        ? options.before(context)
+        : null
+    after = options.after && context.type === AnimationType.Exit
+      ? options.after(context)
       : null
-  const after = options.after && context.type === AnimationType.Exit
-    ? options.after(context)
-    : null
-  const accordion = intersect(
-    before?.execute() ?? after?.execute() ?? null,
-    context.intersectWith?.accordion
-  )
-
-  const sharedHook = (name, stage, schema = ParsableAnimateSchema) => () => {
-    before?.[name]?.()
-    after?.[name]?.()
-    return hook(name, stage, schema)
+    accordion = intersect(
+      before?.execute() ?? after?.execute() ?? null,
+      context.intersectWith?.accordion
+    )
   }
 
   const instances = !context.instance.cancelled
@@ -255,8 +260,6 @@ export function parse (data = null, context, options = {}) {
   return {
     wrapper: context.wrapper,
     onBeforeBegin,
-    onBeforeDestroy: sharedHook('onBeforeDestroy', ParseStage.BeforeDestroy, ParsableExtendableAnimateSchema),
-    onDestroyed: sharedHook('onDestroyed', ParseStage.Destroyed, ParsableExtendableAnimateSchema),
     accordion,
     instances,
     reset: resetAll,
@@ -264,6 +267,8 @@ export function parse (data = null, context, options = {}) {
     revert: revertAll,
     finished: finishedAll
       .then(() => {
+        if (context.instance.cancelled) return
+
         if (!hook('onCompleted', ParseStage.Completed)) return
 
         if (before) return promisify(accordion)

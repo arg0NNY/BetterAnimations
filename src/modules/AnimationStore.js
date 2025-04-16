@@ -68,12 +68,10 @@ class Animation {
       )
       this.context = context
 
-      const { wrapper, onBeforeBegin, onBeforeDestroy, onDestroyed, accordion, instances, reset, pause, revert, finished }
+      const { wrapper, onBeforeBegin, accordion, instances, reset, pause, revert, finished }
         = parse(animate, context, this.module.buildOptions())
 
       this.wrapper = wrapper
-      this.onBeforeDestroy = onBeforeDestroy
-      this.onDestroyed = onDestroyed
       this.accordion = accordion
       this.instances = instances
       this.pause = pause
