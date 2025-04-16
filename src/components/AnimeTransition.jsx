@@ -105,7 +105,6 @@ export default AnimeTransition
 css
 `[data-ba-container][data-baa-type] { /* Container while animation is running */
     position: relative;
-    background: none;
 }
 
 [data-baa] {
@@ -124,6 +123,9 @@ css
 }
 [data-ba-container][data-baa-switch] > :not([data-baa]) { /* Animating switch element */
     isolation: isolate;
+}
+[data-ba-container][data-baa-switch][data-baa-type="exit"] {
+    z-index: 1;
 }
 [data-ba-container][data-baa-switch][data-baa-type="exit"]:not([data-ba-default-layout-styles="false"]) { /* Exiting switch container */
     position: absolute !important;
