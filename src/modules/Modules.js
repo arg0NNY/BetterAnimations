@@ -388,7 +388,7 @@ class Module {
     const { accordion } = this.meta
     if (!accordion) return null
 
-    const forceDisabled = !!this.animations[type]?.animation?.meta?.forceDisableInternalExpandCollapseAnimations
+    const forceDisabled = this.animations[type]?.animation?.meta?.accordion[type] === false
     const animation = this.getAccordionAnimation()
     const config = this.settings.accordion?.[type] ?? {}
     const defaults = () => this.buildDefaultSettings(animation, type)

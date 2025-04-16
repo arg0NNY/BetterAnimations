@@ -320,7 +320,7 @@
       "name": "Sidebar",
       "meta": {
         "modules": "sidebars",
-        "forceDisableInternalExpandCollapseAnimations": true
+        "accordion": false
       },
       "settings": {
         "duration": true,
