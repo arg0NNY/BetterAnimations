@@ -2,8 +2,9 @@ import PackAccordionItem from '@/modules/settings/components/PackAccordionItem'
 import PackManager from '@/modules/PackManager'
 import { css } from '@/modules/Style'
 import AnimationList from '@/modules/settings/components/AnimationList'
+import AnimationType from '@/enums/AnimationType'
 
-function PackAccordion ({ module, packs, ...props }) {
+function PackAccordion ({ module, packs, selected, ...props }) {
   return (
     <div className="BA__packAccordion">
       {packs.map(pack => {
@@ -13,6 +14,7 @@ function PackAccordion ({ module, packs, ...props }) {
         return (
           <PackAccordionItem
             pack={pack}
+            isActive={AnimationType.values().some(t => selected[t].packSlug === pack.slug)}
             isOpen={PackManager.isEnabled(pack.id)}
             onToggle={() => PackManager.togglePack(pack.id)}
           >
@@ -22,6 +24,7 @@ function PackAccordion ({ module, packs, ...props }) {
                 module={module}
                 pack={pack}
                 animations={animations}
+                selected={selected}
               />
             )}
           </PackAccordionItem>

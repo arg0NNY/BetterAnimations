@@ -7,22 +7,25 @@ import IconButton from '@/modules/settings/components/IconButton'
 import ErrorManager from '@/modules/ErrorManager'
 import CircleWarningIcon from '@/modules/settings/components/icons/CircleWarningIcon'
 
-function PackAccordionItem ({ pack, children, isOpen, onToggle }) {
+function PackAccordionItem ({ pack, children, isActive, isOpen, onToggle }) {
   return (
     <div className={Utils.className(
       'BA__packAccordionItem',
-      { 'BA__packAccordionItem--partial': pack.partial }
+      {
+        'BA__packAccordionItem--active': isActive && !isOpen,
+        'BA__packAccordionItem--partial': pack.partial
+      }
     )}>
       <Clickable tag="div" className="BA__packAccordionItemHeader" onClick={onToggle}>
         <div className="BA__packAccordionItemHeading">
           <Text
             variant="heading-md/semibold"
-            color={isOpen ? 'header-primary' : 'header-muted'}
+            color={isActive || isOpen ? 'header-primary' : 'header-muted'}
           >{pack.name}</Text>
           {pack.version || pack.author ? (
             <Text
               variant="text-xs/normal"
-              color={isOpen ? 'text-normal' : 'text-muted'}
+              color={isActive || isOpen ? 'text-normal' : 'text-muted'}
             >
               {
                 [pack.version && `v${pack.version}`, pack.author && `by ${pack.author}`]
@@ -84,6 +87,9 @@ css
     padding-top: 8px;
 }
 
+.BA__packAccordionItem--active .BA__packAccordionItemHeader {
+    box-shadow: 0 0 0 2.5px var(--brand-500);
+}
 .BA__packAccordionItem--partial .BA__packAccordionItemHeader {
     cursor: default;
 }`
