@@ -3,13 +3,348 @@
   "author": "arg0NNY",
   "version": "0.0.0",
 
+  "snippets": [
+    {
+      "key": "opacity",
+      "value": {
+        "inject": "type",
+        "enter": {
+          "inject": "isIntersected",
+          "true": 1,
+          "false": [0, 1]
+        },
+        "exit": 0
+      }
+    },
+    {
+      "key": "directionalTranslate",
+      "params": {
+        "value": "5px",
+        "negativeValue": "-5px"
+      },
+      "value": {
+        "inject": "type",
+        "enter": {
+          "inject": "direction",
+          "upwards": { "y": [{ "inject": "snippet.params", "name": "value" }, 0] },
+          "downwards": { "y": [{ "inject": "snippet.params", "name": "negativeValue" }, 0] },
+          "leftwards": { "x": [{ "inject": "snippet.params", "name": "value" }, 0] },
+          "rightwards": { "x": [{ "inject": "snippet.params", "name": "negativeValue" }, 0] }
+        },
+        "exit": {
+          "inject": "direction",
+          "upwards": { "y": { "inject": "snippet.params", "name": "negativeValue" } },
+          "downwards": { "y": { "inject": "snippet.params", "name": "value" } },
+          "leftwards": { "x": { "inject": "snippet.params", "name": "negativeValue" } },
+          "rightwards": { "x": { "inject": "snippet.params", "name": "value" } }
+        }
+      }
+    }
+  ],
+
   "animations": [
+
+    {
+      "key": "fade",
+      "name": "Fade",
+      "meta": {
+        "override": {
+          "for": {
+            "module": ["messages", "membersSidebar", "threadSidebar"]
+          },
+          "accordion": false
+        }
+      },
+      "settings": {
+        "duration": true,
+        "easing": true,
+
+        "defaults": {
+          "duration": 200,
+          "easing": {
+            "type": "ease",
+            "style": "quart"
+          },
+
+          "override": {
+            "for": {
+              "module": ["switch", "sidebars"]
+            },
+            "duration": 400
+          }
+        }
+      },
+      "animate": {
+        "extends": { "inject": "accordion" },
+        "anime": {
+          "targets": { "inject": "element" },
+          "parameters": {
+            "duration": { "inject": "duration" },
+            "ease": { "inject": "easing" },
+            "opacity": {
+              "inject": "snippet",
+              "key": "opacity"
+            }
+          }
+        }
+      }
+    },
+
+    {
+      "key": "slip",
+      "name": "Slip",
+      "meta": {
+        "intersect": false
+      },
+      "settings": {
+        "duration": true,
+        "easing": true,
+        "direction": true,
+
+        "defaults": {
+          "duration": 200,
+          "easing": { "type": "back" },
+          "direction": "upwards",
+
+          "override": [
+            {
+              "for": {
+                "type": "exit"
+              },
+              "direction": "downwards",
+              "directionTowards": true
+            },
+            {
+              "for": {
+                "module": "switch"
+              },
+              "easing": {
+                "type": "ease",
+                "style": "quart"
+              }
+            },
+            {
+              "for": {
+                "module": "channelList"
+              },
+              "direction": "downwards"
+            },
+            {
+              "for": {
+                "module": "channelList",
+                "type": "exit"
+              },
+              "direction": "upwards"
+            }
+          ]
+        }
+      },
+      "animate": {
+        "anime": {
+          "targets": { "inject": "element" },
+          "parameters": {
+            "inject": "assign",
+            "target": {
+              "duration": { "inject": "duration" },
+              "ease": { "inject": "easing" },
+              "opacity": {
+                "inject": "snippet",
+                "key": "opacity"
+              }
+            },
+            "source": {
+              "inject": "snippet",
+              "key": "directionalTranslate",
+              "params": {
+                "value": "5px",
+                "negativeValue": "-5px"
+              }
+            }
+          }
+        }
+      }
+    },
+
+    {
+      "key": "slide",
+      "name": "Slide",
+      "modules": "switch",
+      "meta": {
+        "intersect": false
+      },
+      "settings": {
+        "duration": true,
+        "easing": true,
+        "direction": true,
+        "overflow": false,
+
+        "defaults": {
+          "duration": 600,
+          "easing": {
+            "type": "ease",
+            "style": "quart"
+          },
+          "direction": "upwards",
+          "overflow": false
+        }
+      },
+      "animate": {
+        "anime": {
+          "targets": { "inject": "element" },
+          "parameters": {
+            "inject": "assign",
+            "target": {
+              "duration": { "inject": "duration" },
+              "ease": { "inject": "easing" }
+            },
+            "source": {
+              "inject": "snippet",
+              "key": "directionalTranslate",
+              "params": {
+                "value": "100%",
+                "negativeValue": "-100%"
+              }
+            }
+          }
+        }
+      }
+    },
+
+    {
+      "key": "scale",
+      "name": "Scale",
+      "settings": {
+        "duration": true,
+        "easing": true,
+        "position": true,
+        "direction": ["forwards", "backwards"],
+
+        "defaults": {
+          "duration": 200,
+          "easing": { "type": "back" },
+          "position": "center",
+          "direction": "backwards",
+
+          "override": [
+            {
+              "for": {
+                "type": "exit",
+                "module.type": "reveal"
+              },
+              "direction": "forwards"
+            },
+            {
+              "for": {
+                "module.type": "switch"
+              },
+              "easing": {
+                "type": "ease",
+                "style": "cubic"
+              }
+            }
+          ]
+        }
+      },
+      "animate": {
+        "css": {
+          "{element}": {
+            "transform-origin": { "inject": "position" }
+          }
+        },
+        "anime": {
+          "targets": { "inject": "element" },
+          "parameters": {
+            "duration": { "inject": "duration" },
+            "ease": { "inject": "easing" },
+            "opacity": {
+              "inject": "snippet",
+              "key": "opacity"
+            },
+            "scale": {
+              "inject": "type",
+              "enter": {
+                "inject": "isIntersected",
+                "true": 1,
+                "false": [
+                  {
+                    "inject": "direction",
+                    "forwards": 1.1,
+                    "backwards": 0.9
+                  },
+                  1
+                ]
+              },
+              "exit": {
+                "inject": "direction",
+                "forwards": 0.9,
+                "backwards": 1.1
+              }
+            }
+          }
+        }
+      }
+    },
+
+    {
+      "key": "blur",
+      "name": "Blur",
+      "meta": {
+        "override": {
+          "for": {
+            "module": ["messages", "membersSidebar", "threadSidebar"]
+          },
+          "accordion": false
+        }
+      },
+      "settings": {
+        "duration": true,
+        "easing": true,
+
+        "defaults": {
+          "duration": 200,
+          "easing": {
+            "type": "ease",
+            "style": "quart"
+          },
+
+          "override": {
+            "for": {
+              "module": ["switch", "sidebars"]
+            },
+            "duration": 400
+          }
+        }
+      },
+      "animate": {
+        "extends": { "inject": "accordion" },
+        "anime": {
+          "targets": { "inject": "element" },
+          "parameters": {
+            "duration": { "inject": "duration" },
+            "ease": { "inject": "easing" },
+            "opacity": {
+              "inject": "snippet",
+              "key": "opacity"
+            },
+            "filter": {
+              "inject": "type",
+              "enter": {
+                "inject": "isIntersected",
+                "true": "blur(0)",
+                "false": { "from": "blur(12px)" }
+              },
+              "exit": "blur(12px)"
+            }
+          }
+        }
+      }
+    },
 
     {
       "key": "backdropDark",
       "name": "Dark Blur",
+      "modules": "modalsBackdrop",
       "meta": {
-        "modules": "modalsBackdrop",
         "revert": false
       },
       "settings": {
@@ -18,7 +353,10 @@
 
         "defaults": {
           "duration": 300,
-          "easing": { "type": "ease" }
+          "easing": {
+            "type": "ease",
+            "style": "quart"
+          }
         }
       },
       "animate": {
