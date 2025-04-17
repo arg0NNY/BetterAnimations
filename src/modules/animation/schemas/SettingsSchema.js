@@ -2,14 +2,11 @@ import { z } from 'zod'
 import Setting from '@/enums/AnimationSetting'
 import Position from '@/enums/Position'
 import Direction from '@/enums/Direction'
-import AnimationType from '@/enums/AnimationType'
 import EasingSchema from '@/modules/animation/schemas/EasingSchema'
 import { MAX_ANIMATION_DURATION, MIN_ANIMATION_DURATION } from '@/data/constants'
 import { getSupportedAxes } from '@/utils/direction'
 import { restrictReservedKeys } from '@/modules/animation/keys'
-import { ArrayOrSingleSchema } from '@/utils/schemas'
-import ModuleKey from '@/enums/ModuleKey'
-import ModuleType from '@/enums/ModuleType'
+import OverridableSchema from '@/modules/animation/schemas/OverridableSchema'
 
 export const DurationSchema = (from = MIN_ANIMATION_DURATION, to = MAX_ANIMATION_DURATION) =>
   z.number().int().min(from).max(to)
@@ -46,21 +43,11 @@ const DefaultsSchema = settings => {
     [Setting.Overflow, z.boolean()]
   )
 
-  const baseSchema = z.strictObject(
-    Object.fromEntries(entries)
+  return OverridableSchema(
+    z.strictObject(
+      Object.fromEntries(entries)
+    )
   )
-
-  const overrideSchema = baseSchema.partial().extend({
-    for: z.strictObject({
-      type: ArrayOrSingleSchema(z.enum(AnimationType.values())),
-      module: ArrayOrSingleSchema(z.enum(ModuleKey.values())),
-      'module.type': ArrayOrSingleSchema(z.enum(ModuleType.values()))
-    }).partial()
-  })
-
-  return baseSchema.extend({
-    override: ArrayOrSingleSchema(overrideSchema).optional()
-  })
 }
 
 const SettingsSchema = z.object({

@@ -30,7 +30,7 @@ import EasingSchema from '@/modules/animation/schemas/EasingSchema'
 import Mouse from '@/modules/Mouse'
 import PositionAutoType from '@/enums/PositionAutoType'
 import ParsableExtendableAnimateSchema from '@/modules/animation/schemas/ParsableExtendableAnimateSchema'
-import { omit } from '@/utils/object'
+import { computeOverridable } from '@/modules/animation/schemas/OverridableSchema'
 
 class Module {
   constructor (id, name, meta = {}, { parent, description, controls, alert, onToggle } = {}) {
@@ -214,22 +214,13 @@ class Module {
   }
 
   buildAnimationDefaultSettings (animation, type) {
-    const { defaults } = animation.settings
-    return Object.assign(
-      omit(defaults, ['override']),
-      ...[].concat(defaults.override)
-        .filter(
-          override => override != null && Object.entries(override.for).every(
-            ([property, values]) => [].concat(values).includes(
-              {
-                type,
-                module: this.id,
-                'module.type': this.type
-              }[property]
-            )
-          )
-        )
-        .map(v => omit(v, ['for']))
+    return computeOverridable(
+      animation.settings.defaults,
+      {
+        type,
+        module: this.id,
+        'module.type': this.type
+      }
     )
   }
   buildModuleDefaultSettings (animation) {
