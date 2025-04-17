@@ -11,7 +11,7 @@ import patchStandardSidebarView from '@/patches/StandardSidebarView/patchStandar
 import patchModals from '@/patches/Modals/patchModals'
 import patchLayers from '@/patches/Layers/patchLayers'
 import patchListThin from '@/patches/ListThin/patchListThin'
-import patchGuildChannelList, { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChannelList'
+import patchGuildChannelList from '@/patches/GuildChannelList/patchGuildChannelList'
 import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
 import PackManager from '@/modules/PackManager'
 import Logger from '@/modules/Logger'
@@ -35,6 +35,7 @@ import Toasts from '@/modules/Toasts'
 import ErrorManager from '@/modules/ErrorManager'
 import * as DiscordModules from '@/modules/DiscordModules'
 import * as anime from 'animejs'
+import Utils from '@/modules/Utils'
 
 engine.pauseOnDocumentHidden = false
 
@@ -57,7 +58,7 @@ if (import.meta.env.MODE === 'development')
     DiscordModules,
     DiscordClasses,
     anime,
-    getCurrentGuildChannels: () => currentGuildChannels
+    Utils
   }
 
 export default function (meta) {

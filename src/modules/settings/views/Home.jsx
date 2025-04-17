@@ -120,7 +120,7 @@ function Home () {
           variant="text-sm/medium"
           color="text-muted"
         >
-          v{meta.version}
+          v{meta.version} {import.meta.env.MODE === 'development' ? '(Dev Bundle)' : ''}
         </Text>
       </div>
     </div>
