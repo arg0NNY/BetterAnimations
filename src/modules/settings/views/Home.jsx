@@ -133,7 +133,7 @@ css
 `.BA__home {
     position: absolute;
     inset: 0;
-    padding: 60px 40px 80px;
+    padding: 60px 40px 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -197,7 +197,7 @@ css
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    bottom: 50px;
+    bottom: 16px;
     display: flex;
     align-items: center;
 }`

@@ -63,6 +63,10 @@ css
     height: 100%;
 }
 
+.platform-win ${DiscordSelectors.StandardSidebarView.contentRegionScroller} {
+    height: calc(100% - var(--custom-app-top-bar-height));
+}
+
 ${DiscordSelectors.StandardSidebarView.contentRegionScroller}:has(.BA__home) {
     overflow: visible !important;
 }`

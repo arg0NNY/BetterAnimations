@@ -105,6 +105,7 @@ export default AnimeTransition
 css
 `[data-ba-container][data-baa-type] { /* Container while animation is running */
     position: relative;
+    background: none;
 }
 
 [data-baa] {
