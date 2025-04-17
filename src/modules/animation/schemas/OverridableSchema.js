@@ -1,15 +1,18 @@
 import { z } from 'zod'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
 import AnimationType from '@/enums/AnimationType'
-import ModuleKey from '@/enums/ModuleKey'
+import ModuleKey, { ModuleKeyAlias } from '@/enums/ModuleKey'
 import ModuleType from '@/enums/ModuleType'
 import { omit } from '@/utils/object'
+import { moduleAliases } from '@/data/modules'
 
-export const DEFAULT_PROPERTIES = {
-  type: AnimationType.values(),
-  module: ModuleKey.values(),
-  'module.type': ModuleType.values()
-}
+export const DefaultPropertiesSchema = z.strictObject({
+  type: ArrayOrSingleSchema(z.enum(AnimationType.values())),
+  module: ArrayOrSingleSchema(
+    z.enum(ModuleKey.values().concat(ModuleKeyAlias.values()))
+  ).transform(value => [].concat(value).flatMap(key => moduleAliases[key] ?? key)),
+  'module.type': ArrayOrSingleSchema(z.enum(ModuleType.values()))
+}).partial()
 
 export function computeOverridable (overridable, properties) {
   return Object.assign(
@@ -25,15 +28,10 @@ export function computeOverridable (overridable, properties) {
   )
 }
 
-const OverridableSchema = (schema, properties = DEFAULT_PROPERTIES) => schema.extend({
+const OverridableSchema = (schema, propertiesSchema = DefaultPropertiesSchema) => schema.extend({
   override: ArrayOrSingleSchema(
     schema.partial().extend({
-      for: z.strictObject(
-        Object.fromEntries(
-          Object.entries(properties)
-            .map(([property, values]) => [property, ArrayOrSingleSchema(z.enum(values))])
-        )
-      ).partial()
+      for: propertiesSchema
     })
   ).optional()
 })
