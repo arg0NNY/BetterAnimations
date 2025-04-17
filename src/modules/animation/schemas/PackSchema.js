@@ -2,6 +2,13 @@ import { z } from 'zod'
 import regex from '@/utils/regex'
 import AnimationSchema from '@/modules/animation/schemas/AnimationSchema'
 import Messages from '@/modules/Messages'
+import { StoreSourceMapDeepSchema } from '@/modules/animation/sourceMap'
+
+export const SnippetSchema = z.strictObject({
+  key: z.string().min(1),
+  params: z.record(z.string(), z.any()).optional(),
+  value: StoreSourceMapDeepSchema
+})
 
 const PackSchema = z.object({
   name: z.string().trim().min(1),
@@ -14,6 +21,7 @@ const PackSchema = z.object({
   patreon: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),
   website: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),
 
+  snippets: SnippetSchema.array().optional(),
   animations: AnimationSchema.array()
     .superRefine((animations, ctx) => {
       const keys = {}

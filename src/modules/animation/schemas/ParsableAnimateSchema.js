@@ -10,6 +10,7 @@ import hastSanitizeSchema from '@/modules/animation/hastSanitizeSchema'
 import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/settings'
 import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
 import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/operators'
+import * as SnippetInjectSchemas from '@/modules/animation/schemas/injects/snippet'
 import { clearSourceMapDeep, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
 import ParsableSchema from '@/modules/animation/schemas/ParsableSchema'
@@ -19,6 +20,7 @@ const safeInjects = [
   ...Object.keys(parseInjectSchemas(SettingsInjectSchemas)),
   ...Object.keys(parseInjectSchemas(MathInjectSchemas)),
   ...Object.keys(parseInjectSchemas(OperatorsInjectSchemas)),
+  ...Object.keys(parseInjectSchemas(SnippetInjectSchemas)),
   // Anime
   Inject.AnimeRandom,
   Inject.AnimeGet,

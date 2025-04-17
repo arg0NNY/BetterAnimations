@@ -16,6 +16,7 @@ import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/sett
 import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
 import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/operators'
 import * as AccordionInjectSchemas from '@/modules/animation/schemas/injects/accordion'
+import * as SnippetInjectSchemas from '@/modules/animation/schemas/injects/snippet'
 import Debug from '@/modules/Debug'
 import { getSourcePath, isSourceMap, SELF_KEY } from '@/modules/animation/sourceMap'
 import TrustedFunctionSchema, { trust } from '@/modules/animation/schemas/TrustedFunctionSchema'
@@ -28,7 +29,8 @@ const injectSchemas = {
   ...parseInjectSchemas(SettingsInjectSchemas),
   ...parseInjectSchemas(MathInjectSchemas),
   ...parseInjectSchemas(OperatorsInjectSchemas),
-  ...parseInjectSchemas(AccordionInjectSchemas)
+  ...parseInjectSchemas(AccordionInjectSchemas),
+  ...parseInjectSchemas(SnippetInjectSchemas)
 }
 const injectTypes = Object.keys(injectSchemas)
 const injectDict = new Spelling(injectTypes)
@@ -53,7 +55,7 @@ function parseInject ({ schema, context, env, value, ctx }) {
     return parsed
   }
   catch (error) {
-    throw new AnimationError(
+    throw error instanceof AnimationError ? error : new AnimationError(
       context.animation,
       formatZodError(error, { pack: context.pack, data: value, context, path: ctx.path, sourceMap: { useSelf: true } }),
       { module: context.module, pack: context.pack, type: context.type, context }

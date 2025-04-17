@@ -9,7 +9,7 @@ import ModuleKey, { ModuleKeyAlias } from '@/enums/ModuleKey'
 import { moduleAliases } from '@/data/modules'
 
 const AnimationSchema = z.object({
-  key: z.string().min(1).trim(),
+  key: z.string().min(1),
   name: z.string().min(1).trim(),
   modules: ArrayOrSingleSchema(
     z.enum(ModuleKey.values().concat(ModuleKeyAlias.values()))
