@@ -15,6 +15,7 @@ import * as AnimeInjectSchemas from '@/modules/animation/schemas/injects/anime'
 import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/settings'
 import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
 import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/operators'
+import * as ArrayInjectSchemas from '@/modules/animation/schemas/injects/array'
 import * as AccordionInjectSchemas from '@/modules/animation/schemas/injects/accordion'
 import * as SnippetInjectSchemas from '@/modules/animation/schemas/injects/snippet'
 import Debug from '@/modules/Debug'
@@ -29,6 +30,7 @@ const injectSchemas = {
   ...parseInjectSchemas(SettingsInjectSchemas),
   ...parseInjectSchemas(MathInjectSchemas),
   ...parseInjectSchemas(OperatorsInjectSchemas),
+  ...parseInjectSchemas(ArrayInjectSchemas),
   ...parseInjectSchemas(AccordionInjectSchemas),
   ...parseInjectSchemas(SnippetInjectSchemas)
 }

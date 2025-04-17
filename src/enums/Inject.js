@@ -104,6 +104,7 @@ export default Enum({
   StrictEqualityOperator: '===',
   StrictInequalityOperator: '!==',
   SubtractionOperator: '-',
+  Includes: 'includes',
   Accordion: 'accordion',
   Snippet: 'snippet',
   SnippetParams: 'snippet.params'
