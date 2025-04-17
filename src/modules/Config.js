@@ -28,9 +28,14 @@ class PackConfig {
   load () {
     this.current = this.read()
   }
-  save (value = this.current) {
-    if (!Object.keys(value).length) return
-    fs.writeFileSync(this.filePath, JSON.stringify(value, null, 4), 'utf8')
+  save () {
+    if (!this.hasUnsavedChanges()) return
+    fs.writeFileSync(this.filePath, JSON.stringify(this.current, null, 4), 'utf8')
+  }
+  reset () {
+    this.current = {}
+    this.save()
+    Emitter.emit(Events.SettingsChanged)
   }
 
   hasUnsavedChanges () {
@@ -76,8 +81,9 @@ export default new class Config {
     Emitter.emit(Events.SettingsLoaded)
     Emitter.emit(Events.SettingsChanged)
   }
-  save (value = this.current) {
-    Data[this.dataKey] = value
+  save () {
+    if (!this.hasUnsavedChanges()) return
+    Data[this.dataKey] = this.current
     this.packs.forEach(pack => pack.save())
     Emitter.emit(Events.SettingsSaved)
   }
