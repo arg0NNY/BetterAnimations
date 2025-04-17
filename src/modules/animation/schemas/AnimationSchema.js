@@ -4,10 +4,18 @@ import SettingsSchema from '@/modules/animation/schemas/SettingsSchema'
 import AnimationType from '@/enums/AnimationType'
 import { StoreSourceMapDeepSchema } from '@/modules/animation/sourceMap'
 import ExtendableAnimateSchema from '@/modules/animation/schemas/ExtendableAnimateSchema'
+import { ArrayOrSingleSchema } from '@/utils/schemas'
+import ModuleKey, { ModuleKeyAlias } from '@/enums/ModuleKey'
+import { moduleAliases } from '@/data/modules'
 
 const AnimationSchema = z.object({
   key: z.string().min(1).trim(),
   name: z.string().min(1).trim(),
+  modules: ArrayOrSingleSchema(
+    z.enum(ModuleKey.values().concat(ModuleKeyAlias.values()))
+  ).optional()
+    .default(() => [ModuleKeyAlias.Switch, ModuleKeyAlias.Reveal, ModuleKeyAlias.Sidebars])
+    .transform(value => new Set([].concat(value).flatMap(key => moduleAliases[key] ?? key))),
   meta: MetaSchema.optional().default({}),
   settings: SettingsSchema.optional().default({ defaults: {} }),
   debug: z.union([

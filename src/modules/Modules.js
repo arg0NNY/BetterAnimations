@@ -158,7 +158,7 @@ class Module {
   }
 
   isSupportedBy (animation) {
-    return animation.meta?.modules?.has(this.id)
+    return animation.modules.has(this.id)
   }
 
   getSupportsAuto (setting) {

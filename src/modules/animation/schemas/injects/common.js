@@ -48,7 +48,7 @@ export const AnchorInjectSchema = InjectWithMeta(
 export const ModuleInjectSchema = InjectWithMeta(
   SwitchSchema(Inject.Module, ModuleKey.values(), {
     currentValue: ctx => ctx.module.id,
-    possibleValues: ctx => ctx.meta?.modules && Array.from(ctx.meta.modules)
+    possibleValues: ctx => Array.from(ctx.animation.modules)
   }),
   { immediate: ['module'] }
 )

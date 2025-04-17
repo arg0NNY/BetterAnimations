@@ -317,8 +317,8 @@
     {
       "key": "sidebar",
       "name": "Sidebar",
+      "modules": "sidebars",
       "meta": {
-        "modules": "sidebars",
         "accordion": false
       },
       "settings": {
@@ -511,9 +511,7 @@
     {
       "key": "circle+reveal",
       "name": "Circle + Reveal",
-      "meta": {
-        "modules": "switch"
-      },
+      "modules": "switch",
       "settings": {
         "duration": true,
         "easing": true,
@@ -644,9 +642,7 @@
     {
       "key": "svg",
       "name": "SVG",
-      "meta": {
-        "modules": "switch"
-      },
+      "modules": "switch",
       "settings": {
         "duration": {
           "from": 100,
@@ -767,9 +763,7 @@
     {
       "key": "create-drawable",
       "name": "svg.createDrawable",
-      "meta": {
-        "modules": "switch"
-      },
+      "modules": "switch",
       "exit": {
         "hast": {
           "type": "element",
@@ -945,8 +939,8 @@
     {
       "key": "reveal-accordion",
       "name": "Reveal Accordion",
+      "modules": ["messages", "channelList"],
       "meta": {
-        "modules": ["messages", "channelList"],
         "accordion": false
       },
       "settings": {
