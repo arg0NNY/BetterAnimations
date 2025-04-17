@@ -11,13 +11,13 @@ import ParsableExtendableAnimateSchema, { ParsableExtendsSchema } from '@/module
 import { omit } from '@/utils/object'
 import { intersect, promisify } from '@/utils/anime'
 
-export function buildContext (pack, animation, type, settings = {}, context = {}) {
+export function buildContext (pack, animation, type, settings = {}, meta = {}, context = {}) {
   return Object.assign(
     {
       pack,
       animation,
       settings: animation?.settings,
-      meta: animation?.meta,
+      meta,
       type,
       vars: {}
     },

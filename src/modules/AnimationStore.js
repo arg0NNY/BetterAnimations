@@ -171,7 +171,7 @@ export default new class AnimationStore {
       case ModuleType.Reveal:
         const [conflict] = this.animations.filter(a => a.module.id === animation.module.id && a.node === animation.node)
         const intersect = (animation.raw?.id ?? null) === (conflict?.raw?.id ?? null)
-          && (!animation.raw?.id || animation.raw.animation?.meta?.intersect)
+          && (!animation.raw?.id || animation.raw.meta?.intersect)
 
         return [this.cancelAnimations(conflict ?? []), true, intersect ? conflict : null]
       case ModuleType.Switch: {

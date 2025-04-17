@@ -91,7 +91,8 @@ class Module {
     const path = animation ? ['animations', pack.animations.indexOf(animation), type in animation ? type : 'animate'] : []
 
     const settings = animation && this.buildSettings(animation, type, config, { auto: false })
-    const context = animation && buildContext(pack, animation, type, settings, { module: this, path })
+    const meta = animation && this.buildAnimationMeta(animation, type)
+    const context = animation && buildContext(pack, animation, type, settings, meta, { module: this, path })
 
     const debug = Debug.animation(animation, type)
     const data = animation?.[type] ?? animation?.animate
@@ -121,6 +122,7 @@ class Module {
       pack,
       animation,
       path,
+      meta,
       config,
       animate,
       error
@@ -134,10 +136,10 @@ class Module {
   }
 
   getAnimation (type, options = {}, context = null) {
-    const { pack, animation, path, config } = this.animations[type]
+    const { pack, animation, path, meta, config } = this.animations[type]
 
     const settings = animation && this.buildSettings(animation, type, config, options)
-    const ctx = buildContext(pack, animation, type, settings, { module: this, path, ...context })
+    const ctx = buildContext(pack, animation, type, settings, meta, { module: this, path, ...context })
 
     return {
       ...this.animations[type],
@@ -213,16 +215,26 @@ class Module {
     )
   }
 
+  getOverridableProperties (type) {
+    return {
+      type,
+      module: this.id,
+      'module.type': this.type
+    }
+  }
+  buildAnimationMeta (animation, type) {
+    return computeOverridable(
+      animation.meta,
+      this.getOverridableProperties(type)
+    )
+  }
   buildAnimationDefaultSettings (animation, type) {
     return computeOverridable(
       animation.settings.defaults,
-      {
-        type,
-        module: this.id,
-        'module.type': this.type
-      }
+      this.getOverridableProperties(type)
     )
   }
+
   buildModuleDefaultSettings (animation) {
     return Object.fromEntries(
       Object.entries(this.meta.settings?.defaults ?? {})
@@ -398,7 +410,7 @@ class Module {
     const { accordion } = this.meta
     if (!accordion) return null
 
-    const forceDisabled = this.animations[type]?.animation?.meta?.accordion[type] === false
+    const forceDisabled = this.animations[type]?.meta?.accordion === false
     const animation = this.getAccordionAnimation()
     const config = this.settings.accordion?.[type] ?? {}
     const defaults = () => this.buildDefaultSettings(animation, type)
