@@ -1,6 +1,6 @@
 import { animate, utils } from 'animejs'
 import AnimationType from '@/enums/AnimationType'
-import { toAnimeEasing } from '@/utils/easings'
+import { getEasingFn } from '@/utils/easings'
 import Enum from '@/enums/Enum'
 
 export const AccordionType = Enum({
@@ -51,7 +51,7 @@ export function buildAccordionGenerator (type, options = {}) {
         return animate(container, {
           autoplay: false,
           duration,
-          ease: toAnimeEasing(easing),
+          ease: getEasingFn(easing),
           [getMarginProperty(type)]: {
             [AnimationType.Enter]: isIntersected ? 0 : { from: value },
             [AnimationType.Exit]: value

@@ -1,12 +1,13 @@
 import { EasingType } from '@/enums/Easing'
 import { capitalize } from '@/utils/text'
+import { eases } from 'animejs'
 
-export function toAnimeEasing (easing) {
+export function getEasingFn (easing) {
   switch (easing.type) {
-    case EasingType.Linear: return 'linear'
-    case EasingType.Ease: return `${easing.bezier}${capitalize(easing.style)}`
-    case EasingType.Back: return `${easing.bezier}Back(${easing.overshoot})`
-    case EasingType.Elastic: return `${easing.bezier}Elastic(${easing.amplitude}, ${easing.period})`
-    case EasingType.Steps: return `steps(${easing.amount})`
+    case EasingType.Linear: return eases.linear()
+    case EasingType.Ease: return eases[`${easing.bezier}${capitalize(easing.style)}`]
+    case EasingType.Back: return eases[`${easing.bezier}Back`](easing.overshoot)
+    case EasingType.Elastic: return eases[`${easing.bezier}Elastic`](easing.amplitude, easing.period)
+    case EasingType.Steps: return eases.steps(easing.amount)
   }
 }

@@ -6,7 +6,9 @@ import Inject from '@/enums/Inject'
 import Setting from '@/enums/AnimationSetting'
 import Direction from '@/enums/Direction'
 import { getCenter, toPercent, toUnit } from '@/utils/position'
-import { toAnimeEasing } from '@/utils/easings'
+import { zodErrorBoundary } from '@/modules/animation/utils'
+import EasingSchema from '@/modules/animation/schemas/EasingSchema'
+import { getEasingFn } from '@/utils/easings'
 
 export const DurationInjectSchema = InjectWithMeta(
   ({ duration, settings }) => InjectSchema(Inject.Duration)
@@ -15,15 +17,20 @@ export const DurationInjectSchema = InjectWithMeta(
   { immediate: [Setting.Duration, 'settings'] }
 )
 
-export const EasingInjectSchema = InjectWithMeta(
-  ({ easing, settings }) => InjectSchema(Inject.Easing)
-    .extend({
-      raw: z.boolean().optional().default(false)
-    })
-    .transform(hasInSettings(Inject.Easing, Setting.Easing in settings))
-    .transform(({ raw }) => raw ? easing : toAnimeEasing(easing)),
-  { immediate: [Setting.Easing, 'settings'] }
-)
+export const EasingInjectSchema = context => InjectSchema(Inject.Easing)
+  .extend({
+    easing: Setting.Easing in context.settings
+      ? EasingSchema.optional().default(context.easing)
+      : EasingSchema,
+    raw: z.boolean().optional().default(false)
+  })
+  .transform(
+    ({ easing, raw }, { path }) => raw ? easing : zodErrorBoundary(
+      getEasingFn(easing),
+      context,
+      { path, name: 'easing' }
+    )
+  )
 
 const getVariantKeys = context => context.settings?.[Setting.Variant]?.map(v => v.key) ?? []
 export const VariantInjectSchema = InjectWithMeta(

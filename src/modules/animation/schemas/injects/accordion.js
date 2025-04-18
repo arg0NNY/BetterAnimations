@@ -4,7 +4,6 @@ import Inject from '@/enums/Inject'
 import Setting from '@/enums/AnimationSetting'
 import { DurationSchema } from '@/modules/animation/schemas/SettingsSchema'
 import EasingSchema from '@/modules/animation/schemas/EasingSchema'
-import { toAnimeEasing } from '@/utils/easings'
 import { AccordionType, getMarginProperty, getSizeProperty } from '@/utils/accordion'
 import ModuleKey from '@/enums/ModuleKey'
 
@@ -53,7 +52,10 @@ function buildAccordion (type, { duration, easing }) {
       "targets": { "inject": "container" },
       "parameters": {
         "duration": duration,
-        "ease": toAnimeEasing(easing),
+        "ease": {
+          "inject": "easing",
+          "easing": easing
+        },
         [getMarginProperty(type)]: {
           "inject": "type",
           "enter": {
