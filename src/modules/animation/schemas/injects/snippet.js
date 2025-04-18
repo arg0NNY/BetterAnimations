@@ -19,19 +19,21 @@ export const SnippetInjectSchema = (context, env) => InjectSchema(Inject.Snippet
   const snippet = context.pack.snippets?.find(s => s.key === key)
   if (!snippet) return
 
-  const value = InjectableSchema(context, {
-    ...env,
-    stage: ParseStage.Initialize
-  }).parse(snippet.value, { path: ctx.path })
-
-  return InjectableSchema(context, {
+  const snippetEnv = {
     ...env,
     snippet: {
       key: snippet.key,
       params: Object.assign({}, snippet.params, params),
       depth: env.snippet ? env.snippet.depth + 1 : 1
     }
-  }).parse(value, { path: ctx.path })
+  }
+
+  const value = InjectableSchema(context, {
+    ...snippetEnv,
+    stage: ParseStage.Initialize
+  }).parse(snippet.value, { path: ctx.path })
+
+  return InjectableSchema(context, snippetEnv).parse(value, { path: ctx.path })
 })
 
 export const SnippetParamsInjectSchema = InjectWithMeta(
