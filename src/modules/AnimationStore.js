@@ -31,7 +31,7 @@ class Animation {
   }
 
   initialize (callback, allowed, intersectWith = null) {
-    if (!allowed || !this.node) {
+    if (!allowed || !this.node || (intersectWith && !intersectWith.instances)) {
       this.doneCallbackRef.await(done => {
         done?.()
         callback?.()
