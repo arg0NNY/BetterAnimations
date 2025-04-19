@@ -6,14 +6,14 @@ import AnimationError from '@/structs/AnimationError'
 
 class Animation {
 
-  constructor (store, { module, type, container, node, anchor, auto, doneCallbackRef }) {
+  constructor (store, { module, type, container, element, anchor, auto, doneCallbackRef }) {
     this.store = store
 
     this.module = module
     this.raw = module.animations[type]
     this.type = type
     this.container = container
-    this.node = node
+    this.element = element
     this.anchor = anchor
     this.auto = auto
     this.doneCallbackRef = doneCallbackRef
@@ -31,7 +31,7 @@ class Animation {
   }
 
   initialize (callback, allowed, intersectWith = null) {
-    if (!allowed || !this.node || (intersectWith && !intersectWith.instances)) {
+    if (!allowed || !this.element || (intersectWith && !intersectWith.instances)) {
       this.doneCallbackRef.await(done => {
         done?.()
         callback?.()
@@ -58,7 +58,7 @@ class Animation {
         {
           instance: this,
           container: this.container,
-          element: this.node,
+          element: this.element,
           anchor: typeof this.anchor === 'function'
             ? this.anchor()
             : (this.anchor?.current ?? this.anchor),
@@ -88,7 +88,7 @@ class Animation {
       onBeforeBegin?.()
       if (this.cancelled) return
 
-      if (wrapper) this.node.before(wrapper)
+      if (wrapper) this.element.before(wrapper)
 
       this.ensureTimeLimit()
       finished.then(() => this.cancel())
@@ -169,7 +169,7 @@ export default new class AnimationStore {
   processAnimation (animation) {
     switch (animation.module.type) {
       case ModuleType.Reveal:
-        const [conflict] = this.animations.filter(a => a.module.id === animation.module.id && a.node === animation.node)
+        const [conflict] = this.animations.filter(a => a.module.id === animation.module.id && a.element === animation.element)
         const intersect = (animation.raw?.id ?? null) === (conflict?.raw?.id ?? null)
           && (!animation.raw?.id || animation.raw.meta?.intersect)
 

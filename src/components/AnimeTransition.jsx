@@ -24,7 +24,7 @@ class AnimeTransition extends Component {
 
     return {
       container: container,
-      node: container?.getAttribute('data-ba-container') === ''
+      element: container?.getAttribute('data-ba-container') === ''
         ? [].find.call(container.childNodes, e => !e.getAttribute('data-baa'))
         : container
     }
@@ -32,13 +32,13 @@ class AnimeTransition extends Component {
 
   onAnimate (type, fn) {
     return (targetNode) => {
-      const { container, node } = this.getTargetNodes(targetNode)
+      const { container, element } = this.getTargetNodes(targetNode)
 
       this.instance.current = AnimationStore.requestAnimation({
         module: this.props.module,
         type,
         container,
-        node,
+        element,
         anchor: this.props.anchor,
         auto: this.props.autoRef ?? { current: this.props.auto },
         doneCallbackRef: this.doneCallback
