@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { animate, createTimeline, createTimer } from 'animejs'
+import { animate, createTimeline, createTimer, waapi } from 'animejs'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
 import { zodTransformErrorBoundary } from '@/utils/zod'
 import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
@@ -19,6 +19,12 @@ const AnimeTimerSchema = AnimeBaseSchema('timer').extend({
 
 // Animation
 const AnimeAnimationSchema = context => AnimeBaseSchema('animation', true).extend({
+  targets: TargetsSchema(context),
+  parameters: ParametersSchema
+})
+
+// WAAPI
+const AnimeWAAPISchema = context => AnimeBaseSchema('waapi').extend({
   targets: TargetsSchema(context),
   parameters: ParametersSchema
 })
@@ -84,6 +90,8 @@ function buildInstance ({ type, targets, parameters, children }) {
       })
       return tl
     }
+    case 'waapi':
+      return waapi.animate(targets, parameters)
     default:
       return animate(targets, parameters)
   }
@@ -91,6 +99,7 @@ function buildInstance ({ type, targets, parameters, children }) {
 const AnimeInstanceSchema = context => z.discriminatedUnion('type', [
   AnimeTimerSchema,
   AnimeAnimationSchema(context),
+  AnimeWAAPISchema(context),
   AnimeTimelineSchema(context)
 ]).transform(
   zodTransformErrorBoundary(

@@ -68,19 +68,16 @@ class Animation {
       )
       this.context = context
 
-      const { wrapper, onBeforeBegin, accordion, instances, reset, pause, revert, finished }
+      const { wrapper, onBeforeBegin, accordion, instances, finished }
         = parse(animate, context, this.module.buildOptions())
 
       this.wrapper = wrapper
       this.accordion = accordion
       this.instances = instances
-      this.pause = pause
-      this.revert = revert
 
       if (intersectWith && callback) {
-        callback()
+        callback(false)
         if (this.cancelled) return
-        reset() // Force anime to re-apply styles because cancel callback might have removed some (prevent element flashing on 1 frame)
       }
 
       this.applyAttributes()
@@ -103,17 +100,19 @@ class Animation {
 
     this.onBeforeDestroy?.()
 
-    this.pause?.()
+    this.instances?.pause()
     this.doneCallbackRef.current?.()
     this.destroy(dueToError)
 
-    const callback = () => {
+    const callback = (revert = true) => {
       this.wrapper?.remove()
 
       ;[].filter.call(this.container.attributes, a => a.name?.startsWith('data-baa'))
         .forEach(a => this.container.removeAttribute(a.name))
 
-      this.revert?.()
+      if (revert && ((this.context?.module.meta.revert ?? true) || this.context?.meta.revert)) this.instances?.revert()
+      else this.instances?.cancel()
+
       this.onDestroyed?.()
     }
 
@@ -163,7 +162,7 @@ export default new class AnimationStore {
   cancelAnimations (animations, provideCallback = true) {
     const list = typeof animations === 'function' ? this.animations.filter(animations) : [].concat(animations)
     const callbacks = list.map(animation => animation.cancel(false, provideCallback)).filter(c => typeof c === 'function')
-    if (provideCallback) return () => callbacks.forEach(c => c())
+    if (provideCallback) return (...args) => callbacks.forEach(c => c(...args))
   }
 
   processAnimation (animation) {

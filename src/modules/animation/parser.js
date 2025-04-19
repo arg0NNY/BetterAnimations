@@ -218,16 +218,10 @@ export function parse (data = null, context, options = {}) {
     ? (data?.anime ?? [])
     : []
 
-  const resetAll = () => instances.concat(accordion).forEach(i => i?.reset())
-  const pauseAll = () => instances.concat(accordion).forEach(i => i?.pause())
-  const revertAll = () => {
-    instances.forEach(
-      (context.module.meta.revert ?? true) || context.animation.meta.revert
-        ? i => i.revert()
-        : i => i.cancel()
-    )
-    accordion?.revert()
-  }
+  instances.pause = () => instances.concat(accordion).forEach(i => i?.pause())
+  instances.cancel = () => instances.concat(accordion).forEach(i => i?.cancel())
+  instances.revert = () => instances.concat(accordion).forEach(i => i?.revert())
+
   const finishedAll = Promise.all(instances.map(promisify))
 
   const raf = fn => requestAnimationFrame(
@@ -235,12 +229,18 @@ export function parse (data = null, context, options = {}) {
   )
   let onBeforeBegin
 
-  const begin = () => {
+  const begin = (immediate = true) => {
     if (context.instance.cancelled) return
+
     onBeforeBegin = () => hook('onBeforeBegin', ParseStage.BeforeBegin)
+    if (!immediate) {
+      onBeforeBegin()
+      if (context.instance.cancelled) return
+    }
+
     raf(() => instances.forEach(
       after && context.intersectWith?.accordion && !context.intersectWith.accordion.completed
-        ? i => i.complete()
+        ? i => i.complete().cancel()._resolve() // `.cancel()._resolve()` added to fix the issue of WAAPI animations not being marked as completed when calling `complete`
         : i => i.play()
     ))
   }
@@ -252,7 +252,7 @@ export function parse (data = null, context, options = {}) {
     })
     promisify(accordion).then(() => {
       before.onCompleted?.()
-      begin()
+      begin(false)
     })
   }
   else begin()
@@ -262,9 +262,6 @@ export function parse (data = null, context, options = {}) {
     onBeforeBegin,
     accordion,
     instances,
-    reset: resetAll,
-    pause: pauseAll,
-    revert: revertAll,
     finished: finishedAll
       .then(() => {
         if (context.instance.cancelled) return

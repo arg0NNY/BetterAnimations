@@ -1,4 +1,4 @@
-import { Patcher } from '@/BdApi'
+import { Patcher, Utils } from '@/BdApi'
 import { LayersKeyed, TransitionGroup } from '@/modules/DiscordModules'
 import ensureOnce from '@/utils/ensureOnce'
 import AnimeTransition from '@/components/AnimeTransition'
@@ -14,8 +14,13 @@ import { getWindowCenterAnchor } from '@/utils/anchor'
 function LayerContainer ({ baseLayer, hidden, children }) {
   return (
     <div
-      className={`${DiscordClasses.Layers.layer} ${baseLayer ? DiscordClasses.Layers.baseLayer : ''}`}
-      style={hidden ? { visibility: 'hidden' } : undefined}
+      className={Utils.className(
+        DiscordClasses.Layers.layer,
+        {
+          [DiscordClasses.Layers.baseLayer]: baseLayer,
+          'BA__layer--hidden': hidden
+        }
+      )}
     >
       {children}
     </div>
