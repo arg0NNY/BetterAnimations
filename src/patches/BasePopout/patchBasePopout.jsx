@@ -7,6 +7,7 @@ import ModuleKey from '@/enums/ModuleKey'
 import { autoPosition } from '@/hooks/useAutoPosition'
 import { avoidClickTrap } from '@/utils/transition'
 import { unkeyed } from '@/utils/webpack'
+import { flushSync } from 'react-dom'
 
 function patchBasePopout () {
   const Original = unkeyed(BasePopoutKeyed)
@@ -16,11 +17,23 @@ function patchBasePopout () {
       super(...args)
 
       // Prevent preload firing when popout is already open (fixing Discord's bug basically)
-      Patcher.instead(this, 'handlePreload', (_, args, original) => !this.shouldShow(this) && original(...args))
+      Patcher.instead(this, 'handlePreload', (_, args, original) => !this.shouldShow() && original(...args))
     }
 
-    shouldShow () {
-      return this.shouldShowPopout(this.props, this.state) && (!this.state.isLoading || this.state.shouldShowLoadingState)
+    shouldShow (props = this.props, state = this.state) {
+      return this.shouldShowPopout(props, state) && (!state.isLoading || state.shouldShowLoadingState)
+    }
+
+    componentDidUpdate (props, state) {
+      super.componentDidUpdate(props, state)
+
+      // Guarantee up-to-date position before the animation executes
+      // because `ResizeObserver` implemented by `BasePopout` may trigger its callback after `requestAnimationFrame`
+      // and there will be no way to catch it without waiting for the next frame
+      if (this.shouldShow(props, state) !== this.shouldShow() || state.isLoading !== this.state.isLoading)
+        requestAnimationFrame(() => {
+          flushSync(() => this.setState({ resizeKey: this.state.resizeKey + 1 }))
+        })
     }
 
     renderLayer (...args) {
@@ -54,7 +67,7 @@ function patchBasePopout () {
       return (
         <TransitionGroup component={null}>
           {
-            this.shouldShow(this) &&
+            this.shouldShow() &&
             <AnimeTransition
               key={+this.state.isLoading}
               targetContainer={avoidClickTrap}
