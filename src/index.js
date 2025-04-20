@@ -131,9 +131,5 @@ export default function (meta) {
 css
 `${DiscordSelectors.AppMount.appMount} {
     overflow: clip;
-}
-
-${DiscordSelectors.Layer.layerContainer} > * {
-    isolation: isolate;
 }`
 `Index`
