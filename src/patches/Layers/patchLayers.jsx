@@ -29,6 +29,8 @@ function LayerTransition ({ module, auto, layer, ...props }) {
       auto={auto}
       {...props}
       in={layer.props.mode === 'SHOWN' && props.in}
+      targetContainer={e => e}
+      defaultLayoutStyles={false}
       mountOnEnter={false}
       unmountOnExit={false}
     >
@@ -130,7 +132,13 @@ function patchLayers () {
 export default patchLayers
 
 css
-`${DiscordSelectors.Layers.layers} > ${DiscordSelectors.Layers.layer} {
+`${DiscordSelectors.Layers.layers} > ${DiscordSelectors.Layers.layer} > * {
     contain: strict;
+    z-index: auto;
+}
+
+.BA__layer--hidden {
+    visibility: hidden;
+    pointer-events: none;
 }`
 `Layers`

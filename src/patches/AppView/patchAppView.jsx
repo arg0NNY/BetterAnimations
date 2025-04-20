@@ -132,6 +132,7 @@ export default patchAppView
 
 css
 `.BA__content, .BA__page {
+    position: relative;
     display: grid;
     grid-template-columns: subgrid;
     grid-template-rows: subgrid;

@@ -20,6 +20,7 @@ class AnimeTransition extends Component {
     if (container && this.props.targetContainer) {
       container = this.props.targetContainer(container)
       container?.setAttribute('data-ba-container', '')
+      if (this.props.defaultLayoutStyles === false) container?.setAttribute('data-ba-default-layout-styles', 'false')
     }
 
     return {
@@ -104,8 +105,10 @@ export default AnimeTransition
 
 css
 `[data-ba-container][data-baa-type] { /* Container while animation is running */
-    position: relative;
     background: none;
+}
+[data-ba-container][data-baa-type]:not([data-ba-default-layout-styles="false"]) {
+    position: relative;
 }
 
 [data-baa] {
@@ -122,6 +125,7 @@ css
 [data-ba-container][data-baa-overflow="false"] {
     overflow: clip;
 }
+[data-ba-container][data-baa-switch], /* Animating switch container */
 [data-ba-container][data-baa-switch] > :not([data-baa]) { /* Animating switch element */
     isolation: isolate;
 }

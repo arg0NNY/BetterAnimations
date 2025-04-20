@@ -49,7 +49,12 @@ export default SettingsModal
 
 StandardSidebarViewKeyed.then(() =>
 css
-`.BA__settingsModal ${DiscordSelectors.StandardSidebarView.noticeRegion} {
+`.BA__settingsModal {
+    position: absolute;
+    inset: 0;
+    z-index: 101;
+}
+.BA__settingsModal ${DiscordSelectors.StandardSidebarView.noticeRegion} {
     padding-left: 40px;
     padding-right: 40px;
     z-index: 200;
