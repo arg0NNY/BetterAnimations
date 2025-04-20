@@ -131,7 +131,7 @@ css
     overflow: clip;
 }
 
-${DiscordSelectors.Layer.layer} {
+${DiscordSelectors.Layer.layerContainer} > * {
     isolation: isolate;
 }`
 `Index`
