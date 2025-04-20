@@ -155,3 +155,4 @@ export const AppPanels = Webpack.getModule(m => Filters.byStrings('AppPanels')(m
 export const { ImpressionNames } = Webpack.getByKeys('ImpressionNames')
 export const GuildChannelRouteParams = Webpack.getModule(m => Filters.byStrings('escapeRegExp')(m?.guildId), { searchExports: true })
 export const handleClick = Webpack.getModule(Filters.byStrings('sanitizeUrl', 'shouldConfirm'), { searchExports: true })
+export const MenuItemKeyed = getWithKey(Filters.byStrings('dontCloseOnActionIfHoldingShiftKey', 'data-menu-item'))

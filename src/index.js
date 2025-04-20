@@ -36,6 +36,7 @@ import ErrorManager from '@/modules/ErrorManager'
 import * as DiscordModules from '@/modules/DiscordModules'
 import * as anime from 'animejs'
 import Utils from '@/modules/Utils'
+import patchMenuItem from '@/patches/ContextMenu/patchMenuItem'
 
 engine.pauseOnDocumentHidden = false
 
@@ -80,6 +81,7 @@ export default function (meta) {
       Logger.info('Startup', 'Applying patches...')
       patchAppView()
       patchContextMenu()
+      patchMenuItem()
       patchBasePopout()
       patchTooltip()
       patchChannelMessageList()

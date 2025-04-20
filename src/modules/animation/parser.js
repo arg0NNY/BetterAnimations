@@ -240,7 +240,7 @@ export function parse (data = null, context, options = {}) {
 
     raf(() => instances.forEach(
       after && context.intersectWith?.accordion && !context.intersectWith.accordion.completed
-        ? i => i.complete().cancel()._resolve() // `.cancel()._resolve()` added to fix the issue of WAAPI animations not being marked as completed when calling `complete`
+        ? i => i.complete().cancel()._resolve() // TODO: Remove `.cancel()._resolve()` when closed: https://github.com/juliangarnier/anime/issues/1001
         : i => i.play()
     ))
   }
