@@ -214,8 +214,7 @@ const modules = [
       },
       settings: {
         defaults: {
-          [Setting.Direction]: Direction.Upwards,
-          [Setting.Position]: Position.Left
+          [Setting.Direction]: Direction.Upwards
         }
       }
     }
