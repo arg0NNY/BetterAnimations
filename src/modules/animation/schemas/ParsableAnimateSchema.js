@@ -24,8 +24,8 @@ const safeInjects = [
   ...Object.keys(parseInjectSchemas(ArrayInjectSchemas)),
   ...Object.keys(parseInjectSchemas(SnippetInjectSchemas)),
   // Anime
-  Inject.AnimeRandom,
-  Inject.AnimeGet,
+  Inject.UtilsRandom,
+  Inject.UtilsGet,
   // Common
   Inject.Element,
   Inject.Hast,
