@@ -31,6 +31,7 @@ import Mouse from '@/modules/Mouse'
 import PositionAutoType from '@/enums/PositionAutoType'
 import ParsableExtendableAnimateSchema from '@/modules/animation/schemas/ParsableExtendableAnimateSchema'
 import { computeOverridable } from '@/modules/animation/schemas/OverridableSchema'
+import { metaOverridePresets } from '@/modules/animation/schemas/MetaSchema'
 
 class Module {
   constructor (id, name, meta = {}, { parent, description, controls, alert, onToggle } = {}) {
@@ -225,7 +226,8 @@ class Module {
   buildAnimationMeta (animation, type) {
     return computeOverridable(
       animation.meta,
-      this.getOverridableProperties(type)
+      this.getOverridableProperties(type),
+      metaOverridePresets
     )
   }
   buildAnimationDefaultSettings (animation, type) {

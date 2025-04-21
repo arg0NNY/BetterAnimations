@@ -137,12 +137,7 @@
       "key": "fade",
       "name": "Fade",
       "meta": {
-        "override": {
-          "for": {
-            "module": ["messages", "membersSidebar", "threadSidebar"]
-          },
-          "accordion": false
-        }
+        "override": { "preset": "accordion" }
       },
       "settings": {
         "duration": true,
@@ -382,12 +377,7 @@
       "key": "blur",
       "name": "Blur",
       "meta": {
-        "override": {
-          "for": {
-            "module": ["messages", "membersSidebar", "threadSidebar"]
-          },
-          "accordion": false
-        }
+        "override": { "preset": "accordion" }
       },
       "settings": {
         "duration": true,

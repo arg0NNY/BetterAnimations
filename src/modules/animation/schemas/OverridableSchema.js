@@ -14,10 +14,15 @@ export const DefaultPropertiesSchema = z.strictObject({
   'module.type': ArrayOrSingleSchema(z.enum(ModuleType.values()))
 }).partial()
 
-export function computeOverridable (overridable, properties) {
+export function computeOverridable (overridable, properties, presets = {}) {
   return Object.assign(
     omit(overridable, ['override']),
     ...[].concat(overridable.override)
+      .flatMap(
+        override => override != null && 'preset' in override
+          ? presets[override.preset]
+          : override
+      )
       .filter(
         override => override != null
           && Object.entries(override.for).every(
@@ -28,11 +33,21 @@ export function computeOverridable (overridable, properties) {
   )
 }
 
-const OverridableSchema = (schema, propertiesSchema = DefaultPropertiesSchema) => schema.extend({
+const OverrideSchema = (schema, propertiesSchema = DefaultPropertiesSchema) =>
+  schema.partial().extend({
+    for: propertiesSchema
+  })
+
+const OverridableSchema = (schema, { propertiesSchema, presets = [] } = {}) => schema.extend({
   override: ArrayOrSingleSchema(
-    schema.partial().extend({
-      for: propertiesSchema
-    })
+    !presets.length
+      ? OverrideSchema(schema, propertiesSchema)
+      : z.union([
+        OverrideSchema(schema, propertiesSchema),
+        z.strictObject({
+          preset: z.enum(presets)
+        })
+      ])
   ).optional()
 })
 
