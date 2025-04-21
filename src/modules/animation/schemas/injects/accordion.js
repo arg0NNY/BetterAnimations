@@ -6,15 +6,16 @@ import { DurationSchema } from '@/modules/animation/schemas/SettingsSchema'
 import EasingSchema from '@/modules/animation/schemas/EasingSchema'
 import { AccordionType, getMarginProperty, getSizeProperty } from '@/utils/accordion'
 import ModuleKey from '@/enums/ModuleKey'
+import AnimationType from '@/enums/AnimationType'
 
 function getVariableName (type, name) {
   return `__accordion_${type}__${name}`
 }
 
-function getDefaultType (module) {
+function getDefaultType (module, type) {
   switch (module.id) {
     case ModuleKey.Messages:
-      return AccordionType.MarginBottom
+      return type === AnimationType.Enter ? AccordionType.MarginBottom : null
     case ModuleKey.MembersSidebar:
     case ModuleKey.ThreadSidebar:
       return AccordionType.MarginRight
@@ -78,12 +79,12 @@ function buildAccordion (type, { duration, easing }) {
   }
 }
 
-export const AccordionInjectSchema = ({ module, settings, duration, easing }) => InjectSchema(Inject.Accordion).extend({
+export const AccordionInjectSchema = ({ module, type, settings, duration, easing }) => InjectSchema(Inject.Accordion).extend({
   type: z.union([
     z.enum(AccordionType.values()),
     z.null()
   ]).optional()
-    .default(getDefaultType(module)),
+    .default(getDefaultType(module, type)),
   duration: Setting.Duration in settings
     ? DurationSchema().optional().default(duration)
     : DurationSchema(),
