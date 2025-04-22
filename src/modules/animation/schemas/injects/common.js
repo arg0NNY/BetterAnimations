@@ -187,10 +187,19 @@ export const CallInjectSchema = InjectSchema(Inject.Call).extend({
 
 export const GetBoundingClientRectInjectSchema = context => InjectSchema(Inject.GetBoundingClientRect).extend({
   target: TargetSchema(context).optional().default(context.element),
-  value: z.enum(['x', 'y', 'width', 'height']).optional()
+  value: z.enum(['top', 'left', 'right', 'bottom', 'width', 'height']).optional()
 }).transform(({ target, value }) => {
   const rect = target.getBoundingClientRect()
   return value ? rect[value] : rect
+})
+
+export const WindowInjectSchema = InjectSchema(Inject.Window).extend({
+  value: z.enum(['width', 'height'])
+}).transform(({ value }) => {
+  switch (value) {
+    case 'width': return window.innerWidth
+    case 'height': return window.innerHeight
+  }
 })
 
 export const MouseInjectSchema = ({ container }) => InjectSchema(Inject.Mouse).extend({

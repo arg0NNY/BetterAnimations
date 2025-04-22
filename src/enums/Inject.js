@@ -36,6 +36,7 @@ export default Enum({
   Call: 'call',
   Mouse: 'mouse',
   GetBoundingClientRect: 'getBoundingClientRect',
+  Window: 'window',
   IsIntersected: 'isIntersected',
   Get: 'get',
   Set: 'set',
