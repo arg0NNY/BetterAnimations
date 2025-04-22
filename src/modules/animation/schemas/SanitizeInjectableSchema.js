@@ -3,7 +3,8 @@ import { generatedLazyInjectSymbol, isLazyInject } from '@/modules/animation/sch
 import { clearSourceMap, isSourceMap } from '@/modules/animation/sourceMap'
 import ObjectDeepSchema from '@/modules/animation/schemas/ObjectDeepSchema'
 import { zodErrorBoundarySymbol } from '@/modules/animation/utils'
-import { Timer } from 'animejs'
+import { JSAnimation, Timeline, Timer, WAAPIAnimation } from 'animejs'
+import Logger from '@/modules/Logger'
 
 export const injectableSymbol = Symbol('injectable')
 export function storeInjectable (value, data) {
@@ -20,7 +21,10 @@ function createFunctionPlaceholder (name, readme) {
 
 const SanitizeInjectableSchema = z.lazy(
   () => ObjectDeepSchema(SanitizeInjectableSchema, [
-    z.instanceof(Timer)
+    z.instanceof(Timer),
+    z.instanceof(JSAnimation),
+    z.instanceof(Timeline),
+    z.instanceof(WAAPIAnimation)
   ]).transform(value => {
     if (isSourceMap(value)) return value
 
@@ -37,7 +41,7 @@ const SanitizeInjectableSchema = z.lazy(
       )
     }
 
-    if (['function', 'object'].includes(typeof value) && injectableSymbol in value)
+    if (['function', 'object'].includes(typeof value) && value !== null && injectableSymbol in value)
       return sanitizeInjectable(value[injectableSymbol])
 
     if (typeof value === 'function' && value[zodErrorBoundarySymbol])
@@ -54,7 +58,9 @@ export default SanitizeInjectableSchema
 export function sanitizeInjectable (injectable) {
   try {
     return SanitizeInjectableSchema.parse(injectable)
-  } catch {
+  } catch (error) {
+    if (import.meta.env.MODE === 'development')
+      Logger.error('sanitizeInjectable', 'Failed to sanitize injectable:', error)
     return injectable
   }
 }
