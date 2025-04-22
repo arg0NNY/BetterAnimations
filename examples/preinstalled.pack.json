@@ -19,17 +19,27 @@
     {
       "key": "directionalTranslate",
       "params": {
-        "value": "5px",
-        "negativeValue": "-5px"
+        "value": 5,
+        "negativeValue": -5
       },
       "value": {
         "inject": "type",
         "enter": {
-          "inject": "direction",
-          "upwards": { "y": [{ "inject": "snippet.params", "name": "value" }, 0] },
-          "downwards": { "y": [{ "inject": "snippet.params", "name": "negativeValue" }, 0] },
-          "leftwards": { "x": [{ "inject": "snippet.params", "name": "value" }, 0] },
-          "rightwards": { "x": [{ "inject": "snippet.params", "name": "negativeValue" }, 0] }
+          "inject": "isIntersected",
+          "true": {
+            "inject": "direction",
+            "upwards": { "y": 0 },
+            "downwards": { "y": 0 },
+            "leftwards": { "x": 0 },
+            "rightwards": { "x": 0 }
+          },
+          "false": {
+            "inject": "direction",
+            "upwards": { "y": [{ "inject": "snippet.params", "name": "value" }, 0] },
+            "downwards": { "y": [{ "inject": "snippet.params", "name": "negativeValue" }, 0] },
+            "leftwards": { "x": [{ "inject": "snippet.params", "name": "value" }, 0] },
+            "rightwards": { "x": [{ "inject": "snippet.params", "name": "negativeValue" }, 0] }
+          }
         },
         "exit": {
           "inject": "direction",
@@ -178,9 +188,6 @@
     {
       "key": "slip",
       "name": "Slip",
-      "meta": {
-        "intersect": false
-      },
       "settings": {
         "duration": true,
         "easing": true,
@@ -242,8 +249,8 @@
               "inject": "snippet",
               "key": "directionalTranslate",
               "params": {
-                "value": "5px",
-                "negativeValue": "-5px"
+                "value": 5,
+                "negativeValue": -5
               }
             }
           }
@@ -425,9 +432,333 @@
     },
 
     {
+      "key": "flip",
+      "name": "Flip",
+      "modules": ["reveal", "sidebars"],
+      "meta": {
+        "override": { "preset": "accordion" }
+      },
+      "settings": {
+        "duration": true,
+        "easing": true,
+        "position": true,
+        "direction": ["forwards", "backwards"],
+        "variant": [
+          { "key": "horizontal", "name": "Horizontal" },
+          { "key": "vertical", "name": "Vertical" }
+        ],
+
+        "defaults": {
+          "duration": 400,
+          "easing": {
+            "type": "ease",
+            "style": "quart"
+          },
+          "position": "center",
+          "direction": "forwards",
+          "variant": "horizontal",
+
+          "override": [
+            {
+              "for": {
+                "type": "exit"
+              },
+              "direction": "backwards"
+            },
+            {
+              "for": {
+                "module": ["tooltips", "channelList", "contextMenu"]
+              },
+              "duration": 200
+            },
+            {
+              "for": {
+                "module": "tooltips"
+              },
+              "easing": { "type": "back" }
+            },
+            {
+              "for": {
+                "module": "messages"
+              },
+              "position": "top"
+            },
+            {
+              "for": {
+                "module": "sidebars"
+              },
+              "position": "right",
+              "variant": "vertical"
+            }
+          ]
+        }
+      },
+      "animate": {
+        "extends": {
+          "inject": "accordion",
+          "type": {
+            "inject": "switch",
+            "value": { "inject": "module" },
+            "case": {
+              "membersSidebar": "marginLeft",
+              "threadSidebar": "marginLeft"
+            },
+            "default": { "inject": "undefined" }
+          }
+        },
+        "onBeforeLayout": [
+          {
+            "inject": "var.set",
+            "name": "origin",
+            "value": {
+              "inject": "string.template",
+              "template": {
+                "inject": "variant",
+                "horizontal": "50% ${value}px",
+                "vertical": "${value}px 50%"
+              },
+              "values": {
+                "value": {
+                  "inject": "position",
+                  "value": {
+                    "inject": "variant",
+                    "horizontal": "y",
+                    "vertical": "x"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "inject": "var.set",
+            "name": "rotate",
+            "value": {
+              "inject": "type",
+              "enter": {
+                "inject": "isIntersected",
+                "true": 0,
+                "false": {
+                  "from": {
+                    "inject": "direction",
+                    "forwards": -90,
+                    "backwards": 90
+                  },
+                  "to": 0
+                }
+              },
+              "exit": {
+                "inject": "direction",
+                "forwards": 90,
+                "backwards": -90
+              }
+            }
+          }
+        ],
+        "css": {
+          "{container}": {
+            "perspective": {
+              "a": {
+                "inject": "Math.max",
+                "values": [
+                  {
+                    "a": {
+                      "inject": "utils.get",
+                      "property": {
+                        "inject": "variant",
+                        "horizontal": "clientHeight",
+                        "vertical": "clientWidth"
+                      }
+                    },
+                    "inject": "*",
+                    "b": 1.75
+                  },
+                  150
+                ]
+              },
+              "inject": "+",
+              "b": "px"
+            },
+            "perspective-origin": { "inject": "var.get", "name": "origin" }
+          },
+          "{element}": {
+            "transform-origin": { "inject": "var.get", "name": "origin" }
+          }
+        },
+        "anime": {
+          "type": "waapi",
+          "targets": { "inject": "element" },
+          "parameters": {
+            "inject": "assign",
+            "target": {
+              "duration": { "inject": "duration" },
+              "ease": { "inject": "easing" },
+              "opacity": {
+                "inject": "snippet",
+                "key": "opacity"
+              }
+            },
+            "source": {
+              "inject": "variant",
+              "horizontal": {
+                "rotateX": { "inject": "var.get", "name": "rotate" }
+              },
+              "vertical": {
+                "rotateY": { "inject": "var.get", "name": "rotate" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    {
+      "key": "out-of-bounds",
+      "name": "Out-of-bounds",
+      "modules": ["popouts", "tooltips", "modals"],
+      "settings": {
+        "duration": true,
+        "easing": true,
+        "direction": true,
+
+        "defaults": {
+          "duration": 400,
+          "easing": {
+            "type": "ease",
+            "bezier": "out",
+            "style": "quint"
+          },
+          "direction": "upwards",
+
+          "override": [
+            {
+              "for": {
+                "type": "exit"
+              },
+              "easing": {
+                "type": "ease",
+                "bezier": "in",
+                "style": "quint"
+              },
+              "direction": "downwards",
+              "directionTowards": true
+            },
+            {
+              "for": {
+                "module": "tooltips"
+              },
+              "duration": 200
+            }
+          ]
+        }
+      },
+      "animate": {
+        "css": {
+          "{element}": {
+            "pointer-events": "none"
+          }
+        },
+        "onBeforeCreate": [
+          {
+            "inject": "var.set",
+            "name": "left",
+            "value": {
+              "a": { "inject": "getBoundingClientRect", "target": { "inject": "container" }, "value": "left" },
+              "inject": "+",
+              "b": { "inject": "getBoundingClientRect", "target": { "inject": "container" }, "value": "width" }
+            }
+          },
+          {
+            "inject": "var.set",
+            "name": "top",
+            "value": {
+              "a": { "inject": "getBoundingClientRect", "target": { "inject": "container" }, "value": "top" },
+              "inject": "+",
+              "b": { "inject": "getBoundingClientRect", "target": { "inject": "container" }, "value": "height" }
+            }
+          },
+          {
+            "inject": "var.set",
+            "name": "right",
+            "value": {
+              "a": { "inject": "window", "value": "width" },
+              "inject": "-",
+              "b": { "inject": "getBoundingClientRect", "target": { "inject": "container" }, "value": "left" }
+            }
+          },
+          {
+            "inject": "var.set",
+            "name": "bottom",
+            "value": {
+              "a": { "inject": "window", "value": "height" },
+              "inject": "-",
+              "b": { "inject": "getBoundingClientRect", "target": { "inject": "container" }, "value": "top" }
+            }
+          },
+          {
+            "inject": "var.set",
+            "name": "value",
+            "value": {
+              "a": {
+                "inject": "var.get",
+                "name": {
+                  "inject": "direction",
+                  "rightwards": {
+                    "inject": "type",
+                    "enter": "left",
+                    "exit": "right"
+                  },
+                  "downwards": {
+                    "inject": "type",
+                    "enter": "top",
+                    "exit": "bottom"
+                  },
+                  "leftwards": {
+                    "inject": "type",
+                    "enter": "right",
+                    "exit": "left"
+                  },
+                  "upwards": {
+                    "inject": "type",
+                    "enter": "bottom",
+                    "exit": "top"
+                  }
+                }
+              },
+              "inject": "+",
+              "b": 20
+            }
+          }
+        ],
+        "anime": {
+          "type": "waapi",
+          "targets": { "inject": "element" },
+          "parameters": {
+            "inject": "assign",
+            "target": {
+              "duration": { "inject": "duration" },
+              "ease": { "inject": "easing" }
+            },
+            "source": {
+              "inject": "snippet",
+              "key": "directionalTranslate",
+              "params": {
+                "value": { "inject": "var.get", "name": "value" },
+                "negativeValue": {
+                  "a": { "inject": "var.get", "name": "value" },
+                  "inject": "*",
+                  "b": -1
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    {
       "key": "circle",
       "name": "Circle",
-      "modules": ["switch", "sidebars", "popouts", "contextMenu", "modals"],
+      "modules": ["servers", "channels", "settings", "popouts", "contextMenu", "sidebars"],
       "settings": {
         "duration": true,
         "easing": true,
@@ -802,7 +1133,7 @@
     {
       "key": "wave",
       "name": "Wave",
-      "modules": ["servers", "channels", "settings", "threadSidebarSwitch"],
+      "modules": ["servers", "channels", "settings"],
       "settings": {
         "duration": true,
 
