@@ -8,7 +8,6 @@ import {
   TargetSchema,
   TargetsSchema
 } from '@/modules/animation/schemas/utils'
-import evaluate from '@emmetio/math-expression'
 import Inject from '@/enums/Inject'
 import AnimationType from '@/enums/AnimationType'
 import ModuleKey from '@/enums/ModuleKey'
@@ -98,20 +97,6 @@ export const StringTemplateInjectSchema = InjectSchema(Inject.StringTemplate).ex
     /\${([^\${}\s]+)}/g,
     (_, key) => String(values[Array.isArray(values) ? +key : key]) ?? ''
   )
-})
-
-export const MathInjectSchema = InjectSchema(Inject.Math).extend({
-  expression: z.string()
-}).transform(({ expression }, ctx) => {
-  try { return evaluate(expression) }
-  catch (e) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: e.message + ` "${expression}"`,
-      path: ['expression']
-    })
-    return z.NEVER
-  }
 })
 
 export const StyleRemovePropertyInjectSchema = InjectWithMeta(

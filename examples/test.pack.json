@@ -386,17 +386,17 @@
               "template": "${value}px",
               "values": {
                 "value": {
-                  "inject": "Math.hypot",
+                  "inject": "math.hypot",
                   "values": [
                     {
-                      "inject": "Math.max",
+                      "inject": "math.max",
                       "values": [
                         {
-                          "inject": "Math.abs",
+                          "inject": "math.abs",
                           "value": { "inject": "position", "value": "x", "clip": false }
                         },
                         {
-                          "inject": "Math.abs",
+                          "inject": "math.abs",
                           "value": {
                             "inject": "math",
                             "expression": {
@@ -412,14 +412,14 @@
                       ]
                     },
                     {
-                      "inject": "Math.max",
+                      "inject": "math.max",
                       "values": [
                         {
-                          "inject": "Math.abs",
+                          "inject": "math.abs",
                           "value": { "inject": "position", "value": "y", "clip": false }
                         },
                         {
-                          "inject": "Math.abs",
+                          "inject": "math.abs",
                           "value": {
                             "inject": "math",
                             "expression": {

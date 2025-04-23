@@ -3,6 +3,21 @@ import { InjectSchema, InjectWithMeta } from '@/modules/animation/schemas/utils'
 import Inject from '@/enums/Inject'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
 import { zodTransformErrorBoundary } from '@/utils/zod'
+import evaluate from '@emmetio/math-expression'
+
+export const MathInjectSchema = InjectSchema(Inject.Math).extend({
+  expression: z.string()
+}).transform(({ expression }, ctx) => {
+  try { return evaluate(expression) }
+  catch (e) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: e.message + ` "${expression}"`,
+      path: ['expression']
+    })
+    return z.NEVER
+  }
+})
 
 const MathConstantInjectSchema = (inject, value) => InjectWithMeta(
   InjectSchema(inject).transform(() => value),
