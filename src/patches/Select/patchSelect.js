@@ -3,6 +3,8 @@ import { SearchableSelect, SelectKeyed, SingleSelectKeyed } from '@/modules/Disc
 import Position from '@/enums/Position'
 import findInReactTree from '@/utils/findInReactTree'
 import { useLayoutEffect, useState } from 'react'
+import { css } from '@/modules/Style'
+import { DiscordSelectors } from '@/modules/DiscordSelectors'
 
 function createPatcher () {
   let patchedPopout = null
@@ -48,3 +50,11 @@ function patchSelect () {
 }
 
 export default patchSelect
+
+css
+`/* Fixes a bug where the measurement element may interfere with the select inner element positioning */
+${DiscordSelectors.Select.measurement} {
+    top: 0;
+    left: 0;
+}`
+`Select`

@@ -14,7 +14,8 @@ const Classes = {
   MessageList: Webpack.getByKeys('message', 'groupStart'),
   Layer: Webpack.getByKeys('layer', 'layerContainer'),
   Toast: Webpack.getByKeys('toast', 'icon'),
-  Scroller: Webpack.getByKeys('thin', 'disableScrollAnchor')
+  Scroller: Webpack.getByKeys('thin', 'disableScrollAnchor'),
+  Select: Webpack.getByKeys('select', 'measurement')
 }
 
 export const DiscordClasses = new Proxy(Classes, {
