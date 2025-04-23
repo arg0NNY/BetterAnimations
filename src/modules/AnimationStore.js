@@ -3,6 +3,7 @@ import ModuleType from '@/enums/ModuleType'
 import Config from '@/modules/Config'
 import ErrorManager from '@/modules/ErrorManager'
 import AnimationError from '@/structs/AnimationError'
+import { getRect } from '@/utils/position'
 
 class Animation {
 
@@ -52,16 +53,20 @@ class Animation {
         return
       }
 
+      const anchor = typeof this.anchor === 'function'
+        ? this.anchor()
+        : (this.anchor?.current ?? this.anchor)
+
       const { animate, context } = this.module.getAnimation(
         this.type,
         { auto: this.auto?.current },
         {
           instance: this,
           container: this.container,
+          containerRect: getRect(this.container),
           element: this.element,
-          anchor: typeof this.anchor === 'function'
-            ? this.anchor()
-            : (this.anchor?.current ?? this.anchor),
+          anchor,
+          anchorRect: anchor instanceof Element ? getRect(anchor) : anchor,
           intersectWith,
           isIntersected: !!intersectWith
         }

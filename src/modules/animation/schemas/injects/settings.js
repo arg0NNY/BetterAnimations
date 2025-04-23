@@ -51,16 +51,15 @@ export const PositionInjectSchema =
       unit: z.enum(['px', '%']).optional().default('px'),
       clip: z.boolean().optional().default(true)
     }).transform(({ value, unit, clip }) => {
-      const { position, container, anchor } = context
-      const containerRect = container.getBoundingClientRect()
+      const { position, containerRect, anchorRect } = context
 
       let [x, y] = (() => {
         if (!position?.isAuto)
           return toUnit(position, unit, containerRect)
 
-        if (anchor)
+        if (anchorRect)
           return getCenter(
-            anchor instanceof Element ? anchor.getBoundingClientRect() : anchor,
+            anchorRect,
             unit,
             containerRect
           )

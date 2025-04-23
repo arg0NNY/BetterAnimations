@@ -404,7 +404,7 @@
                               "template": "${0} - ${1}",
                               "values": [
                                 { "inject": "position", "value": "x", "clip": false },
-                                { "inject": "getBoundingClientRect", "value": "width" }
+                                { "inject": "rect", "value": "width" }
                               ]
                             }
                           }
@@ -427,7 +427,7 @@
                               "template": "${0} - ${1}",
                               "values": [
                                 { "inject": "position", "value": "y", "clip": false },
-                                { "inject": "getBoundingClientRect", "value": "height" }
+                                { "inject": "rect", "value": "height" }
                               ]
                             }
                           }

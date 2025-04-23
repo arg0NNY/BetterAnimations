@@ -1,8 +1,13 @@
 import Position from '@/enums/Position'
 import Direction from '@/enums/Direction'
 
+export function getRect (node) {
+  const { top, left, right, bottom, width, height } = node.getBoundingClientRect()
+  return { top, left, right, bottom, width, height }
+}
+
 function getDefaultRect () {
-  return document.body.getBoundingClientRect()
+  return getRect(document.body)
 }
 
 export function reversePosition (position) {

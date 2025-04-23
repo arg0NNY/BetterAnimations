@@ -35,7 +35,7 @@ export default Enum({
   VarSet: 'var.set',
   Call: 'call',
   Mouse: 'mouse',
-  GetBoundingClientRect: 'getBoundingClientRect',
+  Rect: 'rect',
   Window: 'window',
   IsIntersected: 'isIntersected',
   Get: 'get',
