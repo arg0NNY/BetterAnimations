@@ -261,9 +261,9 @@
     {
       "key": "slide",
       "name": "Slide",
-      "modules": "switch",
+      "modules": ["switch", "messages", "channelList"],
       "meta": {
-        "intersect": false
+        "override": { "preset": "accordion" }
       },
       "settings": {
         "duration": true,
@@ -278,10 +278,29 @@
             "style": "quart"
           },
           "direction": "upwards",
-          "overflow": false
+          "overflow": false,
+
+          "override": [
+            {
+              "for": {
+                "module": ["messages", "channelList"]
+              },
+              "duration": 400,
+              "direction": "rightwards",
+              "overflow": true
+            },
+            {
+              "for": {
+                "module": ["messages", "channelList"],
+                "type": "exit"
+              },
+              "direction": "leftwards"
+            }
+          ]
         }
       },
       "animate": {
+        "extends": { "inject": "accordion" },
         "anime": {
           "type": "waapi",
           "targets": { "inject": "element" },
@@ -614,7 +633,7 @@
     {
       "key": "out-of-bounds",
       "name": "Out-of-bounds",
-      "modules": ["popouts", "tooltips", "modals"],
+      "modules": ["popouts", "modals"],
       "settings": {
         "duration": true,
         "easing": true,
