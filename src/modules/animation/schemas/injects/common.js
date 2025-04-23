@@ -173,7 +173,7 @@ export const CallInjectSchema = InjectSchema(Inject.Call).extend({
 
 export const RectInjectSchema = context => InjectSchema(Inject.Rect).extend({
   target: TargetSchema(context).optional(),
-  value: z.enum(['top', 'left', 'right', 'bottom', 'width', 'height']).optional()
+  value: z.enum(['x', 'y', 'top', 'left', 'right', 'bottom', 'width', 'height']).optional()
 }).transform(({ target, value }) => {
   const rect = target ? getRect(target) : context.containerRect
   return value ? rect[value] : rect

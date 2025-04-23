@@ -2,8 +2,8 @@ import Position from '@/enums/Position'
 import Direction from '@/enums/Direction'
 
 export function getRect (node) {
-  const { top, left, right, bottom, width, height } = node.getBoundingClientRect()
-  return { top, left, right, bottom, width, height }
+  const { x, y, top, left, right, bottom, width, height } = node.getBoundingClientRect()
+  return { x, y, top, left, right, bottom, width, height }
 }
 
 function getDefaultRect () {
