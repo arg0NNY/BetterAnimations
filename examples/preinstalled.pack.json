@@ -61,17 +61,17 @@
             "template": "${value}px",
             "values": {
               "value": {
-                "inject": "Math.hypot",
+                "inject": "math.hypot",
                 "values": [
                   {
-                    "inject": "Math.max",
+                    "inject": "math.max",
                     "values": [
                       {
-                        "inject": "Math.abs",
+                        "inject": "math.abs",
                         "value": { "inject": "position", "value": "x", "clip": false }
                       },
                       {
-                        "inject": "Math.abs",
+                        "inject": "math.abs",
                         "value": {
                           "inject": "math",
                           "expression": {
@@ -87,14 +87,14 @@
                     ]
                   },
                   {
-                    "inject": "Math.max",
+                    "inject": "math.max",
                     "values": [
                       {
-                        "inject": "Math.abs",
+                        "inject": "math.abs",
                         "value": { "inject": "position", "value": "y", "clip": false }
                       },
                       {
-                        "inject": "Math.abs",
+                        "inject": "math.abs",
                         "value": {
                           "inject": "math",
                           "expression": {
@@ -558,7 +558,7 @@
           "{container}": {
             "perspective": {
               "a": {
-                "inject": "Math.max",
+                "inject": "math.max",
                 "values": [
                   {
                     "a": {
@@ -662,18 +662,18 @@
             "inject": "var.set",
             "name": "left",
             "value": {
-              "a": { "inject": "getBoundingClientRect", "target": { "inject": "container" }, "value": "left" },
+              "a": { "inject": "rect", "value": "left" },
               "inject": "+",
-              "b": { "inject": "getBoundingClientRect", "target": { "inject": "container" }, "value": "width" }
+              "b": { "inject": "rect", "value": "width" }
             }
           },
           {
             "inject": "var.set",
             "name": "top",
             "value": {
-              "a": { "inject": "getBoundingClientRect", "target": { "inject": "container" }, "value": "top" },
+              "a": { "inject": "rect", "value": "top" },
               "inject": "+",
-              "b": { "inject": "getBoundingClientRect", "target": { "inject": "container" }, "value": "height" }
+              "b": { "inject": "rect", "value": "height" }
             }
           },
           {
@@ -682,7 +682,7 @@
             "value": {
               "a": { "inject": "window", "value": "width" },
               "inject": "-",
-              "b": { "inject": "getBoundingClientRect", "target": { "inject": "container" }, "value": "left" }
+              "b": { "inject": "rect", "value": "left" }
             }
           },
           {
@@ -691,7 +691,7 @@
             "value": {
               "a": { "inject": "window", "value": "height" },
               "inject": "-",
-              "b": { "inject": "getBoundingClientRect", "target": { "inject": "container" }, "value": "top" }
+              "b": { "inject": "rect", "value": "top" }
             }
           },
           {
