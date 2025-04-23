@@ -211,11 +211,6 @@ const modules = [
             style: EasingStyle.Quad
           }
         }
-      },
-      settings: {
-        defaults: {
-          [Setting.Direction]: Direction.Upwards
-        }
       }
     }
   },
@@ -240,11 +235,6 @@ const modules = [
             style: EasingStyle.Quad
           }
         }
-      },
-      settings: {
-        defaults: {
-          [Setting.Position]: Position.Left
-        }
       }
     }
   },
@@ -260,9 +250,6 @@ const modules = [
       settings: {
         supportsAuto: {
           [Setting.Position]: [PositionAutoType.Precise, { asDefault: false }]
-        },
-        defaults: {
-          [Setting.Position]: Position.Center
         }
       }
     }
