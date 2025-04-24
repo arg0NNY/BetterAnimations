@@ -115,7 +115,9 @@ function ErrorDetails ({ error, open = false }) {
               <div className="BA__errorDetailsInvite">
                 <InviteEmbed
                   code={invite}
-                  author={{ username: error.pack?.author }}
+                  message={{
+                    author: { username: error.pack?.author }
+                  }}
                   getAcceptInviteContext={() => ({})}
                 />
               </div>
