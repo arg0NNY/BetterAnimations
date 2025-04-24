@@ -145,15 +145,18 @@
         "defaults": {
           "duration": 200,
           "easing": {
-            "type": "ease",
-            "style": "quart"
+            "type": "ease"
           },
 
           "override": {
             "for": {
               "module": ["switch", "sidebars"]
             },
-            "duration": 400
+            "duration": 400,
+            "easing": {
+              "type": "ease",
+              "style": "quart"
+            }
           }
         }
       },
@@ -190,6 +193,7 @@
           "override": [
             {
               "for": {
+                "module.type": "reveal",
                 "type": "exit"
               },
               "direction": "downwards",
@@ -343,6 +347,12 @@
                 "type": "ease",
                 "style": "cubic"
               }
+            },
+            {
+              "for": {
+                "module": ["messages", "channelList"]
+              },
+              "position": "left"
             }
           ]
         }
@@ -521,16 +531,17 @@
 
         "defaults": {
           "duration": 200,
-          "easing": {
-            "type": "ease",
-            "style": "quart"
-          },
+          "easing": { "type": "ease" },
 
           "override": {
             "for": {
               "module": ["switch", "sidebars"]
             },
-            "duration": 400
+            "duration": 400,
+            "easing": {
+              "type": "ease",
+              "style": "quart"
+            }
           }
         }
       },
