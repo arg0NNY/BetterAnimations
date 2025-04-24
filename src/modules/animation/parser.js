@@ -240,7 +240,7 @@ export function parse (data = null, context, options = {}) {
 
     raf(() => instances.forEach(
       after && context.intersectWith?.accordion && !context.intersectWith.accordion.completed
-        ? i => i.complete().cancel()._resolve() // TODO: Remove `.cancel()._resolve()` when closed: https://github.com/juliangarnier/anime/issues/1001
+        ? i => i.complete()
         : i => i.play()
     ))
   }

@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@emmetio/math-expression": "^1.0.5",
-    "animejs": "^4.0.1",
+    "animejs": "^4.0.2",
     "deepmerge": "^4.3.1",
     "hast-util-sanitize": "^5.0.2",
     "hast-util-to-dom": "^4.0.1",

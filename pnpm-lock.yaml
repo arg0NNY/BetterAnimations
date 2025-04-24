@@ -12,8 +12,8 @@ importers:
         specifier: ^1.0.5
         version: 1.0.5
       animejs:
-        specifier: ^4.0.1
-        version: 4.0.1
+        specifier: ^4.0.2
+        version: 4.0.2
       deepmerge:
         specifier: ^4.3.1
         version: 4.3.1
@@ -342,8 +342,8 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  animejs@4.0.1:
-    resolution: {integrity: sha512-QbNbOrToapaZ7ebNuQpRgOhEGeyg/r8+bOUKbaaDNI/64XyjDrguVWW6Xgnt8PX+HHs0aAi34WpetczSbRZ3dQ==}
+  animejs@4.0.2:
+    resolution: {integrity: sha512-f0L/kSya2RF23iMSF/VO01pMmLwlAFoiQeNAvBXhEyLzIPd2/QTBRatwGUqkVCC6seaAJYzAkGir55N4SL+h3A==}
 
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
@@ -674,7 +674,7 @@ snapshots:
   acorn@8.14.1:
     optional: true
 
-  animejs@4.0.1: {}
+  animejs@4.0.2: {}
 
   buffer-from@1.1.2:
     optional: true
