@@ -6,7 +6,7 @@ import useAnimationSettings from '@/modules/settings/hooks/useAnimationSettings'
 import { useMemo } from 'react'
 
 function AnimationItem ({ module, pack, animation, selected, onSelect, ...props }) {
-  const packConfig = useMemo(() => Config.pack(pack.slug), [pack.slug])
+  const packConfig = useMemo(() => Config.pack(pack.slug), [pack])
   const isActive = type => selected[type].packSlug === pack.slug && selected[type].animationKey === animation.key
 
   const handleSelect = type => value => onSelect(type, value && animation && pack, value && animation)
