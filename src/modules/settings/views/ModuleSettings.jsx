@@ -6,6 +6,8 @@ import { css } from '@/modules/Style'
 import ModuleSettingsHeader from '@/modules/settings/components/ModuleSettingsHeader'
 import ModuleContext from '@/modules/settings/context/ModuleContext'
 import { useCallback } from 'react'
+import { PREINSTALLED_PACK_SLUG } from '@/packs'
+import AnimationList from '@/modules/settings/components/AnimationList'
 
 function ModuleSettings ({ moduleId, refToScroller }) {
   const module = useModule(moduleId, true)
@@ -21,6 +23,9 @@ function ModuleSettings ({ moduleId, refToScroller }) {
 
   const selected = module.getAnimations()
 
+  const preinstalledPack = PackManager.getPack(PREINSTALLED_PACK_SLUG)
+  const preinstalledAnimations = preinstalledPack?.animations.filter(a => module.isSupportedBy(a)) ?? []
+
   const packs = PackManager.getAllPacks(true)
 
   return (
@@ -35,25 +40,32 @@ function ModuleSettings ({ moduleId, refToScroller }) {
           refToScroller={refToScroller}
         />
 
-        <Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
-          <span>ANIMATIONS</span>
-        </Text>
-        <Text>*Preinstalled animations*</Text>
-
-        {packs.length ? (
+        {preinstalledAnimations.length ? (
           <>
             <Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
-              <span>PACKS</span>
+              <span>ANIMATIONS</span>
             </Text>
-            <PackAccordion
+            <AnimationList
               module={module}
-              packs={packs}
+              pack={preinstalledPack}
+              animations={preinstalledAnimations}
               selected={selected}
               onSelect={onSelect}
               refToScroller={refToScroller}
             />
           </>
         ) : null}
+
+        <Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
+          <span>PACKS</span>
+        </Text>
+        <PackAccordion
+          module={module}
+          packs={packs}
+          selected={selected}
+          onSelect={onSelect}
+          refToScroller={refToScroller}
+        />
       </div>
     </ModuleContext.Provider>
   )

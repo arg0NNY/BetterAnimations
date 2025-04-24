@@ -29,6 +29,7 @@ export default class AddonManager {
   get addonFolder () {return ''}
   get language () {return ''}
   get prefix () {return 'addon'}
+  get forbiddenSlugs () {return []}
   emit(event, ...args) {return Events.emit(`${this.prefix}-${event}`, ...args);}
 
   initialize () {
@@ -142,7 +143,7 @@ export default class AddonManager {
       parseError = e
     }
     addon.slug = slug
-    addon.id = addon.slug
+    addon.id = slug
     addon.name = slug
     addon.filename = path.basename(filename)
     addon.added = stats.atimeMs
@@ -150,6 +151,9 @@ export default class AddonManager {
     addon.size = stats.size
     addon.fileContent = fileContent.split(/\r?\n|\r|\n/g)
     addon.installed = addon
+
+    if (this.forbiddenSlugs.includes(slug))
+      throw new AddonError(this.prefix, addon, `Forbidden ${this.prefix} slug: '${slug}'`)
 
     const existingIndex = this.addonList.findIndex(c => c.id === addon.id)
     if (existingIndex !== -1) this.addonList.splice(existingIndex, 1, addon)

@@ -1,4 +1,5 @@
 import ModuleKey from '@/enums/ModuleKey'
+import { internalPackSlugs } from '@/packs'
 
 export const configDefaults = {
   modules: {
@@ -15,6 +16,9 @@ export const configDefaults = {
       }
     }
   },
+  packs: Object.fromEntries(
+    internalPackSlugs.map(slug => [slug, {}])
+  ),
   general: {
     switchCooldownDuration: 1000
   }

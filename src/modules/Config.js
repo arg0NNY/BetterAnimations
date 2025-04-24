@@ -7,13 +7,43 @@ import { fs, path } from '@/modules/Node'
 import PackManager from '@/modules/PackManager'
 import Logger from '@/modules/Logger'
 import isEqual from 'lodash-es/isEqual'
+import { internalPackSlugs } from '@/packs'
 
 class PackConfig {
+  constructor (slug) {
+    this.slug = slug
+  }
+
+  getAnimationConfig (key, moduleId, type) {
+    return this.current[key]?.[moduleId]?.[type] ?? {}
+  }
+  setAnimationConfig (key, moduleId, type, value) {
+    this.current[key] ??= {}
+    this.current[key][moduleId] ??= {}
+    this.current[key][moduleId][type] = value
+    Emitter.emit(Events.ModuleSettingsChanged, moduleId)
+  }
+}
+
+class InternalPackConfig extends PackConfig {
+  constructor (config, slug) {
+    super(slug)
+    this.config = config
+  }
+
+  get current () {
+    return this.config.current.packs[this.slug]
+  }
+  set current (value) {
+    this.config.current.packs[this.slug] = value
+  }
+}
+
+class ExternalPackConfig extends PackConfig {
   get filePath () { return path.resolve(PackManager.addonFolder, `${this.slug}.config.json`) }
 
   constructor (slug) {
-    this.slug = slug
-    this.current = {}
+    super(slug)
     this.load()
   }
 
@@ -41,16 +71,6 @@ class PackConfig {
   hasUnsavedChanges () {
     return !isEqual(this.current, this.read())
   }
-
-  getAnimationConfig (key, moduleId, type) {
-    return this.current[key]?.[moduleId]?.[type] ?? {}
-  }
-  setAnimationConfig (key, moduleId, type, value) {
-    this.current[key] ??= {}
-    this.current[key][moduleId] ??= {}
-    this.current[key][moduleId][type] = value
-    Emitter.emit(Events.ModuleSettingsChanged, moduleId)
-  }
 }
 
 export default new class Config {
@@ -59,7 +79,8 @@ export default new class Config {
 
   constructor () {
     this.current = {}
-    this.packs = new Map()
+    this.internalPacks = new Map()
+    this.externalPacks = new Map()
 
     this.onPackLoaded = this.onPackLoaded.bind(this)
     this.onPackUnloaded = this.onPackUnloaded.bind(this)
@@ -73,24 +94,25 @@ export default new class Config {
   }
 
   read () {
-    return Data[this.dataKey] ?? {}
+    return deepmerge(this.defaults, Data[this.dataKey] ?? {})
   }
-  load (defaults = this.defaults) {
-    this.current = deepmerge(defaults, this.read())
-    this.packs.forEach(pack => pack.load())
+  load () {
+    this.current = this.read()
+    internalPackSlugs.forEach(slug => this.internalPacks.set(slug, new InternalPackConfig(this, slug)))
+    this.externalPacks.forEach(pack => pack.load())
     Emitter.emit(Events.SettingsLoaded)
     Emitter.emit(Events.SettingsChanged)
   }
   save () {
     if (!this.hasUnsavedChanges()) return
     Data[this.dataKey] = this.current
-    this.packs.forEach(pack => pack.save())
+    this.externalPacks.forEach(pack => pack.save())
     Emitter.emit(Events.SettingsSaved)
   }
 
   hasUnsavedChanges () {
     return !isEqual(this.current, this.read())
-      || Array.from(this.packs.values()).some(pack => pack.hasUnsavedChanges())
+      || Array.from(this.externalPacks.values()).some(pack => pack.hasUnsavedChanges())
   }
 
   listenPackEvents () {
@@ -98,10 +120,11 @@ export default new class Config {
     Emitter.on(Events.PackUnloaded, this.onPackUnloaded)
   }
   onPackLoaded (pack) {
-    this.packs.set(pack.slug, new PackConfig(pack.slug))
+    if (pack.partial) return
+    this.externalPacks.set(pack.slug, new ExternalPackConfig(pack.slug))
   }
   onPackUnloaded (pack) {
-    this.packs.delete(pack.slug)
+    this.externalPacks.delete(pack.slug)
   }
   unlistenPackEvents () {
     Emitter.off(Events.PackLoaded, this.onPackLoaded)
@@ -109,12 +132,15 @@ export default new class Config {
   }
 
   pack (slug) {
-    return this.packs.get(slug) ?? new PackConfig(slug)
+    return internalPackSlugs.includes(slug)
+      ? (this.internalPacks.get(slug) ?? new InternalPackConfig(this, slug))
+      : (this.externalPacks.get(slug) ?? new ExternalPackConfig(slug))
   }
 
   shutdown () {
     this.unlistenPackEvents()
-    this.packs.clear()
+    this.internalPacks.clear()
+    this.externalPacks.clear()
 
     Logger.info('Config', 'Shutdown.')
   }

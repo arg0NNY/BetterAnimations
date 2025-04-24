@@ -6,6 +6,7 @@ import PackSchema from '@/modules/animation/schemas/PackSchema'
 import meta from '@/meta'
 import ErrorManager from '@/modules/ErrorManager'
 import { formatZodError } from '@/utils/zod'
+import internalPacks, { internalPackSlugs } from '@/packs'
 
 export default new class PackManager extends AddonManager {
   get name () {return 'PackManager'}
@@ -14,6 +15,7 @@ export default new class PackManager extends AddonManager {
   get addonFolder () {return path.resolve(Plugins.folder, meta.name)}
   get prefix () {return 'pack'}
   get language () {return 'json'}
+  get forbiddenSlugs () {return internalPackSlugs}
 
   /* Aliases */
   updatePackList () {return this.updateList()}
@@ -50,11 +52,17 @@ export default new class PackManager extends AddonManager {
         return a.name.localeCompare(b.name)
       })
   }
+  _getPack (predicate, includePartial = false) {
+    return this.addonList.find(
+      p => (includePartial || !p.partial) && predicate(p)
+    )
+  }
   getPack (slug, includePartial = false) {
-    return this.getAllPacks(includePartial).find(p => p.slug === slug)
+    if (internalPackSlugs.includes(slug)) return internalPacks[slug]
+    return this._getPack(p => p.slug === slug, includePartial)
   }
   getPackByFile (filename, includePartial = false) {
-    return this.getAllPacks(includePartial).find(p => p.filename === filename)
+    return this._getPack(p => p.filename === filename, includePartial)
   }
   getAnimation (packOrSlug, key) {
     return (typeof packOrSlug === 'string' ? this.getPack(packOrSlug) : packOrSlug)
