@@ -74,15 +74,9 @@
                       {
                         "inject": "math.abs",
                         "value": {
-                          "inject": "math",
-                          "expression": {
-                            "inject": "string.template",
-                            "template": "${0} - ${1}",
-                            "values": [
-                              { "inject": "position", "value": "x", "clip": false },
-                              { "inject": "utils.get", "property": "clientWidth" }
-                            ]
-                          }
+                          "a": { "inject": "position", "value": "x", "clip": false },
+                          "inject": "-",
+                          "b": { "inject": "rect", "value": "width" }
                         }
                       }
                     ]
@@ -97,15 +91,9 @@
                       {
                         "inject": "math.abs",
                         "value": {
-                          "inject": "math",
-                          "expression": {
-                            "inject": "string.template",
-                            "template": "${0} - ${1}",
-                            "values": [
-                              { "inject": "position", "value": "y", "clip": false },
-                              { "inject": "utils.get", "property": "clientHeight" }
-                            ]
-                          }
+                          "a": { "inject": "position", "value": "y", "clip": false },
+                          "inject": "-",
+                          "b": { "inject": "rect", "value": "height" }
                         }
                       }
                     ]
@@ -563,7 +551,7 @@
               "enter": {
                 "inject": "isIntersected",
                 "true": "blur(0)",
-                "false": { "from": "blur(12px)" }
+                "false": ["blur(12px)", "blur(0)"]
               },
               "exit": "blur(12px)"
             }
@@ -703,11 +691,11 @@
                 "values": [
                   {
                     "a": {
-                      "inject": "utils.get",
-                      "property": {
+                      "inject": "rect",
+                      "value": {
                         "inject": "variant",
-                        "horizontal": "clientHeight",
-                        "vertical": "clientWidth"
+                        "horizontal": "height",
+                        "vertical": "width"
                       }
                     },
                     "inject": "*",
@@ -997,31 +985,31 @@
         "extends": {
           "inject": "if",
           "value": {
-            "inject": "||",
             "a": {
+              "a": { "a": { "inject": "type" }, "inject": "===", "b": "enter" },
               "inject": "&&",
-              "a": { "inject": "===", "a": { "inject": "type" }, "b": "enter" },
-              "b": { "inject": "===", "a": { "inject": "direction" }, "b": "forwards" }
+              "b": { "a": { "inject": "direction" }, "inject": "===", "b": "forwards" }
             },
+            "inject": "||",
             "b": {
+              "a": { "a": { "inject": "type" }, "inject": "===", "b": "exit" },
               "inject": "&&",
-              "a": { "inject": "===", "a": { "inject": "type" }, "b": "exit" },
-              "b": { "inject": "===", "a": { "inject": "direction" }, "b": "backwards" }
+              "b": { "a": { "inject": "direction" }, "inject": "===", "b": "backwards" }
             }
           },
           "then": {
-            "css": {
-              "{container}": {
-                "z-index": 2
-              }
-            },
-            "onBeforeCreate": {
-              "inject": "snippet",
-              "key": "computeCircle"
-            },
-            "anime": {
-              "inject": "raw",
-              "value": {
+            "inject": "raw",
+            "value": {
+              "css": {
+                "{container}": {
+                  "z-index": 2
+                }
+              },
+              "onBeforeCreate": {
+                "inject": "snippet",
+                "key": "computeCircle"
+              },
+              "anime": {
                 "type": "waapi",
                 "targets": { "inject": "element" },
                 "parameters": {
@@ -1043,17 +1031,17 @@
             }
           },
           "else": {
-            "css": {
-              "{container}": {
-                "z-index": 1
+            "inject": "raw",
+            "value": {
+              "css": {
+                "{container}": {
+                  "z-index": 1
+                },
+                "{element}": {
+                  "transform-origin": { "inject": "position" }
+                }
               },
-              "{element}": {
-                "transform-origin": { "inject": "position" }
-              }
-            },
-            "anime": {
-              "inject": "raw",
-              "value": {
+              "anime": {
                 "type": "waapi",
                 "targets": { "inject": "element" },
                 "parameters": {
@@ -1110,13 +1098,13 @@
             "inject": "var.set",
             "name": "value",
             "value": {
-              "inject": "*",
               "a": {
                 "inject": "position",
                 "value": "y",
                 "unit": "%",
                 "clip": false
               },
+              "inject": "*",
               "b": 100
             }
           },
@@ -1327,8 +1315,8 @@
               "targets": ".overlay__path",
               "parameters": {
                 "duration": {
-                  "inject": "*",
                   "a": 0.3720930233,
+                  "inject": "*",
                   "b": { "inject": "duration" }
                 },
                 "ease": "inQuart",
@@ -1342,8 +1330,8 @@
               "targets": ".overlay__path",
               "parameters": {
                 "duration": {
-                  "inject": "*",
                   "a": 0.0930232558,
+                  "inject": "*",
                   "b": { "inject": "duration" }
                 },
                 "ease": "outSine",
@@ -1361,8 +1349,8 @@
               "targets": ".overlay__path",
               "parameters": {
                 "duration": {
-                  "inject": "*",
                   "a": 0.0697674419,
+                  "inject": "*",
                   "b": { "inject": "duration" }
                 },
                 "ease": "inSine",
@@ -1376,8 +1364,8 @@
               "targets": ".overlay__path",
               "parameters": {
                 "duration": {
-                  "inject": "*",
                   "a": 0.4651162791,
+                  "inject": "*",
                   "b": { "inject": "duration" }
                 },
                 "ease": "outExpo",
