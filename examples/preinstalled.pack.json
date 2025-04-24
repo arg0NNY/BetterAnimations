@@ -2,6 +2,7 @@
   "name": "preinstalled",
   "author": "arg0NNY",
   "version": "0.0.0",
+  "invite": "M8DBtcZjXD",
 
   "snippets": [
     {
@@ -400,6 +401,127 @@
     },
 
     {
+      "key": "point",
+      "name": "Point",
+      "modules": ["popouts", "tooltips", "contextMenu"],
+      "settings": {
+        "duration": true,
+        "easing": true,
+        "position": true,
+
+        "defaults": {
+          "duration": 400,
+          "easing": {
+            "type": "ease",
+            "bezier": "out",
+            "style": "quint"
+          },
+          "position": "center",
+
+          "override": [
+            {
+              "for": {
+                "type": "exit"
+              },
+              "easing": {
+                "type": "ease",
+                "bezier": "in",
+                "style": "quint"
+              }
+            },
+            {
+              "for": {
+                "module": ["tooltips", "contextMenu"]
+              },
+              "duration": 200
+            }
+          ]
+        }
+      },
+      "animate": {
+        "css": {
+          "{element}": {
+            "transform-origin": { "inject": "position" }
+          }
+        },
+        "onBeforeCreate": [
+          {
+            "inject": "var.set",
+            "name": "x",
+            "value": {
+              "a": {
+                "inject": "position",
+                "value": "x",
+                "clip": {
+                  "a": { "inject": "module" },
+                  "inject": "===",
+                  "b": "contextMenu"
+                }
+              },
+              "inject": "-",
+              "b": {
+                "inject": "position",
+                "value": "x"
+              }
+            }
+          },
+          {
+            "inject": "var.set",
+            "name": "y",
+            "value": {
+              "a": {
+                "inject": "position",
+                "value": "y",
+                "clip": {
+                  "a": { "inject": "module" },
+                  "inject": "===",
+                  "b": "contextMenu"
+                }
+              },
+              "inject": "-",
+              "b": {
+                "inject": "position",
+                "value": "y"
+              }
+            }
+          }
+        ],
+        "anime": {
+          "type": "waapi",
+          "targets": { "inject": "element" },
+          "parameters": {
+            "inject": "assign",
+            "target": {
+              "duration": { "inject": "duration" },
+              "ease": { "inject": "easing" }
+            },
+            "source": {
+              "inject": "type",
+              "enter": {
+                "inject": "isIntersected",
+                "true": {
+                  "x": 0,
+                  "y": 0,
+                  "scale": 1
+                },
+                "false": {
+                  "x": [{ "inject": "var.get", "name": "x" }, 0],
+                  "y": [{ "inject": "var.get", "name": "y" }, 0],
+                  "scale": [0, 1]
+                }
+              },
+              "exit": {
+                "x": { "inject": "var.get", "name": "x" },
+                "y": { "inject": "var.get", "name": "y" },
+                "scale": 0
+              }
+            }
+          }
+        }
+      }
+    },
+
+    {
       "key": "blur",
       "name": "Blur",
       "meta": {
@@ -633,7 +755,7 @@
     {
       "key": "out-of-bounds",
       "name": "Out-of-bounds",
-      "modules": ["popouts", "modals"],
+      "modules": ["popouts", "contextMenu", "modals"],
       "settings": {
         "duration": true,
         "easing": true,
@@ -965,7 +1087,7 @@
     {
       "key": "drawer",
       "name": "Drawer",
-      "modules": ["servers", "channels", "settings", "popouts"],
+      "modules": ["servers", "channels", "settings", "popouts", "contextMenu"],
       "settings": {
         "duration": true,
         "position": true,
