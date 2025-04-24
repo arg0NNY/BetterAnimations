@@ -209,7 +209,7 @@
             },
             {
               "for": {
-                "module": "switch"
+                "module": ["switch", "modals"]
               },
               "easing": {
                 "type": "ease",
@@ -414,7 +414,7 @@
           "easing": {
             "type": "ease",
             "bezier": "out",
-            "style": "quint"
+            "style": "quart"
           },
           "position": "center",
 
@@ -426,7 +426,7 @@
               "easing": {
                 "type": "ease",
                 "bezier": "in",
-                "style": "quint"
+                "style": "quart"
               }
             },
             {
@@ -766,7 +766,7 @@
           "easing": {
             "type": "ease",
             "bezier": "out",
-            "style": "quint"
+            "style": "quart"
           },
           "direction": "upwards",
 
@@ -778,7 +778,7 @@
               "easing": {
                 "type": "ease",
                 "bezier": "in",
-                "style": "quint"
+                "style": "quart"
               },
               "direction": "downwards",
               "directionTowards": true
@@ -1390,8 +1390,8 @@
     },
 
     {
-      "key": "backdropDark",
-      "name": "Dark Blur",
+      "key": "backdrop-solid",
+      "name": "Solid",
       "modules": "modalsBackdrop",
       "meta": {
         "revert": false
@@ -1399,16 +1399,41 @@
       "settings": {
         "duration": true,
         "easing": true,
+        "variant": [
+          { "key": "dark", "name": "Dark" },
+          { "key": "light", "name": "Light" }
+        ],
 
         "defaults": {
-          "duration": 300,
+          "duration": 200,
           "easing": {
             "type": "ease",
             "style": "quart"
-          }
+          },
+          "variant": "dark"
         }
       },
       "animate": {
+        "onBeforeCreate": [
+          {
+            "inject": "var.set",
+            "name": "hidden",
+            "value": {
+              "inject": "variant",
+              "dark": "rgba(0, 0, 0, 0)",
+              "light": "rgba(255, 255, 255, 0)"
+            }
+          },
+          {
+            "inject": "var.set",
+            "name": "visible",
+            "value": {
+              "inject": "variant",
+              "dark": "rgba(0, 0, 0, .7)",
+              "light": "rgba(255, 255, 255, .7)"
+            }
+          }
+        ],
         "anime": {
           "type": "waapi",
           "targets": { "inject": "element" },
@@ -1417,13 +1442,113 @@
             "ease": { "inject": "easing" },
             "background": {
               "inject": "type",
-              "enter": ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, .7)"],
-              "exit": "rgba(0, 0, 0, 0)"
-            },
+              "enter": {
+                "inject": "isIntersected",
+                "true": { "inject": "var.get", "name": "visible" },
+                "false": [
+                  { "inject": "var.get", "name": "hidden" },
+                  { "inject": "var.get", "name": "visible" }
+                ]
+              },
+              "exit": { "inject": "var.get", "name": "hidden" }
+            }
+          }
+        }
+      }
+    },
+
+    {
+      "key": "backdrop-blur",
+      "name": "Blur",
+      "modules": "modalsBackdrop",
+      "meta": {
+        "revert": false
+      },
+      "settings": {
+        "duration": true,
+        "easing": true,
+        "variant": [
+          { "key": "dark", "name": "Dark" },
+          { "key": "light", "name": "Light" }
+        ],
+
+        "defaults": {
+          "duration": 200,
+          "easing": {
+            "type": "ease",
+            "style": "quart"
+          },
+          "variant": "dark"
+        }
+      },
+      "animate": {
+        "extends": {
+          "inject": "load",
+          "animation": "backdrop-solid"
+        },
+        "anime": {
+          "type": "waapi",
+          "targets": { "inject": "element" },
+          "parameters": {
+            "duration": { "inject": "duration" },
+            "ease": { "inject": "easing" },
             "backdropFilter": {
               "inject": "type",
-              "enter": ["blur(0px)", "blur(2px)"],
+              "enter": {
+                "inject": "isIntersected",
+                "true": "blur(2px)",
+                "false": ["blur(0px)", "blur(2px)"]
+              },
               "exit": "blur(0px)"
+            }
+          }
+        }
+      }
+    },
+
+    {
+      "key": "backdrop-grayscale",
+      "name": "Grayscale",
+      "modules": "modalsBackdrop",
+      "meta": {
+        "revert": false
+      },
+      "settings": {
+        "duration": true,
+        "easing": true,
+        "variant": [
+          { "key": "dark", "name": "Dark" },
+          { "key": "light", "name": "Light" }
+        ],
+
+        "defaults": {
+          "duration": 200,
+          "easing": {
+            "type": "ease",
+            "style": "quart"
+          },
+          "variant": "dark"
+        }
+      },
+      "animate": {
+        "extends": {
+          "inject": "load",
+          "animation": "backdrop-solid"
+        },
+        "anime": {
+          "type": "waapi",
+          "targets": { "inject": "element" },
+          "parameters": {
+            "duration": { "inject": "duration" },
+            "ease": { "inject": "easing" },
+            "backdropFilter": {
+              "inject": "type",
+              "enter": {
+                "inject": "isIntersected",
+                "true": "grayscale(1)",
+                "false": ["grayscale(0)", "grayscale(1)"]
+              },
+              "exit": "grayscale(0)"
             }
           }
         }
