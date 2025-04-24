@@ -43,7 +43,7 @@ export function buildWrapper (data, context) {
     wrapper.append(
       ...[].concat(
         data.css
-      ).filter(Boolean).map((css, cssIndex) => {
+      ).flat().filter(Boolean).map((css, cssIndex) => {
         const element = document.createElement('style')
         element.appendChild(document.createTextNode(
           buildCSS(

@@ -63,10 +63,12 @@ export function buildLayoutEnv (env) {
 export const HookSchema = (context, env, stage) => ParsableSchema(
   stage,
   context => ArrayOrSingleSchema(
-    TrustedFunctionSchema.nullable()
+    ArrayOrSingleSchema(
+      TrustedFunctionSchema.nullable()
+    )
   ).transform((value, ctx) => {
     const hook = () => executeWithZod(value, (value, ctx) => {
-      [].concat(value).forEach((fn, i) => {
+      [].concat(value).flat().forEach((fn, i) => {
         if (!fn) return
         try { fn() }
         catch (error) {
@@ -86,9 +88,11 @@ export const HookSchema = (context, env, stage) => ParsableSchema(
 export const HastSchema = ParsableSchema(
   ParseStage.Layout,
   ArrayOrSingleSchema(
-    z.record(z.any()).nullable()
+    ArrayOrSingleSchema(
+      z.record(z.any()).nullable()
+    )
   ).transform((value, ctx) => {
-    return [].concat(value).filter(Boolean).map((node, i) => {
+    return [].concat(value).flat().filter(Boolean).map((node, i) => {
       const sanitized = sanitize(clearSourceMapDeep(node), hastSanitizeSchema)
       if (sanitized.type === 'root') {
         ctx.addIssue({
@@ -112,7 +116,9 @@ export const HastSchema = ParsableSchema(
 export const CssSchema = ParsableSchema(
   ParseStage.Layout,
   ArrayOrSingleSchema(
-    z.record(z.record(z.any())).nullable()
+    ArrayOrSingleSchema(
+      z.record(z.record(z.any())).nullable()
+    )
   ).optional()
 )
 

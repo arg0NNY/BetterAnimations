@@ -114,8 +114,10 @@ const AnimeInstanceSchema = context => z.discriminatedUnion('type', [
 )
 
 const AnimeSchema = context => ArrayOrSingleSchema(
-  AnimeInstanceSchema(context).nullable()
-).transform(instances => [].concat(instances).filter(i => i != null))
+  ArrayOrSingleSchema(
+    AnimeInstanceSchema(context).nullable()
+  )
+).transform(instances => [].concat(instances).flat().filter(i => i != null))
   .refine(
     instances => instances.length > 0,
     { message: 'No anime instances created' }

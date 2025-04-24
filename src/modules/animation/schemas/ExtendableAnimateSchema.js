@@ -2,7 +2,11 @@ import { z } from 'zod'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
 import { SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 
-const ArrayOrSingleObjectSchema = ArrayOrSingleSchema(z.record(z.any()))
+const ArrayOrSingleObjectSchema = ArrayOrSingleSchema(
+  ArrayOrSingleSchema(
+    z.record(z.any())
+  )
+)
 
 export const AnimateSchema = SourceMappedObjectSchema.extend({
   onBeforeLayout: ArrayOrSingleObjectSchema,
