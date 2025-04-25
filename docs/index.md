@@ -4,8 +4,11 @@ layout: home
 
 hero:
   name: "BetterAnimations"
-  text: "A Documentation for BetterAnimations"
-  tagline: My great project tagline
+  text: "Discord Client Mod\nfor Animations"
+  tagline: "Bring your Discord app to life — tweak, create, animate. A BetterDiscord plugin."
+  image:
+    src: /assets/logo.svg
+    alt: BetterAnimations
   actions:
     - theme: brand
       text: Markdown Examples

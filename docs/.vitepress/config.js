@@ -2,10 +2,13 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "BetterAnimations",
-  description: "A Documentation for BetterAnimations",
+  lang: 'en-US',
+  title: 'BetterAnimations',
+  description: 'Discord Client Mod for Animations',
+  cleanUrls: true,
   themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
+    logo: '/assets/logo.svg',
+
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Examples', link: '/markdown-examples' }
@@ -22,7 +25,7 @@ export default defineConfig({
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+      { icon: 'github', link: 'https://github.com/arg0NNY/BetterAnimations' }
     ]
   }
 })
