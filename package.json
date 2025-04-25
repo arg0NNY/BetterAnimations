@@ -6,7 +6,10 @@
   "main": "src/index.js",
   "scripts": {
     "build": "vite build",
-    "dev": "vite build --mode development --watch"
+    "dev": "vite build --mode development --watch",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "author": "arg0NNY",
   "license": "MIT",
@@ -14,7 +17,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "vite": "^5.4.18",
-    "vite-plugin-banner": "^0.8.0"
+    "vite-plugin-banner": "^0.8.0",
+    "vitepress": "^1.6.3"
   },
   "dependencies": {
     "@emmetio/math-expression": "^1.0.5",

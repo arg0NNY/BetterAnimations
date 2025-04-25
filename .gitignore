@@ -129,3 +129,7 @@ dist
 # IDE
 .idea
 .vscode
+
+# VitePress
+docs/.vitepress/dist
+docs/.vitepress/cache
