@@ -11,11 +11,14 @@ hero:
     alt: BetterAnimations
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: How to use?
+      link: /usage/customization
+    - theme: brand
+      text: Create your own Animations
+      link: /create/introduction
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: Reference
+      link: /reference/pack
 
 features:
   - title: Feature A
