@@ -1,18 +1,161 @@
 import ModuleKey from '@/enums/ModuleKey'
-import { internalPackSlugs } from '@/packs'
+import { internalPackSlugs, PREINSTALLED_PACK_SLUG } from '@/packs'
 
 export const configDefaults = {
   modules: {
     [ModuleKey.Servers]: {
-      enabled: true,
+      enabled: false,
       enhanceLayout: true,
       enter: {
-        packSlug: 'test',
-        animationKey: 'example'
+        packSlug: null,
+        animationKey: null
       },
       exit: {
-        packSlug: 'test',
-        animationKey: 'example'
+        packSlug: null,
+        animationKey: null
+      }
+    },
+    [ModuleKey.Channels]: {
+      enabled: false,
+      enter: {
+        packSlug: null,
+        animationKey: null
+      },
+      exit: {
+        packSlug: null,
+        animationKey: null
+      }
+    },
+    [ModuleKey.Settings]: {
+      enabled: true,
+      enter: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'slip'
+      },
+      exit: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'slip'
+      }
+    },
+    [ModuleKey.Layers]: {
+      enabled: true,
+      enter: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'circle-scale'
+      },
+      exit: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'circle-scale'
+      }
+    },
+    [ModuleKey.Tooltips]: {
+      enabled: true,
+      enter: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'scale'
+      },
+      exit: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'scale'
+      }
+    },
+    [ModuleKey.Popouts]: {
+      enabled: true,
+      enter: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'slip'
+      },
+      exit: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'slip'
+      }
+    },
+    [ModuleKey.ContextMenu]: {
+      enabled: true,
+      enter: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'scale'
+      },
+      exit: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'scale'
+      }
+    },
+    [ModuleKey.Messages]: {
+      enabled: true,
+      enter: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'fade'
+      },
+      exit: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'fade'
+      }
+    },
+    [ModuleKey.ChannelList]: {
+      enabled: true,
+      enter: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'slip'
+      },
+      exit: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'slip'
+      }
+    },
+    [ModuleKey.Modals]: {
+      enabled: true,
+      enter: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'slip'
+      },
+      exit: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'slip'
+      }
+    },
+    [ModuleKey.ModalsBackdrop]: {
+      enabled: true,
+      enter: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'backdrop-blur'
+      },
+      exit: {
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'backdrop-blur'
+      }
+    },
+    [ModuleKey.MembersSidebar]: {
+      enabled: true,
+      enter: {
+        packSlug: null,
+        animationKey: null
+      },
+      exit: {
+        packSlug: null,
+        animationKey: null
+      }
+    },
+    [ModuleKey.ThreadSidebar]: {
+      enabled: true,
+      enter: {
+        packSlug: null,
+        animationKey: null
+      },
+      exit: {
+        packSlug: null,
+        animationKey: null
+      }
+    },
+    [ModuleKey.ThreadSidebarSwitch]: {
+      enabled: false,
+      enter: {
+        packSlug: null,
+        animationKey: null
+      },
+      exit: {
+        packSlug: null,
+        animationKey: null
       }
     }
   },

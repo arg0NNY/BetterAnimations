@@ -142,20 +142,25 @@
 
         "defaults": {
           "duration": 200,
-          "easing": {
-            "type": "ease"
-          },
+          "easing": { "type": "ease" },
 
-          "override": {
-            "for": {
-              "module": ["switch", "sidebars"]
+          "override": [
+            {
+              "for": {
+                "module": ["switch", "messages", "sidebars"]
+              },
+              "easing": {
+                "type": "ease",
+                "style": "quart"
+              }
             },
-            "duration": 400,
-            "easing": {
-              "type": "ease",
-              "style": "quart"
+            {
+              "for": {
+                "module": ["switch", "sidebars"]
+              },
+              "duration": 400
             }
-          }
+          ]
         }
       },
       "animate": {
@@ -531,16 +536,23 @@
           "duration": 200,
           "easing": { "type": "ease" },
 
-          "override": {
-            "for": {
-              "module": ["switch", "sidebars"]
+          "override": [
+            {
+              "for": {
+                "module": ["switch", "messages", "sidebars"]
+              },
+              "easing": {
+                "type": "ease",
+                "style": "quart"
+              }
             },
-            "duration": 400,
-            "easing": {
-              "type": "ease",
-              "style": "quart"
+            {
+              "for": {
+                "module": ["switch", "sidebars"]
+              },
+              "duration": 400
             }
-          }
+          ]
         }
       },
       "animate": {

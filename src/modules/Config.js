@@ -14,6 +14,12 @@ class PackConfig {
     this.slug = slug
   }
 
+  reset () {
+    this.current = {}
+    this.save()
+    Emitter.emit(Events.SettingsChanged)
+  }
+
   getAnimationConfig (key, moduleId, type) {
     return this.current[key]?.[moduleId]?.[type] ?? {}
   }
@@ -36,6 +42,10 @@ class InternalPackConfig extends PackConfig {
   }
   set current (value) {
     this.config.current.packs[this.slug] = value
+  }
+
+  save () {
+    return this.config.save()
   }
 }
 
@@ -61,11 +71,6 @@ class ExternalPackConfig extends PackConfig {
   save () {
     if (!this.hasUnsavedChanges()) return
     fs.writeFileSync(this.filePath, JSON.stringify(this.current, null, 4), 'utf8')
-  }
-  reset () {
-    this.current = {}
-    this.save()
-    Emitter.emit(Events.SettingsChanged)
   }
 
   hasUnsavedChanges () {
