@@ -19,6 +19,12 @@ A range from 100 milliseconds to 2 seconds with 50ms step.
 > 
 > If the range exceeds 2 seconds in total the step will be increased from 50ms to 100ms.
 
+## Variant
+
+Custom options provided by the Animation.
+
+For example, it may control color, size, etc.
+
 ## Position
 
 Determines the anchor point of the animation.
@@ -122,9 +128,3 @@ This setting can automatically determine its value:
   <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" style="display: inline; vertical-align: sub;">
       <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19V5m10 1l-6 6l6 6m-6-6h14"></path>
   </svg>_Towards_, etc.
-
-## Variant
-
-Custom options provided by the Animation.
-
-For example, it may control color, size, etc.
