@@ -40,7 +40,7 @@ Determines the anchor point of the animation.
 - Bottom
 - Bottom Right
 
-### Auto
+### Auto {#position-auto}
 
 This setting can automatically determine its value:
 - **For [_Tooltips_](./modules#tooltips) and [_Popouts_](./modules#popouts):**
@@ -71,7 +71,7 @@ Determines the general flow of the animation.
 - Forwards
 - Backwards
 
-### Auto
+### Auto {#direction-auto}
 
 This setting can automatically determine its value:
 

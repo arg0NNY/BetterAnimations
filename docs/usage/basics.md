@@ -1,6 +1,6 @@
 # Basics
 
-There are two entities layering out the fundament of the _BetterAnimations_: **Animations** and **Modules**.
+There are two entities layering out the fundament of the _BetterAnimations_: **Animations** and&nbsp;**Modules**.
 
 ## Animations
 
@@ -22,10 +22,10 @@ Every Animation consists of two animations of different types: **Enter** and **E
 
 ## Modules
 
-Module controls the Animations for specific parts of Discord.
+Modules control the Animations for specific parts of Discord.
 
 There are a bunch of modules supported by _BetterAnimations_: Servers, Channels, Popouts, Messages, etc.
-A full list of modules with detailed descriptions is available at [Modules](./modules).
+See [the full list of Modules](./modules).
 
 However, every one of them has a type, and there are only two types of Modules: **Reveal** and **Switch**.
 
