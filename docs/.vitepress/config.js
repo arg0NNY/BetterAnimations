@@ -11,7 +11,7 @@ export default defineConfig({
 
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Usage', link: '/usage/customization', activeMatch: '/usage/' },
+      { text: 'Usage', link: '/usage/basics', activeMatch: '/usage/' },
       { text: 'Create', link: '/create/introduction', activeMatch: '/create/' },
       { text: 'Reference', link: '/reference/pack', activeMatch: '/reference/' }
     ],
@@ -21,7 +21,7 @@ export default defineConfig({
         {
           text: 'Customization',
           items: [
-            { text: 'Basics', link: '/usage/customization' },
+            { text: 'Basics', link: '/usage/basics' },
             { text: 'Modules', link: '/usage/modules' },
             { text: 'Animation Settings', link: '/usage/animation-settings' },
             { text: 'Packs', link: '/usage/packs' }

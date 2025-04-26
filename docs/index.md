@@ -12,7 +12,7 @@ hero:
   actions:
     - theme: brand
       text: How to use?
-      link: /usage/customization
+      link: /usage/basics
     - theme: brand
       text: Create your own Animations
       link: /create/introduction
