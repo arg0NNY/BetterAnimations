@@ -22,8 +22,8 @@ export default defineConfig({
           text: 'Customization',
           items: [
             { text: 'Basics', link: '/usage/customization' },
-            { text: 'Animation Settings', link: '/usage/animation-settings' },
             { text: 'Modules', link: '/usage/modules' },
+            { text: 'Animation Settings', link: '/usage/animation-settings' },
             { text: 'Packs', link: '/usage/packs' }
           ]
         },
