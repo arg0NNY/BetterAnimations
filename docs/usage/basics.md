@@ -1,6 +1,6 @@
 # Basics
 
-There are two entities layering out the fundament of the _BetterAnimations_: **Animations** and&nbsp;**Modules**.
+There are two entities layering out the fundament of _BetterAnimations_: **Animations** and&nbsp;**Modules**.
 
 ## Animations
 
