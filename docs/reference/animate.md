@@ -89,6 +89,9 @@ See [Extending Animations](/create/extending-animations).
 
 An array of or a single hast [`Element`](https://github.com/syntax-tree/hast?tab=readme-ov-file#element) definition of elements to be mounted inside a Wrapper while the Animation is alive. See [Layout](/create/layout#hast).
 
+> [!IMPORTANT]
+> Provided hast nodes are sanitized before being inserted into DOM. See [sanitization schema](https://github.com/arg0NNY/BetterAnimations/blob/main/src/modules/animation/hastSanitizeSchema.js).
+
 **Example:**
 ```json
 {
@@ -115,9 +118,6 @@ An array of or a single hast [`Element`](https://github.com/syntax-tree/hast?tab
   ]
 }
 ```
-
-> [!IMPORTANT]
-> Provided hast nodes are sanitized before being inserted into DOM. See [sanitization schema](https://github.com/arg0NNY/BetterAnimations/blob/main/src/modules/animation/hastSanitizeSchema.js).
 
 ### `css` <Badge type="info" text="optional" />
 
