@@ -28,7 +28,7 @@ const AnimationSchema = z.object({
 }).strict().refine(
   v => v.animate ? !(v.enter || v.exit) : (v.enter && v.exit),
   v => ({
-    message: `Animation definition is required and must be either inside a single 'animate' property or inside 'enter' and 'exit' properties`,
+    message: `Execution definition is required and must be either inside a single 'animate' property or inside 'enter' and 'exit' properties`,
     path: [].concat(Object.keys(v).find(k => ['enter', 'exit', 'animate'].includes(k)) ?? []),
     params: { pointAt: 'key' }
   })
