@@ -2,28 +2,28 @@ import { z } from 'zod'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
 import { SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 
-const ArrayOrSingleObjectSchema = ArrayOrSingleSchema(
+const AnimatePropertySchema = ArrayOrSingleSchema(
   ArrayOrSingleSchema(
-    z.record(z.any())
+    z.record(z.any()).nullable()
   )
 )
 
 export const AnimateSchema = SourceMappedObjectSchema.extend({
-  onBeforeLayout: ArrayOrSingleObjectSchema,
-  hast: ArrayOrSingleObjectSchema,
-  css: ArrayOrSingleObjectSchema,
-  onBeforeCreate: ArrayOrSingleObjectSchema,
-  anime: ArrayOrSingleObjectSchema,
-  onCreated: ArrayOrSingleObjectSchema,
-  onBeforeBegin: ArrayOrSingleObjectSchema,
-  onCompleted: ArrayOrSingleObjectSchema,
-  onBeforeDestroy: ArrayOrSingleObjectSchema,
-  onDestroyed: ArrayOrSingleObjectSchema
+  onBeforeLayout: AnimatePropertySchema,
+  hast: AnimatePropertySchema,
+  css: AnimatePropertySchema,
+  onBeforeCreate: AnimatePropertySchema,
+  anime: AnimatePropertySchema,
+  onCreated: AnimatePropertySchema,
+  onBeforeBegin: AnimatePropertySchema,
+  onCompleted: AnimatePropertySchema,
+  onBeforeDestroy: AnimatePropertySchema,
+  onDestroyed: AnimatePropertySchema
 }).partial().strict()
 
 const ExtendableAnimateSchema = AnimateSchema.extend({
-  onBeforeExtend: ArrayOrSingleObjectSchema,
-  extends: ArrayOrSingleObjectSchema
+  onBeforeExtend: AnimatePropertySchema,
+  extends: AnimatePropertySchema
 }).partial().strict()
 
 export default ExtendableAnimateSchema

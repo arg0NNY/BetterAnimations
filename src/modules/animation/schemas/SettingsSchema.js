@@ -76,7 +76,7 @@ const SettingsSchema = z.object({
     z.literal('precise'),
     z.literal('enum'),
     z.literal('simple'),
-    z.enum(Position.values()).array()
+    z.enum(Position.values()).array().nonempty()
   ]).optional()
     .transform(value => {
       switch (value) {
@@ -88,7 +88,7 @@ const SettingsSchema = z.object({
     }),
   [Setting.Direction]: z.union([
     z.literal(true),
-    z.enum(Direction.values()).array()
+    z.enum(Direction.values()).array().nonempty()
   ]).optional()
     .transform(value => value === true
       ? [Direction.Upwards, Direction.Downwards, Direction.Leftwards, Direction.Rightwards]
