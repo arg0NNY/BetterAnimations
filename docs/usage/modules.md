@@ -1,3 +1,7 @@
+---
+outline: deep
+---
+
 # Modules
 
 Modules control the Animations for specific parts of Discord. See [Basics](./basics#modules).

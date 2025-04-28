@@ -80,7 +80,12 @@ export default defineConfig({
           items: [
             { text: 'Pack', link: '/reference/pack' },
             { text: 'Animation', link: '/reference/animation' },
-            { text: 'Snippet', link: '/reference/snippet' }
+            { text: 'Meta', link: '/reference/meta' },
+            { text: 'Settings', link: '/reference/settings' },
+            { text: 'Animate', link: '/reference/animate' },
+            { text: 'Anime', link: '/reference/anime' },
+            { text: 'Snippet', link: '/reference/snippet' },
+            { text: 'Easing', link: '/reference/easing' }
           ]
         },
         {

@@ -1,5 +1,3 @@
 # Settings
 
-::: tip 🚧 WORK IN PROGRESS
-This page is yet to be written.
-:::
+Unlock the full potential of customization provided by _BetterAnimations_ by defining the settings for your Animation.
