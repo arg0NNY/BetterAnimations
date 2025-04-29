@@ -50,8 +50,8 @@ export default defineConfig({
           items: [
             { text: 'Anime', link: '/create/anime' },
             { text: 'Injects', link: '/create/injects' },
-            { text: 'Settings', link: '/create/settings' },
             { text: 'Layout', link: '/create/layout' },
+            { text: 'Settings', link: '/create/settings' },
             { text: 'Lifecycle', link: '/create/lifecycle' },
             { text: 'Intersection', link: '/create/intersection' },
             { text: 'Debug Mode', link: '/create/debug-mode' }

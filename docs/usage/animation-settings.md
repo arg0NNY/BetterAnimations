@@ -45,10 +45,10 @@ Determines the anchor point of the animation.
 This setting can automatically determine its value:
 - **For [_Tooltips_](./modules#tooltips) and [_Popouts_](./modules#popouts):**
 
-  Uses **the location of the anchor element** relative to the animating element.
+  Uses **the location of the center of the anchor element** relative to the animating element.
 - **For [_Context Menu_](./modules#context-menu):**
 
-  Uses the current **mouse position** for the root Context Menu or **the location of the corresponding Menu Item** for Context Submenus.
+  Uses the current **mouse position** for the root Context Menu or **the location of the center of the corresponding Menu Item** for Context Submenus.
 - **For [_Layers_](./modules#layers):**
 
   Uses the current **mouse position**.

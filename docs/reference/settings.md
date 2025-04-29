@@ -54,7 +54,7 @@ Accepts `true`, `"precise"`, `"enum"`, `"simple"` or a non-empty array of values
 `"top left"`, `"top"`, `"top right"`, `"left"`, `"center"`, `"right"`,
 `"bottom left"`, `"bottom"`, `"bottom right"`.
 
-`true` is an alias for: `"precise"`. Refer to [Create](/create/settings#position) to learn about _Precise_ mode.
+`true` is an alias for: `"precise"`. Refer to [Create](/create/settings#position) to learn about [_Precise_ mode](/create/settings#position-precise).
 
 `"enum"` is an alias for:
 ```json
@@ -65,6 +65,9 @@ Accepts `true`, `"precise"`, `"enum"`, `"simple"` or a non-empty array of values
 ```json
 ["top", "bottom", "left", "right", "center"]
 ```
+
+> [!TIP]
+> Use inject [`position`](./injects/settings#position) to get the current value of this setting.
 
 ### `direction` <Badge type="info" text="optional" />
 
@@ -78,12 +81,13 @@ Accepts `true` or a non-empty array of values: `"upwards"`, `"downwards"`, `"lef
 ["upwards", "downwards", "leftwards", "rightwards"]
 ```
 
+> [!TIP]
+> Use inject [`direction`](./injects/settings#direction) to get the current value of this setting.
+
 ### `overflow` <Badge type="info" text="optional" />
 
 A boolean indicating whether the [Overflow](/usage/advanced-animation-settings#overflow) setting
-is configurable when an Animation is selected.
-
-Define to override a default value for this setting in [`defaults`](#defaults). Pass `false` to force it.
+is configurable when an Animation is selected. See [Settings](/create/settings#overflow).
 
 ### `defaults`
 

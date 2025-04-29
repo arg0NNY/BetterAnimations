@@ -1,10 +1,14 @@
+---
+outline: deep
+---
+
 # Anime
 
 A definition of [Anime instance](/create/anime).
 
 Can be of 4 different types: `timer`, `animation` (default), `waapi` and `timeline`.
 
-## `timer`
+## [`timer`](https://animejs.com/documentation/timer)
 
 An object containing the following properties:
 - `type` — A literal string `timer`.
@@ -20,7 +24,7 @@ An object containing the following properties:
 }
 ```
 
-## `animation`
+## [`animation`](https://animejs.com/documentation/animation)
 
 An object containing the following properties:
 - `type` <Badge type="info" text="optional" /> — A literal string `animation`. Can be omitted as it is considered default.
@@ -42,7 +46,7 @@ An object containing the following properties:
 }
 ```
 
-## `waapi`
+## [`waapi`](https://animejs.com/documentation/web-animation-api)
 
 An object containing the following properties:
 - `type` — A literal string `waapi`.
@@ -65,12 +69,12 @@ An object containing the following properties:
 }
 ```
 
-## `timeline`
+## [`timeline`](https://animejs.com/documentation/timeline)
 
 An object containing the following properties:
 - `type` — A literal string `timeline`.
 - `parameters` <Badge type="info" text="optional" /> — Timeline parameters. Refer to [Anime Documentation](https://animejs.com/documentation/timeline).
-- `children` — A non-empty array of [Timeline children](#timeline-child).
+- `children` — A non-empty array of [`children`](#children).
 
 **Example:**
 ```json
@@ -112,13 +116,13 @@ An object containing the following properties:
 }
 ```
 
-### Timeline child
+### `children`
 
 A definition of Anime Timeline child.
 
 Can be of 4 different types: `add` (default), `set`, `label` and `call`.
 
-#### `add`
+#### [`add`](https://animejs.com/documentation/timeline/timeline-methods/add)
 
 An object containing the following properties:
 - `type` <Badge type="info" text="optional" /> — A literal string `add`. Can be omitted as it is considered default.
@@ -137,7 +141,7 @@ An object containing the following properties:
 }
 ```
 
-#### `set`
+#### [`set`](https://animejs.com/documentation/timeline/timeline-methods/set)
 
 An object containing the following properties:
 - `type` — A literal string `set`.
@@ -157,7 +161,7 @@ An object containing the following properties:
 }
 ```
 
-#### `label`
+#### [`label`](https://animejs.com/documentation/timeline/timeline-methods/label)
 
 An object containing the following properties:
 - `type` — A literal string `label`.
@@ -173,7 +177,7 @@ An object containing the following properties:
 }
 ```
 
-#### `call`
+#### [`call`](https://animejs.com/documentation/timeline/timeline-methods/call)
 
 An object containing the following properties:
 - `type` — A literal string `call`.

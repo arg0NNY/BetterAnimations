@@ -10,12 +10,12 @@ _BetterAnimations_ uses [Anime JavaScript Animation Engine](https://animejs.com/
 An Animation must have an Anime instance defined to be executed. To define an instance you'll need to
 pass **targets** and **parameters** to `anime` property of [Animate](/reference/animate) definition.
 
-```json {5-15}
+```json
 {
   "key": "my-animation",
   "name": "My animation",
   "animate": {
-    "anime": {
+    "anime": { // [!code focus:11]
       "targets": { "inject": "element" },
       "parameters": {
         "duration": 200,
@@ -86,7 +86,7 @@ This will target `element` and all the elements matching the selectors: `#elemen
 _BetterAnimations_ creates a plain [`Animation`](https://animejs.com/documentation/animation) instance by default.
 However, it is highly recommended to use `WAAPI` ([Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API)) when possible as a much better alternative to plain JS animation performance-wise.
 
-Refer to [Anime Documentation](https://animejs.com/documentation/web-animation-api) to learn about WAAPI animations and when they can be used.
+Refer to [Anime Documentation](https://animejs.com/documentation/web-animation-api) to learn about WAAPI animations and [when they can be used](https://animejs.com/documentation/web-animation-api/when-to-use-waapi).
 
 To create a [`WAAPI`](https://animejs.com/documentation/web-animation-api) instance instead of a plain [`Animation`](https://animejs.com/documentation/animation) explicitly specify a type `waapi`:
 ```json

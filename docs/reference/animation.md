@@ -35,11 +35,11 @@ An array of or a single string containing the key of a [Module](/usage/modules) 
 
 ### `meta` <Badge type="info" text="optional" />
 
-Animation's [Meta](./meta).
+[Meta](./meta).
 
 ### `settings` <Badge type="info" text="optional" />
 
-Animation's [Settings](./settings).
+[Settings](./settings).
 
 ### `debug` <Badge type="info" text="optional" />
 
