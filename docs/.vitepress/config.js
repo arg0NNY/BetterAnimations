@@ -64,7 +64,8 @@ export default defineConfig({
             { text: 'Accordions', link: '/create/accordions' },
             { text: 'Snippets', link: '/create/snippets' },
             { text: 'Extending Animations', link: '/create/extending-animations' },
-            { text: 'Modal Backdrop', link: '/create/modal-backdrop' }
+            { text: 'Modal Backdrop', link: '/create/modal-backdrop' },
+            { text: 'Parsing In-depth', link: '/create/parsing' }
           ]
         },
         {

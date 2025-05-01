@@ -45,10 +45,10 @@ animate(element, {
 ```
 
 > [!TIP]
-> This example uses inject [`element`](/reference/injects/general#element). Injects will be covered in the [next section](./injects).
+> This example uses inject [`element`](/reference/injects/general#element). Injects are covered at [Injects](./injects).
 > 
 > At the moment all you have to know is that `{ "inject": "element" }` will be replaced with an instance
-> of an [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element) animation currently executes for.
+> of an [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element) animation currently executes for. See [Layout](./layout#element).
 
 ## Targets
 
@@ -72,7 +72,7 @@ You can also specify multiple targets and have a nested array if needed:
 This will target `element` and all the elements matching the selectors: `#element-id`, `.selector-1`, `.selector-2`.
 
 > [!IMPORTANT]
-> Target selectors can only target elements created by an Animation. Refer to [Layout](./layout).
+> Target selectors can only target elements created by an Animation. Refer to [Layout](./layout#hast).
 
 ## Parameters
 

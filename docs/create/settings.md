@@ -14,7 +14,7 @@ and set the default value for it inside [`defaults`](/reference/settings#default
 {
   "key": "scale",
   "name": "Scale",
-  "settings": { // [!code ++:7]
+  "settings": { // [!code highlight:7]
     "duration": true,
 
     "defaults": {
@@ -259,7 +259,7 @@ To use the current value of this setting use inject [`easing`](/reference/inject
 
 ## Position
 
-[**Position**](/usage/animation-settings#position) setting may be activated in two modes: **Enum** and **Precise**.
+[**Position**](/usage/animation-settings#position) setting may be activated in two modes: **Enum** or **Precise**.
 
 ### Enum {#position-enum}
 
@@ -443,9 +443,9 @@ To use the current value of this setting use inject [`position`](/reference/inje
 
 ### Precise {#position-precise}
 
-In **Precise** mode this setting _precisely_ anchors to some _anchor point_.
+In **Precise** mode this setting _precisely_ anchors to _anchor point_.
 
-_Anchor point_ may be simply one of the Enum values transformed into a coordinate or some specific point in the layout,
+_Anchor point_ may be simply one of the Enum values transformed into a coordinate or, if [Auto-Position](/usage/animation-settings#position-auto) is enabled, some specific point in the layout,
 such as the location of the center of the anchor element. See possible anchor points at [Animation Settings](/usage/animation-settings#position-auto).
 
 However, how the anchor point is determined won't change how it would be handled inside an Animation.
@@ -527,7 +527,7 @@ based on the requested `unit`, which is `px` by default, relative to the Contain
 }
 ```
 
-Inject [`position`](/reference/injects/settings#position) clips the values to fit inside the Container bounds,
+Inject [`position`](/reference/injects/settings#position) clips the values to fit them into the Container bounds,
 use the parameter `clip` to disable the clipping and get the original values:
 ```json
 {
@@ -548,7 +548,7 @@ use the parameter `clip` to disable the clipping and get the original values:
 }
 ```
 
-You can also get `x` and `y` values separately using by passing the parameter `value`:
+You can also get `x` and `y` values separately by passing the parameter `value`:
 ```json
 {
   "css": {

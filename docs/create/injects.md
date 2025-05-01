@@ -156,7 +156,7 @@ When parsed in the context of animation type `exit`:
 ## Lazy injects
 
 _Lazy injects_ (or _Callbacks_), unlike regular _injects_, which are parsed immediately,
-transform into function and will parse their contents only when this function is called.
+transform into function and parse their contents only when this function is called.
 
 One of the most commonly used _lazy inject_ is [`var.set`](/reference/injects/general#var.set),
 which sets the provided `value` in the global context of the animation as a variable under specified `name`:
@@ -197,7 +197,7 @@ which sets the provided `value` in the global context of the animation as a vari
 ```
 
 > [!TIP]
-> This example uses _hook_ `onBeforeCreate`. Hooks will be covered in [Lifecycle](./lifecycle).
+> This example uses _hook_ `onBeforeCreate`. Hooks are covered at [Lifecycle](./lifecycle).
 > 
 > At the moment all you have to know is that any function (_lazy inject_) passed to `onBeforeCreate`
 > will be called right before `anime` property is parsed.

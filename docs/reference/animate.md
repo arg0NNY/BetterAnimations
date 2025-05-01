@@ -51,10 +51,6 @@ A hook triggered before [`hast`](#hast) and [`css`](#css) are parsed.
 
 ### `onBeforeCreate` <Badge type="info" text="optional" />
 
-A hook triggered before [`anime`](#anime) is parsed. 
-
-### `onBeforeCreate` <Badge type="info" text="optional" />
-
 A hook triggered before [`anime`](#anime) is parsed.
 
 ### `onCreated` <Badge type="info" text="optional" />
@@ -63,7 +59,7 @@ A hook triggered after [`anime`](#anime) is parsed and before [Accordion](/creat
 
 ### `onBeforeBegin` <Badge type="info" text="optional" />
 
-A hook triggered a frame before [`play()`](https://animejs.com/documentation/animation/animation-methods/play) is called on created [Anime instances](/create/anime).
+A hook triggered before [`play()`](https://animejs.com/documentation/animation/animation-methods/play) is called on the created [Anime instances](/create/anime).
 
 ### `onCompleted` <Badge type="info" text="optional" />
 
@@ -87,10 +83,13 @@ See [Extending Animations](/create/extending-animations).
 
 ### `hast` <Badge type="info" text="optional" />
 
-An array of or a single hast [`Element`](https://github.com/syntax-tree/hast?tab=readme-ov-file#element) definition of elements to be mounted inside a Wrapper while the Animation is alive. See [Layout](/create/layout#hast).
+An array of or a single hast [`Element`](https://github.com/syntax-tree/hast?tab=readme-ov-file#element) definition of elements to be mounted while the Animation is alive. See [Layout](/create/layout#hast).
 
-> [!IMPORTANT]
-> Provided hast nodes are sanitized before being inserted into DOM. See [sanitization schema](https://github.com/arg0NNY/BetterAnimations/blob/main/src/modules/animation/hastSanitizeSchema.js).
+> [!WARNING]
+> Provided hast elements are sanitized before being inserted into DOM. See [sanitization schema](https://github.com/arg0NNY/BetterAnimations/blob/main/src/modules/animation/hastSanitizeSchema.js).
+
+> [!WARNING]
+> `hast` has a limited set of injects that are allowed for use inside it. See [Layout](/create/layout#inject-restrictions).
 
 **Example:**
 ```json
@@ -125,6 +124,9 @@ An object representing the CSS to be mounted while the Animation is alive. See [
 
 Selectors can only target the elements defined inside [`hast`](#hast). Use `{element}` and `{container}` to target an animating element and a container correspondingly.
 
+> [!WARNING]
+> `css` has a limited set of injects that are allowed for use inside it. See [Layout](/create/layout#inject-restrictions).
+
 **Example:**
 ```json
 {
@@ -143,7 +145,7 @@ Selectors can only target the elements defined inside [`hast`](#hast). Use `{ele
 
 ### `anime` <Badge type="info" text="optional" />
 
-An array of or a single [Anime](./anime) definition. At least one Anime instance must be defined.
+An array of or a single [Anime](./anime) definition. At least one Anime instance must be defined. See [Anime](/create/anime).
 
 Can be omitted if instances are defined inside [`extends`](#extends).
 
