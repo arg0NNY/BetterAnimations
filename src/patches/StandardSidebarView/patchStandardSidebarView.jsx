@@ -61,6 +61,7 @@ StandardSidebarViewKeyed.then(() =>
 css
 `${DiscordSelectors.StandardSidebarView.contentRegion} > ${DiscordSelectors.StandardSidebarView.contentRegion} {
     height: 100%;
+    background: none;
 }
 
 .platform-win ${DiscordSelectors.StandardSidebarView.contentRegionScroller} {

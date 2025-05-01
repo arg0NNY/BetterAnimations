@@ -36,7 +36,6 @@ const safeInjects = [
   Inject.Type,
   Inject.Assign,
   Inject.StringTemplate,
-  Inject.Math,
   Inject.Undefined,
   Inject.VarGet,
   Inject.Rect,

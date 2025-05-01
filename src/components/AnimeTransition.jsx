@@ -104,8 +104,9 @@ class AnimeTransition extends Component {
 export default AnimeTransition
 
 css
-`[data-ba-container][data-baa-type] { /* Container while animation is running */
-    background: none;
+`[data-ba-container][data-baa-type], /* Animating Container */
+[data-ba-container][data-baa-type] > :not([data-baa]) { /* Animating Element */
+    isolation: isolate;
 }
 [data-ba-container][data-baa-type]:not([data-ba-default-layout-styles="false"]) {
     position: relative;
@@ -118,17 +119,13 @@ css
     position: absolute;
 }
 
+[data-ba-container][data-baa-overflow="false"] {
+    overflow: clip;
+}
 [data-baa-type="exit"] {
     pointer-events: none;
 }
 
-[data-ba-container][data-baa-overflow="false"] {
-    overflow: clip;
-}
-[data-ba-container][data-baa-switch], /* Animating switch container */
-[data-ba-container][data-baa-switch] > :not([data-baa]) { /* Animating switch element */
-    isolation: isolate;
-}
 [data-ba-container][data-baa-switch][data-baa-type="exit"] {
     z-index: 1;
 }
