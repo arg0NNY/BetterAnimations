@@ -144,7 +144,7 @@ export default class AddonManager {
     }
     addon.slug = slug
     addon.id = slug
-    addon.name = slug
+    addon.name = addon.name ?? slug
     addon.filename = path.basename(filename)
     addon.added = stats.atimeMs
     addon.modified = stats.mtimeMs
