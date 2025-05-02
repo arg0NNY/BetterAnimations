@@ -31,6 +31,8 @@ A boolean indicating whether [Anime](/create/anime) instances should be reverted
 
 ## Presets
 
+See [Overridables](/create/overridables#presets).
+
 ### `accordion` {#presets-accordion}
 
 ```json
