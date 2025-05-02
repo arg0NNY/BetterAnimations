@@ -1,6 +1,6 @@
 # Overridables
 
-_Overridables_ are object definitions properties of which can be overridden based on the set of provided conditions.
+**Overridables** are object definitions properties of which can be overridden based on the set of provided conditions.
 
 Available _Overridables_:
 - [Meta](/reference/meta).

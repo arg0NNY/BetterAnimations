@@ -16,7 +16,7 @@ returns a reference to an animating [`Element`](https://developer.mozilla.org/en
 ```json
 {
   "key": "my-animation",
-  "name": "My animation",
+  "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:11]
       "targets": { "inject": "element" }, // [!code highlight]
@@ -52,7 +52,7 @@ However, according to the same [Reference](/reference/injects/general#element), 
 ```json
 {
   "key": "my-animation",
-  "name": "My animation",
+  "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:16]
       "targets": { "inject": "element" }, // [!code --]
@@ -93,7 +93,7 @@ To consolidate, let's try to use inject [`type`](/reference/injects/general#type
 ```json
 {
   "key": "my-animation",
-  "name": "My animation",
+  "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:15]
       "targets": { "inject": "element" },
@@ -118,7 +118,7 @@ When parsed in the context of animation type `enter` it will result in the follo
 ```json
 {
   "key": "my-animation",
-  "name": "My animation",
+  "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:15]
       "targets": { "inject": "element" },
@@ -139,7 +139,7 @@ When parsed in the context of animation type `exit`:
 ```json
 {
   "key": "my-animation",
-  "name": "My animation",
+  "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:15]
       "targets": { "inject": "element" },
@@ -163,7 +163,7 @@ which sets the provided `value` in the global context of the animation as a vari
 ```json
 {
   "key": "my-animation",
-  "name": "My animation",
+  "name": "My Animation",
   "animate": {
     "onBeforeCreate": { // [!code focus:27] [!code highlight:12]
       "inject": "var.set",
@@ -207,7 +207,7 @@ we'll need to use inject [`var.get`](/reference/injects/general#var.get):
 ```json
 {
   "key": "my-animation",
-  "name": "My animation",
+  "name": "My Animation",
   "animate": {
     "onBeforeCreate": { // [!code focus:31]
       "inject": "var.set",

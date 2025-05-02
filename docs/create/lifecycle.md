@@ -28,7 +28,7 @@ to `onBeforeCreate` property:
 ```json
 {
   "key": "my-animation",
-  "name": "My animation",
+  "name": "My Animation",
   "animate": {
     "onBeforeCreate": [ // [!code focus:19] [!code highlight:15]
       {
@@ -60,7 +60,7 @@ That means if you try to get the value of `zIndex` variable before the Animation
 ```json
 {
   "key": "my-animation",
-  "name": "My animation",
+  "name": "My Animation",
   "animate": {
     "css": { // [!code focus:24] [!code highlight:5]
       "{container}": {
@@ -94,7 +94,7 @@ To fix the issue in the case above, move `var.set` callback to `beforeLayout` ho
 ```json
 {
   "key": "my-animation",
-  "name": "My animation",
+  "name": "My Animation",
   "animate": {
     "onBeforeLayout": { // [!code focus:33] [!code ++:9]
       "inject": "var.set",
@@ -141,7 +141,7 @@ To fix the issue in the case above, move `var.set` callback to `beforeLayout` ho
 > ```json
 > {
 >   "key": "my-animation",
->   "name": "My animation",
+>   "name": "My Animation",
 >   "animate": {
 >     "onBeforeBegin": { // [!code focus:16] [!code highlight:8]
 >       "inject": "var.set",
@@ -171,7 +171,7 @@ To fix the issue in the case above, move `var.set` callback to `beforeLayout` ho
 > ```json
 > {
 >   "key": "my-animation",
->   "name": "My animation",
+>   "name": "My Animation",
 >   "animate": {
 >     "onBeforeBegin": { // [!code focus:23]
 >       "inject": "var.set",

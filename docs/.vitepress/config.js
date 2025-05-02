@@ -61,9 +61,9 @@ export default defineConfig({
           text: 'Advanced',
           items: [
             { text: 'Overridables', link: '/create/overridables' },
+            { text: 'Extending Animations', link: '/create/extending-animations' },
             { text: 'Accordions', link: '/create/accordions' },
             { text: 'Snippets', link: '/create/snippets' },
-            { text: 'Extending Animations', link: '/create/extending-animations' },
             { text: 'Modal Backdrop', link: '/create/modal-backdrop' },
             { text: 'Parsing In-depth', link: '/create/parsing' }
           ]

@@ -7,13 +7,13 @@ _BetterAnimations_ uses [Anime JavaScript Animation Engine](https://animejs.com/
 
 ## Defining an instance
 
-An Animation must have an Anime instance defined to be executed. To define an instance you'll need to
+An Animation must have an Anime instance defined to be executed. To define an instance, you'll need to
 pass **targets** and **parameters** to `anime` property of [Animate](/reference/animate) definition.
 
 ```json
 {
   "key": "my-animation",
-  "name": "My animation",
+  "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:11]
       "targets": { "inject": "element" },

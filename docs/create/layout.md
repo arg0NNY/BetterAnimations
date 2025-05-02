@@ -16,7 +16,7 @@ To get the reference to the **Element** use inject [`element`](/reference/inject
 ```json
 {
   "key": "my-animation",
-  "name": "My animation",
+  "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:4]
       "targets": { "inject": "element" }, // [!code highlight]
@@ -42,7 +42,7 @@ To get the reference to the **Container** use inject [`container`](/reference/in
 ```json
 {
   "key": "my-animation",
-  "name": "My animation",
+  "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:4]
       "targets": { "inject": "container" }, // [!code highlight]
@@ -59,7 +59,7 @@ in [Hast](https://github.com/syntax-tree/hast) (**H**ypertext **A**bstract **S**
 ```json
 {
   "key": "my-animation",
-  "name": "My animation",
+  "name": "My Animation",
   "animate": {
     "hast": { // [!code focus:27] [!code highlight:23]
       "type": "element",
@@ -112,7 +112,7 @@ This definition will be transformed into the following HTML:
 
 All the **root** elements defined inside [`hast`](/reference/animate#hast) will have [`position`](https://developer.mozilla.org/en-US/docs/Web/CSS/position) property assigned to [`absolute`](https://developer.mozilla.org/en-US/docs/Web/CSS/position#absolute) by default
 and will be mounted **inside** the [Container](#container) **before** the [Element](#element) while the Animation is alive:
-```
+```md
 Container
 ├── Hast Element 1
 ├── Hast Element 2
@@ -127,7 +127,7 @@ To get the reference to the created Hast elements use inject [`hast`](/reference
 ```json
 {
   "key": "my-animation",
-  "name": "My animation",
+  "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:4]
       "targets": { "inject": "hast", "selector": ".overlay" }, // [!code highlight]
@@ -144,7 +144,7 @@ To get the reference to the created Hast elements use inject [`hast`](/reference
 > ```json
 > {
 >   "key": "my-animation",
->   "name": "My animation",
+>   "name": "My Animation",
 >   "animate": {
 >     "anime": { // [!code focus:4]
 >       "targets": ".overlay", // [!code highlight]
@@ -161,7 +161,7 @@ inside [`css`](/reference/animate#css) property of [Animate](/reference/animate)
 ```json
 {
   "key": "my-animation",
-  "name": "My animation",
+  "name": "My Animation",
   "animate": {
     "hast": [ // [!code focus:30]
       {
@@ -226,7 +226,7 @@ Use `{element}` and `{container}` to target an [Element](#element) and a [Contai
 
 **Enter** and **Exit** animations executing simultaneously in the scope of the same [Module](/usage/modules)
 of type _Switch_ share the same **Switch Container**:
-```
+```md
 Switch Container
 ├── Container (Enter)
 │   ├── Hast Element 1

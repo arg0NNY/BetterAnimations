@@ -145,9 +145,12 @@ Selectors can only target the elements defined inside [`hast`](#hast). Use `{ele
 
 ### `anime` <Badge type="info" text="optional" />
 
-An array of or a single [Anime](./anime) definition. At least one Anime instance must be defined. See [Anime](/create/anime).
+An array of or a single [Anime](./anime) definition. See [Anime](/create/anime).
 
-Can be omitted if instances are defined inside [`extends`](#extends).
+> [!WARNING]
+> Despite the fact that `anime` property is optional, at least one Anime instance must be defined for an Animation to be played.
+> 
+> When using extensions, make sure to define at least one instance somewhere inside [`extends`](#extends) or inside the root [Animate](./animate) definition. See [Extending Animations](/create/extending-animations).
 
 **Example:**
 ```json

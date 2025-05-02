@@ -1,0 +1,138 @@
+{
+  "name": "Composite Animations Example",
+  "version": "0.0.0",
+  "author": "arg0NNY",
+
+  "animations": [
+
+    {
+      "key": "fade",
+      "name": "Fade",
+      "settings": {
+        "duration": true,
+        "easing": true,
+
+        "defaults": {
+          "duration": 200,
+          "easing": { "type": "ease", "style": "sine" }
+        }
+      },
+      "animate": {
+        "anime": {
+          "type": "waapi",
+          "targets": { "inject": "element" },
+          "parameters": {
+            "duration": { "inject": "duration" },
+            "ease": { "inject": "easing" },
+            "opacity": {
+              "inject": "type",
+              "enter": {
+                "inject": "isIntersected",
+                "true": 1,
+                "false": [0, 1]
+              },
+              "exit": 0
+            }
+          }
+        }
+      }
+    },
+
+    {
+      "key": "scale",
+      "name": "Scale",
+      "settings": {
+        "duration": true,
+        "easing": true,
+
+        "defaults": {
+          "duration": 200,
+          "easing": { "type": "ease", "style": "quart" }
+        }
+      },
+      "animate": {
+        "extends": {
+          "inject": "load",
+          "animation": "fade"
+        },
+        "anime": {
+          "type": "waapi",
+          "targets": { "inject": "element" },
+          "parameters": {
+            "duration": { "inject": "duration" },
+            "ease": { "inject": "easing" },
+            "scale": {
+              "inject": "type",
+              "enter": {
+                "inject": "isIntersected",
+                "true": 1,
+                "false": [0.9, 1]
+              },
+              "exit": 0.9
+            }
+          }
+        }
+      }
+    },
+
+    {
+      "key": "slip",
+      "name": "Slip",
+      "settings": {
+        "duration": true,
+        "easing": true,
+
+        "defaults": {
+          "duration": 200,
+          "easing": { "type": "ease", "style": "quart" }
+        }
+      },
+      "animate": {
+        "anime": {
+          "type": "waapi",
+          "targets": { "inject": "element" },
+          "parameters": {
+            "duration": { "inject": "duration" },
+            "ease": { "inject": "easing" },
+            "y": {
+              "inject": "type",
+              "enter": {
+                "inject": "isIntersected",
+                "true": 0,
+                "false": [50, 0]
+              },
+              "exit": 50
+            }
+          }
+        }
+      }
+    },
+
+    {
+      "key": "scale-slip",
+      "name": "Scale + Slip",
+      "settings": {
+        "duration": true,
+        "easing": true,
+
+        "defaults": {
+          "duration": 200,
+          "easing": { "type": "ease", "style": "quart" }
+        }
+      },
+      "animate": {
+        "extends": [
+          {
+            "inject": "load",
+            "animation": "scale"
+          },
+          {
+            "inject": "load",
+            "animation": "slip"
+          }
+        ]
+      }
+    }
+
+  ]
+}
