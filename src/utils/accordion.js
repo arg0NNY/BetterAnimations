@@ -23,10 +23,10 @@ export function getSizeProperty (type) {
   switch (type) {
     case AccordionType.MarginTop:
     case AccordionType.MarginBottom:
-      return 'clientHeight'
+      return 'offsetHeight'
     case AccordionType.MarginLeft:
     case AccordionType.MarginRight:
-      return 'clientWidth'
+      return 'offsetWidth'
   }
 }
 
