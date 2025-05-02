@@ -216,7 +216,7 @@ class Module {
     )
   }
 
-  getOverridableProperties (type) {
+  getOverridableConditionValues (type) {
     return {
       type,
       module: this.id,
@@ -226,14 +226,14 @@ class Module {
   buildAnimationMeta (animation, type) {
     return computeOverridable(
       animation.meta,
-      this.getOverridableProperties(type),
+      this.getOverridableConditionValues(type),
       metaOverridePresets
     )
   }
   buildAnimationDefaultSettings (animation, type) {
     return computeOverridable(
       animation.settings.defaults,
-      this.getOverridableProperties(type)
+      this.getOverridableConditionValues(type)
     )
   }
 

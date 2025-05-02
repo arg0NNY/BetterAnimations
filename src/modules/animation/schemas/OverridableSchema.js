@@ -6,15 +6,15 @@ import ModuleType from '@/enums/ModuleType'
 import { omit } from '@/utils/object'
 import { moduleAliases } from '@/data/modules'
 
-export const DefaultPropertiesSchema = z.strictObject({
-  type: ArrayOrSingleSchema(z.enum(AnimationType.values())),
+export const DefaultConditionsSchema = z.strictObject({
+  type: z.enum(AnimationType.values()),
+  'module.type': z.enum(ModuleType.values()),
   module: ArrayOrSingleSchema(
     z.enum(ModuleKey.values().concat(ModuleKeyAlias.values()))
-  ).transform(value => [].concat(value).flatMap(key => moduleAliases[key] ?? key)),
-  'module.type': ArrayOrSingleSchema(z.enum(ModuleType.values()))
+  ).transform(value => [].concat(value).flatMap(key => moduleAliases[key] ?? key))
 }).partial()
 
-export function computeOverridable (overridable, properties, presets = {}) {
+export function computeOverridable (overridable, conditionValues, presets = {}) {
   return Object.assign(
     omit(overridable, ['override']),
     ...[].concat(overridable.override)
@@ -26,24 +26,24 @@ export function computeOverridable (overridable, properties, presets = {}) {
       .filter(
         override => override != null
           && Object.entries(override.for).every(
-            ([property, values]) => [].concat(values).includes(properties[property])
+            ([condition, values]) => [].concat(values).includes(conditionValues[condition])
           )
       )
       .map(v => omit(v, ['for']))
   )
 }
 
-const OverrideSchema = (schema, propertiesSchema = DefaultPropertiesSchema) =>
+const OverrideSchema = (schema, conditionsSchema = DefaultConditionsSchema) =>
   schema.partial().extend({
-    for: propertiesSchema
+    for: conditionsSchema
   })
 
-const OverridableSchema = (schema, { propertiesSchema, presets = [] } = {}) => schema.extend({
+const OverridableSchema = (schema, { conditionsSchema, presets = [] } = {}) => schema.extend({
   override: ArrayOrSingleSchema(
     !presets.length
-      ? OverrideSchema(schema, propertiesSchema)
+      ? OverrideSchema(schema, conditionsSchema)
       : z.union([
-        OverrideSchema(schema, propertiesSchema),
+        OverrideSchema(schema, conditionsSchema),
         z.strictObject({
           preset: z.enum(presets)
         })
