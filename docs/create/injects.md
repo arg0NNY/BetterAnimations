@@ -153,9 +153,9 @@ When parsed in the context of animation type `exit`:
 }
 ```
 
-## Lazy injects
+## Lazy Injects
 
-_Lazy injects_ (or _Callbacks_), unlike regular _injects_, which are parsed immediately,
+_Lazy Injects_ (or _Callbacks_), unlike regular _injects_, which are parsed immediately,
 transform into function and parse their contents only when this function is called.
 
 One of the most commonly used _lazy inject_ is [`var.set`](/reference/injects/general#var.set),

@@ -45,7 +45,7 @@ An array of or a single string containing the key of a [Module](/usage/modules) 
 
 A boolean indicating whether Debug Mode is enabled. See [Debug Mode](/create/debug-mode).
 
-Also accepts `"enter"` and `"exit"` to enable Debug Mode only for a specific animation type.
+Also accepts `"enter"` and `"exit"` to enable Debug Mode only for a specific type of animation.
 
 ## Execution definition
 
