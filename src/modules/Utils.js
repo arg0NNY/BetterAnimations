@@ -3,6 +3,7 @@ import AnimationType from '@/enums/AnimationType'
 import { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChannelList'
 import Logger from '@/modules/Logger'
 import Config from '@/modules/Config'
+import { guildChannelPath } from '@/patches/AppView/patchAppView'
 
 export default new class Utils {
   get name () { return 'Utils' }
@@ -21,5 +22,9 @@ export default new class Utils {
 
   getCurrentGuildChannels () {
     return currentGuildChannels
+  }
+
+  getGuildChannelPath () {
+    return guildChannelPath
   }
 }
