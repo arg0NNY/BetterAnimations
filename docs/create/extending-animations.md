@@ -120,7 +120,7 @@ Animation defined in the example above essentially is equivalent to:
 }
 ```
 
-You may also pass an array of [Animate](/reference/animate) definitions to [`extends`](/reference/animate#extends) property.
+You may also pass an array of [Animate](/reference/animate) definitions to the [`extends`](/reference/animate#extends) property.
 Their properties will be merged the same way in the exact order they were defined.
 
 Let's take this [Animate](/reference/animate) definition tree as an example:
@@ -334,7 +334,7 @@ animate
     └── /onDestroyed
 ```
 
-This process may seem difficult to follow, but normally you will have only 1-level deep [`extends`](/reference/animate#extends) tree inside a single [Animate](/reference/animate) definition.
+This process may seem difficult to follow, but normally you will only have 1-level deep [`extends`](/reference/animate#extends) tree inside a single [Animate](/reference/animate) definition.
 This example is just to showcase the recursive nature of the process.
 The recursiveness comes in handy and is pretty much straightforward when you [build composite animations](#building-composite-animations).
 
