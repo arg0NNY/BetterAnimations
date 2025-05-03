@@ -97,7 +97,7 @@ export default defineConfig({
             { text: 'Anime', link: '/reference/injects/anime' },
             { text: 'Operators', link: '/reference/injects/operators' },
             { text: 'Math', link: '/reference/injects/math' },
-            { text: 'Accordion', link: '/reference/injects/accordion' },
+            { text: 'Accordions', link: '/reference/injects/accordions' },
             { text: 'Snippets', link: '/reference/injects/snippets' }
           ]
         }

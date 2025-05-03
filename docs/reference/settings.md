@@ -6,6 +6,8 @@ outline: deep
 
 The definition of the settings of an [Animation](./animation).
 
+Defined inside the [`settings`](./animation#settings) property of an [Animation](./animation).
+
 ## Properties
 
 ### `duration` <Badge type="info" text="optional" />

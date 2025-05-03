@@ -6,6 +6,8 @@ outline: deep
 
 An [Overridable](/create/overridables) containing the meta information of an [Animation](./animation).
 
+Defined inside the [`meta`](./animation#meta) property of an [Animation](./animation).
+
 ## Properties
 
 ### `intersect` <Badge type="info" text="optional" />
