@@ -1,5 +1,4 @@
 <script setup>
-import { Vue3Lottie } from 'vue3-lottie'
 import expandCollapse from '../assets/lottie/expand-collapse.json'
 </script>
 
@@ -87,9 +86,7 @@ Learn more about each setting at [Animation Settings](./animation-settings).
 
 **Expand/Collapse Animations** is an internal _BetterAnimations_'s Animation that executes before Enter animation (**Expand**) or after Exit animation (**Collapse**).
 
-<ClientOnly>
-    <Vue3Lottie :animation-data="expandCollapse" />
-</ClientOnly>
+<Lottie :animation-data="expandCollapse" />
 
 **Expand** animation smoothly takes up the required space for the element when it appears.
 For example, when a new message is sent in the channel it smoothly pushes all the messages above it before executing the Enter animation to avoid the sudden shift.

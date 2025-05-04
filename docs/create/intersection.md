@@ -1,5 +1,4 @@
 <script setup>
-import { Vue3Lottie } from 'vue3-lottie'
 import intersection from '../assets/lottie/intersection.json'
 </script>
 
@@ -8,9 +7,7 @@ import intersection from '../assets/lottie/intersection.json'
 _BetterAnimations_ intersects Animation instances to create seamless transitions between unfinished Enter and Exit
 animations.
 
-<ClientOnly>
-    <Vue3Lottie :animation-data="intersection" />
-</ClientOnly>
+<Lottie :animation-data="intersection" />
 
 > [!NOTE]
 > Intersection happens only if [Module](/usage/modules) is of type [_Reveal_](/usage/basics#reveal)

@@ -1,5 +1,4 @@
 <script setup>
-import { Vue3Lottie } from 'vue3-lottie'
 import internalImplemented from '../assets/lottie/accordions-internal-implemented.json'
 import topBottom from '../assets/lottie/accordions-margin-top-bottom.json'
 import leftRight from '../assets/lottie/accordions-margin-left-right.json'
@@ -17,9 +16,7 @@ which will be executed **before and after the animation itself**. See [Lifecycle
 However, you may implement Accordion into your Animation for it to be executed **simultaneously**
 with the rest of your Animation.
 
-<ClientOnly>
-    <Vue3Lottie :animation-data="internalImplemented" />
-</ClientOnly>
+<Lottie :animation-data="internalImplemented" />
 
 ## Implementing Accordions
 
@@ -77,10 +74,8 @@ For example, Accordion of type `marginTop` will animate the [`margin-top`](https
 to `{marginTop}px`, where `marginTop` and `marginBottom` are the corresponding original [`margin`](https://developer.mozilla.org/en-US/docs/Web/CSS/margin) values of the [Container](./layout#container)
 and `offsetHeight` is the [`offsetHeight`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetHeight) value of the [Element](./layout#element). See the <InjectRef inject="accordion" text="full definition" returns />.
 
-<ClientOnly>
-    <Vue3Lottie :animation-data="topBottom" />
-    <Vue3Lottie :animation-data="leftRight" />
-</ClientOnly>
+<Lottie :animation-data="topBottom" />
+<Lottie :animation-data="leftRight" />
 
 > [!NOTE]
 > Why not use [`width`](https://developer.mozilla.org/en-US/docs/Web/CSS/width) and [`height`](https://developer.mozilla.org/en-US/docs/Web/CSS/height) instead?
