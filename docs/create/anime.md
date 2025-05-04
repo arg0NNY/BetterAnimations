@@ -45,7 +45,7 @@ animate(element, {
 ```
 
 > [!TIP]
-> This example uses inject [`element`](/reference/injects/general#element). Injects are covered at [Injects](./injects).
+> This example uses inject <InjectRef inject="element" />. Injects are covered at [Injects](./injects).
 > 
 > At the moment all you have to know is that `{ "inject": "element" }` will be replaced with an instance
 > of an [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element) animation currently executes for. See [Layout](./layout#element).

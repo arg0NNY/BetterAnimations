@@ -12,7 +12,7 @@ What the **Element** exactly is depends on a [Module](/usage/modules) — Toolti
 However, for most of the Animations, what the **Element** is doesn't matter, with the exception being the Animations
 made for a specific Module, most commonly for [Backdrop](/usage/modules#modals-backdrop).
 
-To get the reference to the **Element** use inject [`element`](/reference/injects/general#element):
+To get the reference to the **Element** use inject <InjectRef inject="element" />:
 ```json
 {
   "key": "my-animation",
@@ -38,7 +38,7 @@ It exists for multiple purposes:
   to [`overflow`](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow) property when disabled.
 - To make [Accordion Animations](./accordions) without interfering with [**Element**](#element)'s position and size.
 
-To get the reference to the **Container** use inject [`container`](/reference/injects/general#container):
+To get the reference to the **Container** use inject <InjectRef inject="container" />:
 ```json
 {
   "key": "my-animation",
@@ -123,7 +123,7 @@ Container
 > [!WARNING]
 > Provided hast elements are sanitized before being inserted into DOM. See [sanitization schema](https://github.com/arg0NNY/BetterAnimations/blob/main/src/modules/animation/hastSanitizeSchema.js).
 
-To get the reference to the created Hast elements use inject [`hast`](/reference/injects/general#hast):
+To get the reference to the created Hast elements use inject <InjectRef inject="hast" />:
 ```json
 {
   "key": "my-animation",

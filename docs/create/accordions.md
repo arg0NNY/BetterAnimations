@@ -50,7 +50,7 @@ to the [`accordion`](/reference/meta#accordion) property of the Animation's [Met
 
 ## Using premade Accordions
 
-_BetterAnimations_ provides inject [`accordion`](/reference/injects/accordions#accordion), which returns the premade **raw** [Animate](/reference/animate) definition of the Accordion animation,
+_BetterAnimations_ provides inject <InjectRef inject="accordion" />, which returns the premade **raw** [Animate](/reference/animate) definition of the Accordion animation,
 which you can pass to the [`extends`](/reference/animate#extends) property of your Animation. See [Extending Animations](./extending-animations).
 
 ```json
@@ -70,12 +70,12 @@ which you can pass to the [`extends`](/reference/animate#extends) property of yo
 }
 ```
 
-Inject [`accordion`](/reference/injects/accordions#accordion) provides 4 types of Accordion animations: `marginTop`, `marginBottom`, `marginLeft`, `marginRight`.
+Inject <InjectRef inject="accordion" /> provides 4 types of Accordion animations: `marginTop`, `marginBottom`, `marginLeft`, `marginRight`.
 All of these leverage the negative values of the [`margin`](https://developer.mozilla.org/en-US/docs/Web/CSS/margin) properties to offset the neighboring elements.
 
 For example, Accordion of type `marginTop` will animate the [`margin-top`](https://developer.mozilla.org/en-US/docs/Web/CSS/margin-top) property of the [Container](./layout#container) from `{-1 * (offsetHeight + marginBottom)}px`
 to `{marginTop}px`, where `marginTop` and `marginBottom` are the corresponding original [`margin`](https://developer.mozilla.org/en-US/docs/Web/CSS/margin) values of the [Container](./layout#container)
-and `offsetHeight` is the [`offsetHeight`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetHeight) value of the [Element](./layout#element). See the [full definition](/reference/injects/accordions#accordion-returns).
+and `offsetHeight` is the [`offsetHeight`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetHeight) value of the [Element](./layout#element). See the <InjectRef inject="accordion" text="full definition" returns />.
 
 <ClientOnly>
     <Vue3Lottie :animation-data="topBottom" />
@@ -89,7 +89,7 @@ and `offsetHeight` is the [`offsetHeight`](https://developer.mozilla.org/en-US/d
 > It may introduce unnecessary complications for the rest of the Animation since the [Container](./layout#container) is expected to always be the same size as the [Element](./layout#element).
 > See [Layout](./layout).
 
-Inject [`accordion`](/reference/injects/accordions#accordion) uses the following types of Accordions by default:
+Inject <InjectRef inject="accordion" /> uses the following types of Accordions by default:
 - For [_Messages_](/usage/modules#messages) animations of type `enter` — `marginBottom`
 - For [_Members Sidebar_](/usage/modules#members-sidebar) and [_Thread Sidebar_](/usage/modules#thread-sidebar) — `marginRight`
 
@@ -112,7 +112,7 @@ Inject [`accordion`](/reference/injects/accordions#accordion) uses the following
 }
 ```
 
-You can override the default Accordion type by passing the [`type`](/reference/injects/accordions#accordion-parameters-type) parameter:
+You can override the default Accordion type by passing the <InjectRef inject="type" /> parameter:
 ```json
 {
   "key": "fade",

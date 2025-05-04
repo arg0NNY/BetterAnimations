@@ -373,11 +373,11 @@ you may expect this example to work completely fine:
 
 However, let's remember that **[`extends`](/reference/animate#extends) is parsed before all the other properties** of [Animate](/reference/animate) (see [Lifecycle](./lifecycle)).
 Therefore, injects inside [`extends`](/reference/animate#extends) will be parsed before the injects in the rest of the properties,
-which will result in inject [`var.get`](/reference/injects/general#var-get) returning `undefined` in the example above,
+which will result in inject <InjectRef inject="var.get" /> returning `undefined` in the example above,
 since [`onBeforeLayout`](/reference/animate#onbeforelayout) has not been triggered yet.
 
 To fix this issue, we'll need to wrap the [Animate](/reference/animate) definition inside [`extends`](/reference/animate#extends)
-with inject [`raw`](/reference/injects/general#raw):
+with inject <InjectRef inject="raw" />:
 ```json
 {
   "key": "my-animation",
@@ -418,13 +418,13 @@ with inject [`raw`](/reference/injects/general#raw):
 ```
 
 Now, the injects that we defined inside [`extends`](/reference/animate#extends) will be merged into the root properties
-**in their raw form** after the extension process completes since inject [`raw`](/reference/injects/general#raw)
+**in their raw form** after the extension process completes since inject <InjectRef inject="raw" />
 will prevent the parser from going into the contents of the `value` and will return the value as-is.
 Therefore, these injects will be parsed later in the desired stages of [Lifecycle](./lifecycle).
 
 ## Building composite animations
 
-To build composite animations, _BetterAnimations_ provides inject [`load`](/reference/injects/general#load) that accepts the key of the Animation
+To build composite animations, _BetterAnimations_ provides inject <InjectRef inject="load" /> that accepts the key of the Animation
 and returns its **raw** [Animate](/reference/animate) definition, from which you can extend your Animation as such:
 ```json
 {
@@ -574,8 +574,8 @@ and returns its **raw** [Animate](/reference/animate) definition, from which you
 > Consider using [Snippets](./snippets) instead when building similar animations.
 
 > [!TIP]
-> Injects [`pick`](/reference/injects/general#pick) and [`omit`](/reference/injects/general#omit) can be useful in conjunction
-> with inject [`load`](/reference/injects/general#load) when you want to extend from a subset of the [Animate](/reference/animate) properties:
+> Injects <InjectRef inject="pick" /> and <InjectRef inject="omit" /> can be useful in conjunction
+> with inject <InjectRef inject="load" /> when you want to extend from a subset of the [Animate](/reference/animate) properties:
 > ```json
 > {
 >   "key": "my-animation",

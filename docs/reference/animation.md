@@ -67,7 +67,7 @@ describing execution for animation types separately.
 [Animate](./animate).
 
 > [!TIP]
-> Use inject [`type`](./injects/general#type) to determine the current animation type inside `animate`.
+> Use inject <InjectRef inject="type" /> to determine the current animation type inside `animate`.
 
 ## Example
 

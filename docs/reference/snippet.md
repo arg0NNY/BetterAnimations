@@ -21,7 +21,7 @@ An object containing the default values for the parameters of the snippet. See [
 Snippet contents.
 
 > [!TIP]
-> Use inject [`snippet.params`](./injects/snippets#snippet-params) to get the value of a parameter.
+> Use inject <InjectRef inject="snippet.params" /> to get the value of a parameter.
 
 ## Example
 

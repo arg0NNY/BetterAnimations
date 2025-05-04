@@ -35,7 +35,7 @@ with a unique identifier ([`key`](/reference/snippet#key)) and the contents of t
 
 ## Usage
 
-To use a snippet, use inject [`snippet`](/reference/injects/snippets#snippet) and provide the `key` of a snippet you want to use:
+To use a snippet, use inject <InjectRef inject="snippet" /> and provide the `key` of a snippet you want to use:
 ```json
 {
   "key": "fade",
@@ -57,7 +57,7 @@ To use a snippet, use inject [`snippet`](/reference/injects/snippets#snippet) an
 }
 ```
 
-When parsed, inject [`snippet`](/reference/injects/snippets#snippet) will return the **parsed** contents of the snippet.
+When parsed, inject <InjectRef inject="snippet" /> will return the **parsed** contents of the snippet.
 
 The definition above essentially is equivalent to:
 ```json
@@ -90,7 +90,7 @@ Snippets can be used at any place inside _injectables_.
 
 ## Parameters
 
-Snippets can accept parameters. To pass the parameters to the snippet, use the `params` property of inject [`snippet`](/reference/injects/snippets#snippet):
+Snippets can accept parameters. To pass the parameters to the snippet, use the `params` property of inject <InjectRef inject="snippet" />:
 ```json
 {
   "key": "fade",
@@ -116,7 +116,7 @@ Snippets can accept parameters. To pass the parameters to the snippet, use the `
 }
 ```
 
-To use the parameters inside a snippet, use inject [`snippet.params`](/reference/injects/snippets#snippet-params)
+To use the parameters inside a snippet, use inject <InjectRef inject="snippet.params" />
 with the `name` of a parameter you want to get the value of:
 ```json
 {

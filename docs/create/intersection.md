@@ -121,7 +121,7 @@ Covering the second case is a bit more complex:
 Here we couldn't just simply remove [`from`](https://animejs.com/documentation/animation/tween-parameters/from) value and set [`to`](https://animejs.com/documentation/animation/tween-parameters/to) to `1` like we did with the previous case,
 as the [Element](./layout#element) has opacity `1` by default, so there will be no visible animation under normal circumstances, since it will animate `opacity` from `1` to `1`.
 
-To fix this issue, we used inject [`isIntersected`](/reference/injects/general#isIntersected) to cover two cases:
+To fix this issue, we used inject <InjectRef inject="isIntersected" /> to cover two cases:
 - **If intersected** (`isIntersected` is `true`)
 
   If animation has been intersected, we can certainly tell that the current `opacity` value will be in some intermediate

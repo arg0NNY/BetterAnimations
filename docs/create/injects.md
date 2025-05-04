@@ -11,7 +11,7 @@ They provide useful utilities and customizability.
 To call an inject declare `inject` property containing the name of the inject you want to call
 anywhere inside _injectable_ and pass **parameters** that this specific inject accepts.
 
-For example, inject [`element`](/reference/injects/general#element), according to [Reference](/reference/injects/general#element), when used with no parameters,
+For example, inject <InjectRef inject="element" />, according to <InjectRef inject="element" text="Reference" />, when used with no parameters,
 returns a reference to an animating [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element):
 ```json
 {
@@ -47,7 +47,7 @@ animate(element, { // `element` is a reference to an animating `Element`
 })
 ```
 
-However, according to the same [Reference](/reference/injects/general#element), it may accept optional parameters
+However, according to the same <InjectRef inject="element" text="Reference" />, it may accept optional parameters
 `selector` and `multiple` to query elements inside an animating element:
 ```json
 {
@@ -88,7 +88,7 @@ animate(element.querySelectorAll('.some-class'), {
 })
 ```
 
-To consolidate, let's try to use inject [`type`](/reference/injects/general#type), which, according to [Reference](/reference/injects/general#type), when declared with parameters
+To consolidate, let's try to use inject <InjectRef inject="type" />, which, according to <InjectRef inject="type" text="Reference" />, when declared with parameters
 `enter` and `exit`, will return the value passed under the property corresponding to the current animation type:
 ```json
 {
@@ -158,7 +158,7 @@ When parsed in the context of animation type `exit`:
 _Lazy Injects_ (or _Callbacks_), unlike regular _injects_, which are parsed immediately,
 transform into function and parse their contents only when this function is called.
 
-One of the most commonly used _lazy inject_ is [`var.set`](/reference/injects/general#var.set),
+One of the most commonly used _lazy inject_ is <InjectRef inject="var.set" />,
 which sets the provided `value` in the global context of the animation as a variable under specified `name`:
 ```json
 {
@@ -202,8 +202,8 @@ which sets the provided `value` in the global context of the animation as a vari
 > At the moment all you have to know is that any function (_lazy inject_) passed to `onBeforeCreate`
 > will be called right before `anime` property is parsed.
 
-To get the value of the variable named `opacity` we just assigned using [`var.set`](/reference/injects/general#var.set),
-we'll need to use inject [`var.get`](/reference/injects/general#var.get):
+To get the value of the variable named `opacity` we just assigned using <InjectRef inject="var.set" />,
+we'll need to use inject <InjectRef inject="var.get" />:
 ```json
 {
   "key": "my-animation",

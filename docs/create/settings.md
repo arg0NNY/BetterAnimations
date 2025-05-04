@@ -108,7 +108,7 @@ To modify the range pass an object with properties `from` and `to` instead:
 }
 ```
 
-To use the current value of this setting use inject [`duration`](/reference/injects/settings#duration):
+To use the current value of this setting use inject <InjectRef inject="duration" />:
 ```json
 {
   "key": "scale",
@@ -208,7 +208,7 @@ and set the default value for it inside [`defaults`](/reference/settings#default
 
 This will activate the [**Easing**](/usage/advanced-animation-settings#easing) setting for your Animation.
 
-To use the current value of this setting use inject [`easing`](/reference/injects/settings#easing):
+To use the current value of this setting use inject <InjectRef inject="easing" />:
 ```json
 {
   "key": "scale",
@@ -390,7 +390,7 @@ Or use aliases `"enum"` or `"simple"` (see [Reference](/reference/settings#posit
 }
 ```
 
-To use the current value of this setting use inject [`position`](/reference/injects/settings#position):
+To use the current value of this setting use inject <InjectRef inject="position" />:
 ```json
 {
   "key": "scale",
@@ -506,7 +506,7 @@ and set the default value for it inside [`defaults`](/reference/settings#default
 }
 ```
 
-In **Precise** mode inject [`position`](/reference/injects/settings#position) will return [`<length-percentage> <length-percentage>`](https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage) CSS value
+In **Precise** mode inject <InjectRef inject="position" /> will return [`<length-percentage> <length-percentage>`](https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage) CSS value
 based on the requested `unit`, which is `px` by default, relative to the Container:
 ```json
 {
@@ -527,7 +527,7 @@ based on the requested `unit`, which is `px` by default, relative to the Contain
 }
 ```
 
-Inject [`position`](/reference/injects/settings#position) clips the values to fit them into the Container bounds,
+Inject <InjectRef inject="position" /> clips the values to fit them into the Container bounds,
 use the parameter `clip` to disable the clipping and get the original values:
 ```json
 {
@@ -566,7 +566,7 @@ You can also get `x` and `y` values separately by passing the parameter `value`:
 }
 ```
 
-See [Reference](/reference/injects/settings#position) to learn more about inject [`position`](/reference/injects/settings#position) usage in **Precise** mode.
+See <InjectRef inject="position" text="Reference" /> to learn more about inject <InjectRef inject="position" /> usage in **Precise** mode.
 
 ## Direction
 
@@ -648,7 +648,7 @@ Or use an alias `true` (see [Reference](/reference/settings#direction)):
 
 This will activate the [**Direction**](/usage/animation-settings#direction) setting for your Animation.
 
-To use the current value of this setting use inject [`direction`](/reference/injects/settings#direction):
+To use the current value of this setting use inject <InjectRef inject="direction" />:
 ```json
 {
   "key": "slip",
@@ -761,7 +761,7 @@ and set the default value for it inside [`defaults`](/reference/settings#default
 This will activate the [**Variant**](/usage/animation-settings#variant) setting for your Animation
 with the options you provided.
 
-To use the current value of this setting use inject [`variant`](/reference/injects/settings#variant):
+To use the current value of this setting use inject <InjectRef inject="variant" />:
 ```json
 {
   "key": "backdrop-solid",

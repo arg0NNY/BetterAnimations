@@ -6,7 +6,7 @@ const md = MarkdownIt({ html: true })
   .use(headersPlugin, { level: [2] })
 
 export default {
-  watch: ['./injects/*.md'],
+  watch: ['../reference/injects/*.md'],
   load (files) {
     return Object.fromEntries(
       files.flatMap(file => {

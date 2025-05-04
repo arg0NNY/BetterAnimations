@@ -26,7 +26,7 @@ Accepts `true` or an object containing the following properties:
 ```
 
 > [!TIP]
-> Use inject [`duration`](./injects/settings#duration) to get the current value of this setting.
+> Use inject <InjectRef inject="duration" /> to get the current value of this setting.
 
 ### `easing` <Badge type="info" text="optional" />
 
@@ -35,7 +35,7 @@ Activates the [Easing](/usage/advanced-animation-settings#easing) setting for an
 Accepts `true`.
 
 > [!TIP]
-> Use inject [`easing`](./injects/settings#easing) to get the current value of this setting.
+> Use inject <InjectRef inject="easing" /> to get the current value of this setting.
 
 ### `variant` <Badge type="info" text="optional" />
 
@@ -46,7 +46,7 @@ Accepts a non-empty array of objects containing the following properties:
 - **`name`** — A string containing the display name of a variant.
 
 > [!TIP]
-> Use inject [`variant`](./injects/settings#variant) to get the current value of this setting.
+> Use inject <InjectRef inject="variant" /> to get the current value of this setting.
 
 ### `position` <Badge type="info" text="optional" />
 
@@ -69,7 +69,7 @@ Accepts `true`, `"precise"`, `"enum"`, `"simple"` or a non-empty array of values
 ```
 
 > [!TIP]
-> Use inject [`position`](./injects/settings#position) to get the current value of this setting.
+> Use inject <InjectRef inject="position" /> to get the current value of this setting.
 
 ### `direction` <Badge type="info" text="optional" />
 
@@ -84,7 +84,7 @@ Accepts `true` or a non-empty array of values: `"upwards"`, `"downwards"`, `"lef
 ```
 
 > [!TIP]
-> Use inject [`direction`](./injects/settings#direction) to get the current value of this setting.
+> Use inject <InjectRef inject="direction" /> to get the current value of this setting.
 
 ### `overflow` <Badge type="info" text="optional" />
 

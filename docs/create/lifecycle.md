@@ -136,8 +136,8 @@ To fix the issue in the case above, move `var.set` callback to `beforeLayout` ho
 > [!TIP]
 > Hooks are not strictly bound to [_lazy injects_](./injects#lazy-injects), they can also accept any [trusted function](./parsing#trusted-functions).
 > 
-> For example, inject [`utils.set`](/reference/injects/anime#utils.set) returns a callback function that reverts styles to their original state.
-> We may save this callback using inject [`var.set`](/reference/injects/general#var.set) and pass it to the `destroyed` hook using inject [`var.get`](/reference/injects/general#var.get):
+> For example, inject <InjectRef inject="utils.set" /> returns a callback function that reverts styles to their original state.
+> We may save this callback using inject <InjectRef inject="var.set" /> and pass it to the `destroyed` hook using inject <InjectRef inject="var.get" />:
 > ```json
 > {
 >   "key": "my-animation",
@@ -163,11 +163,11 @@ To fix the issue in the case above, move `var.set` callback to `beforeLayout` ho
 > }
 > ```
 >
-> However, if you try to execute the animation above, you'll end up seeing [`utils.set`](/reference/injects/anime#utils.set) execute on `destroyed` hook instead of on `beforeBegin`.
-> That happens because [`utils.set`](/reference/injects/anime#utils.set), just like [`var.set`](/reference/injects/general#var.set), is a [_lazy inject_](./injects#lazy-injects) — it transforms into a function and parses its contents only when this function is called.
+> However, if you try to execute the animation above, you'll end up seeing <InjectRef inject="utils.set" /> execute on `destroyed` hook instead of on `beforeBegin`.
+> That happens because <InjectRef inject="utils.set" />, just like <InjectRef inject="var.set" />, is a [_lazy inject_](./injects#lazy-injects) — it transforms into a function and parses its contents only when this function is called.
 > So what we essentially ended up doing in the example above is storing the `utils.set` itself, not the callback it returns.
 > 
-> To fix this issue, we can immediately call it while parsing using inject [`call`](/reference/injects/general#call) as such:
+> To fix this issue, we can immediately call it while parsing using inject <InjectRef inject="call" /> as such:
 > ```json
 > {
 >   "key": "my-animation",
