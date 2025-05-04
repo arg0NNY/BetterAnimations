@@ -33,17 +33,11 @@ export const ElementInjectSchema = ({ element }) => ElementSchema(Inject.Element
 
 export const HastInjectSchema = ({ wrapper }) => ElementSchema(Inject.Hast, wrapper, false)
 
-export const ContainerInjectSchema = InjectWithMeta(
-  ({ container }) => InjectSchema(Inject.Container)
-    .transform(() => container),
-  { immediate: ['container'] }
-)
+export const ContainerInjectSchema = ({ container }) => InjectSchema(Inject.Container)
+  .transform(() => container)
 
-export const AnchorInjectSchema = InjectWithMeta(
-  ({ anchor }) => InjectSchema(Inject.Anchor)
-    .transform(() => anchor instanceof Element ? anchor : undefined),
-  { immediate: ['anchor'] }
-)
+export const AnchorInjectSchema = ({ anchor }) => InjectSchema(Inject.Anchor)
+  .transform(() => anchor instanceof Element ? anchor : undefined)
 
 export const ModuleInjectSchema = InjectWithMeta(
   SwitchSchema(Inject.Module, ModuleKey.values(), {
@@ -209,12 +203,9 @@ export const MouseInjectSchema = ({ containerRect }) => InjectSchema(Inject.Mous
   }
 })
 
-export const IsIntersectedInjectSchema = InjectWithMeta(
-  SwitchSchema(Inject.IsIntersected, [true, false], {
-    currentValue: ctx => !!ctx.isIntersected,
-  }),
-  { immediate: ['isIntersected'] }
-)
+export const IsIntersectedInjectSchema = SwitchSchema(Inject.IsIntersected, [true, false], {
+  currentValue: ctx => !!ctx.isIntersected,
+})
 
 export const GetInjectSchema = InjectSchema(Inject.Get).extend({
   target: z.union([

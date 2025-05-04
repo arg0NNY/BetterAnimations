@@ -29,9 +29,6 @@ That is why when you use [Debug Mode](./debug-mode), you might notice some of th
 Immediate injects are injects parsed in advance to the parsing that happens when the animation triggers. See [Initialize stage](#initialize-stage).
 
 Here is the list of all the _immediate injects_ available in _BetterAnimations_:
-- <InjectRef inject="anchor" />
-- <InjectRef inject="container" />
-- <InjectRef inject="isIntersected" />
 - <InjectRef inject="module" />
 - <InjectRef inject="module.type" />
 - <InjectRef inject="type" />

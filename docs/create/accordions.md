@@ -107,7 +107,7 @@ Inject <InjectRef inject="accordion" /> uses the following types of Accordions b
 }
 ```
 
-You can override the default Accordion type by passing the <InjectRef inject="type" /> parameter:
+You can override the default Accordion type by passing the <InjectRef inject="accordion" parameter="type" /> parameter:
 ```json
 {
   "key": "fade",
