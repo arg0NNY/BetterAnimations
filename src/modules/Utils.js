@@ -4,6 +4,8 @@ import { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChann
 import Logger from '@/modules/Logger'
 import Config from '@/modules/Config'
 import { guildChannelPath } from '@/patches/AppView/patchAppView'
+import { injectSchemas, injectTypes } from '@/modules/animation/schemas/InjectableSchema'
+import { safeInjects } from '@/modules/animation/schemas/ParsableAnimateSchema'
 
 export default new class Utils {
   get name () { return 'Utils' }
@@ -26,5 +28,23 @@ export default new class Utils {
 
   getGuildChannelPath () {
     return guildChannelPath
+  }
+
+  Documentation = new class Documentation {
+    buildInjectRefList (predicate = () => true) {
+      return injectTypes
+        .filter(type => predicate(injectSchemas[type], type))
+        .map(type => `- <InjectRef inject="${type}" />`)
+        .join('\n')
+    }
+    buildImmediateInjectRefList () {
+      return this.buildInjectRefList(([, meta]) => !!meta.immediate)
+    }
+    buildLazyInjectRefList () {
+      return this.buildInjectRefList(([, meta]) => meta.lazy)
+    }
+    buildSafeInjectRefList () {
+      return this.buildInjectRefList((_, type) => safeInjects.includes(type))
+    }
   }
 }

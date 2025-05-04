@@ -1,6 +1,5 @@
 import { z } from 'zod'
-import { hasInSettings } from '@/utils/schemas'
-import { InjectSchema, InjectWithMeta, SwitchSchema } from '@/modules/animation/schemas/utils'
+import { hasInSettings, InjectSchema, InjectWithMeta, SwitchSchema } from '@/modules/animation/schemas/utils'
 import Position from '@/enums/Position'
 import Inject from '@/enums/Inject'
 import Setting from '@/enums/AnimationSetting'

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { ArrayOrSingleSchema, parseInjectSchemas } from '@/utils/schemas'
+import { ArrayOrSingleSchema } from '@/utils/schemas'
 import Inject from '@/enums/Inject'
 import ParseStage from '@/enums/ParseStage'
 import { sanitize } from 'hast-util-sanitize'
@@ -16,8 +16,9 @@ import { clearSourceMapDeep, SourceMappedObjectSchema } from '@/modules/animatio
 import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
 import ParsableSchema from '@/modules/animation/schemas/ParsableSchema'
 import AnimeSchema from '@/modules/animation/schemas/AnimeSchema'
+import { parseInjectSchemas } from '@/modules/animation/schemas/utils'
 
-const safeInjects = [
+export const safeInjects = [
   ...Object.keys(parseInjectSchemas(SettingsInjectSchemas)),
   ...Object.keys(parseInjectSchemas(MathInjectSchemas)),
   ...Object.keys(parseInjectSchemas(OperatorsInjectSchemas)),

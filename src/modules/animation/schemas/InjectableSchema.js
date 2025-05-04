@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { formatValuesList, parseInjectSchemas } from '@/utils/schemas'
+import { formatValuesList } from '@/utils/schemas'
 import { formatZodError } from '@/utils/zod'
 import {
   generatedLazyInjectSymbol,
@@ -23,8 +23,9 @@ import { getSourcePath, isSourceMap, SELF_KEY } from '@/modules/animation/source
 import TrustedFunctionSchema, { trust } from '@/modules/animation/schemas/TrustedFunctionSchema'
 import { ObjectDeepBaseSchema } from '@/modules/animation/schemas/ObjectDeepSchema'
 import { RawInjectBaseSchema } from '@/modules/animation/schemas/injects/common'
+import { parseInjectSchemas } from '@/modules/animation/schemas/utils'
 
-const injectSchemas = {
+export const injectSchemas = {
   ...parseInjectSchemas(CommonInjectSchemas),
   ...parseInjectSchemas(AnimeInjectSchemas),
   ...parseInjectSchemas(SettingsInjectSchemas),
@@ -34,7 +35,7 @@ const injectSchemas = {
   ...parseInjectSchemas(AccordionInjectSchemas),
   ...parseInjectSchemas(SnippetInjectSchemas)
 }
-const injectTypes = Object.keys(injectSchemas)
+export const injectTypes = Object.keys(injectSchemas)
 const injectDict = new Spelling(injectTypes)
 
 function assertInjectType (type) {
@@ -93,7 +94,7 @@ const InjectableSchema = (context, env = {}) => {
           return value
 
         try {
-          const [schema, meta = {}] = [].concat(injectSchemas[value.inject])
+          const [schema, meta] = injectSchemas[value.inject]
 
           if (stage === ParseStage.Initialize) {
             if (!schema) {

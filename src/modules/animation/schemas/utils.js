@@ -1,11 +1,47 @@
 import { z } from 'zod'
-import { ArrayOrSingleSchema, buildSwitchSchema, Defined, formatValuesList, hasInSettings } from '@/utils/schemas'
+import { ArrayOrSingleSchema, Defined, formatValuesList } from '@/utils/schemas'
 import { clearSourceMap, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 import { InjectableValidateSchema } from '@/modules/animation/schemas/InjectableSchema'
+import Inject from '@/enums/Inject'
 
 export const InjectSchema = type => SourceMappedObjectSchema.extend({
   inject: z.literal(type)
 }).strict()
+
+export const hasInSettings = (name, has) => (value, ctx) => {
+  if (!has) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `Used '${name}' inject while the corresponding setting is not defined in the animation\'s settings`,
+      path: ['inject']
+    })
+    return z.NEVER
+  }
+  return value
+}
+
+export function InjectWithMeta (
+  schema,
+  {
+    immediate = false,
+    lazy = false,
+    allowed = null
+  } = {}
+) {
+  if (Array.isArray(schema)) return schema
+  return [schema, { immediate, lazy, allowed }]
+}
+
+export const parseInjectSchemas = schemas => Object.fromEntries(
+  Object.entries(schemas)
+    .filter(([key]) => key.endsWith('InjectSchema'))
+    .map(([key, schema]) => [
+      Inject[key.replace(/InjectSchema$/, '')],
+      InjectWithMeta(schema)
+    ])
+)
+
+export const buildSwitchSchema = (keys, value = Defined) => Object.fromEntries([].concat(keys).map(k => [k.toString(), value]))
 
 export function SwitchSchema (inject, valueList, options = {}) {
   const { currentValue, defaultValue, possibleValues, setting } = options
@@ -43,17 +79,6 @@ export function SwitchSchema (inject, valueList, options = {}) {
       else return value
     })
   }
-}
-
-export function InjectWithMeta (
-  schema,
-  {
-    immediate = false,
-    lazy = false,
-    allowed = null
-  }
-) {
-  return [schema, { immediate, lazy, allowed }]
 }
 
 function _queryElement(target, selector, multiple = false) {
