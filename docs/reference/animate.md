@@ -91,6 +91,9 @@ An array of or a single hast [`Element`](https://github.com/syntax-tree/hast?tab
 > [!WARNING]
 > `hast` has a limited set of injects that are allowed for use inside it. See [Layout](/create/layout#inject-restrictions).
 
+> [!TIP]
+> Use inject <InjectRef inject="hast" /> to get the reference to the created elements.
+
 **Example:**
 ```json
 {

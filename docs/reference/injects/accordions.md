@@ -1,6 +1,6 @@
-# Accordions
+# Injects: Accordions
 
-See [Accordions](/create/accordions).
+[Injects](/create/injects) for [Accordions](/create/accordions) implementation.
 
 ## `accordion`
 

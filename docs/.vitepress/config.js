@@ -93,10 +93,12 @@ export default defineConfig({
           text: 'Injects',
           items: [
             { text: 'General', link: '/reference/injects/general' },
-            { text: 'Settings', link: '/reference/injects/settings' },
+            { text: 'Object', link: '/reference/injects/object' },
+            { text: 'Array', link: '/reference/injects/array' },
             { text: 'Anime', link: '/reference/injects/anime' },
-            { text: 'Operators', link: '/reference/injects/operators' },
+            { text: 'Settings', link: '/reference/injects/settings' },
             { text: 'Math', link: '/reference/injects/math' },
+            { text: 'Operators', link: '/reference/injects/operators' },
             { text: 'Accordions', link: '/reference/injects/accordions' },
             { text: 'Snippets', link: '/reference/injects/snippets' }
           ]

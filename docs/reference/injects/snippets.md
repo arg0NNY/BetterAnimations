@@ -1,5 +1,3 @@
-# Snippets
+# Injects: Snippets
 
-::: tip 🚧 WORK IN PROGRESS
-This page is yet to be written.
-:::
+[Injects](/create/injects) for [Snippet](/create/snippets) manipulation.

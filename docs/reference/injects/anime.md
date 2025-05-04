@@ -1,5 +1,3 @@
-# Anime
+# Injects: Anime
 
-::: tip 🚧 WORK IN PROGRESS
-This page is yet to be written.
-:::
+[Injects](/create/injects) of [Anime JavaScript Animation Engine](https://animejs.com) utility functions.

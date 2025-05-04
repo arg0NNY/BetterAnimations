@@ -1,5 +1,3 @@
-# Operators
+# Injects: Operators
 
-::: tip 🚧 WORK IN PROGRESS
-This page is yet to be written.
-:::
+[Injects](/create/injects) of JavaScript [Operators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators).

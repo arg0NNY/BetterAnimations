@@ -276,6 +276,31 @@ animate(element, {
 > 
 > It is only to give the general idea of how Animation Lifecycle works. Learn more at [Lifecycle](./lifecycle).
 
+To get the values of the arguments received by the _lazy inject_ use inject <InjectRef inject="arguments" />:
+```json
+{
+  "key": "my-animation",
+  "name": "My Animation",
+  "animate": {
+    "anime": { // [!code focus:15]
+      "targets": { "inject": "element" },
+      "parameters": {
+        "duration": 200,
+        "ease": "inOutSine",
+        "scale": {
+          "inject": "function",
+          "return": {
+            "a": { "inject": "arguments", "index": 2 }, // [!code highlight]
+            "inject": "-",
+            "b": { "inject": "arguments", "index": 1 } // [!code highlight]
+          }
+        }
+      }
+    }
+  }
+}
+```
+
 ## Reference
 
 We have only covered a handful of injects out of many more provided by _BetterAnimations_.
