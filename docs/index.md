@@ -7,7 +7,7 @@ hero:
   text: "Discord Client Mod\nfor Animations"
   tagline: "Bring your Discord app to life — tweak, create, animate. A BetterDiscord plugin."
   image:
-    src: /assets/logo.svg
+    src: /logo.svg
     alt: BetterAnimations
   actions:
     - theme: brand

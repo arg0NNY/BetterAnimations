@@ -7,7 +7,7 @@ export default defineConfig({
   description: 'Discord Client Mod for Animations',
   cleanUrls: true,
   themeConfig: {
-    logo: '/assets/logo.svg',
+    logo: '/logo.svg',
 
     nav: [
       { text: 'Home', link: '/' },
