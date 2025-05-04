@@ -11,7 +11,7 @@ import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/sett
 import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
 import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/operators'
 import * as ArrayInjectSchemas from '@/modules/animation/schemas/injects/array'
-import * as SnippetInjectSchemas from '@/modules/animation/schemas/injects/snippet'
+import * as SnippetsInjectSchemas from '@/modules/animation/schemas/injects/snippets'
 import { clearSourceMapDeep, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
 import ParsableSchema from '@/modules/animation/schemas/ParsableSchema'
@@ -23,7 +23,7 @@ export const safeInjects = [
   ...Object.keys(parseInjectSchemas(MathInjectSchemas)),
   ...Object.keys(parseInjectSchemas(OperatorsInjectSchemas)),
   ...Object.keys(parseInjectSchemas(ArrayInjectSchemas)),
-  ...Object.keys(parseInjectSchemas(SnippetInjectSchemas)),
+  ...Object.keys(parseInjectSchemas(SnippetsInjectSchemas)),
   // Anime
   Inject.UtilsRandom,
   Inject.UtilsGet,

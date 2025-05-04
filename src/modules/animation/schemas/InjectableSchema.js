@@ -10,30 +10,32 @@ import ParseStage from '@/enums/ParseStage'
 import Spelling from 'spelling'
 import ErrorManager from '@/modules/ErrorManager'
 import AnimationError from '@/structs/AnimationError'
-import * as CommonInjectSchemas from '@/modules/animation/schemas/injects/common'
+import * as GeneralInjectSchemas from '@/modules/animation/schemas/injects/general'
+import * as ObjectInjectSchemas from '@/modules/animation/schemas/injects/object'
+import * as ArrayInjectSchemas from '@/modules/animation/schemas/injects/array'
 import * as AnimeInjectSchemas from '@/modules/animation/schemas/injects/anime'
 import * as SettingsInjectSchemas from '@/modules/animation/schemas/injects/settings'
 import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
 import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/operators'
-import * as ArrayInjectSchemas from '@/modules/animation/schemas/injects/array'
-import * as AccordionInjectSchemas from '@/modules/animation/schemas/injects/accordion'
-import * as SnippetInjectSchemas from '@/modules/animation/schemas/injects/snippet'
+import * as AccordionsInjectSchemas from '@/modules/animation/schemas/injects/accordions'
+import * as SnippetsInjectSchemas from '@/modules/animation/schemas/injects/snippets'
 import Debug from '@/modules/Debug'
 import { getSourcePath, isSourceMap, SELF_KEY } from '@/modules/animation/sourceMap'
 import TrustedFunctionSchema, { trust } from '@/modules/animation/schemas/TrustedFunctionSchema'
 import { ObjectDeepBaseSchema } from '@/modules/animation/schemas/ObjectDeepSchema'
-import { RawInjectBaseSchema } from '@/modules/animation/schemas/injects/common'
+import { RawInjectBaseSchema } from '@/modules/animation/schemas/injects/general'
 import { parseInjectSchemas } from '@/modules/animation/schemas/utils'
 
 export const injectSchemas = {
-  ...parseInjectSchemas(CommonInjectSchemas),
+  ...parseInjectSchemas(GeneralInjectSchemas),
+  ...parseInjectSchemas(ObjectInjectSchemas),
+  ...parseInjectSchemas(ArrayInjectSchemas),
   ...parseInjectSchemas(AnimeInjectSchemas),
   ...parseInjectSchemas(SettingsInjectSchemas),
   ...parseInjectSchemas(MathInjectSchemas),
   ...parseInjectSchemas(OperatorsInjectSchemas),
-  ...parseInjectSchemas(ArrayInjectSchemas),
-  ...parseInjectSchemas(AccordionInjectSchemas),
-  ...parseInjectSchemas(SnippetInjectSchemas)
+  ...parseInjectSchemas(AccordionsInjectSchemas),
+  ...parseInjectSchemas(SnippetsInjectSchemas)
 }
 export const injectTypes = Object.keys(injectSchemas)
 const injectDict = new Spelling(injectTypes)

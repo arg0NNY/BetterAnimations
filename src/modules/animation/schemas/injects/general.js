@@ -20,10 +20,7 @@ import {
   clearSourceMap,
   clearSourceMapDeep,
   getSourcePath,
-  sourceMappedObjectAssign,
-  SELF_KEY,
-  sourceMappedPick,
-  sourceMappedOmit
+  SELF_KEY
 } from '@/modules/animation/sourceMap'
 import { restrictForbiddenKeys } from '@/modules/animation/keys'
 import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
@@ -31,13 +28,13 @@ import { getRect } from '@/utils/position'
 
 export const ElementInjectSchema = ({ element }) => ElementSchema(Inject.Element, element)
 
-export const HastInjectSchema = ({ wrapper }) => ElementSchema(Inject.Hast, wrapper, false)
-
 export const ContainerInjectSchema = ({ container }) => InjectSchema(Inject.Container)
   .transform(() => container)
 
 export const AnchorInjectSchema = ({ anchor }) => InjectSchema(Inject.Anchor)
   .transform(() => anchor instanceof Element ? anchor : undefined)
+
+export const HastInjectSchema = ({ wrapper }) => ElementSchema(Inject.Hast, wrapper, false)
 
 export const ModuleInjectSchema = InjectWithMeta(
   SwitchSchema(Inject.Module, ModuleKey.values(), {
@@ -56,31 +53,6 @@ export const TypeInjectSchema = InjectWithMeta(
   SwitchSchema(Inject.Type, AnimationType.values(), { currentValue: ctx => ctx.type }),
   { immediate: ['type'] }
 )
-
-export const AssignInjectSchema = InjectSchema(Inject.Assign).extend({
-  target: z.record(z.any()),
-  source: ArrayOrSingleSchema(z.record(z.any())),
-}).transform(({ target, source }) => sourceMappedObjectAssign(target, ...[].concat(source)))
-
-export const PickInjectSchema = InjectSchema(Inject.Pick).extend({
-  target: z.record(z.any()),
-  keys: ArrayOrSingleSchema(
-    z.string().refine(
-      restrictForbiddenKeys,
-      key => ({ message: `Forbidden key: '${key}'` })
-    )
-  )
-}).transform(({ target, keys }) => sourceMappedPick(target, [].concat(keys)))
-
-export const OmitInjectSchema = InjectSchema(Inject.Omit).extend({
-  target: z.record(z.any()),
-  keys: ArrayOrSingleSchema(
-    z.string().refine(
-      restrictForbiddenKeys,
-      key => ({ message: `Forbidden key: '${key}'` })
-    )
-  )
-}).transform(({ target, keys }) => sourceMappedOmit(target, [].concat(keys)))
 
 export const StringTemplateInjectSchema = InjectSchema(Inject.StringTemplate).extend({
   template: z.string(),
@@ -121,12 +93,14 @@ export const FunctionInjectSchema = InjectWithMeta(
   { lazy: true }
 )
 
-export const ArgumentsInjectSchema = (context, env) => InjectSchema(Inject.Arguments).extend({
-  index: z.number().optional()
-}).transform(({ index }) => {
-  const args = env.args ?? []
-  return index === undefined ? args : args[index]
-})
+export const ArgumentsInjectSchema = InjectWithMeta(
+  (context, { args }) => InjectSchema(Inject.Arguments).extend({
+    index: z.number().optional()
+  }).transform(({ index }) => index == null ? args : args[index]),
+  {
+    allowed: ({ env }) => 'args' in env
+  }
+)
 
 export const DebugInjectSchema = InjectWithMeta(
   context => InjectSchema(Inject.Debug).extend({
