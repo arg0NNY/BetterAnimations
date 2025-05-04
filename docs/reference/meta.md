@@ -21,7 +21,7 @@ A boolean indicating whether internal [Expand/Collapse Animation](/usage/basics#
 
 > [!WARNING]
 > Pass `false` to this option only when an Animation implements the [Accordion](/create/accordions) animation itself,
-> whether custom-made or by using [`accordion`](./injects/accordion#accordion) inject.
+> whether custom-made or by using [`accordion`](./injects/accordions#accordion) inject.
 
 ### `revert` <Badge type="info" text="optional" />
 

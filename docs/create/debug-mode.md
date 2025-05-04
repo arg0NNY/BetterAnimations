@@ -47,7 +47,7 @@ See [BetterDiscord Documentation](https://docs.betterdiscord.app/developers/devt
 
 **Types of logs:**
 - **Parsing started/completed** — Marks the start and end of parsing stages:
-  - **Initialize:** General parsing with limited context. Parses [the limited set of injects](./parsing#immediate-injects) and transforms [lazy inject](./injects#lazy-injects) definitions into functions. See [Parsing In-depth](./parsing) to learn more about the **Initialize** stage.
+  - **Initialize:** General parsing with limited context. Parses [the limited set of injects](./parsing#immediate-injects) and transforms [lazy inject](./injects#lazy-injects) definitions into functions. See [Parsing In-depth](./parsing#initialize-stage).
   - **BeforeExtend:** Parses [`onBeforeExtend`](/reference/animate#onbeforeextend).
   - **Extend:** Parses [`extends`](/reference/animate#extends).
   - **BeforeLayout:** Parses [`onBeforeLayout`](/reference/animate#onbeforelayout).

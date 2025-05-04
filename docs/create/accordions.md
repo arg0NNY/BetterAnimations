@@ -17,7 +17,9 @@ which will be executed **before and after the animation itself**. See [Lifecycle
 However, you may implement Accordion into your Animation for it to be executed **simultaneously**
 with the rest of your Animation.
 
-<Vue3Lottie :animation-data="internalImplemented" />
+<ClientOnly>
+    <Vue3Lottie :animation-data="internalImplemented" />
+</ClientOnly>
 
 ## Implementing Accordions
 
@@ -44,11 +46,11 @@ to the [`accordion`](/reference/meta#accordion) property of the Animation's [Met
 
 > [!WARNING]
 > Make sure to apply Accordions only for the Modules in which they have an effect:
-> [_Messages_](./modules#messages), [_Channel List_](./modules#channel-list), [_Members Sidebar_](./modules#members-sidebar), [_Thread Sidebar_](./modules#thread-sidebar).
+> [_Messages_](/usage/modules#messages), [_Channel List_](/usage/modules#channel-list), [_Members Sidebar_](/usage/modules#members-sidebar), [_Thread Sidebar_](/usage/modules#thread-sidebar).
 
 ## Using premade Accordions
 
-_BetterAnimations_ provides inject [`accordion`](/reference/injects/accordions#accordion), which returns the premade [Animate](/reference/animate) definition of the Accordion animation,
+_BetterAnimations_ provides inject [`accordion`](/reference/injects/accordions#accordion), which returns the premade **raw** [Animate](/reference/animate) definition of the Accordion animation,
 which you can pass to the [`extends`](/reference/animate#extends) property of your Animation. See [Extending Animations](./extending-animations).
 
 ```json
@@ -71,12 +73,14 @@ which you can pass to the [`extends`](/reference/animate#extends) property of yo
 Inject [`accordion`](/reference/injects/accordions#accordion) provides 4 types of Accordion animations: `marginTop`, `marginBottom`, `marginLeft`, `marginRight`.
 All of these leverage the negative values of the [`margin`](https://developer.mozilla.org/en-US/docs/Web/CSS/margin) properties to offset the neighboring elements.
 
-For example, Accordion of type `marginTop` will animate the [`margin-top`](https://developer.mozilla.org/en-US/docs/Web/CSS/margin-top) property of the [Container](./layout#container) from `{(offsetHeight + marginBottom) * -1}px`
+For example, Accordion of type `marginTop` will animate the [`margin-top`](https://developer.mozilla.org/en-US/docs/Web/CSS/margin-top) property of the [Container](./layout#container) from `{-1 * (offsetHeight + marginBottom)}px`
 to `{marginTop}px`, where `marginTop` and `marginBottom` are the corresponding original [`margin`](https://developer.mozilla.org/en-US/docs/Web/CSS/margin) values of the [Container](./layout#container)
 and `offsetHeight` is the [`offsetHeight`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetHeight) value of the [Element](./layout#element). See the [full definition](/reference/injects/accordions#accordion-returns).
 
-<Vue3Lottie :animation-data="topBottom" />
-<Vue3Lottie :animation-data="leftRight" />
+<ClientOnly>
+    <Vue3Lottie :animation-data="topBottom" />
+    <Vue3Lottie :animation-data="leftRight" />
+</ClientOnly>
 
 > [!NOTE]
 > Why not use [`width`](https://developer.mozilla.org/en-US/docs/Web/CSS/width) and [`height`](https://developer.mozilla.org/en-US/docs/Web/CSS/height) instead?
@@ -86,7 +90,7 @@ and `offsetHeight` is the [`offsetHeight`](https://developer.mozilla.org/en-US/d
 > See [Layout](./layout).
 
 Inject [`accordion`](/reference/injects/accordions#accordion) uses the following types of Accordions by default:
-- For [_Messages_](/usage/modules#messages) animations of type `enter` — `marginTop`
+- For [_Messages_](/usage/modules#messages) animations of type `enter` — `marginBottom`
 - For [_Members Sidebar_](/usage/modules#members-sidebar) and [_Thread Sidebar_](/usage/modules#thread-sidebar) — `marginRight`
 
 [Meta](/reference/meta) provides an overridable preset [`accordion`](/reference/meta#presets-accordion) for the default Accordion types (see [Reference](/reference/meta#presets-accordion)):
@@ -117,10 +121,17 @@ You can override the default Accordion type by passing the [`type`](/reference/i
     "accordion": false
   },
   "animate": {
-    "extends": { "inject": "accordion" }, // [!code --]
-    "extends": { // [!code ++:4]
+    "extends": {
       "inject": "accordion",
-      "type": "marginBottom"
+      "type": { // [!code ++:9]
+        "inject": "switch",
+        "value": { "inject": "module" },
+        "case": {
+          "membersSidebar": "marginLeft",
+          "threadSidebar": "marginLeft"
+        },
+        "default": { "inject": "undefined" }
+      }
     },
     "anime": {
       "targets": { "inject": "element" },

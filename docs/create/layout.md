@@ -267,27 +267,93 @@ using the `{container}` selector inside [custom CSS](#css) as such:
 
 [`hast`](/reference/animate#hast) and [`css`](/reference/animate#css) properties of [Animate](/reference/animate)
 have a limited set of injects that are allowed for use inside them:
-- [Settings](/reference/injects/settings)
-- [Math](/reference/injects/math)
-- [Operators](/reference/injects/operators)
-- [Snippets](/reference/injects/snippets)
-- [`utils.random`](/reference/injects/anime#utils.random)
-- [`utils.get`](/reference/injects/anime#utils.get)
-- [`element`](/reference/injects/general#element)
-- [`hast`](/reference/injects/general#hast)
-- [`container`](/reference/injects/general#container)
-- [`anchor`](/reference/injects/general#anchor)
-- [`module`](/reference/injects/general#module)
-- [`module.type`](/reference/injects/general#module.type)
-- [`type`](/reference/injects/general#type)
-- [`assign`](/reference/injects/general#assign)
-- [`string.template`](/reference/injects/general#string.template)
-- [`undefined`](/reference/injects/general#undefined)
-- [`var.get`](/reference/injects/general#var.get)
-- [`rect`](/reference/injects/general#rect)
-- [`window`](/reference/injects/general#window)
-- [`mouse`](/reference/injects/general#mouse)
-- [`isIntersected`](/reference/injects/general#isIntersected)
-- [`if`](/reference/injects/general#if)
-- [`switch`](/reference/injects/general#switch)
-- [`raw`](/reference/injects/general#raw)
+- <InjectRef inject="anchor" />
+- <InjectRef inject="assign" />
+- <InjectRef inject="container" />
+- <InjectRef inject="element" />
+- <InjectRef inject="hast" />
+- <InjectRef inject="if" />
+- <InjectRef inject="isIntersected" />
+- <InjectRef inject="module" />
+- <InjectRef inject="module.type" />
+- <InjectRef inject="mouse" />
+- <InjectRef inject="raw" />
+- <InjectRef inject="rect" />
+- <InjectRef inject="string.template" />
+- <InjectRef inject="switch" />
+- <InjectRef inject="type" />
+- <InjectRef inject="undefined" />
+- <InjectRef inject="var.get" />
+- <InjectRef inject="window" />
+- <InjectRef inject="utils.get" />
+- <InjectRef inject="utils.random" />
+- <InjectRef inject="direction" />
+- <InjectRef inject="duration" />
+- <InjectRef inject="easing" />
+- <InjectRef inject="position" />
+- <InjectRef inject="variant" />
+- <InjectRef inject="math.abs" />
+- <InjectRef inject="math.acos" />
+- <InjectRef inject="math.acosh" />
+- <InjectRef inject="math.asin" />
+- <InjectRef inject="math.asinh" />
+- <InjectRef inject="math.atan2" />
+- <InjectRef inject="math.atan" />
+- <InjectRef inject="math.atanh" />
+- <InjectRef inject="math.cbrt" />
+- <InjectRef inject="math.ceil" />
+- <InjectRef inject="math.clz32" />
+- <InjectRef inject="math.cos" />
+- <InjectRef inject="math.cosh" />
+- <InjectRef inject="math.E" />
+- <InjectRef inject="math.exp" />
+- <InjectRef inject="math.expm1" />
+- <InjectRef inject="math.floor" />
+- <InjectRef inject="math.fround" />
+- <InjectRef inject="math.hypot" />
+- <InjectRef inject="math.imul" />
+- <InjectRef inject="math" />
+- <InjectRef inject="math.LN10" />
+- <InjectRef inject="math.LN2" />
+- <InjectRef inject="math.LOG10E" />
+- <InjectRef inject="math.LOG2E" />
+- <InjectRef inject="math.log10" />
+- <InjectRef inject="math.log1p" />
+- <InjectRef inject="math.log2" />
+- <InjectRef inject="math.log" />
+- <InjectRef inject="math.max" />
+- <InjectRef inject="math.min" />
+- <InjectRef inject="math.PI" />
+- <InjectRef inject="math.pow" />
+- <InjectRef inject="math.random" />
+- <InjectRef inject="math.round" />
+- <InjectRef inject="math.SQRT1_2" />
+- <InjectRef inject="math.SQRT2" />
+- <InjectRef inject="math.sign" />
+- <InjectRef inject="math.sin" />
+- <InjectRef inject="math.sinh" />
+- <InjectRef inject="math.sqrt" />
+- <InjectRef inject="math.tan" />
+- <InjectRef inject="math.tanh" />
+- <InjectRef inject="math.trunc" />
+- <InjectRef inject="+" />
+- <InjectRef inject="/" />
+- <InjectRef inject="==" />
+- <InjectRef inject=">" />
+- <InjectRef inject=">=" />
+- <InjectRef inject="in" />
+- <InjectRef inject="!=" />
+- <InjectRef inject="<" />
+- <InjectRef inject="<=" />
+- <InjectRef inject="&&" />
+- <InjectRef inject="!" />
+- <InjectRef inject="||" />
+- <InjectRef inject="*" />
+- <InjectRef inject="??" />
+- <InjectRef inject="%" />
+- <InjectRef inject="===" />
+- <InjectRef inject="!==" />
+- <InjectRef inject="-" />
+- <InjectRef inject="includes" />
+- <InjectRef inject="snippet" />
+- <InjectRef inject="snippet.params" />

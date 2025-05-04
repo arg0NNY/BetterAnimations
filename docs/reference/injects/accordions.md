@@ -4,7 +4,7 @@ See [Accordions](/create/accordions).
 
 ## `accordion`
 
-Provides premade [Accordion](/create/accordions) [Animate](../animate) definition. See [Accordions](/create/accordions).
+Provides premade [Accordion](/create/accordions) **raw** [Animate](../animate) definition. See [Accordions](/create/accordions).
 
 ### Parameters {#accordion-parameters}
 
@@ -12,7 +12,7 @@ Provides premade [Accordion](/create/accordions) [Animate](../animate) definitio
 Any of: `"marginTop"`, `"marginBottom"`, `"marginLeft"`, `"marginRight"`, `null`.
 
 Defaults to:
-- For [_Messages_](/usage/modules#messages) animations of type `enter` — `"marginTop"`
+- For [_Messages_](/usage/modules#messages) animations of type `enter` — `"marginBottom"`
 - For [_Members Sidebar_](/usage/modules#members-sidebar) and [_Thread Sidebar_](/usage/modules#thread-sidebar) — `"marginRight"`
 - For the rest: `null`
 
