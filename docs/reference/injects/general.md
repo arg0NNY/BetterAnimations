@@ -174,7 +174,7 @@ Otherwise, any of: `"switch"`, `"reveal"`.
 ```
 ```json
 {
-  "inject": "module",
+  "inject": "module.type",
   "switch": /* ... */,
   "reveal": /* ... */
 }
@@ -200,7 +200,7 @@ Otherwise, any of: `"enter"`, `"exit"`.
 ### Example usage {#type-example}
 
 ```json
-{ "inject": "module.type" }
+{ "inject": "type" }
 ```
 ```json
 {
@@ -315,9 +315,44 @@ An array of or a single function. Functions are executed in the same order they 
 
 A value to return.
 
+> [!WARNING]
+> Keep in mind that the value inside `return` is parsed **before** the <InjectRef inject="function" parameter="functions" />
+> are executed.
+>
+> This example won't work as you might have expected:
+> ```json
+> {
+>   "inject": "function",
+>   "functions": [
+>     { "inject": "var.set", "name": "someValue", "value": 10 }
+>   ],
+>   "return": { "inject": "var.get", "name": "someValue" } // Will return `undefined`
+> }
+> ```
+>
+> To parse the return value **after** the <InjectRef inject="function" parameter="functions" /> are executed,
+> wrap the return value definition with another inject <InjectRef inject="function" /> and place it after all the other <InjectRef inject="function" parameter="functions" />:
+> ```json
+> {
+>   "inject": "function",
+>   "functions": [
+>     { "inject": "var.set", "name": "someValue", "value": 10 },
+>     { // [!code ++:4]
+>       "inject": "function",
+>       "return": { "inject": "var.get", "name": "someValue" }
+>     }
+>   ],
+>   "return": { "inject": "var.get", "name": "someValue" } // [!code --]
+> }
+> ```
+
 ### Returns {#function-returns}
 
 A value specified in <InjectRef inject="function" parameter="return" />.
+
+If <InjectRef inject="function" parameter="return" /> is not specified, the return value of the last function passed in <InjectRef inject="function" parameter="functions" />.
+
+If no <InjectRef inject="function" parameter="functions" /> were passed — `undefined`.
 
 ### Example usage {#function-example}
 

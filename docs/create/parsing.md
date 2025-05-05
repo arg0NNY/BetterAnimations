@@ -1,6 +1,6 @@
 # Parsing In-depth
 
-By this point you should already have all the knowledge essential for building your own Animations,
+By this point you should already have all the knowledge on the parsing essential for building your own Animations,
 as it has been covered throughout the previous pages of this documentation.
 
 However, there are a couple of things about the parsing that were deliberately missed that you may want to get familiar with.
@@ -26,7 +26,7 @@ That is why when you use [Debug Mode](./debug-mode), you might notice some of th
 
 ## Immediate injects
 
-Immediate injects are injects parsed in advance to the parsing that happens when the animation triggers. See [Initialize stage](#initialize-stage).
+**Immediate injects** are injects that are parsed in advance to the parsing that happens when the animation triggers. See [Initialize stage](#initialize-stage).
 
 Here is the list of all the _immediate injects_ available in _BetterAnimations_:
 - <InjectRef inject="module" />

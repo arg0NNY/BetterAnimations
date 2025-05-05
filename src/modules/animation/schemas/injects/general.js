@@ -88,8 +88,14 @@ export const FunctionInjectSchema = InjectWithMeta(
     'return': z.any().optional()
   }).transform(zodTransformErrorBoundary(
     ({ functions, 'return': returnValue }) => {
-      [].concat(functions).forEach(f => f?.())
-      return clearSourceMapDeep(returnValue)
+      const functionReturnValues = [].concat(functions).map(f => f?.())
+
+      // Clear source map because the return value can be used outside the parser (by Anime.js, for example)
+      return clearSourceMapDeep(
+        returnValue === undefined
+          ? functionReturnValues.pop()
+          : returnValue
+      )
     }
   )),
   { lazy: true }
