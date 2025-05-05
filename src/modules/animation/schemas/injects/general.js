@@ -83,12 +83,12 @@ export const UndefinedInjectSchema = InjectWithMeta(
 )
 
 export const FunctionInjectSchema = InjectWithMeta(
-  InjectSchema(Inject.Function).extend({
+  (context, { args }) => InjectSchema(Inject.Function).extend({
     functions: ArrayOrSingleSchema(TrustedFunctionSchema).optional(),
     'return': z.any().optional()
   }).transform(zodTransformErrorBoundary(
     ({ functions, 'return': returnValue }) => {
-      const functionReturnValues = [].concat(functions).map(f => f?.())
+      const functionReturnValues = [].concat(functions).map(f => f?.(...args))
 
       // Clear source map because the return value can be used outside the parser (by Anime.js, for example)
       return clearSourceMapDeep(
@@ -101,14 +101,10 @@ export const FunctionInjectSchema = InjectWithMeta(
   { lazy: true }
 )
 
-export const ArgumentsInjectSchema = InjectWithMeta(
+export const ArgumentsInjectSchema =
   (context, { args }) => InjectSchema(Inject.Arguments).extend({
     index: z.number().optional()
-  }).transform(({ index }) => index == null ? args : args[index]),
-  {
-    allowed: ({ env }) => 'args' in env
-  }
-)
+  }).transform(({ index }) => index == null ? args : args[index])
 
 export const DebugInjectSchema = InjectWithMeta(
   context => InjectSchema(Inject.Debug).extend({

@@ -39,7 +39,6 @@ export default Enum({
   Window: 'window',
   IsIntersected: 'isIntersected',
   Get: 'get',
-  Set: 'set',
   If: 'if',
   Switch: 'switch',
   Load: 'load',
