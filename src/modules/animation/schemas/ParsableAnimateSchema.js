@@ -12,11 +12,12 @@ import * as MathInjectSchemas from '@/modules/animation/schemas/injects/math'
 import * as OperatorsInjectSchemas from '@/modules/animation/schemas/injects/operators'
 import * as ArrayInjectSchemas from '@/modules/animation/schemas/injects/array'
 import * as SnippetsInjectSchemas from '@/modules/animation/schemas/injects/snippets'
-import { clearSourceMapDeep, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
+import { clearSourceMapDeep, SourceMappedObjectSchema, SourceMapSchema } from '@/modules/animation/sourceMap'
 import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
 import ParsableSchema from '@/modules/animation/schemas/ParsableSchema'
 import AnimeSchema from '@/modules/animation/schemas/AnimeSchema'
 import { parseInjectSchemas } from '@/modules/animation/schemas/utils'
+import { zodTransformErrorBoundary } from '@/utils/zod'
 
 export const safeInjects = [
   ...Object.keys(parseInjectSchemas(SettingsInjectSchemas)),
@@ -66,23 +67,25 @@ export const HookSchema = (context, env, stage) => ParsableSchema(
     ArrayOrSingleSchema(
       TrustedFunctionSchema.nullable()
     )
-  ).transform((value, ctx) => {
-    const hook = () => executeWithZod(value, (value, ctx) => {
-      [].concat(value).flat().forEach((fn, i) => {
-        if (!fn) return
-        try { fn() }
-        catch (error) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: error.message,
-            path: Array.isArray(value) ? [i] : [],
-            params: { error, received: fn }
-          })
-        }
-      })
-    }, context, ctx)
-    return storeInjectable(hook, value)
-  }).optional()
+  ).transform(
+    zodTransformErrorBoundary((value, ctx) => {
+      const hook = () => executeWithZod(value, (value, ctx) => {
+        [].concat(value).flat().forEach((fn, i) => {
+          if (!fn) return
+          try { fn() }
+          catch (error) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: error.message,
+              path: Array.isArray(value) ? [i] : [],
+              params: { error, received: fn }
+            })
+          }
+        })
+      }, context, ctx)
+      return storeInjectable(hook, value)
+    })
+  ).optional()
 )(context, env)
 
 export const HastSchema = ParsableSchema(
@@ -91,25 +94,27 @@ export const HastSchema = ParsableSchema(
     ArrayOrSingleSchema(
       z.record(z.any()).nullable()
     )
-  ).transform((value, ctx) => {
-    return [].concat(value).flat().filter(Boolean).map((node, i) => {
-      const sanitized = sanitize(clearSourceMapDeep(node), hastSanitizeSchema)
-      if (sanitized.type === 'root') {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'Invalid or forbidden hast node',
-          path: Array.isArray(value) ? [i] : [],
-          params: { received: node }
-        })
-        return z.NEVER
-      }
+  ).transform(
+    zodTransformErrorBoundary((value, ctx) => {
+      return [].concat(value).flat().filter(Boolean).map((node, i) => {
+        const sanitized = sanitize(clearSourceMapDeep(node), hastSanitizeSchema)
+        if (sanitized.type === 'root') {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Invalid or forbidden hast node',
+            path: Array.isArray(value) ? [i] : [],
+            params: { received: node }
+          })
+          return z.NEVER
+        }
 
-      return storeInjectable(
-        toDom(sanitized),
-        value
-      )
+        return storeInjectable(
+          toDom(sanitized),
+          value
+        )
+      })
     })
-  }).optional()
+  ).optional()
 )
 
 
@@ -117,7 +122,14 @@ export const CssSchema = ParsableSchema(
   ParseStage.Layout,
   ArrayOrSingleSchema(
     ArrayOrSingleSchema(
-      z.record(z.record(z.any())).nullable()
+      z.record(
+        z.union([
+          z.record(
+            z.union([z.string(), z.number(), SourceMapSchema])
+          ),
+          SourceMapSchema
+        ])
+      ).nullable()
     )
   ).optional()
 )

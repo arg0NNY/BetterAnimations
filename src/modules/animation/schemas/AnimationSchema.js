@@ -2,11 +2,11 @@ import { z } from 'zod'
 import MetaSchema from '@/modules/animation/schemas/MetaSchema'
 import SettingsSchema from '@/modules/animation/schemas/SettingsSchema'
 import AnimationType from '@/enums/AnimationType'
-import { StoreSourceMapDeepSchema } from '@/modules/animation/sourceMap'
 import ExtendableAnimateSchema from '@/modules/animation/schemas/ExtendableAnimateSchema'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
 import ModuleKey, { ModuleKeyAlias } from '@/enums/ModuleKey'
 import { moduleAliases } from '@/data/modules'
+import PrepareInjectableSchema from '@/modules/animation/schemas/PrepareInjectableSchema'
 
 const AnimationSchema = z.object({
   key: z.string().min(1),
@@ -22,9 +22,9 @@ const AnimationSchema = z.object({
     z.boolean(),
     z.enum(AnimationType.values())
   ]).optional(),
-  animate: ExtendableAnimateSchema.pipe(StoreSourceMapDeepSchema).optional(),
-  enter: ExtendableAnimateSchema.pipe(StoreSourceMapDeepSchema).optional(),
-  exit: ExtendableAnimateSchema.pipe(StoreSourceMapDeepSchema).optional(),
+  animate: ExtendableAnimateSchema.pipe(PrepareInjectableSchema).optional(),
+  enter: ExtendableAnimateSchema.pipe(PrepareInjectableSchema).optional(),
+  exit: ExtendableAnimateSchema.pipe(PrepareInjectableSchema).optional(),
 }).strict().refine(
   v => v.animate ? !(v.enter || v.exit) : (v.enter && v.exit),
   v => ({

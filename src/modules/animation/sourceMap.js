@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import { Literal } from '@/utils/schemas'
 import { getPath, omit, pick } from '@/utils/object'
 import ObjectDeepSchema from '@/modules/animation/schemas/ObjectDeepSchema'
 
@@ -18,33 +17,6 @@ export const SourceMapSchema = z.object({
 export const SourceMappedObjectSchema = z.object({
   [SOURCE_MAP_KEY]: SourceMapSchema.optional()
 })
-
-export const StoreSourceMapDeepSchema = z.lazy(
-  () => z.union([
-    Literal,
-    z.array(StoreSourceMapDeepSchema),
-    z.record(StoreSourceMapDeepSchema)
-  ]).transform(
-    (value, ctx) => {
-      if (typeof value !== 'object' || value === null) return value
-
-      if (
-        reservedKeys.map(key => {
-          if (!(key in value)) return false
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: `Forbidden key: '${key}'`,
-            path: [key],
-            params: { pointAt: 'key' }
-          })
-          return true
-        }).some(Boolean)
-      ) return z.NEVER
-
-      return storeSourceMap(value, ctx.path)
-    }
-  )
-)
 
 export function buildSourceMap (target = {}, path = undefined) {
   return Object.fromEntries([
@@ -89,7 +61,7 @@ export function clearSourceMap (value) {
   return value
 }
 
-export const ClearSourceMapDeepSchema = z.lazy(
+const ClearSourceMapDeepSchema = z.lazy(
   () => ObjectDeepSchema(ClearSourceMapDeepSchema)
     .transform(value => {
       if (isSourceMap(value)) return value
@@ -99,7 +71,9 @@ export const ClearSourceMapDeepSchema = z.lazy(
 )
 
 export function clearSourceMapDeep (value) {
-  return ClearSourceMapDeepSchema.parse(value)
+  const { success, data } = ClearSourceMapDeepSchema.safeParse(value)
+  if (!success) throw new Error('Illegal value')
+  return data
 }
 
 export function sourceMappedObjectKeys (value) {

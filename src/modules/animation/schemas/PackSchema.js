@@ -2,12 +2,12 @@ import { z } from 'zod'
 import regex from '@/utils/regex'
 import AnimationSchema from '@/modules/animation/schemas/AnimationSchema'
 import Messages from '@/modules/Messages'
-import { StoreSourceMapDeepSchema } from '@/modules/animation/sourceMap'
+import PrepareInjectableSchema from '@/modules/animation/schemas/PrepareInjectableSchema'
 
 export const SnippetSchema = z.strictObject({
   key: z.string().min(1),
   params: z.record(z.string(), z.any()).optional(),
-  value: StoreSourceMapDeepSchema
+  value: PrepareInjectableSchema
 })
 
 const PackSchema = z.object({

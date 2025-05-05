@@ -57,13 +57,15 @@ export const TypeInjectSchema = InjectWithMeta(
 export const StringTemplateInjectSchema = InjectSchema(Inject.StringTemplate).extend({
   template: z.string(),
   values: z.union([z.record(z.any()), z.any().array()])
-}).transform(({ template, values }) => {
-  values = clearSourceMap(values)
-  return template.replaceAll(
-    /\${([^\${}\s]+)}/g,
-    (_, key) => String(values[Array.isArray(values) ? +key : key]) ?? ''
-  )
-})
+}).transform(zodTransformErrorBoundary(
+  ({ template, values }) => {
+    values = clearSourceMap(values)
+    return template.replaceAll(
+      /\${([^\${}\s]+)}/g,
+      (_, key) => String(values[Array.isArray(values) ? +key : key]) ?? ''
+    )
+  }
+))
 
 export const StyleRemovePropertyInjectSchema = InjectWithMeta(
   context => InjectSchema(Inject.StyleRemoveProperty).extend({
