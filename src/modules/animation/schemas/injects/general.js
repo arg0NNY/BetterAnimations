@@ -140,9 +140,9 @@ export const VarSetInjectSchema = InjectWithMeta(
 
 export const CallInjectSchema = InjectSchema(Inject.Call).extend({
   function: TrustedFunctionSchema,
-  args: ArrayOrSingleSchema(z.any()).optional()
+  arguments: ArrayOrSingleSchema(z.any()).optional()
 }).transform(zodTransformErrorBoundary(
-  ({ function: fn, args }) => fn(
+  ({ function: fn, arguments: args }) => fn(
     ...[].concat(clearSourceMapDeep(args))
   )
 ))
