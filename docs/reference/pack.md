@@ -12,23 +12,23 @@ Must be at the root of a Pack file (`{slug}.pack.json`).
 
 ### `name`
 
-A non-empty string containing the display name of a pack.
+A non-empty string representing the display name of a pack.
 
 ### `author`
 
-A non-empty string containing the username of the author of a pack.
+A non-empty string representing the username of the pack author.
 
 ### `version`
 
-A string containing the version of the pack in [SemVer](https://semver.org/) format. See [RegExp](https://regex101.com/r/vkijKf/1/).
+A string representing the version of the pack in [SemVer](https://semver.org/) format. See [RegExp](https://regex101.com/r/vkijKf/1/).
 
 ### `description` <Badge type="info" text="optional" />
 
-A non-empty string containing the description of a pack. Displayed in [Catalog & Library](/usage/packs#catalog-library).
+A non-empty string representing the description of a pack. Displayed in [Catalog & Library](/usage/packs#catalog-library).
 
 ### `invite` <Badge type="info" text="optional" />
 
-A string containing the Discord Server Invite ID.
+A string representing the Discord Server Invite ID.
 
 For example, an ID of a Discord Server Invite https://discord.gg/M8DBtcZjXD is `M8DBtcZjXD`.
 
@@ -36,19 +36,19 @@ It will be used to display an invitation in [Catalog & Library](/usage/packs#cat
 
 ### `authorLink` <Badge type="info" text="optional" />
 
-A string containing a URL to author's socials.
+A string representing a URL to author's socials.
 
 ### `donate` <Badge type="info" text="optional" />
 
-A string containing a URL to author's donation service.
+A string representing a URL to author's donation service.
 
 ### `patreon` <Badge type="info" text="optional" />
 
-A string containing a URL to author's Patreon.
+A string representing a URL to author's Patreon.
 
 ### `website` <Badge type="info" text="optional" />
 
-A string containing a URL to author's website.
+A string representing a URL to author's website.
 
 ### `snippets` <Badge type="info" text="optional" />
 

@@ -8,7 +8,7 @@ They provide useful utilities and customizability.
 
 ## Basic usage
 
-To call an inject declare `inject` property containing the name of the inject you want to call
+To call an inject declare `inject` property with the name of the inject you want to call
 anywhere inside _injectable_ and pass **parameters** that this specific inject accepts.
 
 For example, inject <InjectRef inject="element" />, according to <InjectRef inject="element" text="Reference" />, when used with no parameters,
@@ -159,7 +159,7 @@ _Lazy Injects_ (or _Callbacks_), unlike regular _injects_, which are parsed imme
 transform into function and parse their contents only when this function is called.
 
 One of the most commonly used _lazy inject_ is <InjectRef inject="var.set" />,
-which sets the provided `value` in the global context of the animation as a variable under specified `name`:
+which sets the <InjectRef inject="var.set" parameter="value" /> to the variable under the specified <InjectRef inject="var.set" parameter="name" />:
 ```json
 {
   "key": "my-animation",

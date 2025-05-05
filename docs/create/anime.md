@@ -52,7 +52,7 @@ animate(element, {
 
 ## Targets
 
-`targets` accepts an [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element) or a string containing a [selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors).
+`targets` accepts an [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element) or a string representing a [selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors).
 At least one target must be specified.
 
 You can also specify multiple targets and have a nested array if needed:

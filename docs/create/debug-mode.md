@@ -37,7 +37,7 @@ Alternatively, you may pass strings `"enter"` or `"exit"` to enable Debug Mode f
 ```
 
 > [!WARNING]
-> Debug Mode should be disabled for all the Animations before publishing your Pack to Catalog.
+> Debug Mode should be disabled for all the Animations before [publishing your Pack to Catalog](./publish).
 > Activate it only for debugging purposes.
 
 ## Logs

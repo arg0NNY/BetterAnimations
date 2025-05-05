@@ -89,7 +89,7 @@ Accepts a string `"reveal"` or `"switch"`.
 Checks if the current [Module](/usage/modules)'s type is equal to the specified value.
 
 ### `module`
-An array of or a single string containing the key of a [Module](/usage/modules). See [`modules`](/reference/animation#modules).
+An array of or a single string representing the key of a [Module](/usage/modules). See [`modules`](/reference/animation#modules).
 
 Checks if the specified list contains the current [Module](/usage/modules)'s key.
 

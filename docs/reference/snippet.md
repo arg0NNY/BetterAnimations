@@ -10,7 +10,7 @@ The definition of a [Snippet](/create/snippets).
 
 ### `key`
 
-A string containing the identifier of the snippet.
+A string representing the identifier of the snippet.
 
 ### `params`
 

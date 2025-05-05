@@ -424,7 +424,7 @@ Therefore, these injects will be parsed later in the desired stages of [Lifecycl
 
 ## Building composite animations
 
-To build composite animations, _BetterAnimations_ provides inject <InjectRef inject="load" /> that accepts the key of the Animation
+To build composite animations, _BetterAnimations_ provides inject <InjectRef inject="load" /> that accepts the [`key`](/reference/animation#key) of the [Animation](/reference/animation)
 and returns its **raw** [Animate](/reference/animate) definition, from which you can extend your Animation as such:
 ```json
 {

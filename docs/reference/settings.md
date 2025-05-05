@@ -42,8 +42,8 @@ Accepts `true`.
 Activates the [Variant](/usage/animation-settings#variant) setting for an Animation when defined.
 
 Accepts a non-empty array of objects containing the following properties:
-- **`key`** — A string containing the unique key of a variant.
-- **`name`** — A string containing the display name of a variant.
+- **`key`** — A string representing the unique key of a variant.
+- **`name`** — A string representing the display name of a variant.
 
 > [!TIP]
 > Use inject <InjectRef inject="variant" /> to get the current value of this setting.
@@ -106,7 +106,7 @@ An integer in the range specified in [`duration`](#duration).
 
 #### `variant` {#defaults-variant}
 
-A string containing the unique key of a variant defined in [`variant`](#variant).
+A string representing the unique key of a variant defined in [`variant`](#variant).
 
 #### `position` {#defaults-position}
 

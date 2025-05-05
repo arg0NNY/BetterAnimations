@@ -165,7 +165,7 @@ An object containing the following properties:
 
 An object containing the following properties:
 - `type` — A literal string `label`.
-- `name` — A string containing the name of a label.
+- `name` — A string representing the name of a label.
 - `position` <Badge type="info" text="optional" /> — Time position. Refer to [Anime Documentation](https://animejs.com/documentation/timeline/time-position).
 
 **Example:**
