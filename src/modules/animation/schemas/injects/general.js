@@ -120,13 +120,6 @@ export const DebugInjectSchema = InjectWithMeta(
   { lazy: true }
 )
 
-export const VarGetInjectSchema = ({ vars }) => InjectSchema(Inject.VarGet).extend({
-  name: z.string().refine(
-    restrictForbiddenKeys,
-    name => ({ message: `Forbidden variable name: '${name}'` })
-  )
-}).transform(({ name }) => vars[name])
-
 export const VarSetInjectSchema = InjectWithMeta(
   ({ vars }) => InjectSchema(Inject.VarSet).extend({
     name: z.string().refine(
@@ -137,6 +130,13 @@ export const VarSetInjectSchema = InjectWithMeta(
   }).transform(({ name, value }) => { vars[name] = value }),
   { lazy: true }
 )
+
+export const VarGetInjectSchema = ({ vars }) => InjectSchema(Inject.VarGet).extend({
+  name: z.string().refine(
+    restrictForbiddenKeys,
+    name => ({ message: `Forbidden variable name: '${name}'` })
+  )
+}).transform(({ name }) => vars[name])
 
 export const CallInjectSchema = InjectSchema(Inject.Call).extend({
   function: TrustedFunctionSchema,
@@ -217,24 +217,6 @@ export const GetInjectSchema = InjectSchema(Inject.Get).extend({
 }).transform(({ target, key, path }) => {
   if (key != null) return target[key]
   if (path != null) return getPath(target, path)
-  return target
-})
-
-export const SetInjectSchema = InjectSchema(Inject.Set).extend({
-  target: z.union([
-    z.record(z.any()),
-    z.array(z.any())
-  ]),
-  key: z.union([
-    z.string(),
-    z.number()
-  ]).refine(
-    restrictForbiddenKeys,
-    key => ({ message: `Forbidden key: '${key}'` })
-  ),
-  value: z.any()
-}).transform(({ target, key, value }) => {
-  target[key] = value
   return target
 })
 
