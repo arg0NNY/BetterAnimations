@@ -4,8 +4,12 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   lang: 'en-US',
   title: 'BetterAnimations',
-  description: 'Discord Client Mod for Animations',
+  description: 'Discord Animations Client Mod & Framework',
   cleanUrls: true,
+  head: [
+    ['link', { rel: 'icon', href: '/favicon.ico' }]
+  ],
+
   themeConfig: {
     logo: '/logo.svg',
 

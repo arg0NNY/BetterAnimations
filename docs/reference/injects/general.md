@@ -78,6 +78,10 @@ Doesn't accept any parameters.
 Returns a reference to the custom elements defined inside [`hast`](../animate#hast) matching the specified <InjectRef inject="hast" parameter="selector" />.
 See [Layout](/create/layout#hast).
 
+> [!TIP]
+> You can pass the [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors) directly to the `target` and `targets` parameters
+> of the injects and [Anime](../anime) definition to target the custom elements.
+
 ### Parameters {#hast-parameters}
 
 #### `selector` {#hast-parameters-selector}
@@ -273,7 +277,7 @@ None (`undefined`).
 ```json
 {
   "inject": "style.removeProperty",
-  "targets": { "inject": "hast", "selector": ".some-class" },
+  "targets": ".some-class",
   "property": ["opacity", "transform"]
 }
 ```
@@ -309,7 +313,8 @@ Useful for [function-based values](https://animejs.com/documentation/animation/t
 
 #### `functions` <Badge type="info" text="optional" /> {#function-parameters-functions}
 
-An array of or a single [trusted function](/create/parsing#trusted-functions). Functions are executed in the same order they are defined.
+An array of or a single [trusted function](/create/parsing#trusted-functions).
+Functions receive the arguments passed to the inject itself and execute in the same order they are defined.
 
 #### `return` <Badge type="info" text="optional" /> {#function-parameters-return}
 
@@ -352,7 +357,7 @@ A value specified in <InjectRef inject="function" parameter="return" />.
 
 If <InjectRef inject="function" parameter="return" /> is not specified — the return value of the last function passed in <InjectRef inject="function" parameter="functions" />.
 
-If no <InjectRef inject="function" parameter="functions" /> were passed — `undefined`.
+If <InjectRef inject="function" parameter="return" /> is not specified and no <InjectRef inject="function" parameter="functions" /> are passed — `undefined`.
 
 ### Example usage {#function-example}
 
@@ -375,9 +380,6 @@ If no <InjectRef inject="function" parameter="functions" /> were passed — `und
 
 Returns the values of the arguments received by [lazy inject](/create/injects#lazy-injects).
 
-> [!WARNING]
-> Can only be used inside the [lazy inject](/create/injects#lazy-injects).
-
 ### Parameters {#arguments-parameters}
 
 #### `index` <Badge type="info" text="optional" /> {#arguments-parameters-index}
@@ -389,6 +391,8 @@ An index of the argument.
 A value of the argument under the specified <InjectRef inject="arguments" parameter="index" />.
 
 If <InjectRef inject="arguments" parameter="index" /> is not specified — an array of argument values.
+
+If used outside the [lazy inject](/create/injects#lazy-injects) — `undefined`.
 
 ### Example usage {#arguments-example}
 

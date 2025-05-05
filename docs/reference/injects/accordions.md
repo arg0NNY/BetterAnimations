@@ -263,17 +263,9 @@ Returns `null`.
 
 ```json
 {
-  "key": "fade",
-  "name": "Fade",
-  "meta": {
-    "accordion": false
-  },
-  "animate": {
-    "extends": { "inject": "accordion" }, // [!code highlight]
-    "anime": {
-      "targets": { "inject": "element" },
-      "parameters": { /* ... */ }
-    }
-  }
+  "inject": "accordion",
+  "type": "marginBottom",
+  "duration": 200,
+  "easing": { "type": "ease", "style": "quad" }
 }
 ```

@@ -1,10 +1,11 @@
 ---
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
+title: BetterAnimations — Discord Animations Client Mod & Framework
 
 hero:
   name: "BetterAnimations"
-  text: "Discord Client Mod\nfor Animations"
+  text: "Discord Animations Client&nbsp;Mod & Framework"
   tagline: "Bring your Discord app to life — tweak, create, animate. A BetterDiscord plugin."
   image:
     src: /logo.svg
