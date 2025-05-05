@@ -20,11 +20,11 @@ export const StaggerInjectSchema = context => InjectSchema(Inject.Stagger).exten
   ]),
   parameters: ParametersSchema.optional()
 }).transform(
-  zodTransformErrorBoundary(({ value, options }, { path }) => {
+  zodTransformErrorBoundary(({ value, parameters }, { path }) => {
     value = clearSourceMapDeep(value)
-    options = clearSourceMapDeep(options)
+    parameters = clearSourceMapDeep(parameters)
     return zodErrorBoundary(
-      stagger(value, options),
+      stagger(value, parameters),
       context,
       { path, name: 'stagger' }
     )
@@ -44,7 +44,7 @@ export const UtilsRandomInjectSchema = InjectSchema(Inject.UtilsRandom).extend({
 export const UtilsGetInjectSchema = context => InjectSchema(Inject.UtilsGet).extend({
   target: TargetSchema(context).optional().default(context.element),
   property: z.string(),
-  unit: z.union([z.string(), z.literal(false)]).optional()
+  unit: z.union([z.string(), z.boolean()]).optional()
 }).transform(
   zodTransformErrorBoundary(
     ({ target, property, unit }) => utils.get(target, property, unit)

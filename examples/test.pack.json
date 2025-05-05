@@ -69,12 +69,10 @@
         ],
         "css": {
           ".el": {
-            "inset": 0,
-            "z-index": 20
+            "inset": 0
           },
-          "{element}": {
-            "position": "relative",
-            "z-index": 20
+          "{container}": {
+            "z-index": 2
           },
           ".el:nth-child(odd)": {
             "background": {
