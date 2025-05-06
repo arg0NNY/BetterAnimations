@@ -96,7 +96,7 @@ const InjectableSchema = (context, env = {}) => {
           return value
 
         try {
-          const [schema, meta] = injectSchemas[value.inject]
+          const [schema, meta] = injectSchemas[value.inject] ?? []
 
           if (stage === ParseStage.Initialize) {
             if (!schema) {
