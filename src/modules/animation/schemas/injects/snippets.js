@@ -3,11 +3,14 @@ import { InjectSchema, InjectWithMeta } from '@/modules/animation/schemas/utils'
 import Inject from '@/enums/Inject'
 import InjectableSchema from '@/modules/animation/schemas/InjectableSchema'
 import ParseStage from '@/enums/ParseStage'
+import AnimationError from '@/structs/AnimationError'
+import { formatZodError } from '@/utils/zod'
 
 export const SnippetInjectSchema = (context, env) => InjectSchema(Inject.Snippet).extend({
   key: z.enum(context.pack.snippets?.map(s => s.key) ?? []),
-  params: z.record(z.string(), z.any()).optional()
-}).transform(({ key, params }, ctx) => {
+  params: z.record(z.string(), z.any()).optional(),
+  raw: z.boolean().optional().default(false)
+}).transform(({ key, params, raw }, ctx) => {
   if (env.snippet && env.snippet.depth > 10) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
@@ -16,8 +19,11 @@ export const SnippetInjectSchema = (context, env) => InjectSchema(Inject.Snippet
     return z.NEVER
   }
 
-  const snippet = context.pack.snippets?.find(s => s.key === key)
-  if (!snippet) return
+  const snippetIndex = context.pack.snippets?.findIndex(s => s.key === key)
+  if (snippetIndex == null || snippetIndex === -1) return
+
+  const snippet = context.pack.snippets[snippetIndex]
+  if (raw) return snippet.value
 
   const snippetEnv = {
     ...env,
@@ -28,20 +34,29 @@ export const SnippetInjectSchema = (context, env) => InjectSchema(Inject.Snippet
     }
   }
 
-  const value = InjectableSchema(context, {
-    ...snippetEnv,
-    stage: ParseStage.Initialize
-  }).parse(snippet.value, { path: ctx.path })
+  const path = ['snippets', snippetIndex, 'value']
+  try {
+    const value = InjectableSchema(context, {
+      ...snippetEnv,
+      stage: ParseStage.Initialize
+    }).parse(snippet.value, { path })
 
-  return InjectableSchema(context, snippetEnv).parse(value, { path: ctx.path })
+    return InjectableSchema(context, snippetEnv)
+      .parse(value, { path })
+  }
+  catch (error) {
+    throw error instanceof AnimationError ? error : new AnimationError(
+      context.animation,
+      formatZodError(error, { pack: context.pack, data: snippet.value, context, path, sourceMap: { useSelf: true } }),
+      { module: context.module, pack: context.pack, type: context.type, context }
+    )
+  }
 })
 
 export const SnippetParamsInjectSchema = InjectWithMeta(
   (context, { snippet }) => InjectSchema(Inject.SnippetParams).extend({
-    name: z.string().optional()
-  }).transform(
-    ({ name }) => name != null ? snippet.params[name] : snippet.params
-  ),
+    name: z.string()
+  }).transform(({ name }) => snippet.params[name]),
   {
     allowed: ({ env }) => 'snippet' in env
   }
