@@ -11,7 +11,7 @@ However, there are a couple of things about the parsing that were deliberately m
 There is one more additional parsing stage called **Initialize&nbsp;stage**, which is triggered when:
 - Pack loads/unloads
 - Selected Animation changes
-- Module Settings changes
+- Module Settings change
 
 The purpose of this stage is to:
 - Validate the inject references and their usage scopes.
