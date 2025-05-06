@@ -31,12 +31,6 @@ export const EasingInjectSchema = context => InjectSchema(Inject.Easing)
     )
   )
 
-const getVariantKeys = context => context.settings?.[Setting.Variant]?.map(v => v.key) ?? []
-export const VariantInjectSchema = InjectWithMeta(
-  SwitchSchema(Inject.Variant, getVariantKeys, { setting: Setting.Variant, possibleValues: getVariantKeys }),
-  { immediate: [Setting.Variant, 'settings'] }
-)
-
 export const PositionInjectSchema =
   (context) => {
     if (context.settings?.[Setting.Position] !== true)
@@ -103,4 +97,10 @@ export const PositionInjectSchema =
 export const DirectionInjectSchema = InjectWithMeta(
   SwitchSchema(Inject.Direction, Direction.values(), { defaultValue: Direction.Right, setting: Setting.Direction }),
   { immediate: [Setting.Direction, 'settings'] }
+)
+
+const getVariantKeys = context => context.settings?.[Setting.Variant]?.map(v => v.key) ?? []
+export const VariantInjectSchema = InjectWithMeta(
+  SwitchSchema(Inject.Variant, getVariantKeys, { setting: Setting.Variant, possibleValues: getVariantKeys }),
+  { immediate: [Setting.Variant, 'settings'] }
 )

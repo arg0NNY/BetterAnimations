@@ -149,7 +149,8 @@ See [`svg.morphTo()`](https://animejs.com/documentation/svg/morphto).
 ```json
 {
   "inject": "svg.morphTo",
-  "target": ".some-class"
+  "target": ".some-class",
+  "precision": 0.5
 }
 ```
 
@@ -172,7 +173,7 @@ See [`svg.createDrawable()`](https://animejs.com/documentation/svg/createdrawabl
 ```json
 {
   "inject": "svg.createDrawable",
-  "target": ".some-class"
+  "targets": ".some-class"
 }
 ```
 

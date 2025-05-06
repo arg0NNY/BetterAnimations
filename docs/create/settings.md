@@ -261,7 +261,7 @@ To use the current value of this setting use inject <InjectRef inject="easing" /
 
 [**Position**](/usage/animation-settings#position) setting may be activated in two modes: **Enum** or **Precise**.
 
-### Enum {#position-enum}
+### Enum mode {#position-enum}
 
 In **Enum** mode this setting can only be one of 9 values:
 `"top left"`, `"top"`, `"top right"`, `"left"`, `"center"`, `"right"`,
@@ -390,7 +390,7 @@ Or use aliases `"enum"` or `"simple"` (see [Reference](/reference/settings#posit
 }
 ```
 
-To use the current value of this setting use inject <InjectRef inject="position" />:
+To use the current value of this setting use inject <InjectRef inject="position" target="enum" />:
 ```json
 {
   "key": "scale",
@@ -441,9 +441,9 @@ To use the current value of this setting use inject <InjectRef inject="position"
 }
 ```
 
-### Precise {#position-precise}
+### Precise mode {#position-precise}
 
-In **Precise** mode this setting _precisely_ anchors to _anchor point_.
+In **Precise** mode this setting _precisely_ anchors to the _anchor point_.
 
 _Anchor point_ may be simply one of the Enum values transformed into a coordinate or, if [Auto-Position](/usage/animation-settings#position-auto) is enabled, some specific point in the layout,
 such as the location of the center of the anchor element. See possible anchor points at [Animation Settings](/usage/animation-settings#position-auto).
@@ -506,8 +506,8 @@ and set the default value for it inside [`defaults`](/reference/settings#default
 }
 ```
 
-In **Precise** mode inject <InjectRef inject="position" /> will return [`<length-percentage> <length-percentage>`](https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage) CSS value
-based on the requested `unit`, which is `px` by default, relative to the Container:
+In **Precise** mode inject <InjectRef inject="position" target="precise" /> will return [`<length-percentage> <length-percentage>`](https://developer.mozilla.org/en-US/docs/Web/CSS/length-percentage) CSS value
+in the requested <InjectRef inject="position" parameter="unit" target="precise-parameters-unit" />, which is `px` by default, relative to the [Container](/create/layout#container):
 ```json
 {
   "css": {
@@ -527,8 +527,8 @@ based on the requested `unit`, which is `px` by default, relative to the Contain
 }
 ```
 
-Inject <InjectRef inject="position" /> clips the values to fit them into the Container bounds,
-use the parameter `clip` to disable the clipping and get the original values:
+Inject <InjectRef inject="position" target="precise" /> clips the values to fit them into the Container bounds,
+use the parameter <InjectRef inject="position" parameter="clip" target="precise-parameters-clip" /> to disable the clipping and get the original values:
 ```json
 {
   "css": {
@@ -548,7 +548,7 @@ use the parameter `clip` to disable the clipping and get the original values:
 }
 ```
 
-You can also get `x` and `y` values separately by passing the parameter `value`:
+You can also get `x` and `y` values separately by passing the parameter <InjectRef inject="position" parameter="value" target="precise-parameters-value" />:
 ```json
 {
   "css": {
@@ -566,7 +566,7 @@ You can also get `x` and `y` values separately by passing the parameter `value`:
 }
 ```
 
-See <InjectRef inject="position" text="Reference" /> to learn more about inject <InjectRef inject="position" /> usage in **Precise** mode.
+See <InjectRef inject="position" target="precise" text="Reference" /> to learn more about inject <InjectRef inject="position" target="precise" /> usage in **Precise** mode.
 
 ## Direction
 

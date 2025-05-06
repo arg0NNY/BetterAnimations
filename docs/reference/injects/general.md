@@ -535,7 +535,7 @@ See [`Element.getBoundingClientRect()`](https://developer.mozilla.org/en-US/docs
 
 #### `target` <Badge type="info" text="optional" /> {#rect-parameters-target}
 
-A single [Target](/create/anime#targets). Uses the original [Container](/create/layout#container) values by default.
+A single [Target](/create/anime#targets). Uses the original [Container](/create/layout#container) position by default.
 
 #### `value` <Badge type="info" text="optional" /> {#rect-parameters-value}
 
@@ -579,6 +579,36 @@ The value of [`window.innerHeight`](https://developer.mozilla.org/en-US/docs/Web
 {
   "inject": "window",
   "value": "width"
+}
+```
+
+## `mouse`
+
+Returns the current mouse position relative to the original position of the [Container](/create/layout#container).
+
+### Parameters {#mouse-parameters}
+
+#### `value` <Badge type="info" text="optional" /> {#mouse-parameters-value}
+
+Any of: `"x"`, `"y"`.
+
+#### `absolute` <Badge type="info" text="optional" /> {#mouse-parameters-absolute}
+
+A boolean indicating whether to return the mouse position relative to the viewport. `false` by default.
+
+### Returns {#mouse-returns}
+
+The specified coordinate (<InjectRef inject="mouse" parameter="value" />) of a current mouse position in pixels.
+
+If the coordinate (<InjectRef inject="mouse" parameter="value" />) is not specified — a string representing the [`<length> <length>`](https://developer.mozilla.org/en-US/docs/Web/CSS/length) CSS value of the current mouse position.
+
+### Example usage {#mouse-example}
+
+```json
+{
+  "inject": "mouse",
+  "value": "x",
+  "absolute": true
 }
 ```
 
