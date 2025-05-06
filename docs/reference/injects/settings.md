@@ -119,7 +119,7 @@ Any of: `"px"` (default), `"%"`.
 A boolean indicating whether to clip the values to fit them into the bounds of the [Container](/create/layout#container). `true` by default.
 
 For example, if the `x` position of the _anchor point_ is `153px`, but the width of the [Container](/create/layout#container)
-is only `120px`, the latter will be used when this option is enabled.
+is only `120px`, the latter value will be used when this option is enabled.
 
 #### Returns {#position-precise-returns}
 

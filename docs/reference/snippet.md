@@ -18,7 +18,7 @@ An object containing the default values for the parameters of the snippet. See [
 
 ### `value`
 
-Snippet contents.
+_Injectable_ Snippet contents. See [Injects](/create/injects).
 
 > [!TIP]
 > Use inject <InjectRef inject="snippet.params" /> to get the value of a parameter.
