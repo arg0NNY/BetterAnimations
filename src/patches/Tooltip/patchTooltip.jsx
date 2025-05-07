@@ -4,7 +4,7 @@ import AnimeTransition from '@/components/AnimeTransition'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
-import { avoidClickTrap } from '@/utils/transition'
+import { useRef } from 'react'
 
 function TooltipTransition (props) {
   const { module, isVisible, onAnimationRest, ...rest } = props
@@ -25,17 +25,21 @@ function TooltipTransition (props) {
     align: props.align
   }
 
+  const layerRef = useRef()
+  const layer = TooltipLayer(rest)
+  layer.props.ref = layerRef
+
   return (
     <AnimeTransition
       in={isVisible}
-      targetContainer={avoidClickTrap}
+      layerRef={layerRef}
       module={module}
       auto={auto}
       onEntered={onRest(true)}
       onExited={onRest(false)}
       anchor={props.targetElementRef}
     >
-      <TooltipLayer {...rest} />
+      {layer}
     </AnimeTransition>
   )
 }

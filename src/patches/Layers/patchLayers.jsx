@@ -34,7 +34,8 @@ function LayerTransition ({ module, auto, layer, ...props }) {
       auto={auto}
       {...props}
       in={layer.props.mode === 'SHOWN' && props.in}
-      container={{ className: 'BA__layerContainer', defaultLayoutStyles: false }}
+      container={{ className: 'BA__layerContainer' }}
+      defaultLayoutStyles={false}
       mountOnEnter={false}
       unmountOnExit={false}
     >

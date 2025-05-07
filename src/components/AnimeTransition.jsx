@@ -6,40 +6,46 @@ import AnimationStore from '@/modules/AnimationStore'
 import { createAwaitableRef } from '@/utils/react'
 import AnimeContainer from '@/components/AnimeContainer'
 import { Component, createRef } from 'react'
+import { directChild } from '@/utils/transition'
+
+const getRef = ref => typeof ref === 'function' ? ref() : ref.current
+const injectContainerRefFn = (children, ref) => {
+  if (children?.props) children.props.ref = ref
+}
 
 class AnimeTransition extends Component {
-  doneCallback = createAwaitableRef()
-  containerRef = createRef()
-  instance = createRef()
+  constructor (props) {
+    super(props)
+
+    this.doneCallback = createAwaitableRef()
+    this.containerRef = createRef()
+    this.instance = createRef()
+
+    const self = this
+    this.nodeRef = {
+      get current () {
+        if (self.props.containerRef) return getRef(self.props.containerRef)
+        if (self.props.layerRef) return getRef(self.props.layerRef)?.elementRef.current
+        return self.containerRef.current
+      }
+    }
+  }
 
   componentWillUnmount () {
     this.instance.current?.cancel()
   }
 
-  getTargetNodes (container) {
-    if (container && this.props.targetContainer) {
-      container = this.props.targetContainer(container)
+  onAnimate (type, fn) {
+    return () => {
+      const container = this.nodeRef.current
       container?.setAttribute('data-ba-container', '')
       if (this.props.defaultLayoutStyles === false) container?.setAttribute('data-ba-default-layout-styles', 'false')
-    }
-
-    return {
-      container: container,
-      element: container?.getAttribute('data-ba-container') === ''
-        ? [].find.call(container.childNodes, e => !e.getAttribute('data-baa'))
-        : container
-    }
-  }
-
-  onAnimate (type, fn) {
-    return (targetNode) => {
-      const { container, element } = this.getTargetNodes(targetNode)
 
       this.instance.current = AnimationStore.requestAnimation({
         module: this.props.module,
         type,
         container,
-        element,
+        element: directChild(container),
         anchor: this.props.anchor,
         auto: this.props.autoRef ?? { current: this.props.auto },
         doneCallbackRef: this.doneCallback
@@ -66,7 +72,7 @@ class AnimeTransition extends Component {
       unmountOnExit = true,
       enter = true,
       exit = true,
-      containerRef,
+      injectContainerRef = false,
       onEntering,
       onExiting,
       onEntered,
@@ -74,17 +80,30 @@ class AnimeTransition extends Component {
       ...props
     } = this.props
 
-    const contents = (state = null) => (
-      <AnimeContainer container={children && container} ref={this.containerRef}>
-        <Freeze freeze={freeze && props.in === false} nodeRef={containerRef ?? this.containerRef}>
-          {typeof children === 'function' ? children(state) : children}
-        </Freeze>
-      </AnimeContainer>
-    )
+    const contents = (state = null) => {
+      const _children = typeof children === 'function' ? children(state) : children
+
+      if (injectContainerRef) {
+        (
+          typeof injectContainerRef === 'function'
+            ? injectContainerRef
+            : injectContainerRefFn
+        )(_children, this.containerRef)
+      }
+
+      return (
+        <AnimeContainer container={children && container} ref={this.containerRef}>
+          <Freeze freeze={freeze && props.in === false} nodeRef={this.nodeRef}>
+            {_children}
+          </Freeze>
+        </AnimeContainer>
+      )
+    }
 
     return (
       <Transition
         {...props}
+        nodeRef={this.nodeRef}
         enter={module.isEnabled(AnimationType.Enter) && enter}
         exit={module.isEnabled(AnimationType.Exit) && exit}
         mountOnEnter={mountOnEnter}
@@ -93,7 +112,7 @@ class AnimeTransition extends Component {
         onExiting={this.onAnimate(AnimationType.Exit, onExiting)}
         onEntered={this.onCallback(onEntered)}
         onExited={this.onCallback(onExited)}
-        addEndListener={(_, done) => this.doneCallback.current = done}
+        addEndListener={done => this.doneCallback.current = done}
       >
         {typeof children === 'function' ? contents : contents()}
       </Transition>

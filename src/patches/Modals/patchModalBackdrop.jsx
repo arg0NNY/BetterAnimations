@@ -30,7 +30,7 @@ function patchModalBackdrop () {
         appear={true}
         in={props.isVisible}
         module={module}
-        targetContainer={e => e}
+        injectContainerRef={true}
       >
         {backdrop}
       </AnimeTransition>

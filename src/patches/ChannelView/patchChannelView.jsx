@@ -12,6 +12,7 @@ import { css } from '@/modules/Style'
 import patchMembersModViewSidebar from '@/patches/ChannelView/patchMembersModViewSidebar'
 import SidebarTransition from '@/patches/ChannelView/components/SidebarTransition'
 import findInReactTree from '@/utils/findInReactTree'
+import patchVoiceChannelView from '@/patches/ChannelView/patchVoiceChannelView'
 
 function patchChannelView () {
   const once = ensureOnce()
@@ -66,6 +67,7 @@ function patchChannelView () {
   })
 
   patchChatSidebar()
+  patchVoiceChannelView()
   patchMembersModViewSidebar()
 }
 

@@ -15,14 +15,12 @@ function patchChatSidebar () {
     if (!module.isEnabled() && !switchModule.isEnabled()) return
 
     props.maxWidth = Math.max(props.maxWidth, 451) // Disable floating state
+    delete props.floatingLayer // Disable teleport to layer container in a voice call
   })
-  Patcher.after(...ChatSidebarKeyed, (self, args, value) => {
+  Patcher.after(...ChatSidebarKeyed, (self, [props], value) => {
     const module = Modules.getModule(ModuleKey.ThreadSidebar)
     const switchModule = Modules.getModule(ModuleKey.ThreadSidebarSwitch)
     if (!module.isEnabled() && !switchModule.isEnabled()) return
-
-    const channelCallChatLayer = findInReactTree(value, m => m?.type?.displayName === 'ChannelCallChatLayer')
-    if (channelCallChatLayer) return // Disable for voice chat sidebar (not worth to patch for the complexity)
 
     const chatTarget = findInReactTree(value, m => m?.props?.className?.includes(DiscordClasses.ChatSidebar.chatTarget))
     if (chatTarget) {
@@ -31,7 +29,7 @@ function patchChatSidebar () {
     }
 
     return (
-      <AnimeContainer container={{ className: 'BA__sidebar' }}>
+      <AnimeContainer ref={props.ref} container={{ className: 'BA__sidebar' }}>
         <div className="BA__sidebar">{value}</div>
       </AnimeContainer>
     )

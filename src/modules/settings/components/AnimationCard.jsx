@@ -201,6 +201,7 @@ function AnimationCard ({
         {expanded && (
           <CSSTransition
             key={expanded}
+            nodeRef={popoutRef}
             timeout={400}
             classNames="BA__fade"
             mountOnEnter

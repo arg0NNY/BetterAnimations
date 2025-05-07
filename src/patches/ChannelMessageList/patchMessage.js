@@ -6,7 +6,7 @@ import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 
 function patchMessage () {
-  Patcher.after(Message, 'type', (self, args, value) => {
+  Patcher.after(Message, 'type', (self, [props], value) => {
     // Move message margins from child element to message container (as it should have been done, dear Discord)
 
     const module = useModule(ModuleKey.Messages)
@@ -14,6 +14,8 @@ function patchMessage () {
 
     const messageListItem = findInReactTree(value, m => m?.className?.includes(DiscordClasses.MessageList.messageListItem))
     if (!messageListItem) return
+
+    messageListItem.ref = props.ref
 
     const message = findInReactTree(messageListItem, m => m?.className?.includes(DiscordClasses.MessageList.message))
     if (!message?.className.includes(DiscordClasses.MessageList.groupStart)) return

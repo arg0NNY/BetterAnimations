@@ -10,6 +10,7 @@ const Classes = {
   AppMount: Webpack.getByKeys('appMount'),
   AppView: Webpack.getByKeys('base', 'content'),
   ChannelView: Webpack.getByKeys('chat', 'chatContent'),
+  VoiceChannelView: Webpack.getByKeys('channelChatWrapper', 'noChat'),
   ChannelItem: Webpack.getByKeys('containerDefault', 'channelInfo'),
   MessageList: Webpack.getByKeys('message', 'groupStart'),
   Layer: Webpack.getByKeys('layer', 'layerContainer'),

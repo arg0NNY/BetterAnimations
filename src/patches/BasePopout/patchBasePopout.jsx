@@ -1,13 +1,33 @@
 import { Patcher } from '@/BdApi'
-import { BasePopoutKeyed, TransitionGroup } from '@/modules/DiscordModules'
+import { BasePopoutKeyed, ReferencePositionLayer, TransitionGroup } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
 import patchPopoutCSSAnimator from '@/patches/BasePopout/patchPopoutCSSAnimator'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import { autoPosition } from '@/hooks/useAutoPosition'
-import { avoidClickTrap } from '@/utils/transition'
 import { unkeyed } from '@/utils/webpack'
 import { flushSync } from 'react-dom'
+import { useRef } from 'react'
+import findInReactTree from '@/utils/findInReactTree'
+
+function PopoutLayer ({ ref, children, ...props }) {
+  const layerRef = useRef()
+
+  const layer = findInReactTree(children, m => m?.type === ReferencePositionLayer)
+  if (layer) layer.props.ref = value => {
+    layerRef.current = value
+    if (props.in) ref.current = value
+  }
+
+  return (
+    <AnimeTransition
+      layerRef={layerRef}
+      {...props}
+    >
+      {children}
+    </AnimeTransition>
+  )
+}
 
 function patchBasePopout () {
   const Original = unkeyed(BasePopoutKeyed)
@@ -68,15 +88,15 @@ function patchBasePopout () {
         <TransitionGroup component={null}>
           {
             this.shouldShow() &&
-            <AnimeTransition
+            <PopoutLayer
               key={+this.state.isLoading}
-              targetContainer={avoidClickTrap}
+              ref={this.layerRef}
               module={this.props.module}
               autoRef={autoRef}
               anchor={anchor}
             >
               {value}
-            </AnimeTransition>
+            </PopoutLayer>
           }
         </TransitionGroup>
       )

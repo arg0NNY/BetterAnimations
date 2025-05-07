@@ -1,4 +1,4 @@
-import { Patcher } from '@/BdApi'
+import { Patcher, Utils } from '@/BdApi'
 import { ListThin, TransitionGroup, useStateFromStores } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'
@@ -8,7 +8,32 @@ import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import { css } from '@/modules/Style'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
-import { Fragment } from 'react'
+import { Fragment, useMemo, useRef } from 'react'
+import patchChannelItem from '@/patches/ListThin/patchChannelItem'
+
+function ListItem ({ children, ...props }) {
+  const draggableRef = useRef()
+  children.props.ref = draggableRef
+
+  const containerRef = useMemo(() => ({
+    get current () {
+      return Utils.findInTree(
+        draggableRef.current,
+        m => m?.__containerRef,
+        { walkable: ['decoratedRef', 'current'] }
+      )?.__containerRef.current
+    }
+  }), [draggableRef])
+
+  return (
+    <AnimeTransition
+      containerRef={containerRef}
+      {...props}
+    >
+      {children}
+    </AnimeTransition>
+  )
+}
 
 function patchListThin () {
   Patcher.after(ListThin, 'render', (self, [props], value) => {
@@ -53,7 +78,6 @@ function patchListThin () {
             return (
               <PassThrough
                 key={item.key}
-                targetContainer={e => e}
                 enter={shouldAnimate(item)}
                 exit={false} // Managed in childFactory
                 module={module}
@@ -61,9 +85,9 @@ function patchListThin () {
               >
                 {props => (
                   props.items.map(item => (
-                    <AnimeTransition {...props}>
+                    <ListItem {...props}>
                       {item}
-                    </AnimeTransition>
+                    </ListItem>
                   ))
                 )}
               </PassThrough>
@@ -73,6 +97,8 @@ function patchListThin () {
       </TransitionGroup>
     )
   })
+
+  patchChannelItem()
 }
 
 export default patchListThin

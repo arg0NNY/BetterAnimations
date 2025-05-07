@@ -5,10 +5,11 @@ import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Position from '@/enums/Position'
 import useAutoPosition from '@/hooks/useAutoPosition'
-import { avoidClickTrap } from '@/utils/transition'
+import { useRef } from 'react'
 
 function patchContextSubmenu () {
   const callback = (self, [props], original) => {
+    const layerRef = useRef()
     const { autoRef, setPosition } = useAutoPosition(Position.Right)
 
     const module = useModule(ModuleKey.ContextMenu)
@@ -21,16 +22,17 @@ function patchContextSubmenu () {
     if (!children[i]) return value
 
     children[i].props.onPositionChange = setPosition
+    children[i].props.ref = layerRef
     children[i] = (
       <AnimeTransition
         in={props.isFocused}
-        targetContainer={avoidClickTrap}
+        layerRef={layerRef}
         module={module}
         autoRef={autoRef}
-        anchor={value.ref}
+        anchor={value.props.ref}
       >
         <Layer layerContext={appLayerContext}>
-          {value.props.children[i]}
+          {children[i]}
         </Layer>
       </AnimeTransition>
     )

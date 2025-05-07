@@ -8,7 +8,6 @@ import useModule, { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import { autoPosition } from '@/hooks/useAutoPosition'
-import { avoidClickTrap } from '@/utils/transition'
 import Mouse from '@/modules/Mouse'
 
 function patchContextMenu () {
@@ -33,15 +32,17 @@ function patchContextMenu () {
 
         if (value) {
           value.props.onPositionChange = setPosition
+          value.props.setLayerRef = value => self.__layerRef = value
           Patcher.after(value, 'type', (self, [props], value) => {
             value.props.onPositionChange = props.onPositionChange ?? (() => {})
+            props.setLayerRef?.(value.props.ref)
           })
         }
 
         return (
           <AnimeTransition
             in={self.props.in && !!value}
-            targetContainer={avoidClickTrap}
+            layerRef={() => self.__layerRef?.current}
             module={module}
             autoRef={autoRef}
             anchor={self.__anchor}

@@ -1,7 +1,6 @@
 import { Patcher } from '@/BdApi'
 import { ModalsKeyed, TransitionGroup } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
-import PassThrough from '@/components/PassThrough'
 import patchModalItem from '@/patches/Modals/patchModalItem'
 import patchModalBackdrop from '@/patches/Modals/patchModalBackdrop'
 import useModule from '@/hooks/useModule'
@@ -10,6 +9,25 @@ import ensureOnce from '@/utils/ensureOnce'
 import { directChild } from '@/utils/transition'
 import { css } from '@/modules/Style'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
+import { useMemo, useRef } from 'react'
+
+function Modal ({ children, ...props }) {
+  const layerRef = useRef()
+  const containerRef = useMemo(() => ({
+    get current () { return directChild(layerRef.current) }
+  }), [layerRef])
+
+  children.props.layerRef = layerRef
+
+  return (
+    <AnimeTransition
+      containerRef={containerRef}
+      {...props}
+    >
+      {children}
+    </AnimeTransition>
+  )
+}
 
 function patchModals () {
   const once = ensureOnce()
@@ -21,27 +39,21 @@ function patchModals () {
     const module = useModule(ModuleKey.Modals)
     if (!module.isEnabled()) return
 
+    const modal = modals.find(m => m.props.isTopModal)
+
     value.props.children[1] = (
       <TransitionGroup component={null}>
-        {
-          modals.map(modal => (
-            <PassThrough>
-              {props => (
-                <AnimeTransition
-                  {...props}
-                  in={modal.props.isTopModal && props.in}
-                  key={modal.props.modalKey}
-                  targetContainer={directChild}
-                  module={module}
-                  enter={!modal.props.instant}
-                  exit={!modal.props.instant}
-                >
-                  {modal}
-                </AnimeTransition>
-              )}
-            </PassThrough>
-          ))
-        }
+        {modal && (
+          <Modal
+            key={modal.props.modalKey}
+            defaultLayoutStyles={false}
+            module={module}
+            enter={!modal.props.instant}
+            exit={!modal.props.instant}
+          >
+            {modal}
+          </Modal>
+        )}
       </TransitionGroup>
     )
   })

@@ -8,7 +8,7 @@ function SwitchSidebarTransition ({ state, ...props }) {
     <TransitionGroup component={null}>
       <AnimeTransition
         key={key}
-        targetContainer={e => e}
+        injectContainerRef={true}
         {...props}
       />
     </TransitionGroup>

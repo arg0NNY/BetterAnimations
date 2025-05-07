@@ -27,7 +27,8 @@ function AppViewTransition ({ className, module, shouldSwitch, getSwitchDirectio
     <TransitionGroup className={className} childFactory={passAuto(auto)}>
       <AnimeTransition
         key={key}
-        container={{ className, defaultLayoutStyles: false }}
+        container={{ className }}
+        defaultLayoutStyles={false}
         freeze={true}
         module={module}
         auto={auto}

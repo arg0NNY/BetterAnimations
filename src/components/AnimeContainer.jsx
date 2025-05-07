@@ -1,19 +1,16 @@
-import { forwardRef } from 'react'
 
-function AnimeContainer ({ container, children }, ref) {
+function AnimeContainer ({ ref, container, children }) {
   if (!container) return children
-  const { defaultLayoutStyles, ...props } = container
 
   return (
     <div
       ref={ref}
       data-ba-container=""
-      data-ba-default-layout-styles={defaultLayoutStyles}
-      {...props}
+      {...container}
     >
       {children}
     </div>
   )
 }
 
-export default forwardRef(AnimeContainer)
+export default AnimeContainer

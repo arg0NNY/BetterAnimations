@@ -48,7 +48,7 @@ function patchChannelMessageList () {
                 return (
                   <AnimeTransition
                     key={item.key}
-                    targetContainer={e => e}
+                    injectContainerRef={true}
                     enter={toEnter.has(message ? item.key : getMessageKey(arr[index + 1]?.props?.message))}
                     exit={false} // Managed in childFactory
                     module={module}

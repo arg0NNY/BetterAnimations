@@ -67,7 +67,7 @@ export const Router = Object.assign(
 export const Transition = Webpack.getByKeys('ENTERING', 'EXITING', 'contextType')
 export const CSSTransition = Webpack.getModule(m => m?.defaultProps?.classNames === '')
 export const TransitionGroup = Webpack.getModule(m => Filters.byPrototypeKeys('handleExited')(m) && !m.childContextTypes, { searchExports: true })
-export const TransitionGroupContext = new Transition({ children: createElement('div') }, {}).render().type._context
+export const TransitionGroupContext = new Transition({ children: createElement('div') }).render().type
 export const Routes = Webpack.getModule(Filters.byKeys('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'), { searchExports: true })
 export const Constants = {
   DEFAULT_MESSAGE_REQUEST_SIDEBAR_WIDTH: 650,
@@ -108,6 +108,8 @@ export const { ChannelSectionStore, MESSAGE_REQUESTS_BASE_CHANNEL_ID } = getMang
 })
 export const ChatSidebarKeyed = getWithKey(Filters.byStrings('sidebarType', 'postSidebarWidth'))
 export const ChatSidebarType = Webpack.getModule(Filters.byKeys('MessageRequestSidebar', 'ThreadSidebar'), { searchExports: true })
+export const VoiceChannelViewKeyed = getWithKey(Filters.byStrings('shouldUseVoiceEffectsActionBar'))
+export const CallChatSidebarKeyed = getWithKey(Filters.byStrings('CallChatSidebar'))
 export const MessageRequestSidebar = Webpack.getByStrings('isMessageRequest', 'closeChannelSidebar')
 export const SidebarType = Webpack.getModule(Filters.byKeys('VIEW_MESSAGE_REQUEST', 'VIEW_THREAD'), { searchExports: true })
 export const useMessageRequestSidebarStateKeyed = getWithKey(Filters.byStrings('getSidebarState', 'VIEW_MESSAGE_REQUEST'))
@@ -156,3 +158,6 @@ export const { ImpressionNames } = Webpack.getByKeys('ImpressionNames')
 export const GuildChannelRouteParams = Webpack.getModule(m => Filters.byStrings('escapeRegExp')(m?.guildId), { searchExports: true })
 export const handleClick = Webpack.getModule(Filters.byStrings('sanitizeUrl', 'shouldConfirm'), { searchExports: true })
 export const MenuItemKeyed = getWithKey(Filters.byStrings('dontCloseOnActionIfHoldingShiftKey', 'data-menu-item'))
+export const ChannelItemKeyed = getWithKey(Filters.byStrings('shouldIndicateNewChannel', 'MANAGE_CHANNELS'))
+export const VoiceChannelItemKeyed = getWithKey(Filters.byStrings('PLAYING', 'MANAGE_CHANNELS'))
+export const StageVoiceChannelItemKeyed = getWithKey(Filters.byStrings('getStageInstanceByChannel', 'MANAGE_CHANNELS'))

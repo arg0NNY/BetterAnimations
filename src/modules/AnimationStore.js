@@ -27,7 +27,7 @@ class Animation {
 
   applyAttributes () {
     this.container.setAttribute('data-baa-type', this.type)
-    if (this.context) this.container.setAttribute('data-baa-overflow', this.context.overflow)
+    if ('overflow' in (this.context ?? {})) this.container.setAttribute('data-baa-overflow', this.context.overflow)
     if (this.module.type) this.container.setAttribute(`data-baa-${this.module.type}`, '')
   }
 
