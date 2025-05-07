@@ -25,7 +25,7 @@ The duration in milliseconds.
 
 ## `easing`
 
-Returns the easing function of the specified <InjectRef inject="easing" parameter="easing" />.
+Returns an easing function of the specified <InjectRef inject="easing" parameter="easing" />.
 
 ### Parameters {#easing-parameters}
 

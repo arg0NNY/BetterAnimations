@@ -408,7 +408,7 @@ If used outside the [lazy inject](/create/injects#lazy-injects) — `undefined`.
 Debugs the specified <InjectRef inject="debug" parameter="data" /> into the Console. See [DevTools](https://docs.betterdiscord.app/developers/devtools#chromium-devtools).
 
 > [!WARNING]
-> All the <InjectRef inject="debug" /> injects must be removed for all the Animations before [publishing your Pack to Catalog](./publish).
+> All the <InjectRef inject="debug" /> injects must be removed for all the Animations before [publishing your Pack to Catalog](/create/publish).
 > Use it only for debugging purposes.
 
 ### Parameters {#debug-parameters}

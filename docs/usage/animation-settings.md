@@ -1,3 +1,9 @@
+<script setup>
+import duration from '../assets/lottie/duration.json'
+import position from '../assets/lottie/position.json'
+import direction from '../assets/lottie/direction.json'
+</script>
+
 # Animation Settings
 
 This section describes all the settings and all their values Animations can use to unlock the full potential of customization provided by _BetterAnimations_.
@@ -12,22 +18,20 @@ This section describes all the settings and all their values Animations can use 
 
 Controls how long the animation will take to complete.
 
-A range from 100 milliseconds to 2 seconds with 50ms step.
+<Lottie :animation-data="duration" style="max-width: 450px;" />
+
+A range from 100 milliseconds to 2 seconds with 50 ms step.
 
 > [!NOTE]
 > Animations may modify the range and expand it up to 5 seconds if needed.
 > 
-> If the range exceeds 2 seconds in total the step will be increased from 50ms to 100ms.
-
-## Variant
-
-Custom options provided by the Animation.
-
-For example, it may control color, size, etc.
+> If the range exceeds 2 seconds in total, the step will be increased from 50 ms to 100 ms.
 
 ## Position
 
 Determines the anchor point of the animation.
+
+<Lottie :animation-data="position" style="max-width: 450px;" />
 
 **Available values:**
 - Top Left
@@ -61,7 +65,9 @@ This setting can automatically determine its value:
 
 ## Direction
 
-Determines the general flow of the animation.
+Determines the general direction of movement of the animation.
+
+<Lottie :animation-data="direction" style="max-width: 450px;" />
 
 **Available values:**
 - Upwards
@@ -128,3 +134,9 @@ This setting can automatically determine its value:
   <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" style="display: inline; vertical-align: sub;">
       <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19V5m10 1l-6 6l6 6m-6-6h14"></path>
   </svg>_Towards_, etc.
+
+## Variant
+
+Custom options provided by the Animation.
+
+For example, it may control color, size, etc.
