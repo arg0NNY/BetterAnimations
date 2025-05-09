@@ -101,6 +101,9 @@ export default defineConfig({
   markdown: {
     headers: true
   },
+  sitemap: {
+    hostname: 'https://betteranimations.net'
+  },
 
   themeConfig: {
     logo: '/logo.svg',
