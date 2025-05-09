@@ -1,4 +1,7 @@
 <script setup>
+import enterExit from '../assets/lottie/enter-exit.json'
+import reveal from '../assets/lottie/reveal.json'
+import _switch from '../assets/lottie/switch.json'
 import expandCollapse from '../assets/lottie/expand-collapse.json'
 </script>
 
@@ -24,6 +27,8 @@ Every Animation consists of two animations of different types: **Enter** and **E
     </svg> <b>Exit</b> animation animates the disappearance of the element.
 </p>
 
+<Lottie :animation-data="enterExit" />
+
 ## Modules
 
 Modules control the Animations for specific parts of Discord.
@@ -40,16 +45,22 @@ For example, [_Popouts_](./modules#popouts) executes an animation when you open 
 such as User Card in the Member List, [_Messages_](./modules#messages) executes an animation when a new message is sent into the channel or is deleted from it,
 and so on.
 
+<Lottie :animation-data="reveal" style="max-width: 450px;" />
+
 ### Switch
 
 Switch modules animate the switch between elements (pages) sharing the same container.
 For example, [_Servers_](./modules#servers) executes an animation when you switch from one Discord server to another,
 [_Settings_](./modules#settings) executes an animation when you switch between different sections of the settings, etc.
 
+<Lottie :animation-data="_switch" style="max-width: 450px;" />
+
 ## Selecting Animations
 
 To select an Animation you can click the card of the Animation you wish to choose inside the Module settings you wish to choose it for.
 This will apply both Enter and Exit animations of this Animation.
+
+<img src="../assets/img/module-settings.png" alt="Module Settings" style="border-radius: 8px;">
 
 If you wish to choose different Animations for Enter and Exit you can click the corresponding switch in the bottom-right corner of the Animation card.
 

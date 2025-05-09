@@ -2,6 +2,10 @@
 outline: deep
 ---
 
+<script setup>
+import enhanceLayout from '../assets/lottie/enhance-layout.json'
+</script>
+
 # Modules
 
 Modules control the Animations for specific parts of Discord. See [Basics](./basics#modules).
@@ -26,6 +30,9 @@ Animates the&nbsp;transitions when switching between servers and&nbsp;other full
 Discord’s default layout is&nbsp;poorly compatible with&nbsp;server-switching animations, forcing _BetterAnimations_ to&nbsp;animate unrelated areas
 (Server List and User Panel) with&nbsp;huge performance losses.
 This&nbsp;option restructures Discord’s layout to&nbsp;isolate animations to&nbsp;only the&nbsp;server area with&nbsp;no&nbsp;visual changes.
+
+<Lottie :animation-data="enhanceLayout" />
+
 However, it may clash with&nbsp;other plugins or&nbsp;themes you have enabled. Try disabling this&nbsp;option if&nbsp;you encounter conflicts.
 
 > [!NOTE]
