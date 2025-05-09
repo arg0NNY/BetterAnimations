@@ -22,11 +22,13 @@ hero:
       link: /reference/pack
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - icon: 🌊
+    title: Fluid Animations
+    details: Enhance your Discord experience with smooth, customizable animations
+  - icon: 🔧
+    title: Extensive Customization
+    details: Fine-tune every aspect of your animations with detailed settings and controls
+  - icon: 🛠️
+    title: Developer Framework
+    details: Build and share your own animations using the powerful Anime.js Animation Engine
 ---
-
