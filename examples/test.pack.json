@@ -274,7 +274,7 @@
     },
 
     {
-      "key": "slip-no-settings",
+      "key": "slipNoSettings",
       "name": "Slip (No settings)",
       "animate": {
         "anime": {
@@ -507,7 +507,7 @@
     },
 
     {
-      "key": "circle+reveal",
+      "key": "circleReveal",
       "name": "Circle + Reveal",
       "modules": "switch",
       "settings": {
@@ -759,7 +759,7 @@
     },
 
     {
-      "key": "create-drawable",
+      "key": "createDrawable",
       "name": "svg.createDrawable",
       "modules": "switch",
       "exit": {
@@ -935,7 +935,7 @@
     },
 
     {
-      "key": "reveal-accordion",
+      "key": "revealAccordion",
       "name": "Reveal Accordion",
       "modules": ["messages", "channelList"],
       "meta": {

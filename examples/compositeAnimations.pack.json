@@ -109,7 +109,7 @@
     },
 
     {
-      "key": "scale-slip",
+      "key": "scaleSlip",
       "name": "Scale + Slip",
       "settings": {
         "duration": true,

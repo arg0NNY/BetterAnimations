@@ -41,11 +41,11 @@ export const configDefaults = {
       enabled: true,
       enter: {
         packSlug: PREINSTALLED_PACK_SLUG,
-        animationKey: 'circle-scale'
+        animationKey: 'circleScale'
       },
       exit: {
         packSlug: PREINSTALLED_PACK_SLUG,
-        animationKey: 'circle-scale'
+        animationKey: 'circleScale'
       }
     },
     [ModuleKey.Tooltips]: {
@@ -118,11 +118,11 @@ export const configDefaults = {
       enabled: true,
       enter: {
         packSlug: PREINSTALLED_PACK_SLUG,
-        animationKey: 'backdrop-blur'
+        animationKey: 'backdropBlur'
       },
       exit: {
         packSlug: PREINSTALLED_PACK_SLUG,
-        animationKey: 'backdrop-blur'
+        animationKey: 'backdropBlur'
       }
     },
     [ModuleKey.MembersSidebar]: {
