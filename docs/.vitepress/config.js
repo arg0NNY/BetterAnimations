@@ -102,7 +102,7 @@ export default defineConfig({
     headers: true
   },
   sitemap: {
-    hostname: 'https://betteranimations.net'
+    hostname: 'https://docs.betteranimations.net'
   },
 
   themeConfig: {
