@@ -15,7 +15,7 @@ For example, inject <InjectRef inject="element" />, according to <InjectRef inje
 returns a reference to an animating [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element):
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:11]
@@ -51,7 +51,7 @@ However, according to the same <InjectRef inject="element" text="Reference" />, 
 `selector` and `multiple` to query elements inside an animating element:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:16]
@@ -92,7 +92,7 @@ To consolidate, let's try to use inject <InjectRef inject="type" />, which, acco
 `enter` and `exit`, will return the value passed under the property corresponding to the current animation type:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:15]
@@ -117,7 +117,7 @@ To consolidate, let's try to use inject <InjectRef inject="type" />, which, acco
 When parsed in the context of animation type `enter` it will result in the following:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:15]
@@ -138,7 +138,7 @@ When parsed in the context of animation type `enter` it will result in the follo
 When parsed in the context of animation type `exit`:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:15]
@@ -162,7 +162,7 @@ One of the most commonly used _lazy inject_ is <InjectRef inject="var.set" />,
 which sets the <InjectRef inject="var.set" parameter="value" /> to the variable under the specified <InjectRef inject="var.set" parameter="name" />:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "onBeforeCreate": { // [!code focus:27] [!code highlight:12]
@@ -206,7 +206,7 @@ To get the value of the variable named `opacity` we just assigned using <InjectR
 we'll need to use inject <InjectRef inject="var.get" />:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "onBeforeCreate": { // [!code focus:31]
@@ -279,7 +279,7 @@ animate(element, {
 To get the values of the arguments received by the _lazy inject_ use inject <InjectRef inject="arguments" />:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:15]

@@ -48,8 +48,7 @@ export default defineConfig({
         {
           text: 'Getting Started',
           items: [
-            { text: 'Introduction', link: '/create/introduction' },
-            { text: 'Quick Start', link: '/create/quick-start' }
+            { text: 'Introduction', link: '/create/introduction' }
           ]
         },
         {
@@ -61,6 +60,7 @@ export default defineConfig({
             { text: 'Settings', link: '/create/settings' },
             { text: 'Lifecycle', link: '/create/lifecycle' },
             { text: 'Intersection', link: '/create/intersection' },
+            { text: 'Peculiarities', link: '/create/peculiarities' },
             { text: 'Debug Mode', link: '/create/debug-mode' }
           ]
         },
@@ -71,7 +71,6 @@ export default defineConfig({
             { text: 'Extending Animations', link: '/create/extending-animations' },
             { text: 'Accordions', link: '/create/accordions' },
             { text: 'Snippets', link: '/create/snippets' },
-            { text: 'Modal Backdrop', link: '/create/modal-backdrop' },
             { text: 'Parsing In-depth', link: '/create/parsing' }
           ]
         },

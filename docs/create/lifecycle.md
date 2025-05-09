@@ -27,7 +27,7 @@ For example, to assign callbacks to `beforeCreate` hook, pass an array of or a s
 to `onBeforeCreate` property:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "onBeforeCreate": [ // [!code focus:19] [!code highlight:15]
@@ -59,7 +59,7 @@ it will execute the provided callbacks in their original order.
 That means if you try to get the value of `zIndex` variable before the Animation has reached `beforeCreate`, you'll get `undefined` since the value has not been assigned yet:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "css": { // [!code focus:24] [!code highlight:5]
@@ -93,7 +93,7 @@ That means if you try to get the value of `zIndex` variable before the Animation
 To fix the issue in the case above, move `var.set` callback to `beforeLayout` hook, which triggers before `css` is parsed (see [Diagram](#lifecycle-diagram)):
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "onBeforeLayout": { // [!code focus:33] [!code ++:9]
@@ -140,7 +140,7 @@ To fix the issue in the case above, move `var.set` callback to `beforeLayout` ho
 > We may save this callback using inject <InjectRef inject="var.set" /> and pass it to the `destroyed` hook using inject <InjectRef inject="var.get" />:
 > ```json
 > {
->   "key": "my-animation",
+>   "key": "myAnimation",
 >   "name": "My Animation",
 >   "animate": {
 >     "onBeforeBegin": { // [!code focus:16] [!code highlight:8]
@@ -170,7 +170,7 @@ To fix the issue in the case above, move `var.set` callback to `beforeLayout` ho
 > To fix this issue, we can immediately call it while parsing using inject <InjectRef inject="call" /> as such:
 > ```json
 > {
->   "key": "my-animation",
+>   "key": "myAnimation",
 >   "name": "My Animation",
 >   "animate": {
 >     "onBeforeBegin": { // [!code focus:23]

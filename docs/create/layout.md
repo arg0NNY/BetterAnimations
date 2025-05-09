@@ -15,7 +15,7 @@ made for a specific Module, most commonly for [Backdrop](/usage/modules#modals-b
 To get the reference to the **Element** use inject <InjectRef inject="element" />:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:4]
@@ -41,7 +41,7 @@ It exists for multiple purposes:
 To get the reference to the **Container** use inject <InjectRef inject="container" />:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:4]
@@ -58,7 +58,7 @@ _BetterAnimations_ allows Animations to create additional custom elements requir
 in [Hast](https://github.com/syntax-tree/hast) (**H**ypertext **A**bstract **S**yntax **T**ree) format inside [`hast`](/reference/animate#hast) property of [Animate](/reference/animate) as such:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "hast": { // [!code focus:27] [!code highlight:23]
@@ -126,7 +126,7 @@ Container
 To get the reference to the created Hast elements use inject <InjectRef inject="hast" />:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:4]
@@ -143,7 +143,7 @@ To get the reference to the created Hast elements use inject <InjectRef inject="
 > The equivalent to the code above is:
 > ```json
 > {
->   "key": "my-animation",
+>   "key": "myAnimation",
 >   "name": "My Animation",
 >   "animate": {
 >     "anime": { // [!code focus:4]
@@ -160,7 +160,7 @@ _BetterAnimations_ allows Animations to mount custom CSS while alive by defining
 inside [`css`](/reference/animate#css) property of [Animate](/reference/animate) as such:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "hast": [ // [!code focus:30]

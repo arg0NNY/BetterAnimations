@@ -19,7 +19,7 @@ A boolean indicating whether an Animation can be intersected. `true` by default.
 A boolean indicating whether internal [Expand/Collapse Animation](/usage/basics#expand-collapse-animations) (Accordion) can be enabled when an Animation is selected.
 `true` by default. See [Accordions](/create/accordions).
 
-> [!WARNING]
+> [!IMPORTANT]
 > Pass `false` to this option only when an Animation implements the [Accordion](/create/accordions) animation itself,
 > whether custom-made or by using inject <InjectRef inject="accordion" />.
 
@@ -27,9 +27,10 @@ A boolean indicating whether internal [Expand/Collapse Animation](/usage/basics#
 
 A boolean indicating whether [Anime](/create/anime) instances should be reverted when an animation ends. `true` by default.
 
-> [!IMPORTANT]
-> This property has effect only for the [Backdrop Module](/usage/modules#modals-backdrop).
+> [!WARNING]
+> This property has effect only for the [Modals -> Backdrop](/usage/modules#modals-backdrop).
 > Other modules always revert animations they execute.
+> See [Peculiarities](/create/peculiarities#modals-backdrop).
 
 ## Presets
 

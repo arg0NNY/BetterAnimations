@@ -13,11 +13,12 @@ plain [Animations](./basics#animations) that are executed in [Modules](./modules
 
 ## Understanding Switch Animations
 
-Let's take [_Servers_](./modules#servers) as an example. When you switch from one Discord Server to another, it executes two animations:
+Let's take [_Servers_](./modules#servers) as an example.
+When you switch from one Discord Server to another, it simultaneously executes two animations:
 - Exit animation for the Server you are currently on
 - Enter animation for the Server you are switching to
 
-When combined, it looks like one animation:
+When combined, they look like one animation:
 
 <Lottie :animation-data="switchAnimations" />
 
@@ -25,7 +26,7 @@ All the other Switch Modules execute [Animations](./basics#animations) by the ex
 
 ## Mixing Switch Animations
 
-Since the Switch Modules execute two different animations, we can select different Animations for each of them.
+Since the Switch Modules execute two different animations, we can configure different Animations for each of them.
 To unlock the ability to configure the Enter and Exit animations of Switch Modules separately, enable [Advanced Mode](./advanced-mode).
 
 <Lottie :animation-data="switchAnimationsMixing" />

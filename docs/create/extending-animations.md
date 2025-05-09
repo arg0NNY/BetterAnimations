@@ -344,7 +344,7 @@ Since [`extends`](/reference/animate#extends), just like any other [Animate](/re
 you may expect this example to work completely fine:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "extends": { // [!code focus:20]
@@ -380,7 +380,7 @@ To fix this issue, we'll need to wrap the [Animate](/reference/animate) definiti
 with inject <InjectRef inject="raw" />:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "extends": { // [!code focus:30] [!code --:7]
@@ -538,7 +538,7 @@ and returns its **raw** [Animate](/reference/animate) definition, from which you
     },
 
     { // [!code focus:25]
-      "key": "scale-slip",
+      "key": "scaleSlip",
       "name": "Scale + Slip",
       "settings": {
         "duration": true,
@@ -578,7 +578,7 @@ and returns its **raw** [Animate](/reference/animate) definition, from which you
 > with inject <InjectRef inject="load" /> when you want to extend from a subset of the [Animate](/reference/animate) properties:
 > ```json
 > {
->   "key": "my-animation",
+>   "key": "myAnimation",
 >   "name": "My Animation",
 >   "animate": {
 >     "extends": { // [!code focus:12] [!code highlight:8]

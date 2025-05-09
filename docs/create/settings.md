@@ -443,9 +443,9 @@ To use the current value of this setting use inject <InjectRef inject="position"
 
 ### Precise mode {#position-precise}
 
-In **Precise** mode this setting _precisely_ anchors to the _anchor point_.
+In **Precise** mode this setting _precisely_ anchors to an _anchor point_ — a `x`, `y` coordinate.
 
-_Anchor point_ may be simply one of the Enum values transformed into a coordinate or, if [Auto-Position](/usage/animation-settings#position-auto) is enabled, some specific point in the layout,
+_Anchor point_ may be simply one of the [Enum](#position-enum) values transformed into a coordinate or, if [Auto-Position](/usage/animation-settings#position-auto) is enabled, some specific point in the layout,
 such as the location of the center of the anchor element. See possible anchor points at [Animation Settings](/usage/animation-settings#position-auto).
 
 However, how the anchor point is determined won't change how it would be handled inside an Animation.
@@ -705,7 +705,7 @@ Declare property [`variant`](/reference/settings#variant) with an array of `key`
 and set the default value for it inside [`defaults`](/reference/settings#defaults):
 ```json
 {
-  "key": "backdrop-solid",
+  "key": "backdropSolid",
   "name": "Solid",
   "modules": "modalsBackdrop",
   "settings": {
@@ -764,7 +764,7 @@ with the options you provided.
 To use the current value of this setting use inject <InjectRef inject="variant" />:
 ```json
 {
-  "key": "backdrop-solid",
+  "key": "backdropSolid",
   "name": "Solid",
   "modules": "modalsBackdrop",
   "settings": {

@@ -8,7 +8,7 @@ to help you debug your Animations.
 To enable **Debug Mode**, pass `true` to the [`debug`](/reference/animation#debug) property of the Animation:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "debug": true, // [!code ++]
   "animate": {
@@ -23,7 +23,7 @@ To enable **Debug Mode**, pass `true` to the [`debug`](/reference/animation#debu
 Alternatively, you may pass strings `"enter"` or `"exit"` to enable Debug Mode for a specific type of animation:
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "debug": true, // [!code --]
   "debug": "enter", // [!code ++]

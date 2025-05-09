@@ -12,7 +12,7 @@ pass **targets** and **parameters** to `anime` property of [Animate](/reference/
 
 ```json
 {
-  "key": "my-animation",
+  "key": "myAnimation",
   "name": "My Animation",
   "animate": {
     "anime": { // [!code focus:11]
