@@ -106,7 +106,7 @@ An integer in the range specified in [`duration`](#duration).
 
 #### `variant` {#defaults-variant}
 
-A string representing the unique key of a variant defined in [`variant`](#variant).
+A string representing a valid `key` of a variant defined in [`variant`](#variant).
 
 #### `position` {#defaults-position}
 

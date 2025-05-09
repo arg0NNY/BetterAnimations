@@ -38,4 +38,4 @@ Determines whether the animation can overflow its container.
 > Some Animations may force the value of this setting if they are only meant to be used either with or without overflow.
 
 > [!WARNING]
-> [_Layers_](./modules#layers) and [_Modals -> Backdrop_](./modules#modals-backdrop) don't support Overflow setting, as their container takes up the whole Discord window, which can't be overflown.
+> [_Layers_](./modules#layers) and [_Modals -> Backdrop_](./modules#modals-backdrop) hide Overflow setting, as their container occupies the Discord's window entirely, which can't be overflown.

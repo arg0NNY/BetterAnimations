@@ -1,6 +1,6 @@
 # Layout
 
-Animations of every [Module](/usage/modules) has the same base layout consisting of an **Element** and a **Container**.
+Animations of every [Module](/usage/modules) have the same base layout consisting of an **Element** and a **Container**.
 
 ## Element
 
@@ -123,7 +123,7 @@ Container
 > [!WARNING]
 > Provided hast elements are sanitized before being inserted into DOM. See [sanitization schema](https://github.com/arg0NNY/BetterAnimations/blob/main/src/modules/animation/hastSanitizeSchema.js).
 
-To get the reference to the created Hast elements use inject <InjectRef inject="hast" />:
+To get the reference to the created Hast elements, use inject <InjectRef inject="hast" />:
 ```json
 {
   "key": "myAnimation",
@@ -268,7 +268,6 @@ using the `{container}` selector inside [custom CSS](#css) as such:
 [`hast`](/reference/animate#hast) and [`css`](/reference/animate#css) properties of [Animate](/reference/animate)
 have a limited set of injects that are allowed for use inside them:
 - <InjectRef inject="anchor" />
-- <InjectRef inject="assign" />
 - <InjectRef inject="container" />
 - <InjectRef inject="element" />
 - <InjectRef inject="hast" />
@@ -285,6 +284,8 @@ have a limited set of injects that are allowed for use inside them:
 - <InjectRef inject="undefined" />
 - <InjectRef inject="var.get" />
 - <InjectRef inject="window" />
+- <InjectRef inject="assign" />
+- <InjectRef inject="includes" />
 - <InjectRef inject="utils.get" />
 - <InjectRef inject="utils.random" />
 - <InjectRef inject="direction" />
@@ -354,6 +355,5 @@ have a limited set of injects that are allowed for use inside them:
 - <InjectRef inject="===" />
 - <InjectRef inject="!==" />
 - <InjectRef inject="-" />
-- <InjectRef inject="includes" />
 - <InjectRef inject="snippet" />
 - <InjectRef inject="snippet.params" />

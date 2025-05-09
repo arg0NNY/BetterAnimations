@@ -1,7 +1,7 @@
 # Extending Animations
 
 _BetterAnimations_ provides an ability to extend Animations.
-It may be useful in a variety of cases — building composite animations, making animation definitions cleaner
+It can be useful in a variety of cases — building composite animations, making animation definitions cleaner
 by reusing them, using premade animations as a base for your own — and much more.
 
 ## Basics
@@ -335,7 +335,7 @@ animate
 ```
 
 This process may seem difficult to follow, but normally you will only have 1-level deep [`extends`](/reference/animate#extends) tree inside a single [Animate](/reference/animate) definition.
-This example is just to showcase the recursive nature of the process.
+The example above is just to showcase the recursive nature of the process.
 The recursiveness comes in handy and is pretty much straightforward when you [build composite animations](#building-composite-animations).
 
 ## Handling injects

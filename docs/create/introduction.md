@@ -17,7 +17,7 @@ Creating custom animations for _BetterAnimations_ allows you to:
 
 ## Prerequisites
 
-Creating Animations for _BetterAnimations_ requires a basic understanding of the basic technologies
+Creating Animations for _BetterAnimations_ requires a basic understanding of the main technologies
 used for web development:
 - [JavaScript](https://javascript.info/)
 - [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) & [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
@@ -29,11 +29,11 @@ If you have no experience with any of these technologies, please read the linked
 
 [Packs](/usage/packs) are defined as plain JSON definitions and are stored as `.pack.json` files in the [Pack Directory](/usage/pack-directory).
 
-To create a pack, create a file named `{slug}.pack.json` inside the [Pack Directory](/usage/pack-directory),
+To create a Pack, create a file named `{slug}.pack.json` inside the [Pack Directory](/usage/pack-directory),
 where `{slug}` is the unique identifier of your pack, for example, `myPack.pack.json`.
 
 > [!NOTE]
-> Make sure not to use the _slug_ that is already taken if you're planning to [publishing your pack to Catalog](./publish).
+> Make sure not to use the _slug_ that is already taken if you're planning to [publish your pack to the Catalog](./publish).
 
 Open it in your favorite code editor with JSON support and start with this basic template:
 ```json

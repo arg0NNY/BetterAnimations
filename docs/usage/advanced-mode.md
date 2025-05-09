@@ -1,6 +1,6 @@
 # Advanced Mode
 
-Advanced Mode unlocks advanced customization features that are not available in Simple Mode to make it easy to start using _BetterAnimations_.
+Advanced Mode unlocks advanced customization features that are not available in the Simple Mode to make it easy to start using _BetterAnimations_.
 
 > [!IMPORTANT]
 > It is strongly recommended to get familiar with all the features available in Simple Mode before starting using Advanced Mode.
@@ -15,5 +15,5 @@ Advanced Mode unlocks advanced customization features that are not available in 
 
 ## Enabling Advanced Mode
 
-To enable Advanced Mode activate the _**Advanced**_ option in the Mode Switch <img src="../assets/img/toggle-switch.png" style="display: inline; vertical-align: bottom;" />
+To enable Advanced Mode activate the _**Advanced**_ option in the Mode Switch <img src="../assets/img/toggle-switch.png" style="display: inline; vertical-align: bottom; border-radius: 5px;" />
 located in the sidebar of the _BetterAnimations_ settings.

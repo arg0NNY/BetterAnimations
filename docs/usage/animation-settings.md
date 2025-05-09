@@ -6,10 +6,10 @@ import direction from '../assets/lottie/direction.json'
 
 # Animation Settings
 
-This section describes all the settings and all their values Animations can use to unlock the full potential of customization provided by _BetterAnimations_.
+This page describes all the settings and all their values Animations can use to unlock the full potential of customization provided by _BetterAnimations_.
 
 > [!IMPORTANT]
-> Note that different Animations may not support all the listed settings or may not support all the values of the specific setting.
+> Different Animations may not support all the listed settings or may not support all the values of the specific setting.
 
 > [!TIP]
 > This page only covers the settings available in Simple Mode. To learn about the settings available in [Advanced Mode](./advanced-mode) see [Advanced Animation Settings](./advanced-animation-settings).
@@ -99,7 +99,7 @@ This setting can automatically determine its value:
   </svg> _Depth_ (_Forwards_, _Backwards_).
 
   For example, if the selected server/channel/section/layer is listed below the previous one it chooses _Upwards_
-  to make it look like it is coming from above the previous one, if listed above — _Downwards_
+  to make it look like it is coming from below the previous one, if listed above — _Downwards_
   (<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" style="display: inline; vertical-align: sub;">
       <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21V3m0 18l3-3m-3 3l-3-3m3-15L9 6m3-3l3 3"></path>
   </svg> _Vertical_ axis).

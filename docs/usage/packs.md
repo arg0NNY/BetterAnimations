@@ -13,4 +13,4 @@ Catalog & Library are currently under active development and are not available y
 :::
 
 > [!TIP]
-> To learn how to manually manage the packs see [Pack Directory](./pack-directory).
+> To learn how to manually manage the packs, see [Pack Directory](./pack-directory).

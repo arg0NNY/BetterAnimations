@@ -78,13 +78,13 @@ Animates the&nbsp;transitions when switching between full-screen views of&nbsp;t
 - [Auto-Direction](./animation-settings#direction) Axis: **Depth**
 
 > [!TIP]
-> This module hides [Overflow](./advanced-animation-settings#overflow) setting as it has no effect
-> due to the fact that layers occupy Discord's window entirely and can't have overflow.
+> This module hides the [Overflow](./advanced-animation-settings#overflow) setting as it has no effect
+> because layers occupy the Discord's window entirely, which can't be overflown.
 
 ## Tooltips <Badge type="tip" text="Reveal" />
 
 Animates the&nbsp;appearance and disappearance of&nbsp;informative floating UI elements application-wide,
-such as various control descriptions, server titles in&nbsp;the&nbsp;server list and other non-interactive elements that provide clarity to&nbsp;Discord's interfaces.
+such as various control descriptions, server titles in&nbsp;the&nbsp;server list, and other non-interactive elements that provide clarity to&nbsp;Discord's interfaces.
 
 **Supports:**
 - [Auto-Position](./animation-settings#position)
@@ -142,8 +142,8 @@ Animates the&nbsp;appearance and disappearance of&nbsp;a&nbsp;dimming overlay be
 > Backdrop animations can alter the&nbsp;static styles of&nbsp;the&nbsp;backdrop.
 
 > [!TIP]
-> This module hides [Overflow](./advanced-animation-settings#overflow) setting as it has no effect
-> due to the fact that backdrop occupies Discord's window entirely and can't have overflow.
+> This module hides the [Overflow](./advanced-animation-settings#overflow) setting as it has no effect
+> because backdrop occupies the Discord's window entirely, which can't be overflown.
 
 ## Members Sidebar <Badge type="tip" text="Reveal" />
 

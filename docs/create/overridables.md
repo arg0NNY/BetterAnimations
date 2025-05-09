@@ -9,7 +9,7 @@ Available _Overridables_:
 ## Defining an override
 
 To define an override, provide an object to `override` property of an _Overridable_
-with a set of conditions inside `for` property and the list of properties to override **if all of the provided conditions are met**.
+with a set of conditions inside `for` property and the list of properties to override **if all the provided conditions are met**.
 
 ```json
 {

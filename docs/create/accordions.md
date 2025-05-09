@@ -13,7 +13,7 @@ import leftRight from '../assets/lottie/accordions-margin-left-right.json'
 _BetterAnimations_ provides internal Accordions users can enable for any of the Animations,
 which will be executed **before and after the animation itself**. See [Lifecycle Diagram](./lifecycle#lifecycle-diagram).
 
-However, you may implement Accordion into your Animation for it to be executed **simultaneously**
+However, you can implement Accordions into your Animation for it to be executed **simultaneously**
 with the rest of your Animation.
 
 <Lottie :animation-data="internalImplemented" />
@@ -43,7 +43,7 @@ to the [`accordion`](/reference/meta#accordion) property of the Animation's [Met
 
 > [!WARNING]
 > Make sure to apply Accordions only for the Modules in which they have an effect:
-> [_Messages_](/usage/modules#messages), [_Channel List_](/usage/modules#channel-list), [_Members Sidebar_](/usage/modules#members-sidebar), [_Thread Sidebar_](/usage/modules#thread-sidebar).
+> [_Messages_](/usage/modules#messages), [_Channel List_](/usage/modules#channel-list), [_Members Sidebar_](/usage/modules#members-sidebar) and [_Thread Sidebar_](/usage/modules#thread-sidebar).
 
 ## Using premade Accordions
 
@@ -142,4 +142,4 @@ You can override the default Accordion type by passing the <InjectRef inject="ac
 > animation executed simultaneously with the rest of the Animation instead of after it can make the message overlap the neighboring messages,
 > which will make the animation look unpleasant.
 >
-> The same applies for the [_Channel List_](/usage/modules#channel-list) animations.
+> The same applies for the [_Channel List_](/usage/modules#channel-list) both `enter` and `exit` animations.

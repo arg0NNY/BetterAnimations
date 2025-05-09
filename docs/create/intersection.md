@@ -43,10 +43,10 @@ Let's take a simple Fade animation as an example:
 }
 ```
 
-This animation works completely fine, but it lacks support for intersections, as it always sets [`from`](https://animejs.com/documentation/animation/tween-parameters/from) value,
+This animation works completely fine, but it lacks support for intersections, as it always sets the [`from`](https://animejs.com/documentation/animation/tween-parameters/from) value,
 ignoring the fact that the actual `opacity` may differ if previous Animation instance didn't have time to finish its work.
 
-To add support for intersections the Animation, we'll have to cover two cases:
+To add support for intersections in the Animation, we'll have to cover two cases:
 1. **Exit animation intersects with Enter animation** (Exit started before Enter finished)
 2. **Enter animation intersects with Exit animation** (Enter started before Exit finished)
 
@@ -79,7 +79,7 @@ Let's start with the first one:
 }
 ```
 
-In this case we may simply remove [`from`](https://animejs.com/documentation/animation/tween-parameters/from) value, as it doesn't matter from what `opacity` animation starts as long as it
+In this case we may simply remove the [`from`](https://animejs.com/documentation/animation/tween-parameters/from) value, as it doesn't matter from what `opacity` animation starts as long as it
 ends on `0`. [Anime](./anime) will automatically set [`from`](https://animejs.com/documentation/animation/tween-parameters/from) value equal to the current `opacity`.
 
 Covering the second case is a bit more complex:
@@ -115,7 +115,7 @@ Covering the second case is a bit more complex:
 }
 ```
 
-Here we couldn't just simply remove [`from`](https://animejs.com/documentation/animation/tween-parameters/from) value and set [`to`](https://animejs.com/documentation/animation/tween-parameters/to) to `1` like we did with the previous case,
+Here we couldn't just simply remove the [`from`](https://animejs.com/documentation/animation/tween-parameters/from) value and set the [`to`](https://animejs.com/documentation/animation/tween-parameters/to) to `1` like we did with the previous case,
 as the [Element](./layout#element) has opacity `1` by default, so there will be no visible animation under normal circumstances, since it will animate `opacity` from `1` to `1`.
 
 To fix this issue, we used inject <InjectRef inject="isIntersected" /> to cover two cases:

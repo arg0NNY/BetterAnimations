@@ -47,8 +47,8 @@ animate(element, { // `element` is a reference to an animating `Element`
 })
 ```
 
-However, according to the same <InjectRef inject="element" text="Reference" />, it may accept optional parameters
-`selector` and `multiple` to query elements inside an animating element:
+However, according to the same <InjectRef inject="element" text="Reference" />, it may accept optional parameters <InjectRef inject="element" parameter="selector" />
+and <InjectRef inject="element" parameter="multiple" /> to query elements inside an animating element:
 ```json
 {
   "key": "myAnimation",
@@ -89,7 +89,7 @@ animate(element.querySelectorAll('.some-class'), {
 ```
 
 To consolidate, let's try to use inject <InjectRef inject="type" />, which, according to <InjectRef inject="type" text="Reference" />, when declared with parameters
-`enter` and `exit`, will return the value passed under the property corresponding to the current animation type:
+`enter` and `exit`, will return the value passed to the property corresponding to the current animation type:
 ```json
 {
   "key": "myAnimation",
@@ -135,7 +135,7 @@ When parsed in the context of animation type `enter` it will result in the follo
 }
 ```
 
-When parsed in the context of animation type `exit`:
+When parsed in the context of animation type `exit` — the following:
 ```json
 {
   "key": "myAnimation",
@@ -156,7 +156,7 @@ When parsed in the context of animation type `exit`:
 ## Lazy Injects
 
 _Lazy Injects_ (or _Callbacks_), unlike regular _injects_, which are parsed immediately,
-transform into function and parse their contents only when this function is called.
+transform into a function and parse their contents only when this function is called.
 
 One of the most commonly used _lazy inject_ is <InjectRef inject="var.set" />,
 which sets the <InjectRef inject="var.set" parameter="value" /> to the variable under the specified <InjectRef inject="var.set" parameter="name" />:

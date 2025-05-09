@@ -91,4 +91,4 @@ There, highlighted in red, are the [Containers](./layout#container) that are ani
 
 Notice something strange? Yep, the [Containers](./layout#container) of the _dividers_ are actually 1 pixel in height,
 which makes the text of the divider itself to overflow the container.
-When making the Animations for [Messages](/usage/modules#messages), make sure to account for this beauty of Discord's layout.
+Make sure to account for this beauty of Discord's layout when making the Animations for [Messages](/usage/modules#messages).

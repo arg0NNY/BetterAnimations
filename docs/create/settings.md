@@ -259,7 +259,7 @@ To use the current value of this setting use inject <InjectRef inject="easing" /
 
 ## Position
 
-[**Position**](/usage/animation-settings#position) setting may be activated in two modes: **Enum** or **Precise**.
+[**Position**](/usage/animation-settings#position) setting can be activated in two modes: **Enum** or **Precise**.
 
 ### Enum mode {#position-enum}
 
@@ -445,7 +445,7 @@ To use the current value of this setting use inject <InjectRef inject="position"
 
 In **Precise** mode this setting _precisely_ anchors to an _anchor point_ — a `x`, `y` coordinate.
 
-_Anchor point_ may be simply one of the [Enum](#position-enum) values transformed into a coordinate or, if [Auto-Position](/usage/animation-settings#position-auto) is enabled, some specific point in the layout,
+_Anchor point_ can be simply one of the [Enum](#position-enum) values transformed into a coordinate or, if [Auto-Position](/usage/animation-settings#position-auto) is enabled, some specific point in the layout,
 such as the location of the center of the anchor element. See possible anchor points at [Animation Settings](/usage/animation-settings#position-auto).
 
 However, how the anchor point is determined won't change how it would be handled inside an Animation.
@@ -829,9 +829,9 @@ To use the current value of this setting use inject <InjectRef inject="variant" 
 
 ## Overflow
 
-Every Animation has an [Overflow](/usage/advanced-animation-settings#overflow) setting.
+Every Animation has the [Overflow](/usage/advanced-animation-settings#overflow) setting.
 
-The value of this setting can't be used by Animation,
+Animation can't use the value of this setting,
 as _BetterAnimations_ will automatically set [`overflow`](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow) CSS property
 to [`clip`](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow#clip) for the Container if this setting is enabled.
 

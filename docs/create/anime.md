@@ -8,7 +8,7 @@ _BetterAnimations_ uses [Anime JavaScript Animation Engine](https://animejs.com/
 ## Defining an instance
 
 An Animation must have an Anime instance defined to be executed. To define an instance, you'll need to
-pass **targets** and **parameters** to `anime` property of [Animate](/reference/animate) definition.
+pass **targets** and **parameters** to [`anime`](/reference/animate#anime) property of [Animate](/reference/animate) definition.
 
 ```json
 {
@@ -48,11 +48,11 @@ animate(element, {
 > This example uses inject <InjectRef inject="element" />. Injects are covered at [Injects](./injects).
 > 
 > At the moment all you have to know is that `{ "inject": "element" }` will be replaced with an instance
-> of an [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element) animation currently executes for. See [Layout](./layout#element).
+> of the [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element) animation currently executes for. See [Layout](./layout#element).
 
 ## Targets
 
-`targets` accepts an [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element) or a string representing a [selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors).
+`targets` accepts an [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element) or a string representing a [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors).
 At least one target must be specified.
 
 You can also specify multiple targets and have a nested array if needed:
@@ -76,7 +76,7 @@ This will target `element` and all the elements matching the selectors: `#elemen
 
 ## Parameters
 
-`parameters` accepts an object containing Anime parameters. Refer to [Anime Documentation](https://animejs.com/documentation).
+`parameters` accepts an object containing Anime parameters. Refer to [Anime Documentation](https://animejs.com/documentation/animation/animatable-properties).
 
 > [!NOTE]
 > [`autoplay`](https://animejs.com/documentation/animation/animation-playback-settings/autoplay) parameter is used by _BetterAnimations_ and will be ignored if specified in an instance.
@@ -84,7 +84,7 @@ This will target `element` and all the elements matching the selectors: `#elemen
 ## WAAPI
 
 _BetterAnimations_ creates a plain [`Animation`](https://animejs.com/documentation/animation) instance by default.
-However, it is highly recommended to use `WAAPI` ([Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API)) when possible as a much better alternative to plain JS animation performance-wise.
+However, it is highly recommended to use **WAAPI** ([Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API)) when possible as a much better alternative to plain JS animation performance-wise.
 
 Refer to [Anime Documentation](https://animejs.com/documentation/web-animation-api) to learn about WAAPI animations and [when they can be used](https://animejs.com/documentation/web-animation-api/when-to-use-waapi).
 
@@ -146,7 +146,7 @@ createTimer({
 
 ## Timeline
 
-To create a [`Timeline`](https://animejs.com/documentation/timeline) specify a type `timeline` and pass a non-empty array of `children`:
+To create a [`Timeline`](https://animejs.com/documentation/timeline) specify a type `timeline` and pass a non-empty array of [`children`](/reference/anime#children):
 ```json {3,9-36}
 {
   "anime": {

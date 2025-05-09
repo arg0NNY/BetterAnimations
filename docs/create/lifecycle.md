@@ -10,7 +10,7 @@ Below is a diagram for the Animation lifecycle.
 Most of the steps you should already be familiar with. However, there are steps that weren't covered yet:
 - **Perform extend:** Executes the process of extension. This step will be skipped entirely if the Animation doesn't have property [`extends`](/reference/animate#extends).
   See [Extending Animations](./extending-animations).
-- **Intersections:** Animation may be intersected with itself. The details on when the intersection happens
+- **Intersections:** Animation can be intersected with itself. The details on when the intersection happens
   and how to handle it are described at [Intersection](./intersection).
 - **Accordions:** _Accordions_ are [Expand/Collapse Animations](/usage/basics#expand-collapse-animations).
   They don't require any extra effort on the Animation's side under normal circumstances. Accordions are covered in detail at [Accordions](./accordions).
