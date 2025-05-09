@@ -1,7 +1,8 @@
 ---
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
-title: BetterAnimations — Discord Animations Client Mod & Framework
+title: BetterAnimations
+titleTemplate: Discord Animations Client Mod & Framework
 
 hero:
   name: "BetterAnimations"
