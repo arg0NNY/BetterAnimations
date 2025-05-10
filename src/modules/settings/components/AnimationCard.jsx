@@ -176,6 +176,7 @@ function AnimationCard ({
               onMouseLeave={() => setForceOpenSettingsTooltip(false)}
             >
               <AnimationPreview
+                wide={wide}
                 title={name}
                 active={previewAlwaysActive || cardHovered || !!expanded}
               />
@@ -295,10 +296,10 @@ css
 .BA__animationCard:hover {
     background-color: var(--background-base-lower);
 }
-.BA__animationCard:hover .BA__animationPreviewTitle,
+/*.BA__animationCard:hover .BA__animationPreviewTitle,
 .BA__animationCard--expanded .BA__animationPreviewTitle {
     opacity: 0;
-}
+}*/
 
 .BA__animationCardWrapper:nth-child(3n - 1) .BA__animationCard {
     left: 50%;

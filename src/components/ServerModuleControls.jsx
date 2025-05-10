@@ -1,34 +1,11 @@
 import { forceAppUpdate } from '@/utils/forceUpdate'
-import { Alert, AlertTypes, Checkbox, Flex, ModalActions, ModalSize, Text } from '@/modules/DiscordModules'
+import { Checkbox, Flex, handleClick, Text } from '@/modules/DiscordModules'
 import IconButton from '@/modules/settings/components/IconButton'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import CircleQuestionIcon from '@/modules/settings/components/icons/CircleQuestionIcon'
-import Modal from '@/components/Modal'
-import meta from '@/meta'
 import Emitter from '@/modules/Emitter'
 import Events from '@/enums/Events'
-
-function EnhanceLayoutModal ({ module, ...props }) {
-  return (
-    <Modal
-      title="Enhance layout"
-      size={ModalSize.MEDIUM}
-      confirmText="Got it"
-      {...props}
-    >
-      <Text variant="text-md/normal">
-        Discord’s default layout is&nbsp;poorly compatible with&nbsp;server-switching animations, forcing {meta.name} to&nbsp;animate unrelated areas
-        (Server List and User Panel) with&nbsp;huge performance losses.
-        This&nbsp;option restructures Discord’s layout to&nbsp;isolate animations to&nbsp;only the&nbsp;server area with&nbsp;no&nbsp;visual changes.
-        However, it may clash with&nbsp;other plugins or&nbsp;themes you have enabled. Try disabling this&nbsp;option if&nbsp;you encounter conflicts.
-      </Text>
-      <Alert messageType={AlertTypes.INFO} className={DiscordClasses.Margins.marginTop8}>
-        When this option is&nbsp;disabled {meta.name} will still apply minor layout tweaks (required for&nbsp;animations to&nbsp;function).
-        Consider disabling {module.name} animations entirely if&nbsp;the&nbsp;conflict persists.
-      </Alert>
-    </Modal>
-  )
-}
+import Documentation from '@/modules/Documentation'
 
 function ServerModuleControls ({ module }) {
   return (
@@ -44,10 +21,7 @@ function ServerModuleControls ({ module }) {
         <Text variant="text-sm/normal">Enhance layout</Text>
         <IconButton
           className={DiscordClasses.Margins.marginLeft8}
-          tooltip="Learn more"
-          onClick={() => ModalActions.openModal(
-            props => <EnhanceLayoutModal module={module} {...props} />
-          )}
+          onClick={() => handleClick({ href: Documentation.enhanceLayoutUrl })}
         >
           <CircleQuestionIcon size="xs" color="currentColor" />
         </IconButton>

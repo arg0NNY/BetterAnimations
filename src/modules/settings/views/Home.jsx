@@ -11,6 +11,8 @@ import IconAuthor from '@/components/icons/IconAuthor'
 import SpotlightAnimation from '@/modules/settings/components/SpotlightAnimation'
 import { useMemo } from 'react'
 import { sanitize } from '@/utils/text'
+import BookIcon from '@/modules/settings/components/icons/BookIcon'
+import Documentation from '@/modules/Documentation'
 
 const madeByPhrases = [
   'Made by',
@@ -71,9 +73,10 @@ function Home () {
           <Button
             color={Button.Colors.PRIMARY}
             innerClassName="BA__homeButtonContents"
-            disabled={true}
+            onClick={() => handleClick({ href: Documentation.homeUrl })}
           >
-            Create your own animations
+            <BookIcon size="sm" color="currentColor" />
+            Documentation
             <ExternalLinkIcon size="sm" color="currentColor" />
           </Button>
         </div>

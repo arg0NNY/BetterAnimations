@@ -10,6 +10,7 @@ import { clearSourceMapDeep, getSourcePath, sourceMappedObjectEntries } from '@/
 import ParsableExtendableAnimateSchema, { ParsableExtendsSchema } from '@/modules/animation/schemas/ParsableExtendableAnimateSchema'
 import { omit } from '@/utils/object'
 import { intersect, promisify } from '@/utils/anime'
+import Documentation from '@/modules/Documentation'
 
 export function buildContext (pack, animation, type, settings = {}, meta = {}, context = {}) {
   return Object.assign(
@@ -91,7 +92,7 @@ export function parse (data = null, context, options = {}) {
       ErrorManager.registerAnimationError(
         error instanceof AnimationError ? error : new AnimationError(
           context.animation,
-          formatZodError(error, { pack: context.pack, data, context, path }),
+          formatZodError(error, { pack: context.pack, data, context, path, docs: Documentation.getDefinitionUrl(Documentation.Definition.Animate) }),
           { module: context.module, pack: context.pack, type: context.type, context }
         )
       )

@@ -37,6 +37,7 @@ import * as DiscordModules from '@/modules/DiscordModules'
 import * as anime from 'animejs'
 import Utils from '@/modules/Utils'
 import patchMenuItem from '@/patches/ContextMenu/patchMenuItem'
+import Documentation from '@/modules/Documentation'
 
 engine.pauseOnDocumentHidden = false
 
@@ -59,7 +60,8 @@ if (import.meta.env.MODE === 'development')
     DiscordModules,
     DiscordClasses,
     anime,
-    Utils
+    Utils,
+    Documentation
   }
 
 export default function (meta) {

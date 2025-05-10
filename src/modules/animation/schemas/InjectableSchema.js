@@ -25,18 +25,20 @@ import TrustedFunctionSchema, { trust } from '@/modules/animation/schemas/Truste
 import { ObjectDeepBaseSchema } from '@/modules/animation/schemas/ObjectDeepSchema'
 import { RawInjectBaseSchema } from '@/modules/animation/schemas/injects/general'
 import { parseInjectSchemas } from '@/modules/animation/schemas/utils'
+import Documentation from '@/modules/Documentation'
 
-export const injectSchemas = {
-  ...parseInjectSchemas(GeneralInjectSchemas),
-  ...parseInjectSchemas(ObjectInjectSchemas),
-  ...parseInjectSchemas(ArrayInjectSchemas),
-  ...parseInjectSchemas(AnimeInjectSchemas),
-  ...parseInjectSchemas(SettingsInjectSchemas),
-  ...parseInjectSchemas(MathInjectSchemas),
-  ...parseInjectSchemas(OperatorsInjectSchemas),
-  ...parseInjectSchemas(AccordionsInjectSchemas),
-  ...parseInjectSchemas(SnippetsInjectSchemas)
+export const groupedInjectSchemas = {
+  general: parseInjectSchemas(GeneralInjectSchemas),
+  object: parseInjectSchemas(ObjectInjectSchemas),
+  array: parseInjectSchemas(ArrayInjectSchemas),
+  anime: parseInjectSchemas(AnimeInjectSchemas),
+  settings: parseInjectSchemas(SettingsInjectSchemas),
+  math: parseInjectSchemas(MathInjectSchemas),
+  operators: parseInjectSchemas(OperatorsInjectSchemas),
+  accordions: parseInjectSchemas(AccordionsInjectSchemas),
+  snippets: parseInjectSchemas(SnippetsInjectSchemas)
 }
+export const injectSchemas = Object.assign({}, ...Object.values(groupedInjectSchemas))
 export const injectTypes = Object.keys(injectSchemas)
 const injectDict = new Spelling(injectTypes)
 
@@ -62,7 +64,14 @@ function parseInject ({ schema, context, env, value, ctx }) {
   catch (error) {
     throw error instanceof AnimationError ? error : new AnimationError(
       context.animation,
-      formatZodError(error, { pack: context.pack, data: value, context, path: ctx.path, sourceMap: { useSelf: true } }),
+      formatZodError(error, {
+        pack: context.pack,
+        data: value,
+        context,
+        path: ctx.path,
+        sourceMap: { useSelf: true },
+        docs: Documentation.getInjectUrl(value.inject)
+      }),
       { module: context.module, pack: context.pack, type: context.type, context }
     )
   }

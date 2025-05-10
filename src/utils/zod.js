@@ -35,10 +35,11 @@ export function formatZodError (error, options = {}) {
     context,
     path = context?.path ?? [],
     received = !!data,
-    sourceMap = {}
+    sourceMap = {},
+    docs = null
   } = options
 
-  return '\n' + error.issues.map(issue => {
+  let message = '\n' + error.issues.map(issue => {
     const relativePath = issue.path.slice(path.length)
     const sourcePath = toSourcePath(data, relativePath, sourceMap) ?? issue.path
     let message = `• ${issue.message} at "${toPath(sourcePath)}"`
@@ -97,6 +98,14 @@ export function formatZodError (error, options = {}) {
 
     return message
   }).join('\n')
+
+  if (docs)
+    message += indent(
+      `\n↪ See documentation: `
+      + docs
+    )
+
+  return message
 }
 
 export function zodTransformErrorBoundary (transformFn) {

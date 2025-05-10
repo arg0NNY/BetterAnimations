@@ -32,6 +32,7 @@ import PositionAutoType from '@/enums/PositionAutoType'
 import ParsableExtendableAnimateSchema from '@/modules/animation/schemas/ParsableExtendableAnimateSchema'
 import { computeOverridable } from '@/modules/animation/schemas/OverridableSchema'
 import { metaOverridePresets } from '@/modules/animation/schemas/MetaSchema'
+import Documentation from '@/modules/Documentation'
 
 class Module {
   constructor (id, name, meta = {}, { parent, description, controls, alert, onToggle } = {}) {
@@ -108,7 +109,7 @@ class Module {
     catch (err) {
       error = err instanceof AnimationError ? err : new AnimationError(
         animation,
-        formatZodError(err, { pack, data, context, received: false }),
+        formatZodError(err, { pack, data, context, received: false, docs: Documentation.getDefinitionUrl(Documentation.Definition.Animate) }),
         { module: this, pack, type, context }
       )
       ErrorManager.registerAnimationError(error)

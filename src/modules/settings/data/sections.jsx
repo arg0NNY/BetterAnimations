@@ -10,6 +10,8 @@ import HomeIcon from '@/modules/settings/components/icons/HomeIcon'
 import ShopIcon from '@/modules/settings/components/icons/ShopIcon'
 import BookCheckIcon from '@/components/icons/BookCheckIcon'
 import Home from '@/modules/settings/views/Home'
+import Catalog from '@/modules/settings/views/Catalog'
+import Library from '@/modules/settings/views/Library'
 
 export function getSections () {
   return [
@@ -30,13 +32,13 @@ export function getSections () {
       section: SettingsSection.Catalog,
       label: 'Catalog',
       icon: <ShopIcon size="xs" color="currentColor" />,
-      element: () => {}
+      element: Catalog
     },
     {
       section: SettingsSection.Library,
       label: 'Library',
       icon: <BookCheckIcon size="xs" color="currentColor" />,
-      element: () => {}
+      element: Library
     },
     {
       section: 'DIVIDER'

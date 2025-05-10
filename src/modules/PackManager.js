@@ -7,6 +7,7 @@ import meta from '@/meta'
 import ErrorManager from '@/modules/ErrorManager'
 import { formatZodError } from '@/utils/zod'
 import internalPacks, { internalPackSlugs } from '@/packs'
+import Documentation from '@/modules/Documentation'
 
 export default new class PackManager extends AddonManager {
   get name () {return 'PackManager'}
@@ -41,7 +42,11 @@ export default new class PackManager extends AddonManager {
       Object.assign(addon, PackSchema.parse(addon))
     }
     catch (e) {
-      return new AddonError(this.prefix, addon, formatZodError(e, { pack: addon, received: false }))
+      return new AddonError(
+        this.prefix,
+        addon,
+        formatZodError(e, { pack: addon, received: false, docs: Documentation.getDefinitionUrl(Documentation.Definition.Pack) })
+      )
     }
   }
 

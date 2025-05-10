@@ -3,6 +3,7 @@ import { z } from 'zod'
 import InjectableSchema from '@/modules/animation/schemas/InjectableSchema'
 import AnimationError from '@/structs/AnimationError'
 import { formatZodError } from '@/utils/zod'
+import Documentation from '@/modules/Documentation'
 
 const ParsableSchema = (stage, schema) => (context, env) =>
   (![ParseStage.Initialize, stage].includes(env.stage) ? z.any() : InjectableSchema(context, env))
@@ -17,7 +18,7 @@ const ParsableSchema = (stage, schema) => (context, env) =>
       catch (error) {
         throw new AnimationError(
           context.animation,
-          formatZodError(error, { pack: context.pack, data: value, context, path: ctx.path }),
+          formatZodError(error, { pack: context.pack, data: value, context, path: ctx.path, docs: Documentation.getDefinitionUrl(Documentation.Definition.Animate) }),
           { module: context.module, pack: context.pack, type: context.type, context }
         )
       }
