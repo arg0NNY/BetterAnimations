@@ -1,5 +1,5 @@
 import { Slider as DiscordSlider, Tooltip } from '@/modules/DiscordModules'
-import { Patcher } from '@/BdApi'
+import Patcher from '@/modules/Patcher'
 import findInReactTree from '@/utils/findInReactTree'
 
 class Slider extends DiscordSlider {

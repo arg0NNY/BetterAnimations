@@ -1,4 +1,4 @@
-import { Patcher } from '@/BdApi'
+import Patcher from '@/modules/Patcher'
 import { MenuItemKeyed } from '@/modules/DiscordModules'
 
 function patchMenuItem () {

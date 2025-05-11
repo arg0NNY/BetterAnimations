@@ -1,4 +1,4 @@
-import { Patcher } from '@/BdApi'
+import Patcher from '@/modules/Patcher'
 import { ChannelSectionStore, MembersModViewSidebarKeyed, useStateFromStores } from '@/modules/DiscordModules'
 import ModuleKey from '@/enums/ModuleKey'
 import useModule from '@/hooks/useModule'

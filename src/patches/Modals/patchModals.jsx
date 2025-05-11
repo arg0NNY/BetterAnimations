@@ -1,4 +1,4 @@
-import { Patcher } from '@/BdApi'
+import Patcher from '@/modules/Patcher'
 import { ModalsKeyed, TransitionGroup } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
 import patchModalItem from '@/patches/Modals/patchModalItem'

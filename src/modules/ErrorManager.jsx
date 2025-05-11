@@ -4,7 +4,7 @@ import ErrorModal from '@/components/error/ErrorModal'
 import ErrorToast from '@/components/error/ErrorToast'
 import Emitter from '@/modules/Emitter'
 import Events from '@/enums/Events'
-import { Patcher } from '@/BdApi'
+import Patcher from '@/modules/Patcher'
 
 const ErrorManagerToastSymbol = Symbol('ErrorManagerToast')
 

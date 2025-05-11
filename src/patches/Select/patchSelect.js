@@ -1,4 +1,4 @@
-import { Patcher } from '@/BdApi'
+import Patcher from '@/modules/Patcher'
 import { SearchableSelect, SelectKeyed, SingleSelectKeyed } from '@/modules/DiscordModules'
 import Position from '@/enums/Position'
 import findInReactTree from '@/utils/findInReactTree'

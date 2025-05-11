@@ -1,4 +1,4 @@
-import { Patcher } from '@/BdApi'
+import Patcher from '@/modules/Patcher'
 import { CallChatSidebarKeyed, TransitionGroup, VoiceChannelViewKeyed } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import ensureOnce from '@/utils/ensureOnce'

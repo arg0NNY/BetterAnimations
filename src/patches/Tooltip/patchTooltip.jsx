@@ -1,4 +1,4 @@
-import { Patcher } from '@/BdApi'
+import Patcher from '@/modules/Patcher'
 import { SpringTransitionPhases, Tooltip, TooltipLayer } from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
 import { injectModule } from '@/hooks/useModule'

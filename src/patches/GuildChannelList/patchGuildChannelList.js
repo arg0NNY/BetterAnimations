@@ -1,4 +1,4 @@
-import { Patcher } from '@/BdApi'
+import Patcher from '@/modules/Patcher'
 import { GuildChannelList } from '@/modules/DiscordModules'
 
 export let currentGuildChannels = null

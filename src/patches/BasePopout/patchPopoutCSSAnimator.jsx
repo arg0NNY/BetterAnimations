@@ -1,4 +1,4 @@
-import { Patcher } from '@/BdApi'
+import Patcher from '@/modules/Patcher'
 import { PopoutCSSAnimatorKeyed } from '@/modules/DiscordModules'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'

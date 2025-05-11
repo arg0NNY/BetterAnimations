@@ -1,4 +1,4 @@
-import { Patcher } from '@/BdApi'
+import Patcher from '@/modules/Patcher'
 import { ModalTransitionState } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import { injectModule } from '@/hooks/useModule'

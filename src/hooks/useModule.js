@@ -1,4 +1,4 @@
-import { Patcher } from '@/BdApi'
+import Patcher from '@/modules/Patcher'
 import useUpdate from '@/hooks/useUpdate'
 import Emitter from '@/modules/Emitter'
 import Events from '@/enums/Events'

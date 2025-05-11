@@ -1,4 +1,5 @@
-import { Patcher, Utils } from '@/BdApi'
+import Patcher from '@/modules/Patcher'
+import { Utils } from '@/BdApi'
 import { AppPanels, AppViewKeyed, ImpressionNames, Router, Routes, TransitionGroup } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@/components/AnimeTransition'

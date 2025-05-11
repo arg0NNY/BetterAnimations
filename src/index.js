@@ -1,5 +1,5 @@
 import { engine } from 'animejs'
-import { Patcher } from '@/BdApi'
+import Patcher from '@/modules/Patcher'
 import { forceAppUpdate } from '@/utils/forceUpdate'
 import patchAppView from '@/patches/AppView/patchAppView'
 import patchContextMenu from '@/patches/ContextMenu/patchContextMenu'
