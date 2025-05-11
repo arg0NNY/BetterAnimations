@@ -252,8 +252,8 @@ class Module {
   buildDefaultSettings (animation, type, normalized = true) {
     const settings = Object.assign(
       { [Setting.Overflow]: true },
-      this.buildAnimationDefaultSettings(animation, type),
       this.buildModuleDefaultSettings(animation),
+      this.buildAnimationDefaultSettings(animation, type),
       Object.fromEntries(
         this.getAllSettingsSupportingAuto(animation, true).map(s => [s, Auto()])
       )
