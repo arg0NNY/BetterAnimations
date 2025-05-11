@@ -9,7 +9,7 @@ import AnimationSettings from '@/modules/settings/components/AnimationSettings'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import useDismissible from '@/modules/settings/hooks/useDismissible'
 import useElementBounding from '@/hooks/useElementBounding'
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import HintTooltip from '@/modules/settings/components/HintTooltip'
 import { Utils } from '@/BdApi'
 
@@ -25,10 +25,7 @@ const TOP_OFFSET = TOP_BAR_HEIGHT + 40
 const BOTTOM_OFFSET = 72 + 20 // 72 is the height of the settings notice
 const POPOUT_GAP = 20
 
-function useAnimationCardExpand ({ positionerRef, popoutRef, refToScroller }) {
-  const [expanded, setExpanded] = useState(null)
-  const close = useCallback(() => setExpanded(null), [setExpanded])
-
+function useAnimationCardExpand ({ expanded, positionerRef, popoutRef, refToScroller }) {
   const window = useWindowSize()
 
   const positioner = {
@@ -56,9 +53,6 @@ function useAnimationCardExpand ({ positionerRef, popoutRef, refToScroller }) {
   
   return {
     update,
-    expanded,
-    setExpanded,
-    close,
     positionerStyle: {
       height: getCardHeight(positioner.width) + 'px'
     },
@@ -92,20 +86,27 @@ function AnimationCard ({
 }) {
   const positionerRef = useRef()
   const cardRef = useRef()
-  const popoutRef = useRef()
+
+  const settingsPopoutRef = useRef()
+  const accordionsPopoutRef = useRef()
+  const popoutRefs = useMemo(() => ({
+    settings: settingsPopoutRef,
+    accordions: accordionsPopoutRef
+  }), [settingsPopoutRef, accordionsPopoutRef])
+
+  const [expanded, setExpanded] = useState(null)
+  const close = useCallback(() => setExpanded(null), [setExpanded])
 
   const {
     update,
-    expanded,
-    setExpanded,
-    close,
     positionerStyle,
     cardStyle,
     popoutWrapperStyle,
     popoutStyle
   } = useAnimationCardExpand({
+    expanded,
     positionerRef,
-    popoutRef,
+    popoutRef: popoutRefs[expanded],
     refToScroller
   })
 
@@ -202,13 +203,13 @@ function AnimationCard ({
         {expanded && (
           <CSSTransition
             key={expanded}
-            nodeRef={popoutRef}
+            nodeRef={popoutRefs[expanded]}
             timeout={400}
             classNames="BA__fade"
             mountOnEnter
             unmountOnExit
           >
-            <div ref={popoutRef} className="BA__animationCardPopoutWrapper" style={popoutWrapperStyle}>
+            <div ref={popoutRefs[expanded]} className="BA__animationCardPopoutWrapper" style={popoutWrapperStyle}>
               <div className="BA__animationCardPopout" style={popoutStyle}>
                 <div className={`BA__animationCardPopoutScroller ${DiscordClasses.Scroller.thin}`}>
                   <AnimationSettings {...{
