@@ -6,6 +6,7 @@ import { EasingType } from '@/enums/Easing'
 import { prevent } from '@/modules/settings/utils/eventModifiers'
 import SettingControl from '@/modules/settings/components/controls/SettingControl'
 import Slider from '@/components/Slider'
+import Documentation from '@/modules/Documentation'
 
 function EasingField ({ label, children }) {
   return (
@@ -171,7 +172,7 @@ function EasingControl ({ value, onChange, onReset }) {
   )
 
   return (
-    <SettingControl label="Easing" onReset={onReset}>
+    <SettingControl label="Easing" doc={Documentation.Setting.Easing} onReset={onReset}>
       <SingleSelect
         options={easingTypes}
         value={easing.type}

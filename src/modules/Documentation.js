@@ -11,6 +11,14 @@ export default new class Documentation {
     Snippet: 'snippet',
     Easing: 'easing'
   }
+  Setting = {
+    Duration: 'duration',
+    Position: 'position',
+    Direction: 'direction',
+    Variant: 'variant',
+    Easing: 'easing',
+    Overflow: 'overflow'
+  }
 
   get baseUrl () { return import.meta.env.VITE_DOCS_BASE_URL }
   get referenceBaseUrl () { return `${this.baseUrl}/reference` }
@@ -38,5 +46,12 @@ export default new class Documentation {
     if (!group) return
 
     return `${this.injectsBaseUrl}/${group}#${this.getInjectAnchor(inject)}`
+  }
+
+  getSettingUrl (setting) {
+    const section = [this.Setting.Easing, this.Setting.Overflow].includes(setting)
+      ? 'advanced-animation-settings'
+      : 'animation-settings'
+    return `${this.baseUrl}/usage/${section}#${setting.toLowerCase()}`
   }
 }

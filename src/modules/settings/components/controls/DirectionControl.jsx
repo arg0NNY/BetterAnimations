@@ -18,6 +18,7 @@ import { css } from '@/modules/Style'
 import ArrowLeftToLineIcon from '@/modules/settings/components/icons/ArrowLeftToLineIcon'
 import ArrowRightFromLineIcon from '@/modules/settings/components/icons/ArrowRightFromLineIcon'
 import SettingControl from '@/modules/settings/components/controls/SettingControl'
+import Documentation from '@/modules/Documentation'
 
 function getAxisIcon (axis) {
   switch (axis) {
@@ -123,7 +124,7 @@ function DirectionControl ({ module, animation, value, onChange, defaultValue, a
     : null
 
   return (
-    <SettingControl label="Direction" onReset={onReset}>
+    <SettingControl label="Direction" doc={Documentation.Setting.Direction} onReset={onReset}>
       <SingleSelect
         placeholder={defaultValue}
         options={options}

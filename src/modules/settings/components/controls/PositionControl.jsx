@@ -6,6 +6,7 @@ import SettingControl from '@/modules/settings/components/controls/SettingContro
 import Position from '@/enums/Position'
 import PositionAutoType from '@/enums/PositionAutoType'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
+import Documentation from '@/modules/Documentation'
 
 function PositionPreserveControl ({ value, onChange, label = 'Preserve' }) {
   return (
@@ -41,7 +42,7 @@ function PositionControl ({ module, animation, value, onChange, defaultValue, pr
     : null
 
   return (
-    <SettingControl label="Position" onReset={onReset}>
+    <SettingControl label="Position" doc={Documentation.Setting.Position} onReset={onReset}>
       <SingleSelect
         placeholder={defaultValue}
         options={options}

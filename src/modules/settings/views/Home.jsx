@@ -68,7 +68,7 @@ function Home () {
             onClick={() => setSection(SettingsSection.Catalog)}
           >
             <ShopIcon size="sm" color="currentColor" />
-            Visit Catalog
+            Catalog
           </Button>
           <Button
             color={Button.Colors.PRIMARY}

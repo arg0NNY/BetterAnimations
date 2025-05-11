@@ -3,6 +3,7 @@ import AnimationSetting from '@/enums/AnimationSetting'
 import { MAX_ANIMATION_DURATION } from '@/data/constants'
 import Slider from '@/components/Slider'
 import SettingControl from '@/modules/settings/components/controls/SettingControl'
+import Documentation from '@/modules/Documentation'
 
 function DurationControl ({ animation, value, onChange, label = 'Duration', onReset, ...props }) {
   const { to, from } = animation.settings[AnimationSetting.Duration]
@@ -18,7 +19,7 @@ function DurationControl ({ animation, value, onChange, label = 'Duration', onRe
   const onValueRender = value => (value / 1000).toFixed(dense ? 2 : 1) + 's'
 
   return (
-    <SettingControl label={label} onReset={onReset}>
+    <SettingControl label={label} doc={Documentation.Setting.Duration} onReset={onReset}>
       <Slider
         {...props}
         minValue={from}
