@@ -5,7 +5,6 @@
   "authorLink": "https://github.com/arg0NNY/DiscordPlugins",
   "invite": "M8DBtcZjXD",
   "donate": "https://donationalerts.com/r/arg0nny",
-  "website": "https://github.com/arg0NNY/DiscordPlugins/tree/master/BetterAnimations",
-  "source": "https://github.com/arg0NNY/DiscordPlugins/blob/master/BetterAnimations/BetterAnimations.plugin.js",
-  "updateUrl": "https://raw.githubusercontent.com/arg0NNY/DiscordPlugins/master/BetterAnimations/BetterAnimations.plugin.js"
+  "website": "https://docs.betteranimations.net",
+  "source": "https://github.com/arg0NNY/BetterAnimations"
 }
