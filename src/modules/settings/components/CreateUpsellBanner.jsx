@@ -14,11 +14,13 @@ function CreateUpsellBanner () {
         <Text
           tag="h3"
           variant="heading-lg/extrabold"
+          color="currentColor"
         >
           Create your own Animation Packs
         </Text>
         <Text
           variant="text-sm/normal"
+          color="currentColor"
         >
           Build your own animations and publish them to the official Catalog
           for everyone to download and use
