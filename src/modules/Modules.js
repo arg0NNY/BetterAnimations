@@ -184,7 +184,7 @@ class Module {
 
     switch (setting) {
       case Setting.Position:
-        if (type === PositionAutoType.Precise) return false // Otherwise the condition above would have already returned `true`
+        if (type === PositionAutoType.Precise) return false // Otherwise the condition above would have already returned `true` (module requires precise positioning for auto, but animation doesn't support it)
         return [
           Position.Top,
           Position.Bottom,
@@ -363,7 +363,7 @@ class Module {
 
     if (settings[Setting.Position] === Auto()) {
       if (!values.position)
-        settings[Setting.Position] = { isAuto: true, mouse: settings[Setting.PositionPreserve] ? values.mouse : Mouse.getAnchor() }
+        settings[Setting.Position] = { isAuto: true, mouse: settings[Setting.PositionPreserve] ? values.preservedMouse : values.mouse }
       else {
         const position = reversePosition(values.position)
         const mergedPosition = getPosition(position, values.align)

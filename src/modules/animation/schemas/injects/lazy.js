@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { FunctionSchema } from '@/utils/schemas'
 
 export const lazyInjectSymbol = Symbol('lazyInject')
 export const generatedLazyInjectSymbol = Symbol('generatedLazyInject')
@@ -6,7 +7,7 @@ export const generatedLazyInjectSymbol = Symbol('generatedLazyInject')
 export const LazyInjectSchema = z.object({
   symbol: z.literal(lazyInjectSymbol),
   name: z.string(),
-  generator: z.instanceof(Function)
+  generator: FunctionSchema
 })
 
 export function wrapLazyInject (name, generator) {

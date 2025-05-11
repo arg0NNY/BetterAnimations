@@ -9,7 +9,15 @@ import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import { css } from '@/modules/Style'
 import Mouse from '@/modules/Mouse'
-import { getWindowCenterAnchor } from '@/utils/anchor'
+
+function getWindowCenterAnchor () {
+  return {
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2,
+    width: 0,
+    height: 0
+  }
+}
 
 function LayerContainer ({ baseLayer, hidden, children }) {
   return (
@@ -111,7 +119,7 @@ function patchLayers () {
           if (!module.isEnabled()) return
 
           const { direction, anchor } = layerStore.onRender(value.length)
-          const auto = { direction, mouse: anchor }
+          const auto = { direction, preservedMouse: anchor }
 
           return (
             <TransitionGroup component={null} childFactory={passAuto(auto)}>

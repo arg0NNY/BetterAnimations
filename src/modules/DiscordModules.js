@@ -161,3 +161,4 @@ export const MenuItemKeyed = getWithKey(Filters.byStrings('dontCloseOnActionIfHo
 export const ChannelItemKeyed = getWithKey(Filters.byStrings('shouldIndicateNewChannel', 'MANAGE_CHANNELS'))
 export const VoiceChannelItemKeyed = getWithKey(Filters.byStrings('PLAYING', 'MANAGE_CHANNELS'))
 export const StageVoiceChannelItemKeyed = getWithKey(Filters.byStrings('getStageInstanceByChannel', 'MANAGE_CHANNELS'))
+export const { AppContext } = Webpack.getMangled(Filters.bySource('renderWindow', 'ownerDocument.defaultView'), { AppContext: m => m?.Provider })

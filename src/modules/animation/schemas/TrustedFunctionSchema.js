@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { FunctionSchema } from '@/utils/schemas'
 
 export const trustedFunctionSymbol = Symbol('trustedFunction')
 
@@ -7,7 +8,7 @@ export function trust (fn) {
   return fn
 }
 
-const TrustedFunctionSchema = z.instanceof(Function)
+const TrustedFunctionSchema = FunctionSchema
   .superRefine((value, ctx) => {
     if (!value[trustedFunctionSymbol]) ctx.addIssue({
       code: z.ZodIssueCode.custom,

@@ -2,6 +2,8 @@ import meta from '@/meta'
 import { DOM } from '@/BdApi'
 import Logger from '@/modules/Logger'
 
+const mainWindow = window
+
 const Style = new class Style {
   get name () { return 'Style' }
   get styleId () { return `${meta.name}-style` }
@@ -51,6 +53,15 @@ const Style = new class Style {
     this.updateStyle()
   }
 
+  ensureStyleForWindow (window) {
+    const { document } = window
+    if (!this.initialized || window === mainWindow || document.getElementById(this.styleId)) return
+
+    const style = document.createElement('style')
+    style.id = this.styleId
+    style.appendChild(document.createTextNode(this.buildStyle()))
+    document.body.appendChild(style)
+  }
 }
 
 export const css =

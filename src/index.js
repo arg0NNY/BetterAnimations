@@ -22,7 +22,7 @@ import Prompt from '@/modules/Prompt'
 import PackRegistry from '@/modules/PackRegistry'
 import { saveMeta } from '@/meta'
 import Style, { css } from '@/modules/Style'
-import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
+import { DiscordClasses } from '@/modules/DiscordSelectors'
 import Modules from '@/modules/Modules'
 import patchChatSearchSidebar from '@/patches/ChatSearchSidebar/patchChatSearchSidebar'
 import patchReferencePositionLayer from '@/patches/ReferencePositionLayer/patchReferencePositionLayer'
@@ -131,7 +131,7 @@ export default function (meta) {
 }
 
 css
-`${DiscordSelectors.AppMount.appMount} {
+`#app-mount {
     overflow: clip;
 }`
 `Index`

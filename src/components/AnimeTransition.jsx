@@ -1,12 +1,13 @@
-import { Transition } from '@/modules/DiscordModules'
+import { AppContext, Transition } from '@/modules/DiscordModules'
 import Freeze from '@/components/Freeze'
 import AnimationType from '@/enums/AnimationType'
-import { css } from '@/modules/Style'
+import Style, { css } from '@/modules/Style'
 import AnimationStore from '@/modules/AnimationStore'
 import { createAwaitableRef } from '@/utils/react'
 import AnimeContainer from '@/components/AnimeContainer'
 import { Component, createRef } from 'react'
 import { directChild } from '@/utils/transition'
+import { clearMouse, getMouse } from '@/hooks/useMouse'
 
 const getRef = ref => typeof ref === 'function' ? ref() : ref.current
 const injectContainerRefFn = (children, ref) => {
@@ -14,6 +15,8 @@ const injectContainerRefFn = (children, ref) => {
 }
 
 class AnimeTransition extends Component {
+  static contextType = AppContext
+
   constructor (props) {
     super(props)
 
@@ -31,7 +34,17 @@ class AnimeTransition extends Component {
     }
   }
 
+  get window () {
+    return this.context.renderWindow
+  }
+
+  componentDidMount () {
+    this.mouse = getMouse(this.window)
+    Style.ensureStyleForWindow(this.window)
+  }
+
   componentWillUnmount () {
+    clearMouse(this.mouse)
     this.instance.current?.cancel()
   }
 
@@ -46,6 +59,8 @@ class AnimeTransition extends Component {
         type,
         container,
         element: directChild(container),
+        window: this.window,
+        mouse: this.mouse,
         anchor: this.props.anchor,
         auto: this.props.autoRef ?? { current: this.props.auto },
         doneCallbackRef: this.doneCallback

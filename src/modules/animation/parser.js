@@ -11,6 +11,7 @@ import ParsableExtendableAnimateSchema, { ParsableExtendsSchema } from '@/module
 import { omit } from '@/utils/object'
 import { intersect, promisify } from '@/utils/anime'
 import Documentation from '@/modules/Documentation'
+import isElement from 'lodash-es/isElement'
 
 export function buildContext (pack, animation, type, settings = {}, meta = {}, context = {}) {
   return Object.assign(
@@ -31,12 +32,12 @@ export function buildWrapper (data, context) {
   if (!data.hast && !data.css) return null
 
   const id = `${context.module.id}-${context.type}-${Date.now()}`
-  const wrapper = document.createElement('div')
+  const wrapper = context.document.createElement('div')
 
   wrapper.setAttribute('data-baa', id)
 
   wrapper.append(
-    ...[].concat(data.hast).filter(i => i instanceof Element)
+    ...[].concat(data.hast).filter(isElement)
   )
 
   if (data.css) {
@@ -45,8 +46,8 @@ export function buildWrapper (data, context) {
       ...[].concat(
         data.css
       ).flat().filter(Boolean).map((css, cssIndex) => {
-        const element = document.createElement('style')
-        element.appendChild(document.createTextNode(
+        const element = context.document.createElement('style')
+        element.appendChild(context.document.createTextNode(
           buildCSS(
             clearSourceMapDeep(css),
             (selector, selectorIndex) => {

@@ -8,7 +8,7 @@ import useModule, { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import { autoPosition } from '@/hooks/useAutoPosition'
-import Mouse from '@/modules/Mouse'
+import useMouse from '@/hooks/useMouse'
 
 function patchContextMenu () {
   const once = ensureOnce()
@@ -17,7 +17,7 @@ function patchContextMenu () {
     once(() => {
       injectModule(value.type, ModuleKey.ContextMenu)
       Patcher.after(value.type.prototype, 'componentDidMount', self => {
-        self.__anchor = Mouse.getAnchor()
+        self.__anchor = self.props.mouse?.getAnchor()
       })
       Patcher.after(value.type.prototype, 'render', (self, args, value) => {
         const module = Modules.getModule(ModuleKey.ContextMenu)
@@ -53,9 +53,12 @@ function patchContextMenu () {
       })
     })
 
+    const mouse = useMouse()
+
     const module = useModule(ModuleKey.ContextMenu)
     if (!module.isEnabled()) return
 
+    value.props.mouse = mouse
     return (
       <TransitionGroup component={null}>
         {value.props.isOpen && value}

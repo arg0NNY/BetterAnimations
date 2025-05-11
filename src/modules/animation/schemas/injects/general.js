@@ -11,7 +11,6 @@ import {
 import Inject from '@/enums/Inject'
 import AnimationType from '@/enums/AnimationType'
 import ModuleKey from '@/enums/ModuleKey'
-import Mouse from '@/modules/Mouse'
 import ModuleType from '@/enums/ModuleType'
 import { getPath, parsePath } from '@/utils/json'
 import { zodTransformErrorBoundary } from '@/utils/zod'
@@ -25,6 +24,7 @@ import {
 import { restrictForbiddenKeys } from '@/modules/animation/keys'
 import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
 import { getRect } from '@/utils/position'
+import isElement from 'lodash-es/isElement'
 
 export const ElementInjectSchema = ({ element }) => ElementSchema(Inject.Element, element)
 
@@ -32,7 +32,7 @@ export const ContainerInjectSchema = ({ container }) => InjectSchema(Inject.Cont
   .transform(() => container)
 
 export const AnchorInjectSchema = ({ anchor }) => InjectSchema(Inject.Anchor)
-  .transform(() => anchor instanceof Element ? anchor : undefined)
+  .transform(() => isElement(anchor) ? anchor : undefined)
 
 export const HastInjectSchema = ({ wrapper }) => ElementSchema(Inject.Hast, wrapper, false)
 
@@ -151,7 +151,7 @@ export const RectInjectSchema = context => InjectSchema(Inject.Rect).extend({
   return value ? rect[value] : rect
 })
 
-export const WindowInjectSchema = InjectSchema(Inject.Window).extend({
+export const WindowInjectSchema = ({ window }) => InjectSchema(Inject.Window).extend({
   value: z.enum(['width', 'height'])
 }).transform(({ value }) => {
   switch (value) {
@@ -160,17 +160,17 @@ export const WindowInjectSchema = InjectSchema(Inject.Window).extend({
   }
 })
 
-export const MouseInjectSchema = ({ containerRect }) => InjectSchema(Inject.Mouse).extend({
+export const MouseInjectSchema = ({ containerRect, mouse }) => InjectSchema(Inject.Mouse).extend({
   value: z.enum(['x', 'y']).optional(),
   absolute: z.boolean().optional().default(false)
 }).transform(({ value, absolute }) => {
   const { x, y } = (() => {
-    if (absolute || !containerRect) return { x: Mouse.x, y: Mouse.y }
+    if (absolute || !containerRect) return { x: mouse.x, y: mouse.y }
 
     const { left, top } = containerRect
     return {
-      x: Mouse.x - left,
-      y: Mouse.y - top
+      x: mouse.x - left,
+      y: mouse.y - top
     }
   })()
 

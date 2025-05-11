@@ -6,10 +6,6 @@ export function getRect (node) {
   return { x, y, top, left, right, bottom, width, height }
 }
 
-function getDefaultRect () {
-  return getRect(document.body)
-}
-
 export function reversePosition (position) {
   switch (position) {
     case Position.Top: return Position.Bottom
@@ -43,7 +39,7 @@ export function toDirection (position) {
   }
 }
 
-export function toPercent (value, rect = getDefaultRect()) {
+export function toPercent (value, rect) {
   if (typeof value === 'string')
     switch (value) {
       case Position.TopLeft: return [0, 0]
@@ -61,7 +57,7 @@ export function toPercent (value, rect = getDefaultRect()) {
   return [x / rect.width, y / rect.height]
 }
 
-export function toPx (value, rect = getDefaultRect()) {
+export function toPx (value, rect) {
   const [x, y] = typeof value === 'string' ? toPercent(value, rect) : value
   return [x * rect.width, y * rect.height]
 }
@@ -73,7 +69,7 @@ export function toUnit (value, unit, rect = undefined) {
   }
 }
 
-export function getCenter (rect = getDefaultRect(), unit = 'px', relative = getDefaultRect()) {
+export function getCenter (rect, unit, relative) {
   const [x, y] = [
     rect.x + rect.width / 2 - relative.x,
     rect.y + rect.height / 2 - relative.y

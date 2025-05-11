@@ -4,10 +4,11 @@ import Config from '@/modules/Config'
 import ErrorManager from '@/modules/ErrorManager'
 import AnimationError from '@/structs/AnimationError'
 import { getRect } from '@/utils/position'
+import isElement from 'lodash-es/isElement'
 
 class Animation {
 
-  constructor (store, { module, type, container, element, anchor, auto, doneCallbackRef }) {
+  constructor (store, { module, type, container, element, window, mouse, anchor, auto, doneCallbackRef }) {
     this.store = store
 
     this.module = module
@@ -15,6 +16,8 @@ class Animation {
     this.type = type
     this.container = container
     this.element = element
+    this.window = window
+    this.mouse = mouse
     this.anchor = anchor
     this.auto = auto
     this.doneCallbackRef = doneCallbackRef
@@ -46,8 +49,9 @@ class Animation {
     }
 
     this.applyAttributes()
+    const mouseAnchor = this.mouse.getAnchor()
 
-    requestAnimationFrame(() => {
+    this.window.requestAnimationFrame(() => {
       if (this.cancelled) {
         if (intersectWith) callback?.()
         return
@@ -59,14 +63,22 @@ class Animation {
 
       const { animate, context } = this.module.getAnimation(
         this.type,
-        { auto: this.auto?.current },
+        {
+          auto: Object.assign(
+            { mouse: mouseAnchor },
+            this.auto?.current
+          )
+        },
         {
           instance: this,
           container: this.container,
           containerRect: getRect(this.container),
           element: this.element,
+          window: this.window,
+          document: this.window.document,
+          mouse: this.mouse,
           anchor,
-          anchorRect: anchor instanceof Element ? getRect(anchor) : anchor,
+          anchorRect: isElement(anchor) ? getRect(anchor) : anchor,
           intersectWith,
           isIntersected: !!intersectWith
         }
@@ -130,7 +142,7 @@ class Animation {
   }
 
   ensureTimeLimit (limit = this.computeTimeLimit()) {
-    this.timeout = setTimeout(() => {
+    this.timeout = this.window.setTimeout(() => {
       const { animation, module, pack, type } = this.context
       ErrorManager.registerAnimationError(
         new AnimationError(
@@ -144,7 +156,7 @@ class Animation {
   }
 
   destroy (dueToError = false) {
-    clearTimeout(this.timeout)
+    this.window.clearTimeout(this.timeout)
     this.store.destroyAnimation(this, dueToError)
   }
 

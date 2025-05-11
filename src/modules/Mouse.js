@@ -1,17 +1,18 @@
 import Logger from '@/modules/Logger'
 
-export default new class Mouse {
+export class Mouse {
   get name () { return 'Mouse' }
 
-  constructor () {
+  constructor (window, log = false) {
+    this.window = window
+    this.log = log
+
     this.x = -1
     this.y = -1
 
     this.onMouseMove = e => {
-      requestAnimationFrame(() => {
-        this.x = e.clientX
-        this.y = e.clientY
-      })
+      this.x = e.clientX
+      this.y = e.clientY
     }
   }
 
@@ -26,18 +27,22 @@ export default new class Mouse {
 
   initialize () {
     if (this.x === -1 && this.y === -1) {
-      this.x = window.innerWidth / 2
-      this.y = window.innerHeight / 2
+      this.x = this.window.innerWidth / 2
+      this.y = this.window.innerHeight / 2
     }
 
-    document.addEventListener('mousemove', this.onMouseMove)
+    this.window.document.addEventListener('mousemove', this.onMouseMove)
 
-    Logger.info(this.name, 'Initialized.')
+    if (this.log) Logger.info(this.name, 'Initialized.')
+    return this
   }
 
   shutdown () {
-    document.removeEventListener('mousemove', this.onMouseMove)
+    this.window.document.removeEventListener('mousemove', this.onMouseMove)
 
-    Logger.info(this.name, 'Shutdown.')
+    if (this.log) Logger.info(this.name, 'Shutdown.')
+    return this
   }
 }
+
+export default new Mouse(window, true)

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { ArrayOrSingleSchema, Defined, formatValuesList } from '@/utils/schemas'
+import { ArrayOrSingleSchema, Defined, DOMElementSchema, formatValuesList } from '@/utils/schemas'
 import { clearSourceMap, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
 import { InjectableValidateSchema } from '@/modules/animation/schemas/InjectableSchema'
 import Inject from '@/enums/Inject'
@@ -132,7 +132,7 @@ export const ParametersSchema = z.record(z.string(), z.any())
 
 export const TargetSchema = (context, multiple = false) => z.union([
   z.string(),
-  z.instanceof(Element)
+  DOMElementSchema
 ]).transform(
   (target, ctx) => typeof target === 'string'
     ? queryElement(ctx, context.wrapper, target, multiple)
