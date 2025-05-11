@@ -8,6 +8,7 @@ import ModuleContext from '@/modules/settings/context/ModuleContext'
 import { useCallback } from 'react'
 import { PREINSTALLED_PACK_SLUG } from '@/packs'
 import AnimationList from '@/modules/settings/components/AnimationList'
+import NoPacksPlaceholder from '@/modules/settings/components/NoPacksPlaceholder'
 
 function ModuleSettings ({ moduleId, refToScroller }) {
   const module = useModule(moduleId, true)
@@ -27,6 +28,7 @@ function ModuleSettings ({ moduleId, refToScroller }) {
   const preinstalledAnimations = preinstalledPack?.animations.filter(a => module.isSupportedBy(a)) ?? []
 
   const packs = PackManager.getAllPacks(true)
+    .filter(p => p.partial || p.animations.some(a => module.isSupportedBy(a)))
 
   return (
     <ModuleContext.Provider value={module}>
@@ -59,13 +61,17 @@ function ModuleSettings ({ moduleId, refToScroller }) {
         <Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
           <span>PACKS</span>
         </Text>
-        <PackAccordion
-          module={module}
-          packs={packs}
-          selected={selected}
-          onSelect={onSelect}
-          refToScroller={refToScroller}
-        />
+        {!!packs.length ? (
+          <PackAccordion
+            module={module}
+            packs={packs}
+            selected={selected}
+            onSelect={onSelect}
+            refToScroller={refToScroller}
+          />
+        ) : (
+          <NoPacksPlaceholder />
+        )}
       </div>
     </ModuleContext.Provider>
   )

@@ -64,7 +64,7 @@ function Home () {
         </Text>
         <div className="BA__homeHeadingActions">
           <Button
-            innerClassName="BA__homeButtonContents"
+            innerClassName="BA__buttonContents"
             onClick={() => setSection(SettingsSection.Catalog)}
           >
             <ShopIcon size="sm" color="currentColor" />
@@ -72,7 +72,7 @@ function Home () {
           </Button>
           <Button
             color={Button.Colors.PRIMARY}
-            innerClassName="BA__homeButtonContents"
+            innerClassName="BA__buttonContents"
             onClick={() => handleClick({ href: Documentation.homeUrl })}
           >
             <BookIcon size="sm" color="currentColor" />
@@ -101,7 +101,7 @@ function Home () {
         <div className="BA__homeAuthorActions">
           <Button
             color={Button.Colors.GREEN}
-            innerClassName="BA__homeButtonContents"
+            innerClassName="BA__buttonContents"
             onClick={() => handleClick({ href: meta.donate })}
           >
             <CircleDollarSignIcon size="sm" color="currentColor" />
@@ -110,7 +110,7 @@ function Home () {
           <Button
             size={Button.Sizes.SMALL}
             color={Button.Colors.PRIMARY}
-            innerClassName="BA__homeButtonContents"
+            innerClassName="BA__buttonContents"
             onClick={() => handleClick({ href: meta.authorLink })}
           >
             Plugins made by {meta.author}
@@ -142,12 +142,6 @@ css
     justify-content: center;
     align-items: stretch;
     text-align: center;
-}
-
-.BA__homeButtonContents {
-    display: flex;
-    align-items: center;
-    gap: 4px;
 }
 
 .BA__homeHeading {

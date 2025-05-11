@@ -28,6 +28,7 @@ export default new class Documentation {
   get usageUrl () { return `${this.baseUrl}/usage/basics` }
   get createUrl () { return `${this.baseUrl}/create/introduction` }
 
+  get packDirectoryUrl () { return `${this.baseUrl}/usage/pack-directory` }
   get enhanceLayoutUrl () { return `${this.baseUrl}/usage/modules#enhance-layout` }
 
   getDefinitionUrl (definition) {
