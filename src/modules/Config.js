@@ -1,4 +1,4 @@
-import { configDefaults } from '@/data/configDefaults'
+import { CONFIG_VERSION, configDefaults, packConfigDefaults } from '@/data/config'
 import deepmerge from 'deepmerge'
 import Data from '@/modules/Data'
 import Emitter from '@/modules/Emitter'
@@ -8,8 +8,11 @@ import PackManager from '@/modules/PackManager'
 import Logger from '@/modules/Logger'
 import isEqual from 'lodash-es/isEqual'
 import { internalPackSlugs } from '@/packs'
+import cloneDeep from 'lodash-es/cloneDeep'
 
 class PackConfig {
+  get name () { return `PackConfig: ${this.slug}` }
+
   constructor (slug) {
     this.slug = slug
   }
@@ -20,14 +23,26 @@ class PackConfig {
     Emitter.emit(Events.SettingsChanged)
   }
 
-  getAnimationConfig (key, moduleId, type) {
-    return this.current[key]?.[moduleId]?.[type] ?? {}
+  createAnimationConfigEntry (key, moduleKey) {
+    return {
+      animation: key,
+      module: moduleKey
+    }
   }
-  setAnimationConfig (key, moduleId, type, value) {
-    this.current[key] ??= {}
-    this.current[key][moduleId] ??= {}
-    this.current[key][moduleId][type] = value
-    Emitter.emit(Events.ModuleSettingsChanged, moduleId)
+  getAnimationConfigEntry (key, moduleKey, createIfMissing = false) {
+    const entry = this.current.entries.find(({ animation, module }) => animation === key && module === moduleKey)
+    if (entry || !createIfMissing) return entry
+
+    const newEntry = this.createAnimationConfigEntry(key, moduleKey)
+    this.current.entries.push(newEntry)
+    return newEntry
+  }
+  getAnimationConfig (key, moduleKey, type) {
+    return this.getAnimationConfigEntry(key, moduleKey)?.[type] ?? {}
+  }
+  setAnimationConfig (key, moduleKey, type, value) {
+    this.getAnimationConfigEntry(key, moduleKey, true)[type] = value
+    Emitter.emit(Events.ModuleSettingsChanged, moduleKey)
   }
 }
 
@@ -51,6 +66,7 @@ class InternalPackConfig extends PackConfig {
 
 class ExternalPackConfig extends PackConfig {
   get filePath () { return path.resolve(PackManager.addonFolder, `${this.slug}.config.json`) }
+  get defaults () { return packConfigDefaults }
 
   constructor (slug) {
     super(slug)
@@ -58,12 +74,18 @@ class ExternalPackConfig extends PackConfig {
   }
 
   read () {
-    try {
-      return fs.existsSync(this.filePath) ? JSON.parse(fs.readFileSync(this.filePath, 'utf8')) : {}
-    }
-    catch (e) {
-      return {}
-    }
+    const config = deepmerge(
+      this.defaults,
+      (() => {
+        try { return fs.existsSync(this.filePath) ? JSON.parse(fs.readFileSync(this.filePath, 'utf8')) : {} }
+        catch { return {} }
+      })()
+    )
+    if (config.configVersion === CONFIG_VERSION) return config
+
+    // TODO: Trigger pack config migrator
+    Logger.warn(this.name, `Config version is outdated, falling back to defaults.`)
+    return cloneDeep(this.defaults)
   }
   load () {
     this.current = this.read()
@@ -79,12 +101,15 @@ class ExternalPackConfig extends PackConfig {
 }
 
 export default new class Config {
+  get name () { return 'Config' }
   get dataKey () { return 'settings' }
   get defaults () { return configDefaults }
 
   constructor () {
     this.current = {}
-    this.internalPacks = new Map()
+    this.internalPacks = new Map(
+      internalPackSlugs.map(slug => [slug, new InternalPackConfig(this, slug)])
+    )
     this.externalPacks = new Map()
 
     this.onPackLoaded = this.onPackLoaded.bind(this)
@@ -98,12 +123,22 @@ export default new class Config {
     Logger.info('Config', 'Initialized.')
   }
 
+  getConfigVersion () {
+    const configVersion = Data.configVersion
+    if (configVersion != null) return configVersion // If the config version is set, use it
+    if (Data[this.dataKey] != null) return 1 // If the config version is not set, but the settings are, this is a legacy V1 config
+    return Data.configVersion = CONFIG_VERSION // Otherwise, set the config version to the latest version
+  }
   read () {
-    return deepmerge(this.defaults, Data[this.dataKey] ?? {})
+    const configVersion = this.getConfigVersion()
+    if (configVersion === CONFIG_VERSION) return deepmerge(this.defaults, Data[this.dataKey] ?? {})
+
+    // TODO: Trigger config migrator
+    Logger.warn(this.name, 'Config version is outdated, falling back to defaults.')
+    return cloneDeep(this.defaults)
   }
   load () {
     this.current = this.read()
-    internalPackSlugs.forEach(slug => this.internalPacks.set(slug, new InternalPackConfig(this, slug)))
     this.externalPacks.forEach(pack => pack.load())
     Emitter.emit(Events.SettingsLoaded)
     Emitter.emit(Events.SettingsChanged)
@@ -144,7 +179,6 @@ export default new class Config {
 
   shutdown () {
     this.unlistenPackEvents()
-    this.internalPacks.clear()
     this.externalPacks.clear()
 
     Logger.info('Config', 'Shutdown.')

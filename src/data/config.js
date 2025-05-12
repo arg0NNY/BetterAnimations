@@ -1,5 +1,13 @@
 import ModuleKey from '@/enums/ModuleKey'
 import { internalPackSlugs, PREINSTALLED_PACK_SLUG } from '@/packs'
+import { omit } from '@/utils/object'
+
+export const CONFIG_VERSION = 2
+
+export const packConfigDefaults = {
+  configVersion: CONFIG_VERSION,
+  entries: []
+}
 
 export const configDefaults = {
   modules: {
@@ -160,7 +168,7 @@ export const configDefaults = {
     }
   },
   packs: Object.fromEntries(
-    internalPackSlugs.map(slug => [slug, {}])
+    internalPackSlugs.map(slug => [slug, omit(packConfigDefaults, ['configVersion'])])
   ),
   general: {
     switchCooldownDuration: 1000
