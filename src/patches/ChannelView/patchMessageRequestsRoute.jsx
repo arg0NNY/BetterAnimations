@@ -5,15 +5,14 @@ import {
   ChannelStore,
   MESSAGE_REQUESTS_BASE_CHANNEL_ID,
   SidebarType,
+  TransitionGroup,
   useStateFromStores
 } from '@/modules/DiscordModules'
 import patchUseMessageRequestSidebarState from '@/patches/ChannelView/patchUseMessageRequestSidebarState'
-import MessageRequestSidebarContext from '@/patches/ChannelView/context/MessageRequestSidebarContext'
 import MessageRequestSidebarWrapper from '@/patches/ChannelView/components/MessageRequestSidebarWrapper'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import AnimeTransition from '@/components/AnimeTransition'
-import SwitchSidebarTransition from '@/patches/ChannelView/components/SwitchSidebarTransition'
 import usePrevious from '@/hooks/usePrevious'
 import findInReactTree from '@/utils/findInReactTree'
 
@@ -49,18 +48,20 @@ function patchMessageRequestsRoute (route) {
             container={{ className: 'BA__sidebar' }}
             module={module}
           >
-            <SwitchSidebarTransition
-              state={state ?? cached.state}
-              module={switchModule}
-            >
-              <MessageRequestSidebarContext.Provider value={state ?? cached.state}>
+            <TransitionGroup component={null}>
+              <AnimeTransition
+                key={JSON.stringify(state ?? cached.state)}
+                injectContainerRef={true}
+                module={switchModule}
+              >
                 <MessageRequestSidebarWrapper
+                  state={state ?? cached.state}
                   pageWidth={props.width}
                   onSidebarResize={children[1]?.props?.onSidebarResize ?? (() => {})}
                   channel={channel ?? cached.channel}
                 />
-              </MessageRequestSidebarContext.Provider>
-            </SwitchSidebarTransition>
+              </AnimeTransition>
+            </TransitionGroup>
           </AnimeTransition>
         )
       })
