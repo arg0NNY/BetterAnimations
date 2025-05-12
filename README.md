@@ -27,8 +27,7 @@ See [Installing Addons](https://docs.betterdiscord.app/users/guides/installing-a
 
 Visit the Usage and Animation Authoring documentation at
 <a href="https://docs.betteranimations.net/" target="_blank">
-    <img src="./assets/logo.svg" width="24px" valign="bottom" alt="BetterAnimations" />
-    docs.betteranimations.net
+    <img src="./assets/logo.svg" width="24px" valign="bottom" alt="BetterAnimations" />docs.betteranimations.net
 </a>
 
 ## Roadmap
@@ -48,7 +47,7 @@ Visit the Usage and Animation Authoring documentation at
   - [ ] Cross-window Support Toggle (Call Popout, Game Overlay)
   - [ ] Hints Toggle
 - [ ] Pack Changelogs
-- [ ] BetterAnimations V1 Settings Migrator
+- [ ] [BetterAnimations V1](https://github.com/arg0NNY/DiscordPlugins/tree/fa45fb514aa7a8febe4ddd143a08ff1c9f124fe0/BetterAnimations) Settings Migrator
 
 ### Stable
 
