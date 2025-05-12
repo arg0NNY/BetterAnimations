@@ -61,6 +61,9 @@ Visit the Usage and Animation Authoring documentation at
 
 ## Development
 
+This project uses [pnpm](https://pnpm.io/) as a primary package manager.
+
+Run the following commands to build the plugin:
 ```sh
 pnpm install
 pnpm dev
