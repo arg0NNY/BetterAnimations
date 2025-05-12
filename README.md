@@ -31,6 +31,34 @@ Visit the Usage and Animation Authoring documentation at
     docs.betteranimations.net
 </a>
 
+## Roadmap
+
+### Beta
+
+- [ ] Migrate to Zod 4 (improve performance & reduce bundle size)
+- [ ] Animation Preview
+- [ ] Catalog & Library
+- [ ] Integrate `ErrorBoundary` for better error safety
+- [ ] Integrate Expression Picker to [_Popouts_](https://docs.betteranimations.net/usage/modules#popouts)
+- [ ] Expand [Injects](https://docs.betteranimations.net/create/injects)
+  - [ ] Add more [Array Injects](https://docs.betteranimations.net/reference/injects/array)
+  - [ ] Add more [Anime Injects](https://docs.betteranimations.net/reference/injects/anime)
+- [ ] General Settings
+  - [ ] Switch Cooldown Duration
+  - [ ] Cross-window Support Toggle (Call Popout, Game Overlay)
+  - [ ] Hints Toggle
+- [ ] Pack Changelogs
+- [ ] BetterAnimations V1 Settings Migrator
+
+### Stable
+
+- [ ] Settings Preview Mode
+- [ ] Custom Animation Settings
+- [ ] Revamp Animation Settings
+  - [ ] Position
+  - [ ] Direction
+- [ ] Migrate to TypeScript
+
 ## Development
 
 ```sh
