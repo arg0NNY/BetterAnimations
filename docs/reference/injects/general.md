@@ -697,7 +697,7 @@ If <InjectRef inject="get" parameter="key" /> and <InjectRef inject="get" parame
       }
     ]
   },
-  "key": "/foo/0/bar/baz"
+  "path": "/foo/0/bar/baz"
 }
 ```
 
