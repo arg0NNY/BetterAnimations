@@ -585,7 +585,7 @@ and returns its **raw** [Animate](/reference/animate) definition, from which you
 >       "inject": "pick",
 >       "target": {
 >         "inject": "load",
->         "animation": "animation-key"
+>         "animation": "animationKey"
 >       },
 >       "keys": ["hast", "css", "anime"]
 >     },
