@@ -1,9 +1,18 @@
 # Anime
 
-_BetterAnimations_ uses [Anime JavaScript Animation Engine](https://animejs.com/) to define its animations.
+_BetterAnimations_ uses [Anime JavaScript Animation Engine](https://animejs.com/) to execute animations.
 
 > [!IMPORTANT]
 > It is highly recommended to get familiar with [Anime Documentation](https://animejs.com/documentation) before proceeding further.
+> 
+> Sections that are relevant for _BetterAnimations_:
+> - [Timer](https://animejs.com/documentation/timer)
+> - [Animation](https://animejs.com/documentation/animation)
+> - [Timeline](https://animejs.com/documentation/timeline)
+> - [Stagger](https://animejs.com/documentation/stagger)
+> - [SVG](https://animejs.com/documentation/svg)
+> - [Utilities](https://animejs.com/documentation/utilities)
+> - [WAAPI](https://animejs.com/documentation/web-animation-api)
 
 ## Defining an instance
 
@@ -244,7 +253,7 @@ waapi.animate(element, {
 })
 
 createTimer({
-  duration: 200
+  duration: 400
 })
 ```
 
