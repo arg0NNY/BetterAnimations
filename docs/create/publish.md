@@ -7,7 +7,7 @@ When you're ready to share your pack with the community, you can publish it to t
 ::: tip 🚧 WORK IN PROGRESS
 [Catalog & Library](/usage/packs#catalog-library) are currently under active development and are not available yet.
 
-Share your packs with others to the `#packs` channel of a Discord Server while in Closed Beta.
+Share your packs with others to the [`#packs`](https://discord.com/channels/947007182552064050/1371848189963010139) channel of the Discord Beta Community while in Closed Beta.
 :::
 
 ## Guidelines
