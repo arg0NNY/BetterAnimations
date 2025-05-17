@@ -1,4 +1,3 @@
-import { engine } from 'animejs'
 import Patcher from '@/modules/Patcher'
 import { forceAppUpdate } from '@/utils/forceUpdate'
 import patchAppView from '@/patches/AppView/patchAppView'
@@ -39,8 +38,6 @@ import Utils from '@/modules/Utils'
 import patchMenuItem from '@/patches/ContextMenu/patchMenuItem'
 import Documentation from '@/modules/Documentation'
 
-engine.pauseOnDocumentHidden = false
-
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
     PackManager,
@@ -70,13 +67,14 @@ export default function (meta) {
   return {
     start () {
       Logger.info('Startup', 'Initializing modules...')
-      Config.initialize()
       ErrorManager.initialize()
+      Config.initialize()
       Mouse.initialize()
       Style.initialize()
       Prompt.onStartup()
       PackManager.initialize()
       PackRegistry.initialize()
+      AnimationStore.initialize()
 
       Modules.initialize()
 
@@ -111,6 +109,7 @@ export default function (meta) {
       ErrorManager.shutdown()
       PackRegistry.shutdown()
       PackManager.shutdown()
+      AnimationStore.shutdown()
 
       Settings.closeSettingsModal()
 

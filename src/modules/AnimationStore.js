@@ -5,6 +5,7 @@ import ErrorManager from '@/modules/ErrorManager'
 import AnimationError from '@/structs/AnimationError'
 import { getRect } from '@/utils/position'
 import isElement from 'lodash-es/isElement'
+import Logger from '@/modules/Logger'
 
 class Animation {
 
@@ -35,7 +36,12 @@ class Animation {
   }
 
   initialize (callback, allowed, intersectWith = null) {
-    if (!allowed || !this.element || (intersectWith && !intersectWith.instances)) {
+    if (
+      !allowed
+      || !this.element
+      || (intersectWith && !intersectWith.instances)
+      || this.window.document.hidden
+    ) {
       this.doneCallbackRef.await(done => {
         done?.()
         callback?.()
@@ -163,10 +169,25 @@ class Animation {
 }
 
 export default new class AnimationStore {
+  get name () { return 'AnimationStore' }
 
   constructor () {
     this.animations = []
     this.switchCooldownUntil = 0
+
+    this.onDocumentVisibilityChange = () => {
+      if (document.hidden) this.cancelAllAnimations()
+    }
+  }
+
+  initialize () {
+    document.addEventListener('visibilitychange', this.onDocumentVisibilityChange)
+    Logger.info(this.name, 'Initialized.')
+  }
+  shutdown () {
+    document.removeEventListener('visibilitychange', this.onDocumentVisibilityChange)
+    this.cancelAllAnimations()
+    Logger.info(this.name, 'Shutdown.')
   }
 
   cooldown () {
@@ -179,7 +200,12 @@ export default new class AnimationStore {
   cancelAnimations (animations, provideCallback = true) {
     const list = typeof animations === 'function' ? this.animations.filter(animations) : [].concat(animations)
     const callbacks = list.map(animation => animation.cancel(false, provideCallback)).filter(c => typeof c === 'function')
-    if (provideCallback) return (...args) => callbacks.forEach(c => c(...args))
+    const callback = (...args) => callbacks.forEach(c => c(...args))
+    if (provideCallback) return callback
+    else callback()
+  }
+  cancelAllAnimations () {
+    return this.cancelAnimations(this.animations, false)
   }
 
   processAnimation (animation) {

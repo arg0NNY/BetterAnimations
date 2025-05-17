@@ -226,7 +226,7 @@ export function parse (data = null, context, options = {}) {
 
   const finishedAll = Promise.all(instances.map(promisify))
 
-  const raf = fn => requestAnimationFrame(
+  const raf = fn => context.window.requestAnimationFrame(
     () => !context.instance.cancelled && fn()
   )
   let onBeforeBegin
