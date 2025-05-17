@@ -4,6 +4,7 @@ import ModuleKey from '@/enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 import SidebarTransition from '@/patches/ChannelView/components/SidebarTransition'
 import useWindow from '@/hooks/useWindow'
+import AnimeContainer from '@/components/AnimeContainer'
 
 function patchMembersModViewSidebar () {
   Patcher.after(...MembersModViewSidebarKeyed, (self, [{ guildId }], value) => {
@@ -20,7 +21,9 @@ function patchMembersModViewSidebar () {
         switchModule={switchModule}
         state={state}
       >
-        {value}
+        <AnimeContainer container={{ className: 'BA__sidebar' }}>
+          {value}
+        </AnimeContainer>
       </SidebarTransition>
     )
   })
