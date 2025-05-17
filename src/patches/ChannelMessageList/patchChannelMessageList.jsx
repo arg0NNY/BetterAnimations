@@ -11,6 +11,7 @@ import patchMessage from '@/patches/ChannelMessageList/patchMessage'
 import patchMessageDivider from '@/patches/ChannelMessageList/patchMessageDivider'
 import { css } from '@/modules/Style'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
+import useWindow from '@/hooks/useWindow'
 
 function patchChannelMessageList () {
   const once = ensureOnce()
@@ -19,8 +20,9 @@ function patchChannelMessageList () {
     once(() =>
       Patcher.after(findInReactTree(value.props.children, m => m?.props?.messages).type, 'type', (self, args, value) => {
         const { toEnter, toExit } = useStateFromStores([MessageStackStore], () => MessageStackStore.getMessagesAwaitingTransition())
+        const { isMainWindow } = useWindow()
         const module = useModule(ModuleKey.Messages)
-        if (!module.isEnabled()) return
+        if (!isMainWindow || !module.isEnabled()) return
 
         const list = findInReactTree(value, m => m?.type === 'ol')
         if (!list) return

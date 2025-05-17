@@ -5,6 +5,7 @@ import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import { useRef } from 'react'
+import { MainWindowOnly } from '@/hooks/useWindow'
 
 function TooltipTransition (props) {
   const { module, isVisible, onAnimationRest, ...rest } = props
@@ -50,11 +51,19 @@ function patchTooltip () {
     const module = Modules.getModule(ModuleKey.Tooltips)
     if (!module.isEnabled()) return
 
-    const { text } = self.props
-    value.props.children = typeof text === 'function' ? text() : text
+    return (
+      <MainWindowOnly fallback={value}>
+        {() => {
+          const { text } = self.props
+          value.props.children = typeof text === 'function' ? text() : text
 
-    value.props.module = module
-    value.type = TooltipTransition
+          value.props.module = module
+          value.type = TooltipTransition
+
+          return value
+        }}
+      </MainWindowOnly>
+    )
   })
 }
 

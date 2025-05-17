@@ -10,6 +10,7 @@ import { directChild } from '@/utils/transition'
 import { css } from '@/modules/Style'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
 import { useMemo, useRef } from 'react'
+import useWindow from '@/hooks/useWindow'
 
 function Modal ({ children, ...props }) {
   const layerRef = useRef()
@@ -36,8 +37,9 @@ function patchModals () {
     const modals = value.props.children[1]
     if (modals?.length) once(() => patchModalItem(modals[0].type))
 
+    const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.Modals)
-    if (!module.isEnabled()) return
+    if (!isMainWindow || !module.isEnabled()) return
 
     const modal = modals.find(m => m.props.isTopModal)
 

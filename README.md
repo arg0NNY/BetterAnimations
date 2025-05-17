@@ -46,7 +46,7 @@ Visit the Usage and Animation Authoring documentation at
   - [ ] Add more [Anime Injects](https://docs.betteranimations.net/reference/injects/anime)
 - [ ] General Settings
   - [ ] Switch Cooldown Duration
-  - [ ] Cross-window Support Toggle (Call Popout, Game Overlay)
+  - [ ] Suppress Errors Toggle
   - [ ] Hints Toggle
 - [ ] Pack Changelogs
 - [ ] [BetterAnimations V1](https://github.com/arg0NNY/DiscordPlugins/tree/fa45fb514aa7a8febe4ddd143a08ff1c9f124fe0/BetterAnimations) Settings Migrator

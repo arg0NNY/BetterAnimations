@@ -9,6 +9,7 @@ import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import { autoPosition } from '@/hooks/useAutoPosition'
 import useMouse from '@/hooks/useMouse'
+import useWindow, { MainWindowOnly } from '@/hooks/useWindow'
 
 function patchContextMenu () {
   const once = ensureOnce()
@@ -23,40 +24,47 @@ function patchContextMenu () {
         const module = Modules.getModule(ModuleKey.ContextMenu)
         if (!module.isEnabled()) return
 
-        const { config = {} } = self.props
-        const { autoRef, setPosition } = autoPosition(
-          self,
-          config.position ?? Position.Right,
-          { align: config.align ?? Position.Top }
-        )
-
-        if (value) {
-          value.props.onPositionChange = setPosition
-          value.props.setLayerRef = value => self.__layerRef = value
-          Patcher.after(value, 'type', (self, [props], value) => {
-            value.props.onPositionChange = props.onPositionChange ?? (() => {})
-            props.setLayerRef?.(value.props.ref)
-          })
-        }
-
         return (
-          <AnimeTransition
-            in={self.props.in && !!value}
-            layerRef={() => self.__layerRef?.current}
-            module={module}
-            autoRef={autoRef}
-            anchor={self.__anchor}
-          >
-            {value}
-          </AnimeTransition>
+          <MainWindowOnly fallback={value}>
+            {() => {
+              const { config = {} } = self.props
+              const { autoRef, setPosition } = autoPosition(
+                self,
+                config.position ?? Position.Right,
+                { align: config.align ?? Position.Top }
+              )
+
+              if (value) {
+                value.props.onPositionChange = setPosition
+                value.props.setLayerRef = value => self.__layerRef = value
+                Patcher.after(value, 'type', (self, [props], value) => {
+                  value.props.onPositionChange = props.onPositionChange ?? (() => {})
+                  props.setLayerRef?.(value.props.ref)
+                })
+              }
+
+              return (
+                <AnimeTransition
+                  in={self.props.in && !!value}
+                  layerRef={() => self.__layerRef?.current}
+                  module={module}
+                  autoRef={autoRef}
+                  anchor={self.__anchor}
+                >
+                  {value}
+                </AnimeTransition>
+              )
+            }}
+          </MainWindowOnly>
         )
       })
     })
 
     const mouse = useMouse()
 
+    const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.ContextMenu)
-    if (!module.isEnabled()) return
+    if (!isMainWindow || !module.isEnabled()) return
 
     value.props.mouse = mouse
     return (

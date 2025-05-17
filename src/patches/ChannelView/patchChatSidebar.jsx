@@ -6,21 +6,19 @@ import ModuleKey from '@/enums/ModuleKey'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import { Fragment } from 'react'
 import useModule from '@/hooks/useModule'
-import Modules from '@/modules/Modules'
+import useWindow from '@/hooks/useWindow'
 
 function patchChatSidebar () {
-  Patcher.before(...ChatSidebarKeyed, (self, [props]) => {
+  Patcher.instead(...ChatSidebarKeyed, (self, [props], original) => {
+    const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.ThreadSidebar)
     const switchModule = useModule(ModuleKey.ThreadSidebarSwitch)
-    if (!module.isEnabled() && !switchModule.isEnabled()) return
+    if (!isMainWindow || (!module.isEnabled() && !switchModule.isEnabled())) return original(props)
 
     props.maxWidth = Math.max(props.maxWidth, 451) // Disable floating state
     delete props.floatingLayer // Disable teleport to layer container in a voice call
-  })
-  Patcher.after(...ChatSidebarKeyed, (self, [props], value) => {
-    const module = Modules.getModule(ModuleKey.ThreadSidebar)
-    const switchModule = Modules.getModule(ModuleKey.ThreadSidebarSwitch)
-    if (!module.isEnabled() && !switchModule.isEnabled()) return
+
+    const value = original(props)
 
     const chatTarget = findInReactTree(value, m => m?.props?.className?.includes(DiscordClasses.ChatSidebar.chatTarget))
     if (chatTarget) {

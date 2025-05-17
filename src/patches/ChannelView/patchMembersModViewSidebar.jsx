@@ -3,12 +3,14 @@ import { ChannelSectionStore, MembersModViewSidebarKeyed, useStateFromStores } f
 import ModuleKey from '@/enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 import SidebarTransition from '@/patches/ChannelView/components/SidebarTransition'
+import useWindow from '@/hooks/useWindow'
 
 function patchMembersModViewSidebar () {
   Patcher.after(...MembersModViewSidebarKeyed, (self, [{ guildId }], value) => {
+    const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.ThreadSidebar)
     const switchModule = useModule(ModuleKey.ThreadSidebarSwitch)
-    if (!module.isEnabled() && !switchModule.isEnabled()) return
+    if (!isMainWindow || (!module.isEnabled() && !switchModule.isEnabled())) return
 
     const state = useStateFromStores([ChannelSectionStore], () => ChannelSectionStore.getGuildSidebarState(guildId), [guildId])
 

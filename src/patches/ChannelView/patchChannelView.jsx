@@ -13,6 +13,7 @@ import patchMembersModViewSidebar from '@/patches/ChannelView/patchMembersModVie
 import SidebarTransition from '@/patches/ChannelView/components/SidebarTransition'
 import findInReactTree from '@/utils/findInReactTree'
 import patchVoiceChannelView from '@/patches/ChannelView/patchVoiceChannelView'
+import { MainWindowOnly } from '@/hooks/useWindow'
 
 function patchChannelView () {
   const once = ensureOnce()
@@ -33,16 +34,18 @@ function patchChannelView () {
           if (!module.isEnabled()) return value
 
           return (
-            <SwitchTransition>
-              <AnimeTransition
-                key={self.props.section}
-                container={{ className: 'BA__sidebar' }}
-                module={module}
-                freeze={true}
-              >
-                {value}
-              </AnimeTransition>
-            </SwitchTransition>
+            <MainWindowOnly fallback={value}>
+              <SwitchTransition>
+                <AnimeTransition
+                  key={self.props.section}
+                  container={{ className: 'BA__sidebar' }}
+                  module={module}
+                  freeze={true}
+                >
+                  {value}
+                </AnimeTransition>
+              </SwitchTransition>
+            </MainWindowOnly>
           )
         })
         Patcher.after(guildChannel.type.prototype, 'renderThreadSidebar', (self, args, value) => {
@@ -53,13 +56,15 @@ function patchChannelView () {
           const state = self.props.channelSidebarState ?? self.props.guildSidebarState
 
           return (
-            <SidebarTransition
-              module={module}
-              switchModule={switchModule}
-              state={state}
-            >
-              {value}
-            </SidebarTransition>
+            <MainWindowOnly fallback={value}>
+              <SidebarTransition
+                module={module}
+                switchModule={switchModule}
+                state={state}
+              >
+                {value}
+              </SidebarTransition>
+            </MainWindowOnly>
           )
         })
       })

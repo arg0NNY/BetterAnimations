@@ -10,6 +10,7 @@ import { css } from '@/modules/Style'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
 import { Fragment, useMemo, useRef } from 'react'
 import patchChannelItem from '@/patches/ListThin/patchChannelItem'
+import useWindow from '@/hooks/useWindow'
 
 function ListItem ({ children, ...props }) {
   const draggableRef = useRef()
@@ -40,8 +41,9 @@ function patchListThin () {
     const isChannelList = props.id?.includes('channels')
     const channelsToAnimate = isChannelList && useStateFromStores([ChannelStackStore], () => ChannelStackStore.getChannelsAwaitingTransition())
 
+    const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.ChannelList)
-    if (!isChannelList || !module.isEnabled()) return
+    if (!isMainWindow || !isChannelList || !module.isEnabled()) return
 
     const focusRingScope = findInReactTree(value, m => m?.containerRef)
     if (!focusRingScope || !Array.isArray(focusRingScope.children)) return

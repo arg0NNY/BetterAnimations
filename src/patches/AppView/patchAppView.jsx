@@ -17,6 +17,7 @@ import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequest
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { css } from '@/modules/Style'
 import { Fragment } from 'react'
+import useWindow from '@/hooks/useWindow'
 
 export let guildChannelPath = []
 
@@ -44,8 +45,10 @@ const byClassName = className => m => m?.props?.className?.includes(className)
 
 function patchAppView () {
   Patcher.after(...AppViewKeyed, (self, args, value) => {
+    const { isMainWindow } = useWindow()
     const serversModule = useModule(ModuleKey.Servers)
     const channelsModule = useModule(ModuleKey.Channels)
+    if (!isMainWindow || (!serversModule.isEnabled() && !channelsModule.isEnabled())) return
 
     const base = findInReactTree(value, byClassName(DiscordClasses.AppView.base))
     if (!base) return

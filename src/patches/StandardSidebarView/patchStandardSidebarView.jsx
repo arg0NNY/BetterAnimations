@@ -8,6 +8,7 @@ import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { css } from '@/modules/Style'
+import useWindow from '@/hooks/useWindow'
 
 async function patchStandardSidebarView () {
   Patcher.after((await StandardSidebarViewWrapper).prototype, 'render', (self, args, value) => {
@@ -19,8 +20,9 @@ async function patchStandardSidebarView () {
 
   Patcher.after(...await StandardSidebarViewKeyed, (self, [props], value) => {
     const direction = useDirection(props.sections, props.section)
+    const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.Settings)
-    if (!module.isEnabled()) return
+    if (!isMainWindow || !module.isEnabled()) return
 
     // Disable Discord's internal animations, for Layers module
     const animated = findInReactTree(value, m => m?.type?.displayName?.startsWith('Animated'))

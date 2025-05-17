@@ -5,11 +5,13 @@ import ModuleKey from '@/enums/ModuleKey'
 import findInReactTree from '@/utils/findInReactTree'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import AnimeTransition from '@/components/AnimeTransition'
+import useWindow from '@/hooks/useWindow'
 
 function patchModalBackdrop () {
   Patcher.instead(ModalBackdrop, 'render', (self, [props, ...args], original) => {
+    const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.ModalsBackdrop)
-    if (!module.isEnabled()) return original(props, ...args)
+    if (!isMainWindow || !module.isEnabled()) return original(props, ...args)
 
     const value = original({ ...props, isVisible: true }, ...args)
 

@@ -8,6 +8,7 @@ import Modules from '@/modules/Modules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import AnimeTransition from '@/components/AnimeTransition'
 import { createRef, Fragment } from 'react'
+import { MainWindowOnly } from '@/hooks/useWindow'
 
 function patchCallChatSidebar () {
   Patcher.after(...CallChatSidebarKeyed, (self, [props], value) => {
@@ -39,18 +40,25 @@ function patchVoiceChannelView () {
         const { children } = fragment.props
         const callChatSidebarIndex = 0 // Can't find dynamically because it will be unmounted if the sidebar is closed
 
-        children[callChatSidebarIndex] = (
-          <TransitionGroup component={null}>
-            {
-              children[callChatSidebarIndex] &&
-              <AnimeTransition
-                injectContainerRef={true}
-                module={module}
-              >
-                {children[callChatSidebarIndex]}
-              </AnimeTransition>
-            }
-          </TransitionGroup>
+        return (
+          <MainWindowOnly fallback={value}>
+            {() => {
+              children[callChatSidebarIndex] = (
+                <TransitionGroup component={null}>
+                  {
+                    children[callChatSidebarIndex] &&
+                    <AnimeTransition
+                      injectContainerRef={true}
+                      module={module}
+                    >
+                      {children[callChatSidebarIndex]}
+                    </AnimeTransition>
+                  }
+                </TransitionGroup>
+              )
+              return value
+            }}
+          </MainWindowOnly>
         )
       })
     })

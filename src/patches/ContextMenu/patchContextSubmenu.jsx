@@ -6,14 +6,16 @@ import ModuleKey from '@/enums/ModuleKey'
 import Position from '@/enums/Position'
 import useAutoPosition from '@/hooks/useAutoPosition'
 import { useRef } from 'react'
+import useWindow from '@/hooks/useWindow'
 
 function patchContextSubmenu () {
   const callback = (self, [props], original) => {
     const layerRef = useRef()
     const { autoRef, setPosition } = useAutoPosition(Position.Right)
 
+    const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.ContextMenu)
-    if (!module.isEnabled()) return original(props)
+    if (!isMainWindow || !module.isEnabled()) return original(props)
 
     const value = original(Object.assign({}, props, { isFocused: true }))
     const { children } = value.props

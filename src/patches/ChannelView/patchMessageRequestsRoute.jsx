@@ -15,6 +15,7 @@ import ModuleKey from '@/enums/ModuleKey'
 import AnimeTransition from '@/components/AnimeTransition'
 import usePrevious from '@/hooks/usePrevious'
 import findInReactTree from '@/utils/findInReactTree'
+import useWindow from '@/hooks/useWindow'
 
 let once = () => {}
 
@@ -28,9 +29,10 @@ function patchMessageRequestsRoute (route) {
 
   Patcher.after(route.props, 'render', (self, args, value) => {
     once(() => Patcher.after(value.type, 'render', (self, args, value) => {
+      const { isMainWindow } = useWindow()
       const module = useModule(ModuleKey.ThreadSidebar)
       const switchModule = useModule(ModuleKey.ThreadSidebarSwitch)
-      if (!module.isEnabled() && !switchModule.isEnabled()) return
+      if (!isMainWindow || (!module.isEnabled() && !switchModule.isEnabled())) return
 
       const messageRequests = findInReactTree(value, m => typeof m?.type === 'function')
       if (!messageRequests) return

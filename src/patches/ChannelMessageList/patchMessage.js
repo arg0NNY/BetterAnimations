@@ -4,13 +4,15 @@ import findInReactTree from '@/utils/findInReactTree'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
+import useWindow from '@/hooks/useWindow'
 
 function patchMessage () {
   Patcher.after(Message, 'type', (self, [props], value) => {
     // Move message margins from child element to message container (as it should have been done, dear Discord)
 
+    const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.Messages)
-    if (!module.isEnabled()) return
+    if (!isMainWindow || !module.isEnabled()) return
 
     const messageListItem = findInReactTree(value, m => m?.className?.includes(DiscordClasses.MessageList.messageListItem))
     if (!messageListItem) return
