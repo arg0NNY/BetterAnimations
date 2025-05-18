@@ -46,6 +46,7 @@ function TooltipTransition (props) {
 }
 
 function patchTooltip () {
+  Tooltip.defaultProps.delay = 0
   injectModule(Tooltip, ModuleKey.Tooltips)
   Patcher.after(Tooltip.prototype, 'renderTooltip', (self, args, value) => {
     const module = Modules.getModule(ModuleKey.Tooltips)

@@ -1,17 +1,34 @@
 import Patcher from '@/modules/Patcher'
-import { appLayerContext, Layer, MenuSubmenuItemKeyed, MenuSubmenuListItemKeyed } from '@/modules/DiscordModules'
+import {
+  appLayerContext,
+  Layer,
+  MenuSubmenuItemKeyed,
+  MenuSubmenuListItemKeyed,
+  Timeout
+} from '@/modules/DiscordModules'
 import AnimeTransition from '@/components/AnimeTransition'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Position from '@/enums/Position'
 import useAutoPosition from '@/hooks/useAutoPosition'
-import { useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import useWindow from '@/hooks/useWindow'
 
 function patchContextSubmenu () {
   const callback = (self, [props], original) => {
     const layerRef = useRef()
     const { autoRef, setPosition } = useAutoPosition(Position.Right)
+
+    const timeout = useMemo(() => new Timeout(), [])
+
+    const [isFocused, setIsFocused] = useState(props.isFocused)
+    useEffect(() => {
+      if (props.isFocused) timeout.start(20, () => setIsFocused(true))
+      else {
+        timeout.stop()
+        setIsFocused(false)
+      }
+    }, [props.isFocused])
 
     const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.ContextMenu)
@@ -27,7 +44,7 @@ function patchContextSubmenu () {
     children[i].props.ref = layerRef
     children[i] = (
       <AnimeTransition
-        in={props.isFocused}
+        in={isFocused}
         layerRef={layerRef}
         module={module}
         autoRef={autoRef}
