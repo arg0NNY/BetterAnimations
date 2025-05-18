@@ -65,7 +65,9 @@ class Animation {
 
       const anchor = typeof this.anchor === 'function'
         ? this.anchor()
-        : (this.anchor?.current ?? this.anchor)
+        : 'current' in (this.anchor ?? {})
+          ? this.anchor.current
+          : this.anchor
 
       const { animate, context } = this.module.getAnimation(
         this.type,

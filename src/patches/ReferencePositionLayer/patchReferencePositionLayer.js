@@ -20,7 +20,7 @@ ${DiscordSelectors.Layer.layerContainer} > * {
 }
 
 /* Don't trap clicks while exit animation is playing on the layer */
-${DiscordSelectors.Layer.clickTrapContainer}:has(> [data-baa-type="exit"]) {
+${DiscordSelectors.Layer.clickTrapContainer}:has([data-baa-type="exit"]) {
     pointer-events: none !important;
 }`
 `ReferencePositionLayer`
