@@ -162,3 +162,4 @@ export const ChannelItemKeyed = getWithKey(Filters.byStrings('shouldIndicateNewC
 export const VoiceChannelItemKeyed = getWithKey(Filters.byStrings('PLAYING', 'MANAGE_CHANNELS'))
 export const StageVoiceChannelItemKeyed = getWithKey(Filters.byStrings('getStageInstanceByChannel', 'MANAGE_CHANNELS'))
 export const { AppContext } = Webpack.getMangled(Filters.bySource('renderWindow', 'ownerDocument.defaultView'), { AppContext: m => m?.Provider })
+export const Timeout = Webpack.getModule(m => Filters.byPrototypeKeys('isStarted', 'start', 'stop')(m) && Filters.byStrings('setTimeout')(m), { searchExports: true })
