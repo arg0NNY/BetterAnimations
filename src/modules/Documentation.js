@@ -30,6 +30,7 @@ export default new class Documentation {
 
   get packDirectoryUrl () { return `${this.baseUrl}/usage/pack-directory` }
   get enhanceLayoutUrl () { return `${this.baseUrl}/usage/modules#enhance-layout` }
+  get accordionUrl () { return `${this.baseUrl}/usage/basics#expand-collapse-animations` }
 
   getDefinitionUrl (definition) {
     return `${this.referenceBaseUrl}/${definition.toLowerCase()}`
