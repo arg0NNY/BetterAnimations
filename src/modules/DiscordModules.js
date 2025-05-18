@@ -162,3 +162,9 @@ export const ChannelItemKeyed = getWithKey(Filters.byStrings('shouldIndicateNewC
 export const VoiceChannelItemKeyed = getWithKey(Filters.byStrings('PLAYING', 'MANAGE_CHANNELS'))
 export const StageVoiceChannelItemKeyed = getWithKey(Filters.byStrings('getStageInstanceByChannel', 'MANAGE_CHANNELS'))
 export const { AppContext } = Webpack.getMangled(Filters.bySource('renderWindow', 'ownerDocument.defaultView'), { AppContext: m => m?.Provider })
+export const ChannelTextArea = Webpack.getModule(m => Filters.byStrings('CHANNEL_TEXT_AREA')(m?.type?.render))
+export const ExpressionPicker = Webpack.getModule(m => Filters.byStrings('EXPRESSION_PICKER', 'positionContainer')(m?.type), { searchExports: true })
+export const { useExpressionPickerStore: useExpressionPickerStoreKeyed } = getMangled(Webpack.getBySource('expression-picker-last-active-view'), {
+  useExpressionPickerStore: Filters.byKeys('getState', 'setState')
+}, { withKeys: true })
+export const ChannelTextAreaButtons = Webpack.getModule(m => Filters.byStrings('ChannelTextAreaButtons')(m?.type), { searchExports: true })

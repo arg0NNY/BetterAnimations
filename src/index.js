@@ -37,6 +37,7 @@ import * as anime from 'animejs'
 import Utils from '@/modules/Utils'
 import patchMenuItem from '@/patches/ContextMenu/patchMenuItem'
 import Documentation from '@/modules/Documentation'
+import patchChannelTextArea from '@/patches/ChannelTextArea/patchChannelTextArea'
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -95,6 +96,7 @@ export default function (meta) {
       patchChatSearchSidebar()
       patchReferencePositionLayer()
       patchSelect()
+      patchChannelTextArea()
 
       Logger.info('Startup', 'Forcing app update...')
       forceAppUpdate()
