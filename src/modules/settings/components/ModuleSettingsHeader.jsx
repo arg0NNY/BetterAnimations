@@ -10,6 +10,7 @@ import {
   Clickable,
   FormText,
   FormTitle,
+  handleClick,
   Switch,
   Tooltip
 } from '@/modules/DiscordModules'
@@ -20,6 +21,9 @@ import ArrowSmallRightIcon from '@/modules/settings/components/icons/ArrowSmallR
 import { useContext, useMemo } from 'react'
 import DismissibleAlert from '@/modules/settings/components/DismissibleAlert'
 import useDismissible from '@/modules/settings/hooks/useDismissible'
+import Documentation from '@/modules/Documentation'
+import CircleQuestionIcon from '@/modules/settings/components/icons/CircleQuestionIcon'
+import IconButton from '@/modules/settings/components/IconButton'
 
 function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect, ...props }) {
   const { setSection } = useContext(SectionContext)
@@ -75,12 +79,22 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
     }
   ])
 
+  const accordionHint = (
+    <IconButton
+      className="BA__accordionHint"
+      onClick={() => handleClick({ href: Documentation.accordionUrl })}
+    >
+      <CircleQuestionIcon size="xs" color="currentColor" />
+    </IconButton>
+  )
+
   const accordions = module.getAccordions()
   const accordionsSettings = useAnimationSettings(module, accordions ? [
     {
       animation: accordions.animation,
       type: AnimationType.Enter,
       title: 'Smooth Expand',
+      headerAfter: accordionHint,
       switchTooltip: accordions.enter.forceDisabled ? Messages.IMPLEMENTED_BY_ANIMATION(selected.enter.animation?.name) : null,
       ...accordions.enter
     },
@@ -88,6 +102,7 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
       animation: accordions.animation,
       type: AnimationType.Exit,
       title: 'Smooth Collapse',
+      headerAfter: accordionHint,
       switchTooltip: accordions.exit.forceDisabled ? Messages.IMPLEMENTED_BY_ANIMATION(selected.exit.animation?.name) : null,
       ...accordions.exit
     }
@@ -223,5 +238,9 @@ css
 }
 .BA__moduleSettingsLink:hover svg {
     transform: translateX(4px);
+}
+
+.BA__accordionHint {
+    margin: auto 0;
 }`
 `ModuleSettingsHeader`

@@ -56,7 +56,7 @@ function Setting ({ type, ...props }) {
 function AnimationSettingsHeader ({ headers }) {
   return (
     <SettingGroup className="BA__animationSettingsHeaderGroup">
-      {() => headers.map(({ key, title, subtitle, enabled, setEnabled, onReset, switchTooltip }) => (
+      {() => headers.map(({ key, title, subtitle, headerAfter, enabled, setEnabled, onReset, switchTooltip }) => (
         <div className="BA__animationSettingsItem BA__animationSettingsHeader" key={key}>
           <div className="BA__animationSettingsHeading">
             <Text variant="heading-lg/semibold" lineClamp={1}>
@@ -69,6 +69,7 @@ function AnimationSettingsHeader ({ headers }) {
                 color="header-muted"
               >{subtitle}</Text>
             )}
+            {headerAfter}
           </div>
           <div className="BA__animationSettingsHeaderControls">
             {onReset && (

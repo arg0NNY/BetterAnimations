@@ -133,6 +133,7 @@ function useAnimationSettingsHeaders (module, items, settings = _useAnimationSet
     onReset,
     title,
     subtitle,
+    headerAfter,
     switchTooltip
   }) => ({
     key: type,
@@ -140,6 +141,7 @@ function useAnimationSettingsHeaders (module, items, settings = _useAnimationSet
     subtitle: title && subtitle
       ? (subtitle === true ? typeLabel(type) : subtitle)
       : null,
+    headerAfter,
     enabled,
     setEnabled,
     switchTooltip,
