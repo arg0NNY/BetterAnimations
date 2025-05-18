@@ -15,6 +15,7 @@ import useAutoPosition from '@/hooks/useAutoPosition'
 import Position from '@/enums/Position'
 import { useCallback, useRef } from 'react'
 import { unkeyed } from '@/utils/webpack'
+import patchChannelAppLauncher from '@/patches/ChannelTextArea/patchChannelAppLauncher'
 
 function patchChannelTextAreaButtons () {
   Patcher.after(ChannelTextAreaButtons, 'type', (self, [{ buttonRefs }], value) => {
@@ -78,6 +79,7 @@ function patchChannelTextArea () {
 
   patchChannelTextAreaButtons()
   patchExpressionPicker()
+  patchChannelAppLauncher()
 }
 
 export default patchChannelTextArea

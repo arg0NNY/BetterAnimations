@@ -168,3 +168,5 @@ export const { useExpressionPickerStore: useExpressionPickerStoreKeyed } = getMa
   useExpressionPickerStore: Filters.byKeys('getState', 'setState')
 }, { withKeys: true })
 export const ChannelTextAreaButtons = Webpack.getModule(m => Filters.byStrings('ChannelTextAreaButtons')(m?.type), { searchExports: true })
+export const ChannelAppLauncher = Webpack.getModule(m => Filters.byStrings('channelAppLauncher')(m?.type), { searchExports: true })
+export const AppLauncherPopup = Webpack.getModule(m => Filters.byStrings('AppLauncherPopup')(m?.type), { searchExports: true })
