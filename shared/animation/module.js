@@ -1,9 +1,17 @@
-import PackManager from '@/modules/PackManager'
-import modules from '@/data/modules'
-import Auto from '@enums/Auto'
+import ModuleType from '@enums/ModuleType'
+import { buildContext } from '@animation/parser'
+import Debug from '@logger/debug'
+import ParsableExtendableAnimateSchema from '@animation/schemas/ParsableExtendableAnimateSchema'
+import ParseStage from '@enums/ParseStage'
+import AnimationError from '@error/structs/AnimationError'
+import { formatZodError } from '@utils/zod'
+import Documentation from '@shared/documentation'
+import ErrorManager from '@error/manager'
+import AnimationType from '@enums/AnimationType'
 import Setting from '@enums/AnimationSetting'
+import PositionAutoType from '@enums/PositionAutoType'
 import Position from '@enums/Position'
-import Direction from '@enums/Direction'
+import DirectionAutoType from '@enums/DirectionAutoType'
 import {
   getAnchorDirection,
   getDirection,
@@ -11,46 +19,51 @@ import {
   getSupportedAxes,
   reverseDirection
 } from '@utils/direction'
-import Axis from '@enums/Axis'
-import { getPosition, reversePosition } from '@utils/position'
-import Config from '@/modules/Config'
-import AnimationType from '@enums/AnimationType'
-import ModuleType from '@enums/ModuleType'
-import { buildContext } from '@animation/parser'
-import ParseStage from '@enums/ParseStage'
-import Events from '@enums/Events'
-import Emitter from '@/modules/Emitter'
-import Logger from '@logger'
-import DirectionAutoType from '@enums/DirectionAutoType'
-import ErrorManager from '@error/manager'
-import AnimationError from '@error/structs/AnimationError'
-import { formatZodError } from '@utils/zod'
-import Debug from '@logger/debug'
-import EasingSchema from '@animation/schemas/EasingSchema'
-import Mouse from '@/modules/Mouse'
-import PositionAutoType from '@enums/PositionAutoType'
-import ParsableExtendableAnimateSchema from '@animation/schemas/ParsableExtendableAnimateSchema'
+import Direction from '@enums/Direction'
 import { computeOverridable } from '@animation/schemas/OverridableSchema'
 import { metaOverridePresets } from '@animation/schemas/MetaSchema'
-import Documentation from '@shared/documentation'
+import Auto from '@enums/Auto'
+import internalPacks from '@packs'
+import EasingSchema from '@animation/schemas/EasingSchema'
+import Axis from '@enums/Axis'
+import { getPosition, reversePosition } from '@utils/position'
 
-class Module {
-  constructor (id, name, meta = {}, { parent, description, controls, alert, onToggle } = {}) {
+export default class Module {
+  constructor ({
+    id,
+    name,
+    parent = null,
+    meta = {},
+    description,
+    controls,
+    alert,
+    onToggle
+  }) {
     this.id = id
     this.name = name
     this.description = description ?? 'No description provided.'
     this.controls = controls
     this._alert = alert
-    this.onToggle = onToggle
+    this._onToggle = onToggle
     this.meta = meta
     this.parent = parent
     this.animations = {}
   }
 
   get settings () {
-    return Config.current.modules[this.id] ??= {}
+    return {}
   }
-  getSettings () { return this.settings }
+  getPack (slug) {
+    return internalPacks[slug]
+  }
+  getAnimationConfig (pack, animation, type) {
+    return {}
+  }
+
+  onToggle (value) {
+    this._onToggle?.(value)
+  }
+  onSettingsChange () {}
 
   isEnabled (type = null) {
     if (!type) return this.settings.enabled ?? true
@@ -58,18 +71,17 @@ class Module {
     return (this.settings.enabled ?? true)
       && (!!this.animations[type]?.animate || !!this.getAccordion(type)?.enabled)
   }
-  enable () { this.settings.enabled = true }
-  disable () { this.settings.enabled = false }
-  toggle () { this.settings.enabled = !this.settings.enabled }
   setIsEnabled (value) {
     this.settings.enabled = value
-    Emitter.emit(Events.ModuleToggled, this.id, value)
+    this.onToggle(value)
   }
+  enable () { this.setIsEnabled(true) }
+  disable () { this.setIsEnabled(false) }
+  toggle () { this.setIsEnabled(!this.isEnabled()) }
 
   get type () {
     return this.meta.type ?? ModuleType.Reveal
   }
-  getType () { return this.type }
 
   get alert () {
     if (typeof this._alert === 'function') return this._alert(this.name)
@@ -77,20 +89,18 @@ class Module {
   }
 
   findAnimation (packOrSlug, key) {
-    const animation = PackManager.getAnimation(packOrSlug, key)
+    const animation = (typeof packOrSlug === 'string' ? this.getPack(packOrSlug) : packOrSlug)
+      ?.animations.find(a => a.key === key)
     return animation && this.isSupportedBy(animation) ? animation : null
   }
 
-  getAnimationConfig (pack, animation, type) {
-    return Config.pack(pack.slug).getAnimationConfig(animation.key, this.id, type)
-  }
   getAnimationSettings (pack, animation, type, options = {}) {
     return this.buildSettings(animation, type, this.getAnimationConfig(pack, animation, type), options)
   }
 
   initializeAnimation (type) {
     const pointer = this.settings[type] ?? {}
-    const pack = pointer.packSlug && PackManager.getPack(pointer.packSlug)
+    const pack = pointer.packSlug && this.getPack(pointer.packSlug)
     const animation = pack && this.findAnimation(pack, pointer.animationKey)
     const config = animation ? this.getAnimationConfig(pack, animation, type) : {}
     const path = animation ? ['animations', pack.animations.indexOf(animation), type in animation ? type : 'animate'] : []
@@ -161,7 +171,7 @@ class Module {
 
   setAnimation (type, packSlug, animationKey) {
     this.settings[type] = { packSlug, animationKey }
-    Emitter.emit(Events.ModuleSettingsChanged, this.id)
+    this.onSettingsChange()
   }
 
   isSupportedBy (animation) {
@@ -448,7 +458,7 @@ class Module {
   updateAccordion (type, values) {
     const config = this.settings.accordion ??= {}
     Object.assign(config[type] ??= {}, values)
-    Emitter.emit(Events.ModuleSettingsChanged, this.id)
+    this.onSettingsChange()
   }
   buildOptions () {
     const options = {}
@@ -456,62 +466,5 @@ class Module {
     if (accordions?.enter?.enabled) options.before = accordions.enter.animate
     if (accordions?.exit?.enabled) options.after = accordions.exit.animate
     return options
-  }
-}
-
-export default new class Modules {
-  get name () { return 'Core' }
-
-  constructor () {
-    this.modules = modules.map(({ id, name, meta, ...options }) => new Module(id, name, meta, options))
-
-    this.globalChangeEvents = [Events.PackLoaded, Events.PackUnloaded, Events.SettingsChanged]
-    this.onGlobalChange = () => this.onChange()
-    this.onModuleChange = id => this.onChange(id)
-  }
-
-  initialize () {
-    this.modules.forEach(m => m.initializeAnimations())
-    this.listenEvents()
-
-    Logger.log(this.name, `Initialized ${this.modules.length} animation modules.`)
-  }
-
-  shutdown () {
-    this.unlistenEvents()
-
-    Logger.log(this.name, 'Shutdown.')
-  }
-
-  onChange (id = null) {
-    if (!id) return this.modules.forEach(m => m.initializeAnimations())
-    this.getModule(id)?.initializeAnimations()
-  }
-  listenEvents () {
-    this.globalChangeEvents.forEach(e => Emitter.on(e, this.onGlobalChange))
-    Emitter.on(Events.ModuleSettingsChanged, this.onModuleChange)
-  }
-  unlistenEvents () {
-    this.globalChangeEvents.forEach(e => Emitter.off(e, this.onGlobalChange))
-    Emitter.off(Events.ModuleSettingsChanged, this.onModuleChange)
-  }
-
-  getAllModules (includeNested = false) {
-    return this.modules.filter(m => includeNested || !m.parent)
-  }
-  getModule (id) {
-    return this.modules.find(m => m.id === id)
-  }
-  getParentModule (module) {
-    return module.parent && this.getModule(module.parent)
-  }
-  getParentModules (module, _list = []) {
-    const parent = this.getParentModule(module)
-    if (!parent) return _list
-
-    return this.getParentModules(parent, [parent, ..._list])
-  }
-  getChildModules (module) {
-    return this.modules.filter(m => m.parent === module.id)
   }
 }

@@ -5,7 +5,7 @@ import AnimationType from '@enums/AnimationType'
 import ExtendableAnimateSchema from '@animation/schemas/ExtendableAnimateSchema'
 import { ArrayOrSingleSchema } from '@utils/schemas'
 import ModuleKey, { ModuleKeyAlias } from '@enums/ModuleKey'
-import { moduleAliases } from '@/data/modules'
+import { moduleAliases } from '@data/modules'
 import PrepareInjectableSchema from '@animation/schemas/PrepareInjectableSchema'
 
 const AnimationSchema = z.object({

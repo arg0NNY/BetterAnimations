@@ -69,8 +69,4 @@ export default new class PackManager extends AddonManager {
   getPackByFile (filename, includePartial = false) {
     return this._getPack(p => p.filename === filename, includePartial)
   }
-  getAnimation (packOrSlug, key) {
-    return (typeof packOrSlug === 'string' ? this.getPack(packOrSlug) : packOrSlug)
-      ?.animations.find(a => a.key === key)
-  }
 }

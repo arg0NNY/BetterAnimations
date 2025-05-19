@@ -4,7 +4,7 @@ import AnimationType from '@enums/AnimationType'
 import ModuleKey, { ModuleKeyAlias } from '@enums/ModuleKey'
 import ModuleType from '@enums/ModuleType'
 import { omit } from '@utils/object'
-import { moduleAliases } from '@/data/modules'
+import { moduleAliases } from '@data/modules'
 
 export const DefaultConditionsSchema = z.strictObject({
   type: z.enum(AnimationType.values()),

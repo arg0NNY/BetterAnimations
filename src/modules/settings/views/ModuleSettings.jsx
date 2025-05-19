@@ -17,10 +17,7 @@ function ModuleSettings ({ moduleId, refToScroller }) {
     if (!animation) module.setAnimation(type, null, null)
     else module.setAnimation(type, pack.slug, animation.key, {})
   }, [module])
-  const setIsEnabled = useCallback(value => {
-    module.setIsEnabled(value)
-    module.onToggle?.(value)
-  }, [module])
+  const setIsEnabled = useCallback(value => module.setIsEnabled(value), [module])
 
   const selected = module.getAnimations()
 
