@@ -1,6 +1,6 @@
 import { groupedInjectSchemas } from '@animation/schemas/injects'
 
-export default new class Documentation {
+const Documentation = new class Documentation {
   Definition = {
     Pack: 'pack',
     Animation: 'animation',
@@ -57,3 +57,5 @@ export default new class Documentation {
     return `${this.baseUrl}/usage/${section}#${setting.toLowerCase()}`
   }
 }
+
+export default Documentation

@@ -65,11 +65,12 @@ export default defineConfig({
   resolve: {
     alias: {
       // For plugin only
+      '@': path.resolve(__dirname, 'src'),
       '@style': path.resolve(__dirname, 'src/modules/Style.js'),
+      '@animation/store': path.resolve(__dirname, 'src/modules/AnimationStore.js'),
       '@error/manager': path.resolve(__dirname, 'src/modules/ErrorManager.jsx'),
 
       // General
-      '@': path.resolve(__dirname, 'src'),
       '@config': path.resolve(__dirname, 'config.json'),
       '@shared': path.resolve(__dirname, 'shared'),
       '@utils': path.resolve(__dirname, 'shared/utils'),
