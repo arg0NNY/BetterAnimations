@@ -134,7 +134,7 @@ To fix this issue, we used inject <InjectRef inject="isIntersected" /> to cover 
 
 > [!TIP]
 > The process of adding support for intersections for properties other than `opacity` is relatively the same.
-> You may explore the [source code](https://github.com/arg0NNY/BetterAnimations/blob/main/src/packs/preinstalled.pack.json) of a preinstalled pack to see more examples of Intersection handling.
+> You may explore the [source code](https://github.com/arg0NNY/BetterAnimations/blob/main/shared/packs/preinstalled.pack.json) of a preinstalled pack to see more examples of Intersection handling.
 
 ## Disabling Intersections
 

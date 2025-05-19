@@ -121,7 +121,7 @@ Container
 ```
 
 > [!WARNING]
-> Provided hast elements are sanitized before being inserted into DOM. See [sanitization schema](https://github.com/arg0NNY/BetterAnimations/blob/main/src/modules/animation/hastSanitizeSchema.js).
+> Provided hast elements are sanitized before being inserted into DOM. See [sanitization schema](https://github.com/arg0NNY/BetterAnimations/blob/main/shared/animation/hastSanitizeSchema.js).
 
 To get the reference to the created Hast elements, use inject <InjectRef inject="hast" />:
 ```json
