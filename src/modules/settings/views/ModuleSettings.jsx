@@ -6,7 +6,7 @@ import { css } from '@style'
 import ModuleSettingsHeader from '@/modules/settings/components/ModuleSettingsHeader'
 import ModuleContext from '@/modules/settings/context/ModuleContext'
 import { useCallback } from 'react'
-import { PREINSTALLED_PACK_SLUG } from '@/packs'
+import { PREINSTALLED_PACK_SLUG } from '@packs'
 import AnimationList from '@/modules/settings/components/AnimationList'
 import NoPacksPlaceholder from '@/modules/settings/components/NoPacksPlaceholder'
 

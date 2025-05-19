@@ -7,7 +7,7 @@ import { fs, path } from '@/modules/Node'
 import PackManager from '@/modules/PackManager'
 import Logger from '@logger'
 import isEqual from 'lodash-es/isEqual'
-import { internalPackSlugs } from '@/packs'
+import { internalPackSlugs } from '@packs'
 import cloneDeep from 'lodash-es/cloneDeep'
 
 class PackConfig {

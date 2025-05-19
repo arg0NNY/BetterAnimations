@@ -73,6 +73,7 @@ export default defineConfig({
       '@error': path.resolve(__dirname, 'shared/error'),
       '@logger': path.resolve(__dirname, 'shared/logger'),
       '@data': path.resolve(__dirname, 'shared/data'),
+      '@packs': path.resolve(__dirname, 'shared/packs'),
 
       // For plugin only
       '@style': path.resolve(__dirname, 'src/modules/Style.js'),

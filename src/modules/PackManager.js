@@ -6,7 +6,7 @@ import PackSchema from '@animation/schemas/PackSchema'
 import meta from '@/meta'
 import ErrorManager from '@error/manager'
 import { formatZodError } from '@utils/zod'
-import internalPacks, { internalPackSlugs } from '@/packs'
+import internalPacks, { internalPackSlugs } from '@packs'
 import Documentation from '@shared/documentation'
 
 export default new class PackManager extends AddonManager {
