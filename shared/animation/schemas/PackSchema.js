@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import regex from '@utils/regex'
 import AnimationSchema from '@animation/schemas/AnimationSchema'
-import Messages from '@/modules/Messages'
+import Messages from '@shared/messages'
 import PrepareInjectableSchema from '@animation/schemas/PrepareInjectableSchema'
 
 export const SnippetSchema = z.strictObject({
