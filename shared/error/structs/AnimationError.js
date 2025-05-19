@@ -1,4 +1,4 @@
-import BaseError from '@/structs/BaseError'
+import BaseError from '@error/structs/BaseError'
 import objectInspect from 'object-inspect'
 import { sanitizeContext } from '@/utils/animations'
 

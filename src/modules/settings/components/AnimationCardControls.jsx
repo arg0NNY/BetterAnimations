@@ -4,7 +4,7 @@ import { css } from '@style'
 import { stop } from '@/modules/settings/utils/eventModifiers'
 import SettingsIcon from '@/modules/settings/components/icons/SettingsIcon'
 import CollapseListIcon from '@/modules/settings/components/icons/CollapseListIcon'
-import ErrorManager from '@/modules/ErrorManager'
+import ErrorManager from '@error/manager'
 import { colors } from '@/modules/DiscordModules'
 import CircleWarningIcon from '@/modules/settings/components/icons/CircleWarningIcon'
 

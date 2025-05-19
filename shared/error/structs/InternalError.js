@@ -1,4 +1,4 @@
-import BaseError from '@/structs/BaseError'
+import BaseError from '@error/structs/BaseError'
 
 export default class InternalError extends BaseError {
   constructor (message, options = {}) {

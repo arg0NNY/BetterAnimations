@@ -1,3 +1,4 @@
+import BaseErrorManager from '@shared/error/manager'
 import Logger from '@/modules/Logger'
 import { createToast, ModalActions, popToast, popToastKeyed, useToastStore } from '@/modules/DiscordModules'
 import ErrorModal from '@/components/error/ErrorModal'
@@ -8,12 +9,12 @@ import Patcher from '@/modules/Patcher'
 
 const ErrorManagerToastSymbol = Symbol('ErrorManagerToast')
 
-export default new class ErrorManager {
-  get name () { return 'ErrorManager' }
+export default new class ErrorManager extends BaseErrorManager {
   get timeoutDuration () { return 10000 }
   get maxErrors () { return 20 }
 
   constructor () {
+    super()
     this.errors = []
     this.errorsOverload = false
     this.timeout = null
@@ -57,15 +58,6 @@ export default new class ErrorManager {
     else this.showToast()
 
     this.timeout = setTimeout(this.clear.bind(this), this.timeoutDuration)
-  }
-  registerInternalError (error) {
-    this.registerError(error)
-  }
-  registerAddonError (error) {
-    this.registerError(error)
-  }
-  registerAnimationError (error) {
-    this.registerError(error)
   }
 
   onView () {

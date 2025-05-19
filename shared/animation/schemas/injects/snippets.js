@@ -3,7 +3,7 @@ import { InjectSchema, InjectWithMeta } from '@animation/schemas/utils'
 import Inject from '@shared/enums/Inject'
 import InjectableSchema from '@animation/schemas/InjectableSchema'
 import ParseStage from '@shared/enums/ParseStage'
-import AnimationError from '@/structs/AnimationError'
+import AnimationError from '@error/structs/AnimationError'
 import { formatZodError } from '@/utils/zod'
 
 export const SnippetInjectSchema = (context, env) => InjectSchema(Inject.Snippet).extend({

@@ -1,6 +1,6 @@
 import { fs, path } from '@/modules/Node'
 import Logger from '@/modules/Logger'
-import AddonError from '@/structs/AddonError'
+import AddonError from '@error/structs/AddonError'
 import Toasts from '@/modules/Toasts'
 import Data from '@/modules/Data'
 import Events from '@/modules/Emitter'

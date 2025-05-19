@@ -68,7 +68,11 @@ export default defineConfig({
       '@config': path.resolve(__dirname, 'config.json'),
       '@shared': path.resolve(__dirname, 'shared'),
       '@animation': path.resolve(__dirname, 'shared/animation'),
-      '@style': path.resolve(__dirname, 'src/modules/Style.js')
+      '@error': path.resolve(__dirname, 'shared/error'),
+
+      // For plugin only
+      '@style': path.resolve(__dirname, 'src/modules/Style.js'),
+      '@error/manager': path.resolve(__dirname, 'src/modules/ErrorManager.js')
     }
   },
   plugins: [

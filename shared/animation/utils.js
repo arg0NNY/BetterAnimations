@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import ErrorManager from '@/modules/ErrorManager'
-import AnimationError from '@/structs/AnimationError'
+import ErrorManager from '@error/manager'
+import AnimationError from '@error/structs/AnimationError'
 import { formatZodError } from '@/utils/zod'
 import { trust } from '@animation/schemas/TrustedFunctionSchema'
 

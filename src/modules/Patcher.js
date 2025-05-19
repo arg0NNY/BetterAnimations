@@ -1,7 +1,7 @@
 import { Patcher as _Patcher } from '@/BdApi'
 import config from '@config'
-import ErrorManager from '@/modules/ErrorManager'
-import InternalError from '@/structs/InternalError'
+import ErrorManager from '@error/manager'
+import InternalError from '@error/structs/InternalError'
 
 function patcherCallbackBoundary (callback, fallback = (self, args, value) => value) {
   return (...args) => {

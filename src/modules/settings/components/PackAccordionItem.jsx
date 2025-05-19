@@ -4,7 +4,7 @@ import ChevronSmallUpIcon from '@/modules/settings/components/icons/ChevronSmall
 import ChevronSmallDownIcon from '@/modules/settings/components/icons/ChevronSmallDownIcon'
 import { Utils } from '@/BdApi'
 import IconButton from '@/modules/settings/components/IconButton'
-import ErrorManager from '@/modules/ErrorManager'
+import ErrorManager from '@error/manager'
 import CircleWarningIcon from '@/modules/settings/components/icons/CircleWarningIcon'
 
 function PackAccordionItem ({ pack, children, isActive, isOpen, onToggle }) {

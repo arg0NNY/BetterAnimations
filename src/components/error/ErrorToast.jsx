@@ -2,7 +2,7 @@ import Toast, { ToastTypes } from '@/components/Toast'
 import { Button } from '@/modules/DiscordModules'
 import useEmitterEffect from '@/hooks/useEmitterEffect'
 import Events from '@shared/enums/Events'
-import ErrorManager from '@/modules/ErrorManager'
+import ErrorManager from '@error/manager'
 
 function ErrorToast ({ onView }) {
   useEmitterEffect(Events.ErrorOccurred)
