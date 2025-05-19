@@ -2,7 +2,7 @@ import Logger from '@/modules/Logger'
 import { snapshotContext } from '@/utils/animations'
 import { toPath, visualizeAddonPath } from '@/utils/json'
 import { capitalize } from '@/utils/text'
-import { sanitizeInjectable } from '@/modules/animation/schemas/SanitizeInjectableSchema'
+import { sanitizeInjectable } from '@animation/schemas/SanitizeInjectableSchema'
 
 export default class Debug {
   constructor ({ animation, animationType }) {

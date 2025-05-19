@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { InjectSchema, InjectWithMeta } from '@/modules/animation/schemas/utils'
+import { InjectSchema, InjectWithMeta } from '@animation/schemas/utils'
 import Inject from '@/enums/Inject'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
 import { zodTransformErrorBoundary } from '@/utils/zod'

@@ -1,9 +1,9 @@
-import { InjectSchema } from '@/modules/animation/schemas/utils'
+import { InjectSchema } from '@animation/schemas/utils'
 import Inject from '@/enums/Inject'
 import { z } from 'zod'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
-import { sourceMappedObjectAssign, sourceMappedOmit, sourceMappedPick } from '@/modules/animation/sourceMap'
-import { restrictForbiddenKeys } from '@/modules/animation/keys'
+import { sourceMappedObjectAssign, sourceMappedOmit, sourceMappedPick } from '@animation/sourceMap'
+import { restrictForbiddenKeys } from '@animation/keys'
 
 export const AssignInjectSchema = InjectSchema(Inject.Assign).extend({
   target: z.record(z.any()),

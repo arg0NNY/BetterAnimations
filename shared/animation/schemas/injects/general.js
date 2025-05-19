@@ -7,7 +7,7 @@ import {
   SwitchSchema,
   TargetSchema,
   TargetsSchema
-} from '@/modules/animation/schemas/utils'
+} from '@animation/schemas/utils'
 import Inject from '@/enums/Inject'
 import AnimationType from '@/enums/AnimationType'
 import ModuleKey from '@/enums/ModuleKey'
@@ -20,9 +20,9 @@ import {
   clearSourceMapDeep,
   getSourcePath,
   SELF_KEY
-} from '@/modules/animation/sourceMap'
-import { restrictForbiddenKeys } from '@/modules/animation/keys'
-import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
+} from '@animation/sourceMap'
+import { restrictForbiddenKeys } from '@animation/keys'
+import TrustedFunctionSchema from '@animation/schemas/TrustedFunctionSchema'
 import { getRect } from '@/utils/position'
 import isElement from 'lodash-es/isElement'
 

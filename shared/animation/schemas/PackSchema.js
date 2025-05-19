@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import regex from '@/utils/regex'
-import AnimationSchema from '@/modules/animation/schemas/AnimationSchema'
+import AnimationSchema from '@animation/schemas/AnimationSchema'
 import Messages from '@/modules/Messages'
-import PrepareInjectableSchema from '@/modules/animation/schemas/PrepareInjectableSchema'
+import PrepareInjectableSchema from '@animation/schemas/PrepareInjectableSchema'
 
 export const SnippetSchema = z.strictObject({
   key: z.string().min(1),

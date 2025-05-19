@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import OverridableSchema from '@/modules/animation/schemas/OverridableSchema'
+import OverridableSchema from '@animation/schemas/OverridableSchema'
 import ModuleKey from '@/enums/ModuleKey'
 import AnimationType from '@/enums/AnimationType'
 

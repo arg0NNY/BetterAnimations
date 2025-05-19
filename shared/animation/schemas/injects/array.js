@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { InjectSchema } from '@/modules/animation/schemas/utils'
+import { InjectSchema } from '@animation/schemas/utils'
 import Inject from '@/enums/Inject'
 
 const ArrayInjectBaseSchema = inject => InjectSchema(inject).extend({

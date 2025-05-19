@@ -4,13 +4,13 @@ import {
   ParametersSchema,
   TargetSchema,
   TargetsSchema
-} from '@/modules/animation/schemas/utils'
+} from '@animation/schemas/utils'
 import { stagger, svg, utils } from 'animejs'
 import { z } from 'zod'
 import Inject from '@/enums/Inject'
 import { zodTransformErrorBoundary } from '@/utils/zod'
-import { zodErrorBoundary } from '@/modules/animation/utils'
-import { clearSourceMapDeep } from '@/modules/animation/sourceMap'
+import { zodErrorBoundary } from '@animation/utils'
+import { clearSourceMapDeep } from '@animation/sourceMap'
 
 const StaggerValueSchema = z.union([z.number(), z.string()])
 export const StaggerInjectSchema = context => InjectSchema(Inject.Stagger).extend({

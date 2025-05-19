@@ -1,12 +1,12 @@
 import { z } from 'zod'
-import MetaSchema from '@/modules/animation/schemas/MetaSchema'
-import SettingsSchema from '@/modules/animation/schemas/SettingsSchema'
+import MetaSchema from '@animation/schemas/MetaSchema'
+import SettingsSchema from '@animation/schemas/SettingsSchema'
 import AnimationType from '@/enums/AnimationType'
-import ExtendableAnimateSchema from '@/modules/animation/schemas/ExtendableAnimateSchema'
+import ExtendableAnimateSchema from '@animation/schemas/ExtendableAnimateSchema'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
 import ModuleKey, { ModuleKeyAlias } from '@/enums/ModuleKey'
 import { moduleAliases } from '@/data/modules'
-import PrepareInjectableSchema from '@/modules/animation/schemas/PrepareInjectableSchema'
+import PrepareInjectableSchema from '@animation/schemas/PrepareInjectableSchema'
 
 const AnimationSchema = z.object({
   key: z.string().min(1),

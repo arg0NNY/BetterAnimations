@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { ArrayOrSingleSchema, Defined, DOMElementSchema, formatValuesList } from '@/utils/schemas'
-import { clearSourceMap, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
-import { InjectableValidateSchema } from '@/modules/animation/schemas/InjectableSchema'
+import { clearSourceMap, SourceMappedObjectSchema } from '@animation/sourceMap'
+import { InjectableValidateSchema } from '@animation/schemas/InjectableSchema'
 import Inject from '@/enums/Inject'
 
 export const InjectSchema = type => SourceMappedObjectSchema.extend({

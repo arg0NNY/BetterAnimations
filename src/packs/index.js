@@ -1,6 +1,6 @@
 import config from '@config'
 import preinstalled from '@/packs/preinstalled.pack.json'
-import PackSchema from '@/modules/animation/schemas/PackSchema'
+import PackSchema from '@animation/schemas/PackSchema'
 
 export const PREINSTALLED_PACK_SLUG = 'preinstalled'
 

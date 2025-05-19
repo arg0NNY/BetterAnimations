@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { DOMElementSchema, FunctionSchema, Literal } from '@/utils/schemas'
-import { SourceMapSchema } from '@/modules/animation/sourceMap'
-import { LazyInjectSchema } from '@/modules/animation/schemas/injects/lazy'
+import { SourceMapSchema } from '@animation/sourceMap'
+import { LazyInjectSchema } from '@animation/schemas/injects/lazy'
 
 export const ObjectDeepBaseSchema = (schema, extend = []) => z.union([
   Literal,

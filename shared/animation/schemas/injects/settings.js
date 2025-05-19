@@ -1,12 +1,12 @@
 import { z } from 'zod'
-import { hasInSettings, InjectSchema, InjectWithMeta, SwitchSchema } from '@/modules/animation/schemas/utils'
+import { hasInSettings, InjectSchema, InjectWithMeta, SwitchSchema } from '@animation/schemas/utils'
 import Position from '@/enums/Position'
 import Inject from '@/enums/Inject'
 import Setting from '@/enums/AnimationSetting'
 import Direction from '@/enums/Direction'
 import { getCenter, toPercent, toUnit } from '@/utils/position'
-import { zodErrorBoundary } from '@/modules/animation/utils'
-import EasingSchema from '@/modules/animation/schemas/EasingSchema'
+import { zodErrorBoundary } from '@animation/utils'
+import EasingSchema from '@animation/schemas/EasingSchema'
 import { getEasingFn } from '@/utils/easings'
 
 export const DurationInjectSchema = InjectWithMeta(

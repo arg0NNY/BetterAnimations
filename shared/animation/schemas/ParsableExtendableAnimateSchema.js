@@ -2,10 +2,10 @@ import { z } from 'zod'
 import ParsableAnimateSchema, {
   buildPreLayoutEnv,
   HookSchema
-} from '@/modules/animation/schemas/ParsableAnimateSchema'
+} from '@animation/schemas/ParsableAnimateSchema'
 import ParseStage from '@/enums/ParseStage'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
-import ParsableSchema from '@/modules/animation/schemas/ParsableSchema'
+import ParsableSchema from '@animation/schemas/ParsableSchema'
 
 const ExtendsSchema = ParsableSchema(
   ParseStage.Extend,

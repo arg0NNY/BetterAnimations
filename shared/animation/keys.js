@@ -1,4 +1,4 @@
-import { reservedKeys as sourceMapReservedKeys } from '@/modules/animation/sourceMap'
+import { reservedKeys as sourceMapReservedKeys } from '@animation/sourceMap'
 
 export const forbiddenKeys = [
   ...sourceMapReservedKeys,

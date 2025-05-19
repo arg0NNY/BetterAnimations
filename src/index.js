@@ -27,7 +27,7 @@ import patchChatSearchSidebar from '@/patches/ChatSearchSidebar/patchChatSearchS
 import patchReferencePositionLayer from '@/patches/ReferencePositionLayer/patchReferencePositionLayer'
 import patchSelect from '@/patches/Select/patchSelect'
 import Mouse from '@/modules/Mouse'
-import AnimationStore from '@/modules/AnimationStore'
+import AnimationStore from '@animationStore'
 import Emitter from '@/modules/Emitter'
 import Notices from '@/modules/Notices'
 import Toasts from '@/modules/Toasts'

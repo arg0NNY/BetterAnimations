@@ -67,6 +67,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
       '@config': path.resolve(__dirname, 'config.json'),
       '@shared': path.resolve(__dirname, 'shared'),
+      '@animation': path.resolve(__dirname, 'shared/animation'),
       '@style': path.resolve(__dirname, 'src/modules/Style.js')
     }
   },

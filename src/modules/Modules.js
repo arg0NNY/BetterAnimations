@@ -16,7 +16,7 @@ import { getPosition, reversePosition } from '@/utils/position'
 import Config from '@/modules/Config'
 import AnimationType from '@/enums/AnimationType'
 import ModuleType from '@/enums/ModuleType'
-import { buildContext } from '@/modules/animation/parser'
+import { buildContext } from '@animation/parser'
 import ParseStage from '@/enums/ParseStage'
 import Events from '@/enums/Events'
 import Emitter from '@/modules/Emitter'
@@ -26,12 +26,12 @@ import ErrorManager from '@/modules/ErrorManager'
 import AnimationError from '@/structs/AnimationError'
 import { formatZodError } from '@/utils/zod'
 import Debug from '@/modules/Debug'
-import EasingSchema from '@/modules/animation/schemas/EasingSchema'
+import EasingSchema from '@animation/schemas/EasingSchema'
 import Mouse from '@/modules/Mouse'
 import PositionAutoType from '@/enums/PositionAutoType'
-import ParsableExtendableAnimateSchema from '@/modules/animation/schemas/ParsableExtendableAnimateSchema'
-import { computeOverridable } from '@/modules/animation/schemas/OverridableSchema'
-import { metaOverridePresets } from '@/modules/animation/schemas/MetaSchema'
+import ParsableExtendableAnimateSchema from '@animation/schemas/ParsableExtendableAnimateSchema'
+import { computeOverridable } from '@animation/schemas/OverridableSchema'
+import { metaOverridePresets } from '@animation/schemas/MetaSchema'
 import Documentation from '@/modules/Documentation'
 
 class Module {
@@ -81,15 +81,18 @@ class Module {
     return animation && this.isSupportedBy(animation) ? animation : null
   }
 
+  getAnimationConfig (pack, animation, type) {
+    return Config.pack(pack.slug).getAnimationConfig(animation.key, this.id, type)
+  }
   getAnimationSettings (pack, animation, type, options = {}) {
-    return this.buildSettings(animation, type, Config.pack(pack.slug).getAnimationConfig(animation.key, this.id, type), options)
+    return this.buildSettings(animation, type, this.getAnimationConfig(pack, animation, type), options)
   }
 
   initializeAnimation (type) {
     const pointer = this.settings[type] ?? {}
     const pack = pointer.packSlug && PackManager.getPack(pointer.packSlug)
     const animation = pack && this.findAnimation(pack, pointer.animationKey)
-    const config = animation ? Config.pack(pack.slug).getAnimationConfig(animation.key, this.id, type) : {}
+    const config = animation ? this.getAnimationConfig(pack, animation, type) : {}
     const path = animation ? ['animations', pack.animations.indexOf(animation), type in animation ? type : 'animate'] : []
 
     const settings = animation && this.buildSettings(animation, type, config, { auto: false })

@@ -1,4 +1,4 @@
-import { parse } from '@/modules/animation/parser'
+import { parse } from '@animation/parser'
 import ModuleType from '@/enums/ModuleType'
 import Config from '@/modules/Config'
 import ErrorManager from '@/modules/ErrorManager'

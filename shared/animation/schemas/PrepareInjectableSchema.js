@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { Literal } from '@/utils/schemas'
-import { forbiddenKeys } from '@/modules/animation/keys'
-import { storeSourceMap } from '@/modules/animation/sourceMap'
+import { forbiddenKeys } from '@animation/keys'
+import { storeSourceMap } from '@animation/sourceMap'
 
 const PrepareInjectableSchema = z.lazy(
   () => z.union([

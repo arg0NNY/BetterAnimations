@@ -3,8 +3,8 @@ import { indent } from '@/utils/text'
 import { toPath, visualizeAddonPath } from '@/utils/json'
 import { getPath } from '@/utils/object'
 import objectInspect from 'object-inspect'
-import { toSourcePath } from '@/modules/animation/sourceMap'
-import { sanitizeInjectable } from '@/modules/animation/schemas/SanitizeInjectableSchema'
+import { toSourcePath } from '@animation/sourceMap'
+import { sanitizeInjectable } from '@animation/schemas/SanitizeInjectableSchema'
 
 function stripInject (path) {
   return path[path.length - 1] === 'inject'

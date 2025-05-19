@@ -1,6 +1,6 @@
 import ParseStage from '@/enums/ParseStage'
 import { z } from 'zod'
-import InjectableSchema from '@/modules/animation/schemas/InjectableSchema'
+import InjectableSchema from '@animation/schemas/InjectableSchema'
 import AnimationError from '@/structs/AnimationError'
 import { formatZodError } from '@/utils/zod'
 import Documentation from '@/modules/Documentation'

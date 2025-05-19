@@ -1,8 +1,8 @@
 import { z } from 'zod'
-import { generatedLazyInjectSymbol, isLazyInject } from '@/modules/animation/schemas/injects/lazy'
-import { clearSourceMap, isSourceMap } from '@/modules/animation/sourceMap'
-import ObjectDeepSchema from '@/modules/animation/schemas/ObjectDeepSchema'
-import { zodErrorBoundarySymbol } from '@/modules/animation/utils'
+import { generatedLazyInjectSymbol, isLazyInject } from '@animation/schemas/injects/lazy'
+import { clearSourceMap, isSourceMap } from '@animation/sourceMap'
+import ObjectDeepSchema from '@animation/schemas/ObjectDeepSchema'
+import { zodErrorBoundarySymbol } from '@animation/utils'
 import { JSAnimation, Timeline, Timer, WAAPIAnimation } from 'animejs'
 import Logger from '@/modules/Logger'
 

@@ -2,7 +2,7 @@ import { z } from 'zod'
 import ErrorManager from '@/modules/ErrorManager'
 import AnimationError from '@/structs/AnimationError'
 import { formatZodError } from '@/utils/zod'
-import { trust } from '@/modules/animation/schemas/TrustedFunctionSchema'
+import { trust } from '@animation/schemas/TrustedFunctionSchema'
 
 function buildStyles (styles) {
   return Object.entries(styles).reduce(

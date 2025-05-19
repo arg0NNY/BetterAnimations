@@ -2,11 +2,11 @@ import { z } from 'zod'
 import { animate, createTimeline, createTimer, waapi } from 'animejs'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
 import { zodTransformErrorBoundary } from '@/utils/zod'
-import TrustedFunctionSchema from '@/modules/animation/schemas/TrustedFunctionSchema'
-import { clearSourceMapDeep, SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
-import { ParametersSchema, TargetsSchema } from '@/modules/animation/schemas/utils'
+import TrustedFunctionSchema from '@animation/schemas/TrustedFunctionSchema'
+import { clearSourceMapDeep, SourceMappedObjectSchema } from '@animation/sourceMap'
+import { ParametersSchema, TargetsSchema } from '@animation/schemas/utils'
 import { intersect } from '@/utils/anime'
-import { storeInjectable } from '@/modules/animation/schemas/SanitizeInjectableSchema'
+import { storeInjectable } from '@animation/schemas/SanitizeInjectableSchema'
 
 const AnimeBaseSchema = (type, isDefault = false) => SourceMappedObjectSchema.extend({
   type: isDefault ? z.literal(type).optional() : z.literal(type)

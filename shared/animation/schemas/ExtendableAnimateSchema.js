@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
-import { SourceMappedObjectSchema } from '@/modules/animation/sourceMap'
+import { SourceMappedObjectSchema } from '@animation/sourceMap'
 
 const AnimatePropertySchema = ArrayOrSingleSchema(
   ArrayOrSingleSchema(
