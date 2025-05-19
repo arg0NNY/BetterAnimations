@@ -1,4 +1,4 @@
-import positions from '@/data/positions'
+import positions from '@data/positions'
 import Auto from '@enums/Auto'
 import AnimationSetting from '@enums/AnimationSetting'
 import { Checkbox, SingleSelect, Text } from '@/modules/DiscordModules'

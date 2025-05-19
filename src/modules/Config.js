@@ -1,4 +1,4 @@
-import { CONFIG_VERSION, configDefaults, packConfigDefaults } from '@/data/config'
+import { CONFIG_VERSION, configDefaults, packConfigDefaults } from '@data/config'
 import deepmerge from 'deepmerge'
 import Data from '@/modules/Data'
 import Emitter from '@/modules/Emitter'

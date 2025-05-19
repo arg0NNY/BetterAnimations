@@ -1,7 +1,7 @@
 import { SingleSelect, Text, TextInput } from '@/modules/DiscordModules'
 import { useEffect, useMemo, useState } from 'react'
 import { css } from '@style'
-import { easingBeziers, easingStyles, easingTypes, easingValues } from '@/data/easings'
+import { easingBeziers, easingStyles, easingTypes, easingValues } from '@data/easings'
 import { EasingType } from '@enums/Easing'
 import { prevent } from '@/modules/settings/utils/eventModifiers'
 import SettingControl from '@/modules/settings/components/controls/SettingControl'
