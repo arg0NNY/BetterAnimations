@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { DOMElementSchema, FunctionSchema, Literal } from '@/utils/schemas'
+import { DOMElementSchema, FunctionSchema, Literal } from '@shared/utils/schemas'
 import { SourceMapSchema } from '@animation/sourceMap'
 import { LazyInjectSchema } from '@animation/schemas/injects/lazy'
 

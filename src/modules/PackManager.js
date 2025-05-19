@@ -5,7 +5,7 @@ import AddonError from '@error/structs/AddonError'
 import PackSchema from '@animation/schemas/PackSchema'
 import meta from '@/meta'
 import ErrorManager from '@error/manager'
-import { formatZodError } from '@/utils/zod'
+import { formatZodError } from '@shared/utils/zod'
 import internalPacks, { internalPackSlugs } from '@/packs'
 import Documentation from '@/modules/Documentation'
 

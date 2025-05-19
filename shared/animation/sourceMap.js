@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { getPath, omit, pick } from '@/utils/object'
+import { getPath, omit, pick } from '@shared/utils/object'
 import ObjectDeepSchema from '@animation/schemas/ObjectDeepSchema'
 
 export const SOURCE_MAP_KEY = '__sourceMap'

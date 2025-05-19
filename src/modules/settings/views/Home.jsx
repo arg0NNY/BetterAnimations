@@ -10,7 +10,7 @@ import SettingsSection from '@shared/enums/SettingsSection'
 import IconAuthor from '@/components/icons/IconAuthor'
 import SpotlightAnimation from '@/modules/settings/components/SpotlightAnimation'
 import { useMemo } from 'react'
-import { sanitize } from '@/utils/text'
+import { sanitize } from '@shared/utils/text'
 import BookIcon from '@/modules/settings/components/icons/BookIcon'
 import Documentation from '@/modules/Documentation'
 

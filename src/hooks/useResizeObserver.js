@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react'
 import useLatest from '@/hooks/useLatest'
 import useDeepCompareEffect from '@/hooks/useDeepCompareEffect'
-import { getTargetElement } from '@/utils/domTarget'
+import { getTargetElement } from '@shared/utils/domTarget'
 
 function useResizeObserver (target, callback, options = {}) {
   const savedCallback = useLatest(callback)

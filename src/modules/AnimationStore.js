@@ -3,7 +3,7 @@ import ModuleType from '@shared/enums/ModuleType'
 import Config from '@/modules/Config'
 import ErrorManager from '@error/manager'
 import AnimationError from '@error/structs/AnimationError'
-import { getRect } from '@/utils/position'
+import { getRect } from '@shared/utils/position'
 import isElement from 'lodash-es/isElement'
 import Logger from '@/modules/Logger'
 

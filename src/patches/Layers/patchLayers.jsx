@@ -1,6 +1,6 @@
 import { Patcher, Utils } from '@/BdApi'
 import { LayersKeyed, TransitionGroup } from '@/modules/DiscordModules'
-import ensureOnce from '@/utils/ensureOnce'
+import ensureOnce from '@shared/utils/ensureOnce'
 import AnimeTransition from '@/components/AnimeTransition'
 import { passAuto } from '@/utils/transition'
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'

@@ -1,5 +1,5 @@
 import { EasingType } from '@shared/enums/Easing'
-import { capitalize } from '@/utils/text'
+import { capitalize } from '@shared/utils/text'
 import { eases } from 'animejs'
 
 export function getEasingFn (easing) {

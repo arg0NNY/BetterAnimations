@@ -1,7 +1,7 @@
 import useResizeObserver from '@/hooks/useResizeObserver'
 import useUpdate from '@/hooks/useUpdate'
 import { useEffect, useLayoutEffect, useRef } from 'react'
-import { getTargetElement } from '@/utils/domTarget'
+import { getTargetElement } from '@shared/utils/domTarget'
 
 function useElementBounding (target, options = {}) {
   const {

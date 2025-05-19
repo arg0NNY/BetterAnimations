@@ -1,7 +1,7 @@
 import Patcher from '@/modules/Patcher'
 import { ChatSearchSidebarKeyed } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
-import ensureOnce from '@/utils/ensureOnce'
+import ensureOnce from '@shared/utils/ensureOnce'
 
 const once = ensureOnce()
 

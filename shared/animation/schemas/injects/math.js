@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import { InjectSchema, InjectWithMeta } from '@animation/schemas/utils'
 import Inject from '@shared/enums/Inject'
-import { ArrayOrSingleSchema } from '@/utils/schemas'
-import { zodTransformErrorBoundary } from '@/utils/zod'
+import { ArrayOrSingleSchema } from '@shared/utils/schemas'
+import { zodTransformErrorBoundary } from '@shared/utils/zod'
 import evaluate from '@emmetio/math-expression'
 
 export const MathInjectSchema = InjectSchema(Inject.Math).extend({

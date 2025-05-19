@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { FunctionSchema } from '@/utils/schemas'
+import { FunctionSchema } from '@shared/utils/schemas'
 
 export const lazyInjectSymbol = Symbol('lazyInject')
 export const generatedLazyInjectSymbol = Symbol('generatedLazyInject')

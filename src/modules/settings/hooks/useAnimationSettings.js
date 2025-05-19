@@ -4,7 +4,7 @@ import ModuleType from '@shared/enums/ModuleType'
 import AnimationType from '@shared/enums/AnimationType'
 import AnimationSettingContainer from '@shared/enums/AnimationSettingContainer'
 import isEqual from 'lodash-es/isEqual'
-import { pick } from '@/utils/object'
+import { pick } from '@shared/utils/object'
 
 function isSame (array, key) {
   return array.every(item => isEqual(item?.[key], array[0]?.[key]))

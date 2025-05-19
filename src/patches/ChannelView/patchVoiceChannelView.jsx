@@ -1,7 +1,7 @@
 import Patcher from '@/modules/Patcher'
 import { CallChatSidebarKeyed, TransitionGroup, VoiceChannelViewKeyed } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
-import ensureOnce from '@/utils/ensureOnce'
+import ensureOnce from '@shared/utils/ensureOnce'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@shared/enums/ModuleKey'
 import Modules from '@/modules/Modules'

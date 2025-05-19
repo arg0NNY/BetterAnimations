@@ -2,7 +2,7 @@ import ParseStage from '@shared/enums/ParseStage'
 import { z } from 'zod'
 import InjectableSchema from '@animation/schemas/InjectableSchema'
 import AnimationError from '@error/structs/AnimationError'
-import { formatZodError } from '@/utils/zod'
+import { formatZodError } from '@shared/utils/zod'
 import Documentation from '@/modules/Documentation'
 
 const ParsableSchema = (stage, schema) => (context, env) =>

@@ -1,6 +1,6 @@
 import Patcher from '@/modules/Patcher'
 import { ChannelView } from '@/modules/DiscordModules'
-import ensureOnce from '@/utils/ensureOnce'
+import ensureOnce from '@shared/utils/ensureOnce'
 import AnimeTransition from '@/components/AnimeTransition'
 import SwitchTransition from '@/components/SwitchTransition'
 import { injectModule } from '@/hooks/useModule'

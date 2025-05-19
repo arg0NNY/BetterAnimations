@@ -1,6 +1,6 @@
 import ModuleKey from '@shared/enums/ModuleKey'
 import { internalPackSlugs, PREINSTALLED_PACK_SLUG } from '@/packs'
-import { omit } from '@/utils/object'
+import { omit } from '@shared/utils/object'
 
 export const CONFIG_VERSION = 2
 

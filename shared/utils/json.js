@@ -1,4 +1,4 @@
-import { indent } from '@/utils/text'
+import { indent } from '@shared/utils/text'
 
 function getKey (key) {
   const intKey = parseInt(key)

@@ -4,7 +4,7 @@ import Inject from '@shared/enums/Inject'
 import Setting from '@shared/enums/AnimationSetting'
 import { DurationSchema } from '@animation/schemas/SettingsSchema'
 import EasingSchema from '@animation/schemas/EasingSchema'
-import { AccordionType, getMarginProperty, getSizeProperty } from '@/utils/accordion'
+import { AccordionType, getMarginProperty, getSizeProperty } from '@shared/utils/accordion'
 import ModuleKey from '@shared/enums/ModuleKey'
 import AnimationType from '@shared/enums/AnimationType'
 

@@ -4,7 +4,7 @@ import Position from '@shared/enums/Position'
 import Direction from '@shared/enums/Direction'
 import EasingSchema from '@animation/schemas/EasingSchema'
 import { MAX_ANIMATION_DURATION, MIN_ANIMATION_DURATION } from '@/data/constants'
-import { getSupportedAxes } from '@/utils/direction'
+import { getSupportedAxes } from '@shared/utils/direction'
 import { restrictReservedKeys } from '@animation/keys'
 import OverridableSchema from '@animation/schemas/OverridableSchema'
 

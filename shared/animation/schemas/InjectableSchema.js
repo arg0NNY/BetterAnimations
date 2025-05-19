@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { formatValuesList } from '@/utils/schemas'
-import { formatZodError } from '@/utils/zod'
+import { formatValuesList } from '@shared/utils/schemas'
+import { formatZodError } from '@shared/utils/zod'
 import {
   generatedLazyInjectSymbol,
   isLazyInject,

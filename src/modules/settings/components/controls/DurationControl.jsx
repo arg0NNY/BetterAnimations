@@ -1,4 +1,4 @@
-import { range } from '@/utils/general'
+import { range } from '@shared/utils/general'
 import AnimationSetting from '@shared/enums/AnimationSetting'
 import { MAX_ANIMATION_DURATION } from '@/data/constants'
 import Slider from '@/components/Slider'
