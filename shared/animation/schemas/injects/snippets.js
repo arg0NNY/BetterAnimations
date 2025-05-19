@@ -4,7 +4,7 @@ import Inject from '@shared/enums/Inject'
 import InjectableSchema from '@animation/schemas/InjectableSchema'
 import ParseStage from '@shared/enums/ParseStage'
 import AnimationError from '@error/structs/AnimationError'
-import { formatZodError } from '@shared/utils/zod'
+import { formatZodError } from '@utils/zod'
 
 export const SnippetInjectSchema = (context, env) => InjectSchema(Inject.Snippet).extend({
   key: z.enum(context.pack.snippets?.map(s => s.key) ?? []),

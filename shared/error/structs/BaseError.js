@@ -1,4 +1,4 @@
-import { indent } from '@shared/utils/text'
+import { indent } from '@utils/text'
 import config from '@config'
 
 export default class BaseError extends Error {

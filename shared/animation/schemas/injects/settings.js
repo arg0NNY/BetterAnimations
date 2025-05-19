@@ -4,10 +4,10 @@ import Position from '@shared/enums/Position'
 import Inject from '@shared/enums/Inject'
 import Setting from '@shared/enums/AnimationSetting'
 import Direction from '@shared/enums/Direction'
-import { getCenter, toPercent, toUnit } from '@shared/utils/position'
+import { getCenter, toPercent, toUnit } from '@utils/position'
 import { zodErrorBoundary } from '@animation/utils'
 import EasingSchema from '@animation/schemas/EasingSchema'
-import { getEasingFn } from '@shared/utils/easings'
+import { getEasingFn } from '@utils/easings'
 
 export const DurationInjectSchema = InjectWithMeta(
   ({ duration, settings }) => InjectSchema(Inject.Duration)

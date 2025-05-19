@@ -67,6 +67,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
       '@config': path.resolve(__dirname, 'config.json'),
       '@shared': path.resolve(__dirname, 'shared'),
+      '@utils': path.resolve(__dirname, 'shared/utils'),
       '@animation': path.resolve(__dirname, 'shared/animation'),
       '@error': path.resolve(__dirname, 'shared/error'),
       '@logger': path.resolve(__dirname, 'shared/logger'),

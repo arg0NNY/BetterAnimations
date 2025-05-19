@@ -10,9 +10,9 @@ import {
   getDirectionsByAxis,
   getSupportedAxes,
   reverseDirection
-} from '@shared/utils/direction'
+} from '@utils/direction'
 import Axis from '@shared/enums/Axis'
-import { getPosition, reversePosition } from '@shared/utils/position'
+import { getPosition, reversePosition } from '@utils/position'
 import Config from '@/modules/Config'
 import AnimationType from '@shared/enums/AnimationType'
 import ModuleType from '@shared/enums/ModuleType'
@@ -24,7 +24,7 @@ import Logger from '@logger'
 import DirectionAutoType from '@shared/enums/DirectionAutoType'
 import ErrorManager from '@error/manager'
 import AnimationError from '@error/structs/AnimationError'
-import { formatZodError } from '@shared/utils/zod'
+import { formatZodError } from '@utils/zod'
 import Debug from '@logger/debug'
 import EasingSchema from '@animation/schemas/EasingSchema'
 import Mouse from '@/modules/Mouse'

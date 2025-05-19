@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { Literal } from '@shared/utils/schemas'
+import { Literal } from '@utils/schemas'
 import { forbiddenKeys } from '@animation/keys'
 import { storeSourceMap } from '@animation/sourceMap'
 

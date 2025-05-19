@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { ArrayOrSingleSchema } from '@shared/utils/schemas'
+import { ArrayOrSingleSchema } from '@utils/schemas'
 import {
   ElementSchema,
   InjectSchema,
@@ -12,8 +12,8 @@ import Inject from '@shared/enums/Inject'
 import AnimationType from '@shared/enums/AnimationType'
 import ModuleKey from '@shared/enums/ModuleKey'
 import ModuleType from '@shared/enums/ModuleType'
-import { getPath, parsePath } from '@shared/utils/json'
-import { zodTransformErrorBoundary } from '@shared/utils/zod'
+import { getPath, parsePath } from '@utils/json'
+import { zodTransformErrorBoundary } from '@utils/zod'
 import Debug from '@logger/debug'
 import {
   clearSourceMap,
@@ -23,7 +23,7 @@ import {
 } from '@animation/sourceMap'
 import { restrictForbiddenKeys } from '@animation/keys'
 import TrustedFunctionSchema from '@animation/schemas/TrustedFunctionSchema'
-import { getRect } from '@shared/utils/position'
+import { getRect } from '@utils/position'
 import isElement from 'lodash-es/isElement'
 
 export const ElementInjectSchema = ({ element }) => ElementSchema(Inject.Element, element)

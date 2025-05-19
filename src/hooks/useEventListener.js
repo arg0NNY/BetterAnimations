@@ -1,7 +1,7 @@
 import useLatest from '@/hooks/useLatest'
 import useDeepCompareEffect from '@/hooks/useDeepCompareEffect'
-import { getTargetElement } from '@shared/utils/domTarget'
-import { off, on } from '@shared/utils/browser'
+import { getTargetElement } from '@utils/domTarget'
+import { off, on } from '@utils/browser'
 
 function useEventListener (eventName, handler, element, options) {
   const savedHandler = useLatest(handler)

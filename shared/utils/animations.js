@@ -1,4 +1,4 @@
-import { omit, pick } from '@shared/utils/object'
+import { omit, pick } from '@utils/object'
 import cloneDeep from 'lodash-es/cloneDeep'
 import { sanitizeInjectable } from '@animation/schemas/SanitizeInjectableSchema'
 

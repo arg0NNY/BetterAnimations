@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import ensureOnce from '@shared/utils/ensureOnce'
+import ensureOnce from '@utils/ensureOnce'
 import {
   ChannelSectionStore,
   ChannelStore,

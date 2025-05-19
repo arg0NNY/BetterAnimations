@@ -1,7 +1,7 @@
 import Logger from '@logger'
-import { snapshotContext } from '@shared/utils/animations'
-import { toPath, visualizeAddonPath } from '@shared/utils/json'
-import { capitalize } from '@shared/utils/text'
+import { snapshotContext } from '@utils/animations'
+import { toPath, visualizeAddonPath } from '@utils/json'
+import { capitalize } from '@utils/text'
 import { sanitizeInjectable } from '@animation/schemas/SanitizeInjectableSchema'
 
 export default class Debug {

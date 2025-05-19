@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { ArrayOrSingleSchema, Defined, DOMElementSchema, formatValuesList } from '@shared/utils/schemas'
+import { ArrayOrSingleSchema, Defined, DOMElementSchema, formatValuesList } from '@utils/schemas'
 import { clearSourceMap, SourceMappedObjectSchema } from '@animation/sourceMap'
 import { InjectableValidateSchema } from '@animation/schemas/InjectableSchema'
 import Inject from '@shared/enums/Inject'

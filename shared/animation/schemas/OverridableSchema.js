@@ -1,9 +1,9 @@
 import { z } from 'zod'
-import { ArrayOrSingleSchema } from '@shared/utils/schemas'
+import { ArrayOrSingleSchema } from '@utils/schemas'
 import AnimationType from '@shared/enums/AnimationType'
 import ModuleKey, { ModuleKeyAlias } from '@shared/enums/ModuleKey'
 import ModuleType from '@shared/enums/ModuleType'
-import { omit } from '@shared/utils/object'
+import { omit } from '@utils/object'
 import { moduleAliases } from '@/data/modules'
 
 export const DefaultConditionsSchema = z.strictObject({

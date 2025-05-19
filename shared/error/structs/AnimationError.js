@@ -1,6 +1,6 @@
 import BaseError from '@error/structs/BaseError'
 import objectInspect from 'object-inspect'
-import { sanitizeContext } from '@shared/utils/animations'
+import { sanitizeContext } from '@utils/animations'
 
 export default class AnimationError extends BaseError {
   constructor (animation, message, { type, context, stage, ...options } = {}) {

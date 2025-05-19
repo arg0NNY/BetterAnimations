@@ -1,7 +1,7 @@
 import { InjectSchema } from '@animation/schemas/utils'
 import Inject from '@shared/enums/Inject'
 import { z } from 'zod'
-import { ArrayOrSingleSchema } from '@shared/utils/schemas'
+import { ArrayOrSingleSchema } from '@utils/schemas'
 import { sourceMappedObjectAssign, sourceMappedOmit, sourceMappedPick } from '@animation/sourceMap'
 import { restrictForbiddenKeys } from '@animation/keys'
 
