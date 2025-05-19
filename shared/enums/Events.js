@@ -1,4 +1,4 @@
-import Enum from '@shared/Enum'
+import Enum from '@shared/enum'
 
 export default Enum({
   PackLoaded: 'pack-loaded',

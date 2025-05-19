@@ -1,5 +1,5 @@
 import { InjectSchema } from '@animation/schemas/utils'
-import Inject from '@shared/enums/Inject'
+import Inject from '@enums/Inject'
 import { z } from 'zod'
 import { ArrayOrSingleSchema } from '@utils/schemas'
 import { sourceMappedObjectAssign, sourceMappedOmit, sourceMappedPick } from '@animation/sourceMap'

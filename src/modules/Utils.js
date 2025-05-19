@@ -1,5 +1,5 @@
 import Modules from '@/modules/Modules'
-import AnimationType from '@shared/enums/AnimationType'
+import AnimationType from '@enums/AnimationType'
 import { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChannelList'
 import Logger from '@logger'
 import Config from '@/modules/Config'

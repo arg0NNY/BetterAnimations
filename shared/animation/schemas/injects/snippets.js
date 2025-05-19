@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import { InjectSchema, InjectWithMeta } from '@animation/schemas/utils'
-import Inject from '@shared/enums/Inject'
+import Inject from '@enums/Inject'
 import InjectableSchema from '@animation/schemas/InjectableSchema'
-import ParseStage from '@shared/enums/ParseStage'
+import ParseStage from '@enums/ParseStage'
 import AnimationError from '@error/structs/AnimationError'
 import { formatZodError } from '@utils/zod'
 

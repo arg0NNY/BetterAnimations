@@ -3,7 +3,7 @@ import { Message } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import useModule from '@/hooks/useModule'
-import ModuleKey from '@shared/enums/ModuleKey'
+import ModuleKey from '@enums/ModuleKey'
 import useWindow from '@/hooks/useWindow'
 
 function patchMessage () {

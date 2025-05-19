@@ -3,7 +3,7 @@ import { CallChatSidebarKeyed, TransitionGroup, VoiceChannelViewKeyed } from '@/
 import findInReactTree from '@/utils/findInReactTree'
 import ensureOnce from '@utils/ensureOnce'
 import { injectModule } from '@/hooks/useModule'
-import ModuleKey from '@shared/enums/ModuleKey'
+import ModuleKey from '@enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import AnimeTransition from '@/components/AnimeTransition'

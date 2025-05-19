@@ -1,5 +1,5 @@
 import { SingleSelect } from '@/modules/DiscordModules'
-import AnimationSetting from '@shared/enums/AnimationSetting'
+import AnimationSetting from '@enums/AnimationSetting'
 import SettingControl from '@/modules/settings/components/controls/SettingControl'
 import Documentation from '@shared/documentation'
 

@@ -1,4 +1,4 @@
-import { EasingBezier, EasingStyle, EasingType } from '@shared/enums/Easing'
+import { EasingBezier, EasingStyle, EasingType } from '@enums/Easing'
 
 export const easingTypes = [
   { value: EasingType.Linear, label: 'Linear' },

@@ -1,4 +1,4 @@
-import { EasingType } from '@shared/enums/Easing'
+import { EasingType } from '@enums/Easing'
 import { capitalize } from '@utils/text'
 import { eases } from 'animejs'
 

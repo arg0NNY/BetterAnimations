@@ -1,7 +1,7 @@
 import { animate, utils } from 'animejs'
-import AnimationType from '@shared/enums/AnimationType'
+import AnimationType from '@enums/AnimationType'
 import { getEasingFn } from '@utils/easings'
-import Enum from '@shared/Enum'
+import Enum from '@shared/enum'
 
 export const AccordionType = Enum({
   MarginTop: 'marginTop',

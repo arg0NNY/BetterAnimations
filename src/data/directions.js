@@ -1,5 +1,5 @@
-import Auto from '@shared/enums/Auto'
-import Direction from '@shared/enums/Direction'
+import Auto from '@enums/Auto'
+import Direction from '@enums/Direction'
 
 const directions = [
   { value: Auto(Direction).Auto, label: 'Auto' },

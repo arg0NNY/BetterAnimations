@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { InjectSchema } from '@animation/schemas/utils'
-import Inject from '@shared/enums/Inject'
+import Inject from '@enums/Inject'
 
 const ArrayInjectBaseSchema = inject => InjectSchema(inject).extend({
   target: z.array(z.any())

@@ -1,9 +1,9 @@
 import { Dispatcher, Flux, useStateFromStores } from '@/modules/DiscordModules'
 import Emitter from '@/modules/Emitter'
-import Events from '@shared/enums/Events'
+import Events from '@enums/Events'
 import Config from '@/modules/Config'
-import DispatcherEvents from '@shared/enums/DispatcherEvents'
-import SettingsSection from '@shared/enums/SettingsSection'
+import DispatcherEvents from '@enums/DispatcherEvents'
+import SettingsSection from '@enums/SettingsSection'
 
 let section = SettingsSection.Home
 

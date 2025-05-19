@@ -6,7 +6,7 @@ import {
   isLazyInject,
   wrapLazyInject
 } from '@animation/schemas/injects/lazy'
-import ParseStage from '@shared/enums/ParseStage'
+import ParseStage from '@enums/ParseStage'
 import Spelling from 'spelling'
 import ErrorManager from '@error/manager'
 import AnimationError from '@error/structs/AnimationError'

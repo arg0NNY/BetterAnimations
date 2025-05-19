@@ -3,7 +3,7 @@ import ParsableAnimateSchema, {
   buildPreLayoutEnv,
   HookSchema
 } from '@animation/schemas/ParsableAnimateSchema'
-import ParseStage from '@shared/enums/ParseStage'
+import ParseStage from '@enums/ParseStage'
 import { ArrayOrSingleSchema } from '@utils/schemas'
 import ParsableSchema from '@animation/schemas/ParsableSchema'
 

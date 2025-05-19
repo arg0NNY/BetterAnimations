@@ -1,5 +1,5 @@
 import useEmitterEffect from '@/hooks/useEmitterEffect'
-import Events from '@shared/enums/Events'
+import Events from '@enums/Events'
 import Data from '@/modules/Data'
 import { useCallback } from 'react'
 

@@ -1,12 +1,12 @@
 import { z } from 'zod'
 import { InjectSchema } from '@animation/schemas/utils'
-import Inject from '@shared/enums/Inject'
-import Setting from '@shared/enums/AnimationSetting'
+import Inject from '@enums/Inject'
+import Setting from '@enums/AnimationSetting'
 import { DurationSchema } from '@animation/schemas/SettingsSchema'
 import EasingSchema from '@animation/schemas/EasingSchema'
 import { AccordionType, getMarginProperty, getSizeProperty } from '@utils/accordion'
-import ModuleKey from '@shared/enums/ModuleKey'
-import AnimationType from '@shared/enums/AnimationType'
+import ModuleKey from '@enums/ModuleKey'
+import AnimationType from '@enums/AnimationType'
 
 function getVariableName (type, name) {
   return `__accordion_${type}__${name}`

@@ -1,7 +1,7 @@
 import useUpdate from '@/hooks/useUpdate'
 import PackRegistry from '@/modules/PackRegistry'
 import Emitter from '@/modules/Emitter'
-import Events from '@shared/enums/Events'
+import Events from '@enums/Events'
 import { useEffect } from 'react'
 
 export function usePackRegistry () {

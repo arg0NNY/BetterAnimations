@@ -1,6 +1,6 @@
 import { css } from '@style'
 import useAnimationSettings from '@/modules/settings/hooks/useAnimationSettings'
-import AnimationType from '@shared/enums/AnimationType'
+import AnimationType from '@enums/AnimationType'
 import Config from '@/modules/Config'
 import AnimationCard from '@/modules/settings/components/AnimationCard'
 import Modules from '@/modules/Modules'

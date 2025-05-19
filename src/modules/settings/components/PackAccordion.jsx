@@ -2,7 +2,7 @@ import PackAccordionItem from '@/modules/settings/components/PackAccordionItem'
 import PackManager from '@/modules/PackManager'
 import { css } from '@style'
 import AnimationList from '@/modules/settings/components/AnimationList'
-import AnimationType from '@shared/enums/AnimationType'
+import AnimationType from '@enums/AnimationType'
 
 function PackAccordion ({ module, packs, selected, ...props }) {
   return (
