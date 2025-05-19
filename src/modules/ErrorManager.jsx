@@ -45,13 +45,14 @@ export default new class ErrorManager extends BaseErrorManager {
   }
 
   registerError (error) {
+    super.registerError(error)
+
     this.errors.unshift(error)
     if (this.errors.length > this.maxErrors) {
       this.errors = this.errors.slice(0, this.maxErrors)
       this.errorsOverload = true
     }
 
-    Logger.error(this.name, error)
     Emitter.emit(Events.ErrorOccurred)
 
     if (this.isToastActive()) clearTimeout(this.timeout)

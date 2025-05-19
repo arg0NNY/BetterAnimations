@@ -1,9 +1,10 @@
+import Logger from '@logger'
 
 class ErrorManager {
   get name () { return 'ErrorManager' }
 
   registerError (error) {
-    console.error(error)
+    Logger.error(this.name, error)
   }
   registerInternalError (error) {
     this.registerError(error)
