@@ -1,4 +1,4 @@
-import config from '@/config.json'
+import config from '@config'
 import preinstalled from '@/packs/preinstalled.pack.json'
 import PackSchema from '@/modules/animation/schemas/PackSchema'
 

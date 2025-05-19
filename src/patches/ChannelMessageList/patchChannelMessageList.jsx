@@ -9,7 +9,7 @@ import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import patchMessage from '@/patches/ChannelMessageList/patchMessage'
 import patchMessageDivider from '@/patches/ChannelMessageList/patchMessageDivider'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
 import useWindow from '@/hooks/useWindow'
 

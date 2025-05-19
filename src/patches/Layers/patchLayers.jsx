@@ -7,7 +7,7 @@ import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import Modules from '@/modules/Modules'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import Mouse from '@/modules/Mouse'
 
 function getWindowCenterAnchor () {

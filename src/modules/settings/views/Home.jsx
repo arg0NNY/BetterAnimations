@@ -1,7 +1,7 @@
 import IconBrand from '@/components/icons/IconBrand'
 import { Button, handleClick, Text } from '@/modules/DiscordModules'
 import meta from '@/meta'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import ShopIcon from '@/modules/settings/components/icons/ShopIcon'
 import ExternalLinkIcon from '@/modules/settings/components/icons/ExternalLinkIcon'
 import CircleDollarSignIcon from '@/modules/settings/components/icons/CircleDollarSignIcon'

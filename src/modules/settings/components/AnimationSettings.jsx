@@ -5,7 +5,7 @@ import VariantControl from '@/modules/settings/components/controls/VariantContro
 import PositionControl from '@/modules/settings/components/controls/PositionControl'
 import DirectionControl from '@/modules/settings/components/controls/DirectionControl'
 import OverflowControl from '@/modules/settings/components/controls/OverflowControl'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import { Switch, Text, Tooltip } from '@/modules/DiscordModules'
 import IconButton from '@/modules/settings/components/IconButton'
 import AnimationSettingContainer from '@/enums/AnimationSettingContainer'

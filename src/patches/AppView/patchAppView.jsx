@@ -15,7 +15,7 @@ import ModuleKey from '@/enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import { Fragment } from 'react'
 import useWindow from '@/hooks/useWindow'
 

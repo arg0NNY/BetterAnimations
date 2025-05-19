@@ -1,4 +1,4 @@
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import { Clickable, Tooltip } from '@/modules/DiscordModules'
 import { Utils } from '@/BdApi'
 

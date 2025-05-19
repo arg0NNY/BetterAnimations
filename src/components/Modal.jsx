@@ -8,7 +8,7 @@ import {
   Tooltip
 } from '@/modules/DiscordModules'
 import IconBrand from '@/components/icons/IconBrand'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import meta from '@/meta'
 
 function Modal ({

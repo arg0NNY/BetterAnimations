@@ -1,6 +1,6 @@
 import IconButton from '@/modules/settings/components/IconButton'
 import AnimationToggleControl from '@/modules/settings/components/AnimationToggleControl'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import { stop } from '@/modules/settings/utils/eventModifiers'
 import SettingsIcon from '@/modules/settings/components/icons/SettingsIcon'
 import CollapseListIcon from '@/modules/settings/components/icons/CollapseListIcon'

@@ -1,4 +1,4 @@
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import AnimationPreview, { getPreviewHeight } from '@/modules/settings/components/AnimationPreview'
 import AnimationCardControls from '@/modules/settings/components/AnimationCardControls'
 import useEventListener from '@/hooks/useEventListener'

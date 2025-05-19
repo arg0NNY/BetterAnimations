@@ -1,5 +1,5 @@
 import { Clickable, colors, Text } from '@/modules/DiscordModules'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import ChevronSmallUpIcon from '@/modules/settings/components/icons/ChevronSmallUpIcon'
 import ChevronSmallDownIcon from '@/modules/settings/components/icons/ChevronSmallDownIcon'
 import { Utils } from '@/BdApi'

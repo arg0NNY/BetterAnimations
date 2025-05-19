@@ -1,5 +1,5 @@
 import WIP from '@/modules/settings/components/WIP'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 
 function Library () {
   return (

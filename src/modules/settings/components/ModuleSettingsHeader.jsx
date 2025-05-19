@@ -1,4 +1,4 @@
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import useAnimationSettings from '@/modules/settings/hooks/useAnimationSettings'
 import AnimationType from '@/enums/AnimationType'
 import Config from '@/modules/Config'

@@ -1,37 +1,19 @@
-import meta from '@/meta'
+import BaseStyle, { createCSS } from '@shared/Style'
 import { DOM } from '@/BdApi'
 import Logger from '@/modules/Logger'
 
 const mainWindow = window
 
-const Style = new class Style {
-  get name () { return 'Style' }
-  get styleId () { return `${meta.name}-style` }
-
-  constructor () {
-    this.initialized = false
-    this.styles = []
-  }
-
+const Style = new class extends BaseStyle {
   initialize () {
-    this.injectStyle()
-
-    this.initialized = true
+    super.initialize()
     Logger.info(this.name, 'Initialized.')
   }
   shutdown () {
-    this.removeStyle()
-
-    this.initialized = false
+    super.shutdown()
     Logger.info(this.name, 'Shutdown.')
   }
 
-  buildStyle () {
-    return this.styles.reduce(
-      (str, { description, style }) => str + `/* ====== ${description} ====== */\n${style}\n\n`,
-      ''
-    )
-  }
   injectStyle () {
     Logger.log(this.name, `Injecting ${this.styles.length} registered styles...`)
     DOM.addStyle(this.styleId, this.buildStyle())
@@ -43,30 +25,20 @@ const Style = new class Style {
   updateStyle () {
     if (!this.initialized) return
 
-    this.removeStyle()
-    this.injectStyle()
+    super.updateStyle()
     Logger.log(this.name, 'Styles updated.')
-  }
-
-  registerStyle (description, style) {
-    this.styles.push({ description, style })
-    this.updateStyle()
   }
 
   ensureStyleForWindow (window) {
     const { document } = window
     if (!this.initialized || window === mainWindow || document.getElementById(this.styleId)) return
 
-    const style = document.createElement('style')
-    style.id = this.styleId
-    style.appendChild(document.createTextNode(this.buildStyle()))
-    document.body.appendChild(style)
+    document.body.appendChild(
+      this.buildStyleElement(document)
+    )
   }
 }
 
-export const css =
-  (strings, ...values) =>
-    description =>
-      Style.registerStyle(description, String.raw({ raw: strings }, ...values))
+export const css = createCSS(Style)
 
 export default Style

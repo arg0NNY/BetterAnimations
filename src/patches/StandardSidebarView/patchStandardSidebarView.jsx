@@ -7,7 +7,7 @@ import useDirection from '@/hooks/useDirection'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@/enums/ModuleKey'
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import useWindow from '@/hooks/useWindow'
 
 async function patchStandardSidebarView () {

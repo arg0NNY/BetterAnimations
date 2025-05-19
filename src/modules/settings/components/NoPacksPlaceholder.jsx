@@ -1,4 +1,4 @@
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import PackPicture from '@/modules/settings/components/PackPicture'
 import { Button, handleClick, Text } from '@/modules/DiscordModules'
 import SettingsSection from '@/enums/SettingsSection'

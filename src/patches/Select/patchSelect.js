@@ -3,7 +3,7 @@ import { SearchableSelect, SelectKeyed, SingleSelectKeyed } from '@/modules/Disc
 import Position from '@/enums/Position'
 import findInReactTree from '@/utils/findInReactTree'
 import { useLayoutEffect, useState } from 'react'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
 
 function createPatcher () {

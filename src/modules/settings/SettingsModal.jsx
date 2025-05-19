@@ -9,7 +9,7 @@ import {
 import { getSections } from '@/modules/settings/data/sections'
 import meta from '@/meta'
 import SectionContext from '@/modules/settings/context/SectionContext'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import { useSection } from '@/modules/settings/stores/SettingsStore'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
 import { useCallback, useMemo, Suspense, lazy } from 'react'

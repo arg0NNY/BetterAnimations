@@ -1,6 +1,6 @@
 import Patcher from '@/modules/Patcher'
 import { ReferencePositionLayer } from '@/modules/DiscordModules'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
 
 function patchReferencePositionLayer () {

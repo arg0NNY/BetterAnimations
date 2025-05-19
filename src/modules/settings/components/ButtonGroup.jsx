@@ -1,5 +1,5 @@
 import { Clickable, Tooltip } from '@/modules/DiscordModules'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import { Utils } from '@/BdApi'
 
 const Sizes = {

@@ -1,4 +1,4 @@
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import IconBrand from '@/components/icons/IconBrand'
 import Divider from '@/components/Divider'
 import {

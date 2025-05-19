@@ -1,5 +1,5 @@
 import { Text } from '@/modules/DiscordModules'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import { Utils } from '@/BdApi'
 import { useMemo } from 'react'
 

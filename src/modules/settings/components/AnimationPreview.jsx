@@ -1,4 +1,4 @@
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import { Text } from '@/modules/DiscordModules'
 import ModuleContext from '@/modules/settings/context/ModuleContext'
 import { useContext } from 'react'

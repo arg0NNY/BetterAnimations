@@ -3,7 +3,7 @@ import path from 'path'
 import fs from 'fs'
 import banner from 'vite-plugin-banner'
 import pkg from './package.json'
-import pluginConfig from './src/config.json'
+import pluginConfig from './config.json'
 
 pluginConfig.version = pkg.version
 
@@ -64,7 +64,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src')
+      '@': path.resolve(__dirname, 'src'),
+      '@config': path.resolve(__dirname, 'config.json'),
+      '@shared': path.resolve(__dirname, 'shared'),
+      '@style': path.resolve(__dirname, 'src/modules/Style.js')
     }
   },
   plugins: [

@@ -1,5 +1,5 @@
 import IconBrand from '@/components/icons/IconBrand'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import { Text } from '@/modules/DiscordModules'
 import { useSection } from '@/modules/settings/stores/SettingsStore'
 import { Utils } from '@/BdApi'

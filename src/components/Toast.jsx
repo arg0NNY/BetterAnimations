@@ -1,7 +1,7 @@
 import IconBrand from '@/components/icons/IconBrand'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import { Text } from '@/modules/DiscordModules'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import IconBrandInfo from '@/components/icons/IconBrandInfo'
 import IconBrandSuccess from '@/components/icons/IconBrandSuccess'
 import IconBrandWarning from '@/components/icons/IconBrandWarning'

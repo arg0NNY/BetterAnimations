@@ -1,5 +1,5 @@
 import { Patcher as _Patcher } from '@/BdApi'
-import config from '@/config.json'
+import config from '@config'
 import ErrorManager from '@/modules/ErrorManager'
 import InternalError from '@/structs/InternalError'
 

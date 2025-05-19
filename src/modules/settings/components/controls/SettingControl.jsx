@@ -1,5 +1,5 @@
 import { FormItem, FormTitle, handleClick } from '@/modules/DiscordModules'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import IconButton from '@/modules/settings/components/IconButton'
 import RedoIcon from '@/modules/settings/components/icons/RedoIcon'
 import Documentation from '@/modules/Documentation'

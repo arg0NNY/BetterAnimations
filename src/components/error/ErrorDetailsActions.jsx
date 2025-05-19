@@ -1,6 +1,6 @@
 import { Utils } from '@/BdApi'
 import { Button, FormTitle, ModalActions } from '@/modules/DiscordModules'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import useModule from '@/hooks/useModule'
 import Config from '@/modules/Config'
 import Settings from '@/modules/Settings'

@@ -1,4 +1,4 @@
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import AnimationCard from '@/modules/settings/components/AnimationCard'
 import Config from '@/modules/Config'
 import AnimationType from '@/enums/AnimationType'

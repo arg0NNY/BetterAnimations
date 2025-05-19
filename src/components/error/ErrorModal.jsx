@@ -1,7 +1,7 @@
 import { ModalSize } from '@/modules/DiscordModules'
 import Modal from '@/components/Modal'
 import ErrorDetails from '@/components/error/ErrorDetails'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 
 function ErrorModal ({ errors = [], ...props }) {
   return (

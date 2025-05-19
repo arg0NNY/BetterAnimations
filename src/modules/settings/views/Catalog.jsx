@@ -1,6 +1,6 @@
 import WIP from '@/modules/settings/components/WIP'
 import CreateUpsellBanner from '@/modules/settings/components/CreateUpsellBanner'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 
 function Catalog () {
   return (

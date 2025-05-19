@@ -1,4 +1,4 @@
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import { Utils } from '@/BdApi'
 import { useCallback, useEffect, useState } from 'react'
 
