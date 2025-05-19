@@ -7,7 +7,7 @@ import {
 } from '@animation/schemas/utils'
 import { stagger, svg, utils } from 'animejs'
 import { z } from 'zod'
-import Inject from '@/enums/Inject'
+import Inject from '@shared/enums/Inject'
 import { zodTransformErrorBoundary } from '@/utils/zod'
 import { zodErrorBoundary } from '@animation/utils'
 import { clearSourceMapDeep } from '@animation/sourceMap'

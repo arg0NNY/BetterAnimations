@@ -1,5 +1,5 @@
-import Position from '@/enums/Position'
-import Direction from '@/enums/Direction'
+import Position from '@shared/enums/Position'
+import Direction from '@shared/enums/Direction'
 
 export function getRect (node) {
   const { x, y, top, left, right, bottom, width, height } = node.getBoundingClientRect()

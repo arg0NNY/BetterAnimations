@@ -11,7 +11,7 @@ import {
   shouldSwitchPage
 } from '@/utils/locations'
 import { passAuto } from '@/utils/transition'
-import ModuleKey from '@/enums/ModuleKey'
+import ModuleKey from '@shared/enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'

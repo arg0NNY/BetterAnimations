@@ -1,5 +1,5 @@
 import { range } from '@/utils/general'
-import AnimationSetting from '@/enums/AnimationSetting'
+import AnimationSetting from '@shared/enums/AnimationSetting'
 import { MAX_ANIMATION_DURATION } from '@/data/constants'
 import Slider from '@/components/Slider'
 import SettingControl from '@/modules/settings/components/controls/SettingControl'

@@ -1,7 +1,7 @@
 import Patcher from '@/modules/Patcher'
 import useUpdate from '@/hooks/useUpdate'
 import Emitter from '@/modules/Emitter'
-import Events from '@/enums/Events'
+import Events from '@shared/enums/Events'
 import Modules from '@/modules/Modules'
 import { useEffect } from 'react'
 

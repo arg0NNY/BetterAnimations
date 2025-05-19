@@ -3,7 +3,7 @@ import { css } from '@style'
 import { Text } from '@/modules/DiscordModules'
 import { useSection } from '@/modules/settings/stores/SettingsStore'
 import { Utils } from '@/BdApi'
-import SettingsSection from '@/enums/SettingsSection'
+import SettingsSection from '@shared/enums/SettingsSection'
 import meta from '@/meta'
 
 function SettingsSidebarHeader () {

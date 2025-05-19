@@ -1,8 +1,8 @@
 import { useAdvancedMode } from '@/modules/settings/hooks/useMode'
-import Setting from '@/enums/AnimationSetting'
-import ModuleType from '@/enums/ModuleType'
-import AnimationType from '@/enums/AnimationType'
-import AnimationSettingContainer from '@/enums/AnimationSettingContainer'
+import Setting from '@shared/enums/AnimationSetting'
+import ModuleType from '@shared/enums/ModuleType'
+import AnimationType from '@shared/enums/AnimationType'
+import AnimationSettingContainer from '@shared/enums/AnimationSettingContainer'
 import isEqual from 'lodash-es/isEqual'
 import { pick } from '@/utils/object'
 

@@ -3,7 +3,7 @@ import { createToast, ModalActions, popToast, popToastKeyed, useToastStore } fro
 import ErrorModal from '@/components/error/ErrorModal'
 import ErrorToast from '@/components/error/ErrorToast'
 import Emitter from '@/modules/Emitter'
-import Events from '@/enums/Events'
+import Events from '@shared/enums/Events'
 import Patcher from '@/modules/Patcher'
 
 const ErrorManagerToastSymbol = Symbol('ErrorManagerToast')

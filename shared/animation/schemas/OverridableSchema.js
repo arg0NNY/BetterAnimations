@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import { ArrayOrSingleSchema } from '@/utils/schemas'
-import AnimationType from '@/enums/AnimationType'
-import ModuleKey, { ModuleKeyAlias } from '@/enums/ModuleKey'
-import ModuleType from '@/enums/ModuleType'
+import AnimationType from '@shared/enums/AnimationType'
+import ModuleKey, { ModuleKeyAlias } from '@shared/enums/ModuleKey'
+import ModuleType from '@shared/enums/ModuleType'
 import { omit } from '@/utils/object'
 import { moduleAliases } from '@/data/modules'
 

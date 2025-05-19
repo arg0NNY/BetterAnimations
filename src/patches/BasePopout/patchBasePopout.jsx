@@ -3,7 +3,7 @@ import { BasePopoutKeyed, ReferencePositionLayer, TransitionGroup } from '@/modu
 import AnimeTransition from '@/components/AnimeTransition'
 import patchPopoutCSSAnimator from '@/patches/BasePopout/patchPopoutCSSAnimator'
 import useModule from '@/hooks/useModule'
-import ModuleKey from '@/enums/ModuleKey'
+import ModuleKey from '@shared/enums/ModuleKey'
 import { autoPosition } from '@/hooks/useAutoPosition'
 import { unkeyed } from '@/utils/webpack'
 import { flushSync } from 'react-dom'

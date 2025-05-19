@@ -11,7 +11,7 @@ import {
 import patchUseMessageRequestSidebarState from '@/patches/ChannelView/patchUseMessageRequestSidebarState'
 import MessageRequestSidebarWrapper from '@/patches/ChannelView/components/MessageRequestSidebarWrapper'
 import useModule from '@/hooks/useModule'
-import ModuleKey from '@/enums/ModuleKey'
+import ModuleKey from '@shared/enums/ModuleKey'
 import AnimeTransition from '@/components/AnimeTransition'
 import usePrevious from '@/hooks/usePrevious'
 import findInReactTree from '@/utils/findInReactTree'

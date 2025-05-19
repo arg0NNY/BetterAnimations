@@ -1,5 +1,5 @@
-import Axis from '@/enums/Axis'
-import Direction from '@/enums/Direction'
+import Axis from '@shared/enums/Axis'
+import Direction from '@shared/enums/Direction'
 import { toDirection } from '@/utils/position'
 
 export function getDirectionsByAxis (axis) {

@@ -1,6 +1,6 @@
 import Patcher from '@/modules/Patcher'
 import { SearchableSelect, SelectKeyed, SingleSelectKeyed } from '@/modules/DiscordModules'
-import Position from '@/enums/Position'
+import Position from '@shared/enums/Position'
 import findInReactTree from '@/utils/findInReactTree'
 import { useLayoutEffect, useState } from 'react'
 import { css } from '@style'

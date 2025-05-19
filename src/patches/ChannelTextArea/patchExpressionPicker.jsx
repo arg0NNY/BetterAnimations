@@ -5,7 +5,7 @@ import { css } from '@style'
 import AnimeContainer from '@/components/AnimeContainer'
 import useWindow from '@/hooks/useWindow'
 import useModule from '@/hooks/useModule'
-import ModuleKey from '@/enums/ModuleKey'
+import ModuleKey from '@shared/enums/ModuleKey'
 
 function patchExpressionPicker () {
   let expressionPickerRendering = false

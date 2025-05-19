@@ -1,6 +1,6 @@
 import { AppContext, Transition } from '@/modules/DiscordModules'
 import Freeze from '@/components/Freeze'
-import AnimationType from '@/enums/AnimationType'
+import AnimationType from '@shared/enums/AnimationType'
 import Style, { css } from '@style'
 import AnimationStore from '@animationStore'
 import { createAwaitableRef } from '@/utils/react'

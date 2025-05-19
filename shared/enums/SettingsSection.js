@@ -1,4 +1,4 @@
-import Enum from '@/enums/Enum'
+import Enum from '@shared/Enum'
 
 export default Enum({
   Home: 'home',

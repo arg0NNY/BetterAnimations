@@ -1,7 +1,7 @@
 import { css } from '@style'
 import AnimationCard from '@/modules/settings/components/AnimationCard'
 import Config from '@/modules/Config'
-import AnimationType from '@/enums/AnimationType'
+import AnimationType from '@shared/enums/AnimationType'
 import useAnimationSettings from '@/modules/settings/hooks/useAnimationSettings'
 import { useMemo } from 'react'
 

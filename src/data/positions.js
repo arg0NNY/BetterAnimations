@@ -1,5 +1,5 @@
-import Position from '@/enums/Position'
-import Auto from '@/enums/Auto'
+import Position from '@shared/enums/Position'
+import Auto from '@shared/enums/Auto'
 
 const positions = [
   { value: Auto(Position).Auto, label: 'Auto' },

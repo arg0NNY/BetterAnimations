@@ -1,4 +1,4 @@
-import Axis from '@/enums/Axis'
+import Axis from '@shared/enums/Axis'
 
 const directionAxes = [
   { value: Axis.Y, name: 'Vertical', desc: 'Automatically choose between Upwards and Downwards' },

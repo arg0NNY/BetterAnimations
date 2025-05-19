@@ -1,4 +1,4 @@
-import Position from '@/enums/Position'
+import Position from '@shared/enums/Position'
 import { createRef, useRef } from 'react'
 
 export function autoPosition (self, defaultPosition, source = { align: Position.Top }) {

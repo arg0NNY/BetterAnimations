@@ -1,5 +1,5 @@
 import { parse } from '@animation/parser'
-import ModuleType from '@/enums/ModuleType'
+import ModuleType from '@shared/enums/ModuleType'
 import Config from '@/modules/Config'
 import ErrorManager from '@/modules/ErrorManager'
 import AnimationError from '@/structs/AnimationError'

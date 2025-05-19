@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { EasingBezier, EasingStyle, EasingType } from '@/enums/Easing'
+import { EasingBezier, EasingStyle, EasingType } from '@shared/enums/Easing'
 import { easingValues } from '@/data/easings'
 import { SourceMappedObjectSchema } from '@animation/sourceMap'
 

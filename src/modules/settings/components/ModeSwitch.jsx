@@ -1,5 +1,5 @@
 import ButtonGroup from '@/modules/settings/components/ButtonGroup'
-import SettingsMode from '@/enums/SettingsMode'
+import SettingsMode from '@shared/enums/SettingsMode'
 import useMode from '@/modules/settings/hooks/useMode'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 

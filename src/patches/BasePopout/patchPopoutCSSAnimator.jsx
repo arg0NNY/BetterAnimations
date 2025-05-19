@@ -1,7 +1,7 @@
 import Patcher from '@/modules/Patcher'
 import { PopoutCSSAnimatorKeyed } from '@/modules/DiscordModules'
 import useModule from '@/hooks/useModule'
-import ModuleKey from '@/enums/ModuleKey'
+import ModuleKey from '@shared/enums/ModuleKey'
 import { unkeyed } from '@/utils/webpack'
 import useWindow from '@/hooks/useWindow'
 

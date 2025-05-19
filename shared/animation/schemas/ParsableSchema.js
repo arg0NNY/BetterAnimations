@@ -1,4 +1,4 @@
-import ParseStage from '@/enums/ParseStage'
+import ParseStage from '@shared/enums/ParseStage'
 import { z } from 'zod'
 import InjectableSchema from '@animation/schemas/InjectableSchema'
 import AnimationError from '@/structs/AnimationError'

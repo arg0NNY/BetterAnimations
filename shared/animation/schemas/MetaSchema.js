@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import OverridableSchema from '@animation/schemas/OverridableSchema'
-import ModuleKey from '@/enums/ModuleKey'
-import AnimationType from '@/enums/AnimationType'
+import ModuleKey from '@shared/enums/ModuleKey'
+import AnimationType from '@shared/enums/AnimationType'
 
 export const metaOverridePresets = {
   accordion: [

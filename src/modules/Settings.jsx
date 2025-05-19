@@ -1,6 +1,6 @@
 import { LayerActions, LayerStore, UserSettingsModal } from '@/modules/DiscordModules'
 import SettingsModal from '@/modules/settings/SettingsModal'
-import SettingsSection from '@/enums/SettingsSection'
+import SettingsSection from '@shared/enums/SettingsSection'
 import { setSection } from '@/modules/settings/stores/SettingsStore'
 
 export default new class Settings {

@@ -8,10 +8,10 @@ import {
   TargetSchema,
   TargetsSchema
 } from '@animation/schemas/utils'
-import Inject from '@/enums/Inject'
-import AnimationType from '@/enums/AnimationType'
-import ModuleKey from '@/enums/ModuleKey'
-import ModuleType from '@/enums/ModuleType'
+import Inject from '@shared/enums/Inject'
+import AnimationType from '@shared/enums/AnimationType'
+import ModuleKey from '@shared/enums/ModuleKey'
+import ModuleType from '@shared/enums/ModuleType'
 import { getPath, parsePath } from '@/utils/json'
 import { zodTransformErrorBoundary } from '@/utils/zod'
 import Debug from '@/modules/Debug'
