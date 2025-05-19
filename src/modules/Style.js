@@ -1,4 +1,4 @@
-import BaseStyle, { createCSS } from '@shared/Style'
+import BaseStyle, { createCSS } from '@shared/style'
 import { DOM } from '@/BdApi'
 import Logger from '@logger'
 
