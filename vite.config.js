@@ -64,6 +64,11 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      // For plugin only
+      '@style': path.resolve(__dirname, 'src/modules/Style.js'),
+      '@error/manager': path.resolve(__dirname, 'src/modules/ErrorManager.jsx'),
+
+      // General
       '@': path.resolve(__dirname, 'src'),
       '@config': path.resolve(__dirname, 'config.json'),
       '@shared': path.resolve(__dirname, 'shared'),
@@ -73,11 +78,7 @@ export default defineConfig({
       '@error': path.resolve(__dirname, 'shared/error'),
       '@logger': path.resolve(__dirname, 'shared/logger'),
       '@data': path.resolve(__dirname, 'shared/data'),
-      '@packs': path.resolve(__dirname, 'shared/packs'),
-
-      // For plugin only
-      '@style': path.resolve(__dirname, 'src/modules/Style.js'),
-      '@error/manager': path.resolve(__dirname, 'src/modules/ErrorManager.js')
+      '@packs': path.resolve(__dirname, 'shared/packs')
     }
   },
   plugins: [
