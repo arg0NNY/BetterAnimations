@@ -1,6 +1,6 @@
 import { Button, handleClick, Text } from '@/modules/DiscordModules'
 import { css } from '@style'
-import Documentation from '@/modules/Documentation'
+import Documentation from '@shared/documentation'
 import PackPicture from '@/modules/settings/components/PackPicture'
 import BookIcon from '@/modules/settings/components/icons/BookIcon'
 

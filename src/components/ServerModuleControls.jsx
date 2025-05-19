@@ -5,7 +5,7 @@ import { DiscordClasses } from '@/modules/DiscordSelectors'
 import CircleQuestionIcon from '@/modules/settings/components/icons/CircleQuestionIcon'
 import Emitter from '@/modules/Emitter'
 import Events from '@shared/enums/Events'
-import Documentation from '@/modules/Documentation'
+import Documentation from '@shared/documentation'
 
 function ServerModuleControls ({ module }) {
   return (

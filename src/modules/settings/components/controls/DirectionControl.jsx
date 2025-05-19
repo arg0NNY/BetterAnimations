@@ -18,7 +18,7 @@ import { css } from '@style'
 import ArrowLeftToLineIcon from '@/modules/settings/components/icons/ArrowLeftToLineIcon'
 import ArrowRightFromLineIcon from '@/modules/settings/components/icons/ArrowRightFromLineIcon'
 import SettingControl from '@/modules/settings/components/controls/SettingControl'
-import Documentation from '@/modules/Documentation'
+import Documentation from '@shared/documentation'
 
 function getAxisIcon (axis) {
   switch (axis) {

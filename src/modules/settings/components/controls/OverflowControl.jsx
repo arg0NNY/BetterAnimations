@@ -2,7 +2,7 @@ import { Checkbox, handleClick, Text, Tooltip } from '@/modules/DiscordModules'
 import IconButton from '@/modules/settings/components/IconButton'
 import RedoIcon from '@/modules/settings/components/icons/RedoIcon'
 import { css } from '@style'
-import Documentation from '@/modules/Documentation'
+import Documentation from '@shared/documentation'
 import CircleQuestionIcon from '@/modules/settings/components/icons/CircleQuestionIcon'
 
 function OverflowControl ({ value, onChange, forced = false, onReset }) {

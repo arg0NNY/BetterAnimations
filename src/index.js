@@ -36,7 +36,7 @@ import * as DiscordModules from '@/modules/DiscordModules'
 import * as anime from 'animejs'
 import Utils from '@/modules/Utils'
 import patchMenuItem from '@/patches/ContextMenu/patchMenuItem'
-import Documentation from '@/modules/Documentation'
+import Documentation from '@shared/documentation'
 import patchChannelTextArea from '@/patches/ChannelTextArea/patchChannelTextArea'
 
 if (import.meta.env.MODE === 'development')

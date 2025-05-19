@@ -21,7 +21,7 @@ import ArrowSmallRightIcon from '@/modules/settings/components/icons/ArrowSmallR
 import { useContext, useMemo } from 'react'
 import DismissibleAlert from '@/modules/settings/components/DismissibleAlert'
 import useDismissible from '@/modules/settings/hooks/useDismissible'
-import Documentation from '@/modules/Documentation'
+import Documentation from '@shared/documentation'
 import CircleQuestionIcon from '@/modules/settings/components/icons/CircleQuestionIcon'
 import IconButton from '@/modules/settings/components/IconButton'
 

@@ -32,7 +32,7 @@ import PositionAutoType from '@shared/enums/PositionAutoType'
 import ParsableExtendableAnimateSchema from '@animation/schemas/ParsableExtendableAnimateSchema'
 import { computeOverridable } from '@animation/schemas/OverridableSchema'
 import { metaOverridePresets } from '@animation/schemas/MetaSchema'
-import Documentation from '@/modules/Documentation'
+import Documentation from '@shared/documentation'
 
 class Module {
   constructor (id, name, meta = {}, { parent, description, controls, alert, onToggle } = {}) {

@@ -6,7 +6,7 @@ import SettingControl from '@/modules/settings/components/controls/SettingContro
 import Position from '@shared/enums/Position'
 import PositionAutoType from '@shared/enums/PositionAutoType'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
-import Documentation from '@/modules/Documentation'
+import Documentation from '@shared/documentation'
 
 function PositionPreserveControl ({ value, onChange, label = 'Preserve' }) {
   return (

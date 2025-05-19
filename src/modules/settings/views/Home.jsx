@@ -12,7 +12,7 @@ import SpotlightAnimation from '@/modules/settings/components/SpotlightAnimation
 import { useMemo } from 'react'
 import { sanitize } from '@utils/text'
 import BookIcon from '@/modules/settings/components/icons/BookIcon'
-import Documentation from '@/modules/Documentation'
+import Documentation from '@shared/documentation'
 
 const madeByPhrases = [
   'Made by',

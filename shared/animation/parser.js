@@ -10,7 +10,7 @@ import { clearSourceMapDeep, getSourcePath, sourceMappedObjectEntries } from '@a
 import ParsableExtendableAnimateSchema, { ParsableExtendsSchema } from '@animation/schemas/ParsableExtendableAnimateSchema'
 import { omit } from '@utils/object'
 import { intersect, promisify } from '@utils/anime'
-import Documentation from '@/modules/Documentation'
+import Documentation from '@shared/documentation'
 import isElement from 'lodash-es/isElement'
 
 export function buildContext (pack, animation, type, settings = {}, meta = {}, context = {}) {

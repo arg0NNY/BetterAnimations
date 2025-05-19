@@ -7,7 +7,7 @@ import meta from '@/meta'
 import ErrorManager from '@error/manager'
 import { formatZodError } from '@utils/zod'
 import internalPacks, { internalPackSlugs } from '@/packs'
-import Documentation from '@/modules/Documentation'
+import Documentation from '@shared/documentation'
 
 export default new class PackManager extends AddonManager {
   get name () {return 'PackManager'}

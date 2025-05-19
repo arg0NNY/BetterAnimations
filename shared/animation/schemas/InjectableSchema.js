@@ -25,7 +25,7 @@ import TrustedFunctionSchema, { trust } from '@animation/schemas/TrustedFunction
 import { ObjectDeepBaseSchema } from '@animation/schemas/ObjectDeepSchema'
 import { RawInjectBaseSchema } from '@animation/schemas/injects/general'
 import { parseInjectSchemas } from '@animation/schemas/utils'
-import Documentation from '@/modules/Documentation'
+import Documentation from '@shared/documentation'
 
 export const groupedInjectSchemas = {
   general: parseInjectSchemas(GeneralInjectSchemas),
