@@ -1,8 +1,7 @@
 import { z } from 'zod'
 import { ArrayOrSingleSchema, Defined, DOMElementSchema, formatValuesList } from '@utils/schemas'
 import { clearSourceMap, SourceMappedObjectSchema } from '@animation/sourceMap'
-import { InjectableValidateSchema } from '@animation/schemas/InjectableSchema'
-import Inject from '@enums/Inject'
+import { InjectableDefaultBaseSchema } from '@animation/schemas/InjectableBaseSchema'
 
 export const InjectSchema = type => SourceMappedObjectSchema.extend({
   inject: z.literal(type)
@@ -31,15 +30,6 @@ export function InjectWithMeta (
   if (Array.isArray(schema)) return schema
   return [schema, { immediate, lazy, allowed }]
 }
-
-export const parseInjectSchemas = schemas => Object.fromEntries(
-  Object.entries(schemas)
-    .filter(([key]) => key.endsWith('InjectSchema'))
-    .map(([key, schema]) => [
-      Inject[key.replace(/InjectSchema$/, '')],
-      InjectWithMeta(schema)
-    ])
-)
 
 export const buildSwitchSchema = (keys, value = Defined) => Object.fromEntries([].concat(keys).map(k => [k.toString(), value]))
 
@@ -122,7 +112,7 @@ export function ElementSchema (inject, element = null, allowDirect = true) {
 
 export const ParametersSchema = z.record(z.string(), z.any())
   .superRefine((value, ctx) => {
-    const { success } = InjectableValidateSchema.safeParse(value)
+    const { success } = InjectableDefaultBaseSchema.safeParse(value)
     if (!success) ctx.addIssue({
       code: z.ZodIssueCode.custom,
       message: 'Illegal value',

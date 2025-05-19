@@ -4,8 +4,7 @@ import { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChann
 import Logger from '@logger'
 import Config from '@/modules/Config'
 import { guildChannelPath } from '@/patches/AppView/patchAppView'
-import { injectSchemas, injectTypes } from '@animation/schemas/InjectableSchema'
-import { safeInjects } from '@animation/schemas/ParsableAnimateSchema'
+import { injectSchemas, injectTypes, safeInjects } from '@animation/schemas/injects'
 
 export default new class Utils {
   get name () { return 'Utils' }

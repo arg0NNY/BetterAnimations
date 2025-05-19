@@ -1,4 +1,4 @@
-import { groupedInjectSchemas } from '@animation/schemas/InjectableSchema'
+import { groupedInjectSchemas } from '@animation/schemas/injects'
 
 export default new class Documentation {
   Definition = {

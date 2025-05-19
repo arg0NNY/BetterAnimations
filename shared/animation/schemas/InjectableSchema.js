@@ -1,46 +1,17 @@
 import { z } from 'zod'
 import { formatValuesList } from '@utils/schemas'
 import { formatZodError } from '@utils/zod'
-import {
-  generatedLazyInjectSymbol,
-  isLazyInject,
-  wrapLazyInject
-} from '@animation/schemas/injects/lazy'
+import { generatedLazyInjectSymbol, isLazyInject, wrapLazyInject } from '@animation/schemas/injects/lazy'
 import ParseStage from '@enums/ParseStage'
-import Spelling from 'spelling'
 import ErrorManager from '@error/manager'
 import AnimationError from '@error/structs/AnimationError'
-import * as GeneralInjectSchemas from '@animation/schemas/injects/general'
-import * as ObjectInjectSchemas from '@animation/schemas/injects/object'
-import * as ArrayInjectSchemas from '@animation/schemas/injects/array'
-import * as AnimeInjectSchemas from '@animation/schemas/injects/anime'
-import * as SettingsInjectSchemas from '@animation/schemas/injects/settings'
-import * as MathInjectSchemas from '@animation/schemas/injects/math'
-import * as OperatorsInjectSchemas from '@animation/schemas/injects/operators'
-import * as AccordionsInjectSchemas from '@animation/schemas/injects/accordions'
-import * as SnippetsInjectSchemas from '@animation/schemas/injects/snippets'
+import { RawInjectBaseSchema } from '@animation/schemas/injects/general'
 import Debug from '@logger/debug'
 import { getSourcePath, isSourceMap, SELF_KEY } from '@animation/sourceMap'
-import TrustedFunctionSchema, { trust } from '@animation/schemas/TrustedFunctionSchema'
-import { ObjectDeepBaseSchema } from '@animation/schemas/ObjectDeepSchema'
-import { RawInjectBaseSchema } from '@animation/schemas/injects/general'
-import { parseInjectSchemas } from '@animation/schemas/utils'
+import { trust } from '@animation/schemas/TrustedFunctionSchema'
 import Documentation from '@shared/documentation'
-
-export const groupedInjectSchemas = {
-  general: parseInjectSchemas(GeneralInjectSchemas),
-  object: parseInjectSchemas(ObjectInjectSchemas),
-  array: parseInjectSchemas(ArrayInjectSchemas),
-  anime: parseInjectSchemas(AnimeInjectSchemas),
-  settings: parseInjectSchemas(SettingsInjectSchemas),
-  math: parseInjectSchemas(MathInjectSchemas),
-  operators: parseInjectSchemas(OperatorsInjectSchemas),
-  accordions: parseInjectSchemas(AccordionsInjectSchemas),
-  snippets: parseInjectSchemas(SnippetsInjectSchemas)
-}
-export const injectSchemas = Object.assign({}, ...Object.values(groupedInjectSchemas))
-export const injectTypes = Object.keys(injectSchemas)
-const injectDict = new Spelling(injectTypes)
+import InjectableBaseSchema from '@animation/schemas/InjectableBaseSchema'
+import { injectDict, injectSchemas, injectTypes } from '@animation/schemas/injects'
 
 function assertInjectType (type) {
   if (Array.isArray(type)) return type.map(assertInjectType).filter(Boolean)
@@ -76,13 +47,6 @@ function parseInject ({ schema, context, env, value, ctx }) {
     )
   }
 }
-
-export const InjectableBaseSchema = (schema, extend = []) =>
-  ObjectDeepBaseSchema(schema, [TrustedFunctionSchema, ...extend])
-
-export const InjectableValidateSchema = z.lazy(
-  () => InjectableBaseSchema(InjectableValidateSchema)
-)
 
 const InjectableSchema = (context, env = {}) => {
   const { allowed, disallowed, stage } = env

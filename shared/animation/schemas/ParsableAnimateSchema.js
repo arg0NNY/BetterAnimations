@@ -1,57 +1,17 @@
 import { z } from 'zod'
 import { ArrayOrSingleSchema } from '@utils/schemas'
-import Inject from '@enums/Inject'
 import ParseStage from '@enums/ParseStage'
 import { sanitize } from 'hast-util-sanitize'
 import { toDom } from 'hast-util-to-dom'
 import { executeWithZod } from '@animation/utils'
 import { storeInjectable } from '@animation/schemas/SanitizeInjectableSchema'
 import hastSanitizeSchema from '@animation/hastSanitizeSchema'
-import * as SettingsInjectSchemas from '@animation/schemas/injects/settings'
-import * as MathInjectSchemas from '@animation/schemas/injects/math'
-import * as OperatorsInjectSchemas from '@animation/schemas/injects/operators'
-import * as ArrayInjectSchemas from '@animation/schemas/injects/array'
-import * as SnippetsInjectSchemas from '@animation/schemas/injects/snippets'
 import { clearSourceMapDeep, SourceMappedObjectSchema, SourceMapSchema } from '@animation/sourceMap'
 import TrustedFunctionSchema from '@animation/schemas/TrustedFunctionSchema'
 import ParsableSchema from '@animation/schemas/ParsableSchema'
 import AnimeSchema from '@animation/schemas/AnimeSchema'
-import { parseInjectSchemas } from '@animation/schemas/utils'
 import { zodTransformErrorBoundary } from '@utils/zod'
-
-export const safeInjects = [
-  ...Object.keys(parseInjectSchemas(SettingsInjectSchemas)),
-  ...Object.keys(parseInjectSchemas(MathInjectSchemas)),
-  ...Object.keys(parseInjectSchemas(OperatorsInjectSchemas)),
-  ...Object.keys(parseInjectSchemas(ArrayInjectSchemas)),
-  ...Object.keys(parseInjectSchemas(SnippetsInjectSchemas)),
-  // Anime
-  Inject.UtilsRandom,
-  Inject.UtilsGet,
-  // Common
-  Inject.Element,
-  Inject.Hast,
-  Inject.Container,
-  Inject.Anchor,
-  Inject.Module,
-  Inject.ModuleType,
-  Inject.Type,
-  Inject.Assign,
-  Inject.StringTemplate,
-  Inject.Undefined,
-  Inject.VarGet,
-  Inject.Rect,
-  Inject.Window,
-  Inject.Mouse,
-  Inject.IsIntersected,
-  Inject.If,
-  Inject.Switch,
-  Inject.Raw
-]
-
-const layoutDependentInjects = [
-  Inject.Hast
-]
+import { layoutDependentInjects, safeInjects } from '@animation/schemas/injects'
 
 export function buildPreLayoutEnv (env) {
   return Object.assign({ disallowed: layoutDependentInjects }, env)
