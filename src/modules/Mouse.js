@@ -1,4 +1,4 @@
-import Logger from '@/modules/Logger'
+import Logger from '@logger'
 
 export class Mouse {
   get name () { return 'Mouse' }

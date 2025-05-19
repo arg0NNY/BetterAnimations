@@ -5,7 +5,7 @@ import ErrorManager from '@error/manager'
 import AnimationError from '@error/structs/AnimationError'
 import { getRect } from '@shared/utils/position'
 import isElement from 'lodash-es/isElement'
-import Logger from '@/modules/Logger'
+import Logger from '@logger'
 
 class Animation {
 

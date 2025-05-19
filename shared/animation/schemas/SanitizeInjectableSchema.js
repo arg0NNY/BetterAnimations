@@ -4,7 +4,7 @@ import { clearSourceMap, isSourceMap } from '@animation/sourceMap'
 import ObjectDeepSchema from '@animation/schemas/ObjectDeepSchema'
 import { zodErrorBoundarySymbol } from '@animation/utils'
 import { JSAnimation, Timeline, Timer, WAAPIAnimation } from 'animejs'
-import Logger from '@/modules/Logger'
+import Logger from '@logger'
 
 export const injectableSymbol = Symbol('injectable')
 export function storeInjectable (value, data) {

@@ -69,6 +69,7 @@ export default defineConfig({
       '@shared': path.resolve(__dirname, 'shared'),
       '@animation': path.resolve(__dirname, 'shared/animation'),
       '@error': path.resolve(__dirname, 'shared/error'),
+      '@logger': path.resolve(__dirname, 'shared/logger'),
 
       // For plugin only
       '@style': path.resolve(__dirname, 'src/modules/Style.js'),

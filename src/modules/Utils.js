@@ -1,7 +1,7 @@
 import Modules from '@/modules/Modules'
 import AnimationType from '@shared/enums/AnimationType'
 import { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChannelList'
-import Logger from '@/modules/Logger'
+import Logger from '@logger'
 import Config from '@/modules/Config'
 import { guildChannelPath } from '@/patches/AppView/patchAppView'
 import { injectSchemas, injectTypes } from '@animation/schemas/InjectableSchema'

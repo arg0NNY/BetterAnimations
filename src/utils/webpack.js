@@ -1,5 +1,5 @@
 import { Webpack } from '@/BdApi'
-import Logger from '@/modules/Logger'
+import Logger from '@logger'
 
 function avoidCommon (module) {
   return module === null || typeof module !== 'object' || Object.keys(module).length <= 100

@@ -1,6 +1,6 @@
 import BaseStyle, { createCSS } from '@shared/Style'
 import { DOM } from '@/BdApi'
-import Logger from '@/modules/Logger'
+import Logger from '@logger'
 
 const mainWindow = window
 

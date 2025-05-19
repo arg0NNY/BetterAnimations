@@ -14,7 +14,7 @@ import ModuleKey from '@shared/enums/ModuleKey'
 import ModuleType from '@shared/enums/ModuleType'
 import { getPath, parsePath } from '@shared/utils/json'
 import { zodTransformErrorBoundary } from '@shared/utils/zod'
-import Debug from '@/modules/Debug'
+import Debug from '@logger/debug'
 import {
   clearSourceMap,
   clearSourceMapDeep,

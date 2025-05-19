@@ -1,4 +1,4 @@
-import Logger from '@/modules/Logger'
+import Logger from '@logger'
 import { snapshotContext } from '@shared/utils/animations'
 import { toPath, visualizeAddonPath } from '@shared/utils/json'
 import { capitalize } from '@shared/utils/text'
