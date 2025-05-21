@@ -1,6 +1,7 @@
 import config from '@config'
+import Logger from '@logger'
 
-class Style {
+export class Style {
   get name () { return 'Style' }
   get styleId () { return `${config.name}-style` }
 
@@ -12,10 +13,12 @@ class Style {
   initialize () {
     this.injectStyle()
     this.initialized = true
+    Logger.info(this.name, 'Initialized.')
   }
   shutdown () {
     this.removeStyle()
     this.initialized = false
+    Logger.info(this.name, 'Shutdown.')
   }
 
   buildStyle () {
@@ -36,6 +39,7 @@ class Style {
 
     this.removeStyle()
     this.injectStyle()
+    Logger.log(this.name, 'Styles updated.')
   }
 
   registerStyle (description, style) {
@@ -57,4 +61,6 @@ export const createCSS =
       description =>
         style.registerStyle(description, String.raw({ raw: strings }, ...values))
 
-export default Style
+const style = new Style
+export const css = createCSS(style)
+export default style

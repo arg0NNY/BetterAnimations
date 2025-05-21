@@ -4,6 +4,7 @@ import fs from 'fs'
 import banner from 'vite-plugin-banner'
 import pkg from './package.json'
 import pluginConfig from './config.json'
+import omit from 'lodash-es/omit'
 
 pluginConfig.version = pkg.version
 
@@ -37,6 +38,21 @@ function copyToBDPlugin() {
       console.log('\x1b[32m%s\x1b[34m%s\x1b[32m%s\x1b[0m', '✓ copied to ', 'BetterDiscord', ' folder')
     }
   }
+}
+
+export const aliases = {
+  '@config': path.resolve(__dirname, 'config.json'),
+  '@shared': path.resolve(__dirname, 'shared'),
+  '@utils': path.resolve(__dirname, 'shared/utils'),
+  '@enums': path.resolve(__dirname, 'shared/enums'),
+  '@animation': path.resolve(__dirname, 'shared/animation'),
+  '@error': path.resolve(__dirname, 'shared/error'),
+  '@logger': path.resolve(__dirname, 'shared/logger'),
+  '@data': path.resolve(__dirname, 'shared/data'),
+  '@packs': path.resolve(__dirname, 'shared/packs'),
+  '@components': path.resolve(__dirname, 'shared/components'),
+  '@discord': path.resolve(__dirname, 'shared/discord'),
+  '@style': path.resolve(__dirname, 'shared/style')
 }
 
 export default defineConfig({
@@ -73,16 +89,7 @@ export default defineConfig({
       '@error/manager': path.resolve(__dirname, 'src/modules/ErrorManager'),
 
       // General
-      '@config': path.resolve(__dirname, 'config.json'),
-      '@shared': path.resolve(__dirname, 'shared'),
-      '@utils': path.resolve(__dirname, 'shared/utils'),
-      '@enums': path.resolve(__dirname, 'shared/enums'),
-      '@animation': path.resolve(__dirname, 'shared/animation'),
-      '@error': path.resolve(__dirname, 'shared/error'),
-      '@logger': path.resolve(__dirname, 'shared/logger'),
-      '@data': path.resolve(__dirname, 'shared/data'),
-      '@packs': path.resolve(__dirname, 'shared/packs'),
-      '@components': path.resolve(__dirname, 'shared/components')
+      ...omit(aliases, ['@discord', '@style'])
     }
   },
   plugins: [
