@@ -64,12 +64,13 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      // For plugin only
       '@': path.resolve(__dirname, 'src'),
+
+      // Rewrites
+      '@discord': path.resolve(__dirname, 'src/discord'),
       '@style': path.resolve(__dirname, 'src/modules/Style'),
       '@animation/store': path.resolve(__dirname, 'src/modules/AnimationStore'),
       '@error/manager': path.resolve(__dirname, 'src/modules/ErrorManager'),
-      '@discord': path.resolve(__dirname, 'src/discord'),
 
       // General
       '@config': path.resolve(__dirname, 'config.json'),

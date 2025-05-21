@@ -14,7 +14,7 @@ import {
   Switch,
   Tooltip
 } from '@discord/modules'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
+import DiscordClasses from '@discord/classes'
 import SectionContext from '@/modules/settings/context/SectionContext'
 import Messages from '@shared/messages'
 import ArrowSmallRightIcon from '@/modules/settings/components/icons/ArrowSmallRightIcon'

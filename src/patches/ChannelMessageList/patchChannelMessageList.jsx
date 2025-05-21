@@ -10,7 +10,7 @@ import ModuleKey from '@enums/ModuleKey'
 import patchMessage from '@/patches/ChannelMessageList/patchMessage'
 import patchMessageDivider from '@/patches/ChannelMessageList/patchMessageDivider'
 import { css } from '@style'
-import { DiscordSelectors } from '@/modules/DiscordSelectors'
+import DiscordSelectors from '@discord/selectors'
 import useWindow from '@/hooks/useWindow'
 
 function patchChannelMessageList () {

@@ -3,7 +3,7 @@ import { ModalBackdrop } from '@discord/modules'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import findInReactTree from '@/utils/findInReactTree'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
+import DiscordClasses from '@discord/classes'
 import AnimeTransition from '@components/AnimeTransition'
 import useWindow from '@/hooks/useWindow'
 

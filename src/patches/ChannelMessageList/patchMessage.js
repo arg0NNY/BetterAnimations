@@ -1,7 +1,7 @@
 import Patcher from '@/modules/Patcher'
 import { Message } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
+import DiscordClasses from '@discord/classes'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import useWindow from '@/hooks/useWindow'

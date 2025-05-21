@@ -1,5 +1,5 @@
 import IconBrand from '@/components/icons/IconBrand'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
+import DiscordClasses from '@discord/classes'
 import { Text } from '@discord/modules'
 import { css } from '@style'
 import IconBrandInfo from '@/components/icons/IconBrandInfo'

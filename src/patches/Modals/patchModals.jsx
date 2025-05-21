@@ -8,7 +8,7 @@ import ModuleKey from '@enums/ModuleKey'
 import ensureOnce from '@utils/ensureOnce'
 import { directChild } from '@utils/transition'
 import { css } from '@style'
-import { DiscordSelectors } from '@/modules/DiscordSelectors'
+import DiscordSelectors from '@discord/selectors'
 import { useMemo, useRef } from 'react'
 import useWindow from '@/hooks/useWindow'
 

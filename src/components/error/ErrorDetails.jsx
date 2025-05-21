@@ -13,7 +13,7 @@ import {
   useStateFromStores
 } from '@discord/modules'
 import meta from '@/meta'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
+import DiscordClasses from '@discord/classes'
 import InternalError from '@error/structs/InternalError'
 import AddonError from '@error/structs/AddonError'
 import AnimationError from '@error/structs/AnimationError'

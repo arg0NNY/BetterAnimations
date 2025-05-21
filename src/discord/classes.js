@@ -19,7 +19,7 @@ const Classes = {
   Select: Webpack.getByKeys('select', 'measurement')
 }
 
-export const DiscordClasses = new Proxy(Classes, {
+const DiscordClasses = new Proxy(Classes, {
   get (obj, prop) {
     const value = obj[prop]
     if (typeof value !== 'function') return value
@@ -31,12 +31,4 @@ export const DiscordClasses = new Proxy(Classes, {
   }
 })
 
-export const DiscordSelectors = new Proxy(DiscordClasses, {
-  get (obj, prop) {
-    return obj[prop] && new Proxy(obj[prop], {
-      get (obj, prop) {
-        return obj[prop]?.split(' ').filter(i => !!i).map(c => '.'+c).join('')
-      }
-    })
-  }
-})
+export default DiscordClasses

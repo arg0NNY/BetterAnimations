@@ -4,7 +4,7 @@ import Position from '@enums/Position'
 import findInReactTree from '@/utils/findInReactTree'
 import { useLayoutEffect, useState } from 'react'
 import { css } from '@style'
-import { DiscordSelectors } from '@/modules/DiscordSelectors'
+import DiscordSelectors from '@discord/selectors'
 
 function createPatcher () {
   let patchedPopout = null
