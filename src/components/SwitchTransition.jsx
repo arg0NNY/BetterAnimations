@@ -1,4 +1,4 @@
-import { PropTypes, Transition, TransitionGroupContext } from '@discord/modules'
+import { Transition, TransitionGroupContext } from '@discord/modules'
 import { cloneElement, Component, isValidElement } from 'react'
 
 const { ENTERED, ENTERING, EXITING } = Transition
@@ -200,21 +200,6 @@ class SwitchTransition extends Component {
       </TransitionGroupContext.Provider>
     )
   }
-}
-
-SwitchTransition.propTypes = {
-  /**
-   * Transition modes.
-   * `out-in`: Current element transitions out first, then when complete, the new element transitions in.
-   * `in-out`: New element transitions in first, then when complete, the current element transitions out.
-   *
-   * @type {'out-in'|'in-out'}
-   */
-  mode: PropTypes.oneOf([modes.in, modes.out]),
-  /**
-   * Any `Transition` or `CSSTransition` component.
-   */
-  children: PropTypes.oneOfType([PropTypes.element.isRequired]),
 }
 
 SwitchTransition.defaultProps = {

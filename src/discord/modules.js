@@ -91,7 +91,6 @@ export const { Layer, appLayerContext } = getMangled(Filters.byDisplayName('AppL
 })
 export const ChannelMessageList = Webpack.getModule(m => Filters.byStrings('channel', 'messageDisplayCompact')(m?.type))
 export const ChannelView = Webpack.getModule(m => Filters.byStrings('providedChannel')(m?.type))
-export const PropTypes = Webpack.getByKeys('PropTypes')
 export const StandardSidebarViewWrapper = Webpack.waitForModule(Filters.byPrototypeKeys('getPredicateSections', 'renderSidebar'))
 export const StandardSidebarViewKeyed = getWithKey(Filters.byStrings('standardSidebarView', 'section'), { lazy: true })
 export const ModalsKeyed = getWithKey(Filters.byStrings('modalKey', '"layer-"'))
