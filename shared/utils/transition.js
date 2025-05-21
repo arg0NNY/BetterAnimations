@@ -1,13 +1,6 @@
-import { DiscordClasses } from '@/modules/DiscordSelectors'
 
 export function directChild (node) {
   return node && [].find.call(node.children, e => !e.getAttribute('data-baa'))
-}
-
-export function avoidClickTrap (node) {
-  return node?.classList.contains(DiscordClasses.Layer.clickTrapContainer)
-    ? directChild(node)
-    : node
 }
 
 export function pass (props) {

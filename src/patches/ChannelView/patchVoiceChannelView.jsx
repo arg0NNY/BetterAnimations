@@ -6,7 +6,7 @@ import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
-import AnimeTransition from '@/components/AnimeTransition'
+import AnimeTransition from '@components/AnimeTransition'
 import { createRef, Fragment } from 'react'
 import { MainWindowOnly } from '@/hooks/useWindow'
 

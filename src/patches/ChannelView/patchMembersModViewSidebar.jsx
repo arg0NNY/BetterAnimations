@@ -4,7 +4,7 @@ import ModuleKey from '@enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 import SidebarTransition from '@/patches/ChannelView/components/SidebarTransition'
 import useWindow from '@/hooks/useWindow'
-import AnimeContainer from '@/components/AnimeContainer'
+import AnimeContainer from '@components/AnimeContainer'
 
 function patchMembersModViewSidebar () {
   Patcher.after(...MembersModViewSidebarKeyed, (self, [{ guildId }], value) => {

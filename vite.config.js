@@ -79,7 +79,8 @@ export default defineConfig({
       '@error': path.resolve(__dirname, 'shared/error'),
       '@logger': path.resolve(__dirname, 'shared/logger'),
       '@data': path.resolve(__dirname, 'shared/data'),
-      '@packs': path.resolve(__dirname, 'shared/packs')
+      '@packs': path.resolve(__dirname, 'shared/packs'),
+      '@components': path.resolve(__dirname, 'shared/components')
     }
   },
   plugins: [

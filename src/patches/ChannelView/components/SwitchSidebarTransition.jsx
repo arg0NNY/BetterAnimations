@@ -1,5 +1,5 @@
 import { TransitionGroup } from '@/modules/DiscordModules'
-import AnimeTransition from '@/components/AnimeTransition'
+import AnimeTransition from '@components/AnimeTransition'
 
 function SwitchSidebarTransition ({ state, ...props }) {
   const key = JSON.stringify(state)

@@ -7,7 +7,7 @@ import useModule from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import useAutoPosition from '@/hooks/useAutoPosition'
 import Position from '@enums/Position'
-import AnimeTransition from '@/components/AnimeTransition'
+import AnimeTransition from '@components/AnimeTransition'
 
 function patchAppLauncherPopup () {
   Patcher.after(AppLauncherPopup, 'type', (self, [props], value) => {

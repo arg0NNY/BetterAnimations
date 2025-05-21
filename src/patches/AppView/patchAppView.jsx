@@ -2,7 +2,7 @@ import Patcher from '@/modules/Patcher'
 import { Utils } from '@/BdApi'
 import { AppPanels, AppViewKeyed, ImpressionNames, Router, Routes, TransitionGroup } from '@/modules/DiscordModules'
 import findInReactTree from '@/utils/findInReactTree'
-import AnimeTransition from '@/components/AnimeTransition'
+import AnimeTransition from '@components/AnimeTransition'
 import useLocationKey from '@/hooks/useLocationKey'
 import {
   getSwitchContentDirection,
@@ -10,7 +10,7 @@ import {
   shouldSwitchContent,
   shouldSwitchPage
 } from '@/utils/locations'
-import { passAuto } from '@/utils/transition'
+import { passAuto } from '@utils/transition'
 import ModuleKey from '@enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'

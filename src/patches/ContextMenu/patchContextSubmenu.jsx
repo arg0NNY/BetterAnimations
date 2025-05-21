@@ -6,7 +6,7 @@ import {
   MenuSubmenuListItemKeyed,
   Timeout
 } from '@/modules/DiscordModules'
-import AnimeTransition from '@/components/AnimeTransition'
+import AnimeTransition from '@components/AnimeTransition'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import Position from '@enums/Position'

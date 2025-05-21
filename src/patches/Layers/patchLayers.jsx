@@ -1,14 +1,14 @@
 import { Patcher, Utils } from '@/BdApi'
 import { LayersKeyed, TransitionGroup } from '@/modules/DiscordModules'
 import ensureOnce from '@utils/ensureOnce'
-import AnimeTransition from '@/components/AnimeTransition'
-import { passAuto } from '@/utils/transition'
+import AnimeTransition from '@components/AnimeTransition'
+import { passAuto } from '@utils/transition'
 import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import { css } from '@style'
-import Mouse from '@/modules/Mouse'
+import Mouse from '@shared/mouse'
 
 function getWindowCenterAnchor () {
   return {
