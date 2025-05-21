@@ -1,5 +1,5 @@
 import IconBrand from '@/components/icons/IconBrand'
-import { Button, handleClick, Text } from '@/modules/DiscordModules'
+import { Button, handleClick, Text } from '@discord/modules'
 import meta from '@/meta'
 import { css } from '@style'
 import ShopIcon from '@/modules/settings/components/icons/ShopIcon'

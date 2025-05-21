@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { ContextMenuKeyed, TransitionGroup } from '@/modules/DiscordModules'
+import { ContextMenuKeyed, TransitionGroup } from '@discord/modules'
 import AnimeTransition from '@components/AnimeTransition'
 import patchContextSubmenu from '@/patches/ContextMenu/patchContextSubmenu'
 import ensureOnce from '@utils/ensureOnce'

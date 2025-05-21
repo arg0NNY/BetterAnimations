@@ -6,7 +6,7 @@ import {
   ModalHeader,
   ModalRoot,
   Tooltip
-} from '@/modules/DiscordModules'
+} from '@discord/modules'
 import IconBrand from '@/components/icons/IconBrand'
 import { css } from '@style'
 import meta from '@/meta'

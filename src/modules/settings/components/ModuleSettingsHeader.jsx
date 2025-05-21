@@ -13,7 +13,7 @@ import {
   handleClick,
   Switch,
   Tooltip
-} from '@/modules/DiscordModules'
+} from '@discord/modules'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import SectionContext from '@/modules/settings/context/SectionContext'
 import Messages from '@shared/messages'

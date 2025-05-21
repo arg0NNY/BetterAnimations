@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { ModalsKeyed, TransitionGroup } from '@/modules/DiscordModules'
+import { ModalsKeyed, TransitionGroup } from '@discord/modules'
 import AnimeTransition from '@components/AnimeTransition'
 import patchModalItem from '@/patches/Modals/patchModalItem'
 import patchModalBackdrop from '@/patches/Modals/patchModalBackdrop'

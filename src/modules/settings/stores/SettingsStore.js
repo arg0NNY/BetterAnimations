@@ -1,4 +1,4 @@
-import { Dispatcher, Flux, useStateFromStores } from '@/modules/DiscordModules'
+import { Dispatcher, Flux, useStateFromStores } from '@discord/modules'
 import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
 import Config from '@/modules/Config'

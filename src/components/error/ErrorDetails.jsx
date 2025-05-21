@@ -11,7 +11,7 @@ import {
   Parser,
   Text,
   useStateFromStores
-} from '@/modules/DiscordModules'
+} from '@discord/modules'
 import meta from '@/meta'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import InternalError from '@error/structs/InternalError'

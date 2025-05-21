@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { GuildChannelList } from '@/modules/DiscordModules'
+import { GuildChannelList } from '@discord/modules'
 
 export let currentGuildChannels = null
 

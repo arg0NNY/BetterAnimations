@@ -1,5 +1,5 @@
 import ButtonGroup from '@/modules/settings/components/ButtonGroup'
-import { Checkbox, Tooltip } from '@/modules/DiscordModules'
+import { Checkbox, Tooltip } from '@discord/modules'
 import { stop } from '@/modules/settings/utils/eventModifiers'
 import { useAdvancedMode } from '@/modules/settings/hooks/useMode'
 import ModuleContext from '@/modules/settings/context/ModuleContext'

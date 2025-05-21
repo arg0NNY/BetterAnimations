@@ -66,9 +66,10 @@ export default defineConfig({
     alias: {
       // For plugin only
       '@': path.resolve(__dirname, 'src'),
-      '@style': path.resolve(__dirname, 'src/modules/Style.js'),
-      '@animation/store': path.resolve(__dirname, 'src/modules/AnimationStore.js'),
-      '@error/manager': path.resolve(__dirname, 'src/modules/ErrorManager.jsx'),
+      '@style': path.resolve(__dirname, 'src/modules/Style'),
+      '@animation/store': path.resolve(__dirname, 'src/modules/AnimationStore'),
+      '@error/manager': path.resolve(__dirname, 'src/modules/ErrorManager'),
+      '@discord': path.resolve(__dirname, 'src/discord'),
 
       // General
       '@config': path.resolve(__dirname, 'config.json'),

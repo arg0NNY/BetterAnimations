@@ -1,4 +1,4 @@
-import { PropTypes, Transition, TransitionGroupContext } from '@/modules/DiscordModules'
+import { PropTypes, Transition, TransitionGroupContext } from '@discord/modules'
 import { cloneElement, Component, isValidElement } from 'react'
 
 const { ENTERED, ENTERING, EXITING } = Transition

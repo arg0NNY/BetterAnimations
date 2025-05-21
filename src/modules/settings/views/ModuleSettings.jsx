@@ -1,4 +1,4 @@
-import { Text } from '@/modules/DiscordModules'
+import { Text } from '@discord/modules'
 import PackAccordion from '@/modules/settings/components/PackAccordion'
 import PackManager from '@/modules/PackManager'
 import useModule from '@/hooks/useModule'

@@ -1,4 +1,4 @@
-import { Text } from '@/modules/DiscordModules'
+import { Text } from '@discord/modules'
 import { css } from '@style'
 import { Utils } from '@/BdApi'
 import { useMemo } from 'react'

@@ -5,7 +5,7 @@ import {
   ChannelTextAreaButtons,
   TransitionGroup,
   useExpressionPickerStoreKeyed
-} from '@/modules/DiscordModules'
+} from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
 import useWindow from '@/hooks/useWindow'
 import useModule from '@/hooks/useModule'

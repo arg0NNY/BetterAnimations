@@ -1,5 +1,5 @@
 import { css } from '@style'
-import { Clickable, Tooltip } from '@/modules/DiscordModules'
+import { Clickable, Tooltip } from '@discord/modules'
 import { Utils } from '@/BdApi'
 
 function IconButton ({ children, tooltip, disabled = false, active = false, className, ...props }) {

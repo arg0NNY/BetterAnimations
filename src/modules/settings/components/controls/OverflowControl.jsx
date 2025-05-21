@@ -1,4 +1,4 @@
-import { Checkbox, handleClick, Text, Tooltip } from '@/modules/DiscordModules'
+import { Checkbox, handleClick, Text, Tooltip } from '@discord/modules'
 import IconButton from '@/modules/settings/components/IconButton'
 import RedoIcon from '@/modules/settings/components/icons/RedoIcon'
 import { css } from '@style'

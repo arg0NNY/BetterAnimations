@@ -1,5 +1,5 @@
 import Toast, { ToastTypes } from '@/components/Toast'
-import { Button } from '@/modules/DiscordModules'
+import { Button } from '@discord/modules'
 import useEmitterEffect from '@/hooks/useEmitterEffect'
 import Events from '@enums/Events'
 import ErrorManager from '@error/manager'

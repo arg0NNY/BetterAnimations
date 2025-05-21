@@ -1,4 +1,4 @@
-import { Transition } from '@/modules/DiscordModules'
+import { Transition } from '@discord/modules'
 import Freeze from '@components/Freeze'
 import AnimationType from '@enums/AnimationType'
 import { css } from '@style'

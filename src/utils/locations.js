@@ -4,7 +4,7 @@ import {
   Router,
   Routes,
   StaticChannelRoute
-} from '@/modules/DiscordModules'
+} from '@discord/modules'
 import { getSortedGuildChannelIds, getSortedGuildTreeIds } from '@/utils/guilds'
 import { getStaticDMRouteIndex } from '@/utils/routes'
 import { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChannelList'

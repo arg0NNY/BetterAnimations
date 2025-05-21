@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { ModalTransitionState } from '@/modules/DiscordModules'
+import { ModalTransitionState } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'

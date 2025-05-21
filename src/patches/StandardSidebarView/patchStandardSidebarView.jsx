@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { StandardSidebarViewKeyed, StandardSidebarViewWrapper, TransitionGroup } from '@/modules/DiscordModules'
+import { StandardSidebarViewKeyed, StandardSidebarViewWrapper, TransitionGroup } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@components/AnimeTransition'
 import { passAuto } from '@utils/transition'

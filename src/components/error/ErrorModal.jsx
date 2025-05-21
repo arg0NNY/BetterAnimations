@@ -1,4 +1,4 @@
-import { ModalSize } from '@/modules/DiscordModules'
+import { ModalSize } from '@discord/modules'
 import Modal from '@/components/Modal'
 import ErrorDetails from '@/components/error/ErrorDetails'
 import { css } from '@style'

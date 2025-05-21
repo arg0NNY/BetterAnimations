@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { SpringTransitionPhases, Tooltip, TooltipLayer } from '@/modules/DiscordModules'
+import { SpringTransitionPhases, Tooltip, TooltipLayer } from '@discord/modules'
 import AnimeTransition from '@components/AnimeTransition'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'

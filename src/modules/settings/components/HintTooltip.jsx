@@ -1,4 +1,4 @@
-import { Tooltip } from '@/modules/DiscordModules'
+import { Tooltip } from '@discord/modules'
 import CircleInfoIcon from '@/modules/settings/components/icons/CircleInfoIcon'
 import { css } from '@style'
 import { useCallback } from 'react'

@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { ExpressionPicker, useExpressionPickerStoreKeyed } from '@/modules/DiscordModules'
+import { ExpressionPicker, useExpressionPickerStoreKeyed } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
 import { css } from '@style'
 import AnimeContainer from '@components/AnimeContainer'

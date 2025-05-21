@@ -1,4 +1,4 @@
-import { Slider as DiscordSlider, Tooltip } from '@/modules/DiscordModules'
+import { Slider as DiscordSlider, Tooltip } from '@discord/modules'
 import Patcher from '@/modules/Patcher'
 import findInReactTree from '@/utils/findInReactTree'
 

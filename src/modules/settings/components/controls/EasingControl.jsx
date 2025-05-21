@@ -1,4 +1,4 @@
-import { SingleSelect, Text, TextInput } from '@/modules/DiscordModules'
+import { SingleSelect, Text, TextInput } from '@discord/modules'
 import { useEffect, useMemo, useState } from 'react'
 import { css } from '@style'
 import { easingBeziers, easingStyles, easingTypes, easingValues } from '@data/easings'

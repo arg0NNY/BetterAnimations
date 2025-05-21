@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { Message } from '@/modules/DiscordModules'
+import { Message } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import useModule from '@/hooks/useModule'

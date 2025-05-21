@@ -1,6 +1,6 @@
 import Patcher from '@/modules/Patcher'
 import { Utils } from '@/BdApi'
-import { AppPanels, AppViewKeyed, ImpressionNames, Router, Routes, TransitionGroup } from '@/modules/DiscordModules'
+import { AppPanels, AppViewKeyed, ImpressionNames, Router, Routes, TransitionGroup } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@components/AnimeTransition'
 import useLocationKey from '@/hooks/useLocationKey'

@@ -1,4 +1,4 @@
-import { SortedGuildStore } from '@/modules/DiscordModules'
+import { SortedGuildStore } from '@discord/modules'
 import { guildActionRowToChannelRoute } from '@/utils/routes'
 
 export function getSortedGuildTreeIds (node = SortedGuildStore.getGuildsTree().root) {

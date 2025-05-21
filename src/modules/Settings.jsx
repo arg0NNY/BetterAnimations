@@ -1,4 +1,4 @@
-import { LayerActions, LayerStore, UserSettingsModal } from '@/modules/DiscordModules'
+import { LayerActions, LayerStore, UserSettingsModal } from '@discord/modules'
 import SettingsModal from '@/modules/settings/SettingsModal'
 import SettingsSection from '@enums/SettingsSection'
 import { setSection } from '@/modules/settings/stores/SettingsStore'

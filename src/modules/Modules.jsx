@@ -10,7 +10,7 @@ import ServerModuleControls from '@/components/ServerModuleControls'
 import Messages from '@shared/messages'
 import { forceAppUpdate } from '@/utils/forceUpdate'
 import meta from '@/meta'
-import { Anchor } from '@/modules/DiscordModules'
+import { Anchor } from '@discord/modules'
 
 class Module extends BaseModule {
   get settings () {

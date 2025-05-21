@@ -1,4 +1,4 @@
-import { TransitionGroup } from '@/modules/DiscordModules'
+import { TransitionGroup } from '@discord/modules'
 import AnimeTransition from '@components/AnimeTransition'
 
 function SwitchSidebarTransition ({ state, ...props }) {

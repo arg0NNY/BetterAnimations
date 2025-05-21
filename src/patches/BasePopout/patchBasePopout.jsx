@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { BasePopoutKeyed, ReferencePositionLayer, TransitionGroup } from '@/modules/DiscordModules'
+import { BasePopoutKeyed, ReferencePositionLayer, TransitionGroup } from '@discord/modules'
 import AnimeTransition from '@components/AnimeTransition'
 import patchPopoutCSSAnimator from '@/patches/BasePopout/patchPopoutCSSAnimator'
 import useModule from '@/hooks/useModule'

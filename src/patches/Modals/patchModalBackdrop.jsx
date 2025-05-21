@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { ModalBackdrop } from '@/modules/DiscordModules'
+import { ModalBackdrop } from '@discord/modules'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import findInReactTree from '@/utils/findInReactTree'

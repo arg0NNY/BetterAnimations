@@ -1,5 +1,5 @@
 import { css } from '@style'
-import { Text } from '@/modules/DiscordModules'
+import { Text } from '@discord/modules'
 import ModuleContext from '@/modules/settings/context/ModuleContext'
 import { useContext } from 'react'
 import WIP from '@/modules/settings/components/WIP'

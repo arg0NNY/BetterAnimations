@@ -6,7 +6,7 @@ import PositionControl from '@/modules/settings/components/controls/PositionCont
 import DirectionControl from '@/modules/settings/components/controls/DirectionControl'
 import OverflowControl from '@/modules/settings/components/controls/OverflowControl'
 import { css } from '@style'
-import { Switch, Text, Tooltip } from '@/modules/DiscordModules'
+import { Switch, Text, Tooltip } from '@discord/modules'
 import IconButton from '@/modules/settings/components/IconButton'
 import AnimationSettingContainer from '@enums/AnimationSettingContainer'
 import { createElement } from 'react'

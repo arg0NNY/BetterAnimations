@@ -5,7 +5,7 @@ import { stop } from '@/modules/settings/utils/eventModifiers'
 import SettingsIcon from '@/modules/settings/components/icons/SettingsIcon'
 import CollapseListIcon from '@/modules/settings/components/icons/CollapseListIcon'
 import ErrorManager from '@error/manager'
-import { colors } from '@/modules/DiscordModules'
+import { colors } from '@discord/modules'
 import CircleWarningIcon from '@/modules/settings/components/icons/CircleWarningIcon'
 
 function AnimationCardControls ({

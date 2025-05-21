@@ -1,5 +1,5 @@
 import { forceAppUpdate } from '@/utils/forceUpdate'
-import { Checkbox, Flex, handleClick, Text } from '@/modules/DiscordModules'
+import { Checkbox, Flex, handleClick, Text } from '@discord/modules'
 import IconButton from '@/modules/settings/components/IconButton'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import CircleQuestionIcon from '@/modules/settings/components/icons/CircleQuestionIcon'

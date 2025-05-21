@@ -1,4 +1,4 @@
-import { createToast, showToast } from '@/modules/DiscordModules'
+import { createToast, showToast } from '@discord/modules'
 import Toast, { ToastTypes } from '@/components/Toast'
 
 export default class Toasts {

@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { MessageDivider } from '@/modules/DiscordModules'
+import { MessageDivider } from '@discord/modules'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import useWindow from '@/hooks/useWindow'

@@ -1,6 +1,6 @@
 import BaseErrorManager from '@shared/error/manager'
 import Logger from '@logger'
-import { createToast, ModalActions, popToast, popToastKeyed, useToastStore } from '@/modules/DiscordModules'
+import { createToast, ModalActions, popToast, popToastKeyed, useToastStore } from '@discord/modules'
 import ErrorModal from '@/components/error/ErrorModal'
 import ErrorToast from '@/components/error/ErrorToast'
 import Emitter from '@/modules/Emitter'

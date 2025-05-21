@@ -1,6 +1,6 @@
 import IconBrand from '@/components/icons/IconBrand'
 import { css } from '@style'
-import { Text } from '@/modules/DiscordModules'
+import { Text } from '@discord/modules'
 import { useSection } from '@/modules/settings/stores/SettingsStore'
 import { Utils } from '@/BdApi'
 import SettingsSection from '@enums/SettingsSection'

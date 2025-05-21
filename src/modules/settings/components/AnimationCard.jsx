@@ -4,7 +4,7 @@ import AnimationCardControls from '@/modules/settings/components/AnimationCardCo
 import useEventListener from '@/hooks/useEventListener'
 import useHover from '@/hooks/useHover'
 import useWindowSize from '@/hooks/useWindowSize'
-import { Clickable, CSSTransition, TransitionGroup } from '@/modules/DiscordModules'
+import { Clickable, CSSTransition, TransitionGroup } from '@discord/modules'
 import AnimationSettings from '@/modules/settings/components/AnimationSettings'
 import { DiscordClasses } from '@/modules/DiscordSelectors'
 import useDismissible from '@/modules/settings/hooks/useDismissible'

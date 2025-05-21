@@ -1,5 +1,5 @@
 import { Patcher, Utils } from '@/BdApi'
-import { ListThin, TransitionGroup, useStateFromStores } from '@/modules/DiscordModules'
+import { ListThin, TransitionGroup, useStateFromStores } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@components/AnimeTransition'
 import ChannelStackStore from '@/patches/ListThin/ChannelStackStore'

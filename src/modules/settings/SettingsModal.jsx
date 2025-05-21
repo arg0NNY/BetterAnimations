@@ -5,7 +5,7 @@ import {
   StandardSidebarViewWrapper,
   ThemeStore,
   useStateFromStores
-} from '@/modules/DiscordModules'
+} from '@discord/modules'
 import { getSections } from '@/modules/settings/data/sections'
 import meta from '@/meta'
 import SectionContext from '@/modules/settings/context/SectionContext'

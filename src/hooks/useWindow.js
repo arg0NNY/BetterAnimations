@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { AppContext } from '@/modules/DiscordModules'
+import { AppContext } from '@discord/modules'
 
 const mainWindow = window
 

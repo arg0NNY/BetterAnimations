@@ -1,4 +1,4 @@
-import { Dispatcher } from '@/modules/DiscordModules'
+import { Dispatcher } from '@discord/modules'
 
 export function forceAppUpdate () {
   Dispatcher.dispatch({ type: 'DOMAIN_MIGRATION_START' })

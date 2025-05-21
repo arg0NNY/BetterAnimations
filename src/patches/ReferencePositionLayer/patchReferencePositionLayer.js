@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { ReferencePositionLayer } from '@/modules/DiscordModules'
+import { ReferencePositionLayer } from '@discord/modules'
 import { css } from '@style'
 import { DiscordSelectors } from '@/modules/DiscordSelectors'
 

@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { ChannelMessageList, TransitionGroup, useStateFromStores } from '@/modules/DiscordModules'
+import { ChannelMessageList, TransitionGroup, useStateFromStores } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@components/AnimeTransition'
 import ensureOnce from '@utils/ensureOnce'

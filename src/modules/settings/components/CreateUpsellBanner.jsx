@@ -1,4 +1,4 @@
-import { Button, handleClick, Text } from '@/modules/DiscordModules'
+import { Button, handleClick, Text } from '@discord/modules'
 import { css } from '@style'
 import Documentation from '@shared/documentation'
 import PackPicture from '@/modules/settings/components/PackPicture'

@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { AppLauncherPopup, ChannelAppLauncher, TransitionGroup } from '@/modules/DiscordModules'
+import { AppLauncherPopup, ChannelAppLauncher, TransitionGroup } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
 import { useRef } from 'react'
 import useWindow from '@/hooks/useWindow'

@@ -1,4 +1,4 @@
-import { GuildActionRow, Routes, StaticChannelRoute } from '@/modules/DiscordModules'
+import { GuildActionRow, Routes, StaticChannelRoute } from '@discord/modules'
 
 export function guildActionRowToChannelRoute (guildActionRow) {
   // Keep up-to-date with the internal `GuildChannelList` component

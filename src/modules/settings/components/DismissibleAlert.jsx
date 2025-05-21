@@ -1,4 +1,4 @@
-import { Alert } from '@/modules/DiscordModules'
+import { Alert } from '@discord/modules'
 import XIcon from '@/modules/settings/components/icons/XIcon'
 import IconButton from '@/modules/settings/components/IconButton'
 import { css } from '@style'

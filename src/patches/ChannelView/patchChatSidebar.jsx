@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { ChatSidebarKeyed } from '@/modules/DiscordModules'
+import { ChatSidebarKeyed } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeContainer from '@components/AnimeContainer'
 import ModuleKey from '@enums/ModuleKey'

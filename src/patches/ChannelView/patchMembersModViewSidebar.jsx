@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { ChannelSectionStore, MembersModViewSidebarKeyed, useStateFromStores } from '@/modules/DiscordModules'
+import { ChannelSectionStore, MembersModViewSidebarKeyed, useStateFromStores } from '@discord/modules'
 import ModuleKey from '@enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 import SidebarTransition from '@/patches/ChannelView/components/SidebarTransition'

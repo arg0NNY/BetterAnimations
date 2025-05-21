@@ -4,7 +4,7 @@ import {
   Constants,
   MESSAGE_REQUESTS_BASE_CHANNEL_ID,
   MessageRequestSidebar
-} from '@/modules/DiscordModules'
+} from '@discord/modules'
 import { memo } from 'react'
 import { unkeyed } from '@/utils/webpack'
 import MessageRequestSidebarContext from '@/patches/ChannelView/context/MessageRequestSidebarContext'

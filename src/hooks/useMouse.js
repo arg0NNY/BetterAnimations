@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { AppContext } from '@/modules/DiscordModules'
+import { AppContext } from '@discord/modules'
 import MainMouse, { Mouse } from '@shared/mouse'
 
 export function getMouse (renderWindow) {

@@ -7,7 +7,7 @@ import {
   SidebarType,
   TransitionGroup,
   useStateFromStores
-} from '@/modules/DiscordModules'
+} from '@discord/modules'
 import patchUseMessageRequestSidebarState from '@/patches/ChannelView/patchUseMessageRequestSidebarState'
 import MessageRequestSidebarWrapper from '@/patches/ChannelView/components/MessageRequestSidebarWrapper'
 import useModule from '@/hooks/useModule'

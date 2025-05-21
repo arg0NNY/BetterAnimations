@@ -1,6 +1,6 @@
 import { css } from '@style'
 import PackPicture from '@/modules/settings/components/PackPicture'
-import { Button, handleClick, Text } from '@/modules/DiscordModules'
+import { Button, handleClick, Text } from '@discord/modules'
 import SettingsSection from '@enums/SettingsSection'
 import ShopIcon from '@/modules/settings/components/icons/ShopIcon'
 import Documentation from '@shared/documentation'
