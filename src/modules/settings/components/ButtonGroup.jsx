@@ -1,6 +1,6 @@
 import { Clickable, Tooltip } from '@discord/modules'
 import { css } from '@style'
-import { Utils } from '@/BdApi'
+import classNames from 'classnames'
 
 const Sizes = {
   SMALL: 'small',
@@ -31,7 +31,7 @@ function ButtonGroupItem ({ children, tooltip, selected, disabled, onClick }) {
 function ButtonGroup ({ options, multiple = false, selected, onChange, className, size = Sizes.SMALL }) {
   return (
     <div
-      className={Utils.className(
+      className={classNames(
         'BA__buttonGroup',
         `BA__buttonGroup--${size}`,
         {

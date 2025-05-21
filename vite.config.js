@@ -65,11 +65,12 @@ export default defineConfig({
     },
     minify: false,
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: ['react', 'react-dom', 'classnames'],
       output: {
         globals: {
           react: 'BdApi.React',
-          'react-dom': 'BdApi.ReactDOM'
+          'react-dom': 'BdApi.ReactDOM',
+          classnames: 'BdApi.Utils.className'
         }
       },
       onwarn (warning, warn) {

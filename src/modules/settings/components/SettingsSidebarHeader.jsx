@@ -2,15 +2,15 @@ import IconBrand from '@/components/icons/IconBrand'
 import { css } from '@style'
 import { Text } from '@discord/modules'
 import { useSection } from '@/modules/settings/stores/SettingsStore'
-import { Utils } from '@/BdApi'
 import SettingsSection from '@enums/SettingsSection'
 import meta from '@/meta'
+import classNames from 'classnames'
 
 function SettingsSidebarHeader () {
   const [section] = useSection()
 
   return (
-    <div className={Utils.className(
+    <div className={classNames(
       'BA__settingsSidebarHeader',
       {
         'BA__settingsSidebarHeader--hidden': section === SettingsSection.Home

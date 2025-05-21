@@ -11,7 +11,7 @@ import useDismissible from '@/modules/settings/hooks/useDismissible'
 import useElementBounding from '@/hooks/useElementBounding'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import HintTooltip from '@/modules/settings/components/HintTooltip'
-import { Utils } from '@/BdApi'
+import classNames from 'classnames'
 
 export function getCardHeight (width) {
   return getPreviewHeight(width - 16) + 52
@@ -148,7 +148,7 @@ function AnimationCard ({
 
   return (
     <div
-      className={Utils.className(
+      className={classNames(
         'BA__animationCardWrapper',
         {
           'BA__animationCard--expanded': expanded,

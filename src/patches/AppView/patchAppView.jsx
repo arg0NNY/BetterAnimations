@@ -1,5 +1,4 @@
 import Patcher from '@/modules/Patcher'
-import { Utils } from '@/BdApi'
 import { AppPanels, AppViewKeyed, ImpressionNames, Router, Routes, TransitionGroup } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@components/AnimeTransition'
@@ -19,6 +18,7 @@ import DiscordSelectors from '@discord/selectors'
 import { css } from '@style'
 import { Fragment } from 'react'
 import useWindow from '@/hooks/useWindow'
+import classNames from 'classnames'
 
 export let guildChannelPath = []
 
@@ -95,7 +95,7 @@ function patchAppView () {
     // Enhance layout
     if (!serversModule.isEnabled() || !serversModule.settings.enhanceLayout) return
 
-    base.props.className = Utils.className(base.props.className, 'BA__baseEnhancedLayout')
+    base.props.className = classNames(base.props.className, 'BA__baseEnhancedLayout')
 
     const sidebarIndex = content.props.children.findIndex(m => 'isSidebarOpen' in (m?.props ?? {}))
     if (sidebarIndex === -1) return

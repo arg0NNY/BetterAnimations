@@ -1,13 +1,13 @@
 import { css } from '@style'
 import { Clickable, Tooltip } from '@discord/modules'
-import { Utils } from '@/BdApi'
+import classNames from 'classnames'
 
 function IconButton ({ children, tooltip, disabled = false, active = false, className, ...props }) {
   const button = _props => (
     <div className={className} {..._props}>
       <Clickable
         tag="button"
-        className={Utils.className(
+        className={classNames(
           'BA__iconButton',
           { 'BA__iconButton--active': active }
         )}

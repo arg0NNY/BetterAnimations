@@ -1,9 +1,9 @@
-import { Utils } from '@/BdApi'
 import { Button, FormTitle, ModalActions } from '@discord/modules'
 import { css } from '@style'
 import useModule from '@/hooks/useModule'
 import Config from '@/modules/Config'
 import Settings from '@/modules/Settings'
+import classNames from 'classnames'
 
 function ErrorDetailsActions ({ error, className }) {
   const module = useModule(error.module?.id)
@@ -40,7 +40,7 @@ function ErrorDetailsActions ({ error, className }) {
   return (
     <>
       <FormTitle>Suggested actions</FormTitle>
-      <div className={Utils.className('BA__errorDetailsActions', className)}>
+      <div className={classNames('BA__errorDetailsActions', className)}>
         {actions}
       </div>
     </>

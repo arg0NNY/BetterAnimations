@@ -10,8 +10,8 @@ import { Switch, Text, Tooltip } from '@discord/modules'
 import IconButton from '@/modules/settings/components/IconButton'
 import AnimationSettingContainer from '@enums/AnimationSettingContainer'
 import { createElement } from 'react'
-import { Utils } from '@/BdApi'
 import RedoIcon from '@/modules/settings/components/icons/RedoIcon'
+import classNames from 'classnames'
 
 function SettingList ({ children, className = 'BA__animationSettingsList' }) {
   return (
@@ -26,7 +26,7 @@ function SettingList ({ children, className = 'BA__animationSettingsList' }) {
 
 function SettingGroup ({ children, className }) {
   return (
-    <SettingList className={Utils.className('BA__animationSettingsGroup', className)}>
+    <SettingList className={classNames('BA__animationSettingsGroup', className)}>
       {children}
     </SettingList>
   )

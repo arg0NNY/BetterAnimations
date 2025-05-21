@@ -1,4 +1,4 @@
-import { Patcher, Utils } from '@/BdApi'
+import { Patcher } from '@/BdApi'
 import { LayersKeyed, TransitionGroup } from '@discord/modules'
 import ensureOnce from '@utils/ensureOnce'
 import AnimeTransition from '@components/AnimeTransition'
@@ -10,6 +10,7 @@ import ModuleKey from '@enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import { css } from '@style'
 import Mouse from '@shared/mouse'
+import classNames from 'classnames'
 
 function getWindowCenterAnchor () {
   return {
@@ -23,7 +24,7 @@ function getWindowCenterAnchor () {
 function LayerContainer ({ baseLayer, hidden, children }) {
   return (
     <div
-      className={Utils.className(
+      className={classNames(
         DiscordClasses.Layers.layer,
         {
           [DiscordClasses.Layers.baseLayer]: baseLayer,
