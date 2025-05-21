@@ -43,7 +43,12 @@ export class Style {
   }
 
   registerStyle (description, style) {
-    this.styles.push({ description, style })
+    const index = this.styles.findIndex(s => s.description === description)
+    if (index !== -1) {
+      this.styles.splice(index, 1, { description, style })
+      Logger.warn(this.name, `Style "${description}" has been overridden.`)
+    }
+    else this.styles.push({ description, style })
     this.updateStyle()
   }
 
@@ -58,8 +63,11 @@ export class Style {
 export const createCSS =
   style =>
     (strings, ...values) =>
-      description =>
-        style.registerStyle(description, String.raw({ raw: strings }, ...values))
+      (description, ...descriptionValues) =>
+        style.registerStyle(
+          String.raw(description, ...descriptionValues),
+          String.raw(strings, ...values)
+        )
 
 const style = new Style
 export const css = createCSS(style)
