@@ -52,7 +52,8 @@ export const aliases = {
   '@packs': path.resolve(__dirname, 'shared/packs'),
   '@components': path.resolve(__dirname, 'shared/components'),
   '@discord': path.resolve(__dirname, 'shared/discord'),
-  '@style': path.resolve(__dirname, 'shared/style')
+  '@style': path.resolve(__dirname, 'shared/style'),
+  '@preview': path.resolve(__dirname, 'shared/preview')
 }
 
 export default defineConfig({
