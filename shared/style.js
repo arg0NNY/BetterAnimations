@@ -27,7 +27,7 @@ export class Style {
       ''
     )
   }
-  buildStyleElement (document = window.document) {
+  buildStyleElement () {
     const style = document.createElement('style')
     style.id = this.styleId
     style.appendChild(document.createTextNode(this.buildStyle()))

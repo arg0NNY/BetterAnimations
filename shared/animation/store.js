@@ -2,7 +2,7 @@ import Animation from '@animation'
 import ModuleType from '@enums/ModuleType'
 import Logger from '@logger'
 
-export default class AnimationStore {
+export class AnimationStore {
   get name () { return 'AnimationStore' }
   get switchCooldownDuration () { return 1000 }
 
@@ -10,19 +10,20 @@ export default class AnimationStore {
     this.animations = []
     this.switchCooldownUntil = 0
 
+    this._watchers = []
+
     this.onDocumentVisibilityChange = () => {
       if (document.hidden) this.cancelAllAnimations()
+      else this.trigger()
     }
   }
 
   initialize () {
     document.addEventListener('visibilitychange', this.onDocumentVisibilityChange)
-    Logger.info(this.name, 'Initialized.')
   }
   shutdown () {
     document.removeEventListener('visibilitychange', this.onDocumentVisibilityChange)
     this.cancelAllAnimations()
-    Logger.info(this.name, 'Shutdown.')
   }
 
   cooldown () {
@@ -47,8 +48,8 @@ export default class AnimationStore {
     switch (animation.module.type) {
       case ModuleType.Reveal:
         const [conflict] = this.animations.filter(a => a.module.id === animation.module.id && a.element === animation.element)
-        const intersect = (animation.raw?.id ?? null) === (conflict?.raw?.id ?? null)
-          && (!animation.raw?.id || animation.raw.meta?.intersect)
+        const intersect = (animation.data?.id ?? null) === (conflict?.data?.id ?? null)
+          && (!animation.data?.id || animation.data.meta?.intersect)
 
         return [this.cancelAnimations(conflict ?? []), true, intersect ? conflict : null]
       case ModuleType.Switch: {
@@ -73,6 +74,7 @@ export default class AnimationStore {
     if (!animation.initialize(callback, allowed, intersectWith)) return null
 
     this.animations.push(animation)
+    this.trigger()
     return animation
   }
 
@@ -86,6 +88,22 @@ export default class AnimationStore {
 
   removeAnimation (animation) {
     const index = this.animations.indexOf(animation)
-    if (index !== -1) this.animations.splice(this.animations.indexOf(animation), 1)
+    if (index === -1) return
+
+    this.animations.splice(index, 1)
+    this.trigger()
+  }
+
+  watch (callback) {
+    this._watchers.push(callback)
+    return () => this._watchers.splice(this._watchers.indexOf(callback), 1)
+  }
+  trigger () {
+    this._watchers.forEach(callback => {
+      try { callback(this.animations) }
+      catch (error) { Logger.warn(this.name, `Watcher threw an error:`, error) }
+    })
   }
 }
+
+export default new AnimationStore

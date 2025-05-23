@@ -1,4 +1,4 @@
-import BaseErrorManager from '@shared/error/manager'
+import { ErrorManager as BaseErrorManager } from '@shared/error/manager'
 import Logger from '@logger'
 import { createToast, ModalActions, popToast, popToastKeyed, useToastStore } from '@discord/modules'
 import ErrorModal from '@/components/error/ErrorModal'

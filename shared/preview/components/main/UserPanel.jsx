@@ -26,6 +26,7 @@ export default UserPanel
 css
 `.BAP__userPanelContainer {
     position: absolute;
+    z-index: 100;
     left: 0;
     bottom: 0;
     width: 341px;

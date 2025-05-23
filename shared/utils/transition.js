@@ -1,13 +1,11 @@
+import { cloneElement } from 'react'
 
 export function directChild (node) {
   return node && [].find.call(node.children, e => !e.getAttribute('data-baa'))
 }
 
-export function pass (props) {
-  return e => {
-    if (e?.props) Object.assign(e.props, props)
-    return e
-  }
+export function pass (props = null) {
+  return e => cloneElement(e, props)
 }
 
 export function passAuto (auto) {

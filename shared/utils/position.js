@@ -1,9 +1,26 @@
 import Position from '@enums/Position'
 import Direction from '@enums/Direction'
 
-export function getRect (node) {
-  const { x, y, top, left, right, bottom, width, height } = node.getBoundingClientRect()
-  return { x, y, top, left, right, bottom, width, height }
+export function getRect (el, parent = document.body) {
+  const { offsetWidth: width, offsetHeight: height } = el
+
+  let x = 0, y = 0, current = el
+  while (current != null && current !== parent) {
+    x += current.offsetLeft
+    y += current.offsetTop
+    current = current.offsetParent
+  }
+
+  return {
+    x,
+    y,
+    left: x,
+    top: y,
+    right: x + width,
+    bottom: y + height,
+    width,
+    height
+  }
 }
 
 export function reversePosition (position) {

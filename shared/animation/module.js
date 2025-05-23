@@ -98,10 +98,15 @@ export default class Module {
     return this.buildSettings(animation, type, this.getAnimationConfig(pack, animation, type), options)
   }
 
-  initializeAnimation (type) {
-    const pointer = this.settings[type] ?? {}
-    const pack = pointer.packSlug && this.getPack(pointer.packSlug)
-    const animation = pack && this.findAnimation(pack, pointer.animationKey)
+  initializeAnimation (pack, animation, type) {
+    if (typeof pack === 'string') {
+      type = pack
+
+      const pointer = this.settings[type] ?? {}
+      pack = pointer.packSlug && this.getPack(pointer.packSlug)
+      animation = pack && this.findAnimation(pack, pointer.animationKey)
+    }
+
     const config = animation ? this.getAnimationConfig(pack, animation, type) : {}
     const path = animation ? ['animations', pack.animations.indexOf(animation), type in animation ? type : 'animate'] : []
 
@@ -131,9 +136,9 @@ export default class Module {
     if (animation) debug.initializeEnd(animate, context)
 
     return {
-      packSlug: pointer.packSlug ?? null,
-      animationKey: pointer.animationKey ?? null,
-      id: [pointer.packSlug, pointer.animationKey].filter(Boolean).join('/') || null,
+      packSlug: pack?.slug ?? null,
+      animationKey: animation?.key ?? null,
+      id: [pack?.slug, animation?.key].filter(Boolean).join('/') || null,
       pack,
       animation,
       path,
@@ -143,21 +148,32 @@ export default class Module {
       error
     }
   }
-  initializeAnimations () {
+  initializeAnimations (pack, animation) {
+    if (pack && animation)
+      return {
+        enter: this.initializeAnimation(pack, animation, AnimationType.Enter),
+        exit: this.initializeAnimation(pack, animation, AnimationType.Exit)
+      }
+
     this.animations = {
       enter: this.initializeAnimation(AnimationType.Enter),
       exit: this.initializeAnimation(AnimationType.Exit)
     }
   }
 
-  getAnimation (type, options = {}, context = null) {
-    const { pack, animation, path, meta, config } = this.animations[type]
+  getAnimation (data, type, options, context) {
+    if (typeof data === 'string') {
+      [type, options, context] = arguments
+      data = this.settings[type]
+    }
+
+    const { pack, animation, path, meta, config } = data
 
     const settings = animation && this.buildSettings(animation, type, config, options)
     const ctx = buildContext(pack, animation, type, settings, meta, { module: this, path, ...context })
 
     return {
-      ...this.animations[type],
+      ...data,
       settings,
       context: ctx
     }

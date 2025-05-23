@@ -52,7 +52,7 @@ function ChannelList ({ name, items = [] }) {
 
 function Server ({ channelList, channel }) {
   return (
-    <Flex align="stretch" flex={1}>
+    <Flex className="BAP__server">
       <ChannelList {...channelList} />
       <Channel {...channel} />
     </Flex>
@@ -62,7 +62,12 @@ function Server ({ channelList, channel }) {
 export default Server
 
 css
-`.BAP__channelList {
+`.BAP__server {
+    display: flex;
+    align-items: stretch;
+    flex: 1;
+}
+.BAP__channelList {
     border-top-width: 1px !important;
     border-left-width: 1px !important;
     border-top-left-radius: 12px;

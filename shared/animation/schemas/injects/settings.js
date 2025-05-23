@@ -95,7 +95,7 @@ export const PositionInjectSchema =
   }
 
 export const DirectionInjectSchema = InjectWithMeta(
-  SwitchSchema(Inject.Direction, Direction.values(), { defaultValue: Direction.Right, setting: Setting.Direction }),
+  SwitchSchema(Inject.Direction, Direction.values(), { defaultValue: Direction.Rightwards, setting: Setting.Direction }),
   { immediate: [Setting.Direction, 'settings'] }
 )
 

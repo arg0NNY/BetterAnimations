@@ -32,6 +32,13 @@ class AnimeTransition extends Component {
     }
   }
 
+  get mouse () {
+    return this.props.mouse ?? mouse
+  }
+  get store () {
+    return this.props.store ?? AnimationStore
+  }
+
   componentWillUnmount () {
     this.instance.current?.cancel()
   }
@@ -42,13 +49,15 @@ class AnimeTransition extends Component {
       container?.setAttribute('data-ba-container', '')
       if (this.props.defaultLayoutStyles === false) container?.setAttribute('data-ba-default-layout-styles', 'false')
 
-      this.instance.current = AnimationStore.requestAnimation({
+      this.instance.current = this.store.requestAnimation({
         module: this.props.module,
+        data: this.props.data?.[type],
         type,
         container,
         element: directChild(container),
+        viewport: this.props.viewportRef?.current,
         window: window,
-        mouse: this.props.mouse ?? mouse,
+        mouse: this.mouse,
         anchor: this.props.anchor,
         auto: this.props.autoRef ?? { current: this.props.auto },
         doneCallbackRef: this.doneCallback
@@ -68,6 +77,7 @@ class AnimeTransition extends Component {
   render () {
     const {
       module,
+      data,
       children,
       container = false,
       freeze = false,
@@ -107,8 +117,8 @@ class AnimeTransition extends Component {
       <Transition
         {...props}
         nodeRef={this.nodeRef}
-        enter={module.isEnabled(AnimationType.Enter) && enter}
-        exit={module.isEnabled(AnimationType.Exit) && exit}
+        enter={(data != null || module.isEnabled(AnimationType.Enter)) && enter}
+        exit={(data != null || module.isEnabled(AnimationType.Exit)) && exit}
         mountOnEnter={mountOnEnter}
         unmountOnExit={unmountOnExit}
         onEntering={this.onAnimate(AnimationType.Enter, onEntering)}

@@ -1,6 +1,6 @@
 import Logger from '@logger'
 
-class ErrorManager {
+export class ErrorManager {
   get name () { return 'ErrorManager' }
 
   registerError (error) {
@@ -17,4 +17,4 @@ class ErrorManager {
   }
 }
 
-export default ErrorManager
+export default new ErrorManager

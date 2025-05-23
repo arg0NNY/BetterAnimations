@@ -5,14 +5,15 @@ import ErrorManager from '@error/manager'
 import AnimationError from '@error/structs/AnimationError'
 
 export default class Animation {
-  constructor (store, { module, type, container, element, window, mouse, anchor, auto, doneCallbackRef }) {
+  constructor (store, { module, data, type, container, element, viewport, window, mouse, anchor, auto, doneCallbackRef }) {
     this.store = store
 
     this.module = module
-    this.raw = module.animations[type]
+    this.data = data ?? module.animations[type]
     this.type = type
     this.container = container
     this.element = element
+    this.viewport = viewport ?? window.document.body
     this.window = window
     this.mouse = mouse
     this.anchor = anchor
@@ -66,6 +67,7 @@ export default class Animation {
           : this.anchor
 
       const { animate, context } = this.module.getAnimation(
+        this.data,
         this.type,
         {
           auto: Object.assign(
@@ -76,13 +78,14 @@ export default class Animation {
         {
           instance: this,
           container: this.container,
-          containerRect: getRect(this.container),
+          containerRect: getRect(this.container, this.viewport),
           element: this.element,
+          viewport: this.viewport,
           window: this.window,
           document: this.window.document,
           mouse: this.mouse,
           anchor,
-          anchorRect: isElement(anchor) ? getRect(anchor) : anchor,
+          anchorRect: isElement(anchor) ? getRect(anchor, this.viewport) : anchor,
           intersectWith,
           isIntersected: !!intersectWith
         }

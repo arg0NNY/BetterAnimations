@@ -40,9 +40,7 @@ export function Message ({ username = 40, rows = [], embed = null }) {
   )
 }
 
-function Chat ({ rng, count = 8 }) {
-  const messages = generateMessageStream(rng, count)
-
+function Chat ({ messages }) {
   return (
     <Flex flex={1} column>
       <Block relative flex={1} overflow="hidden">
