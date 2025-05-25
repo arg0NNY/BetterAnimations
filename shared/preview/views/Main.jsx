@@ -18,6 +18,8 @@ function Main () {
   const data = useMemo(() => [server.main(), server.alt()], [])
 
   const [module, isActive] = useModule(ModuleKey.Servers)
+  const enhanceLayout = module.settings.enhanceLayout ?? true
+
   const stage = useStages([500, 500], isActive)
   const auto = { direction: stage }
   const mouse = useMouse({
@@ -25,24 +27,34 @@ function Main () {
     y: stage ? 445 : 205
   })
 
+  const wrap = (children, enabled = false) => enabled ? (
+    <TransitionGroup className="BAP__content" childFactory={passAuto(auto)}>
+      <PreviewTransition
+        key={stage}
+        container={{ className: 'BAP__content' }}
+        module={module}
+        auto={auto}
+        mouse={mouse}
+      >
+        {children}
+      </PreviewTransition>
+    </TransitionGroup>
+  ) : children
+
   return (
     <Flex column>
       <SystemBar />
-      <Flex align="stretch" flex={1}>
-        <ServerList active={stage ? 7 : 2} />
-        <TransitionGroup className="BAP__content" childFactory={passAuto(auto)}>
-          <PreviewTransition
-            key={stage}
-            container={{ className: 'BAP__content' }}
-            module={module}
-            auto={auto}
-            mouse={mouse}
-          >
-            <Server {...data[stage]} />
-          </PreviewTransition>
-        </TransitionGroup>
-      </Flex>
-      <UserPanel />
+      {wrap(
+        <Flex className="BAP__content">
+          <ServerList active={stage ? 7 : 2} />
+          {wrap(
+            <Server {...data[stage]} />,
+            enhanceLayout
+          )}
+          <UserPanel />
+        </Flex>,
+        !enhanceLayout
+      )}
     </Flex>
   )
 }
@@ -55,5 +67,6 @@ css
     isolation: isolate;
     display: flex;
     flex: 1;
+    min-height: 0;
 }`
 `Preview: Main`
