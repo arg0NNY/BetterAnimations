@@ -1,7 +1,12 @@
 import Position from '@enums/Position'
 import Direction from '@enums/Direction'
 
-export function getRect (el, parent = document.body) {
+export function getRect (el, parent = null) {
+  if (!parent) {
+    const { x, y, left, top, right, bottom, width, height } = el.getBoundingClientRect()
+    return { x, y, left, top, right, bottom, width, height }
+  }
+
   const { offsetWidth: width, offsetHeight: height } = el
 
   let x = 0, y = 0, current = el

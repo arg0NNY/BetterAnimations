@@ -1,8 +1,12 @@
 import { css } from '@style'
 import Main from '@preview/views/Main'
 import PreviewContext from '@preview/context/PreviewContext'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { memo, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimationStore } from '@animation/store'
+import classNames from 'classnames'
+
+export const PREVIEW_WIDTH = 1280
+export const PREVIEW_HEIGHT = 720
 
 function Preview ({
   id = null,
@@ -11,7 +15,9 @@ function Preview ({
   pack = null,
   animation = null,
   dataKey = 0,
-  containerRef = useRef(),
+  className,
+  style,
+  ref,
   viewportRef = useRef()
 }) {
   const store = useMemo(() => new AnimationStore, [])
@@ -33,7 +39,7 @@ function Preview ({
 
   return (
     <PreviewContext.Provider value={{ store, id, modules, active, pack, animation, data, viewportRef }}>
-      <div ref={containerRef} className="BAP__container">
+      <div ref={ref} className={classNames('BAP__container', className)} style={style}>
         <div ref={viewportRef} className="BAP__viewport">
           <Main />
         </div>
@@ -42,14 +48,14 @@ function Preview ({
   )
 }
 
-export default Preview
+export default memo(Preview)
 
 css
 `.BAP__container {
     position: relative;
     overflow: clip;
-    width: 1280px;
-    height: 720px;
+    width: ${PREVIEW_WIDTH}px;
+    height: ${PREVIEW_HEIGHT}px;
 }
 .BAP__viewport {
     --background-primary: #202024;

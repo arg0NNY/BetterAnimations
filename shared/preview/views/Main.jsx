@@ -18,7 +18,7 @@ function Main () {
   const data = useMemo(() => [server.main(), server.alt()], [])
 
   const [module, isActive] = useModule(ModuleKey.Servers)
-  const stage = useStages([1000, 1000], isActive)
+  const stage = useStages([500, 500], isActive)
   const auto = { direction: stage }
   const mouse = useMouse({
     x: 36,

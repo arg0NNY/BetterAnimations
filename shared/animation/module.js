@@ -164,7 +164,7 @@ export default class Module {
   getAnimation (data, type, options, context) {
     if (typeof data === 'string') {
       [type, options, context] = arguments
-      data = this.settings[type]
+      data = this.animations[type]
     }
 
     const { pack, animation, path, meta, config } = data

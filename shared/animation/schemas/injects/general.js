@@ -151,12 +151,12 @@ export const RectInjectSchema = context => InjectSchema(Inject.Rect).extend({
   return value ? rect[value] : rect
 })
 
-export const WindowInjectSchema = ({ viewport }) => InjectSchema(Inject.Window).extend({
+export const WindowInjectSchema = ({ viewport, window }) => InjectSchema(Inject.Window).extend({
   value: z.enum(['width', 'height'])
 }).transform(({ value }) => {
   switch (value) {
-    case 'width': return viewport.offsetWidth
-    case 'height': return viewport.offsetHeight
+    case 'width': return viewport?.offsetWidth ?? window.innerWidth
+    case 'height': return viewport?.offsetHeight ?? window.innerHeight
   }
 })
 

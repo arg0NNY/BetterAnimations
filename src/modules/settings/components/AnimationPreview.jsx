@@ -1,23 +1,52 @@
+import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { css } from '@style'
-import { Text } from '@discord/modules'
+import { Text, Timeout } from '@discord/modules'
 import ModuleContext from '@/modules/settings/context/ModuleContext'
-import { useContext } from 'react'
-import WIP from '@/modules/settings/components/WIP'
+import Preview, { PREVIEW_WIDTH } from '@preview'
+import Modules from '@/modules/Modules'
+import { moduleEffect } from '@/hooks/useModule'
+import useElementBounding from '@/hooks/useElementBounding'
 
 export function getPreviewHeight (width) {
   return width * 9 / 16
 }
 
-function AnimationPreview ({ title, active = false, wide = false }) {
+function AnimationPreview ({ pack, animation, title = animation?.name, active = false }) {
   const module = useContext(ModuleContext)
 
+  const [isActive, setIsActive] = useState(active)
+  const timeout = useMemo(() => new Timeout, [])
+  useEffect(() => {
+    if (active) timeout.start(200, () => setIsActive(true))
+    else {
+      timeout.stop()
+      setIsActive(false)
+    }
+  }, [active])
+
+  const [dataKey, setDataKey] = useState(0)
+  useEffect(() => moduleEffect(
+    module.id,
+    () => setDataKey(key => key + 1),
+    true
+  ), [module])
+
+  const containerRef = useRef()
+  const { width } = useElementBounding(containerRef)
+  const scale = width / PREVIEW_WIDTH
+
   return (
-    <div className="BA__animationPreviewContainer">
-      {wide && (
-        <WIP
-          name="Animation Preview"
-          size={WIP.Sizes.Medium}
-          color="text-normal"
+    <div ref={containerRef} className="BA__animationPreviewContainer">
+      {isActive && (
+        <Preview
+          className="BA__animationPreview"
+          style={{ scale }}
+          key={module.id}
+          id={module.id}
+          modules={Modules.getAllModules(true)}
+          pack={pack}
+          animation={animation}
+          dataKey={dataKey}
         />
       )}
       {title && (
@@ -35,13 +64,19 @@ css
 `.BA__animationPreviewContainer {
     position: relative;
     overflow: hidden;
+    isolation: isolate;
     aspect-ratio: 16 / 9;
     border-radius: 8px;
     background: var(--background-base-low);
     display: flex;
     align-items: center;
 }
-
+.BA__animationPreview {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+}
 .BA__animationPreviewTitle {
     position: absolute;
     inset: 0;

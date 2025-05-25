@@ -70,7 +70,9 @@ function useAnimationCardExpand ({ expanded, positionerRef, popoutRef, refToScro
 }
 
 function AnimationCard ({
-  name,
+  pack,
+  animation,
+  name = animation?.name,
   enter,
   exit,
   setEnter,
@@ -178,7 +180,8 @@ function AnimationCard ({
               onMouseLeave={() => setForceOpenSettingsTooltip(false)}
             >
               <AnimationPreview
-                wide={wide}
+                pack={pack}
+                animation={animation}
                 title={name}
                 active={previewAlwaysActive || cardHovered || !!expanded}
               />
@@ -298,10 +301,10 @@ css
 .BA__animationCard:hover {
     background-color: var(--background-base-lower);
 }
-/*.BA__animationCard:hover .BA__animationPreviewTitle,
+.BA__animationCard:hover .BA__animationPreviewTitle,
 .BA__animationCard--expanded .BA__animationPreviewTitle {
     opacity: 0;
-}*/
+}
 
 .BA__animationCardWrapper:nth-child(3n - 1) .BA__animationCard {
     left: 50%;

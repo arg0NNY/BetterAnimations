@@ -46,7 +46,8 @@ function AnimationItem ({ module, pack, animation, selected, onSelect, ...props 
     <AnimationCard
       {...props}
       key={animation.key}
-      name={animation.name}
+      pack={pack}
+      animation={animation}
       enter={isActive(AnimationType.Enter)}
       exit={isActive(AnimationType.Exit)}
       setEnter={handleSelect(AnimationType.Enter)}

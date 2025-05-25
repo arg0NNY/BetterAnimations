@@ -13,7 +13,7 @@ export default class Animation {
     this.type = type
     this.container = container
     this.element = element
-    this.viewport = viewport ?? window.document.body
+    this.viewport = viewport
     this.window = window
     this.mouse = mouse
     this.anchor = anchor
