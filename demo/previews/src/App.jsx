@@ -4,9 +4,19 @@ import Module from '@animation/module'
 import data from '@data/modules'
 import ModuleKey from '@enums/ModuleKey'
 import internalPacks, { PREINSTALLED_PACK_SLUG } from '@packs'
+import { getRect } from '@utils/position'
 
 const modules = data.map(m => new Module(m))
 const pack = internalPacks[PREINSTALLED_PACK_SLUG]
+
+window.getRect = el => getRect(el, document.querySelector('.BAP__viewport'))
+window.getCenter = el => {
+  const rect = window.getRect(el)
+  return {
+    x: rect.left + rect.width / 2,
+    y: rect.top + rect.height / 2
+  }
+}
 
 function App () {
   const [id, setId] = useState(ModuleKey.Servers)

@@ -15,10 +15,10 @@ import { passAuto } from '@utils/transition'
 import useMouse from '@preview/hooks/useMouse'
 
 function Main () {
-  const data = useMemo(() => [server.main(), server.alt()], [])
-
   const [module, isActive] = useModule(ModuleKey.Servers)
   const enhanceLayout = module.settings.enhanceLayout ?? true
+
+  const data = useMemo(() => [server.main(), server.alt()], [])
 
   const stage = useStages([500, 500], isActive)
   const auto = { direction: stage }

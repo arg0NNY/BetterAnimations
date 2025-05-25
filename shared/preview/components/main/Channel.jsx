@@ -52,7 +52,7 @@ function ThreadSidebar () {
 
 function Channel ({ header, chat, memberList }) {
   return (
-    <Flex align="stretch" flex={1}>
+    <Flex className="BAP__channel">
       <Flex column bg="background-secondary" flex={1} borderTopWidth={1}>
         <ChannelHeader {...header} />
         <Flex align="stretch" flex={1}>
@@ -68,5 +68,9 @@ function Channel ({ header, chat, memberList }) {
 export default Channel
 
 css
-``
+`.BAP__channel {
+    display: flex;
+    align-items: stretch;
+    flex: 1;
+}`
 `Preview: Channel`
