@@ -75,7 +75,7 @@ function Server ({ channelList, channel }) {
   })
 
   return (
-    <Flex className="BAP__server">
+    <div className="BAP__server">
       <ChannelList
         active={stage ? 10 : 4}
         {...channelList}
@@ -91,7 +91,7 @@ function Server ({ channelList, channel }) {
           <Channel {...data[stage]} />
         </PreviewTransition>
       </TransitionGroup>
-    </Flex>
+    </div>
   )
 }
 

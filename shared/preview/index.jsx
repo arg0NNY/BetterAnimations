@@ -39,7 +39,15 @@ function Preview ({
 
   return (
     <PreviewContext.Provider value={{ store, id, modules, active, pack, animation, data, viewportRef }}>
-      <div ref={ref} className={classNames('BAP__container', className)} style={style}>
+      <div
+        ref={ref}
+        className={classNames(
+          'BAP__container',
+          `BAP--${id}`,
+          className
+        )}
+        style={style}
+      >
         <div ref={viewportRef} className="BAP__viewport">
           <Main />
         </div>
@@ -85,5 +93,9 @@ css
     border-color: var(--border-subtle);
     border-style: solid;
     border-width: 0;
+}
+.BAP--messages .BAP__viewport {
+    scale: 1.3;
+    transform-origin: 59% bottom;
 }`
 `Preview`
