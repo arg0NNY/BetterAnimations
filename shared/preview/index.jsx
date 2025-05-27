@@ -4,6 +4,8 @@ import PreviewContext from '@preview/context/PreviewContext'
 import { memo, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimationStore } from '@animation/store'
 import classNames from 'classnames'
+import mainPlaceholder from '@preview/assets/placeholders/main.png'
+import { CSSTransition, TransitionGroup } from '@discord/modules'
 
 export const PREVIEW_WIDTH = 1280
 export const PREVIEW_HEIGHT = 720
@@ -12,6 +14,7 @@ function Preview ({
   id = null,
   modules = [],
   active = true,
+  placeholder = false,
   pack = null,
   animation = null,
   dataKey = 0,
@@ -30,12 +33,21 @@ function Preview ({
   const module = useMemo(() => modules.find(m => m.id === id), [id, modules])
   const [data, setData] = useState(null)
   useEffect(() => {
-    if (!module || !pack || !animation) {
+    if (placeholder || !module || !pack || !animation) {
       setData(null)
       return
     }
     setData(module.initializeAnimations(pack, animation))
-  }, [module, pack, animation, dataKey])
+  }, [placeholder, module, pack, animation, dataKey])
+
+  const placeholderRef = useRef()
+  const placeholderSrc = useMemo(() => {
+    if (typeof placeholder === 'string') return placeholder
+
+    switch (module?.id) {
+      default: return mainPlaceholder
+    }
+  }, [placeholder, module])
 
   return (
     <PreviewContext.Provider value={{ store, id, modules, active, pack, animation, data, viewportRef }}>
@@ -48,9 +60,29 @@ function Preview ({
         )}
         style={style}
       >
-        <div ref={viewportRef} className="BAP__viewport">
-          <Main />
-        </div>
+        <TransitionGroup component={null}>
+          <CSSTransition
+            key={placeholder ? 'placeholder' : 'viewport'}
+            nodeRef={placeholder ? placeholderRef : viewportRef}
+            classNames={placeholder ? 'BAP__fade' : undefined}
+            timeout={400}
+          >
+            {placeholder ? (
+              <img
+                ref={placeholderRef}
+                src={placeholderSrc}
+                className="BAP__viewport"
+              />
+            ) : (
+              <div
+                ref={viewportRef}
+                className="BAP__viewport"
+              >
+                <Main />
+              </div>
+            )}
+          </CSSTransition>
+        </TransitionGroup>
       </div>
     </PreviewContext.Provider>
   )
@@ -84,6 +116,10 @@ css
     color: var(--text-primary);
     background-color: var(--background-tertiary);
     overflow: clip;
+    object-fit: cover;
+}
+img.BAP__viewport {
+    z-index: 2;
 }
 .BAP__viewport > * {
     position: absolute;
@@ -93,9 +129,20 @@ css
     border-color: var(--border-subtle);
     border-style: solid;
     border-width: 0;
+    box-sizing: content-box;
 }
 .BAP--messages .BAP__viewport {
     scale: 1.3;
     transform-origin: 59% bottom;
+}
+
+.BAP__fade-enter-active, .BAP__fade-exit-active {
+    transition: opacity .4s;
+}
+.BAP__fade-enter, .BAP__fade-exit-active {
+    opacity: 0;
+}
+.BAP__fade-enter-active {
+    opacity: 1;
 }`
 `Preview`

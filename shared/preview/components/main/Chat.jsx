@@ -101,7 +101,7 @@ css
     width: 100%;
     padding-right: 16px;
     padding-bottom: 16px;
-    box-sizing: border-box;
+    box-sizing: border-box !important;
 }
 .BAP__messageContainer {
     margin-top: 16px;

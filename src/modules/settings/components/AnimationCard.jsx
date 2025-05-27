@@ -248,6 +248,7 @@ css
 
 .BA__animationCardPositioner {
     position: relative;
+    will-change: height;
 }
 
 .BA__animationCardPopoutWrapper {
@@ -300,10 +301,6 @@ css
 }
 .BA__animationCard:hover {
     background-color: var(--background-base-lower);
-}
-.BA__animationCard:hover .BA__animationPreviewTitle,
-.BA__animationCard--expanded .BA__animationPreviewTitle {
-    opacity: 0;
 }
 
 .BA__animationCardWrapper:nth-child(3n - 1) .BA__animationCard {

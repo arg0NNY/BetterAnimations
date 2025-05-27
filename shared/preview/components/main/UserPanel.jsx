@@ -31,7 +31,7 @@ css
     bottom: 0;
     width: 341px;
     padding: 0 8px 8px;
-    box-sizing: border-box;
+    box-sizing: border-box !important;
 }
 .BAP__userPanel {
     height: 54px;

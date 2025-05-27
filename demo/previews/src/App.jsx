@@ -22,6 +22,7 @@ function App () {
   const [id, setId] = useState(ModuleKey.Servers)
   const [animationKey, setAnimationKey] = useState('fade')
   const [active, setActive] = useState(true)
+  const [placeholder, setPlaceholder] = useState(false)
 
   const module = modules.find(m => m.id === id)
   const animations = pack.animations.filter(a => module.isSupportedBy(a))
@@ -54,6 +55,14 @@ function App () {
           />
           Active
         </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={placeholder}
+            onChange={e => setPlaceholder(e.target.checked)}
+          />
+          Placeholder
+        </label>
       </div>
       <Preview
         key={`${id}${active}`}
@@ -62,6 +71,7 @@ function App () {
         pack={pack}
         animation={animation}
         active={active}
+        placeholder={placeholder}
       />
     </div>
   )
