@@ -130,8 +130,8 @@ function AnimationCard ({
   animationSettings,
   accordionsSettings,
   active = enter || exit,
-  previewAlwaysActive = false,
-  wide = false,
+  header = false,
+  wide = header,
   errors
 }) {
   const positionerRef = useRef()
@@ -147,7 +147,7 @@ function AnimationCard ({
   const [expanded, setExpanded] = useState(null)
   const close = useCallback(() => setExpanded(null), [setExpanded])
 
-  useIsAnimationExpanded(!!expanded)
+  const isAnimationExpanded = useIsAnimationExpanded(header ? null : !!expanded)
 
   const {
     update,
@@ -236,7 +236,7 @@ function AnimationCard ({
                 pack={pack}
                 animation={animation}
                 title={name}
-                active={previewAlwaysActive || cardHovered || !!expanded}
+                active={(header && !isAnimationExpanded) || cardHovered || !!expanded}
               />
               <AnimationCardControls
                 enter={enter}
