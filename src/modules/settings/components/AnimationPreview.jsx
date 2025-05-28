@@ -103,7 +103,7 @@ css
 }
 
 .BA__animationCard--expanded .BA__animationPreviewContainer {
-    border-radius: 2px;
+    border-radius: 3px;
     box-shadow: 0 0 0 .5px var(--border-faint);
 }`
 `AnimationPreview`

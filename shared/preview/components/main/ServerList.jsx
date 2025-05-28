@@ -29,6 +29,6 @@ css
     width: 4px;
     height: 20px;
     border-radius: 0 5px 5px 0;
-    background-color: var(--white);
+    background-color: var(--bap-white);
 }`
 `Preview: ServerList`

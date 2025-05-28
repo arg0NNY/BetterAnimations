@@ -38,6 +38,6 @@ css
     border-width: 1px !important;
     border-radius: 8px;
     padding: 0 8px;
-    background: var(--background-primary);
+    background: var(--bap-background-primary);
 }`
 `Preview: UserPanel`

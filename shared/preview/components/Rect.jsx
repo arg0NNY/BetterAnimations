@@ -9,7 +9,7 @@ function Rect ({ className, width, height, radius, color }) {
         width,
         height,
         borderRadius: radius,
-        background: color && `var(--${color})`
+        background: color && `var(--bap-${color})`
       }}
     />
   )
@@ -52,7 +52,7 @@ export default Rect
 css
 `.BAP__rect {
     display: inline-block;
-    background: var(--text-primary);
+    background: var(--bap-text-primary);
     width: 20px;
     height: 20px;
     border-radius: 8px;
@@ -70,6 +70,6 @@ css
 .BA__divider {
     width: 1px;
     height: 1px;
-    background: var(--border-subtle);
+    background: var(--bap-border-subtle);
 }`
 `Preview: Rect`

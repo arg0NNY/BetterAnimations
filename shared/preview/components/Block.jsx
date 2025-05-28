@@ -23,7 +23,7 @@ function Block ({ className, children, relative, absolute, x, y, w, h, p, px, py
         marginRight: mr,
         marginBottom: mb,
         marginLeft: ml,
-        background: bg && `var(--${bg})`,
+        background: bg && `var(--bap-${bg})`,
         borderRadius: radius,
         ...props,
         ...style

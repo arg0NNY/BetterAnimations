@@ -98,23 +98,23 @@ css
     height: ${PREVIEW_HEIGHT}px;
 }
 .BAP__viewport {
-    --background-primary: #202024;
-    --background-secondary: #1A1A1E;
-    --background-secondary-alt: #18181C;
-    --background-tertiary: #121214;
-    --background-surface-overlay: #242429;
-    --border-subtle: rgba(151, 151, 159, .12);
-    --text-primary: #3B3D42;
-    --text-heading: #505357;
-    --brand-primary: #5865F2;
-    --white: #FBFBFB;
+    --bap-background-primary: #202024;
+    --bap-background-secondary: #1A1A1E;
+    --bap-background-secondary-alt: #18181C;
+    --bap-background-tertiary: #121214;
+    --bap-background-surface-overlay: #242429;
+    --bap-border-subtle: rgba(151, 151, 159, .12);
+    --bap-text-primary: #3B3D42;
+    --bap-text-heading: #505357;
+    --bap-brand-primary: #5865F2;
+    --bap-white: #FBFBFB;
 
     position: absolute;
     inset: 0;
     isolation: isolate;
     font-size: 16px;
-    color: var(--text-primary);
-    background-color: var(--background-tertiary);
+    color: var(--bap-text-primary);
+    background-color: var(--bap-background-tertiary);
     overflow: clip;
     object-fit: cover;
 }
@@ -126,7 +126,7 @@ img.BAP__viewport {
     inset: 0;
 }
 .BAP__viewport * {
-    border-color: var(--border-subtle);
+    border-color: var(--bap-border-subtle);
     border-style: solid;
     border-width: 0;
     box-sizing: content-box;
