@@ -24,6 +24,7 @@ import useDismissible from '@/modules/settings/hooks/useDismissible'
 import Documentation from '@shared/documentation'
 import CircleQuestionIcon from '@/modules/settings/components/icons/CircleQuestionIcon'
 import IconButton from '@/modules/settings/components/IconButton'
+import { useIsAnimationExpanded } from '@/modules/settings/stores/SettingsStore'
 
 function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect, ...props }) {
   const { setSection } = useContext(SectionContext)
@@ -136,7 +137,7 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
           animationSettings={animationSettings}
           accordionsSettings={accordionsSettings}
           active={false}
-          previewAlwaysActive
+          previewAlwaysActive={!useIsAnimationExpanded()}
           wide
           errors={errors}
         />

@@ -13,6 +13,7 @@ import { createContext, use, useCallback, useEffect, useLayoutEffect, useMemo, u
 import HintTooltip from '@/modules/settings/components/HintTooltip'
 import classNames from 'classnames'
 import { getRect } from '@utils/position'
+import { useIsAnimationExpanded } from '@/modules/settings/stores/SettingsStore'
 
 export function getCardHeight (width) {
   return getPreviewHeight(width - 16) + 52
@@ -145,6 +146,8 @@ function AnimationCard ({
 
   const [expanded, setExpanded] = useState(null)
   const close = useCallback(() => setExpanded(null), [setExpanded])
+
+  useIsAnimationExpanded(!!expanded)
 
   const {
     update,
