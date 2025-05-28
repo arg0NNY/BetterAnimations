@@ -5,8 +5,9 @@ import ModuleContext from '@/modules/settings/context/ModuleContext'
 import Preview, { PREVIEW_WIDTH } from '@preview'
 import Modules from '@/modules/Modules'
 import { moduleEffect } from '@/hooks/useModule'
-import useElementBounding from '@/hooks/useElementBounding'
 import classNames from 'classnames'
+import { useMovable } from '@/modules/settings/components/AnimationCard'
+import useResizeObserver from '@/hooks/useResizeObserver'
 
 export function getPreviewHeight (width) {
   return width * 9 / 16
@@ -33,11 +34,17 @@ function AnimationPreview ({ pack, animation, title = animation?.name, active = 
   ), [module])
 
   const containerRef = useRef()
-  const { width } = useElementBounding(containerRef)
-  const scale = width / PREVIEW_WIDTH
+  const [scale, setScale] = useState(1)
+  useResizeObserver(containerRef, () => {
+    setScale(containerRef.current.offsetWidth / PREVIEW_WIDTH)
+  })
 
   return (
-    <div ref={containerRef} className="BA__animationPreviewContainer">
+    <div
+      ref={containerRef}
+      className="BA__animationPreviewContainer"
+      {...useMovable('preview')}
+    >
       <Preview
         className="BA__animationPreview"
         style={{ scale }}
@@ -74,6 +81,7 @@ css
     display: flex;
     align-items: center;
     box-shadow: 0 0 0 1px var(--border-faint);
+    transition: border-radius .4s, box-shadow .4s;
 }
 .BA__animationPreview {
     position: absolute;
@@ -92,5 +100,10 @@ css
 .BA__animationPreviewTitle--hidden {
     opacity: 0;
     backdrop-filter: blur(0);
+}
+
+.BA__animationCard--expanded .BA__animationPreviewContainer {
+    border-radius: 2px;
+    box-shadow: 0 0 0 .5px var(--border-faint);
 }`
 `AnimationPreview`

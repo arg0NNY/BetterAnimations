@@ -9,23 +9,35 @@ import AnimationSettings from '@/modules/settings/components/AnimationSettings'
 import DiscordClasses from '@discord/classes'
 import useDismissible from '@/modules/settings/hooks/useDismissible'
 import useElementBounding from '@/hooks/useElementBounding'
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { createContext, use, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import HintTooltip from '@/modules/settings/components/HintTooltip'
 import classNames from 'classnames'
+import { getRect } from '@utils/position'
 
 export function getCardHeight (width) {
   return getPreviewHeight(width - 16) + 52
 }
 
 const CARD_WIDE_WIDTH = 320
-const CARD_WIDE_HEIGHT = getCardHeight(CARD_WIDE_WIDTH)
+
+const CARD_EXPANDED_WIDTH = 460
+const CARD_EXPANDED_HEIGHT = getCardHeight(CARD_EXPANDED_WIDTH)
 
 const TOP_BAR_HEIGHT = 0
 const TOP_OFFSET = TOP_BAR_HEIGHT + 40
 const BOTTOM_OFFSET = 72 + 20 // 72 is the height of the settings notice
 const POPOUT_GAP = 20
 
-function useAnimationCardExpand ({ expanded, positionerRef, popoutRef, refToScroller }) {
+const MovableContext = createContext({ styles: {} })
+const MOVABLE_ATTRIBUTE = 'data-expand-movable'
+export function useMovable (key) {
+  return {
+    [MOVABLE_ATTRIBUTE]: key,
+    style: use(MovableContext).styles[key] ?? {}
+  }
+}
+
+function useAnimationCardExpand ({ expanded, positionerRef, cardRef, popoutRef, refToScroller }) {
   const window = useWindowSize()
 
   const positioner = {
@@ -44,12 +56,42 @@ function useAnimationCardExpand ({ expanded, positionerRef, popoutRef, refToScro
     popout.update()
   }, [positioner.update, popout.update])
 
-  const popoutMaxHeight = window.height - (TOP_OFFSET + CARD_WIDE_HEIGHT + POPOUT_GAP + BOTTOM_OFFSET)
-  const totalHeight = CARD_WIDE_HEIGHT + POPOUT_GAP + popout.height
+  const popoutMaxHeight = window.height - (TOP_OFFSET + CARD_EXPANDED_HEIGHT + POPOUT_GAP + BOTTOM_OFFSET)
+  const totalHeight = CARD_EXPANDED_HEIGHT + POPOUT_GAP + popout.height
 
   const top = Math.max(TOP_OFFSET, Math.min(window.height - (BOTTOM_OFFSET + totalHeight), positioner.top))
 
   useLayoutEffect(update, [expanded, top])
+
+  const [movableStyles, setMovableStyles] = useState({})
+  useLayoutEffect(() => {
+    if (!expanded || !cardRef.current) {
+      setMovableStyles({})
+      return
+    }
+
+    const movables = Array.from(cardRef.current.querySelectorAll(`[${MOVABLE_ATTRIBUTE}]`))
+    const store = fn => Object.fromEntries(
+      movables.map(movable => {
+        const key = movable.getAttribute(MOVABLE_ATTRIBUTE)
+        return [key, fn(movable, key)]
+      })
+    )
+
+    const original = store(movable => getRect(movable, positionerRef.current))
+
+    cardRef.current.style.width = CARD_EXPANDED_WIDTH + 'px'
+    setMovableStyles(store((movable, key) => {
+      const rect = getRect(movable, positionerRef.current)
+      return {
+        transform: [
+          `translate(${rect.x - original[key].x}px, ${rect.y - original[key].y}px)`,
+          `scale(${rect.width / original[key].width}, ${rect.height / original[key].height})`
+        ].join(' ')
+      }
+    }))
+    cardRef.current.style.removeProperty('width')
+  }, [expanded])
   
   return {
     update,
@@ -61,11 +103,16 @@ function useAnimationCardExpand ({ expanded, positionerRef, popoutRef, refToScro
     },
     popoutWrapperStyle: {
       maxHeight: popoutMaxHeight + 'px',
-      transform: `translateY(${top + CARD_WIDE_HEIGHT + POPOUT_GAP - TOP_BAR_HEIGHT}px)`
+      transform: `translateY(${top + CARD_EXPANDED_HEIGHT + POPOUT_GAP - TOP_BAR_HEIGHT}px)`
     },
     popoutStyle: {
       transformOrigin: `${(positioner.left + positioner.width / 2) - popout.left}px ${(positioner.top + positioner.height / 2) - popout.top}px`
-    }
+    },
+    wrap: children => (
+      <MovableContext value={{ styles: movableStyles }}>
+        {children}
+      </MovableContext>
+    )
   }
 }
 
@@ -104,10 +151,12 @@ function AnimationCard ({
     positionerStyle,
     cardStyle,
     popoutWrapperStyle,
-    popoutStyle
+    popoutStyle,
+    wrap
   } = useAnimationCardExpand({
     expanded,
     positionerRef,
+    cardRef,
     popoutRef: popoutRefs[expanded],
     refToScroller
   })
@@ -148,7 +197,7 @@ function AnimationCard ({
     if (rightClick === true && !rightClickHint) setRightClickHint(true)
   }
 
-  return (
+  return wrap(
     <div
       className={classNames(
         'BA__animationCardWrapper',
@@ -179,6 +228,7 @@ function AnimationCard ({
               onContextMenu={() => expandSettings?.(true)}
               onMouseLeave={() => setForceOpenSettingsTooltip(false)}
             >
+              <div class="BA__animationCardBg" {...useMovable('bg')} />
               <AnimationPreview
                 pack={pack}
                 animation={animation}
@@ -237,18 +287,77 @@ css
     min-width: 0;
 }
 
+[${MOVABLE_ATTRIBUTE}] {
+    transform-origin: top left;
+    transition: transform .4s;
+}
+
 .BA__animationCardBackdrop {
     position: absolute;
     inset: 0;
     z-index: 99;
-    background-color: transparent;
+    background-color: rgba(0, 0, 0, .8);
+    opacity: 0;
     pointer-events: none;
-    transition: background-color .4s;
+    transition: opacity .4s;
 }
 
 .BA__animationCardPositioner {
     position: relative;
-    will-change: height;
+    display: flex;
+}
+.BA__animationCardWrapper:nth-child(3n - 1) .BA__animationCardPositioner {
+    justify-content: center;
+}
+.BA__animationCardWrapper:nth-child(3n) .BA__animationCardPositioner {
+    justify-content: flex-end;
+}
+
+.BA__animationCard {
+    position: absolute;
+    width: 100%;
+    padding: 8px;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform .4s, z-index .4s step-end;
+    isolation: isolate;
+}
+.BA__animationCardBg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 8px;
+    background-color: var(--background-base-lowest);
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 0 0 0 var(--brand-500);
+    transition: background-color .2s, box-shadow .2s, border-radius .4s, transform .4s;
+}
+.BA__animationCard:hover .BA__animationCardBg {
+    background-color: var(--background-base-lower);
+}
+
+.BA__animationCard--wide .BA__animationCardPositioner,
+.BA__animationCard--wide .BA__animationCard {
+    width: ${CARD_WIDE_WIDTH}px;
+}
+
+.BA__animationCard--expanded .BA__animationCardBackdrop {
+    opacity: 1;
+    pointer-events: all;
+}
+.BA__animationCard--expanded .BA__animationCard {
+    z-index: 105;
+    transition: transform .4s, z-index .4s step-start;
+}
+.BA__animationCard--expanded .BA__animationCardBg {
+    border-radius: 4px;
+}
+
+.BA__animationCard--active .BA__animationCardBg {
+    box-shadow: 0 0 0 2.5px var(--brand-500);
+}
+.BA__animationCard--active.BA__animationCard--expanded .BA__animationCardBg {
+    box-shadow: 0 0 0 1.5px var(--brand-500);
 }
 
 .BA__animationCardPopoutWrapper {
@@ -283,55 +392,6 @@ css
     height: 20px;
     background-color: var(--background-primary);
     z-index: 110;
-}
-
-.BA__animationCard {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 8px;
-    border-radius: 8px;
-    background-color: var(--background-base-lowest);
-    border: 1px solid var(--border-subtle);
-    cursor: pointer;
-    transition: background-color .2s, transform .4s, width .4s, box-shadow .2s, z-index .4s step-end;
-    z-index: 10;
-    box-shadow: 0 0 0 0 var(--brand-500);
-}
-.BA__animationCard:hover {
-    background-color: var(--background-base-lower);
-}
-
-.BA__animationCardWrapper:nth-child(3n - 1) .BA__animationCard {
-    left: 50%;
-    translate: -50%;
-}
-.BA__animationCardWrapper:nth-child(3n) .BA__animationCard {
-    left: auto;
-    right: 0;
-}
-
-.BA__animationCard--expanded .BA__animationCardBackdrop {
-    background-color: rgba(0, 0, 0, .8);
-    pointer-events: all;
-}
-    
-.BA__animationCard--wide .BA__animationCardPositioner {
-    height: ${CARD_WIDE_HEIGHT}px;
-}
-.BA__animationCard--wide .BA__animationCard,
-.BA__animationCard--expanded .BA__animationCard,
-.BA__animationCard--wide .BA__animationCardPositioner {
-    width: ${CARD_WIDE_WIDTH}px;
-}
-.BA__animationCard--expanded .BA__animationCard {
-    z-index: 105;
-    transition: background-color .2s, transform .4s, width .4s, box-shadow .2s, z-index .4s step-start;
-}
-
-.BA__animationCard--active .BA__animationCard {
-    box-shadow: 0 0 0 2.5px var(--brand-500);
 }
 
 .BA__fade-enter, .BA__fade-exit-active {
