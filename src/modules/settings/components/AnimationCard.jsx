@@ -329,10 +329,9 @@ css
     position: absolute;
     inset: 0;
     z-index: -1;
-    border-radius: 8px;
     background-color: var(--background-base-lowest);
-    border: 1px solid var(--border-subtle);
-    box-shadow: 0 0 0 0 var(--brand-500);
+    border-radius: 8px;
+    box-shadow: 0 0 0 1px var(--border-subtle);
     transition: background-color .2s, box-shadow .2s, border-radius .4s, transform .4s;
 }
 .BA__animationCard:hover .BA__animationCardBg {
@@ -354,6 +353,7 @@ css
 }
 .BA__animationCard--expanded .BA__animationCardBg {
     border-radius: 4px;
+    box-shadow: 0 0 0 .5px var(--border-subtle);
 }
 
 .BA__animationCard--active .BA__animationCardBg {
