@@ -93,7 +93,7 @@ export default class Animation {
       this.context = context
 
       const { wrapper, onBeforeBegin, accordion, instances, finished }
-        = parse(animate, context, this.module.buildOptions())
+        = parse(animate, context, this.module.buildOptions(this.data, this.type))
 
       this.wrapper = wrapper
       this.accordion = accordion

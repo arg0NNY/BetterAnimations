@@ -438,11 +438,18 @@ export default class Module {
       }
     }
   }
-  getAccordion (type, options = {}) {
+  getAccordion (data, type, options) {
+    if (typeof data === 'string') {
+      [type, options] = arguments
+      data = this.animations[type]
+    }
+
+    options ??= {}
+
     const { accordion } = this.meta
     if (!accordion) return null
 
-    const forceDisabled = this.animations[type]?.meta?.accordion === false
+    const forceDisabled = data?.meta?.accordion === false
     const animation = this.getAccordionAnimation()
     const config = this.settings.accordion?.[type] ?? {}
     const defaults = () => this.buildDefaultSettings(animation, type)
@@ -476,11 +483,20 @@ export default class Module {
     Object.assign(config[type] ??= {}, values)
     this.onSettingsChange()
   }
-  buildOptions () {
-    const options = {}
-    const accordions = this.getAccordions()
-    if (accordions?.enter?.enabled) options.before = accordions.enter.animate
-    if (accordions?.exit?.enabled) options.after = accordions.exit.animate
-    return options
+  buildOptions (data, type, options) {
+    if (typeof data === 'string') {
+      [type, options] = arguments
+      data = this.animations[type]
+    }
+
+    const accordion = this.getAccordion(data, type, options)
+    if (!accordion?.enabled) return {}
+
+    const key = {
+      [AnimationType.Enter]: 'before',
+      [AnimationType.Exit]: 'after'
+    }[type]
+
+    return { [key]: accordion.animate }
   }
 }

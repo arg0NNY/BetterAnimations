@@ -203,11 +203,11 @@ export function parse (data = null, context, options = {}) {
 
     if (!hook('onCreated', ParseStage.Created)) break parsing
 
-    before = options.before && context.type === AnimationType.Enter
+    before = options.before
       && (!context.intersectWith?.accordion || context.intersectWith.accordion.began)
         ? options.before(context)
         : null
-    after = options.after && context.type === AnimationType.Exit
+    after = options.after
       ? options.after(context)
       : null
     accordion = intersect(
