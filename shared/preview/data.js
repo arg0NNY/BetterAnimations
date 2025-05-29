@@ -106,7 +106,8 @@ export const channelList = {
       { type: 'channel', length: 162 },
       { type: 'channel', length: 83 },
       { type: 'channel', length: 103 }
-    ]
+    ],
+    active: 4
   }),
   alt: () => ({
     name: 67,
@@ -127,7 +128,8 @@ export const channelList = {
       { type: 'section', length: 77 },
       { type: 'channel', length: 125 },
       { type: 'channel', length: 72 }
-    ]
+    ],
+    active: 7
   })
 }
 

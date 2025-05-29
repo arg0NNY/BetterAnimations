@@ -77,8 +77,8 @@ function Server ({ channelList, channel }) {
   return (
     <div className="BAP__server">
       <ChannelList
-        active={stage ? 10 : 4}
         {...channelList}
+        active={isActive ? (stage ? 10 : 4) : channelList.active}
       />
       <TransitionGroup className="BAP__page" childFactory={passAuto(auto)}>
         <PreviewTransition
