@@ -1,5 +1,5 @@
 import Preview from '@shared/preview'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Module from '@animation/module'
 import data from '@data/modules'
 import ModuleKey from '@enums/ModuleKey'
@@ -27,6 +27,11 @@ function App () {
   const module = modules.find(m => m.id === id)
   const animations = pack.animations.filter(a => module.isSupportedBy(a))
   const animation = pack.animations.find(a => a.key === animationKey)
+
+  useEffect(() => {
+    if (!animations.find(a => a.key === animationKey))
+      setAnimationKey(animations[0]?.key)
+  }, [id, animationKey])
 
   return (
     <div>

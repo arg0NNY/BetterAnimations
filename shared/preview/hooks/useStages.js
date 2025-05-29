@@ -1,7 +1,13 @@
 import { use, useCallback, useEffect, useRef, useState } from 'react'
 import PreviewContext from '@preview/context/PreviewContext'
 
+const STAGE_DEFAULT_DURATION = 500
+
 function useStages (stages, isActive = true) {
+  if (typeof stages === 'number') stages = stages === Infinity
+    ? new Proxy({ length: Infinity }, { get: (target, key) => target[key] ?? STAGE_DEFAULT_DURATION })
+    : Array(stages).fill(STAGE_DEFAULT_DURATION)
+
   const { store } = use(PreviewContext)
   const [stage, setStage] = useState(0)
 
@@ -25,7 +31,7 @@ function useStages (stages, isActive = true) {
   useEffect(() => {
     const tid = setTimeout(() => {
       if (!store.animations.length) callback()
-    })
+    }, 100)
     return () => clearTimeout(tid)
   }, [stage])
 

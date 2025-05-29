@@ -20,7 +20,7 @@ function Main () {
 
   const data = useMemo(() => [server.main(), server.alt()], [])
 
-  const stage = useStages([500, 500], isActive)
+  const stage = useStages(2, isActive)
   const auto = { direction: stage }
   const mouse = useMouse({
     x: 36,

@@ -2,15 +2,14 @@ import { sfc32 } from '@utils/prng'
 import { generateMessageStream } from '@preview/components/main/Chat'
 
 export const chat = {
-  main: () => ({
-    messages: generateMessageStream(sfc32(450181629, 238323892, 206681137, 215170589), 8)
-  }),
-  alt: () => ({
-    messages: generateMessageStream(sfc32(3849863118, 865888779, 2963917516, 814392167), 5)
-  }),
-  animatable: () => ({
-    messages: generateMessageStream(sfc32(4228586405, 3866631402, 2889972076, 3985208143), 8)
-  })
+  main: () => {
+    const rng = sfc32(450181629, 238323892, 206681137, 215170589)
+    return { rng, messages: generateMessageStream(rng, 8) }
+  },
+  alt: () => {
+    const rng = sfc32(3849863118, 865888779, 2963917516, 814392167)
+    return { rng, messages: generateMessageStream(rng, 5) }
+  }
 }
 
 export const memberList = {

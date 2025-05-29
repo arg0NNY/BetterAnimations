@@ -1,6 +1,6 @@
 import { int, stream } from '@utils/prng'
 import { Block, Flex, Icon, Text } from '@preview/components'
-import { memo, useMemo } from 'react'
+import { memo, useEffect, useMemo, useState } from 'react'
 import { css } from '@style'
 import { chat } from '@preview/data'
 import useModule from '@preview/hooks/useModule'
@@ -9,8 +9,9 @@ import useStages from '@preview/hooks/useStages'
 import { TransitionGroup } from '@discord/modules'
 import PreviewTransition from '@preview/components/PreviewTransition'
 
-export function generateMessage (rng) {
+export function generateMessage (rng, key = null) {
   return {
+    key,
     username: int(rng, 60, 128),
     rows: stream(
       rng,
@@ -46,37 +47,39 @@ export function Message ({ username = 40, rows = [], embed = null }) {
   )
 }
 
-function Chat ({ messages }) {
+function Chat ({ messages, rng }) {
   const [module, isActive] = useModule(ModuleKey.Messages)
 
-  const data = useMemo(
-    () => (!isActive ? messages : chat.animatable().messages)
-      .map((m, i) => ({ ...m, key: i })),
-    [messages]
-  )
+  const [data, setData] = useState(messages)
+  useEffect(() => setData(messages), [messages])
 
-  const stage = useStages([500, 500, 500, 500], isActive)
-  const displayedMessages = useMemo(() => {
-    if (!isActive) return data
+  const stage = useStages(Infinity, isActive)
+  useEffect(() => {
+    if (stage === 0) return
 
-    switch (stage) {
-      case 0: return data.slice(0, -2)
-      case 1: return data.slice(0, -1)
-      case 2: return data
-      case 3: return data.slice(0, -2).concat(data.at(-1))
-    }
-  }, [data, stage])
+    setData(data => {
+      if (rng() < .2) {
+        const index = data.length - int(rng, 1, 4)
+        return data.slice(0, index).concat(data.slice(index + 1))
+      }
+
+      return data.slice(-10)
+        .concat(generateMessage(rng, messages.length + stage))
+    })
+  }, [stage])
 
   return (
     <Flex flex={1} column>
       <Block relative flex={1} overflow="hidden">
         <Flex className="BAP__messages" flex={1} column>
           <TransitionGroup component={null}>
-            {displayedMessages.map(({ key, ...props }) => (
+            {data.map(({ key, ...props }, i) => (
               <PreviewTransition
                 key={key}
                 container={{ className: 'BAP__messageContainer' }}
                 module={module}
+                enter={i > 1}
+                exit={i > 1}
               >
                 <Message {...props} />
               </PreviewTransition>
