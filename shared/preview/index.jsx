@@ -131,9 +131,10 @@ img.BAP__viewport {
     border-width: 0;
     box-sizing: content-box;
 }
+
 .BAP--messages .BAP__viewport {
-    scale: 1.3;
-    transform-origin: 59% bottom;
+    scale: 1.35;
+    transform-origin: 63% bottom
 }
 
 .BAP__fade-enter-active, .BAP__fade-exit-active {
