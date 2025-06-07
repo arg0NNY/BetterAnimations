@@ -21,7 +21,7 @@ function getWindowCenterAnchor () {
   }
 }
 
-function LayerContainer ({ baseLayer, hidden, children }) {
+function Layer ({ baseLayer, hidden, children }) {
   return (
     <div
       className={classNames(
@@ -37,11 +37,9 @@ function LayerContainer ({ baseLayer, hidden, children }) {
   )
 }
 
-function LayerTransition ({ module, auto, layer, ...props }) {
+function LayerTransition ({ layer, ...props }) {
   return (
     <AnimeTransition
-      module={module}
-      auto={auto}
       {...props}
       in={layer.props.mode === 'SHOWN' && props.in}
       container={{ className: 'BA__layerContainer' }}
@@ -50,7 +48,7 @@ function LayerTransition ({ module, auto, layer, ...props }) {
       unmountOnExit={false}
     >
       {state => (
-        <LayerContainer
+        <Layer
           {...layer.props}
           key={layer.key}
           hidden={state === 'exited'}

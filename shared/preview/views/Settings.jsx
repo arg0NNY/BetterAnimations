@@ -7,8 +7,8 @@ function Settings () {
   return (
     <Flex bg="background-tertiary">
       <NavSidebar active={1} />
-      {/*<UserProfileSection />*/}
-      <SwitchesSection />
+      <UserProfileSection />
+      {/*<SwitchesSection />*/}
     </Flex>
   )
 }

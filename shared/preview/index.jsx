@@ -7,6 +7,8 @@ import classNames from 'classnames'
 import mainPlaceholder from '@preview/assets/placeholders/main.png'
 import { CSSTransition, TransitionGroup } from '@discord/modules'
 import Settings from '@preview/views/Settings'
+import Layers from '@preview/components/Layers'
+import ModuleKey from '@enums/ModuleKey'
 
 export const PREVIEW_WIDTH = 1280
 export const PREVIEW_HEIGHT = 720
@@ -50,6 +52,13 @@ function Preview ({
     }
   }, [placeholder, module])
 
+  const layer = useMemo(() => {
+    switch (module.id) {
+      case ModuleKey.Settings: return <Settings />
+      default: return <Main />
+    }
+  }, [module])
+
   return (
     <PreviewContext.Provider value={{ store, id, modules, active, pack, animation, data, viewportRef }}>
       <div
@@ -79,8 +88,7 @@ function Preview ({
                 ref={viewportRef}
                 className="BAP__viewport"
               >
-                {/*<Main />*/}
-                <Settings />
+                <Layers layer={layer} />
               </div>
             )}
           </CSSTransition>
