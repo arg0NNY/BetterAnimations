@@ -1,5 +1,6 @@
 import { Block, Flex, Text } from '@preview/components'
 import XIcon from '@preview/components/icons/XIcon'
+import { css } from '@style'
 
 function CloseButton (props) {
   return (
@@ -14,11 +15,21 @@ function CloseButton (props) {
 
 function Section ({ children }) {
   return (
-    <Block flex={1} pt={96} pl={40} pr={208} relative overflow="hidden" bg="background-primary">
+    <div className="BAP__section">
       <CloseButton absolute top={92} right={132} />
       {children}
-    </Block>
+    </div>
   )
 }
 
 export default Section
+
+css
+`.BAP__section {
+    position: relative;
+    flex: 1;
+    padding: 96px 208px 0 40px;
+    overflow: hidden;
+    background-color: var(--bap-background-primary);
+}`
+`Preview: Section`

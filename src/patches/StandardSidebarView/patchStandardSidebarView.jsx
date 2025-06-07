@@ -62,8 +62,13 @@ export default patchStandardSidebarView
 
 StandardSidebarViewKeyed.then(() =>
 css
-`${DiscordSelectors.StandardSidebarView.contentRegion} > ${DiscordSelectors.StandardSidebarView.contentRegion} {
+`${DiscordSelectors.StandardSidebarView.standardSidebarView} > ${DiscordSelectors.StandardSidebarView.contentRegion} {
+    isolation: isolate;
+}
+${DiscordSelectors.StandardSidebarView.contentRegion} > ${DiscordSelectors.StandardSidebarView.contentRegion} {
     height: 100%;
+}
+${DiscordSelectors.StandardSidebarView.contentRegion}[data-ba-container] {
     background: none;
 }
 
