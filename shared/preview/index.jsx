@@ -6,6 +6,7 @@ import { AnimationStore } from '@animation/store'
 import classNames from 'classnames'
 import mainPlaceholder from '@preview/assets/placeholders/main.png'
 import { CSSTransition, TransitionGroup } from '@discord/modules'
+import Settings from '@preview/views/Settings'
 
 export const PREVIEW_WIDTH = 1280
 export const PREVIEW_HEIGHT = 720
@@ -78,7 +79,8 @@ function Preview ({
                 ref={viewportRef}
                 className="BAP__viewport"
               >
-                <Main />
+                {/*<Main />*/}
+                <Settings />
               </div>
             )}
           </CSSTransition>

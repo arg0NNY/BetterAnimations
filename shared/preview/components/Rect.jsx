@@ -1,9 +1,11 @@
 import { css } from '@style'
 import classNames from 'classnames'
+import Block from '@preview/components/Block'
 
-function Rect ({ className, width, height, radius, color }) {
+function Rect ({ className, width, height, radius, color, ...props }) {
   return (
-    <div
+    <Block
+      {...props}
       className={classNames('BAP__rect', className)}
       style={{
         width,
@@ -41,8 +43,18 @@ export function Divider ({ vertical = false, length, ...props }) {
   return (
     <Rect
       {...props}
-      className="BA__divider"
+      className="BAP__divider"
       {...params}
+    />
+  )
+}
+
+export function Button ({ color = 'brand-primary', ...props }) {
+  return (
+    <Rect
+      {...props}
+      className="BAP__button"
+      color={color}
     />
   )
 }
@@ -67,9 +79,15 @@ css
     width: 22px;
     height: 22px;
 }
-.BA__divider {
+.BAP__divider {
     width: 1px;
     height: 1px;
     background: var(--bap-border-subtle);
+}
+.BAP__button {
+    width: 80px;
+    height: 32px;
+    border-width: 1px !important;
+    border-radius: 8px;
 }`
 `Preview: Rect`
