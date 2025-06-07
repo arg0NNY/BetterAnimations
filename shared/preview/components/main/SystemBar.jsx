@@ -7,15 +7,9 @@ function SystemBar () {
         <Icon size={20} radius={4} color="text-heading" />
         <Text length={140} color="text-heading" />
       </Flex>
-      <Flex align="center" gap={18} pr={6}>
+      <Flex align="center" gap={18} pr={12}>
         <Icon />
         <Icon />
-        <Divider vertical length={20} />
-        <Flex align="center" gap={12}>
-          <Icon />
-          <Icon />
-          <Icon />
-        </Flex>
       </Flex>
     </Flex>
   )
