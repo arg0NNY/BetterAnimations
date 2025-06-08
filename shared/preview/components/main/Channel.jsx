@@ -1,20 +1,24 @@
 import { css } from '@style'
 import { Block, Flex, Icon, Text } from '@preview/components'
 import Chat from '@preview/components/main/Chat'
+import useModule from '@preview/hooks/useModule'
+import ModuleKey from '@enums/ModuleKey'
+import useStages from '@preview/hooks/useStages'
+import PreviewTransition from '@preview/components/PreviewTransition'
+import useMouse from '@preview/hooks/useMouse'
 
-function ChannelHeader ({ name, description }) {
+function ChannelHeader ({ name, description, items = [0, 0, 0, 1] }) {
   return (
-    <Flex h={48} pl={21} pr={8} justify="space-between" borderBottomWidth={1}>
+    <Flex h={48} pl={21} pr={8} justify="space-between" borderBottomWidth={1} bg="background-secondary">
       <Flex align="center" gap={8}>
         <Icon color="text-heading" />
         <Text length={name} color="text-heading" />
         <Text length={description} />
       </Flex>
       <Flex align="center" gap={18}>
-        <Icon />
-        <Icon />
-        <Icon />
-        <Icon color="text-heading" />
+        {items.map((active, i) => (
+          <Icon key={i} color={active ? 'text-heading' : 'text-primary'} />
+        ))}
         <Block w={244} h={32} radius={8} bg="background-secondary-alt" borderWidth={1} />
       </Flex>
     </Flex>
@@ -31,7 +35,7 @@ function MemberListItem ({ active = false, length }) {
 }
 function MemberList ({ sections = [] }) {
   return (
-    <Flex w={247} px={8} py={20} column gap={20} borderLeftWidth={1} overflow="hidden">
+    <div className="BAP__memberList">
       {sections.map(({ length, items = [] }, i) => (
         <Flex key={i} column gap={2}>
           <Flex px={8} pb={4}>
@@ -42,7 +46,7 @@ function MemberList ({ sections = [] }) {
           ))}
         </Flex>
       ))}
-    </Flex>
+    </div>
   )
 }
 
@@ -51,13 +55,24 @@ function ThreadSidebar () {
 }
 
 function Channel ({ header, chat, memberList }) {
+  const [module, isActive] = useModule(ModuleKey.MembersSidebar)
+  const stage = useStages(2, isActive)
+  const mouse = useMouse({ x: 997, y: 57 })
+
   return (
     <div className="BAP__channel">
-      <Flex column bg="background-secondary" flex={1} borderTopWidth={1}>
-        <ChannelHeader {...header} />
+      <Flex column bg="background-tertiary" flex={1} borderTopWidth={1}>
+        <ChannelHeader {...header} items={[0, 0, 0, !stage]} />
         <Flex align="stretch" flex={1}>
           <Chat {...chat} />
-          <MemberList {...memberList} />
+          <PreviewTransition
+            in={!stage}
+            container={{ className: 'BAP__sidebar' }}
+            module={module}
+            mouse={mouse}
+          >
+            <MemberList {...memberList} />
+          </PreviewTransition>
         </Flex>
       </Flex>
       <ThreadSidebar />
@@ -72,5 +87,19 @@ css
     display: flex;
     align-items: stretch;
     flex: 1;
+}
+.BAP__sidebar {
+    display: flex;
+    flex-direction: column;
+}
+.BAP__memberList {
+    width: 247px;
+    padding: 20px 8px;
+    background-color: var(--bap-background-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-left-width: 1px !important;
+    overflow: hidden;
 }`
 `Preview: Channel`

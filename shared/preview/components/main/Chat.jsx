@@ -69,7 +69,7 @@ function Chat ({ messages, rng }) {
   }, [stage])
 
   return (
-    <Flex flex={1} column>
+    <Flex flex={1} column bg="background-secondary">
       <Block relative flex={1} overflow="hidden">
         <Flex className="BAP__messages" flex={1} column>
           <TransitionGroup component={null}>

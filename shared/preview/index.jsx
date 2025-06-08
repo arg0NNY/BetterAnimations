@@ -143,8 +143,12 @@ img.BAP__viewport {
 }
 
 .BAP--messages .BAP__viewport {
+    transform-origin: 63% bottom;
     scale: 1.35;
-    transform-origin: 63% bottom
+}
+.BAP--membersSidebar .BAP__viewport {
+    transform-origin: bottom right;
+    scale: 1.05;
 }
 
 .BAP__fade-enter-active, .BAP__fade-exit-active {
