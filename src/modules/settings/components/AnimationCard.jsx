@@ -191,13 +191,14 @@ function AnimationCard ({
   }, cardRef)
 
   const hasSettings = !!animationSettings.settings.length
+  const hasAccordions = !!accordionsSettings?.settings?.length
   const [forceOpenSettingsTooltip, setForceOpenSettingsTooltip] = useState(false)
   const expandSettings = (rightClick = false) => {
     if (expanded) return
-    if (!hasSettings) return setForceOpenSettingsTooltip(true)
+    if (!hasSettings && !hasAccordions) return setForceOpenSettingsTooltip(true)
 
-    setExpanded('settings')
-    if (rightClick === true && !rightClickHint) setRightClickHint(true)
+    setExpanded(hasSettings ? 'settings' : 'accordions')
+    if (rightClick === true && !rightClickHint && !header) setRightClickHint(true)
   }
 
   return wrap(
@@ -213,7 +214,7 @@ function AnimationCard ({
     >
       <HintTooltip
         text="Right-click the card to open the settings"
-        shouldShow={!rightClickHint && !!expandSettings && !expanded && hasSettings}
+        shouldShow={!rightClickHint && !!expandSettings && !expanded && hasSettings && !header}
       >
         {props => (
           <div
@@ -244,7 +245,7 @@ function AnimationCard ({
                 setEnter={setEnter}
                 setExit={setExit}
                 hasSettings={hasSettings}
-                hasAccordions={!!accordionsSettings?.settings?.length}
+                hasAccordions={hasAccordions}
                 expanded={expanded}
                 setExpanded={setExpanded}
                 errors={errors}
