@@ -45,7 +45,8 @@ to use in the [Module](./modules) Settings.
 Each Pack has a configuration file with the `.config.json` extension, which _BetterAnimations_ uses
 to store your settings for the animations of the Pack.
 
-If you want to migrate the installed packs whilst saving your settings, make sure to also transfer the configuration files.
+Configuration files are created and managed automatically by the plugin, you don't need to create or download them manually.
+However, if you want to migrate the installed packs whilst saving your settings, make sure to also transfer the configuration files.
 
 > [!NOTE]
 > The settings of a preinstalled pack are stored inside the main configuration file of _BetterAnimations_
