@@ -138,7 +138,7 @@ animate
 │       ├── onBeforeLayout
 │       ├── hast
 │       ├── anime
-│       └── onDestroyed
+│       └── onBeforeDestroy
 ├── onBeforeLayout
 ├── hast
 ├── css
@@ -171,7 +171,7 @@ animate
 ├── onBeforeDestroy
 │   └── /extends/1/onBeforeDestroy
 └── onDestroyed
-    ├── /extends/1/onDestroyed
+    ├── /extends/0/onDestroyed
     └── /onDestroyed
 ```
 
