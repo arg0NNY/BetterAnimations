@@ -125,7 +125,7 @@ An array of or a single hast [`Element`](https://github.com/syntax-tree/hast?tab
 
 An object representing the CSS to be mounted while the Animation is alive. See [Layout](/create/layout#css).
 
-Selectors can only target the elements defined inside [`hast`](#hast). Use `{element}` and `{container}` to target an animating element and a container correspondingly.
+Selectors can only target the elements defined inside [`hast`](#hast). Use `{element}` and `{container}` to target an [Element](/create/layout#element) and a [Container](/create/layout#container) correspondingly.
 
 > [!WARNING]
 > `css` has a limited set of injects that are allowed for use inside it. See [Layout](/create/layout#inject-restrictions).
