@@ -413,7 +413,7 @@ Debugs the specified <InjectRef inject="debug" parameter="data" /> into the Cons
 
 ### Parameters {#debug-parameters}
 
-#### `debug` {#data-parameters-debug}
+#### `data` {#debug-parameters-data}
 
 Data to debug.
 
