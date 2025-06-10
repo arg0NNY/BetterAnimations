@@ -16,3 +16,11 @@ export function createAwaitableRef () {
     }
   }
 }
+
+export function getRef (refLike) {
+  return typeof refLike === 'function'
+    ? refLike()
+    : 'current' in (refLike ?? {})
+      ? refLike.current
+      : refLike
+}

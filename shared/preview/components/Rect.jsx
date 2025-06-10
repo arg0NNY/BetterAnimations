@@ -63,7 +63,6 @@ export default Rect
 
 css
 `.BAP__rect {
-    display: inline-block;
     background: var(--bap-text-primary);
     width: 20px;
     height: 20px;

@@ -1,7 +1,10 @@
 import { css } from '@style'
 import { Flex, Icon, Text } from '@preview/components'
+import classNames from 'classnames'
+import { use } from 'react'
+import PreviewContext from '@preview/context/PreviewContext'
 
-function UserPanel () {
+function UserPanel ({ active = -1, actionRefs = use(PreviewContext).userPanelActionRefs }) {
   return (
     <div className="BAP__userPanelContainer">
       <Flex className="BAP__userPanel" justify="space-between" align="center">
@@ -11,9 +14,16 @@ function UserPanel () {
         </Flex>
         <Flex>
           {Array(3).fill(null).map((_, i) => (
-            <Flex key={i} w={32} h={32} center>
-              <Icon size={19} />
-            </Flex>
+            <div
+              ref={ref => { actionRefs.current[i] = ref }}
+              key={i}
+              className={classNames(
+                'BAP__userPanelAction',
+                { 'BAP__userPanelAction--active': i === active }
+              )}
+              >
+              <Icon size={19} color="current" />
+            </div>
           ))}
         </Flex>
       </Flex>
@@ -39,5 +49,20 @@ css
     border-radius: 8px;
     padding: 0 8px;
     background: var(--bap-background-primary);
+}
+.BAP__userPanelAction {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background-color: transparent;
+    color: var(--bap-text-primary);
+    transition: background-color .2s, color .2s;
+}
+.BAP__userPanelAction--active {
+    background-color: var(--bap-border-subtle);
+    color: var(--bap-text-heading);
 }`
 `Preview: UserPanel`

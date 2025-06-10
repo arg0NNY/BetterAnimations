@@ -8,7 +8,13 @@ const PreviewContext = createContext({
   pack: null,
   animation: null,
   data: null,
-  viewportRef: { current: null }
+  viewportRef: { current: null },
+  serverListIconRefs: { current: [] },
+  userPanelActionRefs: { current: [] },
+  serverList: {},
+  setServerList: () => {},
+  userPanel: {},
+  setUserPanel: () => {}
 })
 
 export default PreviewContext

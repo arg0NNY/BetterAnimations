@@ -3,6 +3,7 @@ import isElement from 'lodash-es/isElement'
 import { parse } from '@animation/parser'
 import ErrorManager from '@error/manager'
 import AnimationError from '@error/structs/AnimationError'
+import { getRef } from '@utils/react'
 
 export default class Animation {
   constructor (store, { module, data, type, container, element, viewport, window, mouse, anchor, auto, doneCallbackRef }) {
@@ -60,11 +61,7 @@ export default class Animation {
         return
       }
 
-      const anchor = typeof this.anchor === 'function'
-        ? this.anchor()
-        : 'current' in (this.anchor ?? {})
-          ? this.anchor.current
-          : this.anchor
+      const anchor = getRef(this.anchor)
 
       const { animate, context } = this.module.getAnimation(
         this.data,

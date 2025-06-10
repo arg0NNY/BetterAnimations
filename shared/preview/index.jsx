@@ -59,8 +59,31 @@ function Preview ({
     }
   }, [module])
 
+  const serverListIconRefs = useRef([])
+  const userPanelActionRefs = useRef([])
+
+  const [serverList, setServerList] = useState({})
+  const [userPanel, setUserPanel] = useState({})
+
+  const context = {
+    store,
+    id,
+    modules,
+    active,
+    pack,
+    animation,
+    data,
+    viewportRef,
+    serverListIconRefs,
+    userPanelActionRefs,
+    serverList,
+    setServerList,
+    userPanel,
+    setUserPanel
+  }
+
   return (
-    <PreviewContext.Provider value={{ store, id, modules, active, pack, animation, data, viewportRef }}>
+    <PreviewContext value={context}>
       <div
         ref={ref}
         className={classNames(
@@ -94,7 +117,7 @@ function Preview ({
           </CSSTransition>
         </TransitionGroup>
       </div>
-    </PreviewContext.Provider>
+    </PreviewContext>
   )
 }
 
@@ -118,6 +141,7 @@ css
     --bap-text-heading: #505357;
     --bap-brand-primary: #5865F2;
     --bap-white: #FBFBFB;
+    --bap-current: currentColor;
 
     position: absolute;
     inset: 0;
@@ -149,6 +173,10 @@ img.BAP__viewport {
 .BAP--membersSidebar .BAP__viewport {
     transform-origin: bottom right;
     scale: 1.05;
+}
+.BAP--tooltips .BAP__viewport {
+    transform-origin: bottom left;
+    scale: 2.8;
 }
 
 .BAP__fade-enter-active, .BAP__fade-exit-active {
