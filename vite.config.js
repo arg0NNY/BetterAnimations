@@ -41,6 +41,7 @@ function copyToBDPlugin() {
 }
 
 export const aliases = {
+  '@package': path.resolve(__dirname, 'package.json'),
   '@config': path.resolve(__dirname, 'config.json'),
   '@shared': path.resolve(__dirname, 'shared'),
   '@utils': path.resolve(__dirname, 'shared/utils'),
