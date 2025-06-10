@@ -11,5 +11,6 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
       ...aliases
     }
-  }
+  },
+  envDir: path.resolve(__dirname, '../../')
 })
