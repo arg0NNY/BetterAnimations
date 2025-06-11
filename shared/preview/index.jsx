@@ -24,7 +24,10 @@ function Preview ({
   className,
   style,
   ref,
-  viewportRef = useRef()
+  viewportRef = useRef(),
+  preferences = {
+    memberListShown: true
+  }
 }) {
   const store = useMemo(() => new AnimationStore, [])
 
@@ -65,6 +68,15 @@ function Preview ({
   const [serverList, setServerList] = useState({})
   const [userPanel, setUserPanel] = useState({})
 
+  const [memberListShown, _setMemberListShown] = useState(
+    id === ModuleKey.ThreadSidebar
+      ? preferences.memberListShown
+      : id !== ModuleKey.ThreadSidebarSwitch
+  )
+  const setMemberListShown = (value, force = false) => {
+    if (value === preferences.memberListShown || force) _setMemberListShown(value)
+  }
+
   const context = {
     store,
     id,
@@ -79,7 +91,9 @@ function Preview ({
     serverList,
     setServerList,
     userPanel,
-    setUserPanel
+    setUserPanel,
+    memberListShown,
+    setMemberListShown
   }
 
   return (

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { css } from '@style'
-import { Text, Timeout } from '@discord/modules'
+import { ChannelSectionStore, Text, Timeout, useStateFromStores } from '@discord/modules'
 import ModuleContext from '@/modules/settings/context/ModuleContext'
 import Preview, { PREVIEW_WIDTH } from '@preview'
 import Modules from '@/modules/Modules'
@@ -39,6 +39,8 @@ function AnimationPreview ({ pack, animation, title = animation?.name, active = 
     setScale(containerRef.current.offsetWidth / PREVIEW_WIDTH)
   })
 
+  const { isMembersOpen: memberListShown = true } = useStateFromStores([ChannelSectionStore], () => ChannelSectionStore.getState())
+
   return (
     <div
       ref={containerRef}
@@ -55,6 +57,7 @@ function AnimationPreview ({ pack, animation, title = animation?.name, active = 
         pack={pack}
         animation={animation}
         dataKey={dataKey}
+        preferences={{ memberListShown }}
       />
       {title && (
         <div className={classNames(

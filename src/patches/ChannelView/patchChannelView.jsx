@@ -81,6 +81,7 @@ export default patchChannelView
 css
 `.BA__sidebar {
     position: relative;
+    isolation: isolate;
     display: flex;
     justify-content: flex-end;
     height: 100%;

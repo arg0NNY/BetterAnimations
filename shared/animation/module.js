@@ -159,6 +159,8 @@ export default class Module {
       enter: this.initializeAnimation(AnimationType.Enter),
       exit: this.initializeAnimation(AnimationType.Exit)
     }
+
+    return this
   }
 
   getAnimation (data, type, options, context) {

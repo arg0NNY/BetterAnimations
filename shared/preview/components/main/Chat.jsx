@@ -35,12 +35,12 @@ export function Message ({ username = 40, rows = [], embed = null }) {
       <Flex flex={1} column align="flex-start" gap={6}>
         <Text length={username} color="text-heading" />
         {rows.map((columns, i) => (
-          <Flex key={i} gap={4} wrap>
+          <Flex key={i} gap="6px 4px" wrap>
             {columns.map((length, i) => <Text key={i} length={length} />)}
           </Flex>
         ))}
         {embed && (
-          <Block w={embed[0]} h={embed[1]} radius={8} bg="text-primary" />
+          <Block w={embed[0]} h={embed[1]} maxWidth="100%" radius={8} bg="text-primary" />
         )}
       </Flex>
     </div>

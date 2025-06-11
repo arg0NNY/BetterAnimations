@@ -102,6 +102,7 @@ css
     display: flex;
     align-items: stretch;
     flex: 1;
+    min-width: 0;
 }
 .BAP__channelList {
     border-top-width: 1px !important;
@@ -122,5 +123,6 @@ css
     display: flex;
     align-items: stretch;
     flex: 1;
+    min-width: 0;
 }`
 `Preview: Server`

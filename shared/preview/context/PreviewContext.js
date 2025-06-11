@@ -14,7 +14,9 @@ const PreviewContext = createContext({
   serverList: {},
   setServerList: () => {},
   userPanel: {},
-  setUserPanel: () => {}
+  setUserPanel: () => {},
+  memberListShown: true,
+  setMemberListShown: () => {}
 })
 
 export default PreviewContext

@@ -6,7 +6,7 @@ import ModuleKey from '@enums/ModuleKey'
 import internalPacks, { PREINSTALLED_PACK_SLUG } from '@packs'
 import { getRect } from '@utils/position'
 
-const modules = data.map(m => new Module(m))
+const modules = data.map(m => new Module(m).initializeAnimations())
 const pack = internalPacks[PREINSTALLED_PACK_SLUG]
 
 window.getRect = el => getRect(el, document.querySelector('.BAP__viewport'))

@@ -9,6 +9,10 @@ export const chat = {
   alt: () => {
     const rng = sfc32(3849863118, 865888779, 2963917516, 814392167)
     return { rng, messages: generateMessageStream(rng, 5) }
+  },
+  tertiary: () => {
+    const rng = sfc32(243164468, 1892646852, 3229717884, 3028721673)
+    return { rng, messages: generateMessageStream(rng, 5) }
   }
 }
 
@@ -85,6 +89,17 @@ export const channel = {
     header: { name: 182, description: 176 },
     chat: chat.alt(),
     memberList: memberList.alt()
+  })
+}
+
+export const thread = {
+  main: () => ({
+    header: { name: 103 },
+    chat: chat.alt()
+  }),
+  alt: () => ({
+    header: { name: 143 },
+    chat: chat.tertiary()
   })
 }
 
