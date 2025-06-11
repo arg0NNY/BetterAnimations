@@ -120,7 +120,10 @@ export const channelList = {
       { type: 'channel', length: 123 },
       { type: 'channel', length: 162 },
       { type: 'channel', length: 83 },
-      { type: 'channel', length: 103 }
+      { type: 'channel', length: 103 },
+      { type: 'section', length: 83 },
+      { type: 'channel', length: 124 },
+      { type: 'channel', length: 80 }
     ],
     active: 4
   }),

@@ -192,6 +192,10 @@ img.BAP__viewport {
     transform-origin: bottom left;
     scale: 2.8;
 }
+.BAP--channelList .BAP__viewport {
+    transform-origin: left 66%;
+    scale: 1.5;
+}
 
 .BAP__fade-enter-active, .BAP__fade-exit-active {
     transition: opacity .4s;

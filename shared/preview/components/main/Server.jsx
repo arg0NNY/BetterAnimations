@@ -15,23 +15,21 @@ import useMouse from '@preview/hooks/useMouse'
 
 function ChannelListItem ({ active = false, length }) {
   return (
-    <Flex pl={8} py={1} h={32} align="stretch">
+    <div className="BAP__channelListItem">
       <Flex px={8} align="center" gap={8} radius={4} flex={1} bg={active && 'background-primary'}>
         <Icon size={19} color={active && 'text-heading'} />
         <Text length={length} color={active && 'text-heading'} />
       </Flex>
-    </Flex>
+    </div>
   )
 }
-
 function ChannelListSection ({ active, length }) {
   return (
     <Flex
-      className={classNames('BAP__channelListSection', {
+      className={classNames({
+        'BAP__channelListSection': true,
         'BAP__channelListSection--active': active
       })}
-      h={40}
-      align="flex-end"
     >
       <Flex h={24} px={16} align="center" gap={4} flex={1}>
         <Text length={length} height={12} />
@@ -42,18 +40,55 @@ function ChannelListSection ({ active, length }) {
 }
 
 function ChannelList ({ name, items = [], active = -1 }) {
+  const [module, isActive] = useModule(ModuleKey.ChannelList)
+  const stage = useStages(4, isActive)
+
+  const sectionIndexes = useMemo(
+    () => items.map(({ type }, i) => type === 'section' ? i : -1)
+      .filter(i => i !== -1)
+      .concat(items.length),
+    [items]
+  )
+  const hiddenSections = useMemo(
+    () => [0, 1].slice(Math.max(0, stage - 2), stage),
+    [stage]
+  )
+
   return (
-    <Flex className="BAP__channelList" w={268} pb={64} bg="background-tertiary" column>
+    <Flex className="BAP__channelList">
       <Flex h={48} align="center" px={14} borderBottomWidth={1}>
         <Text length={name} color="text-heading" />
       </Flex>
       <Flex column py={12} pr={8} flex={1}>
-        {items.map(({ type, ...props }, i) => {
-          switch (type) {
-            case 'section': return <ChannelListSection key={i} {...props} />
-            case 'channel': return <ChannelListItem key={i} active={i === active} {...props} />
-          }
-        })}
+        <TransitionGroup component={null}>
+          {items.map(({ type, ...props }, i) => {
+            if (type === 'section') return (
+              <ChannelListSection
+                key={i}
+                active={isActive ? !hiddenSections.some(s => i === sectionIndexes[s]) : null}
+                {...props}
+              />
+            )
+
+            if (
+              hiddenSections.some(j => i >= sectionIndexes[j] && i < sectionIndexes[j + 1])
+                && i !== active
+            ) return null
+
+            return (
+              <PreviewTransition
+                key={i}
+                container={{ className: 'BAP__channelListItemContainer' }}
+                module={module}
+              >
+                <ChannelListItem
+                  active={i === active}
+                  {...props}
+                />
+              </PreviewTransition>
+            )
+          })}
+        </TransitionGroup>
       </Flex>
     </Flex>
   )
@@ -105,10 +140,20 @@ css
     min-width: 0;
 }
 .BAP__channelList {
+    display: flex;
+    flex-direction: column;
+    width: 268px;
+    padding-bottom: 64px;
     border-top-width: 1px !important;
     border-left-width: 1px !important;
     border-top-left-radius: 12px;
+    background-color: var(--bap-background-tertiary);
     overflow: hidden;
+}
+.BAP__channelListSection {
+    height: 40px;
+    display: flex;
+    align-items: flex-end;
 }
 .BAP__channelListSection svg {
     transition: .2s transform;
@@ -116,6 +161,13 @@ css
 }
 .BAP__channelListSection--active svg {
     transform: rotate(0);
+}
+.BAP__channelListItem {
+    display: flex;
+    align-items: stretch;
+    height: 32px;
+    margin-left: 8px;
+    padding: 1px 0;
 }
 .BAP__page {
     position: relative;
