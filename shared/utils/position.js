@@ -91,7 +91,7 @@ export function toUnit (value, unit, rect = undefined) {
   }
 }
 
-export function getCenter (rect, unit, relative) {
+export function getCenter (rect, unit = 'px', relative = { x: 0, y: 0 }) {
   const [x, y] = [
     rect.x + rect.width / 2 - relative.x,
     rect.y + rect.height / 2 - relative.y

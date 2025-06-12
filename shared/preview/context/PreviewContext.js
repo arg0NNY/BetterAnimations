@@ -11,12 +11,18 @@ const PreviewContext = createContext({
   viewportRef: { current: null },
   serverListIconRefs: { current: [] },
   userPanelActionRefs: { current: [] },
+  channelHeaderItemRefs: { current: [] },
+  memberListItemRefs: { current: [] },
   serverList: {},
   setServerList: () => {},
   userPanel: {},
   setUserPanel: () => {},
   memberListShown: true,
-  setMemberListShown: () => {}
+  setMemberListShown: () => {},
+  memberList: {},
+  setMemberList: () => {},
+  threadPopoutShown: false,
+  setThreadPopoutShown: () => {}
 })
 
 export default PreviewContext

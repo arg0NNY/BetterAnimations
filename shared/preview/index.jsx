@@ -64,9 +64,13 @@ function Preview ({
 
   const serverListIconRefs = useRef([])
   const userPanelActionRefs = useRef([])
+  const channelHeaderItemRefs = useRef([])
+  const memberListItemRefs = useRef([])
 
   const [serverList, setServerList] = useState({})
   const [userPanel, setUserPanel] = useState({})
+  const [memberList, setMemberList] = useState({})
+  const [threadPopoutShown, setThreadPopoutShown] = useState(false)
 
   const [memberListShown, _setMemberListShown] = useState(
     id === ModuleKey.ThreadSidebar
@@ -88,12 +92,18 @@ function Preview ({
     viewportRef,
     serverListIconRefs,
     userPanelActionRefs,
+    channelHeaderItemRefs,
+    memberListItemRefs,
     serverList,
     setServerList,
     userPanel,
     setUserPanel,
     memberListShown,
-    setMemberListShown
+    setMemberListShown,
+    memberList,
+    setMemberList,
+    threadPopoutShown,
+    setThreadPopoutShown
   }
 
   return (
@@ -143,6 +153,7 @@ css
     overflow: clip;
     width: ${PREVIEW_WIDTH}px;
     height: ${PREVIEW_HEIGHT}px;
+    contain: strict;
 }
 .BAP__viewport {
     --bap-background-primary: #202024;
@@ -195,6 +206,10 @@ img.BAP__viewport {
 .BAP--channelList .BAP__viewport {
     transform-origin: left 66%;
     scale: 1.5;
+}
+.BAP--popouts .BAP__viewport {
+    transform-origin: top right;
+    scale: 1.3;
 }
 
 .BAP__fade-enter-active, .BAP__fade-exit-active {

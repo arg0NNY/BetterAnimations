@@ -6,12 +6,13 @@ import ModuleKey from '@enums/ModuleKey'
 import useStages from '@preview/hooks/useStages'
 import PreviewTransition from '@preview/components/PreviewTransition'
 import useMouse from '@preview/hooks/useMouse'
-import { use, useEffect, useMemo } from 'react'
+import { use, useEffect, useMemo, useRef } from 'react'
 import { thread as threadData } from '@preview/data'
 import PreviewContext from '@preview/context/PreviewContext'
 import { TransitionGroup } from '@discord/modules'
+import classNames from 'classnames'
 
-function ChannelHeader ({ name, description, items = [0, 0, 0, 1], search = true }) {
+function ChannelHeader ({ name, description, items = [0, 0, 0, 1], itemRefs = useRef([]), search = true }) {
   return (
     <Flex h={48} pl={21} pr={8} justify="space-between" borderBottomWidth={1} bg="background-secondary">
       <Flex relative align="center" gap={8} flex={1} overflow="hidden">
@@ -25,7 +26,14 @@ function ChannelHeader ({ name, description, items = [0, 0, 0, 1], search = true
       </Flex>
       <Flex pl={8} align="center" gap={18}>
         {items.map((active, i) => (
-          <Icon key={i} color={active ? 'text-heading' : 'text-primary'} />
+          <div
+            key={i}
+            ref={ref => { itemRefs.current[i] = ref }}
+            className={classNames({
+              'BAP__channelHeaderItem': true,
+              'BAP__channelHeaderItem--active': active
+            })}
+          />
         ))}
         {search && (
           <Block w={244} h={32} radius={8} bg="background-secondary-alt" borderWidth={1} />
@@ -35,15 +43,21 @@ function ChannelHeader ({ name, description, items = [0, 0, 0, 1], search = true
   )
 }
 
-function MemberListItem ({ active = false, length }) {
+function MemberListItem ({ ref, active = false, length }) {
   return (
-    <Flex px={16} py={4} align="center" gap={12} radius={8} bg={active && 'background-primary'}>
+    <div
+      ref={ref}
+      className={classNames({
+        'BAP__memberListItem': true,
+        'BAP__memberListItem--active': active
+      })}
+    >
       <Icon size={32} radius="50%" color={active && 'text-heading'} />
       <Text length={length} color={active && 'text-heading'} />
-    </Flex>
+    </div>
   )
 }
-function MemberList ({ sections = [] }) {
+function MemberList ({ sections = [], itemRefs = useRef([]), active = -1 }) {
   const { memberListShown, setMemberListShown } = use(PreviewContext)
 
   const [module, isActive] = useModule(ModuleKey.MembersSidebar)
@@ -67,9 +81,17 @@ function MemberList ({ sections = [] }) {
             <Flex px={8} pb={4}>
               <Text length={length} height={12} />
             </Flex>
-            {items.map((props, i) => (
-              <MemberListItem key={i} {...props} />
-            ))}
+            {items.map((props, j) => {
+              const index = sections.slice(0, i).reduce((n, s) => n + s.items.length, 0) + j
+              return (
+                <MemberListItem
+                  key={j}
+                  ref={ref => { itemRefs.current[index] = ref }}
+                  active={index === active}
+                  {...props}
+                />
+              )
+            })}
           </Flex>
         ))}
       </div>
@@ -120,15 +142,29 @@ function ThreadSidebar () {
 }
 
 function Channel ({ header, chat, memberList }) {
-  const { memberListShown } = use(PreviewContext)
+  const {
+    channelHeaderItemRefs,
+    memberListItemRefs,
+    memberListShown,
+    memberList: memberListOverrides,
+    threadPopoutShown
+  } = use(PreviewContext)
 
   return (
     <div className="BAP__channel">
       <Flex className="BAP__channelContents">
-        <ChannelHeader {...header} items={[0, 0, 0, memberListShown]} />
+        <ChannelHeader
+          {...header}
+          items={[threadPopoutShown, 0, 0, memberListShown]}
+          itemRefs={channelHeaderItemRefs}
+        />
         <Flex align="stretch" flex={1}>
           <Chat {...chat} />
-          <MemberList {...memberList} />
+          <MemberList
+            {...memberList}
+            {...memberListOverrides}
+            itemRefs={memberListItemRefs}
+          />
         </Flex>
       </Flex>
       <ThreadSidebar />
@@ -170,6 +206,16 @@ css
     border-left-width: 1px !important;
     overflow: hidden;
 }
+.BAP__memberListItem {
+    display: flex;
+    align-items: center;
+    padding: 4px 16px;
+    gap: 12px;
+    border-radius: 8px;
+}
+.BAP__memberListItem--active {
+    background-color: var(--bap-background-primary);
+}
 .BAP__threadSidebar {
     width: 458px;
     display: flex;
@@ -188,5 +234,14 @@ css
 .BAP__channel:has(.BAP__threadSidebar) .BAP__channelContents {
     border-right-width: 1px !important;
     border-radius: 0 8px 8px 0;
+}
+.BAP__channelHeaderItem {
+    width: 22px;
+    height: 22px;
+    border-radius: 8px;
+    background-color: var(--bap-text-primary);
+}
+.BAP__channelHeaderItem--active {
+    background-color: var(--bap-text-heading);
 }`
 `Preview: Channel`

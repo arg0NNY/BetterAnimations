@@ -3,6 +3,7 @@ import { Flex } from '@preview/components'
 import { css } from '@style'
 import Tooltips from '@preview/components/main/Tooltips'
 import Content from '@preview/components/main/Content'
+import Popouts from '@preview/components/main/Popouts'
 
 function Main () {
   return (
@@ -10,6 +11,7 @@ function Main () {
       <SystemBar />
       <Content />
       <Tooltips />
+      <Popouts />
     </Flex>
   )
 }

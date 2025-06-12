@@ -7,7 +7,6 @@ import useStages from '@preview/hooks/useStages'
 import PreviewTransition from '@preview/components/PreviewTransition'
 import { use, useEffect, useRef } from 'react'
 import PreviewContext from '@preview/context/PreviewContext'
-import useMouse from '@preview/hooks/useMouse'
 
 function AnimatedTooltip ({ position, align = Position.Center, top, left, children, ...props }) {
   const containerRef = useRef()
@@ -53,12 +52,6 @@ function Tooltips () {
     if (isActive) setServerList(stage === 3 ? { hover: serverListIconIndex } : {})
   }, [stage])
 
-  const mouse = useMouse(
-    [1, 2].includes(stage)
-      ? { x: 244, y: 684 }
-      : { x: 36, y: 541 }
-  )
-
   if (!isActive) return null
 
   return (
@@ -69,7 +62,6 @@ function Tooltips () {
         left={190}
         position={Position.Top}
         anchor={() => userPanelActionRefs.current[userPanelActionIndex]}
-        mouse={mouse}
       >
         <Text length={90} />
       </AnimatedTooltip>
@@ -79,7 +71,6 @@ function Tooltips () {
         left={68}
         position={Position.Right}
         anchor={() => serverListIconRefs.current[serverListIconIndex]}
-        mouse={mouse}
       >
         <Flex column gap={8}>
           <Text length={140} color="text-heading" />
