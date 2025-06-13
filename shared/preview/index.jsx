@@ -9,6 +9,10 @@ import { CSSTransition, TransitionGroup } from '@discord/modules'
 import Settings from '@preview/views/Settings'
 import Layers from '@preview/components/Layers'
 import ModuleKey from '@enums/ModuleKey'
+import Tooltips from '@preview/components/main/Tooltips'
+import Popouts from '@preview/components/main/Popouts'
+import ContextMenus from '@preview/components/main/ContextMenus'
+import { FloatingLayerContainer } from '@preview/components/Floating'
 
 export const PREVIEW_WIDTH = 1280
 export const PREVIEW_HEIGHT = 720
@@ -136,6 +140,11 @@ function Preview ({
                 className="BAP__viewport"
               >
                 <Layers layer={layer} />
+                <FloatingLayerContainer>
+                  <Tooltips />
+                  <Popouts />
+                  <ContextMenus />
+                </FloatingLayerContainer>
               </div>
             )}
           </CSSTransition>
@@ -210,6 +219,10 @@ img.BAP__viewport {
 .BAP--popouts .BAP__viewport {
     transform-origin: top right;
     scale: 1.3;
+}
+.BAP--contextMenu .BAP__viewport {
+    transform-origin: 0 58%;
+    scale: 1.45;
 }
 
 .BAP__fade-enter-active, .BAP__fade-exit-active {
