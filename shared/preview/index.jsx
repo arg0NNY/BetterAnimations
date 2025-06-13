@@ -9,9 +9,9 @@ import { CSSTransition, TransitionGroup } from '@discord/modules'
 import Settings from '@preview/views/Settings'
 import Layers from '@preview/components/Layers'
 import ModuleKey from '@enums/ModuleKey'
-import Tooltips from '@preview/components/main/Tooltips'
-import Popouts from '@preview/components/main/Popouts'
-import ContextMenus from '@preview/components/main/ContextMenus'
+import Tooltips from '@preview/components/floating/Tooltips'
+import Popouts from '@preview/components/floating/Popouts'
+import ContextMenus from '@preview/components/floating/ContextMenus'
 import { FloatingLayerContainer } from '@preview/components/Floating'
 
 export const PREVIEW_WIDTH = 1280
