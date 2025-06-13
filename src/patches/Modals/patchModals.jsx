@@ -48,7 +48,6 @@ function patchModals () {
         {modal && (
           <Modal
             key={modal.props.modalKey}
-            defaultLayoutStyles={false}
             module={module}
             enter={!modal.props.instant}
             exit={!modal.props.instant}
@@ -78,14 +77,14 @@ ${DiscordSelectors.Layer.layerContainer} + ${DiscordSelectors.Layer.layerContain
 }
 
 ${DiscordSelectors.Modal.focusLock}:has(> [class*="carouselModal"]) {
-    position: absolute;
+    position: absolute !important;
     inset: 0;
 }
 
-.BA__modalBackdrop {
+.BA__backdrop {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.7);
 }`
 `Modals`

@@ -47,7 +47,7 @@ function ThreadsPopout (props) {
           <Text length={225} height={24} color="text-heading" mt={20} />
           <Text length={299} mt={14} />
           <Text length={265} mt={6} />
-          <Button width={118} height={38} mt={24} />
+          <Button width={118} height={36} mt={24} />
         </Flex>
       </div>
     </Floating>

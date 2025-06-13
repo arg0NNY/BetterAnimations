@@ -23,7 +23,7 @@ function patchModalBackdrop () {
       backdrop.type = 'div'
       delete backdrop.props.style
       backdrop.props.children = (
-        <div className="BA__modalBackdrop" />
+        <div className="BA__backdrop" />
       )
     }
 

@@ -13,6 +13,7 @@ import Tooltips from '@preview/components/floating/Tooltips'
 import Popouts from '@preview/components/floating/Popouts'
 import ContextMenus from '@preview/components/floating/ContextMenus'
 import { FloatingLayerContainer } from '@preview/components/Floating'
+import Modals from '@preview/components/floating/Modals'
 
 export const PREVIEW_WIDTH = 1280
 export const PREVIEW_HEIGHT = 720
@@ -141,6 +142,7 @@ function Preview ({
               >
                 <Layers layer={layer} />
                 <FloatingLayerContainer>
+                  <Modals />
                   <Tooltips />
                   <Popouts />
                   <ContextMenus />

@@ -85,7 +85,7 @@ css
 }
 .BAP__button {
     width: 80px;
-    height: 32px;
+    height: 30px;
     border-width: 1px !important;
     border-radius: 8px;
 }`

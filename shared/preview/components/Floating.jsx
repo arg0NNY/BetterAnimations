@@ -1,27 +1,34 @@
 import { css } from '@style'
+import classNames from 'classnames'
 
-export function FloatingLayerContainer ({ children }) {
+export function FloatingLayerContainer ({ className, children, ...props }) {
   return (
-    <div className="BAP__floatingLayerContainer">
+    <div
+      className={classNames('BAP__floatingLayerContainer', className)}
+      {...props}
+    >
       {children}
     </div>
   )
 }
 
-function FloatingLayer ({ children }) {
+export function FloatingLayer ({ className, children, ...props }) {
   return (
-    <div className="BAP__floatingLayer">
+    <div
+      className={classNames('BAP__floatingLayer', className)}
+      {...props}
+    >
       {children}
     </div>
   )
 }
 
-function Floating ({ ref, top, left, right, bottom, children }) {
+function Floating ({ ref, className, top, left, right, bottom, layer, children }) {
   return (
-    <FloatingLayer>
+    <FloatingLayer {...layer}>
       <div
         ref={ref}
-        className="BAP__floating"
+        className={classNames('BAP__floating', className)}
         style={{
           position: 'absolute',
           top,
