@@ -26,7 +26,8 @@ import TrustedFunctionSchema from '@animation/schemas/TrustedFunctionSchema'
 import { getRect } from '@utils/position'
 import isElement from 'lodash-es/isElement'
 
-export const ElementInjectSchema = ({ element }) => ElementSchema(Inject.Element, element)
+export const ElementInjectSchema = ({ element }) => InjectSchema(Inject.Element)
+  .transform(() => element)
 
 export const ContainerInjectSchema = ({ container }) => InjectSchema(Inject.Container)
   .transform(() => container)

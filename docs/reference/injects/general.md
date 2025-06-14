@@ -4,37 +4,20 @@
 
 ## `element`
 
-Returns a reference to an [Element](/create/layout#element) or the elements inside it matching the specified <InjectRef inject="element" parameter="selector" />.
+Returns a reference to an [Element](/create/layout#element).
 
 ### Parameters {#element-parameters}
 
-#### `selector` <Badge type="info" text="optional" /> {#element-parameters-selector}
-
-A string representing a valid [CSS selector](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors) to target the elements inside an [Element](/create/layout#element).
-
-#### `multiple` <Badge type="info" text="optional" /> {#element-parameters-multiple}
-
-A boolean indicating whether to return all elements matching the specified <InjectRef inject="element" parameter="selector" />.
-`false` by default.
+Doesn't accept any parameters.
 
 ### Returns {#element-returns}
 
-[`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element) matching the specified <InjectRef inject="element" parameter="selector" /> or `null`
-if <InjectRef inject="element" parameter="multiple" /> is `false`.
-
-An array of [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element) matching the specified <InjectRef inject="element" parameter="selector" />
-if <InjectRef inject="element" parameter="multiple" /> is `true`.
-
-If <InjectRef inject="element" parameter="selector" /> is not specified — a reference to an [Element](/create/layout#element).
+[`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element).
 
 ### Example usage {#element-example}
 
 ```json
-{
-  "inject": "element",
-  "selector": ".some-class",
-  "multiple": true
-}
+{ "inject": "element" }
 ```
 
 ## `container`

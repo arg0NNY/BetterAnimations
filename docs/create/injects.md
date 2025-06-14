@@ -8,10 +8,10 @@ They provide useful utilities and customizability.
 
 ## Basic usage
 
-To call an inject declare `inject` property with the name of the inject you want to call
+To call an inject declare an object containing the property `inject` with the name of an inject you want to call
 anywhere inside _injectable_ and pass **parameters** that this specific inject accepts.
 
-For example, inject <InjectRef inject="element" />, according to <InjectRef inject="element" text="Reference" />, when used with no parameters,
+For example, inject <InjectRef inject="element" />, according to <InjectRef inject="element" text="Reference" />,
 returns a reference to an animating [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element):
 ```json
 {
@@ -47,48 +47,7 @@ animate(element, { // `element` is a reference to an animating `Element`
 })
 ```
 
-However, according to the same <InjectRef inject="element" text="Reference" />, it may accept optional parameters <InjectRef inject="element" parameter="selector" />
-and <InjectRef inject="element" parameter="multiple" /> to query elements inside an animating element:
-```json
-{
-  "key": "myAnimation",
-  "name": "My Animation",
-  "animate": {
-    "anime": { // [!code focus:16]
-      "targets": { "inject": "element" }, // [!code --]
-      "targets": { // [!code ++:5]
-        "inject": "element",
-        "selector": ".some-class",
-        "multiple": true
-      },
-      "parameters": {
-        "duration": 200,
-        "ease": "inOutSine",
-        "opacity": {
-          "from": 0,
-          "to": 1
-        }
-      }
-    }
-  }
-}
-```
-
-This will execute the following code when animation is triggered:
-```js {3}
-import { animate } from 'animejs'
-
-animate(element.querySelectorAll('.some-class'), {
-  duration: 200,
-  ease: 'inOutSine',
-  opacity: {
-    from: 0,
-    to: 1
-  }
-})
-```
-
-To consolidate, let's try to use inject <InjectRef inject="type" />, which, according to <InjectRef inject="type" text="Reference" />, when declared with parameters
+Now let's try to use inject <InjectRef inject="type" />, which, according to <InjectRef inject="type" text="Reference" />, when called with parameters
 `enter` and `exit`, will return the value passed to the property corresponding to the current animation type:
 ```json
 {
