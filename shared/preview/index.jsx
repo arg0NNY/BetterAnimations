@@ -4,7 +4,6 @@ import PreviewContext from '@preview/context/PreviewContext'
 import { memo, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimationStore } from '@animation/store'
 import classNames from 'classnames'
-import mainPlaceholder from '@preview/assets/placeholders/main.png'
 import { CSSTransition, TransitionGroup } from '@discord/modules'
 import Settings from '@preview/views/Settings'
 import Layers from '@preview/components/Layers'
@@ -14,6 +13,9 @@ import Popouts from '@preview/components/floating/Popouts'
 import ContextMenus from '@preview/components/floating/ContextMenus'
 import { FloatingLayerContainer } from '@preview/components/Floating'
 import Modals from '@preview/components/floating/Modals'
+import mainPlaceholder from '@preview/assets/placeholders/main.png'
+import settingsPlaceholder from '@preview/assets/placeholders/settings.png'
+import threadSidebarSwitchPlaceholder from '@preview/assets/placeholders/threadSidebarSwitch.png'
 
 export const PREVIEW_WIDTH = 1280
 export const PREVIEW_HEIGHT = 720
@@ -56,6 +58,8 @@ function Preview ({
     if (typeof placeholder === 'string') return placeholder
 
     switch (module?.id) {
+      case ModuleKey.Settings: return settingsPlaceholder
+      case ModuleKey.ThreadSidebarSwitch: return threadSidebarSwitchPlaceholder
       default: return mainPlaceholder
     }
   }, [placeholder, module])
