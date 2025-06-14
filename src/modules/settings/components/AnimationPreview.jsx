@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { css } from '@style'
 import { ChannelSectionStore, Text, Timeout, useStateFromStores } from '@discord/modules'
 import ModuleContext from '@/modules/settings/context/ModuleContext'
@@ -35,9 +35,11 @@ function AnimationPreview ({ pack, animation, title = animation?.name, active = 
 
   const containerRef = useRef()
   const [scale, setScale] = useState(1)
-  useResizeObserver(containerRef, () => {
+  const onUpdate = useCallback(() => {
     setScale(containerRef.current.offsetWidth / PREVIEW_WIDTH)
-  })
+  }, [setScale])
+  useResizeObserver(containerRef, onUpdate)
+  useLayoutEffect(onUpdate, [])
 
   const { isMembersOpen: memberListShown = true } = useStateFromStores([ChannelSectionStore], () => ChannelSectionStore.getState())
 
