@@ -1,5 +1,5 @@
 import SwitchTransition from '@/components/SwitchTransition'
-import AnimeTransition from '@/components/AnimeTransition'
+import AnimeTransition from '@components/AnimeTransition'
 import SwitchSidebarTransition from '@/patches/ChannelView/components/SwitchSidebarTransition'
 
 function SidebarTransition ({ module, switchModule, state, children }) {

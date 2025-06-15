@@ -1,12 +1,12 @@
-import { Text } from '@/modules/DiscordModules'
+import { Text } from '@discord/modules'
 import PackAccordion from '@/modules/settings/components/PackAccordion'
 import PackManager from '@/modules/PackManager'
 import useModule from '@/hooks/useModule'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import ModuleSettingsHeader from '@/modules/settings/components/ModuleSettingsHeader'
 import ModuleContext from '@/modules/settings/context/ModuleContext'
 import { useCallback } from 'react'
-import { PREINSTALLED_PACK_SLUG } from '@/packs'
+import { PREINSTALLED_PACK_SLUG } from '@packs'
 import AnimationList from '@/modules/settings/components/AnimationList'
 import NoPacksPlaceholder from '@/modules/settings/components/NoPacksPlaceholder'
 
@@ -17,10 +17,7 @@ function ModuleSettings ({ moduleId, refToScroller }) {
     if (!animation) module.setAnimation(type, null, null)
     else module.setAnimation(type, pack.slug, animation.key, {})
   }, [module])
-  const setIsEnabled = useCallback(value => {
-    module.setIsEnabled(value)
-    module.onToggle?.(value)
-  }, [module])
+  const setIsEnabled = useCallback(value => module.setIsEnabled(value), [module])
 
   const selected = module.getAnimations()
 

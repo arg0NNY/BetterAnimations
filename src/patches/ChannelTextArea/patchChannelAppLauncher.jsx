@@ -1,13 +1,13 @@
 import Patcher from '@/modules/Patcher'
-import { AppLauncherPopup, ChannelAppLauncher, TransitionGroup } from '@/modules/DiscordModules'
+import { AppLauncherPopup, ChannelAppLauncher, TransitionGroup } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
 import { useRef } from 'react'
 import useWindow from '@/hooks/useWindow'
 import useModule from '@/hooks/useModule'
-import ModuleKey from '@/enums/ModuleKey'
+import ModuleKey from '@enums/ModuleKey'
 import useAutoPosition from '@/hooks/useAutoPosition'
-import Position from '@/enums/Position'
-import AnimeTransition from '@/components/AnimeTransition'
+import Position from '@enums/Position'
+import AnimeTransition from '@components/AnimeTransition'
 
 function patchAppLauncherPopup () {
   Patcher.after(AppLauncherPopup, 'type', (self, [props], value) => {

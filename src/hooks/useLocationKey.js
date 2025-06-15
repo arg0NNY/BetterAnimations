@@ -1,4 +1,4 @@
-import { Router } from '@/modules/DiscordModules'
+import { Router } from '@discord/modules'
 import usePrevious from '@/hooks/usePrevious'
 import { useRef } from 'react'
 

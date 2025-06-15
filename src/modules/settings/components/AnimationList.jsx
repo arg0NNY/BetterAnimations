@@ -1,7 +1,7 @@
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import AnimationCard from '@/modules/settings/components/AnimationCard'
 import Config from '@/modules/Config'
-import AnimationType from '@/enums/AnimationType'
+import AnimationType from '@enums/AnimationType'
 import useAnimationSettings from '@/modules/settings/hooks/useAnimationSettings'
 import { useMemo } from 'react'
 
@@ -46,7 +46,8 @@ function AnimationItem ({ module, pack, animation, selected, onSelect, ...props 
     <AnimationCard
       {...props}
       key={animation.key}
-      name={animation.name}
+      pack={pack}
+      animation={animation}
       enter={isActive(AnimationType.Enter)}
       exit={isActive(AnimationType.Exit)}
       setEnter={handleSelect(AnimationType.Enter)}

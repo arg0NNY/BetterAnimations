@@ -1,15 +1,15 @@
-import { Clickable, colors, Text } from '@/modules/DiscordModules'
-import { css } from '@/modules/Style'
+import { Clickable, colors, Text } from '@discord/modules'
+import { css } from '@style'
 import ChevronSmallUpIcon from '@/modules/settings/components/icons/ChevronSmallUpIcon'
 import ChevronSmallDownIcon from '@/modules/settings/components/icons/ChevronSmallDownIcon'
-import { Utils } from '@/BdApi'
 import IconButton from '@/modules/settings/components/IconButton'
-import ErrorManager from '@/modules/ErrorManager'
+import ErrorManager from '@error/manager'
 import CircleWarningIcon from '@/modules/settings/components/icons/CircleWarningIcon'
+import classNames from 'classnames'
 
 function PackAccordionItem ({ pack, children, isActive, isOpen, onToggle }) {
   return (
-    <div className={Utils.className(
+    <div className={classNames(
       'BA__packAccordionItem',
       {
         'BA__packAccordionItem--active': isActive && !isOpen,

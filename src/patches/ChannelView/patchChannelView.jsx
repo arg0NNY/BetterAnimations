@@ -1,14 +1,14 @@
 import Patcher from '@/modules/Patcher'
-import { ChannelView } from '@/modules/DiscordModules'
-import ensureOnce from '@/utils/ensureOnce'
-import AnimeTransition from '@/components/AnimeTransition'
+import { ChannelView } from '@discord/modules'
+import ensureOnce from '@utils/ensureOnce'
+import AnimeTransition from '@components/AnimeTransition'
 import SwitchTransition from '@/components/SwitchTransition'
 import { injectModule } from '@/hooks/useModule'
-import ModuleKey from '@/enums/ModuleKey'
+import ModuleKey from '@enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import patchChatSidebar from '@/patches/ChannelView/patchChatSidebar'
-import { DiscordSelectors } from '@/modules/DiscordSelectors'
-import { css } from '@/modules/Style'
+import DiscordSelectors from '@discord/selectors'
+import { css } from '@style'
 import patchMembersModViewSidebar from '@/patches/ChannelView/patchMembersModViewSidebar'
 import SidebarTransition from '@/patches/ChannelView/components/SidebarTransition'
 import findInReactTree from '@/utils/findInReactTree'
@@ -81,6 +81,7 @@ export default patchChannelView
 css
 `.BA__sidebar {
     position: relative;
+    isolation: isolate;
     display: flex;
     justify-content: flex-end;
     height: 100%;

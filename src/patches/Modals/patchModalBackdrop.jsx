@@ -1,10 +1,10 @@
 import Patcher from '@/modules/Patcher'
-import { ModalBackdrop } from '@/modules/DiscordModules'
+import { ModalBackdrop } from '@discord/modules'
 import useModule from '@/hooks/useModule'
-import ModuleKey from '@/enums/ModuleKey'
+import ModuleKey from '@enums/ModuleKey'
 import findInReactTree from '@/utils/findInReactTree'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
-import AnimeTransition from '@/components/AnimeTransition'
+import DiscordClasses from '@discord/classes'
+import AnimeTransition from '@components/AnimeTransition'
 import useWindow from '@/hooks/useWindow'
 
 function patchModalBackdrop () {
@@ -23,7 +23,7 @@ function patchModalBackdrop () {
       backdrop.type = 'div'
       delete backdrop.props.style
       backdrop.props.children = (
-        <div className="BA__modalBackdrop" />
+        <div className="BA__backdrop" />
       )
     }
 

@@ -3,7 +3,8 @@ import path from 'path'
 import fs from 'fs'
 import banner from 'vite-plugin-banner'
 import pkg from './package.json'
-import pluginConfig from './src/config.json'
+import pluginConfig from './config.json'
+import omit from 'lodash-es/omit'
 
 pluginConfig.version = pkg.version
 
@@ -39,6 +40,23 @@ function copyToBDPlugin() {
   }
 }
 
+export const aliases = {
+  '@package': path.resolve(__dirname, 'package.json'),
+  '@config': path.resolve(__dirname, 'config.json'),
+  '@shared': path.resolve(__dirname, 'shared'),
+  '@utils': path.resolve(__dirname, 'shared/utils'),
+  '@enums': path.resolve(__dirname, 'shared/enums'),
+  '@animation': path.resolve(__dirname, 'shared/animation'),
+  '@error': path.resolve(__dirname, 'shared/error'),
+  '@logger': path.resolve(__dirname, 'shared/logger'),
+  '@data': path.resolve(__dirname, 'shared/data'),
+  '@packs': path.resolve(__dirname, 'shared/packs'),
+  '@components': path.resolve(__dirname, 'shared/components'),
+  '@discord': path.resolve(__dirname, 'shared/discord'),
+  '@style': path.resolve(__dirname, 'shared/style'),
+  '@preview': path.resolve(__dirname, 'shared/preview')
+}
+
 export default defineConfig({
   build: {
     lib: {
@@ -49,11 +67,12 @@ export default defineConfig({
     },
     minify: false,
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: ['react', 'react-dom', 'classnames'],
       output: {
         globals: {
           react: 'BdApi.React',
-          'react-dom': 'BdApi.ReactDOM'
+          'react-dom': 'BdApi.ReactDOM',
+          classnames: 'BdApi.Utils.className'
         }
       },
       onwarn (warning, warn) {
@@ -64,7 +83,16 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src')
+      '@': path.resolve(__dirname, 'src'),
+
+      // Rewrites
+      '@discord': path.resolve(__dirname, 'src/discord'),
+      '@style': path.resolve(__dirname, 'src/modules/Style'),
+      '@animation/store': path.resolve(__dirname, 'src/modules/AnimationStore'),
+      '@error/manager': path.resolve(__dirname, 'src/modules/ErrorManager'),
+
+      // General
+      ...omit(aliases, ['@discord', '@style'])
     }
   },
   plugins: [

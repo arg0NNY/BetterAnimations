@@ -1,37 +1,8 @@
-import meta from '@/meta'
+import { createCSS, Style } from '@shared/style'
 import { DOM } from '@/BdApi'
-import Logger from '@/modules/Logger'
+import Logger from '@logger'
 
-const mainWindow = window
-
-const Style = new class Style {
-  get name () { return 'Style' }
-  get styleId () { return `${meta.name}-style` }
-
-  constructor () {
-    this.initialized = false
-    this.styles = []
-  }
-
-  initialize () {
-    this.injectStyle()
-
-    this.initialized = true
-    Logger.info(this.name, 'Initialized.')
-  }
-  shutdown () {
-    this.removeStyle()
-
-    this.initialized = false
-    Logger.info(this.name, 'Shutdown.')
-  }
-
-  buildStyle () {
-    return this.styles.reduce(
-      (str, { description, style }) => str + `/* ====== ${description} ====== */\n${style}\n\n`,
-      ''
-    )
-  }
+const style = new class extends Style {
   injectStyle () {
     Logger.log(this.name, `Injecting ${this.styles.length} registered styles...`)
     DOM.addStyle(this.styleId, this.buildStyle())
@@ -40,33 +11,8 @@ const Style = new class Style {
     Logger.log(this.name, 'Removing styles...')
     DOM.removeStyle(this.styleId)
   }
-  updateStyle () {
-    if (!this.initialized) return
-
-    this.removeStyle()
-    this.injectStyle()
-    Logger.log(this.name, 'Styles updated.')
-  }
-
-  registerStyle (description, style) {
-    this.styles.push({ description, style })
-    this.updateStyle()
-  }
-
-  ensureStyleForWindow (window) {
-    const { document } = window
-    if (!this.initialized || window === mainWindow || document.getElementById(this.styleId)) return
-
-    const style = document.createElement('style')
-    style.id = this.styleId
-    style.appendChild(document.createTextNode(this.buildStyle()))
-    document.body.appendChild(style)
-  }
 }
 
-export const css =
-  (strings, ...values) =>
-    description =>
-      Style.registerStyle(description, String.raw({ raw: strings }, ...values))
+export const css = createCSS(style)
 
-export default Style
+export default style

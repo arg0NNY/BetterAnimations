@@ -1,14 +1,14 @@
 import Patcher from '@/modules/Patcher'
-import { ModalsKeyed, TransitionGroup } from '@/modules/DiscordModules'
-import AnimeTransition from '@/components/AnimeTransition'
+import { ModalsKeyed, TransitionGroup } from '@discord/modules'
+import AnimeTransition from '@components/AnimeTransition'
 import patchModalItem from '@/patches/Modals/patchModalItem'
 import patchModalBackdrop from '@/patches/Modals/patchModalBackdrop'
 import useModule from '@/hooks/useModule'
-import ModuleKey from '@/enums/ModuleKey'
-import ensureOnce from '@/utils/ensureOnce'
-import { directChild } from '@/utils/transition'
-import { css } from '@/modules/Style'
-import { DiscordSelectors } from '@/modules/DiscordSelectors'
+import ModuleKey from '@enums/ModuleKey'
+import ensureOnce from '@utils/ensureOnce'
+import { directChild } from '@utils/transition'
+import { css } from '@style'
+import DiscordSelectors from '@discord/selectors'
 import { useMemo, useRef } from 'react'
 import useWindow from '@/hooks/useWindow'
 
@@ -48,7 +48,6 @@ function patchModals () {
         {modal && (
           <Modal
             key={modal.props.modalKey}
-            defaultLayoutStyles={false}
             module={module}
             enter={!modal.props.instant}
             exit={!modal.props.instant}
@@ -78,14 +77,14 @@ ${DiscordSelectors.Layer.layerContainer} + ${DiscordSelectors.Layer.layerContain
 }
 
 ${DiscordSelectors.Modal.focusLock}:has(> [class*="carouselModal"]) {
-    position: absolute;
+    position: absolute !important;
     inset: 0;
 }
 
-.BA__modalBackdrop {
+.BA__backdrop {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.7);
 }`
 `Modals`

@@ -1,9 +1,9 @@
-import { range } from '@/utils/general'
-import AnimationSetting from '@/enums/AnimationSetting'
-import { MAX_ANIMATION_DURATION } from '@/data/constants'
+import { range } from '@utils/general'
+import AnimationSetting from '@enums/AnimationSetting'
+import { MAX_ANIMATION_DURATION } from '@data/constants'
 import Slider from '@/components/Slider'
 import SettingControl from '@/modules/settings/components/controls/SettingControl'
-import Documentation from '@/modules/Documentation'
+import Documentation from '@shared/documentation'
 
 function DurationControl ({ animation, value, onChange, label = 'Duration', onReset, ...props }) {
   const { to, from } = animation.settings[AnimationSetting.Duration]

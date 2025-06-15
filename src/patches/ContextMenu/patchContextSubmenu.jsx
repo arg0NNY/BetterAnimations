@@ -5,11 +5,11 @@ import {
   MenuSubmenuItemKeyed,
   MenuSubmenuListItemKeyed,
   Timeout
-} from '@/modules/DiscordModules'
-import AnimeTransition from '@/components/AnimeTransition'
+} from '@discord/modules'
+import AnimeTransition from '@components/AnimeTransition'
 import useModule from '@/hooks/useModule'
-import ModuleKey from '@/enums/ModuleKey'
-import Position from '@/enums/Position'
+import ModuleKey from '@enums/ModuleKey'
+import Position from '@enums/Position'
 import useAutoPosition from '@/hooks/useAutoPosition'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import useWindow from '@/hooks/useWindow'

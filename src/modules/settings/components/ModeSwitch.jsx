@@ -1,7 +1,7 @@
 import ButtonGroup from '@/modules/settings/components/ButtonGroup'
-import SettingsMode from '@/enums/SettingsMode'
+import SettingsMode from '@enums/SettingsMode'
 import useMode from '@/modules/settings/hooks/useMode'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
+import DiscordClasses from '@discord/classes'
 
 function ModeSwitch () {
   const [mode, setMode] = useMode()

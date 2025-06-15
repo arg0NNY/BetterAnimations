@@ -141,7 +141,7 @@ Start learning the essentials of the animation creation by reading the [Anime](.
 and then proceed to further sections step-by-step: [Injects](./injects), [Layout](./layout), [Settings](./settings), [Lifecycle](./lifecycle), etc.
 
 Throughout the learning, you may use the following packs as a reference:
-- [Preinstalled Pack](https://github.com/arg0NNY/BetterAnimations/blob/main/src/packs/preinstalled.pack.json) — Pack of Animations that come preinstalled with _BetterAnimations_.
+- [Preinstalled Pack](https://github.com/arg0NNY/BetterAnimations/blob/main/shared/packs/preinstalled.pack.json) — Pack of Animations that come preinstalled with _BetterAnimations_.
 - [Example Packs](https://github.com/arg0NNY/BetterAnimations/tree/main/examples) — Packs with various examples of Animations.
 
 ## Publishing

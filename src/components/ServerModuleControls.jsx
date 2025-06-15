@@ -1,11 +1,11 @@
 import { forceAppUpdate } from '@/utils/forceUpdate'
-import { Checkbox, Flex, handleClick, Text } from '@/modules/DiscordModules'
+import { Checkbox, Flex, handleClick, Text } from '@discord/modules'
 import IconButton from '@/modules/settings/components/IconButton'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
+import DiscordClasses from '@discord/classes'
 import CircleQuestionIcon from '@/modules/settings/components/icons/CircleQuestionIcon'
 import Emitter from '@/modules/Emitter'
-import Events from '@/enums/Events'
-import Documentation from '@/modules/Documentation'
+import Events from '@enums/Events'
+import Documentation from '@shared/documentation'
 
 function ServerModuleControls ({ module }) {
   return (

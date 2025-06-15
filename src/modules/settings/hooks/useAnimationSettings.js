@@ -1,10 +1,10 @@
 import { useAdvancedMode } from '@/modules/settings/hooks/useMode'
-import Setting from '@/enums/AnimationSetting'
-import ModuleType from '@/enums/ModuleType'
-import AnimationType from '@/enums/AnimationType'
-import AnimationSettingContainer from '@/enums/AnimationSettingContainer'
+import Setting from '@enums/AnimationSetting'
+import ModuleType from '@enums/ModuleType'
+import AnimationType from '@enums/AnimationType'
+import AnimationSettingContainer from '@enums/AnimationSettingContainer'
 import isEqual from 'lodash-es/isEqual'
-import { pick } from '@/utils/object'
+import { pick } from '@utils/object'
 
 function isSame (array, key) {
   return array.every(item => isEqual(item?.[key], array[0]?.[key]))

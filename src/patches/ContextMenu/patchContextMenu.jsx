@@ -1,15 +1,15 @@
 import Patcher from '@/modules/Patcher'
-import { ContextMenuKeyed, TransitionGroup } from '@/modules/DiscordModules'
-import AnimeTransition from '@/components/AnimeTransition'
+import { ContextMenuKeyed, TransitionGroup } from '@discord/modules'
+import AnimeTransition from '@components/AnimeTransition'
 import patchContextSubmenu from '@/patches/ContextMenu/patchContextSubmenu'
-import ensureOnce from '@/utils/ensureOnce'
-import Position from '@/enums/Position'
+import ensureOnce from '@utils/ensureOnce'
+import Position from '@enums/Position'
 import useModule, { injectModule } from '@/hooks/useModule'
-import ModuleKey from '@/enums/ModuleKey'
+import ModuleKey from '@enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import { autoPosition } from '@/hooks/useAutoPosition'
-import useMouse from '@/hooks/useMouse'
 import useWindow, { MainWindowOnly } from '@/hooks/useWindow'
+import mouse from '@shared/mouse'
 
 function patchContextMenu () {
   const once = ensureOnce()
@@ -18,7 +18,7 @@ function patchContextMenu () {
     once(() => {
       injectModule(value.type, ModuleKey.ContextMenu)
       Patcher.after(value.type.prototype, 'componentDidMount', self => {
-        self.__anchor = self.props.mouse?.getAnchor()
+        self.__anchor = mouse?.getAnchor()
       })
       Patcher.after(value.type.prototype, 'render', (self, args, value) => {
         const module = Modules.getModule(ModuleKey.ContextMenu)
@@ -60,13 +60,10 @@ function patchContextMenu () {
       })
     })
 
-    const mouse = useMouse()
-
     const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.ContextMenu)
     if (!isMainWindow || !module.isEnabled()) return
 
-    value.props.mouse = mouse
     return (
       <TransitionGroup component={null}>
         {value.props.isOpen && value}

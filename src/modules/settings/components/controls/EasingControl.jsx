@@ -1,12 +1,12 @@
-import { SingleSelect, Text, TextInput } from '@/modules/DiscordModules'
+import { SingleSelect, Text, TextInput } from '@discord/modules'
 import { useEffect, useMemo, useState } from 'react'
-import { css } from '@/modules/Style'
-import { easingBeziers, easingStyles, easingTypes, easingValues } from '@/data/easings'
-import { EasingType } from '@/enums/Easing'
+import { css } from '@style'
+import { easingBeziers, easingStyles, easingTypes, easingValues } from '@data/easings'
+import { EasingType } from '@enums/Easing'
 import { prevent } from '@/modules/settings/utils/eventModifiers'
 import SettingControl from '@/modules/settings/components/controls/SettingControl'
 import Slider from '@/components/Slider'
-import Documentation from '@/modules/Documentation'
+import Documentation from '@shared/documentation'
 
 function EasingField ({ label, children }) {
   return (

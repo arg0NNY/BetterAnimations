@@ -1,13 +1,13 @@
-import { CONFIG_VERSION, configDefaults, packConfigDefaults } from '@/data/config'
+import { CONFIG_VERSION, configDefaults, packConfigDefaults } from '@data/config'
 import deepmerge from 'deepmerge'
 import Data from '@/modules/Data'
 import Emitter from '@/modules/Emitter'
-import Events from '@/enums/Events'
+import Events from '@enums/Events'
 import { fs, path } from '@/modules/Node'
 import PackManager from '@/modules/PackManager'
-import Logger from '@/modules/Logger'
+import Logger from '@logger'
 import isEqual from 'lodash-es/isEqual'
-import { internalPackSlugs } from '@/packs'
+import { internalPackSlugs } from '@packs'
 import cloneDeep from 'lodash-es/cloneDeep'
 
 class PackConfig {

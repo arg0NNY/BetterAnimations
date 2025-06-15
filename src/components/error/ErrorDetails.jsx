@@ -1,4 +1,4 @@
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import IconBrand from '@/components/icons/IconBrand'
 import Divider from '@/components/Divider'
 import {
@@ -11,12 +11,12 @@ import {
   Parser,
   Text,
   useStateFromStores
-} from '@/modules/DiscordModules'
+} from '@discord/modules'
 import meta from '@/meta'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
-import InternalError from '@/structs/InternalError'
-import AddonError from '@/structs/AddonError'
-import AnimationError from '@/structs/AnimationError'
+import DiscordClasses from '@discord/classes'
+import InternalError from '@error/structs/InternalError'
+import AddonError from '@error/structs/AddonError'
+import AnimationError from '@error/structs/AnimationError'
 import BookCheckIcon from '@/components/icons/BookCheckIcon'
 import ErrorDetailsActions from '@/components/error/ErrorDetailsActions'
 import { useMemo } from 'react'

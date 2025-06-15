@@ -1,13 +1,13 @@
 import AddonManager from '@/modules/AddonManager'
 import { path } from '@/modules/Node'
 import { Plugins } from '@/BdApi'
-import AddonError from '@/structs/AddonError'
-import PackSchema from '@/modules/animation/schemas/PackSchema'
+import AddonError from '@error/structs/AddonError'
+import PackSchema from '@animation/schemas/PackSchema'
 import meta from '@/meta'
-import ErrorManager from '@/modules/ErrorManager'
-import { formatZodError } from '@/utils/zod'
-import internalPacks, { internalPackSlugs } from '@/packs'
-import Documentation from '@/modules/Documentation'
+import ErrorManager from '@error/manager'
+import { formatZodError } from '@utils/zod'
+import internalPacks, { internalPackSlugs } from '@packs'
+import Documentation from '@shared/documentation'
 
 export default new class PackManager extends AddonManager {
   get name () {return 'PackManager'}
@@ -68,9 +68,5 @@ export default new class PackManager extends AddonManager {
   }
   getPackByFile (filename, includePartial = false) {
     return this._getPack(p => p.filename === filename, includePartial)
-  }
-  getAnimation (packOrSlug, key) {
-    return (typeof packOrSlug === 'string' ? this.getPack(packOrSlug) : packOrSlug)
-      ?.animations.find(a => a.key === key)
   }
 }

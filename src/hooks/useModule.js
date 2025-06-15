@@ -1,33 +1,33 @@
 import Patcher from '@/modules/Patcher'
 import useUpdate from '@/hooks/useUpdate'
 import Emitter from '@/modules/Emitter'
-import Events from '@/enums/Events'
+import Events from '@enums/Events'
 import Modules from '@/modules/Modules'
 import { useEffect } from 'react'
 
-export function moduleEffectFull (id, forceUpdate) {
+export function moduleEffectFull (id, callback) {
   const events = [Events.PackLoaded, Events.PackUnloaded, Events.PackEnabled, Events.PackDisabled, Events.SettingsChanged]
   const moduleEvents = [Events.ModuleToggled, Events.ModuleSettingsChanged]
-  const ifSameId = moduleId => moduleId === id && forceUpdate()
+  const ifSameId = moduleId => moduleId === id && callback()
 
-  events.forEach(e => Emitter.on(e, forceUpdate))
+  events.forEach(e => Emitter.on(e, callback))
   moduleEvents.forEach(e => Emitter.on(e, ifSameId))
   return () => {
-    events.forEach(e => Emitter.off(e, forceUpdate))
+    events.forEach(e => Emitter.off(e, callback))
     moduleEvents.forEach(e => Emitter.off(e, ifSameId))
   }
 }
 
-export function moduleEffectToggleOnly (id, forceUpdate) {
-  const ifSameId = moduleId => moduleId === id && forceUpdate()
+export function moduleEffectToggleOnly (id, callback) {
+  const ifSameId = moduleId => moduleId === id && callback()
 
   Emitter.on(Events.ModuleToggled, ifSameId)
   return () => Emitter.off(Events.ModuleToggled, ifSameId)
 }
 
-export function moduleEffect (id, forceUpdate, full = false) {
-  if (full) return moduleEffectFull(id, forceUpdate)
-  return moduleEffectToggleOnly(id, forceUpdate)
+export function moduleEffect (id, callback, full = false) {
+  if (full) return moduleEffectFull(id, callback)
+  return moduleEffectToggleOnly(id, callback)
 }
 
 // For class components

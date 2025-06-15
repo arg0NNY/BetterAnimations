@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import ensureOnce from '@/utils/ensureOnce'
+import ensureOnce from '@utils/ensureOnce'
 import {
   ChannelSectionStore,
   ChannelStore,
@@ -7,12 +7,12 @@ import {
   SidebarType,
   TransitionGroup,
   useStateFromStores
-} from '@/modules/DiscordModules'
+} from '@discord/modules'
 import patchUseMessageRequestSidebarState from '@/patches/ChannelView/patchUseMessageRequestSidebarState'
 import MessageRequestSidebarWrapper from '@/patches/ChannelView/components/MessageRequestSidebarWrapper'
 import useModule from '@/hooks/useModule'
-import ModuleKey from '@/enums/ModuleKey'
-import AnimeTransition from '@/components/AnimeTransition'
+import ModuleKey from '@enums/ModuleKey'
+import AnimeTransition from '@components/AnimeTransition'
 import usePrevious from '@/hooks/usePrevious'
 import findInReactTree from '@/utils/findInReactTree'
 import useWindow from '@/hooks/useWindow'

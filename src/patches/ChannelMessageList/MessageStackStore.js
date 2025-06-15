@@ -1,5 +1,5 @@
 import { getMessageKey } from '@/patches/ChannelMessageList/utils'
-import { Dispatcher, Flux } from '@/modules/DiscordModules'
+import { Dispatcher, Flux } from '@discord/modules'
 
 const toEnter = new Set()
 const toExit = new Set()

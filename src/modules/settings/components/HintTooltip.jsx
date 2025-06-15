@@ -1,6 +1,6 @@
-import { Tooltip } from '@/modules/DiscordModules'
+import { Tooltip } from '@discord/modules'
 import CircleInfoIcon from '@/modules/settings/components/icons/CircleInfoIcon'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import { useCallback } from 'react'
 
 function HintTooltip ({ text: _text, color = Tooltip.Colors.BRAND, children, ...props }) {

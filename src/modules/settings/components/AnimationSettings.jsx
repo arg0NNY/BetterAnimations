@@ -1,17 +1,17 @@
-import AnimationSetting from '@/enums/AnimationSetting'
+import AnimationSetting from '@enums/AnimationSetting'
 import DurationControl from '@/modules/settings/components/controls/DurationControl'
 import EasingControl from '@/modules/settings/components/controls/EasingControl'
 import VariantControl from '@/modules/settings/components/controls/VariantControl'
 import PositionControl from '@/modules/settings/components/controls/PositionControl'
 import DirectionControl from '@/modules/settings/components/controls/DirectionControl'
 import OverflowControl from '@/modules/settings/components/controls/OverflowControl'
-import { css } from '@/modules/Style'
-import { Switch, Text, Tooltip } from '@/modules/DiscordModules'
+import { css } from '@style'
+import { Switch, Text, Tooltip } from '@discord/modules'
 import IconButton from '@/modules/settings/components/IconButton'
-import AnimationSettingContainer from '@/enums/AnimationSettingContainer'
+import AnimationSettingContainer from '@enums/AnimationSettingContainer'
 import { createElement } from 'react'
-import { Utils } from '@/BdApi'
 import RedoIcon from '@/modules/settings/components/icons/RedoIcon'
+import classNames from 'classnames'
 
 function SettingList ({ children, className = 'BA__animationSettingsList' }) {
   return (
@@ -26,7 +26,7 @@ function SettingList ({ children, className = 'BA__animationSettingsList' }) {
 
 function SettingGroup ({ children, className }) {
   return (
-    <SettingList className={Utils.className('BA__animationSettingsGroup', className)}>
+    <SettingList className={classNames('BA__animationSettingsGroup', className)}>
       {children}
     </SettingList>
   )

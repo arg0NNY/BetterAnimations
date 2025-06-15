@@ -1,7 +1,7 @@
 import Patcher from '@/modules/Patcher'
-import { ReferencePositionLayer } from '@/modules/DiscordModules'
-import { css } from '@/modules/Style'
-import { DiscordSelectors } from '@/modules/DiscordSelectors'
+import { ReferencePositionLayer } from '@discord/modules'
+import { css } from '@style'
+import DiscordSelectors from '@discord/selectors'
 
 function patchReferencePositionLayer () {
   Patcher.after(ReferencePositionLayer.prototype, 'componentDidMount', (self) => {

@@ -5,14 +5,14 @@ import {
   ChannelTextAreaButtons,
   TransitionGroup,
   useExpressionPickerStoreKeyed
-} from '@/modules/DiscordModules'
+} from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
 import useWindow from '@/hooks/useWindow'
 import useModule from '@/hooks/useModule'
-import ModuleKey from '@/enums/ModuleKey'
-import AnimeTransition from '@/components/AnimeTransition'
+import ModuleKey from '@enums/ModuleKey'
+import AnimeTransition from '@components/AnimeTransition'
 import useAutoPosition from '@/hooks/useAutoPosition'
-import Position from '@/enums/Position'
+import Position from '@enums/Position'
 import { useCallback, useRef } from 'react'
 import { unkeyed } from '@/utils/webpack'
 import patchChannelAppLauncher from '@/patches/ChannelTextArea/patchChannelAppLauncher'

@@ -4,7 +4,7 @@ Packs are collections of Animations.
 
 > [!NOTE]
 > Internal Animations that come preinstalled with _BetterAnimations_ are also a part of a pack.
-> See [source code](https://github.com/arg0NNY/BetterAnimations/blob/main/src/packs/preinstalled.pack.json).
+> See [source code](https://github.com/arg0NNY/BetterAnimations/blob/main/shared/packs/preinstalled.pack.json).
 
 ## Catalog & Library
 

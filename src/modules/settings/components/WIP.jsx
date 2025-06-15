@@ -1,7 +1,7 @@
-import { Text } from '@/modules/DiscordModules'
-import { css } from '@/modules/Style'
-import { Utils } from '@/BdApi'
+import { Text } from '@discord/modules'
+import { css } from '@style'
 import { useMemo } from 'react'
+import classNames from 'classnames'
 
 const Sizes = {
   Small: 'small',
@@ -26,7 +26,7 @@ function WIP ({ name, size = Sizes.Large, color = 'header-primary' }) {
   }, [size])
 
   return (
-    <div className={Utils.className('BA__wip', `BA__wip--${size}`)}>
+    <div className={classNames('BA__wip', `BA__wip--${size}`)}>
       <span>🚧</span>
       <Text
         variant={headingVariant}

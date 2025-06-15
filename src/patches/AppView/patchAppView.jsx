@@ -1,8 +1,7 @@
 import Patcher from '@/modules/Patcher'
-import { Utils } from '@/BdApi'
-import { AppPanels, AppViewKeyed, ImpressionNames, Router, Routes, TransitionGroup } from '@/modules/DiscordModules'
+import { AppPanels, AppViewKeyed, ImpressionNames, Router, Routes, TransitionGroup } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
-import AnimeTransition from '@/components/AnimeTransition'
+import AnimeTransition from '@components/AnimeTransition'
 import useLocationKey from '@/hooks/useLocationKey'
 import {
   getSwitchContentDirection,
@@ -10,14 +9,16 @@ import {
   shouldSwitchContent,
   shouldSwitchPage
 } from '@/utils/locations'
-import { passAuto } from '@/utils/transition'
-import ModuleKey from '@/enums/ModuleKey'
+import { passAuto } from '@utils/transition'
+import ModuleKey from '@enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
-import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
-import { css } from '@/modules/Style'
+import DiscordClasses from '@discord/classes'
+import DiscordSelectors from '@discord/selectors'
+import { css } from '@style'
 import { Fragment } from 'react'
 import useWindow from '@/hooks/useWindow'
+import classNames from 'classnames'
 
 export let guildChannelPath = []
 
@@ -94,7 +95,7 @@ function patchAppView () {
     // Enhance layout
     if (!serversModule.isEnabled() || !serversModule.settings.enhanceLayout) return
 
-    base.props.className = Utils.className(base.props.className, 'BA__baseEnhancedLayout')
+    base.props.className = classNames(base.props.className, 'BA__baseEnhancedLayout')
 
     const sidebarIndex = content.props.children.findIndex(m => 'isSidebarOpen' in (m?.props ?? {}))
     if (sidebarIndex === -1) return

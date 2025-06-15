@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import useUpdate from '@/hooks/useUpdate'
-import Logger from '@/modules/Logger'
+import Logger from '@logger'
 
 function useCustomCompareEffect (effect, deps, depsEqual) {
   if (import.meta.env.MODE === 'development') {

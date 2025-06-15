@@ -1,18 +1,18 @@
 import IconBrand from '@/components/icons/IconBrand'
-import { Button, handleClick, Text } from '@/modules/DiscordModules'
+import { Button, handleClick, Text } from '@discord/modules'
 import meta from '@/meta'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import ShopIcon from '@/modules/settings/components/icons/ShopIcon'
 import ExternalLinkIcon from '@/modules/settings/components/icons/ExternalLinkIcon'
 import CircleDollarSignIcon from '@/modules/settings/components/icons/CircleDollarSignIcon'
 import { useSection } from '@/modules/settings/stores/SettingsStore'
-import SettingsSection from '@/enums/SettingsSection'
+import SettingsSection from '@enums/SettingsSection'
 import IconAuthor from '@/components/icons/IconAuthor'
 import SpotlightAnimation from '@/modules/settings/components/SpotlightAnimation'
 import { useMemo } from 'react'
-import { sanitize } from '@/utils/text'
+import { sanitize } from '@utils/text'
 import BookIcon from '@/modules/settings/components/icons/BookIcon'
-import Documentation from '@/modules/Documentation'
+import Documentation from '@shared/documentation'
 
 const madeByPhrases = [
   'Made by',

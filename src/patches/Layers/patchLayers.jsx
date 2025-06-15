@@ -1,14 +1,16 @@
-import { Patcher, Utils } from '@/BdApi'
-import { LayersKeyed, TransitionGroup } from '@/modules/DiscordModules'
-import ensureOnce from '@/utils/ensureOnce'
-import AnimeTransition from '@/components/AnimeTransition'
-import { passAuto } from '@/utils/transition'
-import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
+import { Patcher } from '@/BdApi'
+import { LayersKeyed, TransitionGroup } from '@discord/modules'
+import ensureOnce from '@utils/ensureOnce'
+import AnimeTransition from '@components/AnimeTransition'
+import { passAuto } from '@utils/transition'
+import DiscordClasses from '@discord/classes'
+import DiscordSelectors from '@discord/selectors'
 import { injectModule } from '@/hooks/useModule'
-import ModuleKey from '@/enums/ModuleKey'
+import ModuleKey from '@enums/ModuleKey'
 import Modules from '@/modules/Modules'
-import { css } from '@/modules/Style'
-import Mouse from '@/modules/Mouse'
+import { css } from '@style'
+import Mouse from '@shared/mouse'
+import classNames from 'classnames'
 
 function getWindowCenterAnchor () {
   return {
@@ -19,10 +21,10 @@ function getWindowCenterAnchor () {
   }
 }
 
-function LayerContainer ({ baseLayer, hidden, children }) {
+function Layer ({ baseLayer, hidden, children }) {
   return (
     <div
-      className={Utils.className(
+      className={classNames(
         DiscordClasses.Layers.layer,
         {
           [DiscordClasses.Layers.baseLayer]: baseLayer,
@@ -35,11 +37,9 @@ function LayerContainer ({ baseLayer, hidden, children }) {
   )
 }
 
-function LayerTransition ({ module, auto, layer, ...props }) {
+function LayerTransition ({ layer, ...props }) {
   return (
     <AnimeTransition
-      module={module}
-      auto={auto}
       {...props}
       in={layer.props.mode === 'SHOWN' && props.in}
       container={{ className: 'BA__layerContainer' }}
@@ -48,7 +48,7 @@ function LayerTransition ({ module, auto, layer, ...props }) {
       unmountOnExit={false}
     >
       {state => (
-        <LayerContainer
+        <Layer
           {...layer.props}
           key={layer.key}
           hidden={state === 'exited'}

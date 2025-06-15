@@ -1,12 +1,12 @@
-import positions from '@/data/positions'
-import Auto from '@/enums/Auto'
-import AnimationSetting from '@/enums/AnimationSetting'
-import { Checkbox, SingleSelect, Text } from '@/modules/DiscordModules'
+import positions from '@data/positions'
+import Auto from '@enums/Auto'
+import AnimationSetting from '@enums/AnimationSetting'
+import { Checkbox, SingleSelect, Text } from '@discord/modules'
 import SettingControl from '@/modules/settings/components/controls/SettingControl'
-import Position from '@/enums/Position'
-import PositionAutoType from '@/enums/PositionAutoType'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
-import Documentation from '@/modules/Documentation'
+import Position from '@enums/Position'
+import PositionAutoType from '@enums/PositionAutoType'
+import DiscordClasses from '@discord/classes'
+import Documentation from '@shared/documentation'
 
 function PositionPreserveControl ({ value, onChange, label = 'Preserve' }) {
   return (

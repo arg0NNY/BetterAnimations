@@ -1,5 +1,5 @@
 import isEqual from 'lodash-es/isEqual'
-import Logger from '@/modules/Logger'
+import Logger from '@logger'
 import useCustomCompareEffect from '@/hooks/useCustomCompareEffect'
 
 function useDeepCompareEffect (effect, deps) {

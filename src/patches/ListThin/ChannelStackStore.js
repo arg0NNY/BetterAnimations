@@ -1,4 +1,4 @@
-import { ChannelStore, Dispatcher, Flux } from '@/modules/DiscordModules'
+import { ChannelStore, Dispatcher, Flux } from '@discord/modules'
 
 const channels = new Set()
 const guilds = new Set()

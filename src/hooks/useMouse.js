@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
-import { AppContext } from '@/modules/DiscordModules'
-import MainMouse, { Mouse } from '@/modules/Mouse'
+import { AppContext } from '@discord/modules'
+import MainMouse, { Mouse } from '@shared/mouse'
 
 export function getMouse (renderWindow) {
   return renderWindow === window ? MainMouse : new Mouse(renderWindow).initialize()

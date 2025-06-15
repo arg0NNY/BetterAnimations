@@ -1,6 +1,6 @@
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import useAnimationSettings from '@/modules/settings/hooks/useAnimationSettings'
-import AnimationType from '@/enums/AnimationType'
+import AnimationType from '@enums/AnimationType'
 import Config from '@/modules/Config'
 import AnimationCard from '@/modules/settings/components/AnimationCard'
 import Modules from '@/modules/Modules'
@@ -13,15 +13,15 @@ import {
   handleClick,
   Switch,
   Tooltip
-} from '@/modules/DiscordModules'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
+} from '@discord/modules'
+import DiscordClasses from '@discord/classes'
 import SectionContext from '@/modules/settings/context/SectionContext'
-import Messages from '@/modules/Messages'
+import Messages from '@shared/messages'
 import ArrowSmallRightIcon from '@/modules/settings/components/icons/ArrowSmallRightIcon'
 import { useContext, useMemo } from 'react'
 import DismissibleAlert from '@/modules/settings/components/DismissibleAlert'
 import useDismissible from '@/modules/settings/hooks/useDismissible'
-import Documentation from '@/modules/Documentation'
+import Documentation from '@shared/documentation'
 import CircleQuestionIcon from '@/modules/settings/components/icons/CircleQuestionIcon'
 import IconButton from '@/modules/settings/components/IconButton'
 
@@ -136,8 +136,7 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
           animationSettings={animationSettings}
           accordionsSettings={accordionsSettings}
           active={false}
-          previewAlwaysActive
-          wide
+          header
           errors={errors}
         />
         <div className="BA__moduleSettingsHeading">

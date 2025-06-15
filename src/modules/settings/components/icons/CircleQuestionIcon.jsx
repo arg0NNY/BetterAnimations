@@ -1,5 +1,5 @@
 import useIconSize from '@/hooks/useIconSize'
-import { colors } from '@/modules/DiscordModules'
+import { colors } from '@discord/modules'
 
 function CircleQuestionIcon ({ size, width, height, color = colors.INTERACTIVE_NORMAL, secondaryColor = 'transparent' }) {
   return (

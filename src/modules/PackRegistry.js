@@ -1,13 +1,13 @@
 import { Net, Utils } from '@/BdApi'
-import Logger from '@/modules/Logger'
+import Logger from '@logger'
 import Toasts from '@/modules/Toasts'
 import Emitter from '@/modules/Emitter'
-import Events from '@/enums/Events'
+import Events from '@enums/Events'
 import PackManager from '@/modules/PackManager'
 import Notices from '@/modules/Notices'
 import Settings from '@/modules/Settings'
 import meta from '@/meta'
-import SettingsSection from '@/enums/SettingsSection'
+import SettingsSection from '@enums/SettingsSection'
 
 export default new class PackRegistry {
   get name () { return 'PackRegistry' }

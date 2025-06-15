@@ -1,19 +1,20 @@
-import Logger from '@/modules/Logger'
-import { createToast, ModalActions, popToast, popToastKeyed, useToastStore } from '@/modules/DiscordModules'
+import { ErrorManager as BaseErrorManager } from '@shared/error/manager'
+import Logger from '@logger'
+import { createToast, ModalActions, popToast, popToastKeyed, useToastStore } from '@discord/modules'
 import ErrorModal from '@/components/error/ErrorModal'
 import ErrorToast from '@/components/error/ErrorToast'
 import Emitter from '@/modules/Emitter'
-import Events from '@/enums/Events'
+import Events from '@enums/Events'
 import Patcher from '@/modules/Patcher'
 
 const ErrorManagerToastSymbol = Symbol('ErrorManagerToast')
 
-export default new class ErrorManager {
-  get name () { return 'ErrorManager' }
+export default new class ErrorManager extends BaseErrorManager {
   get timeoutDuration () { return 10000 }
   get maxErrors () { return 20 }
 
   constructor () {
+    super()
     this.errors = []
     this.errorsOverload = false
     this.timeout = null
@@ -44,28 +45,20 @@ export default new class ErrorManager {
   }
 
   registerError (error) {
+    super.registerError(error)
+
     this.errors.unshift(error)
     if (this.errors.length > this.maxErrors) {
       this.errors = this.errors.slice(0, this.maxErrors)
       this.errorsOverload = true
     }
 
-    Logger.error(this.name, error)
     Emitter.emit(Events.ErrorOccurred)
 
     if (this.isToastActive()) clearTimeout(this.timeout)
     else this.showToast()
 
     this.timeout = setTimeout(this.clear.bind(this), this.timeoutDuration)
-  }
-  registerInternalError (error) {
-    this.registerError(error)
-  }
-  registerAddonError (error) {
-    this.registerError(error)
-  }
-  registerAnimationError (error) {
-    this.registerError(error)
   }
 
   onView () {

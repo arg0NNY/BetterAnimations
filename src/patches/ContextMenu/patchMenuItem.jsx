@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { MenuItemKeyed } from '@/modules/DiscordModules'
+import { MenuItemKeyed } from '@discord/modules'
 
 function patchMenuItem () {
   /**

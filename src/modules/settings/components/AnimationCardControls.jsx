@@ -1,12 +1,13 @@
 import IconButton from '@/modules/settings/components/IconButton'
 import AnimationToggleControl from '@/modules/settings/components/AnimationToggleControl'
-import { css } from '@/modules/Style'
+import { css } from '@style'
 import { stop } from '@/modules/settings/utils/eventModifiers'
 import SettingsIcon from '@/modules/settings/components/icons/SettingsIcon'
 import CollapseListIcon from '@/modules/settings/components/icons/CollapseListIcon'
-import ErrorManager from '@/modules/ErrorManager'
-import { colors } from '@/modules/DiscordModules'
+import ErrorManager from '@error/manager'
+import { colors } from '@discord/modules'
 import CircleWarningIcon from '@/modules/settings/components/icons/CircleWarningIcon'
+import { useMovable } from '@/modules/settings/components/AnimationCard'
 
 function AnimationCardControls ({
   hasSettings,
@@ -22,7 +23,7 @@ function AnimationCardControls ({
 }) {
   return (
     <div className="BA__animationCardControls">
-      <div className="BA__animationCardControlsGroup">
+      <div className="BA__animationCardControlsGroup" {...useMovable('controls')}>
         <IconButton
           tooltip={{
             text: hasSettings ? 'Settings' : 'No settings available',
@@ -52,12 +53,14 @@ function AnimationCardControls ({
           </IconButton>
         )}
       </div>
-      <AnimationToggleControl
-        enter={enter}
-        exit={exit}
-        setEnter={setEnter}
-        setExit={setExit}
-      />
+      <div class="BA__animationCardControlsToggle" {...useMovable('toggle')}>
+        <AnimationToggleControl
+          enter={enter}
+          exit={exit}
+          setEnter={setEnter}
+          setExit={setExit}
+        />
+      </div>
     </div>
   )
 }

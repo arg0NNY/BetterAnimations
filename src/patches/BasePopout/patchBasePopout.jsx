@@ -1,9 +1,9 @@
 import Patcher from '@/modules/Patcher'
-import { BasePopoutKeyed, ReferencePositionLayer, TransitionGroup } from '@/modules/DiscordModules'
-import AnimeTransition from '@/components/AnimeTransition'
+import { BasePopoutKeyed, ReferencePositionLayer, TransitionGroup } from '@discord/modules'
+import AnimeTransition from '@components/AnimeTransition'
 import patchPopoutCSSAnimator from '@/patches/BasePopout/patchPopoutCSSAnimator'
 import useModule from '@/hooks/useModule'
-import ModuleKey from '@/enums/ModuleKey'
+import ModuleKey from '@enums/ModuleKey'
 import { autoPosition } from '@/hooks/useAutoPosition'
 import { unkeyed } from '@/utils/webpack'
 import { flushSync } from 'react-dom'
@@ -58,18 +58,11 @@ function patchBasePopout () {
     }
 
     renderLayer (...args) {
-      let anchor = this.domElementRef?.current
-      if (!anchor) {
-        try { anchor = this.getDomElement() }
-        catch {}
-      }
-
       const value = super.renderLayer.call(
         Object.assign(
           {}, this,
           {
             shouldShowPopout: () => true,
-            domElementRef: { current: anchor },
             state: Object.assign({}, this.state, { shouldShowLoadingState: true })
           }
         ),
@@ -94,7 +87,7 @@ function patchBasePopout () {
               ref={this.layerRef}
               module={this.props.module}
               autoRef={autoRef}
-              anchor={anchor}
+              anchor={this.domElementRef}
             >
               {value}
             </PopoutLayer>

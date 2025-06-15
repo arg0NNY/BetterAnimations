@@ -1,13 +1,14 @@
 import Patcher from '@/modules/Patcher'
-import { StandardSidebarViewKeyed, StandardSidebarViewWrapper, TransitionGroup } from '@/modules/DiscordModules'
+import { StandardSidebarViewKeyed, StandardSidebarViewWrapper, TransitionGroup } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
-import AnimeTransition from '@/components/AnimeTransition'
-import { passAuto } from '@/utils/transition'
+import AnimeTransition from '@components/AnimeTransition'
+import { passAuto } from '@utils/transition'
 import useDirection from '@/hooks/useDirection'
 import useModule from '@/hooks/useModule'
-import ModuleKey from '@/enums/ModuleKey'
-import { DiscordClasses, DiscordSelectors } from '@/modules/DiscordSelectors'
-import { css } from '@/modules/Style'
+import ModuleKey from '@enums/ModuleKey'
+import DiscordClasses from '@discord/classes'
+import DiscordSelectors from '@discord/selectors'
+import { css } from '@style'
 import useWindow from '@/hooks/useWindow'
 
 async function patchStandardSidebarView () {
@@ -61,8 +62,13 @@ export default patchStandardSidebarView
 
 StandardSidebarViewKeyed.then(() =>
 css
-`${DiscordSelectors.StandardSidebarView.contentRegion} > ${DiscordSelectors.StandardSidebarView.contentRegion} {
+`${DiscordSelectors.StandardSidebarView.standardSidebarView} > ${DiscordSelectors.StandardSidebarView.contentRegion} {
+    isolation: isolate;
+}
+${DiscordSelectors.StandardSidebarView.contentRegion} > ${DiscordSelectors.StandardSidebarView.contentRegion} {
     height: 100%;
+}
+${DiscordSelectors.StandardSidebarView.contentRegion}[data-ba-container] {
     background: none;
 }
 

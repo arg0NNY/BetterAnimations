@@ -1,4 +1,4 @@
-import { SettingsNotice } from '@/modules/DiscordModules'
+import { SettingsNotice } from '@discord/modules'
 import Config from '@/modules/Config'
 import { useCallback, Suspense, lazy } from 'react'
 

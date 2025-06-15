@@ -1,11 +1,10 @@
 import Modules from '@/modules/Modules'
-import AnimationType from '@/enums/AnimationType'
+import AnimationType from '@enums/AnimationType'
 import { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChannelList'
-import Logger from '@/modules/Logger'
+import Logger from '@logger'
 import Config from '@/modules/Config'
 import { guildChannelPath } from '@/patches/AppView/patchAppView'
-import { injectSchemas, injectTypes } from '@/modules/animation/schemas/InjectableSchema'
-import { safeInjects } from '@/modules/animation/schemas/ParsableAnimateSchema'
+import { injectSchemas, injectTypes, safeInjects } from '@animation/schemas/injects'
 
 export default new class Utils {
   get name () { return 'Utils' }

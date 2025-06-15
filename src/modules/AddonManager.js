@@ -1,11 +1,11 @@
 import { fs, path } from '@/modules/Node'
-import Logger from '@/modules/Logger'
-import AddonError from '@/structs/AddonError'
+import Logger from '@logger'
+import AddonError from '@error/structs/AddonError'
 import Toasts from '@/modules/Toasts'
 import Data from '@/modules/Data'
 import Events from '@/modules/Emitter'
 import { parse } from 'json-source-map'
-import { formatAddonParseError } from '@/utils/json'
+import { formatAddonParseError } from '@utils/json'
 
 const stripBOM = function (fileContent) {
   if (fileContent.charCodeAt(0) === 0xFEFF) {

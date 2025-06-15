@@ -1,10 +1,10 @@
 import Patcher from '@/modules/Patcher'
-import { SearchableSelect, SelectKeyed, SingleSelectKeyed } from '@/modules/DiscordModules'
-import Position from '@/enums/Position'
+import { SearchableSelect, SelectKeyed, SingleSelectKeyed } from '@discord/modules'
+import Position from '@enums/Position'
 import findInReactTree from '@/utils/findInReactTree'
 import { useLayoutEffect, useState } from 'react'
-import { css } from '@/modules/Style'
-import { DiscordSelectors } from '@/modules/DiscordSelectors'
+import { css } from '@style'
+import DiscordSelectors from '@discord/selectors'
 
 function createPatcher () {
   let patchedPopout = null

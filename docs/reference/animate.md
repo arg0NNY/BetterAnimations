@@ -86,7 +86,7 @@ See [Extending Animations](/create/extending-animations).
 An array of or a single hast [`Element`](https://github.com/syntax-tree/hast?tab=readme-ov-file#element) definition of elements to be mounted while the Animation is alive. See [Layout](/create/layout#hast).
 
 > [!WARNING]
-> Provided hast elements are sanitized before being inserted into DOM. See [sanitization schema](https://github.com/arg0NNY/BetterAnimations/blob/main/src/modules/animation/hastSanitizeSchema.js).
+> Provided hast elements are sanitized before being inserted into DOM. See [sanitization schema](https://github.com/arg0NNY/BetterAnimations/blob/main/shared/animation/hastSanitizeSchema.js).
 
 > [!WARNING]
 > `hast` has a limited set of injects that are allowed for use inside it. See [Layout](/create/layout#inject-restrictions).

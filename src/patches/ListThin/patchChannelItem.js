@@ -1,6 +1,6 @@
-import ensureOnce from '@/utils/ensureOnce'
+import ensureOnce from '@utils/ensureOnce'
 import Patcher from '@/modules/Patcher'
-import { ChannelItemKeyed, StageVoiceChannelItemKeyed, VoiceChannelItemKeyed } from '@/modules/DiscordModules'
+import { ChannelItemKeyed, StageVoiceChannelItemKeyed, VoiceChannelItemKeyed } from '@discord/modules'
 import { createRef } from 'react'
 import findInReactTree from '@/utils/findInReactTree'
 

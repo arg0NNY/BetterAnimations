@@ -1,6 +1,6 @@
-import { css } from '@/modules/Style'
-import { Utils } from '@/BdApi'
+import { css } from '@style'
 import { useCallback, useEffect, useState } from 'react'
+import classNames from 'classnames'
 
 function toStyle (state) {
   const translate = Object.values(state.position).map(v => v + 'px').join(', ')
@@ -53,7 +53,7 @@ function SpotlightAnimation ({ count = 8, size = 400, areaSize = 200, speed = 50
 
   return (
     <div
-      className={Utils.className('BA__spotlightAnimation', className)}
+      className={classNames('BA__spotlightAnimation', className)}
       style={{
         width: areaSize + 'px',
         '--ba--spotlight-animation-size': size + 'px'

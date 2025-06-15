@@ -1,6 +1,6 @@
-import { App, Button, Heading, ModalActions, Text } from '@/modules/DiscordModules'
-import { DiscordClasses } from '@/modules/DiscordSelectors'
-import Enum from '@/enums/Enum'
+import { App, Button, Heading, ModalActions, Text } from '@discord/modules'
+import DiscordClasses from '@discord/classes'
+import Enum from '@shared/enum'
 import Data from '@/modules/Data'
 import Modal from '@/components/Modal'
 
