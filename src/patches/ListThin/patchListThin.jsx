@@ -8,7 +8,7 @@ import useModule from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import { css } from '@style'
 import DiscordSelectors from '@discord/selectors'
-import { Fragment, useMemo, useRef } from 'react'
+import { cloneElement, Fragment, useMemo, useRef } from 'react'
 import patchChannelItem from '@/patches/ListThin/patchChannelItem'
 import useWindow from '@/hooks/useWindow'
 
@@ -57,10 +57,9 @@ function patchListThin () {
       return false
     }
 
-    const childFactory = e => {
-      if (e) e.props.exit = e.props.items.some(i => shouldAnimate(i))
-      return e
-    }
+    const childFactory = e => cloneElement(e, {
+      exit: e.props.items.some(i => shouldAnimate(i))
+    })
 
     focusRingScope.children = (
       <TransitionGroup
