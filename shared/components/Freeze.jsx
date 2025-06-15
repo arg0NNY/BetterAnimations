@@ -15,7 +15,7 @@ function Freeze ({ freeze, children, placeholder = null, nodeRef }) {
   useEffect(() => {
     if (freeze && nodeRef?.current) {
       nodeRef.current.style.display = ''
-      nodeRef.current.childNodes.forEach(n => n.style.display = '')
+      ;[].forEach.call(nodeRef.current.children, n => n.style.display = '')
     }
   }, [freeze])
 
