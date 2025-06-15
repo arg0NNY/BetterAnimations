@@ -121,7 +121,7 @@ export const { Select: SelectKeyed, SingleSelect: SingleSelectKeyed } = getMangl
   SingleSelect: m => Filters.byStrings('value', 'onChange')(m) && !Filters.byStrings('isSelected')(m)
 }, { withKeys: true })
 export const SingleSelect = UnkeyedComponent(SingleSelectKeyed)
-export const MembersModViewSidebarKeyed = getWithKey(Filters.byStrings('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))
+export const MembersModViewSidebarKeyed = getWithKey(Filters.byStrings('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'), { lazy: true })
 export const LayerActions = getMangled(Filters.byStrings('LAYER_PUSH', 'component'), {
   pushLayer: Filters.byStrings('"LAYER_PUSH"'),
   popLayer: Filters.byStrings('"LAYER_POP"'),
