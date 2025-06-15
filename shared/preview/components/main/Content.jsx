@@ -8,7 +8,6 @@ import useMouse from '@preview/hooks/useMouse'
 import { TransitionGroup } from '@discord/modules'
 import { passAuto } from '@utils/transition'
 import PreviewTransition from '@preview/components/PreviewTransition'
-import { Flex } from '@preview/components'
 import ServerList from '@preview/components/main/ServerList'
 import Server from '@preview/components/main/Server'
 import UserPanel from '@preview/components/main/UserPanel'
@@ -44,14 +43,14 @@ function Content () {
   ) : children
 
   return wrap(
-    <Flex className="BAP__content">
+    <div className="BAP__content">
       <ServerList active={stage ? 7 : 2} {...serverList} />
       {wrap(
         <Server {...data[stage]} />,
         enhanceLayout
       )}
       <UserPanel {...userPanel} />
-    </Flex>,
+    </div>,
     !enhanceLayout
   )
 }
