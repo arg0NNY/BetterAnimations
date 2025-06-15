@@ -12,6 +12,7 @@ import patchMessageDivider from '@/patches/ChannelMessageList/patchMessageDivide
 import { css } from '@style'
 import DiscordSelectors from '@discord/selectors'
 import useWindow from '@/hooks/useWindow'
+import { cloneElement } from 'react'
 
 function patchChannelMessageList () {
   const once = ensureOnce()
@@ -31,10 +32,11 @@ function patchChannelMessageList () {
         if (i === -1) return
 
         const childFactory = (e, index, arr) => {
-          let message = findInReactTree(e, m => m?.message)?.message
+          const message = findInReactTree(e, m => m?.message)?.message
             ?? findInReactTree(arr[index + 1] ?? {}, m => m?.message)?.message
-          e.props.exit = toExit.has(message?.id)
-          return e
+          return cloneElement(e, {
+            exit: toExit.has(message?.id)
+          })
         }
 
         list.props.children[i] = (
