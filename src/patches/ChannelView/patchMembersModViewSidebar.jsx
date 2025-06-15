@@ -6,8 +6,8 @@ import SidebarTransition from '@/patches/ChannelView/components/SidebarTransitio
 import useWindow from '@/hooks/useWindow'
 import AnimeContainer from '@components/AnimeContainer'
 
-function patchMembersModViewSidebar () {
-  Patcher.after(...MembersModViewSidebarKeyed, (self, [{ guildId }], value) => {
+async function patchMembersModViewSidebar () {
+  Patcher.after(...await MembersModViewSidebarKeyed, (self, [{ guildId }], value) => {
     const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.ThreadSidebar)
     const switchModule = useModule(ModuleKey.ThreadSidebarSwitch)
