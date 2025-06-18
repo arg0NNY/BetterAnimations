@@ -1,36 +1,21 @@
-import IconBrand from '@/components/icons/IconBrand'
+import IconBrand, { IconBrandTypes } from '@/components/icons/IconBrand'
 import DiscordClasses from '@discord/classes'
 import { Text } from '@discord/modules'
 import { css } from '@style'
-import IconBrandInfo from '@/components/icons/IconBrandInfo'
-import IconBrandSuccess from '@/components/icons/IconBrandSuccess'
-import IconBrandWarning from '@/components/icons/IconBrandWarning'
-import IconBrandError from '@/components/icons/IconBrandError'
+import classNames from 'classnames'
 
-export const ToastTypes = {
-  DEFAULT: 0,
-  INFO: 1,
-  SUCCESS: 2,
-  WARNING: 3,
-  ERROR: 4
-}
-
-function ToastIcon ({ type, className }) {
-  switch (type) {
-    case ToastTypes.INFO: return <IconBrandInfo className={className} />
-    case ToastTypes.SUCCESS: return <IconBrandSuccess className={className} />
-    case ToastTypes.WARNING: return <IconBrandWarning className={className} />
-    case ToastTypes.ERROR: return <IconBrandError className={className} />
-    default: return <IconBrand className={className + ` BA__toastIconDefault`} />
-  }
-}
+export const ToastTypes = IconBrandTypes
 
 function Toast ({ children, text, type = ToastTypes.INFO }) {
   return (
     <div className={DiscordClasses.Toast.toast}>
-      <ToastIcon
+      <IconBrand
         type={type}
-        className={`${DiscordClasses.Toast.icon} BA__toastIcon`}
+        className={classNames({
+          [DiscordClasses.Toast.icon]: true,
+          'BA__toastIcon': true,
+          'BA__toastIconDefault': type === ToastTypes.DEFAULT
+        })}
       />
       {text && (
         <Text
