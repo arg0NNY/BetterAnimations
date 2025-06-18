@@ -7,6 +7,7 @@ import DiscordClasses from '@discord/classes'
 import { Fragment } from 'react'
 import useModule from '@/hooks/useModule'
 import useWindow from '@/hooks/useWindow'
+import { ErrorBoundary } from '@error/boundary'
 
 function patchChatSidebar () {
   Patcher.instead(...ChatSidebarKeyed, (self, [props], original) => {
@@ -27,9 +28,11 @@ function patchChatSidebar () {
     }
 
     return (
-      <AnimeContainer ref={props.ref} container={{ className: 'BA__sidebar' }}>
-        <div className="BA__sidebar">{value}</div>
-      </AnimeContainer>
+      <ErrorBoundary fallback={value}>
+        <AnimeContainer ref={props.ref} container={{ className: 'BA__sidebar' }}>
+          <div className="BA__sidebar">{value}</div>
+        </AnimeContainer>
+      </ErrorBoundary>
     )
   })
 }

@@ -13,6 +13,7 @@ import Position from '@enums/Position'
 import useAutoPosition from '@/hooks/useAutoPosition'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import useWindow from '@/hooks/useWindow'
+import { ErrorBoundary } from '@error/boundary'
 
 function patchContextSubmenu () {
   const callback = (self, [props], original) => {
@@ -43,24 +44,26 @@ function patchContextSubmenu () {
     children[i].props.onPositionChange = setPosition
     children[i].props.ref = layerRef
     children[i] = (
-      <AnimeTransition
-        in={isFocused}
-        layerRef={layerRef}
-        module={module}
-        autoRef={autoRef}
-        anchor={value.props.ref}
-      >
-        <Layer layerContext={appLayerContext}>
-          {children[i]}
-        </Layer>
-      </AnimeTransition>
+      <ErrorBoundary module={module} fallback={children[i]}>
+        <AnimeTransition
+          in={isFocused}
+          layerRef={layerRef}
+          module={module}
+          autoRef={autoRef}
+          anchor={value.props.ref}
+        >
+          <Layer layerContext={appLayerContext}>
+            {children[i]}
+          </Layer>
+        </AnimeTransition>
+      </ErrorBoundary>
     )
 
     return value
   }
 
-  Patcher.instead(...MenuSubmenuItemKeyed, callback)
-  Patcher.instead(...MenuSubmenuListItemKeyed, callback)
+  Patcher.instead(ModuleKey.ContextMenu, ...MenuSubmenuItemKeyed, callback)
+  Patcher.instead(ModuleKey.ContextMenu, ...MenuSubmenuListItemKeyed, callback)
 }
 
 export default patchContextSubmenu

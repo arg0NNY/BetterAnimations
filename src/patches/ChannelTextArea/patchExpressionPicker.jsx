@@ -6,6 +6,7 @@ import AnimeContainer from '@components/AnimeContainer'
 import useWindow from '@/hooks/useWindow'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
+import { ErrorBoundary } from '@error/boundary'
 
 function patchExpressionPicker () {
   let expressionPickerRendering = false
@@ -15,7 +16,7 @@ function patchExpressionPicker () {
     args[0] = state => state.activeView ?? state.lastActiveView
   })
 
-  Patcher.instead(ExpressionPicker, 'type', (self, [props], original) => {
+  Patcher.instead(ModuleKey.Popouts, ExpressionPicker, 'type', (self, [props], original) => {
     const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.Popouts)
     if (!isMainWindow || !module.isEnabled()) return original(props)
@@ -30,7 +31,7 @@ function patchExpressionPicker () {
 
     positionLayer.onPositionChange = props.onPositionChange
 
-    Patcher.after(positionLayer, 'children', (self, args, value) => {
+    Patcher.after(ModuleKey.Popouts, positionLayer, 'children', (self, args, value) => {
       const drawerSizingWrapper = findInReactTree(value, m => m?.className?.includes('drawerSizingWrapper'))
       if (!drawerSizingWrapper) return
 
@@ -39,12 +40,14 @@ function patchExpressionPicker () {
       if (contentWrapperIndex === -1) return
 
       children[contentWrapperIndex] = (
-        <AnimeContainer
-          ref={props.__containerRef}
-          container={{ className: 'BA__expressionPickerContainer' }}
-        >
-          {children[contentWrapperIndex]}
-        </AnimeContainer>
+        <ErrorBoundary module={module} fallback={children[contentWrapperIndex]}>
+          <AnimeContainer
+            ref={props.__containerRef}
+            container={{ className: 'BA__expressionPickerContainer' }}
+          >
+            {children[contentWrapperIndex]}
+          </AnimeContainer>
+        </ErrorBoundary>
       )
     })
 

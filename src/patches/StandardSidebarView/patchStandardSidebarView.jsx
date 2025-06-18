@@ -10,6 +10,7 @@ import DiscordClasses from '@discord/classes'
 import DiscordSelectors from '@discord/selectors'
 import { css } from '@style'
 import useWindow from '@/hooks/useWindow'
+import { ErrorBoundary } from '@error/boundary'
 
 async function patchStandardSidebarView () {
   Patcher.after((await StandardSidebarViewWrapper).prototype, 'render', (self, args, value) => {
@@ -19,7 +20,7 @@ async function patchStandardSidebarView () {
     view.props.sections = self.getPredicateSections().map(s => s.section)
   })
 
-  Patcher.after(...await StandardSidebarViewKeyed, (self, [props], value) => {
+  Patcher.after(ModuleKey.Settings, ...await StandardSidebarViewKeyed, (self, [props], value) => {
     const direction = useDirection(props.sections, props.section)
     const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.Settings)
@@ -43,17 +44,19 @@ async function patchStandardSidebarView () {
     const auto = { direction }
 
     standardSidebarView.children[i] = (
-      <TransitionGroup className={DiscordClasses.StandardSidebarView.contentRegion} childFactory={passAuto(auto)}>
-        <AnimeTransition
-          key={props.section}
-          container={{ className: DiscordClasses.StandardSidebarView.contentRegion }}
-          freeze={true}
-          module={module}
-          auto={auto}
-        >
-          {contentRegion}
-        </AnimeTransition>
-      </TransitionGroup>
+      <ErrorBoundary module={module} fallback={contentRegion}>
+        <TransitionGroup className={DiscordClasses.StandardSidebarView.contentRegion} childFactory={passAuto(auto)}>
+          <AnimeTransition
+            key={props.section}
+            container={{ className: DiscordClasses.StandardSidebarView.contentRegion }}
+            freeze={true}
+            module={module}
+            auto={auto}
+          >
+            {contentRegion}
+          </AnimeTransition>
+        </TransitionGroup>
+      </ErrorBoundary>
     )
   })
 }

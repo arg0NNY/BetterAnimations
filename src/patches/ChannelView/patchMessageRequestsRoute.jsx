@@ -16,6 +16,7 @@ import AnimeTransition from '@components/AnimeTransition'
 import usePrevious from '@/hooks/usePrevious'
 import findInReactTree from '@/utils/findInReactTree'
 import useWindow from '@/hooks/useWindow'
+import { ErrorBoundary } from '@error/boundary'
 
 let once = () => {}
 
@@ -45,26 +46,28 @@ function patchMessageRequestsRoute (route) {
 
         const children = value.props.children
         children[1] = (
-          <AnimeTransition
-            in={state && state.type === SidebarType.VIEW_MESSAGE_REQUEST && channel && channel.isPrivate()}
-            container={{ className: 'BA__sidebar' }}
-            module={module}
-          >
-            <TransitionGroup component={null}>
-              <AnimeTransition
-                key={JSON.stringify(state ?? cached.state)}
-                injectContainerRef={true}
-                module={switchModule}
-              >
-                <MessageRequestSidebarWrapper
-                  state={state ?? cached.state}
-                  pageWidth={props.width}
-                  onSidebarResize={children[1]?.props?.onSidebarResize ?? (() => {})}
-                  channel={channel ?? cached.channel}
-                />
-              </AnimeTransition>
-            </TransitionGroup>
-          </AnimeTransition>
+          <ErrorBoundary fallback={children[1]}>
+            <AnimeTransition
+              in={state && state.type === SidebarType.VIEW_MESSAGE_REQUEST && channel && channel.isPrivate()}
+              container={{ className: 'BA__sidebar' }}
+              module={module}
+            >
+              <TransitionGroup component={null}>
+                <AnimeTransition
+                  key={JSON.stringify(state ?? cached.state)}
+                  injectContainerRef={true}
+                  module={switchModule}
+                >
+                  <MessageRequestSidebarWrapper
+                    state={state ?? cached.state}
+                    pageWidth={props.width}
+                    onSidebarResize={children[1]?.props?.onSidebarResize ?? (() => {})}
+                    channel={channel ?? cached.channel}
+                  />
+                </AnimeTransition>
+              </TransitionGroup>
+            </AnimeTransition>
+          </ErrorBoundary>
         )
       })
     }))

@@ -16,10 +16,13 @@ import Position from '@enums/Position'
 import { useCallback, useRef } from 'react'
 import { unkeyed } from '@/utils/webpack'
 import patchChannelAppLauncher from '@/patches/ChannelTextArea/patchChannelAppLauncher'
+import { ErrorBoundary } from '@error/boundary'
 
 function patchChannelTextAreaButtons () {
-  Patcher.after(ChannelTextAreaButtons, 'type', (self, [{ buttonRefs }], value) => {
-    if (!buttonRefs) return
+  Patcher.after(ModuleKey.Popouts, ChannelTextAreaButtons, 'type', (self, [{ buttonRefs }], value) => {
+    const { isMainWindow } = useWindow()
+    const module = useModule(ModuleKey.Popouts)
+    if (!isMainWindow || !module.isEnabled() || !buttonRefs) return
 
     const buttons = findInReactTree(value, m => m?.className?.includes('buttons'))
     if (!buttons) return
@@ -32,7 +35,7 @@ function patchChannelTextAreaButtons () {
 }
 
 function patchChannelTextArea () {
-  Patcher.after(ChannelTextArea.type, 'render', (self, args, value) => {
+  Patcher.after(ModuleKey.Popouts, ChannelTextArea.type, 'render', (self, args, value) => {
     const { autoRef, setPosition } = useAutoPosition(Position.Top, { align: Position.Right })
 
     const buttonRefs = useRef({})
@@ -62,18 +65,20 @@ function patchChannelTextArea () {
       children[expressionPickerIndex].props.onPositionChange = setPosition
 
     children[expressionPickerIndex] = (
-      <TransitionGroup component={null}>
-        {children[expressionPickerIndex] && (
-          <AnimeTransition
-            module={module}
-            injectContainerRef={injectContainerRef}
-            autoRef={autoRef}
-            anchor={anchorRef}
-          >
-            {children[expressionPickerIndex]}
-          </AnimeTransition>
-        )}
-      </TransitionGroup>
+      <ErrorBoundary module={module} fallback={children[expressionPickerIndex]}>
+        <TransitionGroup component={null}>
+          {children[expressionPickerIndex] && (
+            <AnimeTransition
+              module={module}
+              injectContainerRef={injectContainerRef}
+              autoRef={autoRef}
+              anchor={anchorRef}
+            >
+              {children[expressionPickerIndex]}
+            </AnimeTransition>
+          )}
+        </TransitionGroup>
+      </ErrorBoundary>
     )
   })
 

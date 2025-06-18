@@ -8,9 +8,14 @@ import ModuleKey from '@enums/ModuleKey'
 import useAutoPosition from '@/hooks/useAutoPosition'
 import Position from '@enums/Position'
 import AnimeTransition from '@components/AnimeTransition'
+import { ErrorBoundary } from '@error/boundary'
 
 function patchAppLauncherPopup () {
-  Patcher.after(AppLauncherPopup, 'type', (self, [props], value) => {
+  Patcher.after(ModuleKey.Popouts, AppLauncherPopup, 'type', (self, [props], value) => {
+    const { isMainWindow } = useWindow()
+    const module = useModule(ModuleKey.Popouts)
+    if (!isMainWindow || !module.isEnabled()) return
+
     const positionLayer = findInReactTree(value, m => m?.className?.includes('positionLayer'))
     if (!positionLayer) return
 
@@ -20,7 +25,7 @@ function patchAppLauncherPopup () {
 }
 
 function patchChannelAppLauncher () {
-  Patcher.after(ChannelAppLauncher, 'type', (self, args, value) => {
+  Patcher.after(ModuleKey.Popouts, ChannelAppLauncher, 'type', (self, args, value) => {
     const layerRef = useRef()
     const { autoRef, setPosition } = useAutoPosition(Position.Top, { align: Position.Right })
 
@@ -41,18 +46,20 @@ function patchChannelAppLauncher () {
       })
 
     children[popupIndex] = (
-      <TransitionGroup component={null}>
-        {children[popupIndex] && (
-          <AnimeTransition
-            module={module}
-            layerRef={layerRef}
-            autoRef={autoRef}
-            anchor={children[popupIndex].props?.positionTargetRef}
-          >
-            {children[popupIndex]}
-          </AnimeTransition>
-        )}
-      </TransitionGroup>
+      <ErrorBoundary module={module} fallback={children[popupIndex]}>
+        <TransitionGroup component={null}>
+          {children[popupIndex] && (
+            <AnimeTransition
+              module={module}
+              layerRef={layerRef}
+              autoRef={autoRef}
+              anchor={children[popupIndex].props?.positionTargetRef}
+            >
+              {children[popupIndex]}
+            </AnimeTransition>
+          )}
+        </TransitionGroup>
+      </ErrorBoundary>
     )
   })
 

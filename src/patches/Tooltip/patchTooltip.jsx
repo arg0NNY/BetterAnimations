@@ -6,6 +6,7 @@ import ModuleKey from '@enums/ModuleKey'
 import Modules from '@/modules/Modules'
 import { useRef } from 'react'
 import { MainWindowOnly } from '@/hooks/useWindow'
+import { ErrorBoundary } from '@error/boundary'
 
 function TooltipTransition (props) {
   const { module, isVisible, onAnimationRest, ...rest } = props
@@ -48,22 +49,24 @@ function TooltipTransition (props) {
 function patchTooltip () {
   Tooltip.defaultProps.delay = 0
   injectModule(Tooltip, ModuleKey.Tooltips)
-  Patcher.after(Tooltip.prototype, 'renderTooltip', (self, args, value) => {
+  Patcher.after(ModuleKey.Tooltips, Tooltip.prototype, 'renderTooltip', (self, args, value) => {
     const module = Modules.getModule(ModuleKey.Tooltips)
     if (!module.isEnabled()) return
 
     return (
-      <MainWindowOnly fallback={value}>
-        {() => {
-          const { text } = self.props
-          value.props.children = typeof text === 'function' ? text() : text
+      <ErrorBoundary module={module} fallback={value}>
+        <MainWindowOnly fallback={value}>
+          {() => {
+            const { text } = self.props
+            value.props.children = typeof text === 'function' ? text() : text
 
-          value.props.module = module
-          value.type = TooltipTransition
+            value.props.module = module
+            value.type = TooltipTransition
 
-          return value
-        }}
-      </MainWindowOnly>
+            return value
+          }}
+        </MainWindowOnly>
+      </ErrorBoundary>
     )
   })
 }

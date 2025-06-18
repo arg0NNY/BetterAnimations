@@ -9,9 +9,10 @@ import DiscordClasses from '@discord/classes'
 import AnimeTransition from '@components/AnimeTransition'
 import { createRef, Fragment } from 'react'
 import { MainWindowOnly } from '@/hooks/useWindow'
+import { ErrorBoundary } from '@error/boundary'
 
 function patchCallChatSidebar () {
-  Patcher.after(...CallChatSidebarKeyed, (self, [props], value) => {
+  Patcher.after(ModuleKey.ThreadSidebar, ...CallChatSidebarKeyed, (self, [props], value) => {
     value.props.ref = props.ref
   })
 }
@@ -19,13 +20,13 @@ function patchCallChatSidebar () {
 function patchVoiceChannelView () {
   const once = ensureOnce()
 
-  Patcher.after(...VoiceChannelViewKeyed, (self, args, value) => {
+  Patcher.after(ModuleKey.ThreadSidebar, ...VoiceChannelViewKeyed, (self, args, value) => {
     const channelView = findInReactTree(value, m => m?.props?.channel)
     if (!channelView) return
 
     once(() => {
       injectModule(channelView.type, ModuleKey.ThreadSidebar)
-      Patcher.after(channelView.type.prototype, 'render', (self, args, value) => {
+      Patcher.after(ModuleKey.ThreadSidebar, channelView.type.prototype, 'render', (self, args, value) => {
         const module = Modules.getModule(ModuleKey.ThreadSidebar)
         if (!module.isEnabled()) return
 
@@ -41,24 +42,26 @@ function patchVoiceChannelView () {
         const callChatSidebarIndex = 0 // Can't find dynamically because it will be unmounted if the sidebar is closed
 
         return (
-          <MainWindowOnly fallback={value}>
-            {() => {
-              children[callChatSidebarIndex] = (
-                <TransitionGroup component={null}>
-                  {
-                    children[callChatSidebarIndex] &&
-                    <AnimeTransition
-                      injectContainerRef={true}
-                      module={module}
-                    >
-                      {children[callChatSidebarIndex]}
-                    </AnimeTransition>
-                  }
-                </TransitionGroup>
-              )
-              return value
-            }}
-          </MainWindowOnly>
+          <ErrorBoundary module={module} fallback={value}>
+            <MainWindowOnly fallback={value}>
+              {() => {
+                children[callChatSidebarIndex] = (
+                  <TransitionGroup component={null}>
+                    {
+                      children[callChatSidebarIndex] &&
+                      <AnimeTransition
+                        injectContainerRef={true}
+                        module={module}
+                      >
+                        {children[callChatSidebarIndex]}
+                      </AnimeTransition>
+                    }
+                  </TransitionGroup>
+                )
+                return value
+              }}
+            </MainWindowOnly>
+          </ErrorBoundary>
         )
       })
     })

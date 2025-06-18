@@ -19,6 +19,7 @@ import { css } from '@style'
 import { Fragment } from 'react'
 import useWindow from '@/hooks/useWindow'
 import classNames from 'classnames'
+import { ErrorBoundary } from '@error/boundary'
 
 export let guildChannelPath = []
 
@@ -59,14 +60,16 @@ function patchAppView () {
 
     const content = base.props.children[contentIndex]
     if (serversModule.isEnabled()) base.props.children[contentIndex] = (
-      <AppViewTransition
-        className="BA__content"
-        module={serversModule}
-        shouldSwitch={shouldSwitchContent}
-        getSwitchDirection={getSwitchContentDirection}
-      >
-        {content}
-      </AppViewTransition>
+      <ErrorBoundary module={serversModule} fallback={content}>
+        <AppViewTransition
+          className="BA__content"
+          module={serversModule}
+          shouldSwitch={shouldSwitchContent}
+          getSwitchDirection={getSwitchContentDirection}
+        >
+          {content}
+        </AppViewTransition>
+      </ErrorBoundary>
     )
 
     const pageIndex = content.props.children.findIndex(byClassName(DiscordClasses.AppView.page))
@@ -74,14 +77,16 @@ function patchAppView () {
 
     const page = content.props.children[pageIndex]
     if (channelsModule.isEnabled()) content.props.children[pageIndex] = (
-      <AppViewTransition
-        className="BA__page"
-        module={channelsModule}
-        shouldSwitch={shouldSwitchPage}
-        getSwitchDirection={getSwitchPageDirection}
-      >
-        {page}
-      </AppViewTransition>
+      <ErrorBoundary module={channelsModule} fallback={page}>
+        <AppViewTransition
+          className="BA__page"
+          module={channelsModule}
+          shouldSwitch={shouldSwitchPage}
+          getSwitchDirection={getSwitchPageDirection}
+        >
+          {page}
+        </AppViewTransition>
+      </ErrorBoundary>
     )
 
     const routes = findInReactTree(page, m => m?.type === Router.Switch)?.props.children

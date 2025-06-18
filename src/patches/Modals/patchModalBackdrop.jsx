@@ -6,9 +6,10 @@ import findInReactTree from '@/utils/findInReactTree'
 import DiscordClasses from '@discord/classes'
 import AnimeTransition from '@components/AnimeTransition'
 import useWindow from '@/hooks/useWindow'
+import { ErrorBoundary } from '@error/boundary'
 
 function patchModalBackdrop () {
-  Patcher.instead(ModalBackdrop, 'render', (self, [props, ...args], original) => {
+  Patcher.instead(ModuleKey.ModalsBackdrop, ModalBackdrop, 'render', (self, [props, ...args], original) => {
     const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.ModalsBackdrop)
     if (!isMainWindow || !module.isEnabled()) return original(props, ...args)
@@ -28,14 +29,16 @@ function patchModalBackdrop () {
     }
 
     children[0] = (
-      <AnimeTransition
-        appear={true}
-        in={props.isVisible}
-        module={module}
-        injectContainerRef={true}
-      >
-        {backdrop}
-      </AnimeTransition>
+      <ErrorBoundary module={module} fallback={children[0]}>
+        <AnimeTransition
+          appear={true}
+          in={props.isVisible}
+          module={module}
+          injectContainerRef={true}
+        >
+          {backdrop}
+        </AnimeTransition>
+      </ErrorBoundary>
     )
 
     return value

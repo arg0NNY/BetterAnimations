@@ -14,6 +14,7 @@ import SidebarTransition from '@/patches/ChannelView/components/SidebarTransitio
 import findInReactTree from '@/utils/findInReactTree'
 import patchVoiceChannelView from '@/patches/ChannelView/patchVoiceChannelView'
 import { MainWindowOnly } from '@/hooks/useWindow'
+import { ErrorBoundary } from '@error/boundary'
 
 function patchChannelView () {
   const once = ensureOnce()
@@ -29,23 +30,25 @@ function patchChannelView () {
           ModuleKey.ThreadSidebar,
           ModuleKey.ThreadSidebarSwitch
         ])
-        Patcher.after(guildChannel.type.prototype, 'renderSidebar', (self, args, value) => {
+        Patcher.after(ModuleKey.MembersSidebar, guildChannel.type.prototype, 'renderSidebar', (self, args, value) => {
           const module = Modules.getModule(ModuleKey.MembersSidebar)
           if (!module.isEnabled()) return value
 
           return (
-            <MainWindowOnly fallback={value}>
-              <SwitchTransition>
-                <AnimeTransition
-                  key={self.props.section}
-                  container={{ className: 'BA__sidebar' }}
-                  module={module}
-                  freeze={true}
-                >
-                  {value}
-                </AnimeTransition>
-              </SwitchTransition>
-            </MainWindowOnly>
+            <ErrorBoundary module={module} fallback={value}>
+              <MainWindowOnly fallback={value}>
+                <SwitchTransition>
+                  <AnimeTransition
+                    key={self.props.section}
+                    container={{ className: 'BA__sidebar' }}
+                    module={module}
+                    freeze={true}
+                  >
+                    {value}
+                  </AnimeTransition>
+                </SwitchTransition>
+              </MainWindowOnly>
+            </ErrorBoundary>
           )
         })
         Patcher.after(guildChannel.type.prototype, 'renderThreadSidebar', (self, args, value) => {
@@ -56,15 +59,17 @@ function patchChannelView () {
           const state = self.props.channelSidebarState ?? self.props.guildSidebarState
 
           return (
-            <MainWindowOnly fallback={value}>
-              <SidebarTransition
-                module={module}
-                switchModule={switchModule}
-                state={state}
-              >
-                {value}
-              </SidebarTransition>
-            </MainWindowOnly>
+            <ErrorBoundary fallback={value}>
+              <MainWindowOnly fallback={value}>
+                <SidebarTransition
+                  module={module}
+                  switchModule={switchModule}
+                  state={state}
+                >
+                  {value}
+                </SidebarTransition>
+              </MainWindowOnly>
+            </ErrorBoundary>
           )
         })
       })

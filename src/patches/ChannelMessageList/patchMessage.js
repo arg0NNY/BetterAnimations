@@ -7,7 +7,7 @@ import ModuleKey from '@enums/ModuleKey'
 import useWindow from '@/hooks/useWindow'
 
 function patchMessage () {
-  Patcher.after(Message, 'type', (self, [props], value) => {
+  Patcher.after(ModuleKey.Messages, Message, 'type', (self, [props], value) => {
     // Move message margins from child element to message container (as it should have been done, dear Discord)
 
     const { isMainWindow } = useWindow()
