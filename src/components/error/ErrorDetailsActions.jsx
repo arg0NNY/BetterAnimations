@@ -1,15 +1,27 @@
-import { Button, FormTitle, ModalActions } from '@discord/modules'
+import { Button, FormTitle, ModalActions, UserSettingsModal } from '@discord/modules'
 import { css } from '@style'
 import useModule from '@/hooks/useModule'
 import Config from '@/modules/Config'
 import Settings from '@/modules/Settings'
 import classNames from 'classnames'
+import InternalError from '@error/structs/InternalError'
 
 function ErrorDetailsActions ({ error, className }) {
   const module = useModule(error.module?.id)
 
   const actions = [
-    module && !Settings.isSettingsModalOpen() && (
+    error instanceof InternalError && (
+      <Button
+        size={Button.Sizes.SMALL}
+        onClick={() => {
+          UserSettingsModal.open('updates')
+          ModalActions.closeAllModals()
+        }}
+      >
+        Check for updates
+      </Button>
+    ),
+    !(error instanceof InternalError) && module && !Settings.isSettingsModalOpen() && (
       <Button
         size={Button.Sizes.SMALL}
         onClick={() => {

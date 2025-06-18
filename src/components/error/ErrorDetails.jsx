@@ -35,9 +35,18 @@ function ErrorDetails ({ error, open = false }) {
   }, [error])
 
   const hint = useMemo(() => {
-    if (error instanceof InternalError) return <>{meta.name} encountered an internal error. Some parts of the plugin may&nbsp;function incorrectly.</>
-    if (error instanceof AddonError) return <>This pack cannot be&nbsp;loaded due to an&nbsp;unexpected error.</>
-    if (error instanceof AnimationError) return <>An unexpected error occurred in the&nbsp;"{error.animation.name}"&nbsp;animation on&nbsp;{error.module.name}.</>
+    if (error instanceof InternalError)
+      return <>
+        {error.module ? `${error.module.name} animations` : `Some parts of ${meta.name}`} may&nbsp;not&nbsp;work or&nbsp;function&nbsp;incorrectly.
+      </>
+    if (error instanceof AddonError)
+      return <>
+        This pack cannot be&nbsp;loaded due to an&nbsp;unexpected error.
+      </>
+    if (error instanceof AnimationError)
+      return <>
+        An unexpected error occurred in the&nbsp;"{error.animation.name}"&nbsp;animation on&nbsp;{error.module.name}.
+      </>
     return 'Unknown error occurred.'
   }, [error])
 
