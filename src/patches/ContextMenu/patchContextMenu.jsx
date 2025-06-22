@@ -11,6 +11,7 @@ import { autoPosition } from '@/hooks/useAutoPosition'
 import useWindow, { MainWindowOnly } from '@/hooks/useWindow'
 import mouse from '@shared/mouse'
 import { ErrorBoundary } from '@error/boundary'
+import { cloneElement } from 'react'
 
 function patchContextMenu () {
   const once = ensureOnce()
@@ -36,14 +37,11 @@ function patchContextMenu () {
                   { align: config.align ?? Position.Top }
                 )
 
-                if (value) {
-                  value.props.onPositionChange = setPosition
-                  value.props.setLayerRef = value => self.__layerRef = value
+                if (value)
                   Patcher.after(value, 'type', (self, [props], value) => {
                     value.props.onPositionChange = props.onPositionChange ?? (() => {})
                     props.setLayerRef?.(value.props.ref)
                   })
-                }
 
                 return (
                   <AnimeTransition
@@ -53,7 +51,10 @@ function patchContextMenu () {
                     autoRef={autoRef}
                     anchor={self.__anchor}
                   >
-                    {value}
+                    {value && cloneElement(value, {
+                      onPositionChange: setPosition,
+                      setLayerRef: value => self.__layerRef = value
+                    })}
                   </AnimeTransition>
                 )
               }}

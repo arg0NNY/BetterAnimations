@@ -1,6 +1,6 @@
 import Patcher from '@/modules/Patcher'
 import { CallChatSidebarKeyed, TransitionGroup, VoiceChannelViewKeyed } from '@discord/modules'
-import findInReactTree from '@/utils/findInReactTree'
+import findInReactTree, { byClassName } from '@/utils/findInReactTree'
 import ensureOnce from '@utils/ensureOnce'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
@@ -32,7 +32,7 @@ function patchVoiceChannelView () {
 
         if (!self.__containerRef) self.__containerRef = createRef()
 
-        const chatWrapper = findInReactTree(value, m => m?.className?.includes(DiscordClasses.VoiceChannelView.channelChatWrapper))
+        const chatWrapper = findInReactTree(value, byClassName(DiscordClasses.VoiceChannelView.channelChatWrapper))
         if (!chatWrapper) return
 
         const fragment = findInReactTree(chatWrapper, m => m?.type === Fragment)

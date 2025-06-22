@@ -1,6 +1,6 @@
 import Patcher from '@/modules/Patcher'
 import { StandardSidebarViewKeyed, StandardSidebarViewWrapper, TransitionGroup } from '@discord/modules'
-import findInReactTree from '@/utils/findInReactTree'
+import findInReactTree, { byClassName } from '@/utils/findInReactTree'
 import AnimeTransition from '@components/AnimeTransition'
 import { passAuto } from '@utils/transition'
 import useDirection from '@/hooks/useDirection'
@@ -20,30 +20,36 @@ async function patchStandardSidebarView () {
     view.props.sections = self.getPredicateSections().map(s => s.section)
   })
 
-  Patcher.after(ModuleKey.Settings, ...await StandardSidebarViewKeyed, (self, [props], value) => {
+  Patcher.after(...await StandardSidebarViewKeyed, (self, [props], value) => {
     const direction = useDirection(props.sections, props.section)
     const { isMainWindow } = useWindow()
-    const module = useModule(ModuleKey.Settings)
-    if (!isMainWindow || !module.isEnabled()) return
 
-    // Disable Discord's internal animations, for Layers module
-    const animated = findInReactTree(value, m => m?.type?.displayName?.startsWith('Animated'))
-    if (animated) {
-      delete animated.props.style
-      animated.type = 'div'
+    const module = useModule(ModuleKey.Settings)
+    const layersModule = useModule(ModuleKey.Layers)
+    if (!isMainWindow) return
+
+    if (layersModule.isEnabled()) {
+      // Disable Discord's internal animations, for Layers module
+      const animated = findInReactTree(value, m => m?.type?.displayName?.startsWith('Animated'))
+      if (animated) {
+        delete animated.props.style
+        animated.type = 'div'
+      }
     }
 
-    const standardSidebarView = findInReactTree(value, m => m?.className?.includes(DiscordClasses.StandardSidebarView.standardSidebarView))
+    if (!module.isEnabled()) return
+
+    const standardSidebarView = findInReactTree(value, byClassName(DiscordClasses.StandardSidebarView.standardSidebarView))
     if (!standardSidebarView) return
 
-    const i = standardSidebarView.children.findIndex(i => i?.props?.className?.includes(DiscordClasses.StandardSidebarView.contentRegion))
+    const { children } = standardSidebarView.props
+    const i = children.findIndex(byClassName(DiscordClasses.StandardSidebarView.contentRegion))
     if (i === -1) return
 
-    const contentRegion = standardSidebarView.children[i]
-
+    const contentRegion = children[i]
     const auto = { direction }
 
-    standardSidebarView.children[i] = (
+    children[i] = (
       <ErrorBoundary module={module} fallback={contentRegion}>
         <TransitionGroup className={DiscordClasses.StandardSidebarView.contentRegion} childFactory={passAuto(auto)}>
           <AnimeTransition

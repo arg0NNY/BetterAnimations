@@ -13,14 +13,12 @@ function patchMessageDivider() {
     if (!isMainWindow || !module.isEnabled()) return
 
     const { children, className, ...rest } = value.props
-    value.props = {
-      children,
-      className: className.replace(props.className, '')
-    }
 
     return (
       <div className={props.className} {...rest}>
-        {value}
+        <value.type className={className.replace(props.className, '')}>
+          {children}
+        </value.type>
       </div>
     )
   })

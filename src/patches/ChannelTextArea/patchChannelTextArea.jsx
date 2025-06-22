@@ -6,14 +6,14 @@ import {
   TransitionGroup,
   useExpressionPickerStoreKeyed
 } from '@discord/modules'
-import findInReactTree from '@/utils/findInReactTree'
+import findInReactTree, { byClassName } from '@/utils/findInReactTree'
 import useWindow from '@/hooks/useWindow'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import AnimeTransition from '@components/AnimeTransition'
 import useAutoPosition from '@/hooks/useAutoPosition'
 import Position from '@enums/Position'
-import { useCallback, useRef } from 'react'
+import { cloneElement, useCallback, useRef } from 'react'
 import { unkeyed } from '@/utils/webpack'
 import patchChannelAppLauncher from '@/patches/ChannelTextArea/patchChannelAppLauncher'
 import { ErrorBoundary } from '@error/boundary'
@@ -24,10 +24,10 @@ function patchChannelTextAreaButtons () {
     const module = useModule(ModuleKey.Popouts)
     if (!isMainWindow || !module.isEnabled() || !buttonRefs) return
 
-    const buttons = findInReactTree(value, m => m?.className?.includes('buttons'))
+    const buttons = findInReactTree(value, byClassName('buttons'))
     if (!buttons) return
 
-    for (const button of buttons.children) {
+    for (const button of buttons.props.children) {
       if (!button.key) continue
       button.props.ref = el => buttonRefs.current[button.key] = el
     }
@@ -61,9 +61,6 @@ function patchChannelTextArea () {
       if (children?.props) children.props.__containerRef = ref
     }
 
-    if (children[expressionPickerIndex])
-      children[expressionPickerIndex].props.onPositionChange = setPosition
-
     children[expressionPickerIndex] = (
       <ErrorBoundary module={module} fallback={children[expressionPickerIndex]}>
         <TransitionGroup component={null}>
@@ -74,7 +71,9 @@ function patchChannelTextArea () {
               autoRef={autoRef}
               anchor={anchorRef}
             >
-              {children[expressionPickerIndex]}
+              {cloneElement(children[expressionPickerIndex], {
+                onPositionChange: setPosition
+              })}
             </AnimeTransition>
           )}
         </TransitionGroup>

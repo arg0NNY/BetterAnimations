@@ -1,6 +1,6 @@
 import Patcher from '@/modules/Patcher'
 import { ExpressionPicker, useExpressionPickerStoreKeyed } from '@discord/modules'
-import findInReactTree from '@/utils/findInReactTree'
+import findInReactTree, { byClassName } from '@/utils/findInReactTree'
 import { css } from '@style'
 import AnimeContainer from '@components/AnimeContainer'
 import useWindow from '@/hooks/useWindow'
@@ -26,17 +26,17 @@ function patchExpressionPicker () {
     try { value = original(props) }
     finally { expressionPickerRendering = false }
 
-    const positionLayer = findInReactTree(value, m => m?.className?.includes('positionLayer'))
+    const positionLayer = findInReactTree(value, byClassName('positionLayer'))
     if (!positionLayer) return value
 
-    positionLayer.onPositionChange = props.onPositionChange
+    positionLayer.props.onPositionChange = props.onPositionChange
 
-    Patcher.after(ModuleKey.Popouts, positionLayer, 'children', (self, args, value) => {
-      const drawerSizingWrapper = findInReactTree(value, m => m?.className?.includes('drawerSizingWrapper'))
+    Patcher.after(ModuleKey.Popouts, positionLayer.props, 'children', (self, args, value) => {
+      const drawerSizingWrapper = findInReactTree(value, byClassName('drawerSizingWrapper'))
       if (!drawerSizingWrapper) return
 
-      const { children } = drawerSizingWrapper
-      const contentWrapperIndex = children.findIndex(i => i?.props?.className?.includes('contentWrapper'))
+      const { children } = drawerSizingWrapper.props
+      const contentWrapperIndex = children.findIndex(byClassName('contentWrapper'))
       if (contentWrapperIndex === -1) return
 
       children[contentWrapperIndex] = (

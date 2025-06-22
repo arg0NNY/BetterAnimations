@@ -45,7 +45,7 @@ export class ErrorBoundary extends Component {
   render () {
     if (this.state.error === ErrorBoundary.NO_ERROR) return this.props.children
     if (this.props.noop) return null
-    if (this.props.fallback) return this.props.fallback
+    if (this.props.fallback !== undefined) return this.props.fallback
 
     return (
       <ErrorCard>

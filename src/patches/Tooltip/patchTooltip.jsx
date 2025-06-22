@@ -53,18 +53,18 @@ function patchTooltip () {
     const module = Modules.getModule(ModuleKey.Tooltips)
     if (!module.isEnabled()) return
 
+    const { text } = self.props
+
     return (
       <ErrorBoundary module={module} fallback={value}>
         <MainWindowOnly fallback={value}>
-          {() => {
-            const { text } = self.props
-            value.props.children = typeof text === 'function' ? text() : text
-
-            value.props.module = module
-            value.type = TooltipTransition
-
-            return value
-          }}
+          {() => (
+            <TooltipTransition
+              {...value.props}
+              children={typeof text === 'function' ? text() : text}
+              module={module}
+            />
+          )}
         </MainWindowOnly>
       </ErrorBoundary>
     )

@@ -1,6 +1,6 @@
 import Patcher from '@/modules/Patcher'
 import { AppPanels, AppViewKeyed, ImpressionNames, Router, Routes, TransitionGroup } from '@discord/modules'
-import findInReactTree from '@/utils/findInReactTree'
+import findInReactTree, { byClassName } from '@/utils/findInReactTree'
 import AnimeTransition from '@components/AnimeTransition'
 import useLocationKey from '@/hooks/useLocationKey'
 import {
@@ -42,8 +42,6 @@ function AppViewTransition ({ className, module, shouldSwitch, getSwitchDirectio
     </TransitionGroup>
   )
 }
-
-const byClassName = className => m => m?.props?.className?.includes(className)
 
 function patchAppView () {
   Patcher.after(...AppViewKeyed, (self, args, value) => {

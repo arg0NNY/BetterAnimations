@@ -19,6 +19,7 @@ css
     border-radius: 8px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     gap: 12px;
     text-align: center;

@@ -9,7 +9,7 @@ import ensureOnce from '@utils/ensureOnce'
 import { directChild } from '@utils/transition'
 import { css } from '@style'
 import DiscordSelectors from '@discord/selectors'
-import { useMemo, useRef } from 'react'
+import { cloneElement, useMemo, useRef } from 'react'
 import useWindow from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
 
@@ -19,14 +19,12 @@ function Modal ({ children, ...props }) {
     get current () { return directChild(layerRef.current) }
   }), [layerRef])
 
-  children.props.layerRef = layerRef
-
   return (
     <AnimeTransition
       containerRef={containerRef}
       {...props}
     >
-      {children}
+      {cloneElement(children, { layerRef })}
     </AnimeTransition>
   )
 }
@@ -45,7 +43,7 @@ function patchModals () {
     const modal = modals.find(m => m.props.isTopModal)
 
     value.props.children[1] = (
-      <ErrorBoundary module={module} fallback={value.props.children[1]}>
+      <ErrorBoundary module={module} fallback={modals}>
         <TransitionGroup component={null}>
           {modal && (
             <Modal

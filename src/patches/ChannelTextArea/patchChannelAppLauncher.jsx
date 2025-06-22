@@ -1,7 +1,7 @@
 import Patcher from '@/modules/Patcher'
 import { AppLauncherPopup, ChannelAppLauncher, TransitionGroup } from '@discord/modules'
-import findInReactTree from '@/utils/findInReactTree'
-import { useRef } from 'react'
+import findInReactTree, { byClassName } from '@/utils/findInReactTree'
+import { cloneElement, useRef } from 'react'
 import useWindow from '@/hooks/useWindow'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
@@ -16,11 +16,11 @@ function patchAppLauncherPopup () {
     const module = useModule(ModuleKey.Popouts)
     if (!isMainWindow || !module.isEnabled()) return
 
-    const positionLayer = findInReactTree(value, m => m?.className?.includes('positionLayer'))
+    const positionLayer = findInReactTree(value, byClassName('positionLayer'))
     if (!positionLayer) return
 
-    positionLayer.ref = props.layerRef
-    positionLayer.onPositionChange = props.onPositionChange
+    positionLayer.props.ref = props.layerRef
+    positionLayer.props.onPositionChange = props.onPositionChange
   })
 }
 
@@ -39,12 +39,6 @@ function patchChannelAppLauncher () {
     const { children } = wrapper
     const popupIndex = children.length - 1 // Can't query because it will be unmounted if closed
 
-    if (children[popupIndex])
-      Object.assign(children[popupIndex].props, {
-        layerRef,
-        onPositionChange: setPosition
-      })
-
     children[popupIndex] = (
       <ErrorBoundary module={module} fallback={children[popupIndex]}>
         <TransitionGroup component={null}>
@@ -55,7 +49,10 @@ function patchChannelAppLauncher () {
               autoRef={autoRef}
               anchor={children[popupIndex].props?.positionTargetRef}
             >
-              {children[popupIndex]}
+              {cloneElement(children[popupIndex], {
+                layerRef,
+                onPositionChange: setPosition
+              })}
             </AnimeTransition>
           )}
         </TransitionGroup>
