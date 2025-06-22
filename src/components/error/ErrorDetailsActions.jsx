@@ -15,6 +15,7 @@ function ErrorDetailsActions ({ error, className }) {
         size={Button.Sizes.SMALL}
         onClick={() => {
           UserSettingsModal.open('updates')
+          Settings.closeSettingsModal()
           ModalActions.closeAllModals()
         }}
       >

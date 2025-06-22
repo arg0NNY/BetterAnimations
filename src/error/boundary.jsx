@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import ErrorManager from '@error/manager'
 import InternalError from '@error/structs/InternalError'
-import ErrorCard from '@error/components/ErrorCard'
+import ErrorCard from './components/ErrorCard'
 import { Button, Text } from '@discord/modules'
 import IconBrand, { IconBrandTypes } from '@/components/icons/IconBrand'
 import Modules from '@/modules/Modules'
@@ -43,24 +43,42 @@ export class ErrorBoundary extends Component {
   }
 
   render () {
-    if (this.state.error === ErrorBoundary.NO_ERROR) return this.props.children
-    if (this.props.noop) return null
-    if (this.props.fallback !== undefined) return this.props.fallback
+    const {
+      noop,
+      fallback,
+      children,
+      actions = e => e,
+      module,
+      ...props
+    } = this.props
+
+    if (this.state.error === ErrorBoundary.NO_ERROR) return children
+    if (noop) return null
+    if (fallback !== undefined) return fallback
+
+    const _actions = (
+      <Button
+        size={Button.Sizes.SMALL}
+        onClick={() => ErrorManager.showModal([this.state.error])}
+      >
+        View
+      </Button>
+    )
 
     return (
-      <ErrorCard>
+      <ErrorCard {...props} actions={actions(_actions)}>
         <IconBrand
           type={IconBrandTypes.ERROR}
           size="xl"
         />
         <Text variant="text-md/bold">An error occurred.</Text>
-        <Button
-          size={Button.Sizes.SMALL}
-          onClick={() => ErrorManager.showModal([this.state.error])}
-        >
-          View
-        </Button>
       </ErrorCard>
     )
   }
 }
+
+ErrorBoundary.wrap = (Component, boundaryProps) => props => (
+  <ErrorBoundary {...boundaryProps}>
+    <Component {...props} />
+  </ErrorBoundary>
+)

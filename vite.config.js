@@ -89,7 +89,8 @@ export default defineConfig({
       '@discord': path.resolve(__dirname, 'src/discord'),
       '@style': path.resolve(__dirname, 'src/modules/Style'),
       '@animation/store': path.resolve(__dirname, 'src/modules/AnimationStore'),
-      '@error/manager': path.resolve(__dirname, 'src/modules/ErrorManager'),
+      '@error/manager': path.resolve(__dirname, 'src/error/manager'),
+      '@error/boundary': path.resolve(__dirname, 'src/error/boundary'),
 
       // General
       ...omit(aliases, ['@discord', '@style'])

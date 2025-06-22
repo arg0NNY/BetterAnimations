@@ -1,4 +1,5 @@
 import {
+  Button,
   Constants,
   LayerActions,
   StandardSidebarViewKeyed,
@@ -13,6 +14,7 @@ import { css } from '@style'
 import { useSection } from '@/modules/settings/stores/SettingsStore'
 import DiscordSelectors from '@discord/selectors'
 import { useCallback, useMemo, Suspense, lazy } from 'react'
+import { ErrorBoundary } from '@error/boundary'
 
 const StandardSidebarViewComponent = lazy(async () => ({ default: await StandardSidebarViewWrapper }))
 
@@ -26,22 +28,37 @@ function SettingsModal () {
 
   const onClose = useCallback(() => LayerActions.popLayer(), [])
 
+  const actions = actions => (
+    <>
+      {actions}
+      <Button
+        size={Button.Sizes.SMALL}
+        color={Button.Colors.PRIMARY}
+        onClick={onClose}
+      >
+        Close Settings
+      </Button>
+    </>
+  )
+
   return (
-    <SectionContext.Provider value={{ section, setSection }}>
-      <div className="BA__settingsModal">
-        <Suspense>
-          <StandardSidebarViewComponent
-            title={title}
-            theme={theme}
-            sidebarTheme={sidebarTheme}
-            sections={sections}
-            section={section}
-            onSetSection={setSection}
-            onClose={onClose}
-          />
-        </Suspense>
-      </div>
-    </SectionContext.Provider>
+    <ErrorBoundary style={{ margin: 'auto' }} actions={actions}>
+      <SectionContext value={{ section, setSection }}>
+        <div className="BA__settingsModal">
+          <Suspense>
+            <StandardSidebarViewComponent
+              title={title}
+              theme={theme}
+              sidebarTheme={sidebarTheme}
+              sections={sections}
+              section={section}
+              onSetSection={setSection}
+              onClose={onClose}
+            />
+          </Suspense>
+        </div>
+      </SectionContext>
+    </ErrorBoundary>
   )
 }
 

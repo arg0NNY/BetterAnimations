@@ -20,6 +20,7 @@ import AnimationError from '@error/structs/AnimationError'
 import BookCheckIcon from '@/components/icons/BookCheckIcon'
 import ErrorDetailsActions from '@/components/error/ErrorDetailsActions'
 import { useMemo } from 'react'
+import { attempt, ErrorBoundary } from '@error/boundary'
 
 function ErrorDetails ({ error, open = false }) {
   const icon = useMemo(() => {
@@ -67,6 +68,12 @@ function ErrorDetails ({ error, open = false }) {
     return null
   }, [error, invite])
 
+  const content = `${error.name}: ` + error.message
+  const codeBlock = attempt(
+    () => Parser.codeBlock.react({ content, lang: 'json' }, null, {}),
+    () => <pre><code className="hljs">{content}</code></pre>
+  )
+
   return (
     <details className="BA__errorDetails" open={open}>
       <summary className="BA__errorDetailsHeader">
@@ -106,33 +113,30 @@ function ErrorDetails ({ error, open = false }) {
 
         <FormTitle>Error</FormTitle>
         <div className="BA__errorDetailsStack">
-          {
-            Parser.codeBlock.react({
-              content: `${error.name}: ` + error.message,
-              lang: 'json'
-            }, null, {})
-          }
+          {codeBlock}
         </div>
 
-        {alert ? (
-          <Alert
-            messageType={AlertTypes.INFO}
-            className={DiscordClasses.Margins.marginTop20}
-          >
-            <div>{alert}</div>
-            {invite ? (
-              <div className="BA__errorDetailsInvite">
-                <InviteEmbed
-                  code={invite}
-                  message={{
-                    author: { username: error.pack?.author }
-                  }}
-                  getAcceptInviteContext={() => ({})}
-                />
-              </div>
-            ) : null}
-          </Alert>
-        ) : null}
+        <ErrorBoundary noop>
+          {alert ? (
+            <Alert
+              messageType={AlertTypes.INFO}
+              className={DiscordClasses.Margins.marginTop20}
+            >
+              <div>{alert}</div>
+              {invite ? (
+                <div className="BA__errorDetailsInvite">
+                  <InviteEmbed
+                    code={invite}
+                    message={{
+                      author: { username: error.pack?.author }
+                    }}
+                    getAcceptInviteContext={() => ({})}
+                  />
+                </div>
+              ) : null}
+            </Alert>
+          ) : null}
+        </ErrorBoundary>
       </div>
     </details>
   )
