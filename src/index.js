@@ -39,6 +39,7 @@ import patchMenuItem from '@/patches/ContextMenu/patchMenuItem'
 import Documentation from '@shared/documentation'
 import patchChannelTextArea from '@/patches/ChannelTextArea/patchChannelTextArea'
 import patchPopToast from '@/patches/Toast/patchPopToast'
+import Validator from '@discord/validator'
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -73,12 +74,13 @@ export default function (meta) {
       Config.initialize()
       Mouse.initialize()
       Style.initialize()
-      Prompt.onStartup()
       PackManager.initialize()
       PackRegistry.initialize()
       AnimationStore.initialize()
-
       Modules.initialize()
+
+      Validator.onStartup()
+      Prompt.onStartup()
 
       Logger.info('Startup', 'Applying patches...')
       patchAppView()

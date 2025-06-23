@@ -48,7 +48,6 @@ export const ReferencePositionLayer = Webpack.getModule(Filters.byPrototypeKeys(
 export const SearchableSelect = Webpack.getModule(m => Filters.byStrings('searchable', 'select')(m?.render), { searchExports: true })
 export const { Anchor } = Webpack.getByKeys('Anchor')
 
-export const LocaleStore = Webpack.getModule(m => m.Messages?.IMAGE)
 export const Dispatcher = Webpack.getByKeys('dispatch', 'subscribe')
 export const AppViewKeyed = getWithKey(Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'))
 export const Router = Object.assign(
