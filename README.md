@@ -39,7 +39,7 @@ Visit the Usage and Animation Authoring documentation at
 - [ ] Migrate to Zod 4 (improve performance & reduce bundle size)
 - [x] ~~Animation Preview~~
 - [ ] Catalog & Library
-- [ ] Integrate `ErrorBoundary` for better error safety
+- [x] ~~Integrate `ErrorBoundary` for better error safety~~
 - [x] ~~Integrate Emoji/Sticker/GIF Panel to [_Popouts_](https://docs.betteranimations.net/usage/modules#popouts)~~
 - [ ] Expand [Injects](https://docs.betteranimations.net/create/injects)
   - [ ] Add more [Array Injects](https://docs.betteranimations.net/reference/injects/array)
