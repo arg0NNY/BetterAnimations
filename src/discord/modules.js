@@ -115,7 +115,7 @@ export const useMessageRequestSidebarStateKeyed = getWithKey(Filters.byStrings('
 export const App = Webpack.getByKeys('setEnableHardwareAcceleration', 'releaseChannel')
 export const Message = Webpack.getModule(m => Filters.byStrings('must not be a thread starter message')(m?.type), { searchExports: true })
 export const MessageDivider = Webpack.getModule(m => Filters.byStrings('divider', 'unreadPill')(m?.render))
-export const ChatSearchSidebarKeyed = getWithKey(Filters.byStrings('getResultsState', 'searchAnalyticsId'))
+export const ChatSearchSidebarKeyed = getWithKey(Filters.byStrings('SearchResults', 'searchId'))
 export const { Select: SelectKeyed, SingleSelect: SingleSelectKeyed } = getMangled(Filters.byStrings('listbox', 'renderPopout', 'closeOnSelect'), {
   Select: Filters.byStrings('listbox', 'renderPopout', 'closeOnSelect'),
   SingleSelect: m => Filters.byStrings('value', 'onChange')(m) && !Filters.byStrings('isSelected')(m)
