@@ -5,6 +5,7 @@ import useModule from '@/hooks/useModule'
 import SidebarTransition from '@/patches/ChannelView/components/SidebarTransition'
 import useWindow from '@/hooks/useWindow'
 import AnimeContainer from '@components/AnimeContainer'
+import { ErrorBoundary } from '@error/boundary'
 
 async function patchMembersModViewSidebar () {
   Patcher.after(...await MembersModViewSidebarKeyed, (self, [{ guildId }], value) => {
@@ -16,15 +17,17 @@ async function patchMembersModViewSidebar () {
     const state = useStateFromStores([ChannelSectionStore], () => ChannelSectionStore.getGuildSidebarState(guildId), [guildId])
 
     return (
-      <SidebarTransition
-        module={module}
-        switchModule={switchModule}
-        state={state}
-      >
-        <AnimeContainer container={{ className: 'BA__sidebar' }}>
-          {value}
-        </AnimeContainer>
-      </SidebarTransition>
+      <ErrorBoundary fallback={value}>
+        <SidebarTransition
+          module={module}
+          switchModule={switchModule}
+          state={state}
+        >
+          <AnimeContainer container={{ className: 'BA__sidebar' }}>
+            {value}
+          </AnimeContainer>
+        </SidebarTransition>
+      </ErrorBoundary>
     )
   })
 }

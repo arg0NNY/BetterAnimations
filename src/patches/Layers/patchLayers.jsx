@@ -1,4 +1,4 @@
-import { Patcher } from '@/BdApi'
+import Patcher from '@/modules/Patcher'
 import { LayersKeyed, TransitionGroup } from '@discord/modules'
 import ensureOnce from '@utils/ensureOnce'
 import AnimeTransition from '@components/AnimeTransition'
@@ -11,6 +11,7 @@ import Modules from '@/modules/Modules'
 import { css } from '@style'
 import Mouse from '@shared/mouse'
 import classNames from 'classnames'
+import { ErrorBoundary } from '@error/boundary'
 
 function getWindowCenterAnchor () {
   return {
@@ -109,12 +110,12 @@ class LayerStore {
 function patchLayers () {
   const once = ensureOnce()
 
-  Patcher.after(...LayersKeyed, (self, args, value) => {
+  Patcher.after(ModuleKey.Layers, ...LayersKeyed, (self, args, value) => {
     once(
       () => {
         const layerStore = new LayerStore()
         injectModule(value.type, ModuleKey.Layers)
-        Patcher.after(value.type.prototype, 'renderLayers', (self, args, value) => {
+        Patcher.after(ModuleKey.Layers, value.type.prototype, 'renderLayers', (self, args, value) => {
           const module = Modules.getModule(ModuleKey.Layers)
           if (!module.isEnabled()) return
 
@@ -122,22 +123,23 @@ function patchLayers () {
           const auto = { direction, preservedMouse: anchor }
 
           return (
-            <TransitionGroup component={null} childFactory={passAuto(auto)}>
-              {
-                value.map(layer => (
-                  <LayerTransition
-                    key={layer.key}
-                    module={module}
-                    auto={auto}
-                    layer={layer}
-                  />
-                ))
-              }
-            </TransitionGroup>
+            <ErrorBoundary module={module} fallback={value}>
+              <TransitionGroup component={null} childFactory={passAuto(auto)}>
+                {
+                  value.map(layer => (
+                    <LayerTransition
+                      key={layer.key}
+                      module={module}
+                      auto={auto}
+                      layer={layer}
+                    />
+                  ))
+                }
+              </TransitionGroup>
+            </ErrorBoundary>
           )
         })
-      },
-      'renderLayers'
+      }
     )
   })
 }

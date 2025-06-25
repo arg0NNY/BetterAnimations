@@ -1,11 +1,10 @@
 import { ErrorManager as BaseErrorManager } from '@shared/error/manager'
 import Logger from '@logger'
-import { createToast, ModalActions, popToast, popToastKeyed, useToastStore } from '@discord/modules'
+import { createToast, ModalActions, popToast, useToastStore } from '@discord/modules'
 import ErrorModal from '@/components/error/ErrorModal'
 import ErrorToast from '@/components/error/ErrorToast'
 import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
-import Patcher from '@/modules/Patcher'
 
 const ErrorManagerToastSymbol = Symbol('ErrorManagerToast')
 
@@ -21,19 +20,12 @@ export default new class ErrorManager extends BaseErrorManager {
   }
 
   initialize () {
-    this.patchPopToast()
+    this.clear()
     Logger.info(this.name, 'Initialized.')
   }
 
   isToastActive () {
     return useToastStore.getState().currentToast?.type === ErrorManagerToastSymbol
-  }
-
-  patchPopToast () {
-    Patcher.instead(...popToastKeyed, (self, [force], original) => {
-      if (force !== true && this.isToastActive()) return
-      return original()
-    })
   }
 
   clear () {

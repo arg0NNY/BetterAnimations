@@ -1,4 +1,5 @@
-import { Patcher, Utils } from '@/BdApi'
+import Patcher from '@/modules/Patcher'
+import { Utils } from '@/BdApi'
 import { ListThin, TransitionGroup, useStateFromStores } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@components/AnimeTransition'
@@ -11,6 +12,7 @@ import DiscordSelectors from '@discord/selectors'
 import { cloneElement, Fragment, useMemo, useRef } from 'react'
 import patchChannelItem from '@/patches/ListThin/patchChannelItem'
 import useWindow from '@/hooks/useWindow'
+import { ErrorBoundary } from '@error/boundary'
 
 function ListItem ({ children, ...props }) {
   const draggableRef = useRef()
@@ -37,7 +39,7 @@ function ListItem ({ children, ...props }) {
 }
 
 function patchListThin () {
-  Patcher.after(ListThin, 'render', (self, [props], value) => {
+  Patcher.after(ModuleKey.ChannelList, ListThin, 'render', (self, [props], value) => {
     const isChannelList = props.id?.includes('channels')
     const channelsToAnimate = isChannelList && useStateFromStores([ChannelStackStore], () => ChannelStackStore.getChannelsAwaitingTransition())
 
@@ -62,40 +64,42 @@ function patchListThin () {
     })
 
     focusRingScope.children = (
-      <TransitionGroup
-        component={null}
-        childFactory={childFactory}
-      >
-        {
-          focusRingScope.children.map(item => {
-            if (!item) return item
+      <ErrorBoundary module={module} fallback={focusRingScope.children}>
+        <TransitionGroup
+          component={null}
+          childFactory={childFactory}
+        >
+          {
+            focusRingScope.children.map(item => {
+              if (!item) return item
 
-            const items = [].concat(
-              item.type === Fragment
-                ? item.props.children
-                : item
-            ).filter(i => !!i)
+              const items = [].concat(
+                item.type === Fragment
+                  ? item.props.children
+                  : item
+              ).filter(i => !!i)
 
-            return (
-              <PassThrough
-                key={item.key}
-                enter={shouldAnimate(item)}
-                exit={false} // Managed in childFactory
-                module={module}
-                items={items}
-              >
-                {props => (
-                  props.items.map(item => (
-                    <ListItem {...props}>
-                      {item}
-                    </ListItem>
-                  ))
-                )}
-              </PassThrough>
-            )
-          })
-        }
-      </TransitionGroup>
+              return (
+                <PassThrough
+                  key={item.key}
+                  enter={shouldAnimate(item)}
+                  exit={false} // Managed in childFactory
+                  module={module}
+                  items={items}
+                >
+                  {props => (
+                    props.items.map(item => (
+                      <ListItem {...props}>
+                        {item}
+                      </ListItem>
+                    ))
+                  )}
+                </PassThrough>
+              )
+            })
+          }
+        </TransitionGroup>
+      </ErrorBoundary>
     )
   })
 

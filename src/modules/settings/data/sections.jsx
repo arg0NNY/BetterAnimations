@@ -12,18 +12,19 @@ import BookCheckIcon from '@/components/icons/BookCheckIcon'
 import Home from '@/modules/settings/views/Home'
 import Catalog from '@/modules/settings/views/Catalog'
 import Library from '@/modules/settings/views/Library'
+import { ErrorBoundary } from '@error/boundary'
 
 export function getSections () {
   return [
     {
       section: 'CUSTOM',
-      element: SettingsSidebarHeader
+      element: ErrorBoundary.wrap(SettingsSidebarHeader)
     },
     {
       section: SettingsSection.Home,
       label: 'Home',
       icon: <HomeIcon size="xs" color="currentColor" />,
-      element: Home
+      element: ErrorBoundary.wrap(Home)
     },
     {
       section: 'DIVIDER'
@@ -32,20 +33,20 @@ export function getSections () {
       section: SettingsSection.Catalog,
       label: 'Catalog',
       icon: <ShopIcon size="xs" color="currentColor" />,
-      element: Catalog
+      element: ErrorBoundary.wrap(Catalog)
     },
     {
       section: SettingsSection.Library,
       label: 'Library',
       icon: <BookCheckIcon size="xs" color="currentColor" />,
-      element: Library
+      element: ErrorBoundary.wrap(Library)
     },
     {
       section: 'DIVIDER'
     },
     {
       section: 'CUSTOM',
-      element: ModeSwitch
+      element: ErrorBoundary.wrap(ModeSwitch)
     },
     ...Modules.getAllModules(true).map(module => ({
       section: module.id,
@@ -53,7 +54,7 @@ export function getSections () {
       className: module.parent ? 'BA__nestedTabBarItem' : undefined,
       icon: module.parent ? <SpineIcon /> : undefined,
       elementProps: { moduleId: module.id },
-      element: ModuleSettings,
+      element: ErrorBoundary.wrap(ModuleSettings),
       notice: {
         element: FormNotice,
         stores: [SettingsStore]

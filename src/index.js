@@ -38,6 +38,7 @@ import Utils from '@/modules/Utils'
 import patchMenuItem from '@/patches/ContextMenu/patchMenuItem'
 import Documentation from '@shared/documentation'
 import patchChannelTextArea from '@/patches/ChannelTextArea/patchChannelTextArea'
+import patchPopToast from '@/patches/Toast/patchPopToast'
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -97,6 +98,7 @@ export default function (meta) {
       patchReferencePositionLayer()
       patchSelect()
       patchChannelTextArea()
+      patchPopToast()
 
       Logger.info('Startup', 'Forcing app update...')
       forceAppUpdate()

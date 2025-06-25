@@ -11,8 +11,9 @@ import useModule from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import Position from '@enums/Position'
 import useAutoPosition from '@/hooks/useAutoPosition'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { cloneElement, useEffect, useMemo, useRef, useState } from 'react'
 import useWindow from '@/hooks/useWindow'
+import { ErrorBoundary } from '@error/boundary'
 
 function patchContextSubmenu () {
   const callback = (self, [props], original) => {
@@ -34,14 +35,12 @@ function patchContextSubmenu () {
     const module = useModule(ModuleKey.ContextMenu)
     if (!isMainWindow || !module.isEnabled()) return original(props)
 
-    const value = original(Object.assign({}, props, { isFocused: true }))
+    const value = original({ ...props, isFocused: true })
     const { children } = value.props
 
     const i = children.length - 1
     if (!children[i]) return value
 
-    children[i].props.onPositionChange = setPosition
-    children[i].props.ref = layerRef
     children[i] = (
       <AnimeTransition
         in={isFocused}
@@ -51,16 +50,23 @@ function patchContextSubmenu () {
         anchor={value.props.ref}
       >
         <Layer layerContext={appLayerContext}>
-          {children[i]}
+          {cloneElement(children[i], {
+            onPositionChange: setPosition,
+            ref: layerRef
+          })}
         </Layer>
       </AnimeTransition>
     )
 
-    return value
+    return (
+      <ErrorBoundary module={module} fallback={<original {...props} />}>
+        {value}
+      </ErrorBoundary>
+    )
   }
 
-  Patcher.instead(...MenuSubmenuItemKeyed, callback)
-  Patcher.instead(...MenuSubmenuListItemKeyed, callback)
+  Patcher.instead(ModuleKey.ContextMenu, ...MenuSubmenuItemKeyed, callback)
+  Patcher.instead(ModuleKey.ContextMenu, ...MenuSubmenuListItemKeyed, callback)
 }
 
 export default patchContextSubmenu

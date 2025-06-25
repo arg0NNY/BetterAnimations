@@ -5,7 +5,7 @@ import ModuleKey from '@enums/ModuleKey'
 import useWindow from '@/hooks/useWindow'
 
 function patchMessageDivider() {
-  Patcher.after(MessageDivider, 'render', (self, [props], value) => {
+  Patcher.after(ModuleKey.Messages, MessageDivider, 'render', (self, [props], value) => {
     // Transform message divider DOM tree to unified "container -> element" structure
 
     const { isMainWindow } = useWindow()
@@ -13,14 +13,12 @@ function patchMessageDivider() {
     if (!isMainWindow || !module.isEnabled()) return
 
     const { children, className, ...rest } = value.props
-    value.props = {
-      children,
-      className: className.replace(props.className, '')
-    }
 
     return (
       <div className={props.className} {...rest}>
-        {value}
+        <value.type className={className.replace(props.className, '')}>
+          {children}
+        </value.type>
       </div>
     )
   })

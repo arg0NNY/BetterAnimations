@@ -10,6 +10,7 @@ import { flushSync } from 'react-dom'
 import { useRef } from 'react'
 import findInReactTree from '@/utils/findInReactTree'
 import useWindow from '@/hooks/useWindow'
+import { ErrorBoundary } from '@error/boundary'
 
 function PopoutLayer ({ ref, children, ...props }) {
   const layerRef = useRef()
@@ -97,13 +98,20 @@ function patchBasePopout () {
     }
   }
 
-  Patcher.instead(...BasePopoutKeyed, (self, [props, ...rest]) => {
+  const fallback = (self, [props]) => <Original {...props} />
+
+  Patcher.instead(ModuleKey.Popouts, ...BasePopoutKeyed, (self, [props]) => {
+    const fallback = <Original {...props} />
     const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.Popouts)
-    if (!isMainWindow || !module.isEnabled()) return <Original {...props} />
+    if (!isMainWindow || !module.isEnabled()) return fallback
 
-    return <AnimatedBasePopout {...props} module={module} />
-  })
+    return (
+      <ErrorBoundary module={module} fallback={fallback}>
+        <AnimatedBasePopout {...props} module={module} />
+      </ErrorBoundary>
+    )
+  }, fallback)
   patchPopoutCSSAnimator()
 }
 

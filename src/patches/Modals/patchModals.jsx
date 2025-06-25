@@ -9,8 +9,9 @@ import ensureOnce from '@utils/ensureOnce'
 import { directChild } from '@utils/transition'
 import { css } from '@style'
 import DiscordSelectors from '@discord/selectors'
-import { useMemo, useRef } from 'react'
+import { cloneElement, useMemo, useRef } from 'react'
 import useWindow from '@/hooks/useWindow'
+import { ErrorBoundary } from '@error/boundary'
 
 function Modal ({ children, ...props }) {
   const layerRef = useRef()
@@ -18,14 +19,12 @@ function Modal ({ children, ...props }) {
     get current () { return directChild(layerRef.current) }
   }), [layerRef])
 
-  children.props.layerRef = layerRef
-
   return (
     <AnimeTransition
       containerRef={containerRef}
       {...props}
     >
-      {children}
+      {cloneElement(children, { layerRef })}
     </AnimeTransition>
   )
 }
@@ -33,7 +32,7 @@ function Modal ({ children, ...props }) {
 function patchModals () {
   const once = ensureOnce()
 
-  Patcher.after(...ModalsKeyed, (self, args, value) => {
+  Patcher.after(ModuleKey.Modals, ...ModalsKeyed, (self, args, value) => {
     const modals = value.props.children[1]
     if (modals?.length) once(() => patchModalItem(modals[0].type))
 
@@ -44,18 +43,20 @@ function patchModals () {
     const modal = modals.find(m => m.props.isTopModal)
 
     value.props.children[1] = (
-      <TransitionGroup component={null}>
-        {modal && (
-          <Modal
-            key={modal.props.modalKey}
-            module={module}
-            enter={!modal.props.instant}
-            exit={!modal.props.instant}
-          >
-            {modal}
-          </Modal>
-        )}
-      </TransitionGroup>
+      <ErrorBoundary module={module} fallback={modals}>
+        <TransitionGroup component={null}>
+          {modal && (
+            <Modal
+              key={modal.props.modalKey}
+              module={module}
+              enter={!modal.props.instant}
+              exit={!modal.props.instant}
+            >
+              {modal}
+            </Modal>
+          )}
+        </TransitionGroup>
+      </ErrorBoundary>
     )
   })
 

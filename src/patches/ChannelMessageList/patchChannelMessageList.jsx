@@ -13,13 +13,14 @@ import { css } from '@style'
 import DiscordSelectors from '@discord/selectors'
 import useWindow from '@/hooks/useWindow'
 import { cloneElement } from 'react'
+import { ErrorBoundary } from '@error/boundary'
 
 function patchChannelMessageList () {
   const once = ensureOnce()
 
   Patcher.after(ChannelMessageList, 'type', (self, args, value) => {
     once(() =>
-      Patcher.after(findInReactTree(value.props.children, m => m?.props?.messages).type, 'type', (self, args, value) => {
+      Patcher.after(ModuleKey.Messages, findInReactTree(value.props.children, m => m?.props?.messages).type, 'type', (self, args, value) => {
         const { toEnter, toExit } = useStateFromStores([MessageStackStore], () => MessageStackStore.getMessagesAwaitingTransition())
         const { isMainWindow } = useWindow()
         const module = useModule(ModuleKey.Messages)
@@ -40,29 +41,31 @@ function patchChannelMessageList () {
         }
 
         list.props.children[i] = (
-          <TransitionGroup
-            component={null}
-            childFactory={childFactory}
-          >
-            {
-              list.props.children[i].map((item, index, arr) => {
-                const { message } = item.props
-                if (message) item.key = getMessageKey(message)
+          <ErrorBoundary module={module} fallback={list.props.children[i]}>
+            <TransitionGroup
+              component={null}
+              childFactory={childFactory}
+            >
+              {
+                list.props.children[i].map((item, index, arr) => {
+                  const { message } = item.props
+                  if (message) item.key = getMessageKey(message)
 
-                return (
-                  <AnimeTransition
-                    key={item.key}
-                    injectContainerRef={true}
-                    enter={toEnter.has(message ? item.key : getMessageKey(arr[index + 1]?.props?.message))}
-                    exit={false} // Managed in childFactory
-                    module={module}
-                  >
-                    {item}
-                  </AnimeTransition>
-                )
-              })
-            }
-          </TransitionGroup>
+                  return (
+                    <AnimeTransition
+                      key={item.key}
+                      injectContainerRef={true}
+                      enter={toEnter.has(message ? item.key : getMessageKey(arr[index + 1]?.props?.message))}
+                      exit={false} // Managed in childFactory
+                      module={module}
+                    >
+                      {item}
+                    </AnimeTransition>
+                  )
+                })
+              }
+            </TransitionGroup>
+          </ErrorBoundary>
         )
       })
     )

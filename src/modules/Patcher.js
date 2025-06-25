@@ -1,48 +1,54 @@
 import { Patcher as _Patcher } from '@/BdApi'
-import config from '@config'
-import ErrorManager from '@error/manager'
-import InternalError from '@error/structs/InternalError'
-
-function patcherCallbackBoundary (callback, fallback = (self, args, value) => value) {
-  return (...args) => {
-    try {
-      return callback(...args)
-    }
-    catch (error) {
-      ErrorManager.registerInternalError(
-        new InternalError(error.stack)
-      )
-    }
-    return fallback(...args)
-  }
-}
+import { attempt, errorBoundary } from '@error/boundary'
+import Modules from '@/modules/Modules'
 
 export default new class Patcher {
-  before (moduleToPatch, functionName, callback) {
-    return _Patcher.before(
+  _patch (type, moduleId, moduleToPatch, functionName, callback, fallback) {
+    if (typeof moduleId !== 'string') {
+      [, moduleToPatch, functionName, callback, fallback] = arguments
+      moduleId = null
+    }
+
+    const options = { module: moduleId && Modules.getModule(moduleId) }
+
+    return attempt(() => _Patcher[type](
       moduleToPatch,
       functionName,
-      patcherCallbackBoundary(callback)
-    )
+      errorBoundary(callback, fallback, options)
+    ), options)
   }
 
-  after (moduleToPatch, functionName, callback) {
-    return _Patcher.after(
-      moduleToPatch,
-      functionName,
-      patcherCallbackBoundary(callback)
-    )
+  before (
+    moduleId,
+    moduleToPatch,
+    functionName,
+    callback,
+    fallback
+  ) {
+    return this._patch('before', moduleId, moduleToPatch, functionName, callback, fallback)
   }
 
-  instead (moduleToPatch, functionName, callback) {
-    return _Patcher.instead(
-      moduleToPatch,
-      functionName,
-      patcherCallbackBoundary(callback, (self, args, original) => original.call(self, args))
-    )
+  after (
+    moduleId,
+    moduleToPatch,
+    functionName,
+    callback,
+    fallback = (self, args, value) => value
+  ) {
+    return this._patch('after', moduleId, moduleToPatch, functionName, callback, fallback)
+  }
+
+  instead (
+    moduleId,
+    moduleToPatch,
+    functionName,
+    callback,
+    fallback = (self, args, original) => original.apply(self, args)
+  ) {
+    return this._patch('instead', moduleId, moduleToPatch, functionName, callback, fallback)
   }
 
   unpatchAll () {
     return _Patcher.unpatchAll()
   }
-}(config.name)
+}

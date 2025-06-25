@@ -20,6 +20,7 @@ import AnimationError from '@error/structs/AnimationError'
 import BookCheckIcon from '@/components/icons/BookCheckIcon'
 import ErrorDetailsActions from '@/components/error/ErrorDetailsActions'
 import { useMemo } from 'react'
+import { attempt, ErrorBoundary } from '@error/boundary'
 
 function ErrorDetails ({ error, open = false }) {
   const icon = useMemo(() => {
@@ -35,9 +36,18 @@ function ErrorDetails ({ error, open = false }) {
   }, [error])
 
   const hint = useMemo(() => {
-    if (error instanceof InternalError) return <>{meta.name} encountered an internal error. Some parts of the plugin may&nbsp;function incorrectly.</>
-    if (error instanceof AddonError) return <>This pack cannot be&nbsp;loaded due to an&nbsp;unexpected error.</>
-    if (error instanceof AnimationError) return <>An unexpected error occurred in the&nbsp;"{error.animation.name}"&nbsp;animation on&nbsp;{error.module.name}.</>
+    if (error instanceof InternalError)
+      return <>
+        {error.module ? `${error.module.name} animations` : `Some parts of ${meta.name}`} may&nbsp;not&nbsp;work or&nbsp;function&nbsp;incorrectly.
+      </>
+    if (error instanceof AddonError)
+      return <>
+        This pack cannot be&nbsp;loaded due to an&nbsp;unexpected error.
+      </>
+    if (error instanceof AnimationError)
+      return <>
+        An unexpected error occurred in the&nbsp;"{error.animation.name}"&nbsp;animation on&nbsp;{error.module.name}.
+      </>
     return 'Unknown error occurred.'
   }, [error])
 
@@ -57,6 +67,12 @@ function ErrorDetails ({ error, open = false }) {
     if (error.pack) return `Reach out to the pack's author${error.pack.author ? ` (${error.pack.author})` : ''} to get help with this error.`
     return null
   }, [error, invite])
+
+  const content = `${error.name}: ` + error.message
+  const codeBlock = attempt(
+    () => Parser.codeBlock.react({ content, lang: 'json' }, null, {}),
+    () => <pre><code className="hljs">{content}</code></pre>
+  )
 
   return (
     <details className="BA__errorDetails" open={open}>
@@ -97,33 +113,30 @@ function ErrorDetails ({ error, open = false }) {
 
         <FormTitle>Error</FormTitle>
         <div className="BA__errorDetailsStack">
-          {
-            Parser.codeBlock.react({
-              content: `${error.name}: ` + error.message,
-              lang: 'json'
-            }, null, {})
-          }
+          {codeBlock}
         </div>
 
-        {alert ? (
-          <Alert
-            messageType={AlertTypes.INFO}
-            className={DiscordClasses.Margins.marginTop20}
-          >
-            <div>{alert}</div>
-            {invite ? (
-              <div className="BA__errorDetailsInvite">
-                <InviteEmbed
-                  code={invite}
-                  message={{
-                    author: { username: error.pack?.author }
-                  }}
-                  getAcceptInviteContext={() => ({})}
-                />
-              </div>
-            ) : null}
-          </Alert>
-        ) : null}
+        <ErrorBoundary noop>
+          {alert ? (
+            <Alert
+              messageType={AlertTypes.INFO}
+              className={DiscordClasses.Margins.marginTop20}
+            >
+              <div>{alert}</div>
+              {invite ? (
+                <div className="BA__errorDetailsInvite">
+                  <InviteEmbed
+                    code={invite}
+                    message={{
+                      author: { username: error.pack?.author }
+                    }}
+                    getAcceptInviteContext={() => ({})}
+                  />
+                </div>
+              ) : null}
+            </Alert>
+          ) : null}
+        </ErrorBoundary>
       </div>
     </details>
   )
