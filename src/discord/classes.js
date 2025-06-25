@@ -1,6 +1,6 @@
 import { Webpack } from '@/BdApi'
 
-const Classes = {
+export const _Classes = {
   ChatSidebar: Webpack.getByKeys('chatLayerWrapper', 'chatTarget'),
   StandardSidebarView: () => Webpack.getByKeys('standardSidebarView', 'contentRegion'),
   Modal: Webpack.getByKeys('root', 'rootWithShadow'),
@@ -19,7 +19,7 @@ const Classes = {
   Select: Webpack.getByKeys('select', 'measurement')
 }
 
-const DiscordClasses = new Proxy(Classes, {
+const DiscordClasses = new Proxy(_Classes, {
   get (obj, prop) {
     const value = obj[prop]
     if (typeof value !== 'function') return value
