@@ -20,6 +20,7 @@ import { Fragment } from 'react'
 import useWindow from '@/hooks/useWindow'
 import classNames from 'classnames'
 import { ErrorBoundary } from '@error/boundary'
+import HTMLSwitchTransition from '@/components/HTMLSwitchTransition'
 
 export let guildChannelPath = []
 
@@ -28,7 +29,7 @@ function AppViewTransition ({ className, module, shouldSwitch, getSwitchDirectio
   const auto = { direction }
 
   return (
-    <TransitionGroup className={className} childFactory={passAuto(auto)}>
+    <HTMLSwitchTransition className={className}>
       <AnimeTransition
         key={key}
         container={{ className }}
@@ -39,7 +40,7 @@ function AppViewTransition ({ className, module, shouldSwitch, getSwitchDirectio
       >
         {children}
       </AnimeTransition>
-    </TransitionGroup>
+    </HTMLSwitchTransition>
   )
 }
 

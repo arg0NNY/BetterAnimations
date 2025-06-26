@@ -3,13 +3,12 @@ import Freeze from '@components/Freeze'
 import AnimationType from '@enums/AnimationType'
 import { css } from '@style'
 import AnimationStore from '@animation/store'
-import { createAwaitableRef } from '@utils/react'
+import { createAwaitableRef, getRef } from '@utils/react'
 import AnimeContainer from '@components/AnimeContainer'
 import { Component, createRef } from 'react'
 import { directChild } from '@utils/transition'
 import mouse from '@shared/mouse'
 
-const getRef = ref => typeof ref === 'function' ? ref() : ref.current
 const injectContainerRefFn = (children, ref) => {
   if (children?.props) children.props.ref = ref
 }
