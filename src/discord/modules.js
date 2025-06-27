@@ -169,3 +169,4 @@ export const { useExpressionPickerStore: useExpressionPickerStoreKeyed } = getMa
 export const ChannelTextAreaButtons = Webpack.getModule(m => Filters.byStrings('buttons', 'sticker', 'gif')(m?.type), { searchExports: true })
 export const ChannelAppLauncher = Webpack.getModule(m => Filters.byStrings('channelAppLauncher')(m?.type), { searchExports: true })
 export const AppLauncherPopup = Webpack.getModule(m => Filters.byStrings('positionLayer', '"positionTargetRef"')(m?.type), { searchExports: true })
+export const generateUserSettingsSections = getWithKey(Filters.byStrings('ACCOUNT_PROFILE', 'CUSTOM', 'section'), { lazy: true })
