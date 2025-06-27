@@ -13,8 +13,15 @@ import Home from '@/modules/settings/views/Home'
 import Catalog from '@/modules/settings/views/Catalog'
 import Library from '@/modules/settings/views/Library'
 import { ErrorBoundary } from '@error/boundary'
+import GeneralSettings from '@/modules/settings/views/GeneralSettings'
+import SettingsIcon from '@/modules/settings/components/icons/SettingsIcon'
 
 export function getSections () {
+  const notice = {
+    element: FormNotice,
+    stores: [SettingsStore]
+  }
+
   return [
     {
       section: 'CUSTOM',
@@ -55,10 +62,17 @@ export function getSections () {
       icon: module.parent ? <SpineIcon /> : undefined,
       elementProps: { moduleId: module.id },
       element: ErrorBoundary.wrap(ModuleSettings),
-      notice: {
-        element: FormNotice,
-        stores: [SettingsStore]
-      }
-    }))
+      notice
+    })),
+    {
+      section: 'DIVIDER'
+    },
+    {
+      section: SettingsSection.General,
+      label: 'General',
+      icon: <SettingsIcon size="xs" color="currentColor" />,
+      element: ErrorBoundary.wrap(GeneralSettings),
+      notice
+    }
   ]
 }

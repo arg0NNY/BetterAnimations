@@ -40,6 +40,8 @@ import Documentation from '@shared/documentation'
 import patchChannelTextArea from '@/patches/ChannelTextArea/patchChannelTextArea'
 import patchPopToast from '@/patches/Toast/patchPopToast'
 import Validator from '@discord/validator'
+import DispatchController from '@/modules/DispatchController'
+import patchGenerateUserSettingsSections from '@/patches/UserSettings/patchGenerateUserSettingsSections'
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -78,6 +80,7 @@ export default function (meta) {
       PackRegistry.initialize()
       AnimationStore.initialize()
       Modules.initialize()
+      DispatchController.initialize()
 
       Validator.onStartup()
       Prompt.onStartup()
@@ -101,6 +104,7 @@ export default function (meta) {
       patchSelect()
       patchChannelTextArea()
       patchPopToast()
+      patchGenerateUserSettingsSections()
 
       Logger.info('Startup', 'Forcing app update...')
       forceAppUpdate()
@@ -116,6 +120,7 @@ export default function (meta) {
       PackRegistry.shutdown()
       PackManager.shutdown()
       AnimationStore.shutdown()
+      DispatchController.shutdown()
 
       Settings.closeSettingsModal()
 

@@ -96,11 +96,11 @@ export class AnimationStore {
 
   watch (callback) {
     this._watchers.push(callback)
-    return () => this._watchers.splice(this._watchers.indexOf(callback), 1)
+    return () => this._watchers = this._watchers.filter(c => c !== callback)
   }
   trigger () {
     this._watchers.forEach(callback => {
-      try { callback(this.animations) }
+      try { callback([...this.animations]) }
       catch (error) { Logger.warn(this.name, `Watcher threw an error:`, error) }
     })
   }
