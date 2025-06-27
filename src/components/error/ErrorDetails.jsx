@@ -149,7 +149,7 @@ css
     position: relative;
     border-radius: 8px;
     padding: 0;
-    background: var(--background-secondary);
+    background: var(--background-base-lower);
     border: 1px solid var(--border-subtle);
 }
 
@@ -171,7 +171,7 @@ css
     align-items: center;
     justify-content: center;
     align-self: flex-start;
-    background-color: var(--background-tertiary);
+    background-color: var(--background-base-lowest);
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -229,9 +229,9 @@ css
     line-height: 1.125rem;
     text-indent: 0;
     scrollbar-width: thin;
-    scrollbar-color: var(--background-tertiary) var(--background-secondary);
-    background: var(--background-secondary);
-    border: 1px solid var(--background-tertiary);
+    scrollbar-color: var(--background-base-lowest) var(--background-base-lower);
+    background: var(--background-base-lower);
+    border: 1px solid var(--background-base-lowest);
 }
 
 .BA__errorDetailsStack pre {
@@ -243,7 +243,7 @@ css
     display: none;
     right: 4px;
     top: 8px;
-    color: var(--text-normal);
+    color: var(--text-default);
 }
 
 .BA__errorDetailsStack pre:hover [class^="codeActions"] {

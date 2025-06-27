@@ -100,7 +100,7 @@ css
 }
 .BA__moduleSettingsSectionTitle > span {
     position: relative;
-    background: var(--background-primary);
+    background: var(--background-base-low);
     padding: 0 8px;
 }`
 `ModuleSettings`

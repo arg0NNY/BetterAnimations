@@ -374,7 +374,7 @@ css
     transition: transform .4s, translate .4s;
 }
 .BA__animationCardPopout {
-    background-color: var(--background-primary);
+    background-color: var(--background-base-low);
     border: 1px solid var(--border-subtle);
     border-radius: 5px;
     overflow: hidden;
@@ -394,7 +394,7 @@ css
     left: 0;
     right: 0;
     height: 20px;
-    background-color: var(--background-primary);
+    background-color: var(--background-base-low);
     z-index: 110;
 }
 
