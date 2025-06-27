@@ -8,11 +8,20 @@ function patchMenuItem () {
    * as it also uses rAF to schedule an execution, resulting in a flicker on the enter animations.
    * > rAF inside rAF schedules callback on the next frame, not on the current one.
    *
-   * This patch wraps the Menu Item callback in `requestIdleCallback`, which forces the callback to be executed outside the rAF.
+   * This patch intercepts Discord's rAF call and executes the callback synchronously instead.
    */
-  Patcher.before(...MenuItemKeyed, (self, [props]) => {
-    Patcher.instead(props, 'action', (self, args, original) => {
-      requestIdleCallback(() => original(...args))
+  Patcher.after(...MenuItemKeyed, (self, [props], value) => {
+    if (!value.props.onClick) return
+
+    Patcher.before(value.props, 'onClick', (self, [event]) => {
+      Object.defineProperty(event.nativeEvent, 'view', {
+        value: new Proxy(event.nativeEvent.view, {
+          get (target, prop) {
+            if (prop === 'requestAnimationFrame') return cb => cb()
+            return target[prop]
+          }
+        })
+      })
     })
   })
 }
