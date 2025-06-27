@@ -36,14 +36,10 @@ Visit the Usage and Animation Authoring documentation at
 
 ### Beta
 
-- [ ] Migrate to Zod 4 (improve performance & reduce bundle size)
 - [x] ~~Animation Preview~~
 - [ ] Catalog & Library
 - [x] ~~Integrate `ErrorBoundary` for better error safety~~
 - [x] ~~Integrate Emoji/Sticker/GIF Panel to [_Popouts_](https://docs.betteranimations.net/usage/modules#popouts)~~
-- [ ] Expand [Injects](https://docs.betteranimations.net/create/injects)
-  - [ ] Add more [Array Injects](https://docs.betteranimations.net/reference/injects/array)
-  - [ ] Add more [Anime Injects](https://docs.betteranimations.net/reference/injects/anime)
 - [ ] General Settings
   - [ ] Switch Cooldown Duration
   - [ ] Suppress Errors Toggle
@@ -53,6 +49,9 @@ Visit the Usage and Animation Authoring documentation at
 
 ### Stable
 
+- [ ] Expand [Injects](https://docs.betteranimations.net/create/injects)
+  - [ ] Add more [Array Injects](https://docs.betteranimations.net/reference/injects/array)
+  - [ ] Add more [Anime Injects](https://docs.betteranimations.net/reference/injects/anime)
 - [ ] Settings Preview Mode
 - [ ] Custom Animation Settings
 - [ ] Revamp Animation Settings
