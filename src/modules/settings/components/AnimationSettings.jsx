@@ -134,9 +134,9 @@ css
 }
 
 .BA__animationSettingsItem {
-    background-color: var(--background-primary);
-    box-shadow: 0 -16px 0 var(--background-primary),
-                0 16px 0 var(--background-primary);
+    background-color: var(--background-base-low);
+    box-shadow: 0 -16px 0 var(--background-base-low),
+                0 16px 0 var(--background-base-low);
 }
 
 .BA__animationSettingsHeaderGroup {
@@ -156,7 +156,7 @@ css
     left: -20px;
     right: -20px;
     bottom: -16px;
-    background-color: var(--background-primary);
+    background-color: var(--background-base-low);
     z-index: -2;
 }
 .BA__animationSettingsHeader {
@@ -165,8 +165,8 @@ css
     align-items: center;
     gap: 16px;
     padding-bottom: 4px;
-    box-shadow: 0 -20px 0 var(--background-primary),
-                0 16px 0 var(--background-primary);
+    box-shadow: 0 -20px 0 var(--background-base-low),
+                0 16px 0 var(--background-base-low);
     min-width: 0;
 }
 .BA__animationSettingsHeading {

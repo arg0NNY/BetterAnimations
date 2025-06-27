@@ -14,6 +14,6 @@ css
     height: 1px;
     margin: 0;
     border: 0;
-    border-top: thin solid var(--background-modifier-accent);
+    border-top: thin solid var(--border-subtle);
 }`
 `Divider`
