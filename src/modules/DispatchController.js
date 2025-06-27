@@ -9,6 +9,7 @@ const interceptableEvents = [
   'GUILD_CREATE',
   'GUILD_MEMBER_LIST_UPDATE',
   'UPDATE_CHANNEL_LIST_DIMENSIONS',
+  'LOAD_MESSAGES_SUCCESS',
   'THREAD_LIST_SYNC'
 ]
 
@@ -48,11 +49,7 @@ class DispatchController {
   }
 
   shouldIntercept (event) {
-    if (typeof event.type !== 'string') return false
-
-    return event.type === 'GUILD_MEMBER_ADD' // Check for GUILD_MEMBER_ADD as soon as possible, as this event may sometimes fire dozens of times in a row
-      || interceptableEvents.includes(event.type)
-      || event.type.includes('MESSAGE')
+    return interceptableEvents.includes(event.type)
   }
 
   flushQueue () {
