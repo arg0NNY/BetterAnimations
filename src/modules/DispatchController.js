@@ -1,6 +1,9 @@
 import { Dispatcher } from '@discord/modules'
 import AnimationStore from '@animation/store'
 import Logger from '@logger'
+import Config from '@/modules/Config'
+import Emitter from '@/modules/Emitter'
+import Events from '@enums/Events'
 
 const interceptableEvents = [
   'GUILD_CREATE',
@@ -24,6 +27,17 @@ class DispatchController {
       Logger.log(this.name, `Intercepted and queued ${event.type}.`)
       this.queue.push(event)
       return true
+    }
+
+    this.onSettingsChange = () => {
+      if (this.isEnabled()) {
+        this.registerInterceptor()
+        Logger.log(this.name, 'Enabled.')
+      } else {
+        this.clearInterceptor()
+        this.flushQueue()
+        Logger.log(this.name, 'Disabled.')
+      }
     }
   }
 
@@ -49,7 +63,12 @@ class DispatchController {
     this.queue = []
   }
 
+  isEnabled () {
+    return Config.current.general.prioritizeAnimationSmoothness
+  }
+
   registerInterceptor () {
+    if (Dispatcher._interceptors.includes(this.interceptor)) return
     Dispatcher.addInterceptor(this.interceptor)
   }
   clearInterceptor () {
@@ -66,15 +85,18 @@ class DispatchController {
   }
 
   initialize () {
-    this.registerInterceptor()
+    if (this.isEnabled()) this.registerInterceptor()
     this.registerWatcher()
+    Emitter.on(Events.SettingsChanged, this.onSettingsChange)
 
-    Logger.log(this.name, 'Initialized.')
+    Logger.log(this.name, `Initialized${this.isEnabled() ? ' and enabled' : ''}.`)
   }
 
   shutdown () {
     this.clearInterceptor()
     this.clearWatcher()
+    Emitter.off(Events.SettingsChanged, this.onSettingsChange)
+    this.flushQueue()
 
     Logger.log(this.name, 'Shutdown.')
   }

@@ -4,5 +4,5 @@ export default Enum({
   Home: 'home',
   Catalog: 'catalog',
   Library: 'library',
-  PluginSettings: 'pluginSettings',
+  General: 'general',
 })
