@@ -1,4 +1,4 @@
-import { Dispatcher } from '@discord/modules'
+import { Dispatcher, Flux } from '@discord/modules'
 import AnimationStore from '@animation/store'
 import Logger from '@logger'
 import Config from '@/modules/Config'
@@ -56,8 +56,10 @@ class DispatchController {
     if (!this.queue.length) return
 
     Logger.log(this.name, `Flushing ${this.queue.length} event${this.queue.length > 1 ? 's' : ''}:`, this.queue)
-    this.queue.forEach(event => Dispatcher.dispatch(event))
-    this.queue = []
+    Flux.Emitter.batched(() => {
+      this.queue.forEach(event => Dispatcher.dispatch(event))
+      this.queue = []
+    })
   }
 
   isEnabled () {
