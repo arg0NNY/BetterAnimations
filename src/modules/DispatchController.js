@@ -4,11 +4,11 @@ import Logger from '@logger'
 import Config from '@/modules/Config'
 import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
+import ModuleType from '@enums/ModuleType'
 
 const interceptableEvents = [
   'GUILD_CREATE',
   'GUILD_MEMBER_LIST_UPDATE',
-  'UPDATE_CHANNEL_LIST_DIMENSIONS',
   'LOAD_MESSAGES_SUCCESS',
   'THREAD_LIST_SYNC'
 ]
@@ -21,7 +21,7 @@ class DispatchController {
     this._clearWatcher = null
 
     this.interceptor = event => {
-      if (!AnimationStore.animations.length) return
+      if (!AnimationStore.animations.length || this.isEmitterPaused) return
       if (import.meta.env.VITE_DISPATCH_CONTROLLER_DEBUG === 'true') this._debugEvent(event)
       if (!this.shouldIntercept(event)) return
 
@@ -31,7 +31,7 @@ class DispatchController {
     }
 
     this.onSettingsChange = () => {
-      if (this.isEnabled()) {
+      if (this.isEnabled) {
         this.registerInterceptor()
         Logger.log(this.name, 'Enabled.')
       } else {
@@ -51,6 +51,9 @@ class DispatchController {
   shouldIntercept (event) {
     return interceptableEvents.includes(event.type)
   }
+  shouldPauseEmitter (animations = AnimationStore.animations) {
+    return animations.some(a => a.module.type === ModuleType.Switch)
+  }
 
   flushQueue () {
     if (!this.queue.length) return
@@ -62,7 +65,7 @@ class DispatchController {
     })
   }
 
-  isEnabled () {
+  get isEnabled () {
     return Config.current.general.prioritizeAnimationSmoothness
   }
 
@@ -74,8 +77,25 @@ class DispatchController {
     Dispatcher._interceptors = Dispatcher._interceptors.filter(i => i !== this.interceptor)
   }
 
+  get isEmitterPaused () {
+    return Flux.Emitter.isPaused
+  }
+  pauseEmitter () {
+    if (this.isEmitterPaused) return
+    Flux.Emitter.pause()
+    Logger.log(this.name, 'Emitter paused.')
+  }
+  resumeEmitter () {
+    if (!this.isEmitterPaused) return
+    Flux.Emitter.resume()
+    Logger.log(this.name, 'Emitter resumed.')
+  }
+
   registerWatcher () {
     this._clearWatcher = AnimationStore.watch(animations => {
+      if (this.isEnabled && this.shouldPauseEmitter(animations)) this.pauseEmitter()
+      else this.resumeEmitter()
+
       if (!animations.length) this.flushQueue()
     })
   }
@@ -84,11 +104,11 @@ class DispatchController {
   }
 
   initialize () {
-    if (this.isEnabled()) this.registerInterceptor()
+    if (this.isEnabled) this.registerInterceptor()
     this.registerWatcher()
     Emitter.on(Events.SettingsChanged, this.onSettingsChange)
 
-    Logger.log(this.name, `Initialized${this.isEnabled() ? ' and enabled' : ''}.`)
+    Logger.log(this.name, `Initialized${this.isEnabled ? ' and enabled' : ''}.`)
   }
 
   shutdown () {
