@@ -1,4 +1,4 @@
-import { Dispatcher, Flux } from '@discord/modules'
+import { ChannelSectionStore, Dispatcher, Flux, SelectedChannelStore, SelectedGuildStore } from '@discord/modules'
 import AnimationStore from '@animation/store'
 import Logger from '@logger'
 import Config from '@/modules/Config'
@@ -6,7 +6,11 @@ import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
 import ModuleType from '@enums/ModuleType'
 
-const interceptableEvents = [
+const ignoredEvents = [
+  'CHANNEL_SELECT'
+]
+
+const alwaysInterceptedEvents = [
   'GUILD_CREATE',
   'GUILD_MEMBER_LIST_UPDATE',
   'LOAD_MESSAGES_SUCCESS',
@@ -18,6 +22,8 @@ class DispatchController {
 
   constructor () {
     this.queue = []
+    this.isEmitterPaused = false
+    this._selectedChannelId = null
     this._clearWatcher = null
 
     this.interceptor = event => {
@@ -27,7 +33,7 @@ class DispatchController {
 
       Logger.log(this.name, `Intercepted and queued ${event.type}.`)
       this.queue.push(event)
-      return true
+      return true // Block event
     }
 
     this.onSettingsChange = () => {
@@ -40,6 +46,12 @@ class DispatchController {
         Logger.log(this.name, 'Disabled.')
       }
     }
+
+    this.onSelectedChannelStoreChange = () => {
+      const channelId = SelectedChannelStore.getChannelId()
+      if (channelId !== this._selectedChannelId) this.flushQueue()
+      this._selectedChannelId = channelId
+    }
   }
 
   _debugEvent (event) {
@@ -48,8 +60,19 @@ class DispatchController {
     requestAnimationFrame(() => console.timeEnd(event.type))
   }
 
+  getVisibleEntities () {
+    const guildId = SelectedGuildStore.getGuildId()
+    const channelId = SelectedChannelStore.getChannelId(guildId)
+    const threadId = ChannelSectionStore.getCurrentSidebarChannelId(channelId)
+    return { guildId, channelId, threadId }
+  }
   shouldIntercept (event) {
-    return interceptableEvents.includes(event.type)
+    if (ignoredEvents.includes(event.type)) return false
+    if (alwaysInterceptedEvents.includes(event.type)) return true
+
+    const { guildId, channelId, threadId } = this.getVisibleEntities()
+    return (typeof event.guildId === 'string' && event.guildId !== guildId)
+      || (typeof event.channelId === 'string' && event.channelId !== channelId && event.channelId !== threadId)
   }
   shouldPauseEmitter (animations = AnimationStore.animations) {
     return animations.some(a => a.module.type === ModuleType.Switch)
@@ -71,23 +94,24 @@ class DispatchController {
 
   registerInterceptor () {
     if (Dispatcher._interceptors.includes(this.interceptor)) return
-    Dispatcher.addInterceptor(this.interceptor)
+    Dispatcher._interceptors.unshift(this.interceptor)
   }
   clearInterceptor () {
     Dispatcher._interceptors = Dispatcher._interceptors.filter(i => i !== this.interceptor)
   }
 
-  get isEmitterPaused () {
-    return Flux.Emitter.isPaused
-  }
   pauseEmitter () {
     if (this.isEmitterPaused) return
+
     Flux.Emitter.pause()
+    this.isEmitterPaused = true
     Logger.log(this.name, 'Emitter paused.')
   }
   resumeEmitter () {
     if (!this.isEmitterPaused) return
+
     Flux.Emitter.resume()
+    this.isEmitterPaused = false
     Logger.log(this.name, 'Emitter resumed.')
   }
 
@@ -103,10 +127,16 @@ class DispatchController {
     this._clearWatcher?.()
   }
 
+  watchSelectedChannel () {
+    this._selectedChannelId = SelectedChannelStore.getChannelId()
+    SelectedChannelStore.addChangeListener(this.onSelectedChannelStoreChange)
+  }
+
   initialize () {
     if (this.isEnabled) this.registerInterceptor()
     this.registerWatcher()
     Emitter.on(Events.SettingsChanged, this.onSettingsChange)
+    this.watchSelectedChannel()
 
     Logger.log(this.name, `Initialized${this.isEnabled ? ' and enabled' : ''}.`)
   }
@@ -115,6 +145,8 @@ class DispatchController {
     this.clearInterceptor()
     this.clearWatcher()
     Emitter.off(Events.SettingsChanged, this.onSettingsChange)
+    SelectedChannelStore.removeChangeListener(this.onSelectedChannelStoreChange)
+
     this.flushQueue()
 
     Logger.log(this.name, 'Shutdown.')

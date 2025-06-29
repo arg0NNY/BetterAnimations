@@ -63,7 +63,8 @@ if (import.meta.env.MODE === 'development')
     DiscordClasses,
     anime,
     Utils,
-    Documentation
+    Documentation,
+    DispatchController
   }
 
 export default function (meta) {
