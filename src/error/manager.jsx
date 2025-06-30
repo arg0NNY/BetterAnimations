@@ -5,6 +5,9 @@ import ErrorModal from '@/components/error/ErrorModal'
 import ErrorToast from '@/components/error/ErrorToast'
 import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
+import Config from '@/modules/Config'
+import SuppressErrors from '@enums/SuppressErrors'
+import AnimationError from '@error/structs/AnimationError'
 
 const ErrorManagerToastSymbol = Symbol('ErrorManagerToast')
 
@@ -36,8 +39,18 @@ export default new class ErrorManager extends BaseErrorManager {
     if (this.isToastActive()) popToast(true)
   }
 
+  shouldSuppress (error) {
+    switch (Config.current.general.suppressErrors) {
+      case SuppressErrors.All: return true
+      case SuppressErrors.Animation: return error instanceof AnimationError
+      default: return false
+    }
+  }
+
   registerError (error) {
     super.registerError(error)
+
+    if (this.shouldSuppress(error)) return
 
     this.errors.unshift(error)
     if (this.errors.length > this.maxErrors) {

@@ -1,8 +1,12 @@
 import { css } from '@style'
+import classNames from 'classnames'
 
-function Divider () {
+function Divider ({ className, ...props }) {
   return (
-    <hr className="BA__divider" />
+    <div
+      className={classNames('BA__divider', className)}
+      {...props}
+    />
   )
 }
 
@@ -10,10 +14,8 @@ export default Divider
 
 css
 `.BA__divider {
-    width: 100%;
-    height: 1px;
-    margin: 0;
-    border: 0;
     border-top: thin solid var(--border-subtle);
+    height: 1px;
+    width: 100%;
 }`
 `Divider`

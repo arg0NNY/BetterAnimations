@@ -1,7 +1,9 @@
-import { FormSection, FormSwitch, FormTitleTags } from '@discord/modules'
+import { FormItem, FormSection, FormSwitch, FormText, FormTitle, FormTitleTags, RadioGroup } from '@discord/modules'
 import Classes from '@discord/classes'
 import useConfig from '@/hooks/useConfig'
 import meta from '@/meta'
+import SuppressErrors from '@enums/SuppressErrors'
+import Divider from '@/components/Divider'
 
 function GeneralSettings () {
   const [config, onChange] = useConfig()
@@ -37,6 +39,28 @@ function GeneralSettings () {
             onChange()
           }}
         />
+        <FormItem className={Classes.Margins.marginBottom20}>
+          <FormTitle className={Classes.Margins.marginBottom8}>
+            Suppress Errors
+          </FormTitle>
+          <FormText className={Classes.Margins.marginBottom20}>
+            Disable the toast notification for occurring errors.
+            When an error is suppressed, it can only be seen via&nbsp;the&nbsp;Console.
+          </FormText>
+          <RadioGroup
+            options={[
+              { value: SuppressErrors.All, name: 'Suppress all errors' },
+              { value: SuppressErrors.Animation, name: 'Suppress animation errors' },
+              { value: SuppressErrors.None, name: 'Do not suppress errors' },
+            ]}
+            value={config.general.suppressErrors}
+            onChange={({ value }) => {
+              config.general.suppressErrors = value
+              onChange()
+            }}
+          />
+          <Divider className={Classes.Margins.marginTop20} />
+        </FormItem>
       </FormSection>
       <FormSection
         tag={FormTitleTags.H2}
