@@ -14,6 +14,7 @@ import HintTooltip from '@/settings/components/HintTooltip'
 import classNames from 'classnames'
 import { getRect } from '@utils/position'
 import { useIsAnimationExpanded } from '@/settings/stores/SettingsStore'
+import useConfig from '@/hooks/useConfig'
 
 export function getCardHeight (width) {
   return getPreviewHeight(width - 16) + 52
@@ -144,6 +145,8 @@ function AnimationCard ({
     accordions: accordionsPopoutRef
   }), [settingsPopoutRef, accordionsPopoutRef])
 
+  const [config] = useConfig()
+
   const [expanded, setExpanded] = useState(null)
   const close = useCallback(() => setExpanded(null), [setExpanded])
 
@@ -237,7 +240,7 @@ function AnimationCard ({
                 pack={pack}
                 animation={animation}
                 title={name}
-                active={(header && !isAnimationExpanded) || cardHovered || !!expanded}
+                active={(header && !isAnimationExpanded) || (cardHovered && config.general.quickPreview) || !!expanded}
               />
               <AnimationCardControls
                 enter={enter}

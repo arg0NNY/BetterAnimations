@@ -19,7 +19,17 @@ function GeneralSettings () {
       >
         <FormSwitch
           className={Classes.Margins.marginBottom20}
-          children="Disable hints"
+          children="Quick Preview"
+          note="Play the animation preview when hovering over an animation card. Disable to play it only when an animation card is expanded."
+          value={config.general.quickPreview}
+          onChange={value => {
+            config.general.quickPreview = value
+            onChange()
+          }}
+        />
+        <FormSwitch
+          className={Classes.Margins.marginBottom20}
+          children="Disable Hints"
           note={`Hide reference links to ${meta.name} documentation in module settings, animation settings, etc.`}
           value={config.general.disableHints}
           onChange={value => {
@@ -36,7 +46,7 @@ function GeneralSettings () {
       >
         <FormSwitch
           className={Classes.Margins.marginBottom20}
-          children="Prioritize animation smoothness"
+          children="Prioritize Animation Smoothness"
           note="Delay resource-intensive operations until after animations finish to avoid most of the stuttering that occurs while they are running."
           value={config.general.prioritizeAnimationSmoothness}
           onChange={value => {
@@ -46,7 +56,7 @@ function GeneralSettings () {
         />
         <FormSwitch
           className={Classes.Margins.marginBottom20}
-          children="Cache User Settings sections"
+          children="Cache User Settings Sections"
           note="Significantly improves performance when opening User Settings."
           value={config.general.cacheUserSettingsSections}
           onChange={value => {
