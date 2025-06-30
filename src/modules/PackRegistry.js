@@ -5,7 +5,7 @@ import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
 import PackManager from '@/modules/PackManager'
 import Notices from '@/modules/Notices'
-import Settings from '@/modules/Settings'
+import Settings from '@/settings'
 import meta from '@/meta'
 import SettingsSection from '@enums/SettingsSection'
 

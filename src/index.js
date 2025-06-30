@@ -14,7 +14,7 @@ import patchGuildChannelList from '@/patches/GuildChannelList/patchGuildChannelL
 import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
 import PackManager from '@/modules/PackManager'
 import Logger from '@logger'
-import Settings from '@/modules/Settings'
+import Settings from '@/settings'
 import { ModalActions } from '@discord/modules'
 import Config from '@/modules/Config'
 import Prompt from '@/modules/Prompt'
