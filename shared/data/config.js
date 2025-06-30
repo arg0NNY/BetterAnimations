@@ -1,6 +1,7 @@
 import ModuleKey from '@enums/ModuleKey'
 import { internalPackSlugs, PREINSTALLED_PACK_SLUG } from '@packs'
 import { omit } from '@utils/object'
+import SuppressErrors from '@enums/SuppressErrors'
 
 export const CONFIG_VERSION = 2
 
@@ -171,6 +172,9 @@ export const configDefaults = {
     internalPackSlugs.map(slug => [slug, omit(packConfigDefaults, ['configVersion'])])
   ),
   general: {
+    quickPreview: true,
+    disableHints: false,
+    suppressErrors: SuppressErrors.None,
     switchCooldownDuration: 1000,
     prioritizeAnimationSmoothness: true,
     cacheUserSettingsSections: true

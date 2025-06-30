@@ -2,7 +2,7 @@ import { Button, FormTitle, ModalActions, UserSettingsModal } from '@discord/mod
 import { css } from '@style'
 import useModule from '@/hooks/useModule'
 import Config from '@/modules/Config'
-import Settings from '@/modules/Settings'
+import Settings from '@/settings'
 import classNames from 'classnames'
 import InternalError from '@error/structs/InternalError'
 
