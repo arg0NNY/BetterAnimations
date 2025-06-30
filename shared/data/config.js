@@ -171,6 +171,7 @@ export const configDefaults = {
     internalPackSlugs.map(slug => [slug, omit(packConfigDefaults, ['configVersion'])])
   ),
   general: {
+    disableHints: false,
     switchCooldownDuration: 1000,
     prioritizeAnimationSmoothness: true,
     cacheUserSettingsSections: true

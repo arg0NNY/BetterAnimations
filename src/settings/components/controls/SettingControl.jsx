@@ -1,9 +1,9 @@
-import { FormItem, FormTitle, handleClick } from '@discord/modules'
+import { FormItem, FormTitle } from '@discord/modules'
 import { css } from '@style'
 import IconButton from '@/settings/components/IconButton'
 import RedoIcon from '@/settings/components/icons/RedoIcon'
 import Documentation from '@shared/documentation'
-import CircleQuestionIcon from '@/settings/components/icons/CircleQuestionIcon'
+import Hint from '@/settings/components/Hint'
 
 function SettingControl ({ label, doc, onReset, children }) {
   return (
@@ -11,9 +11,7 @@ function SettingControl ({ label, doc, onReset, children }) {
       <FormTitle tag="h5" className="BA__settingControlHeader">
         <span>{label}</span>
         {doc && (
-          <IconButton onClick={() => handleClick({ href: Documentation.getSettingUrl(doc) })}>
-            <CircleQuestionIcon size="xs" color="currentColor" />
-          </IconButton>
+          <Hint href={Documentation.getSettingUrl(doc)} />
         )}
         {onReset && (
           <IconButton

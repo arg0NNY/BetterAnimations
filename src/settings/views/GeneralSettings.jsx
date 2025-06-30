@@ -1,6 +1,7 @@
 import { FormSection, FormSwitch, FormTitleTags } from '@discord/modules'
 import Classes from '@discord/classes'
 import useConfig from '@/hooks/useConfig'
+import meta from '@/meta'
 
 function GeneralSettings () {
   const [config, onChange] = useConfig()
@@ -10,6 +11,23 @@ function GeneralSettings () {
       tag={FormTitleTags.H1}
       title="General Settings"
     >
+      <FormSection
+        tag={FormTitleTags.H2}
+        title="Appearance"
+        className={Classes.Margins.marginTop20}
+        titleClassName={Classes.Margins.marginBottom8}
+      >
+        <FormSwitch
+          className={Classes.Margins.marginBottom20}
+          children="Disable hints"
+          note={`Hide reference links to ${meta.name} documentation in module settings, animation settings, etc.`}
+          value={config.general.disableHints}
+          onChange={value => {
+            config.general.disableHints = value
+            onChange()
+          }}
+        />
+      </FormSection>
       <FormSection
         tag={FormTitleTags.H2}
         title="Optimizations"

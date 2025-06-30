@@ -10,7 +10,6 @@ import {
   Clickable,
   FormText,
   FormTitle,
-  handleClick,
   Switch,
   Tooltip
 } from '@discord/modules'
@@ -22,8 +21,7 @@ import { useContext, useMemo } from 'react'
 import DismissibleAlert from '@/settings/components/DismissibleAlert'
 import useDismissible from '@/settings/hooks/useDismissible'
 import Documentation from '@shared/documentation'
-import CircleQuestionIcon from '@/settings/components/icons/CircleQuestionIcon'
-import IconButton from '@/settings/components/IconButton'
+import Hint from '@/settings/components/Hint'
 
 function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect, ...props }) {
   const { setSection } = useContext(SectionContext)
@@ -80,12 +78,10 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
   ])
 
   const accordionHint = (
-    <IconButton
+    <Hint
       className="BA__accordionHint"
-      onClick={() => handleClick({ href: Documentation.accordionUrl })}
-    >
-      <CircleQuestionIcon size="xs" color="currentColor" />
-    </IconButton>
+      href={Documentation.accordionUrl}
+    />
   )
 
   const accordions = module.getAccordions()

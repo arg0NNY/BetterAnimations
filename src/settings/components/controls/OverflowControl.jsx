@@ -1,9 +1,9 @@
-import { Checkbox, handleClick, Text, Tooltip } from '@discord/modules'
+import { Checkbox, Text, Tooltip } from '@discord/modules'
 import IconButton from '@/settings/components/IconButton'
 import RedoIcon from '@/settings/components/icons/RedoIcon'
 import { css } from '@style'
 import Documentation from '@shared/documentation'
-import CircleQuestionIcon from '@/settings/components/icons/CircleQuestionIcon'
+import Hint from '@/settings/components/Hint'
 
 function OverflowControl ({ value, onChange, forced = false, onReset }) {
   const control = props => (
@@ -26,9 +26,7 @@ function OverflowControl ({ value, onChange, forced = false, onReset }) {
           {control}
         </Tooltip>
       ) : control()}
-      <IconButton onClick={() => handleClick({ href: Documentation.getSettingUrl(Documentation.Setting.Overflow) })}>
-        <CircleQuestionIcon size="xs" color="currentColor" />
-      </IconButton>
+      <Hint href={Documentation.getSettingUrl(Documentation.Setting.Overflow)} />
       {!forced && onReset && (
         <IconButton
           className="BA__overflowControlReset"
