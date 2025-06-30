@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { generateUserSettingsSections } from '@discord/modules'
+import { generateUserSettingsSectionsKeyed } from '@discord/modules'
 import Config from '@/modules/Config'
 
 async function patchGenerateUserSettingsSections () {
@@ -7,7 +7,7 @@ async function patchGenerateUserSettingsSections () {
     params: null,
     value: null
   }
-  Patcher.instead(...await generateUserSettingsSections, (self, [params], original) => {
+  Patcher.instead(...await generateUserSettingsSectionsKeyed, (self, [params], original) => {
     if (!Config.current.general.cacheUserSettingsSections) return original(params)
 
     if (!cached.params || Object.keys(params).some(k => params[k] !== cached.params[k])) {

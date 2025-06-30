@@ -20,7 +20,7 @@ function patchChannelMessageList () {
 
   Patcher.after(ChannelMessageList, 'type', (self, args, value) => {
     once(() =>
-      Patcher.after(ModuleKey.Messages, findInReactTree(value.props.children, m => m?.props?.messages).type, 'type', (self, args, value) => {
+      Patcher.after(ModuleKey.Messages, findInReactTree(value.props.children, m => m?.props?.messages).type, 'type', (self, [{ channel }], value) => {
         const { toEnter, toExit } = useStateFromStores([MessageStackStore], () => MessageStackStore.getMessagesAwaitingTransition())
         const { isMainWindow } = useWindow()
         const module = useModule(ModuleKey.Messages)
@@ -43,6 +43,7 @@ function patchChannelMessageList () {
         list.props.children[i] = (
           <ErrorBoundary module={module} fallback={list.props.children[i]}>
             <TransitionGroup
+              key={channel.id}
               component={null}
               childFactory={childFactory}
             >
