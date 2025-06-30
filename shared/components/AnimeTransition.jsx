@@ -5,7 +5,7 @@ import { css } from '@style'
 import AnimationStore from '@animation/store'
 import { createAwaitableRef } from '@utils/react'
 import AnimeContainer from '@components/AnimeContainer'
-import { Component, createRef } from 'react'
+import { Component, createContext, createRef } from 'react'
 import { directChild } from '@utils/transition'
 import mouse from '@shared/mouse'
 
@@ -13,6 +13,12 @@ const getRef = ref => typeof ref === 'function' ? ref() : ref.current
 const injectContainerRefFn = (children, ref) => {
   if (children?.props) children.props.ref = ref
 }
+
+export const AnimeTransitionContext = createContext({
+  instance: createRef(),
+  nodeRef: createRef(),
+  state: null
+})
 
 class AnimeTransition extends Component {
   constructor (props) {
@@ -105,11 +111,13 @@ class AnimeTransition extends Component {
       }
 
       return (
-        <AnimeContainer container={children && container} ref={this.containerRef}>
-          <Freeze freeze={freeze && props.in === false} nodeRef={this.nodeRef}>
-            {_children}
-          </Freeze>
-        </AnimeContainer>
+        <AnimeTransitionContext value={{ instance: this.instance, nodeRef: this.nodeRef, state }}>
+          <AnimeContainer container={children && container} ref={this.containerRef}>
+            <Freeze freeze={freeze && props.in === false} nodeRef={this.nodeRef}>
+              {_children}
+            </Freeze>
+          </AnimeContainer>
+        </AnimeTransitionContext>
       )
     }
 
@@ -127,7 +135,7 @@ class AnimeTransition extends Component {
         onExited={this.onCallback(onExited)}
         addEndListener={done => this.doneCallback.current = done}
       >
-        {typeof children === 'function' ? contents : contents()}
+        {contents}
       </Transition>
     )
   }

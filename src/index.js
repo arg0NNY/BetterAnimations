@@ -42,6 +42,7 @@ import patchPopToast from '@/patches/Toast/patchPopToast'
 import Validator from '@discord/validator'
 import DispatchController from '@/modules/DispatchController'
 import patchGenerateUserSettingsSections from '@/patches/UserSettings/patchGenerateUserSettingsSections'
+import patchProfileEffects from '@/patches/Profile/patchProfileEffects'
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -106,6 +107,7 @@ export default function (meta) {
       patchChannelTextArea()
       patchPopToast()
       patchGenerateUserSettingsSections()
+      patchProfileEffects()
 
       Logger.info('Startup', 'Forcing app update...')
       forceAppUpdate()
