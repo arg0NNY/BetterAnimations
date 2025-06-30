@@ -4,6 +4,8 @@ import useConfig from '@/hooks/useConfig'
 import meta from '@/meta'
 import SuppressErrors from '@enums/SuppressErrors'
 import Divider from '@/components/Divider'
+import DurationSlider from '@/settings/components/DurationSlider'
+import { configDefaults } from '@data/config'
 
 function GeneralSettings () {
   const [config, onChange] = useConfig()
@@ -32,7 +34,7 @@ function GeneralSettings () {
         <FormSwitch
           className={Classes.Margins.marginBottom20}
           children="Disable Hints"
-          note={`Hide reference links to ${meta.name} documentation in module settings, animation settings, etc.`}
+          note={`Hide reference links to ${meta.name} documentation in the module settings, animation settings, etc.`}
           value={config.general.disableHints}
           onChange={value => {
             config.general.disableHints = value
@@ -88,6 +90,32 @@ function GeneralSettings () {
             onChange()
           }}
         />
+      </FormSection>
+      <FormSection
+        tag={FormTitleTags.H2}
+        title="Behavior"
+        className={Classes.Margins.marginTop20}
+        titleClassName={Classes.Margins.marginBottom8}
+      >
+        <FormItem className={Classes.Margins.marginBottom20}>
+          <FormTitle className={Classes.Margins.marginBottom8}>
+            Switch Cooldown Duration
+          </FormTitle>
+          <FormText className={Classes.Margins.marginBottom20}>
+            If switch animations overlap, they cancel each other and trigger a cooldown
+            preventing new switch animations from playing for a period of time.
+          </FormText>
+          <DurationSlider
+            from={100}
+            to={2000}
+            defaultValue={configDefaults.general.switchCooldownDuration}
+            initialValue={config.general.switchCooldownDuration}
+            onValueChange={value => {
+              config.general.switchCooldownDuration = value
+              onChange()
+            }}
+          />
+        </FormItem>
       </FormSection>
     </FormSection>
   )
