@@ -1,13 +1,22 @@
-import { ChannelSectionStore, Dispatcher, Flux, SelectedChannelStore, SelectedGuildStore } from '@discord/modules'
+import {
+  ChannelSectionStore,
+  Dispatcher,
+  Flux,
+  LayerStore,
+  SelectedChannelStore,
+  SelectedGuildStore
+} from '@discord/modules'
 import AnimationStore from '@animation/store'
 import Logger from '@logger'
 import Config from '@/modules/Config'
 import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
 import ModuleType from '@enums/ModuleType'
+import isEqual from 'lodash-es/isEqual'
 
 const ignoredEvents = [
-  'CHANNEL_SELECT'
+  'CHANNEL_SELECT',
+  'UPDATE_CHANNEL_DIMENSIONS'
 ]
 
 const alwaysInterceptedEvents = [
@@ -17,13 +26,20 @@ const alwaysInterceptedEvents = [
   'THREAD_LIST_SYNC'
 ]
 
+const connectedStores = [
+  SelectedGuildStore,
+  SelectedChannelStore,
+  ChannelSectionStore,
+  LayerStore
+]
+
 class DispatchController {
   get name () { return 'DispatchController' }
 
   constructor () {
     this.queue = []
     this.isEmitterPaused = false
-    this._selectedChannelId = null
+    this._visibleEntities = this.getVisibleEntities()
     this._clearWatcher = null
 
     this.interceptor = event => {
@@ -47,10 +63,10 @@ class DispatchController {
       }
     }
 
-    this.onSelectedChannelStoreChange = () => {
-      const channelId = SelectedChannelStore.getChannelId()
-      if (channelId !== this._selectedChannelId) this.flushQueue()
-      this._selectedChannelId = channelId
+    this.onConnectedStoreChange = () => {
+      const visibleEntities = this.getVisibleEntities()
+      if (!isEqual(visibleEntities, this._visibleEntities)) this.flushQueue()
+      this._visibleEntities = visibleEntities
     }
   }
 
@@ -61,6 +77,8 @@ class DispatchController {
   }
 
   getVisibleEntities () {
+    if (LayerStore.hasLayers()) return { guildId: null, channelId: null, threadId: null }
+
     const guildId = SelectedGuildStore.getGuildId()
     const channelId = SelectedChannelStore.getChannelId(guildId)
     const threadId = ChannelSectionStore.getCurrentSidebarChannelId(channelId)
@@ -70,7 +88,7 @@ class DispatchController {
     if (ignoredEvents.includes(event.type)) return false
     if (alwaysInterceptedEvents.includes(event.type)) return true
 
-    const { guildId, channelId, threadId } = this.getVisibleEntities()
+    const { guildId, channelId, threadId } = this._visibleEntities
     return (typeof event.guildId === 'string' && event.guildId !== guildId)
       || (typeof event.channelId === 'string' && event.channelId !== channelId && event.channelId !== threadId)
   }
@@ -126,16 +144,22 @@ class DispatchController {
     this._clearWatcher?.()
   }
 
-  watchSelectedChannel () {
-    this._selectedChannelId = SelectedChannelStore.getChannelId()
-    SelectedChannelStore.addChangeListener(this.onSelectedChannelStoreChange)
+  connectStores () {
+    connectedStores.forEach(
+      store => store.addChangeListener(this.onConnectedStoreChange)
+    )
+  }
+  disconnectStores () {
+    connectedStores.forEach(
+      store => store.removeChangeListener(this.onConnectedStoreChange)
+    )
   }
 
   initialize () {
     if (this.isEnabled) this.registerInterceptor()
     this.registerWatcher()
+    this.connectStores()
     Emitter.on(Events.SettingsChanged, this.onSettingsChange)
-    this.watchSelectedChannel()
 
     Logger.log(this.name, `Initialized${this.isEnabled ? ' and enabled' : ''}.`)
   }
@@ -143,8 +167,8 @@ class DispatchController {
   shutdown () {
     this.clearInterceptor()
     this.clearWatcher()
+    this.disconnectStores()
     Emitter.off(Events.SettingsChanged, this.onSettingsChange)
-    SelectedChannelStore.removeChangeListener(this.onSelectedChannelStoreChange)
 
     this.flushQueue()
 
