@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { ChannelMessageList, TransitionGroup, useStateFromStores } from '@discord/modules'
+import { ChannelMessageList, LayerStore, TransitionGroup, useStateFromStores } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@components/AnimeTransition'
 import ensureOnce from '@utils/ensureOnce'
@@ -21,6 +21,7 @@ function patchChannelMessageList () {
   Patcher.after(ChannelMessageList, 'type', (self, args, value) => {
     once(() =>
       Patcher.after(ModuleKey.Messages, findInReactTree(value.props.children, m => m?.props?.messages).type, 'type', (self, [{ channel }], value) => {
+        const hasLayers = useStateFromStores([LayerStore], () => LayerStore.hasLayers())
         const { toEnter, toExit } = useStateFromStores([MessageStackStore], () => MessageStackStore.getMessagesAwaitingTransition())
         const { isMainWindow } = useWindow()
         const module = useModule(ModuleKey.Messages)
@@ -36,7 +37,7 @@ function patchChannelMessageList () {
           const message = findInReactTree(e, m => m?.message)?.message
             ?? findInReactTree(arr[index + 1] ?? {}, m => m?.message)?.message
           return cloneElement(e, {
-            exit: toExit.has(message?.id)
+            exit: !hasLayers && toExit.has(message?.id)
           })
         }
 
@@ -56,7 +57,7 @@ function patchChannelMessageList () {
                     <AnimeTransition
                       key={item.key}
                       injectContainerRef={true}
-                      enter={toEnter.has(message ? item.key : getMessageKey(arr[index + 1]?.props?.message))}
+                      enter={!hasLayers && toEnter.has(message ? item.key : getMessageKey(arr[index + 1]?.props?.message))}
                       exit={false} // Managed in childFactory
                       module={module}
                     >
