@@ -103,15 +103,14 @@ class DispatchController {
   pauseEmitter () {
     if (this.isEmitterPaused) return
 
-    Flux.Emitter.pause()
     this.isEmitterPaused = true
     Logger.log(this.name, 'Emitter paused.')
   }
   resumeEmitter () {
     if (!this.isEmitterPaused) return
 
-    Flux.Emitter.resume()
     this.isEmitterPaused = false
+    Flux.Emitter.emit()
     Logger.log(this.name, 'Emitter resumed.')
   }
 

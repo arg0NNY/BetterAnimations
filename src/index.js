@@ -43,6 +43,7 @@ import Validator from '@discord/validator'
 import DispatchController from '@/modules/DispatchController'
 import patchGenerateUserSettingsSections from '@/patches/UserSettings/patchGenerateUserSettingsSections'
 import patchProfileEffects from '@/patches/Profile/patchProfileEffects'
+import patchEmitter from '@/patches/Flux/patchEmitter'
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -108,6 +109,7 @@ export default function (meta) {
       patchPopToast()
       patchGenerateUserSettingsSections()
       patchProfileEffects()
+      patchEmitter()
 
       Logger.info('Startup', 'Forcing app update...')
       forceAppUpdate()
