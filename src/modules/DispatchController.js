@@ -17,7 +17,8 @@ import WebSocketController from '@/modules/WebSocketController'
 
 const ignoredEvents = [
   'CHANNEL_SELECT',
-  'UPDATE_CHANNEL_DIMENSIONS'
+  'UPDATE_CHANNEL_DIMENSIONS',
+  'GUILD_HOME_SETTINGS_FETCH_START'
 ]
 
 const alwaysInterceptedEvents = [
@@ -64,14 +65,14 @@ class DispatchController {
         this.clearInterceptor()
         this.webSocketController.resumeMessages(false)
         this.resumeEmitter()
-        this.flushQueue()
+        this.flush()
         Logger.log(this.name, 'Disabled.')
       }
     }
 
     this.onConnectedStoreChange = () => {
       const visibleEntities = this.getVisibleEntities()
-      if (!isEqual(visibleEntities, this._visibleEntities)) this.flushQueue()
+      if (!isEqual(visibleEntities, this._visibleEntities)) this.flush()
       this._visibleEntities = visibleEntities
     }
   }
@@ -100,8 +101,6 @@ class DispatchController {
   }
 
   flushQueue () {
-    this.webSocketController.flushQueue()
-
     if (!this.queue.length) return
 
     Logger.log(this.name, `Flushing ${this.queue.length} event${this.queue.length > 1 ? 's' : ''}:`, this.queue)
@@ -109,6 +108,10 @@ class DispatchController {
       this.queue.forEach(event => Dispatcher.dispatch(event))
       this.queue = []
     })
+  }
+  flush () {
+    this.webSocketController.flushQueue()
+    this.flushQueue()
   }
 
   registerInterceptor () {
@@ -123,14 +126,17 @@ class DispatchController {
     if (this.isEmitterPaused) return
 
     this.isEmitterPaused = true
-    Logger.log(this.name, 'Emitter paused.')
+
+    Logger.log(this.name, 'Emitter paused. Safely flushing queue...')
+    this.flushQueue()
   }
   resumeEmitter () {
     if (!this.isEmitterPaused) return
 
     this.isEmitterPaused = false
+
+    Logger.log(this.name, 'Emitter resumed. Emitting changes...')
     Flux.Emitter.emit()
-    Logger.log(this.name, 'Emitter resumed.')
   }
 
   registerWatcher () {
@@ -144,7 +150,7 @@ class DispatchController {
         this.resumeEmitter()
       }
 
-      if (!AnimationStore.shouldInterceptEvents) this.flushQueue()
+      if (!AnimationStore.shouldInterceptEvents) this.flush()
     })
   }
   clearWatcher () {
@@ -179,7 +185,7 @@ class DispatchController {
 
     this.webSocketController.resumeMessages(false)
     this.resumeEmitter()
-    this.flushQueue()
+    this.flush()
 
     Logger.log(this.name, 'Shutdown.')
   }
