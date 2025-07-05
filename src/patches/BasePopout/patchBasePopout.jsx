@@ -11,6 +11,7 @@ import { useRef } from 'react'
 import findInReactTree from '@/utils/findInReactTree'
 import useWindow from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
+import AnimationStore from '@animation/store'
 
 function PopoutLayer ({ ref, children, ...props }) {
   const layerRef = useRef()
@@ -35,8 +36,19 @@ function patchBasePopout () {
   const Original = unkeyed(BasePopoutKeyed)
 
   class AnimatedBasePopout extends Original {
+    componentDidMount () {
+      super.componentDidMount()
+      this.__unwatchStore = AnimationStore.watch((_, isSafe) => {
+        if (this.state.__isSafe !== isSafe) this.setState({ __isSafe: isSafe })
+      })
+    }
+    componentWillUnmount () {
+      super.componentWillUnmount()
+      this.__unwatchStore?.()
+    }
+
     shouldShow (props = this.props, state = this.state) {
-      return this.shouldShowPopout(props, state) && (!state.isLoading || state.shouldShowLoadingState)
+      return state.__isSafe !== false && (!state.isLoading || state.shouldShowLoadingState) && this.shouldShowPopout(props, state)
     }
 
     componentDidUpdate (props, state) {
