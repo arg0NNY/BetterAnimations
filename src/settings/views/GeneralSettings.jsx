@@ -82,6 +82,16 @@ function GeneralSettings () {
         />
         <FormSwitch
           className={Classes.Margins.marginBottom20}
+          children="Preload Layers"
+          note="Load full-screen pages (User Settings, Server Settings, Channel Settings, etc.) in advance to prevent them from interrupting the animations when opened."
+          value={config.general.preloadLayers}
+          onChange={value => {
+            config.general.preloadLayers = value
+            onChange()
+          }}
+        />
+        <FormSwitch
+          className={Classes.Margins.marginBottom20}
           children="Cache User Settings Sections"
           note="Significantly improves performance when opening User Settings."
           value={config.general.cacheUserSettingsSections}

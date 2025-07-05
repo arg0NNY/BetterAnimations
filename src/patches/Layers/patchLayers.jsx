@@ -13,6 +13,8 @@ import Mouse from '@shared/mouse'
 import classNames from 'classnames'
 import { ErrorBoundary } from '@error/boundary'
 
+export let LayersComponent = null
+
 function getWindowCenterAnchor () {
   return {
     x: window.innerWidth / 2,
@@ -113,6 +115,7 @@ function patchLayers () {
   Patcher.after(ModuleKey.Layers, ...LayersKeyed, (self, args, value) => {
     once(
       () => {
+        LayersComponent = value.type
         const layerStore = new LayerStore()
         injectModule(value.type, ModuleKey.Layers)
         Patcher.after(ModuleKey.Layers, value.type.prototype, 'renderLayers', (self, args, value) => {

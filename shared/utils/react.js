@@ -24,3 +24,17 @@ export function getRef (refLike) {
       ? refLike.current
       : refLike
 }
+
+export function isLazyLoaded (component) {
+  return component._payload._status !== -1
+}
+
+export function loadLazy (component) {
+  try {
+    return Promise.resolve(
+      component._init(component._payload) // Throws Promise or returns module
+    )
+  } catch (promise) {
+    return promise
+  }
+}

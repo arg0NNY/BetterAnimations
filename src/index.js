@@ -44,6 +44,7 @@ import DispatchController from '@/modules/DispatchController'
 import patchGenerateUserSettingsSections from '@/patches/UserSettings/patchGenerateUserSettingsSections'
 import patchProfileEffects from '@/patches/Profile/patchProfileEffects'
 import patchEmitter from '@/patches/Flux/patchEmitter'
+import LazyLoader from '@/modules/LazyLoader'
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -84,6 +85,7 @@ export default function (meta) {
       AnimationStore.initialize()
       Modules.initialize()
       DispatchController.initialize()
+      LazyLoader.initialize()
 
       Validator.onStartup()
       Prompt.onStartup()
@@ -126,6 +128,7 @@ export default function (meta) {
       PackManager.shutdown()
       AnimationStore.shutdown()
       DispatchController.shutdown()
+      LazyLoader.shutdown()
 
       Settings.closeSettingsModal()
 

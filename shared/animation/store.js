@@ -116,7 +116,7 @@ export class AnimationStore {
   trigger () {
     this.shouldPauseEmitter = this.animations.some(a => a.module.type === ModuleType.Switch)
     this.shouldInterceptEvents = this.animations.some(a => a.module.interceptEvents)
-    this.isSafe = !this.animations.some(a => a.module.type === ModuleType.Switch) // TODO: Integrate `isSafe` in all places where check for switch animations happens
+    this.isSafe = !this.animations.some(a => a.module.type === ModuleType.Switch)
 
     this._watchers.forEach(callback => {
       try { callback([...this.animations], this.isSafe) }
