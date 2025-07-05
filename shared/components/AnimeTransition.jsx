@@ -45,8 +45,12 @@ class AnimeTransition extends Component {
     return this.props.store ?? AnimationStore
   }
 
+  clearCurrentInstance () {
+    this.instance.current?.cancel(false, true)?.()
+  }
+
   componentWillUnmount () {
-    this.instance.current?.cancel()
+    this.clearCurrentInstance()
   }
 
   onAnimate (type, fn) {
@@ -75,7 +79,7 @@ class AnimeTransition extends Component {
 
   onCallback (fn) {
     return () => {
-      this.instance.current?.callback?.()
+      this.clearCurrentInstance()
       fn?.()
     }
   }

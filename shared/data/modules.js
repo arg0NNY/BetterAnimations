@@ -103,6 +103,8 @@ const modules = [
     id: ModuleKey.Tooltips,
     name: 'Tooltips',
     meta: {
+      interceptEvents: false,
+      waitUntilSafe: true,
       settings: {
         supportsAuto: {
           [Setting.Position]: true,
@@ -115,6 +117,7 @@ const modules = [
     id: ModuleKey.Popouts,
     name: 'Popouts',
     meta: {
+      waitUntilSafe: true,
       settings: {
         supportsAuto: {
           [Setting.Position]: true,
@@ -127,6 +130,7 @@ const modules = [
     id: ModuleKey.ContextMenu,
     name: 'Context Menu',
     meta: {
+      waitUntilSafe: true,
       settings: {
         supportsAuto: {
           [Setting.Position]: true,

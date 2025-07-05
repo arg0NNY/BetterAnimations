@@ -47,7 +47,7 @@ class DispatchController {
     this._clearWatcher = null
 
     this.interceptor = event => {
-      if (!AnimationStore.animations.length || this.isEmitterPaused) return
+      if (!AnimationStore.shouldInterceptEvents || this.isEmitterPaused) return
       if (import.meta.env.VITE_DISPATCH_CONTROLLER_DEBUG === 'true') this._debugEvent(event)
       if (!this.shouldIntercept(event)) return
 
@@ -98,9 +98,6 @@ class DispatchController {
     return (typeof event.guildId === 'string' && event.guildId !== guildId)
       || (typeof event.channelId === 'string' && event.channelId !== channelId && event.channelId !== threadId)
   }
-  shouldPauseEmitter (animations = AnimationStore.animations) {
-    return animations.some(a => a.module.type === ModuleType.Switch)
-  }
 
   flushQueue () {
     this.webSocketController.flushQueue()
@@ -137,8 +134,8 @@ class DispatchController {
   }
 
   registerWatcher () {
-    this._clearWatcher = AnimationStore.watch(animations => {
-      if (this.isEnabled && this.shouldPauseEmitter(animations)) {
+    this._clearWatcher = AnimationStore.watch(() => {
+      if (this.isEnabled && AnimationStore.shouldPauseEmitter) {
         this.webSocketController.pauseMessages()
         this.pauseEmitter()
       }
@@ -147,7 +144,7 @@ class DispatchController {
         this.resumeEmitter()
       }
 
-      if (!animations.length) this.flushQueue()
+      if (!AnimationStore.shouldInterceptEvents) this.flushQueue()
     })
   }
   clearWatcher () {
