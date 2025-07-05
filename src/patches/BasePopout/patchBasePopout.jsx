@@ -35,13 +35,6 @@ function patchBasePopout () {
   const Original = unkeyed(BasePopoutKeyed)
 
   class AnimatedBasePopout extends Original {
-    constructor (...args) {
-      super(...args)
-
-      // Prevent preload firing when popout is already open (fixing Discord's bug basically)
-      Patcher.instead(this, 'handlePreload', (_, args, original) => !this.shouldShow() && original(...args))
-    }
-
     shouldShow (props = this.props, state = this.state) {
       return this.shouldShowPopout(props, state) && (!state.isLoading || state.shouldShowLoadingState)
     }
