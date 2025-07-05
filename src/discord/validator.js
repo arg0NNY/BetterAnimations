@@ -8,8 +8,8 @@ class Validator {
   get name() { return 'Validator' }
 
   shouldSkip (module) {
-    if (module instanceof DiscordModules.Flux.Store) return true
-    return false
+    return module instanceof DiscordModules.Flux.Store
+      || module === (DiscordModules.GatewaySocket ?? {})
   }
 
   collectIssues (modules) {
