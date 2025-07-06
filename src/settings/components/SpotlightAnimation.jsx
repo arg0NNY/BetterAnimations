@@ -1,5 +1,5 @@
 import { css } from '@style'
-import { useCallback, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import classNames from 'classnames'
 
 function toStyle (state) {
@@ -47,9 +47,12 @@ function SpotlightAnimation ({ count = 8, size = 400, areaSize = 200, speed = 50
     [setStates, generateNewState]
   )
 
-  useEffect(() => setStates(
-    states => states.map(generateNewState)
-  ), [count])
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setStates(
+      states => states.map(generateNewState)
+    ))
+    return () => cancelAnimationFrame(id)
+  }, [count])
 
   return (
     <div
@@ -70,7 +73,7 @@ function SpotlightAnimation ({ count = 8, size = 400, areaSize = 200, speed = 50
   )
 }
 
-export default SpotlightAnimation
+export default memo(SpotlightAnimation)
 
 css
 `.BA__spotlightAnimation {
@@ -82,7 +85,7 @@ css
     aspect-ratio: 1;
     opacity: .3;
     filter: blur(30px);
-    animation: BA__rotate 30s linear infinite;
+    animation: BA__spotlightAnimationRotate 30s linear infinite;
 }
 
 .BA__spotlightAnimationItem {
@@ -92,11 +95,27 @@ css
     width: var(--ba--spotlight-animation-size);
     height: var(--ba--spotlight-animation-size);
     translate: -50% -50%;
+}
+.BA__spotlightAnimationItem::after {
+    content: '';
+    position: absolute;
+    inset: 0;
     background: radial-gradient(circle, var(--brand-500) 30%, transparent 70%);
+    animation: BA__spotlightAnimationEnter 5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes BA__rotate {
+@keyframes BA__spotlightAnimationRotate {
     0% { rotate: 0deg; }
     100% { rotate: 360deg; }
+}
+@keyframes BA__spotlightAnimationEnter {
+    0% {
+        scale: .3;
+        opacity: 0;
+    }
+    100% {
+        scale: 1;
+        opacity: 1;
+    }
 }`
 `SpotlightAnimation`

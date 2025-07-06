@@ -9,10 +9,11 @@ import { useSection } from '@/settings/stores/SettingsStore'
 import SettingsSection from '@enums/SettingsSection'
 import IconAuthor from '@/components/icons/IconAuthor'
 import SpotlightAnimation from '@/settings/components/SpotlightAnimation'
-import { useMemo } from 'react'
+import { use, useMemo } from 'react'
 import { sanitize } from '@utils/text'
 import BookIcon from '@/settings/components/icons/BookIcon'
 import Documentation from '@shared/documentation'
+import { AnimeTransitionContext } from '@components/AnimeTransition'
 
 const madeByPhrases = [
   'Made by',
@@ -37,10 +38,14 @@ function Home () {
     []
   )
 
+  const { isEnterActive } = use(AnimeTransitionContext)
+
   return (
     <div className="BA__home">
       <div className="BA__homeHeading">
-        <SpotlightAnimation className="BA__homeSpotlightAnimation" />
+        {!isEnterActive && (
+          <SpotlightAnimation className="BA__homeSpotlightAnimation" />
+        )}
         <IconBrand
           size="custom"
           width={120}
