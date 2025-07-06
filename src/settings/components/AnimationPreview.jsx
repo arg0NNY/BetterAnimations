@@ -1,4 +1,4 @@
-import { use, useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { use, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { css } from '@style'
 import { ChannelSectionStore, Text, useStateFromStores } from '@discord/modules'
 import ModuleContext from '@/settings/context/ModuleContext'
@@ -15,7 +15,7 @@ export function getPreviewHeight (width) {
 }
 
 function AnimationPreview ({ pack, animation, title = animation?.name, active = false }) {
-  const module = useContext(ModuleContext)
+  const module = use(ModuleContext)
 
   const { isActive: hasActiveAnimation } = use(AnimeTransitionContext)
   const isActive = active && !hasActiveAnimation

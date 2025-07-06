@@ -13,7 +13,7 @@ function MessageRequestSidebarWrapper ({ state, pageWidth, onSidebarResize, chan
   const ChatSidebar = unkeyed(_ChatSidebar)
 
   return (
-    <MessageRequestSidebarContext.Provider value={state}>
+    <MessageRequestSidebarContext value={state}>
       <ChatSidebar
         ref={ref}
         sidebarType={ChatSidebarType.MessageRequestSidebar}
@@ -25,7 +25,7 @@ function MessageRequestSidebarWrapper ({ state, pageWidth, onSidebarResize, chan
           baseChannelId={MESSAGE_REQUESTS_BASE_CHANNEL_ID}
         />
       </ChatSidebar>
-    </MessageRequestSidebarContext.Provider>
+    </MessageRequestSidebarContext>
   )
 }
 

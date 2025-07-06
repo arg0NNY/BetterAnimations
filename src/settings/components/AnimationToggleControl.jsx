@@ -8,7 +8,7 @@ import { css } from '@style'
 import Messages from '@shared/messages'
 import DoorEnterIcon from '@/settings/components/icons/DoorEnterIcon'
 import DoorExitIcon from '@/settings/components/icons/DoorExitIcon'
-import { useCallback, useContext, useMemo, useState } from 'react'
+import { useCallback, use, useMemo, useState } from 'react'
 
 function useToggleHint () {
   const [hintShown, setHintShown] = useState(false)
@@ -54,7 +54,7 @@ function AnimationToggleCheckbox ({ value, onChange, disabled }) {
 }
 
 function AnimationToggleControl ({ enter, exit, setEnter, setExit }) {
-  const module = useContext(ModuleContext)
+  const module = use(ModuleContext)
   const isAdvanced = useAdvancedMode(enter !== exit)
 
   const { hintProps } = useToggleHint()

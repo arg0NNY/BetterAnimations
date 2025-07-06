@@ -17,14 +17,14 @@ import DiscordClasses from '@discord/classes'
 import SectionContext from '@/settings/context/SectionContext'
 import Messages from '@shared/messages'
 import ArrowSmallRightIcon from '@/settings/components/icons/ArrowSmallRightIcon'
-import { useContext, useMemo } from 'react'
+import { use, useMemo } from 'react'
 import DismissibleAlert from '@/settings/components/DismissibleAlert'
 import useDismissible from '@/settings/hooks/useDismissible'
 import Documentation from '@shared/documentation'
 import Hint from '@/settings/components/Hint'
 
 function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect, ...props }) {
-  const { setSection } = useContext(SectionContext)
+  const { setSection } = use(SectionContext)
 
   const parentModules = useMemo(() => Modules.getParentModules(module), [module])
   const childModules = useMemo(() => Modules.getChildModules(module), [module])

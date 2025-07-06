@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import { AppContext } from '@discord/modules'
 import MainMouse, { Mouse } from '@shared/mouse'
 
@@ -11,7 +11,7 @@ export function clearMouse (mouse) {
 }
 
 function useMouse () {
-  const { renderWindow } = useContext(AppContext)
+  const { renderWindow } = use(AppContext)
 
   const [mouse, setMouse] = useState(null)
   useEffect(() => {

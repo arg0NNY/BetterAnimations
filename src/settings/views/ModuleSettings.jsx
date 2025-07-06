@@ -28,7 +28,7 @@ function ModuleSettings ({ moduleId, refToScroller }) {
     .filter(p => p.partial || p.animations.some(a => module.isSupportedBy(a)))
 
   return (
-    <ModuleContext.Provider value={module}>
+    <ModuleContext value={module}>
       <div key={moduleId} className="BA__moduleSettings">
         <ModuleSettingsHeader
           module={module}
@@ -70,7 +70,7 @@ function ModuleSettings ({ moduleId, refToScroller }) {
           <NoPacksPlaceholder />
         )}
       </div>
-    </ModuleContext.Provider>
+    </ModuleContext>
   )
 }
 
