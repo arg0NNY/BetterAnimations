@@ -22,7 +22,7 @@ function isEmojiOverload (data, priority, limit = 100) {
  */
 function patchEmoji () {
   Patcher.after(...EmojiKeyed, (self, [{ className, size }], value) => {
-    const [config] = useConfig()
+    const { config } = useConfig()
     const { isEnterActive, state, props, data, tree } = use(AnimeTransitionContext)
 
     const priority = useMemo(() => size === 'reaction' ? 2 : 1, [size])

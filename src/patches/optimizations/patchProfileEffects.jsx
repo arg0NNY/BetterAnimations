@@ -9,7 +9,7 @@ import useConfig from '@/hooks/useConfig'
  */
 function patchProfileEffects () {
   Patcher.after(...ProfileEffectsKeyed, () => {
-    const [config] = useConfig()
+    const { config } = useConfig()
     const { isEnterActive } = use(AnimeTransitionContext)
 
     if (config.general.prioritizeAnimationSmoothness && isEnterActive) return null

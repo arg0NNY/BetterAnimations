@@ -145,7 +145,7 @@ function AnimationCard ({
     accordions: accordionsPopoutRef
   }), [settingsPopoutRef, accordionsPopoutRef])
 
-  const [config] = useConfig()
+  const { config } = useConfig()
 
   const [expanded, setExpanded] = useState(null)
   const close = useCallback(() => setExpanded(null), [setExpanded])

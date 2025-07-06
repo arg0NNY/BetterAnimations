@@ -10,7 +10,7 @@ function useConfig () {
   const config = Config.current
   const onChange = useCallback(() => Emitter.emit(Events.SettingsChanged), [])
 
-  return [config, onChange]
+  return { config, onChange }
 }
 
 export default useConfig

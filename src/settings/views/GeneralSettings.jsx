@@ -8,7 +8,7 @@ import DurationSlider from '@/settings/components/DurationSlider'
 import { configDefaults } from '@data/config'
 
 function GeneralSettings () {
-  const [config, onChange] = useConfig()
+  const { config, onChange } = useConfig()
 
   return (
     <FormSection

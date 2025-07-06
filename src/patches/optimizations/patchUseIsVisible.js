@@ -9,7 +9,7 @@ import useConfig from '@/hooks/useConfig'
  */
 function patchUseIsVisible () {
   Patcher.instead(...useIsVisibleKeyed, (self, [callback, ...args], original) => {
-    const [config] = useConfig()
+    const { config } = useConfig()
     const isEnabled = config.general.prioritizeAnimationSmoothness
 
     const { isActive } = use(AnimeTransitionContext)
