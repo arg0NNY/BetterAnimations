@@ -3,6 +3,7 @@ import { useIsVisibleKeyed } from '@discord/modules'
 import { use, useEffect, useState } from 'react'
 import { AnimeTransitionContext } from '@components/AnimeTransition'
 import useConfig from '@/hooks/useConfig'
+import InternalError from '@error/structs/InternalError'
 
 /**
  * Commit the `IntersectionObserver` state after animations are finished
@@ -20,7 +21,7 @@ function patchUseIsVisible () {
     }, [isEnabled, isActive, isIntersecting])
 
     return original(isEnabled ? setIsIntersecting : callback, ...args)
-  })
+  }, { category: InternalError.Category.PRIORITIZE_ANIMATION_SMOOTHNESS })
 }
 
 export default patchUseIsVisible

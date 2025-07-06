@@ -5,6 +5,7 @@ import { EmojiKeyed, Transition } from '@discord/modules'
 import classNames from 'classnames'
 import { css } from '@style'
 import useConfig from '@/hooks/useConfig'
+import InternalError from '@error/structs/InternalError'
 
 function isEmojiOverload (data, priority, limit = 100) {
   let count = 0
@@ -45,7 +46,7 @@ function patchEmoji () {
     )
 
     return value
-  })
+  }, { category: InternalError.Category.PRIORITIZE_ANIMATION_SMOOTHNESS })
 }
 
 export default patchEmoji

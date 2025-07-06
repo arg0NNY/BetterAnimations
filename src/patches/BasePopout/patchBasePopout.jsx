@@ -116,7 +116,7 @@ function patchBasePopout () {
         <AnimatedBasePopout {...props} module={module} />
       </ErrorBoundary>
     )
-  }, fallback)
+  }, { fallback })
   patchPopoutCSSAnimator()
 }
 
