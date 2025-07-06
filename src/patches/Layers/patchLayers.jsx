@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { LayersKeyed, TransitionGroup } from '@discord/modules'
+import { LayersKeyed, Transition, TransitionGroup } from '@discord/modules'
 import ensureOnce from '@utils/ensureOnce'
 import AnimeTransition from '@components/AnimeTransition'
 import { passAuto } from '@utils/transition'
@@ -54,7 +54,7 @@ function LayerTransition ({ layer, ...props }) {
         <Layer
           {...layer.props}
           key={layer.key}
-          hidden={state === 'exited'}
+          hidden={state === Transition.EXITED}
         />
       )}
     </AnimeTransition>

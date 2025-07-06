@@ -15,18 +15,39 @@ const injectContainerRefFn = (children, ref) => {
 }
 
 export const AnimeTransitionContext = createContext({
+  isEnterActive: false,
+  isExitActive: false,
+  isActive: false,
+  state: null,
+  module: null,
   instance: createRef(),
   nodeRef: createRef(),
-  state: null
+  props: null,
+  data: {},
+  tree: []
 })
 
 class AnimeTransition extends Component {
+  static contextType = AnimeTransitionContext
+  static defaultProps = {
+    container: false,
+    freeze: false,
+    mountOnEnter: true,
+    unmountOnExit: true,
+    enter: true,
+    exit: true,
+    injectContainerRef: false
+  }
+
   constructor (props) {
     super(props)
 
     this.doneCallback = createAwaitableRef()
     this.containerRef = createRef()
     this.instance = createRef()
+    this.data = {
+      emoji: { 1: 0, 2: 0 }
+    }
 
     const self = this
     this.nodeRef = {
@@ -84,18 +105,47 @@ class AnimeTransition extends Component {
     }
   }
 
+  provideContext (state, children) {
+    const isEnterActive = (state === Transition.EXITED && this.props.in) || state === Transition.ENTERING
+    const isExitActive = (state === Transition.ENTERED && !this.props.in) || state === Transition.EXITING
+    const isActive = isEnterActive || isExitActive
+
+    const current = {
+      isEnterActive,
+      isExitActive,
+      isActive,
+      state,
+      module: this.props.module,
+      instance: this.instance,
+      nodeRef: this.nodeRef,
+      props: this.props,
+      data: this.data
+    }
+
+    const value = {
+      ...(isActive ? current : this.context),
+      tree: [current, ...this.context.tree]
+    }
+
+    return (
+      <AnimeTransitionContext value={value}>
+        {children}
+      </AnimeTransitionContext>
+    )
+  }
+
   render () {
     const {
       module,
       data,
       children,
-      container = false,
-      freeze = false,
-      mountOnEnter = true,
-      unmountOnExit = true,
-      enter = true,
-      exit = true,
-      injectContainerRef = false,
+      container,
+      freeze,
+      mountOnEnter,
+      unmountOnExit,
+      enter,
+      exit,
+      injectContainerRef,
       onEntering,
       onExiting,
       onEntered,
@@ -114,14 +164,13 @@ class AnimeTransition extends Component {
         )(_children, this.containerRef)
       }
 
-      return (
-        <AnimeTransitionContext value={{ instance: this.instance, nodeRef: this.nodeRef, state }}>
-          <AnimeContainer container={children && container} ref={this.containerRef}>
-            <Freeze freeze={freeze && props.in === false} nodeRef={this.nodeRef}>
-              {_children}
-            </Freeze>
-          </AnimeContainer>
-        </AnimeTransitionContext>
+      return this.provideContext(
+        state,
+        <AnimeContainer container={children && container} ref={this.containerRef}>
+          <Freeze freeze={freeze && props.in === false} nodeRef={this.nodeRef}>
+            {_children}
+          </Freeze>
+        </AnimeContainer>
       )
     }
 

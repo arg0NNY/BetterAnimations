@@ -4,13 +4,15 @@ import { use } from 'react'
 import { AnimeTransitionContext } from '@components/AnimeTransition'
 import useConfig from '@/hooks/useConfig'
 
+/**
+ * Load profile effects after enter animations are finished
+ */
 function patchProfileEffects () {
   Patcher.after(...ProfileEffectsKeyed, () => {
     const [config] = useConfig()
-    if (!config.general.prioritizeAnimationSmoothness) return
+    const { isEnterActive } = use(AnimeTransitionContext)
 
-    const { state } = use(AnimeTransitionContext)
-    if (state === 'entering') return null // Do not load profile effects while entering
+    if (config.general.prioritizeAnimationSmoothness && isEnterActive) return null
   })
 }
 

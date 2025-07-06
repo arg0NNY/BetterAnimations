@@ -2,6 +2,9 @@ import Patcher from '@/modules/Patcher'
 import { Flux } from '@discord/modules'
 import DispatchController from '@/modules/DispatchController'
 
+/**
+ * Pause Flux Emitter while switch animations are active
+ */
 function patchEmitter () {
   Patcher.instead(Flux.Emitter, 'emit', (self, args, original) => {
     if (DispatchController.isEmitterPaused) return
