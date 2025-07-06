@@ -1,6 +1,6 @@
-import { useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { use, useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { css } from '@style'
-import { ChannelSectionStore, Text, Timeout, useStateFromStores } from '@discord/modules'
+import { ChannelSectionStore, Text, useStateFromStores } from '@discord/modules'
 import ModuleContext from '@/settings/context/ModuleContext'
 import Preview, { PREVIEW_WIDTH } from '@preview'
 import Modules from '@/modules/Modules'
@@ -8,6 +8,7 @@ import { moduleEffect } from '@/hooks/useModule'
 import classNames from 'classnames'
 import { useMovable } from '@/settings/components/AnimationCard'
 import useResizeObserver from '@/hooks/useResizeObserver'
+import { AnimeTransitionContext } from '@components/AnimeTransition'
 
 export function getPreviewHeight (width) {
   return width * 9 / 16
@@ -16,15 +17,8 @@ export function getPreviewHeight (width) {
 function AnimationPreview ({ pack, animation, title = animation?.name, active = false }) {
   const module = useContext(ModuleContext)
 
-  const [isActive, setIsActive] = useState(active)
-  const timeout = useMemo(() => new Timeout, [])
-  useEffect(() => {
-    if (active) timeout.start(500, () => setIsActive(true))
-    else {
-      timeout.stop()
-      setIsActive(false)
-    }
-  }, [active])
+  const { isActive: hasActiveAnimation } = use(AnimeTransitionContext)
+  const isActive = active && !hasActiveAnimation
 
   const [dataKey, setDataKey] = useState(0)
   useEffect(() => moduleEffect(

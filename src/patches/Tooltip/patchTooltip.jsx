@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react'
 import { MainWindowOnly } from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
 import AnimationStore from '@animation/store'
+import { useIsSafe } from '@/hooks/useAnimationStore'
 
 function TooltipTransition (props) {
   const { module, isVisible, onAnimationRest, ...rest } = props
@@ -32,8 +33,7 @@ function TooltipTransition (props) {
   const layer = TooltipLayer(rest)
   layer.props.ref = layerRef
 
-  const [isSafe, setIsSafe] = useState(AnimationStore.isSafe)
-  useEffect(() => AnimationStore.watch((_, isSafe) => setIsSafe(isSafe)), [])
+  const isSafe = useIsSafe()
 
   return (
     <AnimeTransition
