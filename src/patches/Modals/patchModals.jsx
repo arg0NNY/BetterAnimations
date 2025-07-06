@@ -24,7 +24,10 @@ function Modal ({ children, ...props }) {
       containerRef={containerRef}
       {...props}
     >
-      {cloneElement(children, { layerRef })}
+      {cloneElement(children, {
+        layerRef,
+        instant: true // Disable Discord's internal modal animations
+      })}
     </AnimeTransition>
   )
 }
