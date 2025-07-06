@@ -159,8 +159,9 @@ css
 }
 
 .BA__baseEnhancedLayout :is(.BA__content, ${DiscordSelectors.AppView.content}) {
-    grid-column: guildsEnd / end;
-    grid-row: noticeEnd / end;
+    /* Indexes used instead of labels to solve conflicts with ServerFolders */
+    grid-column: -3 / end;
+    grid-row: -2 / end;
 }
 .BA__baseEnhancedLayout ${DiscordSelectors.AppView.sidebar} {
     grid-area: channelsList;
@@ -171,6 +172,11 @@ css
 }
 .BA__baseEnhancedLayout[data-fullscreen="true"]
 :is(${DiscordSelectors.AppView.guilds}, ${DiscordSelectors.AppView.panels}) {
+    display: none;
+}
+    
+/* Fix for ServerFolders */
+.BA__baseEnhancedLayout ${DiscordSelectors.AppView.guilds}[class*="closed"] {
     display: none;
 }`
 `AppView (Servers, Channels)`
