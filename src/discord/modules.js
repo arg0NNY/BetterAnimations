@@ -84,7 +84,7 @@ export const MenuSubmenuItemKeyed = getWithKey(Filters.byStrings('subMenuClassNa
 export const MenuSubmenuListItemKeyed = getWithKey(Filters.byStrings('menuSubmenuProps', 'listClassName', 'submenuPaddingContainer'))
 export const { updateTheme } = Webpack.getByKeys('updateTheme')
 export const ThemeStore = Webpack.getStore('ThemeStore')
-export const BasePopoutKeyed = getWithKey(m => m?.defaultProps?.loadingComponent)
+export const BasePopout = Webpack.getModule(m => m?.defaultProps?.loadingComponent, { searchExports: true })
 export const PopoutCSSAnimatorKeyed = getWithKey(m => Filters.byKeys('TRANSLATE', 'SCALE')(m?.Types))
 export const SpringTransitionPhases = Webpack.getModule(Filters.byKeys('ENTER', 'LEAVE'), { searchExports: true })
 export const { Layer, appLayerContext } = getMangled(Filters.byDisplayName('AppLayer'), {
