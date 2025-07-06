@@ -54,7 +54,8 @@ class LazyLoader {
 
     const component = getLazyLayerComponent(layer.id)
     if (!component || isLazyLoaded(component)) {
-      Logger.log(this.name, `Layer "${layer.id}" is already loaded. Skipping...`)
+      if (!component) Logger.warn(this.name, `Unable to find component for layer "${layer.id}". Skipping...`)
+      else Logger.log(this.name, `Layer "${layer.id}" is already loaded. Skipping...`)
       layer.status = LoadStatus.FINISHED
     }
     else {
