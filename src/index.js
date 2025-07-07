@@ -43,6 +43,7 @@ import Validator from '@discord/validator'
 import DispatchController from '@/modules/DispatchController'
 import LazyLoader from '@/modules/LazyLoader'
 import { applyOptimizationPatches } from '@/patches/optimizations'
+import patchRootElementContext from '@/patches/AppView/patchRootElementContext'
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -107,6 +108,7 @@ export default function (meta) {
       patchSelect()
       patchChannelTextArea()
       patchPopToast()
+      patchRootElementContext()
       applyOptimizationPatches()
 
       Logger.info('Startup', 'Forcing app update...')

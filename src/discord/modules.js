@@ -179,3 +179,4 @@ export const ProfileEffectsKeyed = getWithKey(Filters.byStrings('profileEffectCo
 export const GatewaySocket = Webpack.getModule(m => m?.dispatcher?.scheduler, { searchExports: true })
 export const EmojiKeyed = getWithKey(Filters.byStrings('emojiId', 'emojiName', 'animated', 'shouldAnimate'))
 export const useIsVisibleKeyed = getWithKey(Filters.byStrings('isIntersecting', 'arguments.length'))
+export const useRootElementContextKeyed = getWithKey(Filters.byStrings('useRootElementContext'))
