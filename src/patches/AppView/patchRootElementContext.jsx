@@ -1,6 +1,6 @@
 import Patcher from '@/modules/Patcher'
 import { useRootElementContextKeyed } from '@discord/modules'
-import Modules from '@/modules/Modules'
+import Core from '@/modules/Core'
 import classNames from 'classnames'
 
 /**
@@ -15,7 +15,7 @@ function patchRootElementContext () {
       ...value,
       className: classNames(
         value.className,
-        Modules.getAllModules(true)
+        Core.getAllModules(true)
           .filter(m => m.isEnabled())
           .map(m => `BA__module_${m.id}`)
       )

@@ -1,4 +1,4 @@
-import Modules from '@/modules/Modules'
+import Core from '@/modules/Core'
 import ModuleSettings from '@/settings/views/ModuleSettings'
 import SettingsSidebarHeader from '@/settings/components/SettingsSidebarHeader'
 import ModeSwitch from '@/settings/components/ModeSwitch'
@@ -55,7 +55,7 @@ export function getSections () {
       section: 'CUSTOM',
       element: ErrorBoundary.wrap(ModeSwitch)
     },
-    ...Modules.getAllModules(true).map(module => ({
+    ...Core.getAllModules(true).map(module => ({
       section: module.id,
       label: module.name,
       className: module.parent ? 'BA__nestedTabBarItem' : undefined,

@@ -152,7 +152,7 @@ const moduleOptions = {
   }
 }
 
-export default new class Modules {
+export default new class Core {
   get name () { return 'Core' }
 
   constructor () {

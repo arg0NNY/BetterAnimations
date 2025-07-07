@@ -5,7 +5,7 @@ import AnimeTransition from '@components/AnimeTransition'
 import SwitchTransition from '@/components/SwitchTransition'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
-import Modules from '@/modules/Modules'
+import Core from '@/modules/Core'
 import patchChatSidebar from '@/patches/ChannelView/patchChatSidebar'
 import DiscordSelectors from '@discord/selectors'
 import { css } from '@style'
@@ -31,7 +31,7 @@ function patchChannelView () {
           ModuleKey.ThreadSidebarSwitch
         ])
         Patcher.after(ModuleKey.MembersSidebar, guildChannel.type.prototype, 'renderSidebar', (self, args, value) => {
-          const module = Modules.getModule(ModuleKey.MembersSidebar)
+          const module = Core.getModule(ModuleKey.MembersSidebar)
           if (!module.isEnabled()) return value
 
           return (
@@ -52,8 +52,8 @@ function patchChannelView () {
           )
         })
         Patcher.after(guildChannel.type.prototype, 'renderThreadSidebar', (self, args, value) => {
-          const module = Modules.getModule(ModuleKey.ThreadSidebar)
-          const switchModule = Modules.getModule(ModuleKey.ThreadSidebarSwitch)
+          const module = Core.getModule(ModuleKey.ThreadSidebar)
+          const switchModule = Core.getModule(ModuleKey.ThreadSidebarSwitch)
           if (!module.isEnabled() && !switchModule.isEnabled()) return
 
           const state = self.props.channelSidebarState ?? self.props.guildSidebarState

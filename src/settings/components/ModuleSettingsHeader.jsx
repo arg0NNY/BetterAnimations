@@ -3,7 +3,7 @@ import useAnimationSettings from '@/settings/hooks/useAnimationSettings'
 import AnimationType from '@enums/AnimationType'
 import Config from '@/modules/Config'
 import AnimationCard from '@/settings/components/AnimationCard'
-import Modules from '@/modules/Modules'
+import Core from '@/modules/Core'
 import {
   AlertTypes,
   Breadcrumbs,
@@ -26,8 +26,8 @@ import Hint from '@/settings/components/Hint'
 function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect, ...props }) {
   const { setSection } = use(SectionContext)
 
-  const parentModules = useMemo(() => Modules.getParentModules(module), [module])
-  const childModules = useMemo(() => Modules.getChildModules(module), [module])
+  const parentModules = useMemo(() => Core.getParentModules(module), [module])
+  const childModules = useMemo(() => Core.getChildModules(module), [module])
   const breadcrumbs = parentModules.concat(module).map(m => ({
     id: m.id,
     label: m.name

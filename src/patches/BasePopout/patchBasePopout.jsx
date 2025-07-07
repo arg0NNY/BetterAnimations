@@ -11,7 +11,7 @@ import findInReactTree from '@/utils/findInReactTree'
 import { MainWindowOnly } from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
 import AnimationStore from '@animation/store'
-import Modules from '@/modules/Modules'
+import Core from '@/modules/Core'
 
 function shouldShow (self, props = self.props, state = self.state) {
   return state.__isSafe !== false && (!state.isLoading || state.shouldShowLoadingState) && self.shouldShowPopout(props, state)
@@ -59,7 +59,7 @@ function patchBasePopout () {
   })
 
   Patcher.after(ModuleKey.Popouts, BasePopout.prototype, 'renderLayer', (self, args, value) => {
-    const module = Modules.getModule(ModuleKey.Popouts)
+    const module = Core.getModule(ModuleKey.Popouts)
     if (!module.isEnabled()) return
 
     return (

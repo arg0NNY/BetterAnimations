@@ -3,7 +3,7 @@ import { css } from '@style'
 import { ChannelSectionStore, Text, useStateFromStores } from '@discord/modules'
 import ModuleContext from '@/settings/context/ModuleContext'
 import Preview, { PREVIEW_WIDTH } from '@preview'
-import Modules from '@/modules/Modules'
+import Core from '@/modules/Core'
 import { moduleEffect } from '@/hooks/useModule'
 import classNames from 'classnames'
 import { useMovable } from '@/settings/components/AnimationCard'
@@ -48,7 +48,7 @@ function AnimationPreview ({ pack, animation, title = animation?.name, active = 
         style={{ scale }}
         key={module.id}
         id={module.id}
-        modules={Modules.getAllModules(true)}
+        modules={Core.getAllModules(true)}
         placeholder={!isActive}
         pack={pack}
         animation={animation}

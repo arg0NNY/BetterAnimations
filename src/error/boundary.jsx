@@ -4,7 +4,7 @@ import InternalError from '@error/structs/InternalError'
 import ErrorCard from './components/ErrorCard'
 import { Button, Text } from '@discord/modules'
 import IconBrand, { IconBrandTypes } from '@/components/icons/IconBrand'
-import Modules from '@/modules/Modules'
+import Core from '@/modules/Core'
 
 export function errorBoundary (callback, fallback = () => undefined, options = {}) {
   return (...args) => {
@@ -20,7 +20,7 @@ export function errorBoundary (callback, fallback = () => undefined, options = {
 }
 
 export function moduleErrorBoundary (moduleId, callback, fallback) {
-  return errorBoundary(callback, fallback, { module: Modules.getModule(moduleId) })
+  return errorBoundary(callback, fallback, { module: Core.getModule(moduleId) })
 }
 
 export function attempt (callback, fallback, options) {
