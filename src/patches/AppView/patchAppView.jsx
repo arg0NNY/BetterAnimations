@@ -16,12 +16,30 @@ import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequest
 import DiscordClasses from '@discord/classes'
 import DiscordSelectors from '@discord/selectors'
 import { css } from '@style'
-import { Fragment } from 'react'
+import { Fragment, useCallback, useEffect, useMemo } from 'react'
 import useWindow from '@/hooks/useWindow'
 import classNames from 'classnames'
 import { ErrorBoundary } from '@error/boundary'
+import { forceAppUpdate } from '@/utils/forceUpdate'
 
 export let guildChannelPath = []
+
+function useServersModule () {
+  const module = useModule(ModuleKey.Servers, true)
+  const getState = useCallback(() => {
+    const isEnabled = module.isEnabled()
+    return { isEnabled, isEnhancedLayout: isEnabled && module.settings.enhanceLayout }
+  }, [])
+
+  const { isEnabled, isEnhancedLayout } = useMemo(getState, [])
+
+  const { isEnhancedLayout: currentIsEnhancedLayout } = getState()
+  useEffect(() => {
+    if (isEnhancedLayout !== currentIsEnhancedLayout) forceAppUpdate()
+  }, [isEnhancedLayout, currentIsEnhancedLayout])
+
+  return { module, isEnabled, isEnhancedLayout }
+}
 
 function AppViewTransition ({ className, module, shouldSwitch, getSwitchDirection, children }) {
   const [key, direction] = useLocationKey(shouldSwitch, getSwitchDirection)
@@ -46,9 +64,13 @@ function AppViewTransition ({ className, module, shouldSwitch, getSwitchDirectio
 function patchAppView () {
   Patcher.after(...AppViewKeyed, (self, args, value) => {
     const { isMainWindow } = useWindow()
-    const serversModule = useModule(ModuleKey.Servers)
+    const {
+      module: serversModule,
+      isEnabled: isServersModuleEnabled,
+      isEnhancedLayout
+    } = useServersModule()
     const channelsModule = useModule(ModuleKey.Channels)
-    if (!isMainWindow || (!serversModule.isEnabled() && !channelsModule.isEnabled())) return
+    if (!isMainWindow || (!isServersModuleEnabled && !channelsModule.isEnabled())) return
 
     const base = findInReactTree(value, byClassName(DiscordClasses.AppView.base))
     if (!base) return
@@ -57,7 +79,7 @@ function patchAppView () {
     if (contentIndex === -1) return
 
     const content = base.props.children[contentIndex]
-    if (serversModule.isEnabled()) base.props.children[contentIndex] = (
+    if (isServersModuleEnabled) base.props.children[contentIndex] = (
       <ErrorBoundary module={serversModule} fallback={content}>
         <AppViewTransition
           className="BA__content"
@@ -96,7 +118,7 @@ function patchAppView () {
     if (guildChannelRoute) guildChannelPath = guildChannelRoute.props.path
 
     // Enhance layout
-    if (!serversModule.isEnabled() || !serversModule.settings.enhanceLayout) return
+    if (!isEnhancedLayout) return
 
     base.props.className = classNames(base.props.className, 'BA__baseEnhancedLayout')
 
