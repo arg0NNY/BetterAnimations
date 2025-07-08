@@ -15,7 +15,15 @@ function patchChannelItem () {
         const container = findInReactTree(value, m => m?.type === 'li')
         if (!container) return
 
-        Patcher.after(container.props, 'ref', (_, [ref]) => self.__containerRef.current = ref)
+        switch (typeof container.props.ref) {
+          case 'object':
+            self.__containerRef = container.props.ref
+            break
+          case 'function':
+            Patcher.after(container.props, 'ref', (_, [ref]) => self.__containerRef.current = ref)
+            break
+          default: container.props.ref = self.__containerRef
+        }
       }),
       key
     )
