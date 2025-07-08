@@ -12,7 +12,6 @@ import {
 import { passAuto } from '@utils/transition'
 import ModuleKey from '@enums/ModuleKey'
 import useModule from '@/hooks/useModule'
-import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
 import DiscordClasses from '@discord/classes'
 import DiscordSelectors from '@discord/selectors'
 import { css } from '@style'
@@ -72,7 +71,7 @@ function patchAppView () {
       isEnhancedLayout
     } = useServersModule()
     const channelsModule = useModule(ModuleKey.Channels)
-    if (!isMainWindow || (!isServersModuleEnabled && !channelsModule.isEnabled())) return
+    if (!isMainWindow) return
 
     const base = findInReactTree(value, byClassName(DiscordClasses.AppView.base))
     if (!base) return
@@ -112,9 +111,6 @@ function patchAppView () {
     )
 
     const routes = findInReactTree(page, m => m?.type === Router.Switch)?.props.children
-
-    const messageRequestsRoute = routes?.find(r => r?.props?.path === Routes.MESSAGE_REQUESTS)
-    if (messageRequestsRoute) patchMessageRequestsRoute(messageRequestsRoute)
 
     const guildChannelRoute = routes?.find(r => r?.props?.impressionName === ImpressionNames.GUILD_CHANNEL)
     if (guildChannelRoute) guildChannelPath = guildChannelRoute.props.path
