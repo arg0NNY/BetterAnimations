@@ -8,7 +8,6 @@ import Logger from '@logger'
 import ModuleKey from '@enums/ModuleKey'
 import ServerModuleControls from '@/components/ServerModuleControls'
 import Messages from '@shared/messages'
-import { forceAppUpdate } from '@/utils/forceUpdate'
 import meta from '@/meta'
 import { Anchor } from '@discord/modules'
 
@@ -42,8 +41,7 @@ const moduleOptions = {
       </>
     ),
     controls: ServerModuleControls,
-    alert: Messages.HEAVY_MODULE_ALERT,
-    onToggle: forceAppUpdate
+    alert: Messages.HEAVY_MODULE_ALERT
   },
   [ModuleKey.Channels]: {
     description: () => (
@@ -154,7 +152,7 @@ const moduleOptions = {
   }
 }
 
-export default new class Modules {
+export default new class Core {
   get name () { return 'Core' }
 
   constructor () {

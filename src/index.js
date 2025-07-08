@@ -11,7 +11,6 @@ import patchModals from '@/patches/Modals/patchModals'
 import patchLayers from '@/patches/Layers/patchLayers'
 import patchListThin from '@/patches/ListThin/patchListThin'
 import patchGuildChannelList from '@/patches/GuildChannelList/patchGuildChannelList'
-import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
 import PackManager from '@/modules/PackManager'
 import Logger from '@logger'
 import Settings from '@/settings'
@@ -22,7 +21,7 @@ import PackRegistry from '@/modules/PackRegistry'
 import { saveMeta } from '@/meta'
 import Style, { css } from '@style'
 import DiscordClasses from '@discord/classes'
-import Modules from '@/modules/Modules'
+import Core from '@/modules/Core'
 import patchChatSearchSidebar from '@/patches/ChatSearchSidebar/patchChatSearchSidebar'
 import patchReferencePositionLayer from '@/patches/ReferencePositionLayer/patchReferencePositionLayer'
 import patchSelect from '@/patches/Select/patchSelect'
@@ -43,6 +42,7 @@ import Validator from '@discord/validator'
 import DispatchController from '@/modules/DispatchController'
 import LazyLoader from '@/modules/LazyLoader'
 import { applyOptimizationPatches } from '@/patches/optimizations'
+import patchRootElementContext from '@/patches/AppView/patchRootElementContext'
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -53,7 +53,7 @@ if (import.meta.env.MODE === 'development')
     Prompt,
     PackRegistry,
     Style,
-    Modules,
+    Core,
     Mouse,
     AnimationStore,
     Emitter,
@@ -81,7 +81,7 @@ export default function (meta) {
       PackManager.initialize()
       PackRegistry.initialize()
       AnimationStore.initialize()
-      Modules.initialize()
+      Core.initialize()
       DispatchController.initialize()
       LazyLoader.initialize()
 
@@ -101,12 +101,12 @@ export default function (meta) {
       patchLayers()
       patchListThin()
       patchGuildChannelList()
-      patchMessageRequestsRoute()
       patchChatSearchSidebar()
       patchReferencePositionLayer()
       patchSelect()
       patchChannelTextArea()
       patchPopToast()
+      patchRootElementContext()
       applyOptimizationPatches()
 
       Logger.info('Startup', 'Forcing app update...')
@@ -115,7 +115,7 @@ export default function (meta) {
     },
     stop () {
       Logger.info('Shutdown', 'Shutting down modules...')
-      Modules.shutdown()
+      Core.shutdown()
       Mouse.shutdown()
       Style.shutdown()
       Config.shutdown()

@@ -1,10 +1,10 @@
-import { useContext } from 'react'
+import { use } from 'react'
 import { AppContext } from '@discord/modules'
 
 const mainWindow = window
 
 function useWindow () {
-  const { renderWindow } = useContext(AppContext)
+  const { renderWindow } = use(AppContext)
 
   return {
     window: renderWindow,

@@ -1,4 +1,3 @@
-import { forceAppUpdate } from '@/utils/forceUpdate'
 import { Checkbox, Flex, Text } from '@discord/modules'
 import DiscordClasses from '@discord/classes'
 import Emitter from '@/modules/Emitter'
@@ -12,8 +11,7 @@ function ServerModuleControls ({ module }) {
       value={module.settings.enhanceLayout}
       onChange={(_, value) => {
         module.settings.enhanceLayout = value
-        if (module.isEnabled()) forceAppUpdate()
-        else Emitter.emit(Events.ModuleSettingsChanged, module.id)
+        Emitter.emit(Events.ModuleSettingsChanged, module.id)
       }}
     >
       <Flex>

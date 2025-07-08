@@ -2,7 +2,7 @@ import Patcher from '@/modules/Patcher'
 import useUpdate from '@/hooks/useUpdate'
 import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
-import Modules from '@/modules/Modules'
+import Core from '@/modules/Core'
 import { useEffect } from 'react'
 
 export function moduleEffectFull (id, callback) {
@@ -46,7 +46,7 @@ function useModule (id, full = false) {
 
   useEffect(() => moduleEffect(id, update, full), [id])
 
-  return Modules.getModule(id)
+  return Core.getModule(id)
 }
 
 export default useModule

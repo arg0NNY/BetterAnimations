@@ -1,4 +1,4 @@
-import Modules from '@/modules/Modules'
+import Core from '@/modules/Core'
 import AnimationType from '@enums/AnimationType'
 import { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChannelList'
 import Logger from '@logger'
@@ -10,7 +10,7 @@ export default new class Utils {
   get name () { return 'Utils' }
 
   setAnimationForAllSupportedModules (packSlug, animationKey) {
-    const modules = Modules.getAllModules(true)
+    const modules = Core.getAllModules(true)
       .filter(m => m.findAnimation(packSlug, animationKey))
     modules.forEach(m => AnimationType.values().forEach(t => m.setAnimation(t, packSlug, animationKey)))
     Config.save()

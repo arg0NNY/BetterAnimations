@@ -1,6 +1,6 @@
 import { Patcher as BDPatcher } from '@/BdApi'
 import { attempt, errorBoundary } from '@error/boundary'
-import Modules from '@/modules/Modules'
+import Core from '@/modules/Core'
 import InternalError from '@error/structs/InternalError'
 
 function getDefaultFallback (type) {
@@ -21,7 +21,7 @@ export default new class Patcher {
     const { fallback = getDefaultFallback(type), ...rest } = options ?? {}
 
     const errorOptions = {
-      module: moduleId && Modules.getModule(moduleId),
+      module: moduleId && Core.getModule(moduleId),
       category: moduleId ? InternalError.Category.MODULE : InternalError.Category.GENERAL,
       ...rest
     }

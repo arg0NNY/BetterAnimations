@@ -84,7 +84,7 @@ export const MenuSubmenuItemKeyed = getWithKey(Filters.byStrings('subMenuClassNa
 export const MenuSubmenuListItemKeyed = getWithKey(Filters.byStrings('menuSubmenuProps', 'listClassName', 'submenuPaddingContainer'))
 export const { updateTheme } = Webpack.getByKeys('updateTheme')
 export const ThemeStore = Webpack.getStore('ThemeStore')
-export const BasePopoutKeyed = getWithKey(m => m?.defaultProps?.loadingComponent)
+export const BasePopout = Webpack.getModule(m => m?.defaultProps?.loadingComponent, { searchExports: true })
 export const PopoutCSSAnimatorKeyed = getWithKey(m => Filters.byKeys('TRANSLATE', 'SCALE')(m?.Types))
 export const SpringTransitionPhases = Webpack.getModule(Filters.byKeys('ENTER', 'LEAVE'), { searchExports: true })
 export const { Layer, appLayerContext } = getMangled(Filters.byDisplayName('AppLayer'), {
@@ -179,3 +179,4 @@ export const ProfileEffectsKeyed = getWithKey(Filters.byStrings('profileEffectCo
 export const GatewaySocket = Webpack.getModule(m => m?.dispatcher?.scheduler, { searchExports: true })
 export const EmojiKeyed = getWithKey(Filters.byStrings('emojiId', 'emojiName', 'animated', 'shouldAnimate'))
 export const useIsVisibleKeyed = getWithKey(Filters.byStrings('isIntersecting', 'arguments.length'))
+export const useRootElementContextKeyed = getWithKey(Filters.byStrings('useRootElementContext'))

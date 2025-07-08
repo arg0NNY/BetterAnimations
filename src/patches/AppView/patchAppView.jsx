@@ -12,16 +12,35 @@ import {
 import { passAuto } from '@utils/transition'
 import ModuleKey from '@enums/ModuleKey'
 import useModule from '@/hooks/useModule'
-import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequestsRoute'
 import DiscordClasses from '@discord/classes'
 import DiscordSelectors from '@discord/selectors'
 import { css } from '@style'
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import useWindow from '@/hooks/useWindow'
 import classNames from 'classnames'
 import { ErrorBoundary } from '@error/boundary'
+import { forceAppUpdate } from '@/utils/forceUpdate'
 
 export let guildChannelPath = []
+
+function useServersModule () {
+  const module = useModule(ModuleKey.Servers, true)
+
+  const currentState = {
+    isEnabled: module.isEnabled(),
+    isEnhancedLayout: module.isEnabled() && module.settings.enhanceLayout
+  }
+
+  const [isEnabled, setIsEnabled] = useState(currentState.isEnabled)
+  const [isEnhancedLayout] = useState(currentState.isEnhancedLayout)
+
+  useEffect(() => {
+    if (isEnhancedLayout !== currentState.isEnhancedLayout) forceAppUpdate()
+    else if (isEnabled !== currentState.isEnabled) setIsEnabled(currentState.isEnabled)
+  }, [currentState.isEnabled, currentState.isEnhancedLayout])
+
+  return { module, isEnabled, isEnhancedLayout }
+}
 
 function AppViewTransition ({ className, module, shouldSwitch, getSwitchDirection, children }) {
   const [key, direction] = useLocationKey(shouldSwitch, getSwitchDirection)
@@ -46,9 +65,13 @@ function AppViewTransition ({ className, module, shouldSwitch, getSwitchDirectio
 function patchAppView () {
   Patcher.after(...AppViewKeyed, (self, args, value) => {
     const { isMainWindow } = useWindow()
-    const serversModule = useModule(ModuleKey.Servers)
+    const {
+      module: serversModule,
+      isEnabled: isServersModuleEnabled,
+      isEnhancedLayout
+    } = useServersModule()
     const channelsModule = useModule(ModuleKey.Channels)
-    if (!isMainWindow || (!serversModule.isEnabled() && !channelsModule.isEnabled())) return
+    if (!isMainWindow) return
 
     const base = findInReactTree(value, byClassName(DiscordClasses.AppView.base))
     if (!base) return
@@ -57,7 +80,7 @@ function patchAppView () {
     if (contentIndex === -1) return
 
     const content = base.props.children[contentIndex]
-    if (serversModule.isEnabled()) base.props.children[contentIndex] = (
+    if (isServersModuleEnabled) base.props.children[contentIndex] = (
       <ErrorBoundary module={serversModule} fallback={content}>
         <AppViewTransition
           className="BA__content"
@@ -89,14 +112,11 @@ function patchAppView () {
 
     const routes = findInReactTree(page, m => m?.type === Router.Switch)?.props.children
 
-    const messageRequestsRoute = routes?.find(r => r?.props?.path === Routes.MESSAGE_REQUESTS)
-    if (messageRequestsRoute) patchMessageRequestsRoute(messageRequestsRoute)
-
     const guildChannelRoute = routes?.find(r => r?.props?.impressionName === ImpressionNames.GUILD_CHANNEL)
     if (guildChannelRoute) guildChannelPath = guildChannelRoute.props.path
 
     // Enhance layout
-    if (!serversModule.isEnabled() || !serversModule.settings.enhanceLayout) return
+    if (!isEnhancedLayout) return
 
     base.props.className = classNames(base.props.className, 'BA__baseEnhancedLayout')
 
@@ -159,8 +179,9 @@ css
 }
 
 .BA__baseEnhancedLayout :is(.BA__content, ${DiscordSelectors.AppView.content}) {
-    grid-column: guildsEnd / end;
-    grid-row: noticeEnd / end;
+    /* Indexes used instead of labels to solve conflicts with ServerFolders */
+    grid-column: -3 / end;
+    grid-row: -2 / end;
 }
 .BA__baseEnhancedLayout ${DiscordSelectors.AppView.sidebar} {
     grid-area: channelsList;
@@ -169,8 +190,14 @@ css
     width: calc(var(--custom-guild-sidebar-width) - var(--space-xs)*2);
     z-index: 100;
 }
-.BA__baseEnhancedLayout[data-fullscreen="true"]
-:is(${DiscordSelectors.AppView.guilds}, ${DiscordSelectors.AppView.panels}) {
+
+/* Hide the moved elements in the fullscreen voice call */
+.BA__baseEnhancedLayout[data-fullscreen="true"] :is(${DiscordSelectors.AppView.guilds}, ${DiscordSelectors.AppView.panels}) {
+    display: none;
+}
+
+/* Fix for ServerFolders */
+.BA__baseEnhancedLayout ${DiscordSelectors.AppView.guilds}[class*="closed"] {
     display: none;
 }`
 `AppView (Servers, Channels)`

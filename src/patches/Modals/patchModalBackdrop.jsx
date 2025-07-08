@@ -28,6 +28,7 @@ function patchModalBackdrop () {
         in={props.isVisible}
         module={module}
         injectContainerRef={true}
+        defaultLayoutStyles={false}
       >
         <div {...omit(backdrop.props, ['style'])}>
           <div className="BA__backdrop" />

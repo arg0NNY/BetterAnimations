@@ -3,7 +3,7 @@ import { SpringTransitionPhases, Tooltip, TooltipLayer } from '@discord/modules'
 import AnimeTransition from '@components/AnimeTransition'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
-import Modules from '@/modules/Modules'
+import Core from '@/modules/Core'
 import { useEffect, useRef, useState } from 'react'
 import { MainWindowOnly } from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
@@ -54,7 +54,7 @@ function patchTooltip () {
   Tooltip.defaultProps.delay = 0
   injectModule(Tooltip, ModuleKey.Tooltips)
   Patcher.after(ModuleKey.Tooltips, Tooltip.prototype, 'renderTooltip', (self, args, value) => {
-    const module = Modules.getModule(ModuleKey.Tooltips)
+    const module = Core.getModule(ModuleKey.Tooltips)
     if (!module.isEnabled()) return
 
     const { text } = self.props

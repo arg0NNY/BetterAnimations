@@ -4,7 +4,7 @@ import findInReactTree, { byClassName } from '@/utils/findInReactTree'
 import ensureOnce from '@utils/ensureOnce'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
-import Modules from '@/modules/Modules'
+import Core from '@/modules/Core'
 import DiscordClasses from '@discord/classes'
 import AnimeTransition from '@components/AnimeTransition'
 import { createRef, Fragment } from 'react'
@@ -27,7 +27,7 @@ function patchVoiceChannelView () {
     once(() => {
       injectModule(channelView.type, ModuleKey.ThreadSidebar)
       Patcher.after(ModuleKey.ThreadSidebar, channelView.type.prototype, 'render', (self, args, value) => {
-        const module = Modules.getModule(ModuleKey.ThreadSidebar)
+        const module = Core.getModule(ModuleKey.ThreadSidebar)
         if (!module.isEnabled()) return
 
         if (!self.__containerRef) self.__containerRef = createRef()

@@ -4,17 +4,22 @@ import ModuleKey from '@enums/ModuleKey'
 import useModule from '@/hooks/useModule'
 import SidebarTransition from '@/patches/ChannelView/components/SidebarTransition'
 import useWindow from '@/hooks/useWindow'
-import AnimeContainer from '@components/AnimeContainer'
 import { ErrorBoundary } from '@error/boundary'
+import findInReactTree from '@/utils/findInReactTree'
+
+function injectContainerRef (children, ref) {
+  const div = findInReactTree(children, m => m?.type === 'div')
+  if (div) div.props.ref = ref
+}
 
 async function patchMembersModViewSidebar () {
   Patcher.after(...await MembersModViewSidebarKeyed, (self, [{ guildId }], value) => {
+    const state = useStateFromStores([ChannelSectionStore], () => ChannelSectionStore.getGuildSidebarState(guildId), [guildId])
+
     const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.ThreadSidebar)
     const switchModule = useModule(ModuleKey.ThreadSidebarSwitch)
     if (!isMainWindow || (!module.isEnabled() && !switchModule.isEnabled())) return
-
-    const state = useStateFromStores([ChannelSectionStore], () => ChannelSectionStore.getGuildSidebarState(guildId), [guildId])
 
     return (
       <ErrorBoundary fallback={value}>
@@ -22,10 +27,9 @@ async function patchMembersModViewSidebar () {
           module={module}
           switchModule={switchModule}
           state={state}
+          injectContainerRef={injectContainerRef}
         >
-          <AnimeContainer container={{ className: 'BA__sidebar' }}>
-            {value}
-          </AnimeContainer>
+          {value}
         </SidebarTransition>
       </ErrorBoundary>
     )

@@ -39,6 +39,10 @@ However, it may clash with&nbsp;other plugins or&nbsp;themes you have enabled. T
 > When this option is&nbsp;disabled _BetterAnimations_ will still apply minor layout tweaks (required for&nbsp;animations to&nbsp;function).
 > Consider disabling Servers animations entirely if&nbsp;the&nbsp;conflict persists.
 
+::: tip FOR THEME DEVELOPERS
+To learn how to make your theme compatible with **Enhance layout** see [Compatibility](./theme-compatibility#enhance-layout).
+:::
+
 ## Channels <Badge type="warning" text="Switch" />
 
 Animates the&nbsp;transitions when switching between channels and other pages sharing the&nbsp;same sidebar.

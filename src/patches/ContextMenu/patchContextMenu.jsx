@@ -6,7 +6,7 @@ import ensureOnce from '@utils/ensureOnce'
 import Position from '@enums/Position'
 import useModule, { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
-import Modules from '@/modules/Modules'
+import Core from '@/modules/Core'
 import { autoPosition } from '@/hooks/useAutoPosition'
 import useWindow, { MainWindowOnly } from '@/hooks/useWindow'
 import mouse from '@shared/mouse'
@@ -23,7 +23,7 @@ function patchContextMenu () {
         self.__anchor = mouse?.getAnchor()
       })
       Patcher.after(ModuleKey.ContextMenu, value.type.prototype, 'render', (self, args, value) => {
-        const module = Modules.getModule(ModuleKey.ContextMenu)
+        const module = Core.getModule(ModuleKey.ContextMenu)
         if (!module.isEnabled()) return
 
         return (

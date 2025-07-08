@@ -7,7 +7,7 @@ import DiscordClasses from '@discord/classes'
 import DiscordSelectors from '@discord/selectors'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
-import Modules from '@/modules/Modules'
+import Core from '@/modules/Core'
 import { css } from '@style'
 import Mouse from '@shared/mouse'
 import classNames from 'classnames'
@@ -119,7 +119,7 @@ function patchLayers () {
         const layerStore = new LayerStore()
         injectModule(value.type, ModuleKey.Layers)
         Patcher.after(ModuleKey.Layers, value.type.prototype, 'renderLayers', (self, args, value) => {
-          const module = Modules.getModule(ModuleKey.Layers)
+          const module = Core.getModule(ModuleKey.Layers)
           if (!module.isEnabled()) return
 
           const { direction, anchor } = layerStore.onRender(value.length)

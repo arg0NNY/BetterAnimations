@@ -18,6 +18,12 @@ const usageSections = [
       { text: 'Advanced Animation Settings', link: '/usage/advanced-animation-settings' },
       { text: 'Pack Directory', link: '/usage/pack-directory' }
     ]
+  },
+  {
+    text: 'Compatibility',
+    items: [
+      { text: 'For theme developers', link: '/usage/theme-compatibility' }
+    ]
   }
 ]
 
