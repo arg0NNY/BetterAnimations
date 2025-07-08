@@ -72,14 +72,9 @@ css
 `${DiscordSelectors.Modal.root}, .bd-modal-root {
     isolation: isolate;
 }
-
-${DiscordSelectors.ModalBackdrop.backdrop} {
-    position: fixed !important;
-}
 ${DiscordSelectors.Layer.layerContainer} + ${DiscordSelectors.Layer.layerContainer} ${DiscordSelectors.ModalBackdrop.backdrop} {
     display: none;
 }
-
 ${DiscordSelectors.Modal.focusLock}:has(> [class*="carouselModal"]) {
     position: absolute !important;
     inset: 0;

@@ -194,11 +194,12 @@ css
     width: calc(var(--custom-guild-sidebar-width) - var(--space-xs)*2);
     z-index: 100;
 }
-.BA__baseEnhancedLayout[data-fullscreen="true"]
-:is(${DiscordSelectors.AppView.guilds}, ${DiscordSelectors.AppView.panels}) {
+
+/* Hide the moved elements in the fullscreen voice call */
+.BA__baseEnhancedLayout[data-fullscreen="true"] :is(${DiscordSelectors.AppView.guilds}, ${DiscordSelectors.AppView.panels}) {
     display: none;
 }
-    
+
 /* Fix for ServerFolders */
 .BA__baseEnhancedLayout ${DiscordSelectors.AppView.guilds}[class*="closed"] {
     display: none;

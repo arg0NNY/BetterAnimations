@@ -25,7 +25,7 @@ function patchChannelView () {
       if (!guildChannel) return
 
       once(() => {
-        injectModule(value.type, [
+        injectModule(guildChannel.type, [
           ModuleKey.MembersSidebar,
           ModuleKey.ThreadSidebar,
           ModuleKey.ThreadSidebarSwitch

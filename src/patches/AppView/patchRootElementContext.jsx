@@ -2,6 +2,7 @@ import Patcher from '@/modules/Patcher'
 import { useRootElementContextKeyed } from '@discord/modules'
 import Core from '@/modules/Core'
 import classNames from 'classnames'
+import ModuleKey from '@enums/ModuleKey'
 
 /**
  * Inject module indicator classes in the root element for easy theme compatibility
@@ -16,7 +17,13 @@ function patchRootElementContext () {
       className: classNames(
         value.className,
         Core.getAllModules(true)
-          .filter(m => m.isEnabled())
+          .filter(m => {
+            switch (m.id) {
+              case ModuleKey.ThreadSidebar:
+                return m.isEnabled() || Core.getModule(ModuleKey.ThreadSidebarSwitch).isEnabled()
+              default: return m.isEnabled()
+            }
+          })
           .map(m => `BA__module_${m.id}`)
       )
     }
