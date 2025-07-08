@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { ModalBackdrop } from '@discord/modules'
+import { ModalBackdrop, TransitionGroup } from '@discord/modules'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import findInReactTree from '@/utils/findInReactTree'
@@ -10,35 +10,31 @@ import { omit } from '@utils/object'
 import { Fragment } from 'react'
 
 function patchModalBackdrop () {
-  Patcher.instead(ModuleKey.ModalsBackdrop, ModalBackdrop, 'render', (self, [props, ref], original) => {
-    const fallback = original(props, ref)
+  Patcher.after(ModuleKey.ModalsBackdrop, ModalBackdrop, 'render', (self, [{ isVisible }], value) => {
     const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.ModalsBackdrop)
-    if (!isMainWindow || !module.isEnabled()) return fallback
-
-    const value = original({ ...props, isVisible: true }, ref)
+    if (!isMainWindow || !module.isEnabled()) return
 
     const fragment = findInReactTree(value, m => m?.type === Fragment)
-    if (!fragment) return fallback
+    if (!fragment) return
 
-    const [backdrop] = fragment.props.children
-    fragment.props.children[0] = (
-      <AnimeTransition
-        appear={true}
-        in={props.isVisible}
-        module={module}
-        injectContainerRef={true}
-        defaultLayoutStyles={false}
-      >
-        <div {...omit(backdrop.props, ['style'])}>
-          <div className="BA__backdrop" />
-        </div>
-      </AnimeTransition>
-    )
-
-    return (
-      <ErrorBoundary module={module} fallback={fallback}>
-        {value}
+    const backdrop = fragment.props.children.find(Boolean)
+    fragment.props.children = (
+      <ErrorBoundary module={module} fallback={backdrop}>
+        <TransitionGroup component={null}>
+          {backdrop && isVisible && (
+            <AnimeTransition
+              appear={true}
+              module={module}
+              injectContainerRef={true}
+              defaultLayoutStyles={false}
+            >
+              <div {...omit(backdrop.props, ['style'])}>
+                <div className="BA__backdrop" />
+              </div>
+            </AnimeTransition>
+          )}
+        </TransitionGroup>
       </ErrorBoundary>
     )
   })
