@@ -16,7 +16,7 @@ import patchMessageRequestsRoute from '@/patches/ChannelView/patchMessageRequest
 import DiscordClasses from '@discord/classes'
 import DiscordSelectors from '@discord/selectors'
 import { css } from '@style'
-import { Fragment, useCallback, useEffect, useMemo } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import useWindow from '@/hooks/useWindow'
 import classNames from 'classnames'
 import { ErrorBoundary } from '@error/boundary'
@@ -26,17 +26,19 @@ export let guildChannelPath = []
 
 function useServersModule () {
   const module = useModule(ModuleKey.Servers, true)
-  const getState = useCallback(() => {
-    const isEnabled = module.isEnabled()
-    return { isEnabled, isEnhancedLayout: isEnabled && module.settings.enhanceLayout }
-  }, [])
 
-  const { isEnabled, isEnhancedLayout } = useMemo(getState, [])
+  const currentState = {
+    isEnabled: module.isEnabled(),
+    isEnhancedLayout: module.isEnabled() && module.settings.enhanceLayout
+  }
 
-  const { isEnhancedLayout: currentIsEnhancedLayout } = getState()
+  const [isEnabled, setIsEnabled] = useState(currentState.isEnabled)
+  const [isEnhancedLayout] = useState(currentState.isEnhancedLayout)
+
   useEffect(() => {
-    if (isEnhancedLayout !== currentIsEnhancedLayout) forceAppUpdate()
-  }, [isEnhancedLayout, currentIsEnhancedLayout])
+    if (isEnhancedLayout !== currentState.isEnhancedLayout) forceAppUpdate()
+    else if (isEnabled !== currentState.isEnabled) setIsEnabled(currentState.isEnabled)
+  }, [currentState.isEnabled, currentState.isEnhancedLayout])
 
   return { module, isEnabled, isEnhancedLayout }
 }
