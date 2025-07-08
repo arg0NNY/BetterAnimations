@@ -176,3 +176,6 @@ export const generateUserSettingsSectionsKeyed = getWithKey(Filters.byStrings('A
 export const SelectedGuildStore = Webpack.getStore('SelectedGuildStore')
 export const SelectedChannelStore = Webpack.getStore('SelectedChannelStore')
 export const ProfileEffectsKeyed = getWithKey(Filters.byStrings('profileEffectConfig', 'useReducedMotion'))
+export const GatewaySocket = Webpack.getModule(m => m?.dispatcher?.scheduler, { searchExports: true })
+export const EmojiKeyed = getWithKey(Filters.byStrings('emojiId', 'emojiName', 'animated', 'shouldAnimate'))
+export const useIsVisibleKeyed = getWithKey(Filters.byStrings('isIntersecting', 'arguments.length'))

@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { LayersKeyed, TransitionGroup } from '@discord/modules'
+import { LayersKeyed, Transition, TransitionGroup } from '@discord/modules'
 import ensureOnce from '@utils/ensureOnce'
 import AnimeTransition from '@components/AnimeTransition'
 import { passAuto } from '@utils/transition'
@@ -12,6 +12,8 @@ import { css } from '@style'
 import Mouse from '@shared/mouse'
 import classNames from 'classnames'
 import { ErrorBoundary } from '@error/boundary'
+
+export let LayersComponent = null
 
 function getWindowCenterAnchor () {
   return {
@@ -52,7 +54,7 @@ function LayerTransition ({ layer, ...props }) {
         <Layer
           {...layer.props}
           key={layer.key}
-          hidden={state === 'exited'}
+          hidden={state === Transition.EXITED}
         />
       )}
     </AnimeTransition>
@@ -113,6 +115,7 @@ function patchLayers () {
   Patcher.after(ModuleKey.Layers, ...LayersKeyed, (self, args, value) => {
     once(
       () => {
+        LayersComponent = value.type
         const layerStore = new LayerStore()
         injectModule(value.type, ModuleKey.Layers)
         Patcher.after(ModuleKey.Layers, value.type.prototype, 'renderLayers', (self, args, value) => {

@@ -4,7 +4,7 @@ import AnimationCardControls from '@/settings/components/AnimationCardControls'
 import useEventListener from '@/hooks/useEventListener'
 import useHover from '@/hooks/useHover'
 import useWindowSize from '@/hooks/useWindowSize'
-import { Clickable, CSSTransition, TransitionGroup } from '@discord/modules'
+import { Clickable, CSSTransition, Timeout, TransitionGroup } from '@discord/modules'
 import AnimationSettings from '@/settings/components/AnimationSettings'
 import DiscordClasses from '@discord/classes'
 import useDismissible from '@/settings/hooks/useDismissible'
@@ -118,6 +118,23 @@ function useAnimationCardExpand ({ expanded, positionerRef, cardRef, popoutRef, 
   }
 }
 
+function useQuickPreview (cardRef) {
+  const { config } = useConfig()
+  const hovered = useHover(cardRef)
+
+  const [isActive, setIsActive] = useState(hovered)
+  const timeout = useMemo(() => new Timeout, [])
+  useEffect(() => {
+    if (hovered) timeout.start(500, () => setIsActive(true))
+    else {
+      timeout.stop()
+      setIsActive(false)
+    }
+  }, [hovered])
+
+  return config.general.quickPreview && isActive
+}
+
 function AnimationCard ({
   pack,
   animation,
@@ -145,8 +162,6 @@ function AnimationCard ({
     accordions: accordionsPopoutRef
   }), [settingsPopoutRef, accordionsPopoutRef])
 
-  const [config] = useConfig()
-
   const [expanded, setExpanded] = useState(null)
   const close = useCallback(() => setExpanded(null), [setExpanded])
 
@@ -169,7 +184,7 @@ function AnimationCard ({
 
   useLayoutEffect(update, [animationSettings, accordionsSettings])
 
-  const cardHovered = useHover(cardRef)
+  const isQuickPreview = useQuickPreview(cardRef)
 
   const [rightClickHint, setRightClickHint] = useDismissible('rightClickAnimationCard')
 
@@ -240,7 +255,7 @@ function AnimationCard ({
                 pack={pack}
                 animation={animation}
                 title={name}
-                active={(header && !isAnimationExpanded) || (cardHovered && config.general.quickPreview) || !!expanded}
+                active={(header && !isAnimationExpanded) || isQuickPreview || !!expanded}
               />
               <AnimationCardControls
                 enter={enter}

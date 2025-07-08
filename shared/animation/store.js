@@ -10,6 +10,9 @@ export class AnimationStore {
     this.animations = []
     this.switchCooldownUntil = 0
 
+    this.shouldPauseEmitter = false
+    this.shouldInterceptEvents = false
+    this.isSafe = true
     this._watchers = []
 
     this.onDocumentVisibilityChange = () => {
@@ -98,9 +101,25 @@ export class AnimationStore {
     this._watchers.push(callback)
     return () => this._watchers = this._watchers.filter(c => c !== callback)
   }
+  untilSafe () {
+    return new Promise(resolve => {
+      if (this.isSafe) return resolve()
+
+      const unwatch = this.watch((animations, isSafe) => {
+        if (!isSafe) return
+        unwatch()
+        resolve()
+      })
+    })
+  }
+
   trigger () {
+    this.shouldPauseEmitter = this.animations.some(a => a.module.type === ModuleType.Switch)
+    this.shouldInterceptEvents = this.animations.some(a => a.module.interceptEvents)
+    this.isSafe = !this.animations.some(a => a.module.type === ModuleType.Switch)
+
     this._watchers.forEach(callback => {
-      try { callback([...this.animations]) }
+      try { callback([...this.animations], this.isSafe) }
       catch (error) { Logger.warn(this.name, `Watcher threw an error:`, error) }
     })
   }

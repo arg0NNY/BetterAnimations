@@ -82,6 +82,9 @@ export default class Module {
   get type () {
     return this.meta.type ?? ModuleType.Reveal
   }
+  get interceptEvents () {
+    return this.meta.interceptEvents ?? true
+  }
 
   get alert () {
     if (typeof this._alert === 'function') return this._alert(this.name)

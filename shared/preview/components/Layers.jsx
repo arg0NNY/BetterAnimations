@@ -2,7 +2,7 @@ import useModule from '@preview/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import useStages from '@preview/hooks/useStages'
 import useMouse from '@preview/hooks/useMouse'
-import { TransitionGroup } from '@discord/modules'
+import { Transition, TransitionGroup } from '@discord/modules'
 import { passAuto } from '@utils/transition'
 import PreviewTransition from '@preview/components/PreviewTransition'
 import { css } from '@style'
@@ -35,7 +35,7 @@ function LayerTransition ({ baseLayer, shown, children, ...props }) {
       unmountOnExit={false}
     >
       {state => (
-        <Layer baseLayer={baseLayer} hidden={state === 'exited'}>
+        <Layer baseLayer={baseLayer} hidden={state === Transition.EXITED}>
           {children}
         </Layer>
       )}

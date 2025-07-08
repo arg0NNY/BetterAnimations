@@ -55,7 +55,6 @@ async function patchStandardSidebarView () {
           <AnimeTransition
             key={props.section}
             container={{ className: DiscordClasses.StandardSidebarView.contentRegion }}
-            freeze={true}
             module={module}
             auto={auto}
           >

@@ -4,7 +4,7 @@ import { handleClick } from '@discord/modules'
 import useConfig from '@/hooks/useConfig'
 
 function Hint ({ href, onClick, ...props }) {
-  const [config] = useConfig()
+  const { config } = useConfig()
   if (config.general.disableHints) return null
 
   return (

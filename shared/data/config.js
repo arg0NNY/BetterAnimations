@@ -175,8 +175,9 @@ export const configDefaults = {
     quickPreview: true,
     disableHints: false,
     suppressErrors: SuppressErrors.None,
-    switchCooldownDuration: 1000,
     prioritizeAnimationSmoothness: true,
-    cacheUserSettingsSections: true
+    cacheUserSettingsSections: true,
+    preloadLayers: true,
+    switchCooldownDuration: 1000
   }
 }

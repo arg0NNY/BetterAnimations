@@ -41,8 +41,8 @@ import patchChannelTextArea from '@/patches/ChannelTextArea/patchChannelTextArea
 import patchPopToast from '@/patches/Toast/patchPopToast'
 import Validator from '@discord/validator'
 import DispatchController from '@/modules/DispatchController'
-import patchGenerateUserSettingsSections from '@/patches/UserSettings/patchGenerateUserSettingsSections'
-import patchProfileEffects from '@/patches/Profile/patchProfileEffects'
+import LazyLoader from '@/modules/LazyLoader'
+import { applyOptimizationPatches } from '@/patches/optimizations'
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -83,6 +83,7 @@ export default function (meta) {
       AnimationStore.initialize()
       Modules.initialize()
       DispatchController.initialize()
+      LazyLoader.initialize()
 
       Validator.onStartup()
       Prompt.onStartup()
@@ -106,8 +107,7 @@ export default function (meta) {
       patchSelect()
       patchChannelTextArea()
       patchPopToast()
-      patchGenerateUserSettingsSections()
-      patchProfileEffects()
+      applyOptimizationPatches()
 
       Logger.info('Startup', 'Forcing app update...')
       forceAppUpdate()
@@ -124,6 +124,7 @@ export default function (meta) {
       PackManager.shutdown()
       AnimationStore.shutdown()
       DispatchController.shutdown()
+      LazyLoader.shutdown()
 
       Settings.closeSettingsModal()
 

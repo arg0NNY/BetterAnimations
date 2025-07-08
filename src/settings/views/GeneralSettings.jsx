@@ -6,9 +6,10 @@ import SuppressErrors from '@enums/SuppressErrors'
 import Divider from '@/components/Divider'
 import DurationSlider from '@/settings/components/DurationSlider'
 import { configDefaults } from '@data/config'
+import Messages from '@shared/messages'
 
 function GeneralSettings () {
-  const [config, onChange] = useConfig()
+  const { config, onChange } = useConfig()
 
   return (
     <FormSection
@@ -72,7 +73,7 @@ function GeneralSettings () {
       >
         <FormSwitch
           className={Classes.Margins.marginBottom20}
-          children="Prioritize Animation Smoothness"
+          children={Messages.PRIORITIZE_ANIMATION_SMOOTHNESS}
           note="Delay resource-intensive operations until after animations finish to avoid most of the stuttering that occurs while they are running."
           value={config.general.prioritizeAnimationSmoothness}
           onChange={value => {
@@ -82,7 +83,17 @@ function GeneralSettings () {
         />
         <FormSwitch
           className={Classes.Margins.marginBottom20}
-          children="Cache User Settings Sections"
+          children="Preload Layers"
+          note="Load full-screen pages (User Settings, Server Settings, Channel Settings, etc.) in advance to prevent them from interrupting the animations when opened."
+          value={config.general.preloadLayers}
+          onChange={value => {
+            config.general.preloadLayers = value
+            onChange()
+          }}
+        />
+        <FormSwitch
+          className={Classes.Margins.marginBottom20}
+          children={Messages.CACHE_USER_SETTINGS_SECTIONS}
           note="Significantly improves performance when opening User Settings."
           value={config.general.cacheUserSettingsSections}
           onChange={value => {

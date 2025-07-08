@@ -1,6 +1,7 @@
 import Patcher from '@/modules/Patcher'
 import { generateUserSettingsSectionsKeyed } from '@discord/modules'
 import Config from '@/modules/Config'
+import InternalError from '@error/structs/InternalError'
 
 async function patchGenerateUserSettingsSections () {
   const cached = {
@@ -16,7 +17,7 @@ async function patchGenerateUserSettingsSections () {
     }
 
     return cached.value
-  })
+  }, { category: InternalError.Category.CACHE_USER_SETTINGS_SECTIONS })
 }
 
 export default patchGenerateUserSettingsSections

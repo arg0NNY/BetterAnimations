@@ -1,13 +1,24 @@
-import { ChannelSectionStore, Dispatcher, Flux, SelectedChannelStore, SelectedGuildStore } from '@discord/modules'
+import {
+  ChannelSectionStore,
+  Dispatcher,
+  Flux,
+  LayerStore,
+  SelectedChannelStore,
+  SelectedGuildStore
+} from '@discord/modules'
 import AnimationStore from '@animation/store'
 import Logger from '@logger'
 import Config from '@/modules/Config'
 import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
 import ModuleType from '@enums/ModuleType'
+import isEqual from 'lodash-es/isEqual'
+import WebSocketController from '@/modules/WebSocketController'
 
 const ignoredEvents = [
-  'CHANNEL_SELECT'
+  'CHANNEL_SELECT',
+  'UPDATE_CHANNEL_DIMENSIONS',
+  'GUILD_HOME_SETTINGS_FETCH_START'
 ]
 
 const alwaysInterceptedEvents = [
@@ -17,17 +28,27 @@ const alwaysInterceptedEvents = [
   'THREAD_LIST_SYNC'
 ]
 
+const connectedStores = [
+  SelectedGuildStore,
+  SelectedChannelStore,
+  ChannelSectionStore,
+  LayerStore
+]
+
 class DispatchController {
   get name () { return 'DispatchController' }
+  get isEnabled () { return Config.current.general.prioritizeAnimationSmoothness }
 
   constructor () {
+    this.webSocketController = new WebSocketController()
+
     this.queue = []
     this.isEmitterPaused = false
-    this._selectedChannelId = null
+    this._visibleEntities = this.getVisibleEntities()
     this._clearWatcher = null
 
     this.interceptor = event => {
-      if (!AnimationStore.animations.length || this.isEmitterPaused) return
+      if (!AnimationStore.shouldInterceptEvents || this.isEmitterPaused) return
       if (import.meta.env.VITE_DISPATCH_CONTROLLER_DEBUG === 'true') this._debugEvent(event)
       if (!this.shouldIntercept(event)) return
 
@@ -42,15 +63,17 @@ class DispatchController {
         Logger.log(this.name, 'Enabled.')
       } else {
         this.clearInterceptor()
-        this.flushQueue()
+        this.webSocketController.resumeMessages(false)
+        this.resumeEmitter()
+        this.flush()
         Logger.log(this.name, 'Disabled.')
       }
     }
 
-    this.onSelectedChannelStoreChange = () => {
-      const channelId = SelectedChannelStore.getChannelId()
-      if (channelId !== this._selectedChannelId) this.flushQueue()
-      this._selectedChannelId = channelId
+    this.onConnectedStoreChange = () => {
+      const visibleEntities = this.getVisibleEntities()
+      if (!isEqual(visibleEntities, this._visibleEntities)) this.flush()
+      this._visibleEntities = visibleEntities
     }
   }
 
@@ -61,6 +84,8 @@ class DispatchController {
   }
 
   getVisibleEntities () {
+    if (LayerStore.hasLayers()) return { guildId: null, channelId: null, threadId: null }
+
     const guildId = SelectedGuildStore.getGuildId()
     const channelId = SelectedChannelStore.getChannelId(guildId)
     const threadId = ChannelSectionStore.getCurrentSidebarChannelId(channelId)
@@ -70,12 +95,9 @@ class DispatchController {
     if (ignoredEvents.includes(event.type)) return false
     if (alwaysInterceptedEvents.includes(event.type)) return true
 
-    const { guildId, channelId, threadId } = this.getVisibleEntities()
+    const { guildId, channelId, threadId } = this._visibleEntities
     return (typeof event.guildId === 'string' && event.guildId !== guildId)
       || (typeof event.channelId === 'string' && event.channelId !== channelId && event.channelId !== threadId)
-  }
-  shouldPauseEmitter (animations = AnimationStore.animations) {
-    return animations.some(a => a.module.type === ModuleType.Switch)
   }
 
   flushQueue () {
@@ -87,9 +109,9 @@ class DispatchController {
       this.queue = []
     })
   }
-
-  get isEnabled () {
-    return Config.current.general.prioritizeAnimationSmoothness
+  flush () {
+    this.webSocketController.flushQueue()
+    this.flushQueue()
   }
 
   registerInterceptor () {
@@ -103,40 +125,54 @@ class DispatchController {
   pauseEmitter () {
     if (this.isEmitterPaused) return
 
-    Flux.Emitter.pause()
     this.isEmitterPaused = true
-    Logger.log(this.name, 'Emitter paused.')
+
+    Logger.log(this.name, 'Emitter paused. Safely flushing queue...')
+    this.flushQueue()
   }
   resumeEmitter () {
     if (!this.isEmitterPaused) return
 
-    Flux.Emitter.resume()
     this.isEmitterPaused = false
-    Logger.log(this.name, 'Emitter resumed.')
+
+    Logger.log(this.name, 'Emitter resumed. Emitting changes...')
+    Flux.Emitter.emit()
   }
 
   registerWatcher () {
-    this._clearWatcher = AnimationStore.watch(animations => {
-      if (this.isEnabled && this.shouldPauseEmitter(animations)) this.pauseEmitter()
-      else this.resumeEmitter()
+    this._clearWatcher = AnimationStore.watch(() => {
+      if (this.isEnabled && AnimationStore.shouldPauseEmitter) {
+        this.webSocketController.pauseMessages()
+        this.pauseEmitter()
+      }
+      else {
+        this.webSocketController.resumeMessages()
+        this.resumeEmitter()
+      }
 
-      if (!animations.length) this.flushQueue()
+      if (!AnimationStore.shouldInterceptEvents) this.flush()
     })
   }
   clearWatcher () {
     this._clearWatcher?.()
   }
 
-  watchSelectedChannel () {
-    this._selectedChannelId = SelectedChannelStore.getChannelId()
-    SelectedChannelStore.addChangeListener(this.onSelectedChannelStoreChange)
+  connectStores () {
+    connectedStores.forEach(
+      store => store.addChangeListener(this.onConnectedStoreChange)
+    )
+  }
+  disconnectStores () {
+    connectedStores.forEach(
+      store => store.removeChangeListener(this.onConnectedStoreChange)
+    )
   }
 
   initialize () {
     if (this.isEnabled) this.registerInterceptor()
     this.registerWatcher()
+    this.connectStores()
     Emitter.on(Events.SettingsChanged, this.onSettingsChange)
-    this.watchSelectedChannel()
 
     Logger.log(this.name, `Initialized${this.isEnabled ? ' and enabled' : ''}.`)
   }
@@ -144,10 +180,12 @@ class DispatchController {
   shutdown () {
     this.clearInterceptor()
     this.clearWatcher()
+    this.disconnectStores()
     Emitter.off(Events.SettingsChanged, this.onSettingsChange)
-    SelectedChannelStore.removeChangeListener(this.onSelectedChannelStoreChange)
 
-    this.flushQueue()
+    this.webSocketController.resumeMessages(false)
+    this.resumeEmitter()
+    this.flush()
 
     Logger.log(this.name, 'Shutdown.')
   }

@@ -25,6 +25,7 @@ export default class Animation {
 
     this.timeout = null
     this.cancelled = false
+    this.cleared = false
   }
 
   applyAttributes () {
@@ -109,23 +110,33 @@ export default class Animation {
       if (wrapper) this.element.before(wrapper)
 
       this.ensureTimeLimit()
-      finished.then(() => this.cancel())
+      finished
+        .then(() => this.module.meta.waitUntilSafe ? this.store.untilSafe() : null)
+        .then(() => this.cancel())
     })
 
     return true
   }
 
   cancel (dueToError = false, provideCallback = false) {
-    if (this.cancelled) return
+    if (this.cancelled) {
+      if (dueToError) return this.callback()
+      if (provideCallback) {
+        this.destroy(dueToError)
+        return this.callback
+      }
+      return
+    }
     this.cancelled = true
 
     this.onBeforeDestroy?.()
-
     this.instances?.pause()
     this.doneCallbackRef.current?.()
-    this.destroy(dueToError)
 
     const callback = (revert = true) => {
+      if (this.cleared) return
+      this.cleared = true
+
       this.wrapper?.remove()
 
       ;[].filter.call(this.container.attributes, a => a.name?.startsWith('data-baa'))
@@ -134,10 +145,15 @@ export default class Animation {
       if (revert && ((this.context?.module.meta.revert ?? true) || this.context?.meta.revert)) this.instances?.revert()
       else this.instances?.cancel()
 
+      this.destroy(dueToError)
       this.onDestroyed?.()
     }
 
-    if (provideCallback) return callback
+    if (dueToError) return callback()
+    if (provideCallback) {
+      this.destroy(dueToError)
+      return callback
+    }
     this.callback = callback
   }
 
