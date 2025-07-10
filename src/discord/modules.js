@@ -17,7 +17,7 @@ export const { Tooltip, TooltipLayer } = Webpack.getMangled(Filters.byPrototypeK
 }, { searchExports: true, raw: true })
 export const ModalBackdrop = Webpack.getModule(m => Filters.byStrings('backdrop', 'BG_BACKDROP_NO_OPACITY')(m?.render), { searchExports: true })
 export const ListThin = (() => {
-  const { id, exports } = Webpack.getModule(Filters.bySource('thin', 'customTheme', 'ResizeObserver'), { raw: true })
+  const { id, exports } = Webpack.getModule(Filters.bySource('thin', 'none', 'fade', 'ResizeObserver'), { raw: true })
   const source = Webpack.modules[id].toString()
   return exports[
     source.match(new RegExp(`(\\w+):\\(\\)=>${source.match(/let (\w+)=/)[1]}`))[1]
