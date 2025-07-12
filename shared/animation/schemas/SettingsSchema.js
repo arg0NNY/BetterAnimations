@@ -67,7 +67,7 @@ const SettingsSchema = z.object({
   [Setting.Variant]: z.object({
     key: z.string().refine(
       restrictReservedKeys,
-      key => ({ message: `Forbidden variant key: '${key}'` })
+      { error: ({ input }) => `Forbidden variant key: '${input}'` }
     ),
     name: z.string()
   }).strict().array().nonempty().optional(),
@@ -95,7 +95,7 @@ const SettingsSchema = z.object({
       : value),
   [Setting.Overflow]: z.boolean().optional(),
 
-  defaults: z.record(z.any())
+  defaults: z.record(z.string(), z.any())
 }).strict()
   .transform((settings, ctx) => {
     settings.defaults = DefaultsSchema(settings).parse(

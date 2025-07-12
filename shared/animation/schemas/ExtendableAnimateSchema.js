@@ -4,7 +4,7 @@ import { SourceMappedObjectSchema } from '@animation/sourceMap'
 
 const AnimatePropertySchema = ArrayOrSingleSchema(
   ArrayOrSingleSchema(
-    z.record(z.any()).nullable()
+    z.record(z.string(), z.any()).nullable()
   )
 )
 

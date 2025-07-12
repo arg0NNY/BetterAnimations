@@ -25,13 +25,16 @@ const AnimationSchema = z.object({
   animate: ExtendableAnimateSchema.pipe(PrepareInjectableSchema).optional(),
   enter: ExtendableAnimateSchema.pipe(PrepareInjectableSchema).optional(),
   exit: ExtendableAnimateSchema.pipe(PrepareInjectableSchema).optional(),
-}).strict().refine(
-  v => v.animate ? !(v.enter || v.exit) : (v.enter && v.exit),
-  v => ({
-    message: `Execution definition is required and must be either inside a single 'animate' property or inside 'enter' and 'exit' properties`,
-    path: [].concat(Object.keys(v).find(k => ['enter', 'exit', 'animate'].includes(k)) ?? []),
-    params: { pointAt: 'key' }
-  })
+}).strict().check(
+  ({ value, issues }) => {
+    if (value.animate ? !(value.enter || value.exit) : (value.enter && value.exit)) return
+
+    issues.push({
+      message: `Execution definition is required and must be either inside a single 'animate' property or inside 'enter' and 'exit' properties`,
+      path: [].concat(Object.keys(value).find(k => ['enter', 'exit', 'animate'].includes(k)) ?? []),
+      params: { pointAt: 'key' }
+    })
+  }
 )
 
 export default AnimationSchema

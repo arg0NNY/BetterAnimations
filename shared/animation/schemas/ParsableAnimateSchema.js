@@ -52,7 +52,7 @@ export const HastSchema = ParsableSchema(
   ParseStage.Layout,
   ArrayOrSingleSchema(
     ArrayOrSingleSchema(
-      z.record(z.any()).nullable()
+      z.record(z.string(), z.any()).nullable()
     )
   ).transform(
     zodTransformErrorBoundary((value, ctx) => {
@@ -83,8 +83,10 @@ export const CssSchema = ParsableSchema(
   ArrayOrSingleSchema(
     ArrayOrSingleSchema(
       z.record(
+        z.string(),
         z.union([
           z.record(
+            z.string(),
             z.union([z.string(), z.number(), SourceMapSchema])
           ),
           SourceMapSchema

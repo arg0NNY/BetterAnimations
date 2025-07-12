@@ -11,7 +11,7 @@ export const ObjectDeepBaseSchema = (schema, extend = []) => z.union([
   LazyInjectSchema,
   ...extend,
   z.array(schema),
-  z.record(schema)
+  z.record(z.string(), schema)
 ])
 
 const ObjectDeepSchema = (schema, extend = []) =>

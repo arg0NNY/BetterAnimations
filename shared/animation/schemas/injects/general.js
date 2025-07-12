@@ -57,7 +57,7 @@ export const TypeInjectSchema = InjectWithMeta(
 
 export const StringTemplateInjectSchema = InjectSchema(Inject.StringTemplate).extend({
   template: z.string(),
-  values: z.union([z.record(z.any()), z.any().array()])
+  values: z.union([z.record(z.string(), z.any()), z.any().array()])
 }).transform(zodTransformErrorBoundary(
   ({ template, values }) => {
     values = clearSourceMap(values)
@@ -121,7 +121,7 @@ export const VarSetInjectSchema = InjectWithMeta(
   ({ vars }) => InjectSchema(Inject.VarSet).extend({
     name: z.string().refine(
       restrictForbiddenKeys,
-      name => ({ message: `Forbidden variable name: '${name}'` })
+      { error: ({ input }) => `Forbidden variable name: '${input}'` }
     ),
     value: z.any()
   }).transform(({ name, value }) => { vars[name] = value }),
@@ -131,7 +131,7 @@ export const VarSetInjectSchema = InjectWithMeta(
 export const VarGetInjectSchema = ({ vars }) => InjectSchema(Inject.VarGet).extend({
   name: z.string().refine(
     restrictForbiddenKeys,
-    name => ({ message: `Forbidden variable name: '${name}'` })
+    { error: ({ input }) => `Forbidden variable name: '${input}'` }
   )
 }).transform(({ name }) => vars[name])
 
@@ -188,7 +188,7 @@ export const IsIntersectedInjectSchema = SwitchSchema(Inject.IsIntersected, [tru
 
 export const GetInjectSchema = InjectSchema(Inject.Get).extend({
   target: z.union([
-    z.record(z.any()),
+    z.record(z.string(), z.any()),
     z.array(z.any())
   ]),
   key: z.union([
@@ -196,7 +196,7 @@ export const GetInjectSchema = InjectSchema(Inject.Get).extend({
     z.number()
   ]).refine(
     restrictForbiddenKeys,
-    key => ({ message: `Forbidden key: '${key}'` })
+    { error: ({ input }) => `Forbidden key: '${input}'` }
   ).optional(),
   path: z.string()
     .startsWith('/', 'JSON Pointer must begin with `/`')
@@ -226,7 +226,7 @@ export const IfInjectSchema = InjectSchema(Inject.If).extend({
 export const SwitchInjectSchema = InjectSchema(Inject.Switch).extend({
   value: z.any(),
   case: z.union([
-    z.record(z.any()),
+    z.record(z.string(), z.any()),
     z.tuple([z.any(), z.any()]).array()
   ]),
   default: z.any().optional()

@@ -7,7 +7,7 @@ const PrepareInjectableSchema = z.lazy(
   () => z.union([
     Literal,
     z.array(PrepareInjectableSchema),
-    z.record(PrepareInjectableSchema)
+    z.record(z.string(), PrepareInjectableSchema)
   ]).transform(
     (value, ctx) => {
       if (typeof value !== 'object' || value === null) return value
