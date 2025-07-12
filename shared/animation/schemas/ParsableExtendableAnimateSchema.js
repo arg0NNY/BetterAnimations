@@ -17,8 +17,8 @@ const ParsableExtendableAnimateSchema = (context, env) => {
 
   return ParsableAnimateSchema(context, env).extend({
     onBeforeExtend: HookSchema(context, preLayoutEnv, ParseStage.BeforeExtend),
-    extends: ArrayOrSingleSchema(ExtendsSchema(context, preLayoutEnv)).optional()
-  }).strict()
+    extends: ArrayOrSingleSchema(ExtendsSchema(context, preLayoutEnv))
+  }).partial().strict()
 }
 
 export const ParsableExtendsSchema = (context, env) =>

@@ -116,7 +116,7 @@ export const ParsableAnimateSchema = (context, env) => {
     onCompleted: HookSchema(context, env, ParseStage.Completed),
     onBeforeDestroy: HookSchema(context, preLayoutEnv, ParseStage.BeforeDestroy),
     onDestroyed: HookSchema(context, preLayoutEnv, ParseStage.Destroyed),
-  }).strict()
+  }).partial().strict()
 }
 
 export default ParsableAnimateSchema
