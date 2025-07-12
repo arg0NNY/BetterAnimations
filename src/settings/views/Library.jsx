@@ -1,5 +1,7 @@
 import WIP from '@/settings/components/WIP'
 import { css } from '@style'
+import { StandardSidebarViewKeyed } from '@discord/modules'
+import DiscordSelectors from '@discord/selectors'
 
 function Library () {
   return (
@@ -11,8 +13,9 @@ function Library () {
 
 export default Library
 
+StandardSidebarViewKeyed.then(() =>
 css
-`:has(> .BA__library) {
+`${DiscordSelectors.StandardSidebarView.contentColumn}:has(> .BA__library) {
     display: flex;
     align-items: stretch;
 }
@@ -26,3 +29,4 @@ css
     margin: auto 0;
 }`
 `Library`
+)
