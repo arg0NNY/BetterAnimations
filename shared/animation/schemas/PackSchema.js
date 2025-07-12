@@ -3,6 +3,7 @@ import regex from '@utils/regex'
 import AnimationSchema from '@animation/schemas/AnimationSchema'
 import Messages from '@shared/messages'
 import PrepareInjectableSchema from '@animation/schemas/PrepareInjectableSchema'
+import { storePackSourceMap } from '@animation/sourceMap'
 
 export const SnippetSchema = z.strictObject({
   key: z.string().min(1),
@@ -36,6 +37,6 @@ const PackSchema = z.object({
           }))
         })
     })
-})
+}).transform(storePackSourceMap)
 
 export default PackSchema

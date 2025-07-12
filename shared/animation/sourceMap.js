@@ -27,8 +27,33 @@ export function buildSourceMap (target = {}, path = undefined) {
 }
 
 export function storeSourceMap (target, path = undefined) {
+  if (typeof target !== 'object' || target === null) return target
+
   target[SOURCE_MAP_KEY] = buildSourceMap(target, path)
   return target
+}
+
+export function storeSourceMapDeep (target, path = undefined) {
+  if (typeof target !== 'object' || target === null) return target
+
+  Object.keys(target).forEach(
+    key => storeSourceMapDeep(
+      target[key],
+      (path ?? []).concat(key)
+    )
+  )
+  storeSourceMap(target, path)
+  return target
+}
+
+export function storePackSourceMap (pack) {
+  pack.snippets?.forEach((snippet, i) => storeSourceMapDeep(snippet.value, ['snippets', i, 'value']))
+  pack.animations.forEach((animation, i) => {
+    ['animate', 'enter', 'exit'].forEach(
+      key => storeSourceMapDeep(animation[key], ['animations', i, key])
+    )
+  })
+  return pack
 }
 
 export function isSourceMap (value) {

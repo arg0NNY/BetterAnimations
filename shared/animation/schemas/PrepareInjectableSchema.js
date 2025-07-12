@@ -1,7 +1,6 @@
 import { z } from 'zod'
 import { Literal } from '@utils/schemas'
 import { forbiddenKeys } from '@animation/keys'
-import { storeSourceMap } from '@animation/sourceMap'
 
 const PrepareInjectableSchema = z.lazy(
   () => z.union([
@@ -25,7 +24,7 @@ const PrepareInjectableSchema = z.lazy(
         }).some(Boolean)
       ) return z.NEVER
 
-      return storeSourceMap(value, ctx.path)
+      return value
     }
   )
 )
