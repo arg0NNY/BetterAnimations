@@ -1,9 +1,9 @@
 import Patcher from '@/modules/Patcher'
 import { useIsVisibleKeyed } from '@discord/modules'
-import { use, useEffect, useState } from 'react'
-import { AnimeTransitionContext } from '@components/AnimeTransition'
+import { useCallback, useEffect, useRef } from 'react'
 import useConfig from '@/hooks/useConfig'
 import InternalError from '@error/structs/InternalError'
+import store from '@animation/store'
 
 /**
  * Commit the `IntersectionObserver` state after animations are finished
@@ -13,14 +13,17 @@ function patchUseIsVisible () {
     const { config } = useConfig()
     const isEnabled = config.general.prioritizeAnimationSmoothness
 
-    const { isActive } = use(AnimeTransitionContext)
-    const [isIntersecting, setIsIntersecting] = useState(false)
+    const unwatch = useRef()
 
-    useEffect(() => {
-      if (isEnabled && !isActive) callback(isIntersecting)
-    }, [isEnabled, isActive, isIntersecting])
+    const onUpdate = useCallback(isIntersecting => {
+      unwatch.current?.()
+      if (store.isSafe) callback(isIntersecting)
+      else unwatch.current = store.onceSafe(() => callback(isIntersecting))
+    }, [callback])
 
-    return original(isEnabled ? setIsIntersecting : callback, ...args)
+    useEffect(() => () => unwatch.current?.(), [])
+
+    return original(isEnabled ? onUpdate : callback, ...args)
   }, { category: InternalError.Category.PRIORITIZE_ANIMATION_SMOOTHNESS })
 }
 

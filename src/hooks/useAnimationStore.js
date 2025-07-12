@@ -9,11 +9,17 @@ function useAnimationStore (store = AnimationStore) {
   return animations
 }
 
-export function useIsSafe (store = AnimationStore) {
-  const [isSafe, setIsSafe] = useState(AnimationStore.isSafe)
-  useEffect(() => store.watch((_, isSafe) => setIsSafe(isSafe)), [])
+export function useSafeBoolean (value, store = AnimationStore) {
+  const [safeValue, setSafeValue] = useState(value)
 
-  return isSafe
+  useEffect(() => {
+    if (store.isSafe) return setSafeValue(value)
+
+    setSafeValue(false)
+    return store.onceSafe(() => setSafeValue(value))
+  }, [value])
+
+  return safeValue
 }
 
 export default useAnimationStore
