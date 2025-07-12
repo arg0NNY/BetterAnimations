@@ -39,8 +39,8 @@ importers:
         specifier: ^1.5.0
         version: 1.5.0(react@19.0.0)
       zod:
-        specifier: ^3.24.2
-        version: 3.24.2
+        specifier: ^4.0.5
+        version: 4.0.5
     devDependencies:
       '@vitejs/plugin-react':
         specifier: ^4.4.1
@@ -1149,8 +1149,8 @@ packages:
   yallist@3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
 
-  zod@3.24.2:
-    resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
+  zod@4.0.5:
+    resolution: {integrity: sha512-/5UuuRPStvHXu7RS+gmvRf4NXrNxpSllGwDnCBcJZtQsKrviYXm54yDGV2KYNLT5kq0lHGcl7lqWJLgSaG+tgA==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -2282,6 +2282,6 @@ snapshots:
 
   yallist@3.1.1: {}
 
-  zod@3.24.2: {}
+  zod@4.0.5: {}
 
   zwitch@2.0.4: {}
