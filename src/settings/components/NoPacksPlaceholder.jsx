@@ -30,21 +30,16 @@ function NoPacksPlaceholder () {
         </Text>
         <div class="BA__noPacksActions">
           <Button
-            innerClassName="BA__buttonContents"
+            icon={ShopIcon}
+            text="Catalog"
             onClick={() => setSection(SettingsSection.Catalog)}
-          >
-            <ShopIcon size="sm" color="currentColor" />
-            Catalog
-          </Button>
+          />
           <Button
-            color={Button.Colors.PRIMARY}
-            innerClassName="BA__buttonContents"
+            variant="secondary"
+            icon={BookIcon}
+            text="Pack Directory"
             onClick={() => handleClick({ href: Documentation.packDirectoryUrl })}
-          >
-            <BookIcon size="sm" color="currentColor" />
-            Pack Directory
-            <ExternalLinkIcon size="sm" color="currentColor" />
-          </Button>
+          />
         </div>
       </div>
     </div>

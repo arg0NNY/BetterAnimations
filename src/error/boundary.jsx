@@ -58,11 +58,10 @@ export class ErrorBoundary extends Component {
 
     const _actions = (
       <Button
-        size={Button.Sizes.SMALL}
+        size="sm"
+        text="View"
         onClick={() => ErrorManager.showModal([this.state.error])}
-      >
-        View
-      </Button>
+      />
     )
 
     return (

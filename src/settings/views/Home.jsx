@@ -69,21 +69,17 @@ function Home () {
         </Text>
         <div className="BA__homeHeadingActions">
           <Button
-            innerClassName="BA__buttonContents"
+            variant="expressive"
+            icon={ShopIcon}
+            text="Catalog"
             onClick={() => setSection(SettingsSection.Catalog)}
-          >
-            <ShopIcon size="sm" color="currentColor" />
-            Catalog
-          </Button>
+          />
           <Button
-            color={Button.Colors.PRIMARY}
-            innerClassName="BA__buttonContents"
+            variant="secondary"
+            icon={BookIcon}
+            text="Documentation"
             onClick={() => handleClick({ href: Documentation.homeUrl })}
-          >
-            <BookIcon size="sm" color="currentColor" />
-            Documentation
-            <ExternalLinkIcon size="sm" color="currentColor" />
-          </Button>
+          />
         </div>
       </div>
       <div className="BA__homeAuthorSection">
@@ -105,22 +101,21 @@ function Home () {
         </div>
         <div className="BA__homeAuthorActions">
           <Button
-            color={Button.Colors.GREEN}
-            innerClassName="BA__buttonContents"
+            variant="active"
+            icon={CircleDollarSignIcon}
+            text="Support the author"
+            fullWidth
             onClick={() => handleClick({ href: meta.donate })}
-          >
-            <CircleDollarSignIcon size="sm" color="currentColor" />
-            Support the author
-          </Button>
+          />
           <Button
-            size={Button.Sizes.SMALL}
-            color={Button.Colors.PRIMARY}
-            innerClassName="BA__buttonContents"
+            size="sm"
+            variant="secondary"
+            icon={ExternalLinkIcon}
+            iconPosition="end"
+            text={`Plugins made by ${meta.author}`}
+            fullWidth
             onClick={() => handleClick({ href: meta.authorLink })}
-          >
-            Plugins made by {meta.author}
-            <ExternalLinkIcon size="xs" color="currentColor" />
-          </Button>
+          />
         </div>
       </div>
       <div className="BA__homeSystemInfo">

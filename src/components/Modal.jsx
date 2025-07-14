@@ -16,7 +16,7 @@ function Modal ({
   children,
   onClose,
   confirmText = 'Close',
-  confirmButtonColor = Button.Colors.PRIMARY,
+  confirmButtonVariant = 'secondary',
   cancelText,
   onConfirm,
   onCancel,
@@ -55,28 +55,25 @@ function Modal ({
       <ModalFooter>
         <Button
           type="submit"
-          color={confirmButtonColor}
-          submitting={loading}
+          variant={confirmButtonVariant}
+          text={confirmText}
+          loading={loading}
           onClick={() => {
             onConfirm?.()
             onClose()
           }}
-        >
-          {confirmText}
-        </Button>
+        />
         {cancelText ? (
           <Button
             type="button"
-            look={Button.Looks.LINK}
-            color={Button.Colors.PRIMARY}
+            variant="secondary"
+            text={cancelText}
             disabled={loading}
             onClick={() => {
               onCancel?.()
               onClose()
             }}
-          >
-            {cancelText}
-          </Button>
+          />
         ) : null}
       </ModalFooter>
     </ModalRoot>

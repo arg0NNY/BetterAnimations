@@ -147,11 +147,5 @@ export default function (meta) {
 css
 `#app-mount {
     overflow: clip;
-}
-
-.BA__buttonContents {
-    display: flex;
-    align-items: center;
-    gap: 4px;
 }`
 `General`

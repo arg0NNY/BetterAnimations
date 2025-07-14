@@ -50,6 +50,9 @@ export const ModalTransitionState = Webpack.getModule(Filters.byKeys('ENTERED', 
 export const ReferencePositionLayer = Webpack.getModule(Filters.byPrototypeKeys('getHorizontalAlignmentStyle', 'nudgeLeftAlignment'), { searchExports: true })
 export const SearchableSelect = Webpack.getModule(m => Filters.byStrings('searchable', 'select')(m?.render), { searchExports: true })
 export const { Anchor } = Webpack.getByKeys('Anchor')
+export const TextBadge = Webpack.getModule(Filters.byStrings('textBadge', 'STATUS_DANGER'), { searchExports: true })
+export const SearchBar = Webpack.getModule(m => Filters.byKeys('isLoading', 'size')(m?.defaultProps) && Filters.byPrototypeKeys('blur', 'focus')(m), { searchExports: true })
+export const Paginator = Webpack.getModule(Filters.byStrings('pageControlContainer', 'endButtonInner'), { searchExports: true })
 
 export const Dispatcher = Webpack.getByKeys('dispatch', 'subscribe')
 export const AppViewKeyed = getWithKey(Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'))
@@ -137,17 +140,20 @@ export const { Alert, AlertTypes } = getMangled(Filters.byStrings('messageType',
 })
 export const UserSettingsModal = Webpack.getByKeys('open', 'setSection', 'updateAccount')
 export const { colors } = Webpack.getByKeys('colors', 'modules')
-export const { ModalRoot, ModalSize, ModalHeader, ModalFooter, ModalContent } = Webpack.getMangled(
+export const { ModalRoot, ModalSize, ModalHeader, ModalFooter, ModalContent, ModalCloseButton } = Webpack.getMangled(
   Filters.bySource('MODAL', 'rootWithShadow'),
   {
     ModalRoot: Filters.byStrings('MODAL', 'rootWithShadow'),
     ModalSize: Filters.byKeys('MEDIUM', 'LARGE'),
     ModalHeader: Filters.byStrings('headerIdIsManaged', 'HORIZONTAL'),
     ModalFooter: Filters.byStrings('footerSeparator'),
-    ModalContent: Filters.byStrings('content', 'scrollbarType')
+    ModalContent: Filters.byStrings('content', 'scrollbarType'),
+    ModalCloseButton: Filters.byStrings('closeIcon')
   }
 )
-export const Button = Webpack.getModule(Filters.byKeys('Link', 'Sizes'), { searchExports: true })
+export const Button = Webpack.getModule(Filters.byStrings('button', 'hasText', 'expressiveWrapper'), { searchExports: true })
+export const TextButton = Webpack.getModule(Filters.byStrings('textButton', 'textVariant'), { searchExports: true })
+export const ButtonGroup = Webpack.getModule(Filters.byStrings('fullWidth', 'wrap', '"horizontal"'), { searchExports: true })
 export const Flex = Webpack.getByKeys('Direction', 'Justify', 'Child')
 export const Parser = Webpack.getByKeys('defaultRules', 'parse').defaultRules
 export const InviteEmbed = Webpack.getByStrings('Invite Button Embed', 'getInvite')

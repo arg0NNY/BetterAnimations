@@ -53,7 +53,7 @@ export default new class Prompt {
           {...props}
           cancelText="Cancel"
           confirmText="Enable"
-          confirmButtonColor={Button.Colors.RED}
+          confirmButtonVariant="critical-primary"
           onCancel={() => resolve(true)}
           onConfirm={() => {
             resolve(false)

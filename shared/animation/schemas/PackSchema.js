@@ -18,8 +18,6 @@ const PackSchema = z.object({
   invite: z.string().optional(),
   authorLink: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),
   donate: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),
-  patreon: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),
-  website: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),
 
   snippets: SnippetSchema.array().optional(),
   animations: AnimationSchema.array()

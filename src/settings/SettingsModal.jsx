@@ -32,12 +32,11 @@ function SettingsModal () {
     <>
       {actions}
       <Button
-        size={Button.Sizes.SMALL}
-        color={Button.Colors.PRIMARY}
+        variant="secondary"
+        size="sm"
+        text="Close Settings"
         onClick={onClose}
-      >
-        Close Settings
-      </Button>
+      />
     </>
   )
 
