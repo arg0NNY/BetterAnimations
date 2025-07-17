@@ -21,6 +21,7 @@ import BookCheckIcon from '@/components/icons/BookCheckIcon'
 import ErrorDetailsActions from '@/components/error/ErrorDetailsActions'
 import { useMemo } from 'react'
 import { attempt, ErrorBoundary } from '@error/boundary'
+import { isInviteInvalid } from '@discord/utils'
 
 function ErrorDetails ({ error, open = false }) {
   const icon = useMemo(() => {
@@ -56,11 +57,7 @@ function ErrorDetails ({ error, open = false }) {
     return error.pack?.invite
   }, [error])
 
-  const invite = useStateFromStores([InviteStore], () => (
-    ![InviteStates.EXPIRED, InviteStates.BANNED, InviteStates.ERROR].includes(InviteStore.getInvite(code)?.state)
-      ? code
-      : null
-  ))
+  const invite = useStateFromStores([InviteStore], () => isInviteInvalid(InviteStore.getInvite(code)) ? null : code)
 
   const alert = useMemo(() => {
     if (invite) return 'Go to the Support Server to get help with this error:'

@@ -1,21 +1,28 @@
-import { Button, colors, handleClick, ModalActions, Text, TextBadge, Tooltip } from '@discord/modules'
+import {
+  Button,
+  colors, GuildIcon, GuildStore,
+  handleClick, InviteActions, InviteStates, InviteStore,
+  ModalActions,
+  Text,
+  TextBadge,
+  Tooltip,
+  useStateFromStores
+} from '@discord/modules'
 import IconButton from '@/settings/components/IconButton'
 import { css } from '@style'
 import classNames from 'classnames'
 import DownloadIcon from '@/settings/components/icons/DownloadIcon'
 import TrashIcon from '@/settings/components/icons/TrashIcon'
 import CheckIcon from '@/settings/components/icons/CheckIcon'
-import GitHubIcon from '@/settings/components/icons/GitHubIcon'
 import CircleQuestionIcon from '@/settings/components/icons/CircleQuestionIcon'
 import Divider from '@/components/Divider'
 import CircleDollarSignIcon from '@/settings/components/icons/CircleDollarSignIcon'
 import SquircleMask from '@/settings/components/SquircleMask'
-import ExternalLinkIcon from '@/settings/components/icons/ExternalLinkIcon'
 import LinkIcon from '@/settings/components/icons/LinkIcon'
 import DiscordClasses from '@discord/classes'
 import ArrowSmallRightIcon from '@/settings/components/icons/ArrowSmallRightIcon'
 import VerifiedCheckIcon from '@/settings/components/icons/VerifiedCheckIcon'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import DangerIcon from '@/settings/components/icons/DangerIcon'
 import CircleWarningIcon from '@/settings/components/icons/CircleWarningIcon'
 import { PackVerificationStatus } from '@/modules/PackRegistry'
@@ -26,6 +33,9 @@ import JSONIcon from '@/settings/components/icons/JSONIcon'
 import PackManager from '@/modules/PackManager'
 import { path } from '@/modules/Node'
 import Modal from '@/components/Modal'
+import Skeleton from '@/settings/components/Skeleton'
+import { isInviteInvalid } from '@discord/utils'
+import { UI } from '@/BdApi'
 
 export const PackContentLocation  = {
   CATALOG: 0,
@@ -105,7 +115,7 @@ function PackVersion ({ version, from }) {
   )
 }
 
-function PackField ({ icon, title, subtitle, children }) {
+function PackField ({ icon, title, titleColor, subtitle, children }) {
   return (
     <div className="BA__packField">
       <div className="BA__packFieldInfo">
@@ -115,6 +125,7 @@ function PackField ({ icon, title, subtitle, children }) {
             className="BA__packFieldTitle"
             variant="text-md/semibold"
             lineClamp={1}
+            color={titleColor}
           >
             {title}
           </Text>
@@ -213,6 +224,61 @@ function PackAction ({ pack, size, location }) {
       )}
       onClick={stop(() => registry.install(pack.filename))}
     />
+  )
+}
+
+function PackInvite ({ code }) {
+  const invite = useStateFromStores([InviteStore], () => InviteStore.getInvite(code))
+  const guild = useStateFromStores([GuildStore], () => GuildStore.getGuild(invite?.guild?.id), [invite])
+
+  useEffect(() => {
+    if (!invite) InviteActions.resolveInvite(code)
+  }, [code, invite])
+
+  const pending = !invite || invite.state === InviteStates.RESOLVING
+  const invalid = isInviteInvalid(invite)
+
+  const join = useCallback(() => UI.showInviteModal(code), [code])
+
+  return (
+    <PackField
+      icon={(
+        <SquircleMask size={48}>
+          {pending || invalid || !invite?.guild ? (
+            <Skeleton
+              width={48}
+              height={48}
+              rounded={false}
+              animated={pending}
+            />
+          ) : (
+            <GuildIcon
+              className="BA__packServerIcon"
+              guild={invite.guild}
+              active={true}
+            />
+          )}
+        </SquircleMask>
+      )}
+      title={(
+        pending
+          ? <Skeleton width={130} />
+          : invalid
+            ? 'Invalid Invite'
+            : invite?.guild?.name
+      )}
+      titleColor={invalid ? 'text-danger' : undefined}
+      subtitle="Support Server"
+    >
+      <Button
+        variant="secondary"
+        size="sm"
+        text={guild ? 'Joined' : 'Join'}
+        loading={pending}
+        disabled={pending || invalid || guild}
+        onClick={join}
+      />
+    </PackField>
   )
 }
 
@@ -356,25 +422,9 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
                     </Tooltip>
                   )}
                 </PackField>
-                <PackField
-                  icon={(
-                    <SquircleMask size={48}>
-                      <img
-                        className="BA__packServerIcon"
-                        src="https://avatars.githubusercontent.com/u/52377180?s=60&v=4"
-                        alt="Server Name"
-                      />
-                    </SquircleMask>
-                  )}
-                  title="Server Name"
-                  subtitle="Support Server"
-                >
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    text="Join"
-                  />
-                </PackField>
+                {pack.invite && (
+                  <PackInvite code={pack.invite} />
+                )}
               </div>
               <Divider />
               <Button
@@ -396,7 +446,7 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
               {pack.invite && (
                 <IconButton
                   tooltip="Support Server"
-                  onClick={stop(() => handleClick({ href: `https://discord.gg/${pack.invite}` }))}
+                  onClick={stop(() => UI.showInviteModal(pack.invite))}
                 >
                   <CircleQuestionIcon size="sm" color="currentColor" />
                 </IconButton>
@@ -549,6 +599,7 @@ css
     height: 48px;
     object-fit: cover;
     background-color: var(--background-base-low);
+    border-radius: 0;
 }
 .BA__packAuthorAvatar {
     border-radius: 50%;

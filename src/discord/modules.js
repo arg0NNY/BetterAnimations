@@ -188,3 +188,5 @@ export const GatewaySocket = Webpack.getModule(m => m?.dispatcher?.scheduler, { 
 export const EmojiKeyed = getWithKey(Filters.byStrings('emojiId', 'emojiName', 'animated', 'shouldAnimate'))
 export const useIsVisibleKeyed = getWithKey(Filters.byStrings('isIntersecting', 'arguments.length'))
 export const useRootElementContextKeyed = getWithKey(Filters.byStrings('useRootElementContext'))
+export const GuildIcon = Webpack.getModule(m => Filters.byKeys('badgeStrokeColor', 'animate')(m?.defaultProps), { searchExports: true })
+export const GuildStore = Webpack.getStore('GuildStore')
