@@ -1,9 +1,24 @@
 import { ModalCloseButton, ModalContent, ModalRoot, ModalSize } from '@discord/modules'
 import { css } from '@style'
-import PackContent from '@/settings/components/PackContent'
+import PackContent, { PackContentLocation } from '@/settings/components/PackContent'
 import { ErrorBoundary } from '@error/boundary'
+import usePackRegistry from '@/hooks/usePackRegistry'
+import PackManager from '@/modules/PackManager'
+import { useEffect } from 'react'
 
-function PackModal ({ onClose, ...props }) {
+function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose, ...props }) {
+  const registry = usePackRegistry()
+
+  const pack = location === PackContentLocation.CATALOG
+    ? registry.getPack(filename)
+    : PackManager.getPackByFile(filename, true)
+
+  useEffect(() => {
+    if (!pack) onClose()
+  }, [pack])
+
+  if (!pack) return null
+
   return (
     <ModalRoot
       {...props}
@@ -14,6 +29,8 @@ function PackModal ({ onClose, ...props }) {
         <div className="BA__packModalSidebar">
           <PackContent
             className="BA__packModalContent"
+            pack={pack}
+            location={location}
             size="md"
           />
         </div>

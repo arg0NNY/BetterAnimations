@@ -1,11 +1,15 @@
-import PackContent from '@/settings/components/PackContent'
+import PackContent, { PackContentLocation } from '@/settings/components/PackContent'
 import { css } from '@style'
 import { ModalActions } from '@discord/modules'
 import PackModal from '@/settings/components/PackModal'
 
-function PackCard () {
+function PackCard ({ pack, location = PackContentLocation.CATALOG }) {
   const onClick = () => ModalActions.openModal(props => (
-    <PackModal {...props} />
+    <PackModal
+      {...props}
+      filename={pack.filename}
+      location={location}
+    />
   ))
 
   return (
@@ -13,7 +17,12 @@ function PackCard () {
       className="BA__packCard"
       onClick={onClick}
     >
-      <PackContent className="BA__packCardContent" />
+      <PackContent
+        className="BA__packCardContent"
+        pack={pack}
+        location={location}
+        size="sm"
+      />
     </div>
   )
 }

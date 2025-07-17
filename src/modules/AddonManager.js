@@ -324,13 +324,10 @@ export default class AddonManager {
     Logger.info(this.name, 'Shutdown.')
   }
 
-  deleteAddon (idOrFileOrAddon) {
-    const addon = typeof (idOrFileOrAddon) == 'string' ? this.addonList.find(c => c.id == idOrFileOrAddon || c.filename == idOrFileOrAddon) : idOrFileOrAddon
-    return fs.unlinkSync(path.resolve(this.addonFolder, addon.filename))
+  deleteAddon (filename) {
+    return fs.unlinkSync(path.resolve(this.addonFolder, filename))
   }
-
-  saveAddon (idOrFileOrAddon, content) {
-    const addon = typeof (idOrFileOrAddon) == 'string' ? this.addonList.find(c => c.id == idOrFileOrAddon || c.filename == idOrFileOrAddon) : idOrFileOrAddon
-    return fs.writeFileSync(path.resolve(this.addonFolder, addon.filename), content)
+  saveAddon (filename, content) {
+    return fs.writeFileSync(path.resolve(this.addonFolder, filename), content)
   }
 }

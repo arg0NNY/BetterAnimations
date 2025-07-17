@@ -64,6 +64,7 @@ function AnimationList ({ animations, ...props }) {
     <div className="BA__animationList">
       {animations.map(animation => (
         <AnimationItem
+          key={animation.key}
           animation={animation}
           {...props}
         />

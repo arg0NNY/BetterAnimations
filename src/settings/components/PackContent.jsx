@@ -1,4 +1,4 @@
-import { Button, colors, Text, TextBadge, Tooltip } from '@discord/modules'
+import { Button, colors, handleClick, Text, TextBadge, Tooltip } from '@discord/modules'
 import IconButton from '@/settings/components/IconButton'
 import { css } from '@style'
 import classNames from 'classnames'
@@ -15,53 +15,80 @@ import LinkIcon from '@/settings/components/icons/LinkIcon'
 import DiscordClasses from '@discord/classes'
 import ArrowSmallRightIcon from '@/settings/components/icons/ArrowSmallRightIcon'
 import VerifiedCheckIcon from '@/settings/components/icons/VerifiedCheckIcon'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import DangerIcon from '@/settings/components/icons/DangerIcon'
 import CircleWarningIcon from '@/settings/components/icons/CircleWarningIcon'
+import { PackVerificationStatus } from '@/modules/PackRegistry'
+import usePackRegistry from '@/hooks/usePackRegistry'
+import { stop } from '@/settings/utils/eventModifiers'
+import ErrorManager from '@error/manager'
+import JSONIcon from '@/settings/components/icons/JSONIcon'
+import PackManager from '@/modules/PackManager'
+import { path } from '@/modules/Node'
 
-const PackBadgeTypes = {
-  UNVERIFIED: 0,
-  VERIFIED: 1,
-  OFFICIAL: 2
+export const PackContentLocation  = {
+  CATALOG: 0,
+  LIBRARY: 1
 }
 
-function PackBadge ({ type = PackBadgeTypes.UNVERIFIED, size = 'sm' }) {
-  const text = useMemo(() => {
+function PackBadge ({ type, size = 'sm' }) {
+  const { icon, color, label } = useMemo(() => {
     switch (type) {
-      case PackBadgeTypes.UNVERIFIED: return 'Unverified'
-      case PackBadgeTypes.VERIFIED: return 'Verified'
-      case PackBadgeTypes.OFFICIAL: return 'Official'
-    }
-  }, [type])
-
-  const color = useMemo(() => {
-    switch (type) {
-      case PackBadgeTypes.UNVERIFIED: return Tooltip.Colors.RED
-      case PackBadgeTypes.VERIFIED: return Tooltip.Colors.GREEN
-      case PackBadgeTypes.OFFICIAL: return Tooltip.Colors.BRAND
+      case PackVerificationStatus.UNKNOWN:
+        return {
+          icon: props => (
+            <VerifiedCheckIcon
+              {...props}
+              color={colors.ICON_MUTED}
+              secondaryColor={colors.ICON_MUTED}
+            />
+          ),
+          color: Tooltip.Colors.PRIMARY,
+          label: 'Unable to verify'
+        }
+      case PackVerificationStatus.UNVERIFIED:
+        return {
+          icon: props => <DangerIcon {...props} />,
+          color: Tooltip.Colors.RED,
+          label: 'Unverified'
+        }
+      case PackVerificationStatus.FAILED:
+        return {
+          icon: props => <DangerIcon {...props} />,
+          color: Tooltip.Colors.RED,
+          label: 'Verification failed'
+        }
+      case PackVerificationStatus.VERIFIED:
+        return {
+          icon: props => (
+            <VerifiedCheckIcon
+              {...props}
+              color="var(--green-360)"
+            />
+          ),
+          color: Tooltip.Colors.GREEN,
+          label: 'Verified'
+        }
+      case PackVerificationStatus.OFFICIAL:
+        return {
+          icon: props => (
+            <VerifiedCheckIcon
+              {...props}
+              color="var(--brand-500)"
+            />
+          ),
+          color: Tooltip.Colors.BRAND,
+          label: 'Official'
+        }
     }
   }, [type])
 
   return (
-    <Tooltip text={text} color={color}>
-      {props => (
-        type === PackBadgeTypes.UNVERIFIED ? (
-          <DangerIcon
-            {...props}
-            size={size}
-          />
-        ) : (
-          <VerifiedCheckIcon
-            {...props}
-            size={size}
-            color={type === PackBadgeTypes.OFFICIAL ? 'var(--brand-500)' : 'var(--green-360)'}
-          />
-        )
-      )}
+    <Tooltip text={label} color={color}>
+      {props => icon({ ...props, size })}
     </Tooltip>
   )
 }
-PackBadge.Types = PackBadgeTypes
 
 function PackVersion ({ version, from }) {
   return (
@@ -110,7 +137,96 @@ function PackField ({ icon, title, subtitle, children }) {
   )
 }
 
-function PackContent ({ className, size = 'sm' }) {
+function PackAction ({ pack, size, location }) {
+  const registry = usePackRegistry()
+
+  const isInstalled = !!pack.installed
+  const hasUpdate = isInstalled && registry.hasUpdate(pack)
+
+  const pending = registry.isPending(pack.filename)
+
+  const props = {
+    size,
+    fullWidth: size === 'md',
+    loading: pending,
+    disabled: pending
+  }
+
+  if (hasUpdate) return (
+    <Button
+      {...props}
+      icon={DownloadIcon}
+      text={(
+        <>
+          <span>Update</span>
+          {size === 'md' && (
+            <PackVersion
+              from={pack.installed.version}
+              version={registry.getPack(pack.filename).version}
+            />
+          )}
+        </>
+      )}
+      onClick={stop(() => registry.update(pack.filename))}
+    />
+  )
+
+  if (isInstalled) {
+    if (location === PackContentLocation.LIBRARY && size === 'sm') return null
+
+    return (
+      <Button
+        {...props}
+        icon={CheckIcon}
+        variant="active"
+        disabled
+        text={(
+          <>
+            <span>
+              {
+                location === PackContentLocation.LIBRARY && registry.hasPack(pack.filename)
+                  ? 'Up to date'
+                  : 'Installed'
+              }
+            </span>
+            {size === 'md' && (
+              <PackVersion version={pack.version} />
+            )}
+          </>
+        )}
+      />
+    )
+  }
+
+  return (
+    <Button
+      {...props}
+      icon={DownloadIcon}
+      text={(
+        <>
+          <span>Install</span>
+          {size === 'md' && (
+            <PackVersion version={pack.version} />
+          )}
+        </>
+      )}
+      onClick={stop(() => registry.install(pack.filename))}
+    />
+  )
+}
+
+function PackContent ({ pack, className, size = 'sm', location = PackContentLocation.CATALOG }) {
+  const registry = usePackRegistry()
+
+  const authorAvatarSrc = registry.getAuthorAvatarSrc(pack)
+
+  const showSource = useCallback(() => {
+    if (location === PackContentLocation.CATALOG) handleClick({ href: registry.getSourceURL(pack.filename) })
+    else DiscordNative.fileManager.showItemInFolder(
+      path.resolve(PackManager.addonFolder, pack.filename)
+    )
+  }, [pack, location])
+
   return (
     <div
       className={classNames(
@@ -119,17 +235,20 @@ function PackContent ({ className, size = 'sm' }) {
         className
       )}
     >
-      <TextBadge className="BA__packBadge" text="New" />
+      <TextBadge
+        className="BA__packBadge"
+        text="Badge"
+      />
       <div className="BA__packSplash">
         <img
           className="BA__packSplashImage"
-          src="https://betterdiscord.app/resources/store/missing.svg"
+          src={registry.getThumbnailSrc(pack)}
+          alt={pack.name}
           loading="lazy"
-          alt="Pack Name"
           draggable="false"
         />
         {size === 'sm' && (
-          <Tooltip text="arg0NNY">
+          <Tooltip text={pack.author}>
             {props => (
               <div
                 {...props}
@@ -137,8 +256,8 @@ function PackContent ({ className, size = 'sm' }) {
               >
                 <img
                   className="BA__packAuthorAvatar"
-                  src="https://avatars.githubusercontent.com/u/52377180?s=60&v=4"
-                  alt="arg0NNY"
+                  src={authorAvatarSrc}
+                  alt={pack.author}
                 />
               </div>
             )}
@@ -148,7 +267,7 @@ function PackContent ({ className, size = 'sm' }) {
       <div className="BA__packContentContainer">
         <div className="BA__packHeader">
           <PackBadge
-            type={PackBadge.Types.OFFICIAL}
+            type={registry.getVerificationStatus(pack)}
             size={size}
           />
           <Text
@@ -156,17 +275,19 @@ function PackContent ({ className, size = 'sm' }) {
             tag="h2"
             lineClamp={2}
           >
-            Pack Name
+            {pack.name}
           </Text>
         </div>
-        <Text
-          className={classNames('BA__packDescription', DiscordClasses.Scroller.thin)}
-          variant="text-sm/medium"
-          color="text-muted"
-          lineClamp={size === 'sm' && 2}
-        >
-          Pack Description
-        </Text>
+        {pack.description && (
+          <Text
+            className={classNames('BA__packDescription', DiscordClasses.Scroller.thin)}
+            variant="text-sm/medium"
+            color="text-muted"
+            lineClamp={size === 'sm' && 2}
+          >
+            {pack.description}
+          </Text>
+        )}
         <div className="BA__packContentSpacer" />
         <div className="BA__packFooter">
           {size === 'md' ? (
@@ -176,33 +297,39 @@ function PackContent ({ className, size = 'sm' }) {
                   icon={(
                     <img
                       className="BA__packAuthorAvatar"
-                      src="https://avatars.githubusercontent.com/u/52377180?s=60&v=4"
-                      alt="arg0NNY"
+                      src={authorAvatarSrc}
+                      alt={pack.author}
                     />
                   )}
-                  title="arg0NNY"
+                  title={pack.author}
                   subtitle="Author"
                 >
-                  <Tooltip text="Author's Page">
-                    {props => (
-                      <Button
-                        {...props}
-                        variant="secondary"
-                        size="sm"
-                        icon={LinkIcon}
-                      />
-                    )}
-                  </Tooltip>
-                  <Tooltip text="Donate">
-                    {props => (
-                      <Button
-                        {...props}
-                        variant="active"
-                        size="sm"
-                        icon={CircleDollarSignIcon}
-                      />
-                    )}
-                  </Tooltip>
+                  {pack.authorLink && (
+                    <Tooltip text="Author's Page">
+                      {props => (
+                        <Button
+                          {...props}
+                          variant="secondary"
+                          size="sm"
+                          icon={LinkIcon}
+                          onClick={() => handleClick({ href: pack.authorLink })}
+                        />
+                      )}
+                    </Tooltip>
+                  )}
+                  {pack.donate && (
+                    <Tooltip text="Donate">
+                      {props => (
+                        <Button
+                          {...props}
+                          variant="active"
+                          size="sm"
+                          icon={CircleDollarSignIcon}
+                          onClick={() => handleClick({ href: pack.donate })}
+                        />
+                      )}
+                    </Tooltip>
+                  )}
                 </PackField>
                 <PackField
                   icon={(
@@ -210,11 +337,11 @@ function PackContent ({ className, size = 'sm' }) {
                       <img
                         className="BA__packServerIcon"
                         src="https://avatars.githubusercontent.com/u/52377180?s=60&v=4"
-                        alt="arg0NNY's Lounge"
+                        alt="Server Name"
                       />
                     </SquircleMask>
                   )}
-                  title="arg0NNY's Lounge"
+                  title="Server Name"
                   subtitle="Support Server"
                 >
                   <Button
@@ -227,56 +354,66 @@ function PackContent ({ className, size = 'sm' }) {
               <Divider />
               <Button
                 variant="icon-only"
-                icon={GitHubIcon}
-                text="slug.pack.json"
+                icon={JSONIcon}
+                text={pack.filename}
                 fullWidth
+                onClick={showSource}
               />
             </>
           ) : (
             <div className="BA__packMeta">
-              <IconButton tooltip="Source">
-                <GitHubIcon size="sm" color="currentColor"/>
+              <IconButton
+                tooltip="Source"
+                onClick={stop(showSource)}
+              >
+                <JSONIcon size="sm" color="currentColor" />
               </IconButton>
-              <IconButton tooltip="Support Server">
-                <CircleQuestionIcon size="sm" color="currentColor"/>
-              </IconButton>
+              {pack.invite && (
+                <IconButton
+                  tooltip="Support Server"
+                  onClick={stop(() => handleClick({ href: `https://discord.gg/${pack.invite}` }))}
+                >
+                  <CircleQuestionIcon size="sm" color="currentColor" />
+                </IconButton>
+              )}
             </div>
           )}
           <div class="BA__packActions">
-            <IconButton tooltip="An error occurred">
-              <CircleWarningIcon size="md" color={colors.STATUS_DANGER} />
-            </IconButton>
-            <Button
-              icon={CheckIcon}
-              variant="active"
+            {pack.partial && (
+              <IconButton
+                tooltip="An error occurred"
+                onClick={stop(() => ErrorManager.showModal([pack.error]))}
+              >
+                <CircleWarningIcon size="md" color={colors.STATUS_DANGER} />
+              </IconButton>
+            )}
+            <PackAction
+              pack={pack}
               size={size}
-              disabled
-              fullWidth={size === 'md'}
-              text={(
-                <>
-                  <span>Installed</span>
-                  {size === 'md' && (
-                    <PackVersion version="1.0.0" from="0.0.0" />
-                  )}
-                </>
-              )}
+              location={location}
             />
-            <Tooltip text="Uninstall">
-              {props => (
-                <Button
-                  {...props}
-                  variant="critical-primary"
-                  size={size}
-                  icon={TrashIcon}
-                />
-              )}
-            </Tooltip>
+            {pack.installed && (
+              <Tooltip text="Uninstall">
+                {props => (
+                  <Button
+                    {...props}
+                    variant="critical-primary"
+                    size={size}
+                    icon={TrashIcon}
+                    disabled={registry.isPending(pack.filename)}
+                    onClick={stop(() => registry.uninstall(pack.filename))} // TODO: Show confirmation with option to also delete the config file (also add irreversible alert for unpublished packs)
+                  />
+                )}
+              </Tooltip>
+            )}
           </div>
         </div>
       </div>
     </div>
   )
 }
+
+PackContent.Location = PackContentLocation
 
 export default PackContent
 
@@ -299,6 +436,7 @@ css
     position: relative;
 }
 .BA__packSplashImage {
+    position: absolute;
     display: block;
     width: 100%;
     height: 100%;

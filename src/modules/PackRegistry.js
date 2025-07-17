@@ -8,6 +8,17 @@ import Notices from '@/modules/Notices'
 import Settings from '@/settings'
 import meta from '@/meta'
 import SettingsSection from '@enums/SettingsSection'
+import regex from '@utils/regex'
+import thumbnailPlaceholder from '@/assets/placeholders/thumbnail.svg'
+import avatarPlaceholder from '@/assets/placeholders/avatar.png'
+
+export const PackVerificationStatus = {
+  UNKNOWN: 0,
+  UNVERIFIED: 1,
+  FAILED: 2,
+  VERIFIED: 3,
+  OFFICIAL: 4
+}
 
 export default new class PackRegistry {
   get name () { return 'PackRegistry' }
@@ -15,13 +26,26 @@ export default new class PackRegistry {
   get mainFilename () { return import.meta.env.VITE_PACK_REGISTRY_MAIN_FILENAME }
 
   constructor () {
-    this._pending = false
+    this._pending = new Set()
+    this._error = null
     this._items = []
+    this._authors = []
+
+    this._closeNotice = null
 
     this.onPackLoaded = () => this.checkForUpdates({ updateRegistry: false })
   }
-  get pending () { return this._pending }
-  set pending (value) { this._pending = value; this.onChange() }
+
+  isPending (filename = this.mainFilename) {
+    return this._pending.has(filename)
+  }
+  get hasPending () {
+    return this._pending.size > 0
+  }
+
+  get error () { return this._error }
+  set error (value) { this._error = value; this.onChange() }
+
   get items () {
     return this._items.map(item => ({
       ...item,
@@ -30,78 +54,121 @@ export default new class PackRegistry {
   }
   set items (value) { this._items = value; this.onChange() }
 
+  get authors () { return this._authors }
+  set authors (value) { this._authors = value; this.onChange() }
+
   onChange () {
     Emitter.emit(Events.PackRegistryUpdated)
   }
 
   initialize () {
-    this.updateRegistry()
-      .then(() => this.checkForUpdates({ updateRegistry: false }))
-      .then(() => this.listenPackEvents())
+    this.listenPackEvents()
+    this.checkForUpdates()
 
     Logger.info(this.name, 'Initialized.')
   }
 
-  fetch (filename, parse = true) {
-    return Net.fetch(`${this.baseUrl}/${filename}?${Date.now()}`)
-      .then(res => parse ? res.json() : res.text())
-      .catch(err => Logger.error(this.name, `Failed to fetch "${filename}"`, err))
+  hasPack (filename) {
+    return this.items.some(item => item.filename === filename)
+  }
+  getPack (filename) {
+    return this.items.find(item => item.filename === filename)
+  }
+  getAuthor (username) {
+    return this.authors.find(author => author.username === username)
+  }
+  getSourceURL (filename) {
+    return `${this.baseUrl}/${filename}`
+  }
+
+  async fetch (filename, parse = true) {
+    this._pending.add(filename)
+    this.onChange()
+    try {
+      const response = await Net.fetch(`${this.getSourceURL(filename)}?${Date.now()}`)
+      return parse ? response.json() : response.text()
+    }
+    finally {
+      this._pending.delete(filename)
+      this.onChange()
+    }
   }
   async updateRegistry () {
-    if (this.pending) return
-
-    this.pending = true
+    this.error = null
     Logger.info(this.name, 'Updating registry...')
-    const data = await this.fetch(this.mainFilename)
-    this.pending = false
-    if (!data?.items) return
+    try {
+      const data = await this.fetch(this.mainFilename)
+      this.items = data.items
+      this.authors = data.authors
 
-    this.items = data.items
-    Logger.info(this.name, `Loaded ${this.items.length} packs.`)
+      Logger.info(this.name, `Loaded ${this.items.length} packs.`)
+    }
+    catch (error) {
+      this.error = error
+      Logger.error(this.name, 'Failed to update registry:', error)
+    }
   }
-  async install (filename) {
-    const content = await this.fetch(filename, false)
-    if (!content) return
+  async install (filename, action = 'install') {
+    try {
+      PackManager.saveAddon(filename, await this.fetch(filename, false))
+      return true
+    }
+    catch (error) {
+      Logger.error(this.name, `Failed to ${action} "${filename}":`, error)
+      Toasts.error(`Failed to ${action} "${filename}".`)
+      return false
+    }
+  }
+  update (filename) {
+    return this.install(filename, 'update')
+  }
+  reinstall (filename) {
+    return this.install(filename, 'reinstall')
+  }
+  uninstall (filename) {
+    PackManager.deleteAddon(filename)
+  }
 
-    PackManager.saveAddon({ filename }, content)
-  }
-  async update (pack) {
-    const content = await this.fetch(pack.filename, false)
-    if (!content) return
-
-    PackManager.saveAddon(pack, content)
-  }
-
-  isUnofficial (pack) {
-    if (!this.items?.length) return false
-    return !this.items.some(item => ['filename', 'name', 'author'].every(key => item[key] === pack[key]))
-  }
+  // isUnofficial (pack) {
+  //   if (!this.items?.length) return false
+  //   return !this.items.some(item => ['filename', 'name', 'author'].every(key => item[key] === pack[key]))
+  // }
   hasUpdate (pack) {
-    if (!this.items?.length) return false
-
-    const latest = this.items.find(item => item.filename === pack.filename)
+    const latest = this.getPack(pack.filename)
     if (!latest) return false
 
-    let hasUpdate
     try {
-      hasUpdate = Utils.semverCompare(pack.version, latest.version) > 0
+      return Utils.semverCompare(pack.version, latest.version) > 0
     }
-    catch (e) {
-      Logger.warn(this.name, `Failed to compare versions for "${pack.filename}":`, e)
-      hasUpdate = false
+    catch (error) {
+      Logger.warn(this.name, `Failed to compare versions for "${pack.filename}":`, error)
+      return regex.semver.test(latest.version)
     }
-
-    return hasUpdate && latest.version
   }
 
+  getOutdatedPacks () {
+    return PackManager.getAllPacks(true)
+      .filter(pack => this.hasUpdate(pack))
+  }
+  showUpdatesNotice (updatesCount = this.getUpdatesCount(), onClick = () => Settings.openSettingsModal(SettingsSection.Library)) {
+    this._closeNotice?.()
+    this._closeNotice = Notices.info(`${meta.name} has found updates for ${updatesCount} of your packs!`, {
+      buttons: [{
+        label: 'View Library',
+        onClick: () => {
+          this._closeNotice?.()
+          onClick()
+        }
+      }]
+    })
+  }
   async checkForUpdates (options = {}) {
     const { useToasts = false, updateRegistry = true } = options
     Logger.info(this.name, 'Checking for updates...')
 
     if (updateRegistry) await this.updateRegistry()
 
-    const updatesCount = PackManager.getAllPacks(true)
-      .reduce((count, pack) => count + (this.hasUpdate(pack) ? 1 : 0), 0)
+    const updatesCount = this.getOutdatedPacks().length
     if (!updatesCount) {
       Logger.info(this.name, 'No updates found.')
       if (useToasts) Toasts.success('Everything is up to date!')
@@ -113,17 +180,35 @@ export default new class PackRegistry {
 
     this.showUpdatesNotice(updatesCount)
   }
+  async updateAll () {
+    const packs = this.getOutdatedPacks()
+    const results = await Promise.all(
+      packs.map(pack => this.update(pack.filename))
+    )
+    Logger.info(this.name, `Updated ${packs.length} packs.`)
 
-  showUpdatesNotice (updatesCount = 1, onClick = () => Settings.openSettingsModal(SettingsSection.Library)) {
-    const closeNotice = Notices.info(`${meta.name} has found updates for ${updatesCount} of your packs!`, {
-      buttons: [{
-        label: 'View Library',
-        onClick: () => {
-          closeNotice()
-          onClick()
-        }
-      }]
-    })
+    if (results.every(Boolean)) {
+      Toasts.success('Everything is up to date!')
+      this._closeNotice?.()
+    }
+  }
+
+  getThumbnailSrc (pack) {
+    return pack.thumbnailSrc
+      ?? this.getPack(pack.filename)?.thumbnailSrc
+      ?? thumbnailPlaceholder
+  }
+  getAuthorAvatarSrc (pack) {
+    const publishedPack = this.getPack(pack.filename)
+    if (!publishedPack) return avatarPlaceholder
+
+    const author = this.getAuthor(publishedPack.author)
+    if (!author) return avatarPlaceholder
+
+    return `https://avatars.githubusercontent.com/u/${author.github.id}?s=60&v=4`
+  }
+  getVerificationStatus (pack) {
+    return PackVerificationStatus.UNKNOWN
   }
 
   listenPackEvents () {
