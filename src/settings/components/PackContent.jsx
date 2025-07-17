@@ -153,7 +153,7 @@ function PackAction ({ pack, size, location }) {
   const registry = usePackRegistry()
 
   const isInstalled = !!pack.installed
-  const hasUpdate = isInstalled && registry.hasUpdate(pack)
+  const hasUpdate = isInstalled && registry.hasUpdate(pack.installed)
 
   const pending = registry.isPending(pack.filename)
 
