@@ -125,9 +125,6 @@ export default new class PackRegistry {
   reinstall (filename) {
     return this.install(filename, 'reinstall')
   }
-  uninstall (filename) {
-    PackManager.deleteAddon(filename)
-  }
 
   // isUnofficial (pack) {
   //   if (!this.items?.length) return false

@@ -1,4 +1,4 @@
-import { Button, colors, handleClick, Text, TextBadge, Tooltip } from '@discord/modules'
+import { Button, colors, handleClick, ModalActions, Text, TextBadge, Tooltip } from '@discord/modules'
 import IconButton from '@/settings/components/IconButton'
 import { css } from '@style'
 import classNames from 'classnames'
@@ -25,6 +25,7 @@ import ErrorManager from '@error/manager'
 import JSONIcon from '@/settings/components/icons/JSONIcon'
 import PackManager from '@/modules/PackManager'
 import { path } from '@/modules/Node'
+import Modal from '@/components/Modal'
 
 export const PackContentLocation  = {
   CATALOG: 0,
@@ -227,6 +228,30 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
     )
   }, [pack, location])
 
+  const uninstall = useCallback(() => {
+    if (!pack.installed) return
+
+    ModalActions.openModal(props => (
+      <Modal
+        {...props}
+        title="Uninstall Pack"
+        confirmText="Uninstall"
+        confirmButtonVariant="critical-primary"
+        cancelText="Cancel"
+        onConfirm={() => PackManager.deleteAddon(pack.filename)}
+      >
+        <Text variant="text-md/normal">
+          Are you sure you want to delete pack <b>{pack.name}</b>?
+          {registry.hasPack(pack.filename) ? (
+            ' It can always be re-installed from the Catalog.'
+          ) : (
+            <b> This action cannot be undone.</b>
+          )}
+        </Text>
+      </Modal>
+    ))
+  }, [pack])
+
   return (
     <div
       className={classNames(
@@ -401,7 +426,7 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
                     size={size}
                     icon={TrashIcon}
                     disabled={registry.isPending(pack.filename)}
-                    onClick={stop(() => registry.uninstall(pack.filename))} // TODO: Show confirmation with option to also delete the config file (also add irreversible alert for unpublished packs)
+                    onClick={stop(uninstall)}
                   />
                 )}
               </Tooltip>
