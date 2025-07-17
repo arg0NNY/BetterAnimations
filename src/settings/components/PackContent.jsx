@@ -36,6 +36,7 @@ import Modal from '@/components/Modal'
 import Skeleton from '@/settings/components/Skeleton'
 import { isInviteInvalid } from '@discord/utils'
 import { UI } from '@/BdApi'
+import Core from '@/modules/Core'
 
 export const PackContentLocation  = {
   CATALOG: 0,
@@ -285,6 +286,7 @@ function PackInvite ({ code }) {
 function PackContent ({ pack, className, size = 'sm', location = PackContentLocation.CATALOG }) {
   const registry = usePackRegistry()
 
+  const isPublished = registry.hasPack(pack.filename)
   const authorAvatarSrc = registry.getAuthorAvatarSrc(pack)
 
   const showSource = useCallback(() => {
@@ -297,23 +299,40 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
   const uninstall = useCallback(() => {
     if (!pack.installed) return
 
+    const affectedModules = Core.getAllModules(true).filter(
+      module => Object.values(module.animations)
+        .some(data => data.pack?.filename === pack.filename)
+    )
+
     ModalActions.openModal(props => (
       <Modal
         {...props}
         title="Uninstall Pack"
-        confirmText="Uninstall"
+        confirmText={isPublished ? 'Uninstall' : 'Delete permanently'}
         confirmButtonVariant="critical-primary"
         cancelText="Cancel"
         onConfirm={() => PackManager.deleteAddon(pack.filename)}
       >
         <Text variant="text-md/normal">
           Are you sure you want to delete pack <b>{pack.name}</b>?
-          {registry.hasPack(pack.filename) ? (
+          {isPublished ? (
             ' It can always be re-installed from the Catalog.'
           ) : (
-            <b> This action cannot be undone.</b>
+            ' It is not published in the Catalog, so it cannot be reinstalled.'
           )}
         </Text>
+        {affectedModules.length > 0 && (
+          <Text variant="text-md/normal" className={DiscordClasses.Margins.marginTop8}>
+            {'Animations of this pack are currently applied for: '}
+            {affectedModules.map((module, i, { length }) => (
+              <>
+                <b>{module.name}</b>
+                {i < length - 1 ? ', ' : '.'}
+              </>
+            ))}
+            {' They will be automatically deselected.'}
+          </Text>
+        )}
       </Modal>
     ))
   }, [pack])
