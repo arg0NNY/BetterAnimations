@@ -6,6 +6,7 @@ export function usePackRegistry () {
   useEmitterEffect([
     Events.PackLoaded,
     Events.PackUnloaded,
+    Events.PackUpdated,
     Events.PackRegistryUpdated
   ])
 

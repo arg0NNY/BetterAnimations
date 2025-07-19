@@ -5,6 +5,7 @@ export default Enum({
   PackUnloaded: 'pack-unloaded',
   PackEnabled: 'pack-enabled',
   PackDisabled: 'pack-disabled',
+  PackUpdated: 'pack-updated',
   ModuleToggled: 'module-toggled',
   ModuleSettingsChanged: 'module-settings-changed',
   SettingsChanged: 'settings-changed',

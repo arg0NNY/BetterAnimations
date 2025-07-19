@@ -31,7 +31,7 @@ import VerifiedCheckIcon from '@/settings/components/icons/VerifiedCheckIcon'
 import { useCallback, useEffect, useMemo } from 'react'
 import DangerIcon from '@/settings/components/icons/DangerIcon'
 import CircleWarningIcon from '@/settings/components/icons/CircleWarningIcon'
-import { PackVerificationStatus } from '@/modules/PackRegistry'
+import { VerificationStatus } from '@/modules/PackRegistry'
 import usePackRegistry from '@/hooks/usePackRegistry'
 import { stop } from '@/settings/utils/eventModifiers'
 import ErrorManager from '@error/manager'
@@ -52,7 +52,7 @@ export const PackContentLocation  = {
 function PackBadge ({ type, size = 'sm' }) {
   const { icon, color, label } = useMemo(() => {
     switch (type) {
-      case PackVerificationStatus.UNKNOWN:
+      case VerificationStatus.UNKNOWN:
         return {
           icon: props => (
             <VerifiedCheckIcon
@@ -64,19 +64,19 @@ function PackBadge ({ type, size = 'sm' }) {
           color: Tooltip.Colors.PRIMARY,
           label: 'Unable to verify'
         }
-      case PackVerificationStatus.UNVERIFIED:
+      case VerificationStatus.UNVERIFIED:
         return {
           icon: props => <DangerIcon {...props} />,
           color: Tooltip.Colors.RED,
           label: 'Unverified'
         }
-      case PackVerificationStatus.FAILED:
+      case VerificationStatus.FAILED:
         return {
           icon: props => <DangerIcon {...props} />,
           color: Tooltip.Colors.RED,
           label: 'Verification failed'
         }
-      case PackVerificationStatus.VERIFIED:
+      case VerificationStatus.VERIFIED:
         return {
           icon: props => (
             <VerifiedCheckIcon
@@ -87,7 +87,7 @@ function PackBadge ({ type, size = 'sm' }) {
           color: Tooltip.Colors.GREEN,
           label: 'Verified'
         }
-      case PackVerificationStatus.OFFICIAL:
+      case VerificationStatus.OFFICIAL:
         return {
           icon: props => (
             <VerifiedCheckIcon
@@ -392,7 +392,7 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
       <div className="BA__packContentContainer">
         <div className="BA__packHeader">
           <PackBadge
-            type={registry.getVerificationStatus(pack)}
+            type={registry.verifier.getVerificationStatus(pack)}
             size={size}
           />
           <Text

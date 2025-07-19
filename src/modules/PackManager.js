@@ -8,6 +8,7 @@ import ErrorManager from '@error/manager'
 import { formatZodError } from '@utils/zod'
 import internalPacks, { internalPackSlugs } from '@packs'
 import Documentation from '@shared/documentation'
+import PackRegistry from '@/modules/PackRegistry'
 
 export default new class PackManager extends AddonManager {
   get name () {return 'PackManager'}
@@ -50,23 +51,26 @@ export default new class PackManager extends AddonManager {
     }
   }
 
-  getAllPacks (includePartial = false) {
-    return this.addonList.filter(p => includePartial || !p.partial)
+  isRestricted (pack) {
+    return pack.partial || !PackRegistry.verifier.check(pack)
+  }
+  getAllPacks (includeRestricted = false) {
+    return this.addonList.filter(p => includeRestricted || !this.isRestricted(p))
       .sort((a, b) => {
         if (a.partial !== b.partial) return a.partial ? 1 : -1
         return a.name.localeCompare(b.name)
       })
   }
-  _getPack (predicate, includePartial = false) {
+  _getPack (predicate, includeRestricted = false) {
     return this.addonList.find(
-      p => (includePartial || !p.partial) && predicate(p)
+      p => (includeRestricted || !this.isRestricted(p)) && predicate(p)
     )
   }
-  getPack (slug, includePartial = false) {
+  getPack (slug, includeRestricted = false) {
     if (internalPackSlugs.includes(slug)) return internalPacks[slug]
-    return this._getPack(p => p.slug === slug, includePartial)
+    return this._getPack(p => p.slug === slug, includeRestricted)
   }
-  getPackByFile (filename, includePartial = false) {
-    return this._getPack(p => p.filename === filename, includePartial)
+  getPackByFile (filename, includeRestricted = false) {
+    return this._getPack(p => p.filename === filename, includeRestricted)
   }
 }

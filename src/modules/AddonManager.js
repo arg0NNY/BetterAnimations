@@ -6,6 +6,7 @@ import Data from '@/modules/Data'
 import Events from '@/modules/Emitter'
 import { parse } from 'json-source-map'
 import { formatAddonParseError } from '@utils/json'
+import { VerificationStatus } from '@/modules/PackRegistry'
 
 const stripBOM = function (fileContent) {
   if (fileContent.charCodeAt(0) === 0xFEFF) {
@@ -151,6 +152,7 @@ export default class AddonManager {
     addon.size = stats.size
     addon.fileContent = fileContent.split(/\r?\n|\r|\n/g)
     addon.installed = addon
+    addon.verificationStatus = VerificationStatus.UNKNOWN
 
     if (this.forbiddenSlugs.includes(slug))
       throw new AddonError(this.prefix, addon, `Forbidden ${this.prefix} slug: '${slug}'`)

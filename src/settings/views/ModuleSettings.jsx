@@ -24,7 +24,7 @@ function ModuleSettings ({ moduleId, refToScroller }) {
   const preinstalledPack = PackManager.getPack(PREINSTALLED_PACK_SLUG)
   const preinstalledAnimations = preinstalledPack?.animations.filter(a => module.isSupportedBy(a)) ?? []
 
-  const packs = PackManager.getAllPacks(true)
+  const packs = PackManager.getAllPacks()
     .filter(p => p.partial || p.animations.some(a => module.isSupportedBy(a)))
 
   return (

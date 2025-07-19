@@ -12,12 +12,66 @@ import regex from '@utils/regex'
 import thumbnailPlaceholder from '@/assets/placeholders/thumbnail.svg'
 import avatarPlaceholder from '@/assets/placeholders/avatar.png'
 
-export const PackVerificationStatus = {
+export const VerificationStatus = {
   UNKNOWN: 0,
   UNVERIFIED: 1,
   FAILED: 2,
   VERIFIED: 3,
   OFFICIAL: 4
+}
+
+class PackVerifier {
+  constructor (registry) {
+    this.registry = registry
+  }
+
+  getVerificationStatus (pack) {
+    if (!pack.installed) return pack.official ? VerificationStatus.OFFICIAL : VerificationStatus.VERIFIED
+    return pack.installed.verificationStatus
+  }
+
+  check (packOrStatus) {
+    return [VerificationStatus.UNKNOWN, VerificationStatus.VERIFIED, VerificationStatus.OFFICIAL]
+      .includes(typeof packOrStatus === 'object' ? packOrStatus.verificationStatus : packOrStatus)
+  }
+
+  _verify (pack) {
+    const publishedPack = this.registry.getPack(pack.filename)
+    if (!publishedPack) return VerificationStatus.UNVERIFIED
+
+    // TODO: Check hashes
+
+    return publishedPack.official ? VerificationStatus.OFFICIAL : VerificationStatus.VERIFIED
+  }
+  verify (pack) {
+    const status = this._verify(pack)
+    const didChange = status !== pack.verificationStatus
+    const hasFailed = didChange && !this.check(status)
+
+    if (didChange) {
+      pack.verificationStatus = status
+      Emitter.emit(Events.PackUpdated, pack)
+    }
+
+    return hasFailed
+  }
+  verifyAll (packs = PackManager.getAllPacks(true)) {
+    const hasFailed = packs.map(pack => this.verify(pack)).some(Boolean)
+    if (hasFailed) this.showModal()
+    return hasFailed
+  }
+
+  getPacksWithIssues (packs = PackManager.getAllPacks(true)) {
+    return packs.filter(pack => this.check(pack))
+  }
+  hasIssues () {
+    return this.getPacksWithIssues().length > 0
+  }
+  showModal (issues = this.getPacksWithIssues()) {
+    if (!issues.length) return
+
+    // TODO: Display modal
+  }
 }
 
 export default new class PackRegistry {
@@ -26,6 +80,8 @@ export default new class PackRegistry {
   get mainFilename () { return import.meta.env.VITE_PACK_REGISTRY_MAIN_FILENAME }
 
   constructor () {
+    this.verifier = new PackVerifier(this)
+
     this._pending = new Set()
     this._error = null
     this._items = []
@@ -33,7 +89,10 @@ export default new class PackRegistry {
 
     this._closeNotice = null
 
-    this.onPackLoaded = () => this.checkForUpdates({ updateRegistry: false })
+    this.onPackLoaded = pack => {
+      this.verifier.verifyAll([pack])
+      this.checkForUpdates({ updateRegistry: false })
+    }
   }
 
   isPending (filename = this.mainFilename) {
@@ -102,6 +161,8 @@ export default new class PackRegistry {
       this.authors = data.authors
 
       Logger.info(this.name, `Loaded ${this.items.length} packs.`)
+
+      this.verifier.verifyAll()
       return true
     }
     catch (error) {
@@ -128,10 +189,6 @@ export default new class PackRegistry {
     return this.install(filename, 'reinstall')
   }
 
-  // isUnofficial (pack) {
-  //   if (!this.items?.length) return false
-  //   return !this.items.some(item => ['filename', 'name', 'author'].every(key => item[key] === pack[key]))
-  // }
   hasUpdate (pack) {
     const latest = this.getPack(pack.filename)
     if (!latest) return false
@@ -211,9 +268,6 @@ export default new class PackRegistry {
     if (!author) return avatarPlaceholder
 
     return `https://avatars.githubusercontent.com/u/${author.github.id}?s=60&v=4`
-  }
-  getVerificationStatus (pack) {
-    return PackVerificationStatus.UNKNOWN
   }
 
   listenPackEvents () {

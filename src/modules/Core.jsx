@@ -163,7 +163,7 @@ export default new class Core {
       })
     )
 
-    this.globalChangeEvents = [Events.PackLoaded, Events.PackUnloaded, Events.SettingsChanged]
+    this.globalChangeEvents = [Events.PackLoaded, Events.PackUnloaded, Events.PackUpdated, Events.SettingsChanged]
     this.onGlobalChange = () => this.onChange()
     this.onModuleChange = id => this.onChange(id)
   }
