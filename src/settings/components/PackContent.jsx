@@ -357,10 +357,13 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
         className
       )}
     >
-      <TextBadge
-        className="BA__packBadge"
-        text="Badge"
-      />
+      {pack.installed && registry.hasUpdate(pack.installed) && (
+        <TextBadge
+          className="BA__packBadge"
+          text="Update available"
+          color={colors.BG_BRAND.css}
+        />
+      )}
       <div className="BA__packSplash">
         <img
           className="BA__packSplashImage"
