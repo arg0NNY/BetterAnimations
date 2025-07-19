@@ -1,14 +1,21 @@
 import { css } from '@style'
 import PackPicture from '@/settings/components/PackPicture'
-import { Button, handleClick, Text } from '@discord/modules'
+import { Button, Text } from '@discord/modules'
 import SettingsSection from '@enums/SettingsSection'
 import ShopIcon from '@/settings/components/icons/ShopIcon'
-import Documentation from '@shared/documentation'
-import BookIcon from '@/settings/components/icons/BookIcon'
-import ExternalLinkIcon from '@/settings/components/icons/ExternalLinkIcon'
 import { useSection } from '@/settings/stores/SettingsStore'
+import BookCheckIcon from '@/components/icons/BookCheckIcon'
 
-function NoPacksPlaceholder () {
+function NoPacksPlaceholder ({
+  title = 'Install Animation Packs',
+  description = (
+    <>
+      Expand your animation library with collections
+      of&nbsp;community-made animations
+    </>
+  ),
+  actions = ['catalog', 'library']
+}) {
   const [section, setSection] = useSection()
 
   return (
@@ -19,28 +26,40 @@ function NoPacksPlaceholder () {
           className="BA__noPacksTitle"
           variant="heading-xl/bold"
         >
-          Install Animation Packs
+          {title}
         </Text>
         <Text
           className="BA__noPacksDescription"
           variant="text-md/normal"
         >
-          Expand your animation library with collections
-          of&nbsp;community-made animations
+          {description}
         </Text>
-        <div class="BA__noPacksActions">
-          <Button
-            icon={ShopIcon}
-            text="Catalog"
-            onClick={() => setSection(SettingsSection.Catalog)}
-          />
-          <Button
-            variant="secondary"
-            icon={BookIcon}
-            text="Pack Directory"
-            onClick={() => handleClick({ href: Documentation.packDirectoryUrl })}
-          />
-        </div>
+        {actions && (
+          <div className="BA__noPacksActions">
+            {actions.map(action => {
+              switch (action) {
+                case 'catalog':
+                  return (
+                    <Button
+                      icon={ShopIcon}
+                      text="Catalog"
+                      onClick={() => setSection(SettingsSection.Catalog)}
+                    />
+                  )
+                case 'library':
+                  return (
+                    <Button
+                      variant="secondary"
+                      icon={BookCheckIcon}
+                      text="Library"
+                      onClick={() => setSection(SettingsSection.Library)}
+                    />
+                  )
+                default: return action
+              }
+            })}
+          </div>
+        )}
       </div>
     </div>
   )

@@ -5,6 +5,7 @@ import { PackContentLocation } from '@/settings/components/PackContent'
 import { Button, Tooltip } from '@discord/modules'
 import RefreshIcon from '@/settings/components/icons/RefreshIcon'
 import DownloadIcon from '@/settings/components/icons/DownloadIcon'
+import NoPacksPlaceholder from '@/settings/components/NoPacksPlaceholder'
 
 function Library () {
   const registry = usePackRegistry()
@@ -13,6 +14,9 @@ function Library () {
     <PackListView
       title="Library"
       items={PackManager.getAllPacks(true)}
+      empty={(
+        <NoPacksPlaceholder actions={['catalog']} />
+      )}
       actions={(
         <>
           {registry.getOutdatedPacks().length > 0 && (
