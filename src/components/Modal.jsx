@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonGroup,
   Heading,
   ModalContent,
   ModalFooter,
@@ -53,28 +54,30 @@ function Modal ({
         {children}
       </ModalContent>
       <ModalFooter>
-        <Button
-          type="submit"
-          variant={confirmButtonVariant}
-          text={confirmText}
-          loading={loading}
-          onClick={() => {
-            onConfirm?.()
-            onClose()
-          }}
-        />
-        {cancelText ? (
+        <ButtonGroup direction="horizontal-reverse">
           <Button
-            type="button"
-            variant="secondary"
-            text={cancelText}
-            disabled={loading}
+            type="submit"
+            variant={confirmButtonVariant}
+            text={confirmText}
+            loading={loading}
             onClick={() => {
-              onCancel?.()
+              onConfirm?.()
               onClose()
             }}
           />
-        ) : null}
+          {cancelText ? (
+            <Button
+              type="button"
+              variant="secondary"
+              text={cancelText}
+              disabled={loading}
+              onClick={() => {
+                onCancel?.()
+                onClose()
+              }}
+            />
+          ) : null}
+        </ButtonGroup>
       </ModalFooter>
     </ModalRoot>
   )
