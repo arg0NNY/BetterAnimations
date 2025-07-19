@@ -65,13 +65,11 @@ export class ErrorBoundary extends Component {
     )
 
     return (
-      <ErrorCard {...props} actions={actions(_actions)}>
-        <IconBrand
-          type={IconBrandTypes.ERROR}
-          size="xl"
-        />
-        <Text variant="text-md/bold">An error occurred.</Text>
-      </ErrorCard>
+      <ErrorCard
+        {...props}
+        text="An error occurred."
+        actions={actions(_actions)}
+      />
     )
   }
 }

@@ -14,6 +14,7 @@ function Catalog () {
       title="Catalog"
       items={registry.items}
       pending={registry.isPending()}
+      error={registry.error && 'Failed to load packs. Please try again later.'}
       location={PackContentLocation.CATALOG}
       actions={(
         <>

@@ -102,10 +102,12 @@ export default new class PackRegistry {
       this.authors = data.authors
 
       Logger.info(this.name, `Loaded ${this.items.length} packs.`)
+      return true
     }
     catch (error) {
       this.error = error
       Logger.error(this.name, 'Failed to update registry:', error)
+      return false
     }
   }
   async install (filename, action = 'install') {
@@ -163,7 +165,13 @@ export default new class PackRegistry {
     const { useToasts = false, updateRegistry = true } = options
     Logger.info(this.name, 'Checking for updates...')
 
-    if (updateRegistry) await this.updateRegistry()
+    if (updateRegistry) {
+      const success = await this.updateRegistry()
+      if (!success) {
+        if (useToasts) Toasts.error('Unable to check for updates. Please try again later.')
+        return
+      }
+    }
 
     const updatesCount = this.getOutdatedPacks().length
     if (!updatesCount) {
