@@ -1,7 +1,13 @@
 import {
   Button,
-  colors, GuildIcon, GuildStore,
-  handleClick, InviteActions, InviteStates, InviteStore,
+  colors,
+  GuildIcon,
+  GuildStore,
+  handleClick,
+  InviteActions,
+  InviteStates,
+  InviteStore,
+  LayerActions,
   ModalActions,
   Text,
   TextBadge,
@@ -239,7 +245,13 @@ function PackInvite ({ code }) {
   const pending = !invite || invite.state === InviteStates.RESOLVING
   const invalid = isInviteInvalid(invite)
 
-  const join = useCallback(() => UI.showInviteModal(code), [code])
+  const join = useCallback(() => {
+    if (guild) {
+      ModalActions.closeAllModals()
+      LayerActions.popAllLayers()
+    }
+    UI.showInviteModal(code)
+  }, [code, guild])
 
   return (
     <PackField
@@ -274,9 +286,9 @@ function PackInvite ({ code }) {
       <Button
         variant="secondary"
         size="sm"
-        text={guild ? 'Joined' : 'Join'}
+        text={guild ? 'Open' : 'Join'}
         loading={pending}
-        disabled={pending || invalid || guild}
+        disabled={pending || invalid}
         onClick={join}
       />
     </PackField>
@@ -316,7 +328,7 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
         <Text variant="text-md/normal">
           Are you sure you want to delete pack <b>{pack.name}</b>?
           {isPublished ? (
-            ' It can always be re-installed from the Catalog.'
+            ' It can always be reinstalled from the Catalog.'
           ) : (
             ' It is not published in the Catalog, so it cannot be reinstalled.'
           )}
@@ -624,7 +636,7 @@ css
     border-radius: 50%;
 }
 .BA__packVersion {
-    opacity: .7;
+    opacity: .8;
     padding: 0 4px;
     display: inline-flex;
     align-items: center;
