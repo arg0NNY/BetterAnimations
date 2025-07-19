@@ -1,4 +1,3 @@
-import { ModalSize } from '@discord/modules'
 import Modal from '@/components/Modal'
 import ErrorDetails from '@/components/error/ErrorDetails'
 import { css } from '@style'
@@ -7,7 +6,7 @@ function ErrorModal ({ errors = [], ...props }) {
   return (
     <Modal
       title="Error Inspector"
-      size={ModalSize.MEDIUM}
+      size="lg"
       confirmText="Dismiss"
       {...props}
     >

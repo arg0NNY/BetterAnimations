@@ -141,17 +141,22 @@ export const { Alert, AlertTypes } = getMangled(Filters.byStrings('messageType',
 })
 export const UserSettingsModal = Webpack.getByKeys('open', 'setSection', 'updateAccount')
 export const { colors } = Webpack.getByKeys('colors', 'modules')
-export const { ModalRoot, ModalSize, ModalHeader, ModalFooter, ModalContent, ModalCloseButton } = Webpack.getMangled(
-  Filters.bySource('MODAL', 'rootWithShadow'),
-  {
-    ModalRoot: Filters.byStrings('MODAL', 'rootWithShadow'),
-    ModalSize: Filters.byKeys('MEDIUM', 'LARGE'),
-    ModalHeader: Filters.byStrings('headerIdIsManaged', 'HORIZONTAL'),
-    ModalFooter: Filters.byStrings('footerSeparator'),
-    ModalContent: Filters.byStrings('content', 'scrollbarType'),
-    ModalCloseButton: Filters.byStrings('closeIcon')
-  }
-)
+// export const { ModalRoot, ModalSize, ModalHeader, ModalFooter, ModalContent, ModalCloseButton } = Webpack.getMangled(
+//   Filters.bySource('MODAL', 'rootWithShadow'),
+//   {
+//     ModalRoot: Filters.byStrings('MODAL', 'rootWithShadow'),
+//     ModalSize: Filters.byKeys('MEDIUM', 'LARGE'),
+//     ModalHeader: Filters.byStrings('headerIdIsManaged', 'HORIZONTAL'),
+//     ModalFooter: Filters.byStrings('footerSeparator'),
+//     ModalContent: Filters.byStrings('content', 'scrollbarType'),
+//     ModalCloseButton: Filters.byStrings('closeIcon')
+//   }
+// )
+export const ModalRoot = Webpack.getModule(Filters.byStrings('MODAL', '"padding-size-"'), { searchExports: true })
+export const ModalHeader = Webpack.getModule(Filters.byStrings('headerCentered', '"header"'), { searchExports: true })
+export const ModalBody = Webpack.getModule(Filters.byStrings('bodyControls', '"main"'), { searchExports: true })
+export const ModalActionBar = Webpack.getModule(Filters.byStrings('actionBar', '"footer"'), { searchExports: true })
+export const ModalCloseButton = Webpack.getModule(Filters.byStrings('colorMix', '"icon-only"'), { searchExports: true })
 export const Button = Webpack.getModule(Filters.byStrings('button', 'hasText', 'expressiveWrapper'), { searchExports: true })
 export const TextButton = Webpack.getModule(Filters.byStrings('textButton', 'textVariant'), { searchExports: true })
 export const ButtonGroup = Webpack.getModule(Filters.byStrings('fullWidth', 'wrap', '"horizontal"'), { searchExports: true })

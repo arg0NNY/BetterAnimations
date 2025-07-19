@@ -1,8 +1,7 @@
 import {
   Button,
-  Heading,
-  ModalContent,
-  ModalFooter,
+  ModalActionBar,
+  ModalBody,
   ModalHeader,
   ModalRoot,
   Tooltip
@@ -13,6 +12,7 @@ import meta from '@/meta'
 
 function Modal ({
   title,
+  subtitle,
   children,
   onClose,
   confirmText = 'Close',
@@ -20,62 +20,65 @@ function Modal ({
   cancelText,
   onConfirm,
   onCancel,
+  actions,
+  actionsFullWidth = false,
+  actionBarLeading,
   loading = false,
   ...props
 }) {
   return (
     <ModalRoot
       className="BA__modal"
+      onClose={onClose}
       {...props}
     >
-      <ModalHeader separator={false}>
-        <Tooltip
-          text={meta.name}
-          shouldShow={!!title}
-          position="bottom"
-          align="left"
-        >
-          {props => (
-            <IconBrand
-              {...props}
-              className="BA__modalIcon"
-              size="custom"
-              width={36}
-              height={36}
-            />
-          )}
-        </Tooltip>
-        <Heading variant="heading-lg/semibold">
-          {title ?? meta.name}
-        </Heading>
-      </ModalHeader>
-      <ModalContent className="BA__modalContent">
+      <ModalHeader
+        title={title ?? meta.name}
+        subtitle={subtitle}
+        leading={(
+          <Tooltip
+            text={meta.name}
+            shouldShow={!!title}
+            position="bottom"
+            align="left"
+          >
+            {props => (
+              <IconBrand
+                {...props}
+                className="BA__modalIcon"
+                size="xl"
+              />
+            )}
+          </Tooltip>
+        )}
+      />
+      <ModalBody className="BA__modalContent">
         {children}
-      </ModalContent>
-      <ModalFooter>
-        <Button
-          type="submit"
-          variant={confirmButtonVariant}
-          text={confirmText}
-          loading={loading}
-          onClick={() => {
-            onConfirm?.()
-            onClose()
-          }}
-        />
-        {cancelText ? (
-          <Button
-            type="button"
-            variant="secondary"
-            text={cancelText}
-            disabled={loading}
-            onClick={() => {
+      </ModalBody>
+      <ModalActionBar
+        actions={actions ?? [
+          cancelText && {
+            variant: 'secondary',
+            text: cancelText,
+            disabled: loading,
+            onClick: () => {
               onCancel?.()
               onClose()
-            }}
-          />
-        ) : null}
-      </ModalFooter>
+            }
+          },
+          {
+            variant: confirmButtonVariant,
+            text: confirmText,
+            loading,
+            onClick: () => {
+              onConfirm?.()
+              onClose()
+            }
+          }
+        ].filter(Boolean)}
+        actionsFullWidth={actionsFullWidth}
+        leading={actionBarLeading}
+      />
     </ModalRoot>
   )
 }
@@ -83,7 +86,7 @@ function Modal ({
 export default Modal
 
 css
-`.BA__modal {
+`/*.BA__modal {
     min-height: unset;
 }
 
@@ -93,5 +96,5 @@ css
 
 .BA__modalContent {
     padding-bottom: 20px;
-}`
+}*/`
 `Modal`

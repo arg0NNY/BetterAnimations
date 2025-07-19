@@ -1,4 +1,4 @@
-import { ModalCloseButton, ModalContent, ModalRoot, ModalSize } from '@discord/modules'
+import { ModalBody, ModalCloseButton, ModalRoot } from '@discord/modules'
 import { css } from '@style'
 import PackContent, { PackContentLocation } from '@/settings/components/PackContent'
 import { ErrorBoundary } from '@error/boundary'
@@ -23,7 +23,7 @@ function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose,
     <ModalRoot
       {...props}
       className="BA__packModal"
-      size={ModalSize.DYNAMIC}
+      size="xl"
     >
       <ErrorBoundary>
         <div className="BA__packModalSidebar">
@@ -34,9 +34,9 @@ function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose,
             size="md"
           />
         </div>
-        <ModalContent className="BA__packModalPreview">
+        <ModalBody className="BA__packModalPreview">
 
-        </ModalContent>
+        </ModalBody>
         <ModalCloseButton
           className="BA__packModalClose"
           onClick={onClose}
