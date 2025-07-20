@@ -14,6 +14,7 @@ import classNames from 'classnames'
 import { ErrorBoundary } from '@error/boundary'
 import usePrevious from '@/hooks/usePrevious'
 import { useEffect } from 'react'
+import useTransitionCustomCondition from '@/hooks/useTransitionCustomCondition'
 
 export let LayersComponent = null
 
@@ -43,17 +44,12 @@ function Layer ({ baseLayer, hidden, children }) {
 }
 
 function LayerTransition ({ layer, ...props }) {
-  const shown = layer.props.mode === 'SHOWN' && props.in
-  const wasShown = usePrevious(shown)
-
-  useEffect(() => {
-    if (!props.in && !wasShown) props.onExited?.()
-  }, [props.in])
+  const isShown = useTransitionCustomCondition(layer.props.mode === 'SHOWN', props)
 
   return (
     <AnimeTransition
       {...props}
-      in={shown}
+      in={isShown}
       container={{ className: 'BA__layerContainer' }}
       defaultLayoutStyles={false}
       mountOnEnter={false}
