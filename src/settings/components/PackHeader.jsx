@@ -1,0 +1,40 @@
+import { css } from '@style'
+import { Text } from '@discord/modules'
+import PackVerificationBadge from '@/settings/components/PackVerificationBadge'
+
+function PackHeader ({ pack, icon, popoutType, size = 'sm' }) {
+  return (
+    <div className="BA__packHeader">
+      {icon ?? (
+        <PackVerificationBadge
+          type={pack.verificationStatus}
+          popoutType={popoutType}
+          size={size}
+        />
+      )}
+      <Text
+        variant={size === 'md' ? 'heading-lg/bold' : 'heading-md/bold'}
+        tag="h2"
+        lineClamp={2}
+      >
+        {pack.name}
+      </Text>
+    </div>
+  )
+}
+
+export default PackHeader
+
+css
+`.BA__packHeader {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+}
+.BA__packHeader svg {
+    flex-shrink: 0;
+}
+.BA__packHeader h2 {
+    word-break: break-word;
+}`
+`PackHeader`

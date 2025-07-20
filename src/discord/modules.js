@@ -54,6 +54,7 @@ export const TextBadge = Webpack.getModule(Filters.byStrings('textBadge', 'STATU
 export const SearchBar = Webpack.getModule(m => Filters.byKeys('isLoading', 'size')(m?.defaultProps) && Filters.byPrototypeKeys('blur', 'focus')(m), { searchExports: true })
 export const Paginator = Webpack.getModule(Filters.byStrings('pageControlContainer', 'endButtonInner'), { searchExports: true })
 export const Spinner = Webpack.getModule(m => Filters.byKeys('WANDERING_CUBES')(m?.Type), { searchExports: true })
+export const Popout = Webpack.getModule(m => Filters.byKeys('Animation')(m) && Filters.byStrings('renderPopout')(m?.prototype?.render), { searchExports: true })
 
 export const Dispatcher = Webpack.getByKeys('dispatch', 'subscribe')
 export const AppViewKeyed = getWithKey(Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'))

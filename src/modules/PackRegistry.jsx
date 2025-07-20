@@ -11,23 +11,13 @@ import SettingsSection from '@enums/SettingsSection'
 import regex from '@utils/regex'
 import thumbnailPlaceholder from '@/assets/placeholders/thumbnail.svg'
 import avatarPlaceholder from '@/assets/placeholders/avatar.png'
-
-export const VerificationStatus = {
-  UNKNOWN: 0,
-  UNVERIFIED: 1,
-  FAILED: 2,
-  VERIFIED: 3,
-  OFFICIAL: 4
-}
+import { ModalActions } from '@discord/modules'
+import VerificationIssuesModal from '@/components/VerificationIssuesModal'
+import { VerificationStatus } from '@/settings/data/verification'
 
 class PackVerifier {
   constructor (registry) {
     this.registry = registry
-  }
-
-  getVerificationStatus (pack) {
-    if (!pack.installed) return pack.official ? VerificationStatus.OFFICIAL : VerificationStatus.VERIFIED
-    return pack.installed.verificationStatus
   }
 
   check (packOrStatus) {
@@ -56,21 +46,24 @@ class PackVerifier {
     return hasFailed
   }
   verifyAll (packs = PackManager.getAllPacks(true)) {
-    const hasFailed = packs.map(pack => this.verify(pack)).some(Boolean)
-    if (hasFailed) this.showModal()
-    return hasFailed
+    const failed = packs.filter(pack => this.verify(pack))
+    if (failed.length) this.showModal()
+    return failed.length > 0
   }
 
-  getPacksWithIssues (packs = PackManager.getAllPacks(true)) {
-    return packs.filter(pack => this.check(pack))
+  getIssues (packs = PackManager.getAllPacks(true)) {
+    return packs.filter(pack => !this.check(pack))
   }
   hasIssues () {
-    return this.getPacksWithIssues().length > 0
+    return this.getIssues().length > 0
   }
-  showModal (issues = this.getPacksWithIssues()) {
-    if (!issues.length) return
+  showModal () {
+    if (!this.hasIssues()) return
 
-    // TODO: Display modal
+    ModalActions.openModal(
+      props => <VerificationIssuesModal {...props} />,
+      { modalKey: 'BA__verificationIssuesModal' }
+    )
   }
 }
 
@@ -108,6 +101,7 @@ export default new class PackRegistry {
   get items () {
     return this._items.map(item => ({
       ...item,
+      verificationStatus: item.official ? VerificationStatus.OFFICIAL : VerificationStatus.VERIFIED,
       installed: PackManager.getPackByFile(item.filename, true)
     }))
   }
@@ -161,14 +155,15 @@ export default new class PackRegistry {
       this.authors = data.authors
 
       Logger.info(this.name, `Loaded ${this.items.length} packs.`)
-
-      this.verifier.verifyAll()
       return true
     }
     catch (error) {
       this.error = error
       Logger.error(this.name, 'Failed to update registry:', error)
       return false
+    }
+    finally {
+      this.verifier.verifyAll()
     }
   }
   async install (filename, action = 'install') {

@@ -7,7 +7,7 @@ import {
   ThemeStore,
   useStateFromStores
 } from '@discord/modules'
-import { getSections } from '@/settings/data/sections'
+import { useSections } from '@/settings/data/sections'
 import meta from '@/meta'
 import SectionContext from '@/settings/context/SectionContext'
 import { css } from '@style'
@@ -23,7 +23,7 @@ function SettingsModal () {
   const sidebarTheme = useStateFromStores([ThemeStore], () => ThemeStore.darkSidebar ? Constants.Themes.DARK : undefined)
 
   const title = `${meta.name} Settings`
-  const sections = useMemo(getSections, [])
+  const sections = useSections()
   const [section, setSection] = useSection()
 
   const onClose = useCallback(() => LayerActions.popLayer(), [])

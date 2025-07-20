@@ -6,6 +6,7 @@ import { Button, Tooltip } from '@discord/modules'
 import RefreshIcon from '@/settings/components/icons/RefreshIcon'
 import DownloadIcon from '@/settings/components/icons/DownloadIcon'
 import NoPacksPlaceholder from '@/settings/components/NoPacksPlaceholder'
+import CircleWarningIcon from '@/settings/components/icons/CircleWarningIcon'
 
 function Library () {
   const registry = usePackRegistry()
@@ -26,6 +27,14 @@ function Library () {
               onClick={() => registry.updateAll()}
               loading={registry.hasPending}
               disabled={registry.hasPending}
+            />
+          )}
+          {registry.verifier.hasIssues() && (
+            <Button
+              variant="critical-primary"
+              icon={CircleWarningIcon}
+              text="Resolve issues"
+              onClick={() => registry.verifier.showModal()}
             />
           )}
           <Tooltip text="Check for updates">

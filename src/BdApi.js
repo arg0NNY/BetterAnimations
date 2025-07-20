@@ -10,7 +10,8 @@ export const {
   Data,
   Plugins,
   UI,
-  Net
+  Net,
+  ContextMenu
 } = bdApi
 
 export default bdApi

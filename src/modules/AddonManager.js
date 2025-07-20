@@ -6,7 +6,8 @@ import Data from '@/modules/Data'
 import Events from '@/modules/Emitter'
 import { parse } from 'json-source-map'
 import { formatAddonParseError } from '@utils/json'
-import { VerificationStatus } from '@/modules/PackRegistry'
+
+import { VerificationStatus } from '@/settings/data/verification'
 
 const stripBOM = function (fileContent) {
   if (fileContent.charCodeAt(0) === 0xFEFF) {

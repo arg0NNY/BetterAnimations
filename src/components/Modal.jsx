@@ -15,6 +15,7 @@ import meta from '@/meta'
 function Modal ({
   title,
   children,
+  footerLeading,
   onClose,
   confirmText = 'Close',
   confirmButtonVariant = 'secondary',
@@ -22,8 +23,16 @@ function Modal ({
   onConfirm,
   onCancel,
   loading = false,
+  disabled = loading,
   ...props
 }) {
+  const onCallback = callback => () => {
+    let shouldClose = true
+    const preventClose = () => shouldClose = false
+    callback?.(preventClose)
+    if (shouldClose) onClose?.()
+  }
+
   return (
     <ModalRoot
       className="BA__modal"
@@ -54,16 +63,17 @@ function Modal ({
         {children}
       </ModalContent>
       <ModalFooter>
-        <ButtonGroup direction="horizontal-reverse">
+        <ButtonGroup
+          className="BA__modalButtonGroup"
+          direction="horizontal-reverse"
+        >
           <Button
             type="submit"
             variant={confirmButtonVariant}
             text={confirmText}
             loading={loading}
-            onClick={() => {
-              onConfirm?.()
-              onClose()
-            }}
+            disabled={disabled}
+            onClick={onCallback(onConfirm)}
           />
           {cancelText ? (
             <Button
@@ -71,13 +81,11 @@ function Modal ({
               variant="secondary"
               text={cancelText}
               disabled={loading}
-              onClick={() => {
-                onCancel?.()
-                onClose()
-              }}
+              onClick={onCallback(onCancel)}
             />
           ) : null}
         </ButtonGroup>
+        {footerLeading}
       </ModalFooter>
     </ModalRoot>
   )
@@ -96,5 +104,9 @@ css
 
 .BA__modalContent {
     padding-bottom: 20px;
+}
+
+.BA__modalButtonGroup {
+    width: auto;
 }`
 `Modal`

@@ -27,11 +27,8 @@ import SquircleMask from '@/settings/components/SquircleMask'
 import LinkIcon from '@/settings/components/icons/LinkIcon'
 import DiscordClasses from '@discord/classes'
 import ArrowSmallRightIcon from '@/settings/components/icons/ArrowSmallRightIcon'
-import VerifiedCheckIcon from '@/settings/components/icons/VerifiedCheckIcon'
-import { useCallback, useEffect, useMemo } from 'react'
-import DangerIcon from '@/settings/components/icons/DangerIcon'
+import { useCallback, useEffect } from 'react'
 import CircleWarningIcon from '@/settings/components/icons/CircleWarningIcon'
-import { VerificationStatus } from '@/modules/PackRegistry'
 import usePackRegistry from '@/hooks/usePackRegistry'
 import { stop } from '@/settings/utils/eventModifiers'
 import ErrorManager from '@error/manager'
@@ -43,69 +40,11 @@ import Skeleton from '@/settings/components/Skeleton'
 import { isInviteInvalid } from '@discord/utils'
 import { UI } from '@/BdApi'
 import Core from '@/modules/Core'
+import PackHeader from '@/settings/components/PackHeader'
 
 export const PackContentLocation  = {
   CATALOG: 0,
   LIBRARY: 1
-}
-
-function PackBadge ({ type, size = 'sm' }) {
-  const { icon, color, label } = useMemo(() => {
-    switch (type) {
-      case VerificationStatus.UNKNOWN:
-        return {
-          icon: props => (
-            <VerifiedCheckIcon
-              {...props}
-              color={colors.ICON_MUTED}
-              secondaryColor={colors.ICON_MUTED}
-            />
-          ),
-          color: Tooltip.Colors.PRIMARY,
-          label: 'Unable to verify'
-        }
-      case VerificationStatus.UNVERIFIED:
-        return {
-          icon: props => <DangerIcon {...props} />,
-          color: Tooltip.Colors.RED,
-          label: 'Unverified'
-        }
-      case VerificationStatus.FAILED:
-        return {
-          icon: props => <DangerIcon {...props} />,
-          color: Tooltip.Colors.RED,
-          label: 'Verification failed'
-        }
-      case VerificationStatus.VERIFIED:
-        return {
-          icon: props => (
-            <VerifiedCheckIcon
-              {...props}
-              color="var(--green-360)"
-            />
-          ),
-          color: Tooltip.Colors.GREEN,
-          label: 'Verified'
-        }
-      case VerificationStatus.OFFICIAL:
-        return {
-          icon: props => (
-            <VerifiedCheckIcon
-              {...props}
-              color="var(--brand-500)"
-            />
-          ),
-          color: Tooltip.Colors.BRAND,
-          label: 'Official'
-        }
-    }
-  }, [type])
-
-  return (
-    <Tooltip text={label} color={color}>
-      {props => icon({ ...props, size })}
-    </Tooltip>
-  )
 }
 
 function PackVersion ({ version, from }) {
@@ -361,7 +300,7 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
         <TextBadge
           className="BA__packBadge"
           text="Update available"
-          color={colors.BG_BRAND.css}
+          color="var(--bg-brand)"
         />
       )}
       <div className="BA__packSplash">
@@ -390,19 +329,10 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
         )}
       </div>
       <div className="BA__packContentContainer">
-        <div className="BA__packHeader">
-          <PackBadge
-            type={registry.verifier.getVerificationStatus(pack)}
-            size={size}
-          />
-          <Text
-            variant={size === 'md' ? 'heading-lg/bold' : 'heading-md/bold'}
-            tag="h2"
-            lineClamp={2}
-          >
-            {pack.name}
-          </Text>
-        </div>
+        <PackHeader
+          pack={pack}
+          size={size}
+        />
         {pack.description && (
           <Text
             className={classNames('BA__packDescription', DiscordClasses.Scroller.thin)}
@@ -566,16 +496,9 @@ css
     flex: 1;
     min-height: 0;
 }
-.BA__packHeader {
-    display: flex;
-    align-items: flex-start;
-    gap: 4px;
+.BA__packContent .BA__packHeader {
     margin-bottom: 6px;
 }
-.BA__packHeader svg {
-    flex-shrink: 0;
-}
-.BA__packHeader h2,
 .BA__packDescription {
     word-break: break-word;
 }
