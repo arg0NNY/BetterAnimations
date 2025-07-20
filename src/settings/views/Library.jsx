@@ -20,6 +20,14 @@ function Library () {
       )}
       actions={(
         <>
+          {registry.verifier.hasIssues() && (
+            <Button
+              variant="critical-primary"
+              icon={CircleWarningIcon}
+              text="Resolve issues"
+              onClick={() => registry.verifier.showModal()}
+            />
+          )}
           {registry.getOutdatedPacks().length > 0 && (
             <Button
               icon={DownloadIcon}
@@ -27,14 +35,6 @@ function Library () {
               onClick={() => registry.updateAll()}
               loading={registry.hasPending}
               disabled={registry.hasPending}
-            />
-          )}
-          {registry.verifier.hasIssues() && (
-            <Button
-              variant="critical-primary"
-              icon={CircleWarningIcon}
-              text="Resolve issues"
-              onClick={() => registry.verifier.showModal()}
             />
           )}
           <Tooltip text="Check for updates">

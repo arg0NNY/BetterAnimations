@@ -16,6 +16,7 @@ import PackHeader from '@/settings/components/PackHeader'
 import CheckIcon from '@/settings/components/icons/CheckIcon'
 import { isDismissed } from '@/hooks/useDismissible'
 import DismissibleModal from '@/components/DismissibleModal'
+import { ErrorBoundary } from '@error/boundary'
 
 function useResolveMethods (pack) {
   const registry = usePackRegistry()
@@ -42,7 +43,10 @@ function useResolveMethods (pack) {
             ? verificationIssueResolveMethods[VerificationIssueResolveMethod.UPDATE]
             : verificationIssueResolveMethods[VerificationIssueResolveMethod.REINSTALL]
         ],
-        additional
+        additional: [
+          verificationIssueResolveMethods[VerificationIssueResolveMethod.UNINSTALL],
+          ...additional
+        ]
       }
       default: return {
         main: [],
@@ -82,7 +86,7 @@ function ResolveMethodSelector ({ size = 'sm', pack, method, setMethod, disabled
   const MethodsContextMenu = ContextMenu.buildMenu(
     additional.map(method => ({
       label: method.label,
-      icon: method.icon,
+      icon: method.icon && (() => <method.icon size="sm" color="currentColor" />),
       color: method.variant === 'critical-primary' ? 'danger' : undefined,
       action: () => selectMethod(method)
     }))
@@ -141,10 +145,12 @@ function ResolveMethodSelector ({ size = 'sm', pack, method, setMethod, disabled
         position="bottom"
         align="right"
         renderPopout={({ closePopout, ...props }) => (
-          <MethodsContextMenu
-            {...props}
-            onClose={closePopout}
-          />
+          <ErrorBoundary>
+            <MethodsContextMenu
+              {...props}
+              onClose={closePopout}
+            />
+          </ErrorBoundary>
         )}
       >
         {props => (
@@ -218,19 +224,19 @@ function VerificationIssuesModal ({ onClose, ...props }) {
     if (!issues.length) onClose?.()
   }, [issues.length])
 
-  const resolvedIssues = issues
+  const resolvers = issues
     .filter(pack => selectedMethods[pack.id] != null)
     .map(pack => ({ pack, method: selectedMethods[pack.id] }))
 
   const confirmText = useMemo(() => {
-    if (!resolvedIssues.length) return 'Resolve issues'
-    if (resolvedIssues.length < issues.length) return `Resolve ${resolvedIssues.length} out of ${issues.length} issues`
+    if (!resolvers.length) return 'Resolve issues'
+    if (resolvers.length < issues.length) return `Resolve ${resolvers.length} out of ${issues.length} issues`
     return 'Resolve all issues'
-  }, [resolvedIssues.length])
+  }, [resolvers.length])
 
-  const onConfirm = preventClose => {
+  const onConfirm = async preventClose => {
     preventClose()
-    // TODO: Apply selected resolve methods (call such method in `PackRegistry.verifier`)
+    if (await registry.verifier.resolveIssues(resolvers)) onClose()
   }
 
   return (
@@ -243,12 +249,13 @@ function VerificationIssuesModal ({ onClose, ...props }) {
       confirmText={confirmText}
       confirmButtonVariant="primary"
       loading={loading}
-      disabled={!resolvedIssues.length || loading}
+      disabled={!resolvers.length || loading}
       onConfirm={onConfirm}
     >
       <div className="BA__verificationIssuesList">
         {issues.map(pack => (
           <VerificationIssue
+            key={pack.filename}
             pack={pack}
             method={selectedMethods[pack.id]}
             setMethod={method => setSelectedMethods(prev => ({ ...prev, [pack.id]: method }))}

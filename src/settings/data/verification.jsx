@@ -15,6 +15,7 @@ export const VerificationStatus = {
 
 export const VerificationIssueResolveMethod = {
   DELETE: 'delete',
+  UNINSTALL: 'uninstall',
   REINSTALL: 'reinstall',
   UPDATE: 'update',
   ALLOW_ONCE: 'allowOnce',
@@ -106,6 +107,12 @@ export const verificationIssueResolveMethods = Object.fromEntries(
       variant: 'critical-primary',
       icon: TrashIcon,
       label: 'Delete permanently'
+    },
+    {
+      value: VerificationIssueResolveMethod.UNINSTALL,
+      variant: 'critical-primary',
+      icon: TrashIcon,
+      label: 'Uninstall'
     },
     {
       value: VerificationIssueResolveMethod.REINSTALL,

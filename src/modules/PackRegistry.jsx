@@ -13,30 +13,52 @@ import thumbnailPlaceholder from '@/assets/placeholders/thumbnail.svg'
 import avatarPlaceholder from '@/assets/placeholders/avatar.png'
 import { ModalActions } from '@discord/modules'
 import VerificationIssuesModal from '@/components/VerificationIssuesModal'
-import { VerificationStatus } from '@/settings/data/verification'
+import { VerificationIssueResolveMethod, VerificationStatus } from '@/settings/data/verification'
+import Data from '@/modules/Data'
 
 class PackVerifier {
+  get whitelistDataKey () { return 'whitelist' }
+
   constructor (registry) {
     this.registry = registry
+
+    this.temporaryWhitelist = new Set()
   }
 
-  check (packOrStatus) {
-    return [VerificationStatus.UNKNOWN, VerificationStatus.VERIFIED, VerificationStatus.OFFICIAL]
-      .includes(typeof packOrStatus === 'object' ? packOrStatus.verificationStatus : packOrStatus)
+  get permanentWhitelist () {
+    return new Set(Data[this.whitelistDataKey] ?? [])
+  }
+  get whitelist () {
+    return this.permanentWhitelist.union(this.temporaryWhitelist)
+  }
+
+  addToWhitelist (pack, permanent = false) {
+    if (permanent) Data[this.whitelistDataKey] = Array.from(this.permanentWhitelist.add(pack.filename))
+    else this.temporaryWhitelist.add(pack.filename)
+
+    Emitter.emit(Events.PackUpdated, pack)
+    return true
+  }
+
+  check (pack) {
+    return this.whitelist.has(pack.filename)
+      || [VerificationStatus.UNKNOWN, VerificationStatus.VERIFIED, VerificationStatus.OFFICIAL]
+        .includes(pack.verificationStatus)
   }
 
   _verify (pack) {
     const publishedPack = this.registry.getPack(pack.filename)
     if (!publishedPack) return VerificationStatus.UNVERIFIED
 
-    // TODO: Check hashes
+    if (pack.hash !== (publishedPack.history?.[pack.version] ?? publishedPack).hash)
+      return VerificationStatus.FAILED
 
     return publishedPack.official ? VerificationStatus.OFFICIAL : VerificationStatus.VERIFIED
   }
   verify (pack) {
     const status = this._verify(pack)
     const didChange = status !== pack.verificationStatus
-    const hasFailed = didChange && !this.check(status)
+    const hasFailed = didChange && !this.check({ ...pack, verificationStatus: status })
 
     if (didChange) {
       pack.verificationStatus = status
@@ -64,6 +86,29 @@ class PackVerifier {
       props => <VerificationIssuesModal {...props} />,
       { modalKey: 'BA__verificationIssuesModal' }
     )
+  }
+
+  resolveIssue ({ pack, method }) {
+    switch (method) {
+      case VerificationIssueResolveMethod.DELETE:
+      case VerificationIssueResolveMethod.UNINSTALL:
+        return this.registry.delete(pack.filename)
+      case VerificationIssueResolveMethod.REINSTALL:
+        return this.registry.reinstall(pack.filename)
+      case VerificationIssueResolveMethod.UPDATE:
+        return this.registry.update(pack.filename)
+      case VerificationIssueResolveMethod.ALLOW_ONCE:
+        return this.addToWhitelist(pack, false)
+      case VerificationIssueResolveMethod.ALLOW_ALWAYS:
+        return this.addToWhitelist(pack, true)
+      default: return false
+    }
+  }
+  async resolveIssues (resolvers) {
+    const results = await Promise.all(
+      resolvers.map(resolver => this.resolveIssue(resolver))
+    )
+    return results.every(Boolean)
   }
 }
 
@@ -182,6 +227,17 @@ export default new class PackRegistry {
   }
   reinstall (filename) {
     return this.install(filename, 'reinstall')
+  }
+  delete (filename) {
+    try {
+      PackManager.deleteAddon(filename)
+      return true
+    }
+    catch (error) {
+      Logger.error(this.name, `Failed to delete "${filename}":`, error)
+      Toasts.error(`Failed to delete "${filename}".`)
+      return false
+    }
   }
 
   hasUpdate (pack) {

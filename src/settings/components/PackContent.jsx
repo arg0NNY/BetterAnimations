@@ -262,7 +262,7 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
         confirmText={isPublished ? 'Uninstall' : 'Delete permanently'}
         confirmButtonVariant="critical-primary"
         cancelText="Cancel"
-        onConfirm={() => PackManager.deleteAddon(pack.filename)}
+        onConfirm={() => registry.delete(pack.filename)}
       >
         <Text variant="text-md/normal">
           Are you sure you want to delete pack <b>{pack.name}</b>?
