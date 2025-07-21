@@ -14,7 +14,7 @@ import avatarPlaceholder from '@/assets/placeholders/avatar.png'
 import { ModalActions } from '@discord/modules'
 import VerificationIssuesModal from '@/components/VerificationIssuesModal'
 import { VerificationIssueResolveMethod, VerificationStatus } from '@/settings/data/verification'
-import Data from '@/modules/Data'
+import Data, { Cache } from '@/modules/Data'
 
 class PackVerifier {
   get whitelistDataKey () { return 'whitelist' }
@@ -51,8 +51,7 @@ class PackVerifier {
 
   check (pack) {
     return this.whitelist.has(pack.filename)
-      || [VerificationStatus.UNKNOWN, VerificationStatus.VERIFIED, VerificationStatus.OFFICIAL]
-        .includes(pack.verificationStatus)
+      || [VerificationStatus.VERIFIED, VerificationStatus.OFFICIAL].includes(pack.verificationStatus)
   }
   getResolveMethod (pack) {
     if (this.permanentWhitelist.has(pack.filename)) return VerificationIssueResolveMethod.ALLOW_ALWAYS
@@ -61,6 +60,8 @@ class PackVerifier {
   }
 
   _verify (pack) {
+    if (!this.registry.isReady) return VerificationStatus.UNKNOWN
+
     const publishedPack = this.registry.getPack(pack.filename)
     if (!publishedPack) return VerificationStatus.UNVERIFIED
 
@@ -82,9 +83,9 @@ class PackVerifier {
     return hasFailed
   }
   verifyAll (packs = PackManager.getAllPacks(true)) {
-    const failed = packs.filter(pack => this.verify(pack))
-    if (failed.length) this.showModal()
-    return failed.length > 0
+    const hasFailed = packs.map(pack => this.verify(pack)).some(Boolean)
+    if (hasFailed) this.showModal()
+    return hasFailed
   }
 
   getIssues (packs = PackManager.getAllPacks(true)) {
@@ -131,13 +132,18 @@ export default new class PackRegistry {
   get baseUrl () { return import.meta.env.VITE_PACK_REGISTRY_BASE_URL }
   get mainFilename () { return import.meta.env.VITE_PACK_REGISTRY_MAIN_FILENAME }
 
+  get cacheKey () { return 'registry' }
+  get cache () { return Cache[this.cacheKey] }
+  set cache (value) { Cache[this.cacheKey] = value }
+  get hasCache () { return this.cache != null }
+
   constructor () {
     this.verifier = new PackVerifier(this)
 
     this._pending = new Set()
     this._error = null
-    this._items = []
-    this._authors = []
+    this._items = this.cache?.items ?? []
+    this._authors = this.cache?.authors ?? []
 
     this._closeNotice = null
 
@@ -156,6 +162,10 @@ export default new class PackRegistry {
 
   get error () { return this._error }
   set error (value) { this._error = value; this.onChange() }
+
+  get hasError () { return this.error != null }
+  get isFatal () { return this.hasError && !this.hasCache }
+  get isReady () { return !this.isPending() || this.hasCache }
 
   get items () {
     return this._items.map(item => ({
@@ -198,6 +208,7 @@ export default new class PackRegistry {
     this.onChange()
     try {
       const response = await Net.fetch(`${this.getSourceURL(filename)}?${Date.now()}`)
+      if (!response.ok) throw response
       return parse ? response.json() : response.text()
     }
     finally {
@@ -210,6 +221,7 @@ export default new class PackRegistry {
     Logger.info(this.name, 'Updating registry...')
     try {
       const data = await this.fetch(this.mainFilename)
+      this.cache = data
       this.items = data.items
       this.authors = data.authors
 

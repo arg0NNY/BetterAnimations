@@ -3,11 +3,11 @@ import config from '@config'
 const bdApi = new BdApi(config.name)
 
 export const {
-  Patcher,
+  Patcher: BDPatcher,
   Webpack,
   Utils,
   DOM,
-  Data,
+  Data: BDData,
   Plugins,
   UI,
   Net,

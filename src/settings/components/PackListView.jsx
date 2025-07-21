@@ -13,7 +13,8 @@ function PackListView ({
   location,
   empty = <NoPacksPlaceholder />,
   actions,
-  after
+  leading,
+  trailing
 }) {
   const [query, setQuery] = useState('')
 
@@ -45,6 +46,7 @@ function PackListView ({
         ) : (
           items.length > 0 ? (
             <>
+              {leading}
               <div className="BA__packListViewList">
                 {items.map(pack => (
                   <PackCard
@@ -54,7 +56,7 @@ function PackListView ({
                   />
                 ))}
               </div>
-              {after}
+              {trailing}
               <Paginator
                 pageSize={10}
                 totalCount={40}
@@ -93,6 +95,7 @@ css
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
+    margin-top: 16px;
 }
 .BA__packListViewSpinner {
     padding: 40px;

@@ -1,4 +1,4 @@
-import { Patcher as BDPatcher } from '@/BdApi'
+import { BDPatcher } from '@/BdApi'
 import { attempt, errorBoundary } from '@error/boundary'
 import Core from '@/modules/Core'
 import InternalError from '@error/structs/InternalError'

@@ -1,11 +1,27 @@
-import { Data } from '@/BdApi'
+import { BDData } from '@/BdApi'
 
-export default new Proxy({}, {
+const Data = new Proxy({}, {
   get (_, name) {
-    return Data.load(name)
+    return BDData.load(name)
   },
   set (_, name, value) {
-    Data.save(name, structuredClone(value))
+    BDData.save(name, structuredClone(value))
     return true
   }
 })
+
+export const cacheDataKey = 'cache'
+export const Cache = new Proxy({}, {
+  get (_, name) {
+    return Data[cacheDataKey]?.[name]
+  },
+  set (_, name, value) {
+    Data[cacheDataKey] = {
+      ...Data[cacheDataKey],
+      [name]: value
+    }
+    return true
+  }
+})
+
+export default Data

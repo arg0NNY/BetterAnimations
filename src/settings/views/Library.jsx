@@ -2,11 +2,12 @@ import usePackRegistry from '@/hooks/usePackRegistry'
 import PackListView from '@/settings/components/PackListView'
 import PackManager from '@/modules/PackManager'
 import { PackContentLocation } from '@/settings/components/PackContent'
-import { Button, Tooltip } from '@discord/modules'
+import { Alert, AlertTypes, Button, Tooltip } from '@discord/modules'
 import RefreshIcon from '@/settings/components/icons/RefreshIcon'
 import DownloadIcon from '@/settings/components/icons/DownloadIcon'
 import NoPacksPlaceholder from '@/settings/components/NoPacksPlaceholder'
 import CircleWarningIcon from '@/settings/components/icons/CircleWarningIcon'
+import Messages from '@shared/messages'
 
 function Library () {
   const registry = usePackRegistry()
@@ -52,6 +53,9 @@ function Library () {
         </>
       )}
       location={PackContentLocation.LIBRARY}
+      leading={registry.hasError && (
+        <Alert messageType={AlertTypes.ERROR}>{Messages.CATALOG_OUT_OF_DATE}</Alert>
+      )}
     />
   )
 }

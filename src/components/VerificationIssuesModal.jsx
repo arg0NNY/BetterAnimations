@@ -1,6 +1,6 @@
 import Modal from '@/components/Modal'
 import { useEffect, useMemo, useState } from 'react'
-import { colors, ModalSize, Text } from '@discord/modules'
+import { Alert, AlertTypes, colors, ModalSize, Text } from '@discord/modules'
 import { css } from '@style'
 import usePackRegistry from '@/hooks/usePackRegistry'
 import { verificationIssueResolveMethods, verificationStatuses } from '@/settings/data/verification'
@@ -8,6 +8,7 @@ import PackHeader from '@/settings/components/PackHeader'
 import CheckIcon from '@/settings/components/icons/CheckIcon'
 import VerificationIssueActions from '@/components/VerificationIssueActions'
 import VerificationIssueSelection from '@/components/VerificationIssueSelection'
+import Messages from '@shared/messages'
 
 function ResolveMethodSelector ({ size = 'sm', pack, method, setMethod, disabled = false }) {
   const selectedMethod = verificationIssueResolveMethods[method]
@@ -113,6 +114,9 @@ function VerificationIssuesModal ({ onClose, ...props }) {
       disabled={!resolvers.length || loading}
       onConfirm={onConfirm}
     >
+      {registry.hasError && (
+        <Alert messageType={AlertTypes.ERROR}>{Messages.CATALOG_OUT_OF_DATE}</Alert>
+      )}
       <div className="BA__verificationIssuesList">
         {issues.map(pack => (
           <VerificationIssue
