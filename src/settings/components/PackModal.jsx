@@ -5,6 +5,7 @@ import { ErrorBoundary } from '@error/boundary'
 import usePackRegistry from '@/hooks/usePackRegistry'
 import PackManager from '@/modules/PackManager'
 import { useEffect } from 'react'
+import usePrevious from '@/hooks/usePrevious'
 
 function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose, ...props }) {
   const registry = usePackRegistry()
@@ -13,11 +14,11 @@ function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose,
     ? registry.getPack(filename)
     : PackManager.getPackByFile(filename, true)
 
+  const cachedPack = usePrevious(pack)
+
   useEffect(() => {
     if (!pack) onClose()
   }, [pack])
-
-  if (!pack) return null
 
   return (
     <ModalRoot
@@ -29,7 +30,7 @@ function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose,
         <div className="BA__packModalSidebar">
           <PackContent
             className="BA__packModalContent"
-            pack={pack}
+            pack={pack ?? cachedPack}
             location={location}
             size="md"
           />
