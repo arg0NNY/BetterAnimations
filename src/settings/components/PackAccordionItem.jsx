@@ -25,7 +25,7 @@ function PackAccordionItem ({ pack, children, isActive, isOpen, onToggle }) {
           {pack.version || pack.author ? (
             <Text
               variant="text-xs/normal"
-              color={isActive || isOpen ? 'text-normal' : 'text-muted'}
+              color={isActive || isOpen ? 'text-default' : 'text-muted'}
             >
               {
                 [pack.version && `v${pack.version}`, pack.author && `by ${pack.author}`]
