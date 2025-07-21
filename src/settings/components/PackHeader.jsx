@@ -7,7 +7,7 @@ function PackHeader ({ pack, icon, popoutType, size = 'sm' }) {
     <div className="BA__packHeader">
       {icon ?? (
         <PackVerificationBadge
-          type={pack.verificationStatus}
+          pack={pack}
           popoutType={popoutType}
           size={size}
         />

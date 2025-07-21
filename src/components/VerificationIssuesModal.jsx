@@ -1,170 +1,31 @@
 import Modal from '@/components/Modal'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Button, colors, ModalActions, ModalSize, Popout, Text, Tooltip } from '@discord/modules'
+import { useEffect, useMemo, useState } from 'react'
+import { colors, ModalSize, Text } from '@discord/modules'
 import { css } from '@style'
 import usePackRegistry from '@/hooks/usePackRegistry'
-import classNames from 'classnames'
-import RedoIcon from '@/settings/components/icons/RedoIcon'
-import { ContextMenu } from '@/BdApi'
-import MoreIcon from '@/settings/components/icons/MoreIcon'
-import {
-  VerificationIssueResolveMethod,
-  verificationIssueResolveMethods,
-  VerificationStatus, verificationStatuses
-} from '@/settings/data/verification'
+import { verificationIssueResolveMethods, verificationStatuses } from '@/settings/data/verification'
 import PackHeader from '@/settings/components/PackHeader'
 import CheckIcon from '@/settings/components/icons/CheckIcon'
-import { isDismissed } from '@/hooks/useDismissible'
-import DismissibleModal from '@/components/DismissibleModal'
-import { ErrorBoundary } from '@error/boundary'
-
-function useResolveMethods (pack) {
-  const registry = usePackRegistry()
-  const hasUpdate = registry.hasUpdate(pack)
-
-  return useMemo(() => {
-    const additional = [
-      verificationIssueResolveMethods[VerificationIssueResolveMethod.ALLOW_ONCE],
-      verificationIssueResolveMethods[VerificationIssueResolveMethod.ALLOW_ALWAYS]
-    ]
-
-    switch (pack.verificationStatus) {
-      case VerificationStatus.UNKNOWN: return {
-        main: [verificationIssueResolveMethods[VerificationIssueResolveMethod.ALLOW_ONCE]],
-        additional: [verificationIssueResolveMethods[VerificationIssueResolveMethod.ALLOW_ALWAYS]]
-      }
-      case VerificationStatus.UNVERIFIED: return {
-        main: [verificationIssueResolveMethods[VerificationIssueResolveMethod.DELETE]],
-        additional
-      }
-      case VerificationStatus.FAILED: return {
-        main: [
-          hasUpdate
-            ? verificationIssueResolveMethods[VerificationIssueResolveMethod.UPDATE]
-            : verificationIssueResolveMethods[VerificationIssueResolveMethod.REINSTALL]
-        ],
-        additional: [
-          verificationIssueResolveMethods[VerificationIssueResolveMethod.UNINSTALL],
-          ...additional
-        ]
-      }
-      default: return {
-        main: [],
-        additional
-      }
-    }
-  }, [pack.verificationStatus, hasUpdate])
-}
+import VerificationIssueActions from '@/components/VerificationIssueActions'
+import VerificationIssueSelection from '@/components/VerificationIssueSelection'
 
 function ResolveMethodSelector ({ size = 'sm', pack, method, setMethod, disabled = false }) {
-  const additionalButtonRef = useRef()
-  const { main, additional } = useResolveMethods(pack)
-
-  const selectMethod = useCallback(method => {
-    const dismissibleName = `verificationIssueResolveMethodConfirmation:${method.value}`
-
-    if (!method.confirmation || isDismissed(dismissibleName)) return setMethod(method.value)
-
-    ModalActions.openModal(props => (
-      <DismissibleModal
-        {...props}
-        name={dismissibleName}
-        size={ModalSize.MEDIUM}
-        title={method.label}
-        cancelText="Cancel"
-        confirmText={method.confirmation.confirmText}
-        confirmButtonVariant="critical-primary"
-        onConfirm={() => setMethod(method.value)}
-      >
-        <Text variant="text-md/normal">
-          {method.confirmation.text(pack)}
-        </Text>
-      </DismissibleModal>
-    ))
-  }, [pack, setMethod])
-
-  const MethodsContextMenu = ContextMenu.buildMenu(
-    additional.map(method => ({
-      label: method.label,
-      icon: method.icon && (() => <method.icon size="sm" color="currentColor" />),
-      color: method.variant === 'critical-primary' ? 'danger' : undefined,
-      action: () => selectMethod(method)
-    }))
-  )
-
   const selectedMethod = verificationIssueResolveMethods[method]
 
   const children = selectedMethod ? (
-    <>
-      <Tooltip text="Undo">
-        {props => (
-          <Button
-            {...props}
-            variant="secondary"
-            size={size}
-            icon={RedoIcon}
-            onClick={() => setMethod(null)}
-            disabled={disabled}
-          />
-        )}
-      </Tooltip>
-      <div
-        className={classNames([
-          'BA__verificationIssueSelection',
-          `BA__verificationIssueSelection--${selectedMethod.variant}`
-        ])}
-      >
-        {selectedMethod.icon && (
-          <selectedMethod.icon
-            size={size}
-            color="currentColor"
-          />
-        )}
-        <Text
-          variant="text-md/semibold"
-          color="currentColor"
-        >
-          {selectedMethod.label}
-        </Text>
-      </div>
-    </>
+    <VerificationIssueSelection
+      {...selectedMethod}
+      size={size}
+      onUndo={() => setMethod(null)}
+    />
   ) : (
-    <>
-      {main.map(method => (
-        <Button
-          variant={method.variant}
-          icon={method.icon}
-          text={method.label}
-          size={size}
-          onClick={() => selectMethod(method)}
-          disabled={disabled}
-        />
-      ))}
-      <Popout
-        targetElementRef={additionalButtonRef}
-        position="bottom"
-        align="right"
-        renderPopout={({ closePopout, ...props }) => (
-          <ErrorBoundary>
-            <MethodsContextMenu
-              {...props}
-              onClose={closePopout}
-            />
-          </ErrorBoundary>
-        )}
-      >
-        {props => (
-          <Button
-            {...props}
-            buttonRef={additionalButtonRef}
-            variant="secondary"
-            size={size}
-            icon={MoreIcon}
-            disabled={disabled}
-          />
-        )}
-      </Popout>
-    </>
+    <VerificationIssueActions
+      pack={pack}
+      onSelect={method => setMethod(method.value)}
+      size={size}
+      direction="horizontal-reverse"
+      disabled={disabled}
+    />
   )
 
   return (
@@ -232,7 +93,7 @@ function VerificationIssuesModal ({ onClose, ...props }) {
     if (!resolvers.length) return 'Resolve issues'
     if (resolvers.length < issues.length) return `Resolve ${resolvers.length} out of ${issues.length} issues`
     return 'Resolve all issues'
-  }, [resolvers.length])
+  }, [resolvers.length, issues.length])
 
   const onConfirm = async preventClose => {
     preventClose()
@@ -286,17 +147,6 @@ css
     align-items: center;
     gap: 8px;
     flex-shrink: 0;
-}
-.BA__verificationIssueSelection {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-.BA__verificationIssueSelection--primary {
-    color: var(--text-brand);
-}
-.BA__verificationIssueSelection--critical-primary {
-    color: var(--text-feedback-critical);
 }
 .BA__verificationIssueDescription {
     margin-top: 12px;

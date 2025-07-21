@@ -39,11 +39,25 @@ class PackVerifier {
     Emitter.emit(Events.PackUpdated, pack)
     return true
   }
+  removeFromWhitelist (pack) {
+    this.temporaryWhitelist.delete(pack.filename)
+    Data[this.whitelistDataKey] = Array.from(
+      this.permanentWhitelist.difference(new Set([pack.filename]))
+    )
+
+    Emitter.emit(Events.PackUpdated, pack)
+    return true
+  }
 
   check (pack) {
     return this.whitelist.has(pack.filename)
       || [VerificationStatus.UNKNOWN, VerificationStatus.VERIFIED, VerificationStatus.OFFICIAL]
         .includes(pack.verificationStatus)
+  }
+  getResolveMethod (pack) {
+    if (this.permanentWhitelist.has(pack.filename)) return VerificationIssueResolveMethod.ALLOW_ALWAYS
+    if (this.temporaryWhitelist.has(pack.filename)) return VerificationIssueResolveMethod.ALLOW_ONCE
+    return null
   }
 
   _verify (pack) {
@@ -76,8 +90,8 @@ class PackVerifier {
   getIssues (packs = PackManager.getAllPacks(true)) {
     return packs.filter(pack => !this.check(pack))
   }
-  hasIssues () {
-    return this.getIssues().length > 0
+  hasIssues (packs = PackManager.getAllPacks(true)) {
+    return packs.some(pack => !this.check(pack))
   }
   showModal () {
     if (!this.hasIssues()) return

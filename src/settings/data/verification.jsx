@@ -77,7 +77,7 @@ export const verificationStatuses = Object.fromEntries(
       label: 'Verified',
       description: (
         <>
-          This community pack has been verified by {config.name} and is safe to use.
+          This community pack has been verified by&nbsp;{config.name} and is safe to use.
         </>
       )
     },
@@ -93,7 +93,7 @@ export const verificationStatuses = Object.fromEntries(
       label: 'Official',
       description: (
         <>
-          This is the official pack from the authors of {config.name} and is safe to use.
+          This is the official pack from the authors of&nbsp;{config.name}.
         </>
       )
     }
@@ -106,30 +106,30 @@ export const verificationIssueResolveMethods = Object.fromEntries(
       value: VerificationIssueResolveMethod.DELETE,
       variant: 'critical-primary',
       icon: TrashIcon,
-      label: 'Delete permanently'
+      label: past => `${past ? 'Deleted' : 'Delete'} permanently`
     },
     {
       value: VerificationIssueResolveMethod.UNINSTALL,
       variant: 'critical-primary',
       icon: TrashIcon,
-      label: 'Uninstall'
+      label: past => past ? 'Uninstalled' : 'Uninstall'
     },
     {
       value: VerificationIssueResolveMethod.REINSTALL,
       variant: 'primary',
       icon: DownloadIcon,
-      label: 'Reinstall'
+      label: past => past ? 'Reinstalled' : 'Reinstall'
     },
     {
       value: VerificationIssueResolveMethod.UPDATE,
       variant: 'primary',
       icon: DownloadIcon,
-      label: 'Update'
+      label: past => past ? 'Updated' : 'Update'
     },
     {
       value: VerificationIssueResolveMethod.ALLOW_ONCE,
       variant: 'critical-primary',
-      label: 'Allow once',
+      label: past => `${past ? 'Allowed' : 'Allow'} once`,
       confirmation: {
         text: pack => (
           <>
@@ -148,7 +148,7 @@ export const verificationIssueResolveMethods = Object.fromEntries(
     {
       value: VerificationIssueResolveMethod.ALLOW_ALWAYS,
       variant: 'critical-primary',
-      label: 'Allow all the time',
+      label: past => `${past ? 'Allowed' : 'Allow'} all the time`,
       confirmation: {
         text: pack => (
           <>
