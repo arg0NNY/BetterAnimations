@@ -194,9 +194,8 @@ export default class AddonManager {
       return error
     }
 
-    const message = `${addon.name} v${addon.version} was loaded.`
-    if (shouldToast) this.toast(message, 'loaded')
-    Logger.log(this.name, message)
+    if (shouldToast) this.toast(<><b>{addon.name}</b> was loaded.</>, 'loaded')
+    Logger.log(this.name, `${addon.name} v${addon.version} was loaded.`)
 
     this.emit('loaded', addon)
 
@@ -212,9 +211,8 @@ export default class AddonManager {
     this.addonList.splice(this.addonList.indexOf(addon), 1)
     this.emit('unloaded', addon)
 
-    const message = `${addon.name} was unloaded.`
-    if (shouldToast) this.toast(message, 'unloaded')
-    Logger.log(this.name, message)
+    if (shouldToast) this.toast(<><b>{addon.name}</b> was unloaded.</>, 'unloaded')
+    Logger.log(this.name, `${addon.name} was unloaded.`)
 
     return true
   }
@@ -224,7 +222,7 @@ export default class AddonManager {
     const didUnload = this.unloadAddon(addon, false, true)
     if (addon && !didUnload) return didUnload
     const error = this.loadAddon(addon ? addon.filename : idOrFileOrAddon, false)
-    if (!error && shouldToast) this.toast(`${addon.name} was reloaded.`, 'reloaded')
+    if (!error && shouldToast) this.toast(<><b>{addon.name}</b> was reloaded.</>, 'reloaded')
     return error
   }
 
