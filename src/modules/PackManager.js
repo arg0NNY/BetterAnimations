@@ -56,10 +56,7 @@ export default new class PackManager extends AddonManager {
   }
   getAllPacks (includeRestricted = false) {
     return this.addonList.filter(p => includeRestricted || !this.isRestricted(p))
-      .sort((a, b) => {
-        if (a.partial !== b.partial) return a.partial ? 1 : -1
-        return a.name.localeCompare(b.name)
-      })
+      .sort((a, b) => a.name.localeCompare(b.name))
   }
   _getPack (predicate, includeRestricted = false) {
     return this.addonList.find(

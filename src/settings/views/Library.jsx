@@ -1,5 +1,5 @@
 import usePackRegistry from '@/hooks/usePackRegistry'
-import PackListView from '@/settings/components/PackListView'
+import PackListView, { defaultSortOptions } from '@/settings/components/PackListView'
 import PackManager from '@/modules/PackManager'
 import { PackContentLocation } from '@/settings/components/PackContent'
 import { Alert, AlertTypes, Button, Tooltip } from '@discord/modules'
@@ -8,6 +8,16 @@ import DownloadIcon from '@/settings/components/icons/DownloadIcon'
 import NoPacksPlaceholder from '@/settings/components/NoPacksPlaceholder'
 import CircleWarningIcon from '@/settings/components/icons/CircleWarningIcon'
 import Messages from '@shared/messages'
+import Core from '@/modules/Core'
+
+const sortOptions = [
+  {
+    value: 'usage',
+    label: 'Usage',
+    compare: (a, b) => Core.getModulesUsingPack(b).length - Core.getModulesUsingPack(a).length
+  },
+  ...defaultSortOptions
+]
 
 function Library () {
   const registry = usePackRegistry()
@@ -16,6 +26,7 @@ function Library () {
     <PackListView
       title="Library"
       items={PackManager.getAllPacks(true)}
+      sortOptions={sortOptions}
       empty={(
         <NoPacksPlaceholder actions={['catalog']} />
       )}

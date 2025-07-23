@@ -9,7 +9,6 @@ import { isDismissed } from '@/hooks/useDismissible'
 import { Button, ButtonGroup, ModalActions, ModalSize, Popout, Text } from '@discord/modules'
 import DismissibleModal from '@/components/DismissibleModal'
 import { ContextMenu } from '@/BdApi'
-import { ErrorBoundary } from '@error/boundary'
 import MoreIcon from '@/settings/components/icons/MoreIcon'
 
 export function useResolveMethods (pack) {
@@ -78,15 +77,6 @@ function VerificationIssueActions ({ pack, onSelect, size = 'sm', disabled = fal
     ))
   }, [pack, onSelect])
 
-  const MethodsContextMenu = ContextMenu.buildMenu(
-    additional.map(method => ({
-      label: method.label(),
-      icon: method.icon && (() => <method.icon size="sm" color="currentColor" />),
-      color: method.variant === 'critical-primary' ? 'danger' : undefined,
-      action: () => selectMethod(method)
-    }))
-  )
-
   return (
     <ButtonGroup
       {...props}
@@ -107,12 +97,21 @@ function VerificationIssueActions ({ pack, onSelect, size = 'sm', disabled = fal
         position="bottom"
         align="right"
         renderPopout={({ closePopout, ...props }) => (
-          <ErrorBoundary>
-            <MethodsContextMenu
-              {...props}
-              onClose={closePopout}
-            />
-          </ErrorBoundary>
+          <ContextMenu.Menu
+            {...props}
+            onClose={closePopout}
+          >
+            {additional.map(method => (
+              <ContextMenu.Item
+                key={method.value}
+                id={method.value}
+                label={method.label()}
+                icon={method.icon}
+                color={method.variant === 'critical-primary' ? 'danger' : undefined}
+                action={() => selectMethod(method)}
+              />
+            ))}
+          </ContextMenu.Menu>
         )}
       >
         {props => (

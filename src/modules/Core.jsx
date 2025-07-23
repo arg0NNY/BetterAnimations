@@ -212,4 +212,10 @@ export default new class Core {
   getChildModules (module) {
     return this.modules.filter(m => m.parent === module.id)
   }
+  getModulesUsingPack (pack) {
+    return this.getAllModules(true).filter(
+      module => Object.values(module.animations)
+        .some(data => data.pack?.filename === pack.filename)
+    )
+  }
 }

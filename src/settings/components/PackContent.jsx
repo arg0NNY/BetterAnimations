@@ -250,10 +250,7 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
   const uninstall = useCallback(() => {
     if (!pack.installed) return
 
-    const affectedModules = Core.getAllModules(true).filter(
-      module => Object.values(module.animations)
-        .some(data => data.pack?.filename === pack.filename)
-    )
+    const affectedModules = Core.getModulesUsingPack(pack)
 
     ModalActions.openModal(props => (
       <Modal
