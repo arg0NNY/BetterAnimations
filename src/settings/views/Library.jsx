@@ -29,6 +29,7 @@ function Library () {
       title="Library"
       items={PackManager.getAllPacks(true)}
       sortOptions={sortOptions}
+      adjective="installed"
       empty={(
         <NoPacksPlaceholder actions={['catalog']} />
       )}

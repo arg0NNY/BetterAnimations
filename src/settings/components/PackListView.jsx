@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button, Paginator, Popout, SearchBar, Spinner, Text } from '@discord/modules'
 import PackCard from '@/settings/components/PackCard'
 import { css } from '@style'
@@ -24,7 +24,7 @@ export const defaultSearchableFields = ['name', 'author', 'description']
 
 function PackListView ({
   title,
-  items,
+  items: allItems,
   pending = false,
   error = null,
   location,
@@ -32,6 +32,8 @@ function PackListView ({
   actions,
   sortOptions = defaultSortOptions,
   searchableFields = defaultSearchableFields,
+  pageSize = 6,
+  adjective = 'available',
   leading,
   trailing
 }) {
@@ -43,7 +45,7 @@ function PackListView ({
   const [sort, setSort] = useState(sortOptions[0].value)
   const selectedSort = sortOptions.find(o => o.value === sort)
 
-  const displayedItems = items
+  const filteredItems = allItems
     .filter(
       item => !trimmedQuery
         || searchableFields.some(
@@ -53,19 +55,30 @@ function PackListView ({
     )
     .sort(selectedSort?.compare ?? (() => 0))
 
+  const [page, setPage] = useState(1)
+  const offset = (page - 1) * pageSize
+  const items = filteredItems.slice(offset, offset + pageSize)
+
+  useEffect(
+    () => setPage(1),
+    [trimmedQuery, pending]
+  )
+  useEffect(() => {
+    if (items.length === 0 && page > 1) setPage(1)
+  }, [items.length, page])
+
   return (
     <div className="BA__packListView">
       <div className="BA__packListViewHeader">
         <Text variant="heading-xl/semibold">{title}</Text>
         <SearchBar
           className="BA__packListViewSearchBar"
+          placeholder="Search"
+          size={SearchBar.Sizes.MEDIUM}
           query={query}
           onChange={setQuery}
           onClear={() => setQuery('')}
-          onSubmit={() => {}}
-          onBlur={() => {}}
-          placeholder="Search"
-          size={SearchBar.Sizes.MEDIUM}
+          autoFocus={true}
         />
       </div>
       <div className="BA__packListViewActionBar">
@@ -113,24 +126,13 @@ function PackListView ({
         error ? (
           <ErrorCard text={error} />
         ) : (
-          items.length > 0 ? (
+          allItems.length > 0 ? (
             <>
-              {displayedItems.length > 0 ? (
+              {items.length > 0 ? (
                 <>
-                  <Text
-                    className="BA__packListViewMeta"
-                    variant="text-sm/semibold"
-                    color="text-muted"
-                  >
-                    {displayedItems.length < items.length ? (
-                      <>Displaying <b>{displayedItems.length}</b> out of {items.length} packs</>
-                    ) : (
-                      <>Displaying all <b>{items.length}</b> packs</>
-                    )}
-                  </Text>
                   {leading}
                   <div className="BA__packListViewList">
-                    {displayedItems.map(pack => (
+                    {items.map(pack => (
                       <PackCard
                         key={pack.filename}
                         pack={pack}
@@ -138,6 +140,31 @@ function PackListView ({
                       />
                     ))}
                   </div>
+                  <Text
+                    className="BA__packListViewMeta"
+                    variant="text-sm/semibold"
+                    color="text-muted"
+                  >
+                    {'Displaying '}
+
+                    {items.length < filteredItems.length ? (
+                      <><b>{offset + 1}-{offset + items.length}</b> out of </>
+                    ) : (
+                      filteredItems.length === allItems.length && allItems.length > 1 ? 'all ' : ''
+                    )}
+
+                    {items.length < filteredItems.length ? (
+                      <>{filteredItems.length}</>
+                    ) : (
+                      <b>{filteredItems.length}</b>
+                    )}
+
+                    {filteredItems.length === allItems.length && ` ${adjective}`}
+
+                    {filteredItems.length > 1 ? ' packs' : ' pack'}
+
+                    {filteredItems.length < allItems.length && ` • ${allItems.length} ${adjective}`}
+                  </Text>
                   {trailing}
                 </>
               ) : (
@@ -153,11 +180,11 @@ function PackListView ({
                 />
               )}
               <Paginator
-                pageSize={10}
-                totalCount={40}
+                pageSize={pageSize}
+                totalCount={filteredItems.length}
                 maxVisiblePages={5}
-                currentPage={1}
-                onPageChange={() => {}}
+                currentPage={page}
+                onPageChange={setPage}
               />
             </>
           ) : empty
