@@ -200,7 +200,7 @@ export default new class PackRegistry {
     return this.authors.find(author => author.username === username)
   }
   getSourceURL (filename) {
-    return `${this.baseUrl}/${filename}`
+    return `${this.baseUrl}/raw/${filename}`
   }
 
   async fetch (filename, parse = true) {

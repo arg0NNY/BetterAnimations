@@ -190,7 +190,7 @@ css
 .BA__packListViewActions {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
 }
 .BA__packListViewMeta {
     margin: 16px 0;

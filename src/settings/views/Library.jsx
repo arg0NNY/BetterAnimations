@@ -9,6 +9,8 @@ import NoPacksPlaceholder from '@/settings/components/NoPacksPlaceholder'
 import CircleWarningIcon from '@/settings/components/icons/CircleWarningIcon'
 import Messages from '@shared/messages'
 import Core from '@/modules/Core'
+import FolderIcon from '@/settings/components/icons/FolderIcon'
+import { path } from '@/modules/Node'
 
 const sortOptions = [
   {
@@ -49,6 +51,18 @@ function Library () {
               disabled={registry.hasPending}
             />
           )}
+          <Tooltip text="Open Pack Directory">
+            {props => (
+              <Button
+                {...props}
+                variant="icon-only"
+                icon={FolderIcon}
+                onClick={() => DiscordNative.fileManager.showItemInFolder(
+                  path.resolve(PackManager.addonFolder, PackManager.addonList[0]?.filename ?? './')
+                )}
+              />
+            )}
+          </Tooltip>
           <Tooltip text="Check for updates">
             {props => (
               <Button

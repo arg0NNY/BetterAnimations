@@ -1,12 +1,13 @@
 import CreateUpsellBanner from '@/settings/components/CreateUpsellBanner'
 import { css } from '@style'
 import PackListView, { defaultSortOptions } from '@/settings/components/PackListView'
-import { Alert, AlertTypes, Button, Tooltip } from '@discord/modules'
+import { Alert, AlertTypes, Button, handleClick, Tooltip } from '@discord/modules'
 import RefreshIcon from '@/settings/components/icons/RefreshIcon'
 import usePackRegistry from '@/hooks/usePackRegistry'
 import { PackContentLocation } from '@/settings/components/PackContent'
 import NoPacksPlaceholder from '@/settings/components/NoPacksPlaceholder'
 import Messages from '@shared/messages'
+import GitHubIcon from '@/settings/components/icons/GitHubIcon'
 
 const sortOptions = [
   {
@@ -47,6 +48,16 @@ function Catalog () {
       location={PackContentLocation.CATALOG}
       actions={(
         <>
+          <Tooltip text="View on GitHub">
+            {props => (
+              <Button
+                {...props}
+                variant="icon-only"
+                icon={GitHubIcon}
+                onClick={() => handleClick({ href: registry.baseUrl })}
+              />
+            )}
+          </Tooltip>
           <Tooltip text="Refresh">
             {props => (
               <Button
