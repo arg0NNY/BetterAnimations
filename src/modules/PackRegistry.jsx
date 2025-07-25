@@ -14,7 +14,9 @@ import avatarPlaceholder from '@/assets/placeholders/avatar.png'
 import { ModalActions } from '@discord/modules'
 import VerificationIssuesModal from '@/components/VerificationIssuesModal'
 import { VerificationIssueResolveMethod, VerificationStatus } from '@/settings/data/verification'
-import Data, { Cache } from '@/modules/Data'
+import Data from '@/modules/Data'
+import PackSchema from '@animation/schemas/PackSchema'
+import { useEffect, useState } from 'react'
 
 class PackVerifier {
   constructor (registry) {
@@ -123,6 +125,64 @@ class PackVerifier {
   }
 }
 
+class PackRegistryStorage {
+  get name () { return 'PackRegistryStorage' }
+
+  constructor (registry) {
+    this.registry = registry
+    this._storage = new Map()
+  }
+
+  async _load (filename) {
+    try {
+      return PackSchema.parse(
+        await this.registry.fetch(filename)
+      )
+    }
+    catch (error) {
+      Logger.error(this.name, `Failed to load "${filename}":`, error)
+      this._storage.delete(filename)
+      throw error
+    }
+  }
+  load (filename) {
+    const promise = this._load(filename)
+    this._storage.set(filename, promise)
+    return promise
+  }
+  get (filename) {
+    return this._storage.get(filename) ?? this.load(filename)
+  }
+  clear () {
+    this._storage.clear()
+  }
+
+  use (filename = null) {
+    const [pack, setPack] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+
+    useEffect(() => {
+      if (filename == null) {
+        setPack(null)
+        setLoading(false)
+        setError(null)
+        return
+      }
+
+      let ignore = false
+      setLoading(true)
+      this.get(filename)
+        .then(pack => ignore || setPack(pack))
+        .catch(error => ignore || setError(error))
+        .finally(() => ignore || setLoading(false))
+      return () => ignore = true
+    }, [filename])
+
+    return { pack, loading, error }
+  }
+}
+
 export default new class PackRegistry {
   get name () { return 'PackRegistry' }
   get baseUrl () { return import.meta.env.VITE_PACK_REGISTRY_BASE_URL }
@@ -136,6 +196,7 @@ export default new class PackRegistry {
 
   constructor () {
     this.verifier = new PackVerifier(this)
+    this.storage = new PackRegistryStorage(this)
 
     this._pending = new Set()
     this._error = null
@@ -201,12 +262,15 @@ export default new class PackRegistry {
   }
 
   async fetch (filename, parse = true) {
+    const response = await Net.fetch(`${this.getSourceURL(filename)}?${Date.now()}`)
+    if (!response.ok) throw response
+    return parse ? response.json() : response.text()
+  }
+  async load (filename, parse = true) {
     this._pending.add(filename)
     this.onChange()
     try {
-      const response = await Net.fetch(`${this.getSourceURL(filename)}?${Date.now()}`)
-      if (!response.ok) throw response
-      return parse ? response.json() : response.text()
+      return await this.fetch(filename, parse)
     }
     finally {
       this._pending.delete(filename)
@@ -217,7 +281,7 @@ export default new class PackRegistry {
     this.error = null
     Logger.info(this.name, 'Updating registry...')
     try {
-      const data = await this.fetch(this.mainFilename)
+      const data = await this.load(this.mainFilename)
       this.cache = data
       this.items = data.items
       this.authors = data.authors
@@ -231,12 +295,13 @@ export default new class PackRegistry {
       return false
     }
     finally {
+      this.storage.clear()
       this.verifier.verifyAll()
     }
   }
   async install (filename, action = 'install') {
     try {
-      PackManager.saveAddon(filename, await this.fetch(filename, false))
+      PackManager.saveAddon(filename, await this.load(filename, false))
       return true
     }
     catch (error) {
@@ -353,6 +418,7 @@ export default new class PackRegistry {
 
   shutdown () {
     this.unlistenPackEvents()
+    this.storage.clear()
     Logger.info(this.name, 'Shutdown.')
   }
 }

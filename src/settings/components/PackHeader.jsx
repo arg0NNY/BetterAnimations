@@ -13,8 +13,9 @@ function PackHeader ({ pack, icon, popoutType, size = 'sm' }) {
         />
       )}
       <Text
-        variant={size === 'md' ? 'heading-lg/bold' : 'heading-md/bold'}
         tag="h2"
+        variant={size === 'md' ? 'heading-lg/bold' : 'heading-md/bold'}
+        color="header-primary"
         lineClamp={2}
       >
         {pack.name}

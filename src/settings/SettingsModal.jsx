@@ -13,8 +13,9 @@ import SectionContext from '@/settings/context/SectionContext'
 import { css } from '@style'
 import { useSection } from '@/settings/stores/SettingsStore'
 import DiscordSelectors from '@discord/selectors'
-import { useCallback, useMemo, Suspense, lazy } from 'react'
+import { useCallback, useMemo, Suspense, lazy, useEffect } from 'react'
 import { ErrorBoundary } from '@error/boundary'
+import PackRegistry from '@/modules/PackRegistry'
 
 const StandardSidebarViewComponent = lazy(async () => ({ default: await StandardSidebarViewWrapper }))
 
@@ -39,6 +40,8 @@ function SettingsModal () {
       />
     </>
   )
+
+  useEffect(() => () => PackRegistry.storage.clear(), [])
 
   return (
     <ErrorBoundary style={{ margin: 'auto' }} actions={actions}>

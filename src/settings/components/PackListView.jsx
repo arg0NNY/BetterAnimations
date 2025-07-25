@@ -75,7 +75,12 @@ function PackListView ({
   return (
     <div className="BA__packListView">
       <div className="BA__packListViewHeader">
-        <Text variant="heading-xl/semibold">{title}</Text>
+        <Text
+          variant="heading-xl/semibold"
+          color="header-primary"
+        >
+          {title}
+        </Text>
         <SearchBar
           className="BA__packListViewSearchBar"
           placeholder="Search"
@@ -147,7 +152,7 @@ function PackListView ({
                   </div>
                   <Text
                     className="BA__packListViewMeta"
-                    variant="text-sm/semibold"
+                    variant="text-sm/medium"
                     color="text-muted"
                   >
                     {'Displaying '}
@@ -229,7 +234,7 @@ css
     text-align: right;
 }
 .BA__packListViewMeta b {
-    font-weight: inherit;
+    font-weight: 600;
     color: var(--text-default);
 }
 .BA__packListViewList {

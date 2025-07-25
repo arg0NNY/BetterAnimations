@@ -420,7 +420,11 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
                 tooltip="An error occurred"
                 onClick={stop(() => ErrorManager.showModal([pack.error]))}
               >
-                <CircleWarningIcon size="md" color={colors.STATUS_DANGER} />
+                <CircleWarningIcon
+                  size="md"
+                  color={colors.STATUS_DANGER}
+                  secondaryColor="var(--white-400)"
+                />
               </IconButton>
             )}
             <PackAction

@@ -142,18 +142,4 @@ export function useData (fieldName) {
   ]
 }
 
-export const cacheDataKey = 'cache'
-export const Cache = new Proxy({}, {
-  get (_, name) {
-    return Data[cacheDataKey]?.[name]
-  },
-  set (_, name, value) {
-    Data[cacheDataKey] = {
-      ...Data[cacheDataKey],
-      [name]: value
-    }
-    return true
-  }
-})
-
 export default Data

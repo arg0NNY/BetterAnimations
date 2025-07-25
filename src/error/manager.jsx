@@ -47,10 +47,10 @@ export default new class ErrorManager extends BaseErrorManager {
     }
   }
 
-  registerError (error) {
+  registerError (error, suppress = false) {
     super.registerError(error)
 
-    if (this.shouldSuppress(error)) return
+    if (suppress || this.shouldSuppress(error)) return
 
     this.errors.unshift(error)
     if (this.errors.length > this.maxErrors) {

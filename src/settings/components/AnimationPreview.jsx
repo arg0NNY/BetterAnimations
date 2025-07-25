@@ -14,9 +14,14 @@ export function getPreviewHeight (width) {
   return width * 9 / 16
 }
 
-function AnimationPreview ({ pack, animation, title = animation?.name, active = false }) {
-  const module = use(ModuleContext)
-
+function AnimationPreview ({
+  module = use(ModuleContext),
+  pack,
+  animation,
+  title = animation?.name,
+  active = false,
+  className
+}) {
   const { isActive: hasActiveAnimation } = use(AnimeTransitionContext)
   const isActive = active && !hasActiveAnimation
 
@@ -40,7 +45,7 @@ function AnimationPreview ({ pack, animation, title = animation?.name, active = 
   return (
     <div
       ref={containerRef}
-      className="BA__animationPreviewContainer"
+      className={classNames('BA__animationPreviewContainer', className)}
       {...useMovable('preview')}
     >
       <Preview
