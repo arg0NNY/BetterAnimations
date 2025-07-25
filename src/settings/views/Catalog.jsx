@@ -8,6 +8,7 @@ import { PackContentLocation } from '@/settings/components/PackContent'
 import NoPacksPlaceholder from '@/settings/components/NoPacksPlaceholder'
 import Messages from '@shared/messages'
 import GitHubIcon from '@/settings/components/icons/GitHubIcon'
+import { useData } from '@/modules/Data'
 
 const sortOptions = [
   {
@@ -30,12 +31,14 @@ const sortOptions = [
 
 function Catalog () {
   const registry = usePackRegistry()
+  const [data] = useData('catalog')
 
   return (
     <PackListView
       title="Catalog"
       items={registry.items}
       sortOptions={sortOptions}
+      data={data}
       pending={registry.isPending()}
       error={registry.isFatal && 'Failed to load packs. Please try again later.'}
       empty={(

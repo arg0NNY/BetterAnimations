@@ -11,6 +11,7 @@ import Messages from '@shared/messages'
 import Core from '@/modules/Core'
 import FolderIcon from '@/settings/components/icons/FolderIcon'
 import { path } from '@/modules/Node'
+import { useData } from '@/modules/Data'
 
 const sortOptions = [
   {
@@ -23,12 +24,14 @@ const sortOptions = [
 
 function Library () {
   const registry = usePackRegistry()
+  const [data] = useData('library')
 
   return (
     <PackListView
       title="Library"
       items={PackManager.getAllPacks(true)}
       sortOptions={sortOptions}
+      data={data}
       adjective="installed"
       empty={(
         <NoPacksPlaceholder actions={['catalog']} />

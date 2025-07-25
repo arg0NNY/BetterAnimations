@@ -34,6 +34,7 @@ function PackListView ({
   searchableFields = defaultSearchableFields,
   pageSize = 6,
   adjective = 'available',
+  data,
   leading,
   trailing
 }) {
@@ -42,8 +43,12 @@ function PackListView ({
   const [query, setQuery] = useState('')
   const trimmedQuery = query.trim()
 
-  const [sort, setSort] = useState(sortOptions[0].value)
+  const [sort, setSort] = useState(data?.sort ?? sortOptions[0].value)
   const selectedSort = sortOptions.find(o => o.value === sort)
+
+  useEffect(() => {
+    if (data) data.sort = sort
+  }, [sort])
 
   const filteredItems = allItems
     .filter(

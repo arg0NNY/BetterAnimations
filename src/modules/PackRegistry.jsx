@@ -128,9 +128,10 @@ export default new class PackRegistry {
   get baseUrl () { return import.meta.env.VITE_PACK_REGISTRY_BASE_URL }
   get mainFilename () { return import.meta.env.VITE_PACK_REGISTRY_MAIN_FILENAME }
 
-  get cacheKey () { return 'registry' }
-  get cache () { return Cache[this.cacheKey] }
-  set cache (value) { Cache[this.cacheKey] = value }
+  get data () { return Data.catalog }
+
+  get cache () { return this.data.cache }
+  set cache (value) { this.data.cache = value }
   get hasCache () { return this.cache != null }
 
   constructor () {

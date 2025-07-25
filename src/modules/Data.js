@@ -100,7 +100,8 @@ const Data = new class Data {
       settings: new DataField('settings'),
       settingsMode: new DataField('settingsMode', SettingsMode.Simple),
       whitelist: new DataSetField('whitelist'),
-      cache: new DataField('cache')
+      catalog: new DataObjectField('catalog'),
+      library: new DataObjectField('library')
     }
 
     return new Proxy(this, {
