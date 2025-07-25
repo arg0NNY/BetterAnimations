@@ -14,5 +14,6 @@ export default Enum({
   PackRegistryUpdated: 'pack-registry-updated',
   SettingsModeChanged: 'settings-mode-changed',
   DismissibleUpdated: 'dismissible-updated',
-  ErrorOccurred: 'error-occurred'
+  ErrorOccurred: 'error-occurred',
+  DataFieldUpdated: 'data-field-updated'
 })

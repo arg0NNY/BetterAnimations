@@ -17,8 +17,6 @@ import { VerificationIssueResolveMethod, VerificationStatus } from '@/settings/d
 import Data, { Cache } from '@/modules/Data'
 
 class PackVerifier {
-  get whitelistDataKey () { return 'whitelist' }
-
   constructor (registry) {
     this.registry = registry
 
@@ -26,14 +24,14 @@ class PackVerifier {
   }
 
   get permanentWhitelist () {
-    return new Set(Data[this.whitelistDataKey] ?? [])
+    return Data.whitelist
   }
   get whitelist () {
     return this.permanentWhitelist.union(this.temporaryWhitelist)
   }
 
   addToWhitelist (pack, permanent = false) {
-    if (permanent) Data[this.whitelistDataKey] = Array.from(this.permanentWhitelist.add(pack.filename))
+    if (permanent) this.permanentWhitelist.add(pack.filename)
     else this.temporaryWhitelist.add(pack.filename)
 
     Emitter.emit(Events.PackUpdated, pack)
@@ -41,9 +39,7 @@ class PackVerifier {
   }
   removeFromWhitelist (pack) {
     this.temporaryWhitelist.delete(pack.filename)
-    Data[this.whitelistDataKey] = Array.from(
-      this.permanentWhitelist.difference(new Set([pack.filename]))
-    )
+    this.permanentWhitelist.delete(pack.filename)
 
     Emitter.emit(Events.PackUpdated, pack)
     return true

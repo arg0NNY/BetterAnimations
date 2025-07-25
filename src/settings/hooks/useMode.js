@@ -1,22 +1,7 @@
 import SettingsMode from '@enums/SettingsMode'
-import useEmitterEffect from '@/hooks/useEmitterEffect'
-import Events from '@enums/Events'
-import Data from '@/modules/Data'
-import { useCallback } from 'react'
+import { useData } from '@/modules/Data'
 
-const DATA_KEY = 'settingsMode'
-
-function useMode () {
-  const emit = useEmitterEffect(Events.SettingsModeChanged)
-
-  return [
-    Data[DATA_KEY] || SettingsMode.Simple,
-    useCallback(value => {
-      Data[DATA_KEY] = value
-      emit(Events.SettingsModeChanged, value)
-    }, [])
-  ]
-}
+const useMode = () => useData('settingsMode')
 
 export function useAdvancedMode (force = false) {
   const [mode] = useMode()

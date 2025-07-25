@@ -9,13 +9,8 @@ export default new class Prompt {
     HardwareAcceleration: 'hardwareAcceleration'
   })
 
-  get dataKey () { return 'prompts' }
-  constructor () {
-    this.state = Data[this.dataKey] ?? {}
-  }
-
-  saveState () {
-    Data[this.dataKey] = this.state
+  get state () {
+    return Data.prompts
   }
 
   onStartup () {
@@ -23,11 +18,10 @@ export default new class Prompt {
   }
 
   hasShown (type) {
-    return !!this.state[type]
+    return this.state[type] === true
   }
   setHasShown (type, value) {
     this.state[type] = value
-    this.saveState()
   }
 
   _showPrompt (type) {

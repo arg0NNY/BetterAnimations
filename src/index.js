@@ -43,6 +43,7 @@ import DispatchController from '@/modules/DispatchController'
 import LazyLoader from '@/modules/LazyLoader'
 import { applyOptimizationPatches } from '@/patches/optimizations'
 import patchRootElementContext from '@/patches/AppView/patchRootElementContext'
+import Data from '@/modules/Data'
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -65,7 +66,8 @@ if (import.meta.env.MODE === 'development')
     anime,
     Utils,
     Documentation,
-    DispatchController
+    DispatchController,
+    Data
   }
 
 export default function (meta) {
