@@ -26,7 +26,7 @@ class PackVerifier {
   }
 
   get permanentWhitelist () {
-    return Data.whitelist
+    return Data.library.whitelist
   }
   get whitelist () {
     return this.permanentWhitelist.union(this.temporaryWhitelist)
@@ -410,6 +410,17 @@ export default new class PackRegistry {
     if (!author) return avatarPlaceholder
 
     return `https://avatars.githubusercontent.com/u/${author.github.id}?s=60&v=4`
+  }
+
+  isUnknown (pack) {
+    return this.data.visited && !this.data.known.has(pack.filename)
+  }
+  markAsKnown (pack) {
+    if (!this.isUnknown(pack)) return
+    this.data.known.add(pack.filename)
+  }
+  getUnknownPacks () {
+    return this.items.filter(pack => this.isUnknown(pack))
   }
 
   listenPackEvents () {

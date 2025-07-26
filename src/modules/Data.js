@@ -7,20 +7,25 @@ import SettingsMode from '@enums/SettingsMode'
 
 class DataField {
   constructor (name, defaultValue) {
-    this.name = name
-    this.defaultValue = defaultValue
+    this.$name = name
+    this.$defaultValue = defaultValue
+    this.$parentField = null
   }
 
   $load () {
-    return BDData.load(this.name)
+    if (this.$parentField) return this.$parentField.$reflect('get', this.$name)
+
+    return BDData.load(this.$name)
   }
   $save (value) {
-    BDData.save(this.name, structuredClone(value))
-    Emitter.emit(Events.DataFieldUpdated, this.name)
+    if (this.$parentField) return this.$parentField.$mutationReflect('set', this.$name, value)
+
+    BDData.save(this.$name, structuredClone(value))
+    Emitter.emit(Events.DataFieldUpdated, this.$name)
   }
 
   get $value () {
-    return this.$load() ?? this.defaultValue
+    return this.$load() ?? this.$defaultValue
   }
   set $value (value) {
     this.$save(value)
@@ -30,22 +35,27 @@ class DataField {
 class DataObjectField extends DataField {
   static mutationMethods = []
 
-  constructor (name, defaultValue = {}) {
+  constructor (name, fields = [], defaultValue = {}) {
     super(name, defaultValue)
 
-    const reflect = method => (self, ...args) => {
-      return Reflect[method](self.$value, ...args)
-    }
-    const mutationReflect = method => (self, ...args) => {
-      const value = self.$value
-      Reflect[method](value, ...args)
-      self.$value = value
-      return true
-    }
+    this.$fields = Object.fromEntries(
+      fields.map(field => {
+        field.$parentField = this
+        return [field.$name, field]
+      })
+    )
+
+    const reflect = method => (self, ...args) => this.$reflect.call(self, method, ...args)
+    const mutationReflect = method => (self, ...args) => this.$mutationReflect.call(self, method, ...args)
 
     return new Proxy(this, {
       get (self, key) {
         if (key in self) return self[key]
+
+        if (key in self.$fields) {
+          if (self.$fields[key] instanceof DataObjectField) return self.$fields[key]
+          return self.$fields[key].$value
+        }
 
         const value = self.$value[key]
 
@@ -57,7 +67,12 @@ class DataObjectField extends DataField {
         }
         return value
       },
-      set: mutationReflect('set'),
+      set (self, key, value) {
+        if (key in self) self[key] = value
+        else if (key in self.$fields) self.$fields[key].$value = value
+        else self.$mutationReflect('set', key, value)
+        return true
+      },
       defineProperty: mutationReflect('defineProperty'),
       deleteProperty: mutationReflect('deleteProperty'),
       has: reflect('has'),
@@ -65,13 +80,23 @@ class DataObjectField extends DataField {
       getOwnPropertyDescriptor: reflect('getOwnPropertyDescriptor')
     })
   }
+
+  $reflect (method, ...args) {
+    return Reflect[method](this.$value, ...args)
+  }
+  $mutationReflect (method, ...args) {
+    const value = this.$value
+    Reflect[method](value, ...args)
+    this.$value = value
+    return true
+  }
 }
 
 class DataArrayField extends DataObjectField {
   static mutationMethods = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse']
 
   constructor (name, defaultValue = []) {
-    return super(name, defaultValue)
+    return super(name, [], defaultValue)
   }
 }
 
@@ -90,20 +115,11 @@ class DataSetField extends DataArrayField {
   }
 }
 
-const Data = new class Data {
-  constructor () {
-    this.$fields = {
-      configVersion: new DataField('configVersion'),
-      packs: new DataField('packs'),
-      prompts: new DataObjectField('prompts'),
-      dismissibles: new DataObjectField('dismissibles'),
-      settings: new DataField('settings'),
-      settingsMode: new DataField('settingsMode', SettingsMode.Simple),
-      whitelist: new DataSetField('whitelist'),
-      catalog: new DataObjectField('catalog'),
-      library: new DataObjectField('library'),
-      preferences: new DataObjectField('preferences')
-    }
+class Data {
+  constructor (fields = []) {
+    this.$fields = Object.fromEntries(
+      fields.map(field => [field.$name, field])
+    )
 
     return new Proxy(this, {
       get (self, key) {
@@ -126,6 +142,28 @@ const Data = new class Data {
   }
 }
 
+const data = new Data([
+  new DataField('configVersion'),
+  new DataField('packs'),
+  new DataObjectField('prompts'),
+  new DataObjectField('dismissibles'),
+  new DataField('settings'),
+  new DataField('settingsMode', SettingsMode.Simple),
+  new DataObjectField('catalog', [
+    new DataField('visited', false),
+    new DataSetField('known'),
+    new DataField('cache'),
+    new DataField('sort')
+  ]),
+  new DataObjectField('library', [
+    new DataSetField('whitelist'),
+    new DataField('sort')
+  ]),
+  new DataObjectField('preferences', [
+    new DataField('module')
+  ])
+])
+
 export function useData (fieldName) {
   const update = useUpdate()
 
@@ -138,9 +176,9 @@ export function useData (fieldName) {
   }, [fieldName])
 
   return [
-    Data[fieldName],
-    useCallback(value => Data[fieldName] = value, [fieldName])
+    data[fieldName],
+    useCallback(value => data[fieldName] = value, [fieldName])
   ]
 }
 
-export default Data
+export default data

@@ -1,5 +1,5 @@
 import IconBrand from '@/components/icons/IconBrand'
-import { Button, handleClick, Text } from '@discord/modules'
+import { Button, handleClick, Text, Tooltip } from '@discord/modules'
 import meta from '@/meta'
 import { css } from '@style'
 import ShopIcon from '@/settings/components/icons/ShopIcon'
@@ -14,6 +14,9 @@ import { sanitize } from '@utils/text'
 import BookIcon from '@/settings/components/icons/BookIcon'
 import Documentation from '@shared/documentation'
 import { AnimeTransitionContext } from '@components/AnimeTransition'
+import PackPicture from '@/settings/components/PackPicture'
+import usePackRegistry from '@/hooks/usePackRegistry'
+import { useData } from '@/modules/Data'
 
 const madeByPhrases = [
   'Made by',
@@ -30,6 +33,41 @@ const madeByPhrases = [
   'Established by'
 ]
 
+function CatalogPromoTooltip ({ packs, displayLimit = 3, children, ...props }) {
+  const nodes = packs.length <= displayLimit
+    ? packs
+    : packs.slice(0, displayLimit - 1).concat(packs.length - displayLimit + 1)
+
+  return (
+    <Tooltip
+      shouldShow={packs.length > 0}
+      tooltipClassName="BA__catalogPromoTooltip"
+      position="bottom"
+      color={Tooltip.Colors.BRAND}
+      spacing={12}
+      allowOverflow
+      text={() => (
+        <div className="BA__catalogPromoTooltipContent">
+          <PackPicture />
+          <div>
+            {`Check out the newly available ${packs.length > 1 ? 'packs' : 'pack'}: `}
+            {nodes.map((node, index) => (
+              <>
+                {typeof node === 'number' ? `${node} others` : <b>{node.name}</b>}
+                {[', ', ' and ', ''][Math.max(0, index - nodes.length + 3)]}
+              </>
+            ))}
+            !
+          </div>
+        </div>
+      )}
+      {...props}
+    >
+      {children}
+    </Tooltip>
+  )
+}
+
 function Home () {
   const [section, setSection] = useSection()
 
@@ -39,6 +77,11 @@ function Home () {
   )
 
   const { isEnterActive } = use(AnimeTransitionContext)
+
+  const [{ visited: visitedCatalog }] = useData('catalog')
+  const registry = usePackRegistry()
+  const unknownPacks = registry.getUnknownPacks()
+  const highlightCatalog = !visitedCatalog || unknownPacks.length > 0
 
   return (
     <div className="BA__home">
@@ -68,12 +111,17 @@ function Home () {
           {sanitize(meta.description)}
         </Text>
         <div className="BA__homeHeadingActions">
-          <Button
-            variant="expressive"
-            icon={ShopIcon}
-            text="Catalog"
-            onClick={() => setSection(SettingsSection.Catalog)}
-          />
+          <CatalogPromoTooltip packs={unknownPacks}>
+            {props => (
+              <Button
+                {...props}
+                variant={highlightCatalog ? 'expressive' : 'primary'}
+                icon={ShopIcon}
+                text="Catalog"
+                onClick={() => setSection(SettingsSection.Catalog)}
+              />
+            )}
+          </CatalogPromoTooltip>
           <Button
             variant="secondary"
             icon={BookIcon}
@@ -197,5 +245,21 @@ css
     bottom: 16px;
     display: flex;
     align-items: center;
+}
+
+.BA__catalogPromoTooltip {
+    max-width: 100%;
+}
+.BA__catalogPromoTooltipContent {
+    width: 230px;
+    position: relative;
+    padding: 10px 0 12px 80px;
+}
+.BA__catalogPromoTooltipContent svg {
+    position: absolute;
+    left: -62px;
+    top: calc(50% + 6px);
+    transform: translateY(-50%);
+    height: 123px;
 }`
 `Home`

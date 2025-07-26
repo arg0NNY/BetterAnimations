@@ -1,7 +1,10 @@
 import PackContent, { PackContentLocation } from '@/settings/components/PackContent'
 import { css } from '@style'
-import { ModalActions } from '@discord/modules'
+import { ModalActions, useIsVisibleKeyed } from '@discord/modules'
 import PackModal from '@/settings/components/PackModal'
+import { unkeyed } from '@/utils/webpack'
+import PackRegistry from '@/modules/PackRegistry'
+import { useCallback } from 'react'
 
 function PackCard ({ pack, location = PackContentLocation.CATALOG }) {
   const onClick = () => ModalActions.openModal(props => (
@@ -12,8 +15,16 @@ function PackCard ({ pack, location = PackContentLocation.CATALOG }) {
     />
   ))
 
+  const onIntersection = useCallback(isIntersecting => {
+    if (location === PackContentLocation.CATALOG && isIntersecting)
+      PackRegistry.markAsKnown(pack)
+  }, [pack, location])
+
+  const cardRef = unkeyed(useIsVisibleKeyed)(onIntersection, .5)
+
   return (
     <div
+      ref={cardRef}
       className="BA__packCard"
       onClick={onClick}
     >

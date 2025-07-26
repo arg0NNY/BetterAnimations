@@ -27,7 +27,7 @@ import SquircleMask from '@/settings/components/SquircleMask'
 import LinkIcon from '@/settings/components/icons/LinkIcon'
 import DiscordClasses from '@discord/classes'
 import ArrowSmallRightIcon from '@/settings/components/icons/ArrowSmallRightIcon'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import CircleWarningIcon from '@/settings/components/icons/CircleWarningIcon'
 import usePackRegistry from '@/hooks/usePackRegistry'
 import { stop } from '@/settings/utils/eventModifiers'
@@ -234,6 +234,28 @@ function PackInvite ({ code }) {
   )
 }
 
+function PackBadge ({ pack, location }) {
+  const registry = usePackRegistry()
+  const isUnknown = useMemo(() => registry.isUnknown(pack), [])
+
+  if (pack.installed && registry.hasUpdate(pack.installed)) return (
+    <TextBadge
+      className="BA__packBadge"
+      text="Update available"
+      color="var(--bg-brand)"
+    />
+  )
+
+  if (location === PackContentLocation.CATALOG && isUnknown) return (
+    <TextBadge
+      className="BA__packBadge"
+      text="New"
+    />
+  )
+
+  return null
+}
+
 function PackContent ({ pack, className, size = 'sm', location = PackContentLocation.CATALOG }) {
   const registry = usePackRegistry()
 
@@ -293,13 +315,10 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
         className
       )}
     >
-      {pack.installed && registry.hasUpdate(pack.installed) && (
-        <TextBadge
-          className="BA__packBadge"
-          text="Update available"
-          color="var(--bg-brand)"
-        />
-      )}
+      <PackBadge
+        pack={pack}
+        location={location}
+      />
       <div className="BA__packSplash">
         <img
           className="BA__packSplashImage"

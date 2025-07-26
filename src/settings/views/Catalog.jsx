@@ -9,6 +9,7 @@ import NoPacksPlaceholder from '@/settings/components/NoPacksPlaceholder'
 import Messages from '@shared/messages'
 import GitHubIcon from '@/settings/components/icons/GitHubIcon'
 import { useData } from '@/modules/Data'
+import { useEffect } from 'react'
 
 const sortOptions = [
   {
@@ -32,6 +33,13 @@ const sortOptions = [
 function Catalog () {
   const registry = usePackRegistry()
   const [data] = useData('catalog')
+
+  useEffect(() => {
+    if (data.visited) return
+
+    registry.items.forEach(item => registry.markAsKnown(item))
+    data.visited = true
+  }, [])
 
   return (
     <PackListView
