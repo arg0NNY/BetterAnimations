@@ -12,7 +12,7 @@ import ChevronSmallLeftIcon from '@/settings/components/icons/ChevronSmallLeftIc
 import ChevronSmallRightIcon from '@/settings/components/icons/ChevronSmallRightIcon'
 import ErrorCard from '@/error/components/ErrorCard'
 import { IconBrandTypes } from '@/components/icons/IconBrand'
-
+import useEventListener from '@/hooks/useEventListener'
 
 function ModuleLabel ({ module }) {
   const parent = Core.getParentModule(module)
@@ -37,6 +37,14 @@ function PackPreview ({ pack, module }) {
 
   const [index, setIndex] = useState(0)
   const step = step => setIndex(index => (animations.length + index + step) % animations.length)
+
+  useEventListener('keydown', e => {
+    if (e.repeat) return
+    switch (e.code) {
+      case 'ArrowLeft': return step(-1)
+      case 'ArrowRight': return step(1)
+    }
+  })
 
   const animation = animations[index]
 
@@ -116,11 +124,25 @@ function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose,
     .filter(module => !loadedPack || loadedPack.partial || loadedPack.animations?.some(a => module.isSupportedBy(a)))
 
   const [moduleId, setModuleId] = useState(modules[0]?.id)
-  const module = modules.find(m => m.id === moduleId)
+  const moduleIndex = modules.findIndex(m => m.id === moduleId)
+  const module = modules[moduleIndex]
+  const step = step => {
+    const module = modules.at((moduleIndex + step) % modules.length)
+    if (module) setModuleId(module.id)
+  }
+
   const options = modules.map(module => ({ module, value: module.id, label: module.name }))
 
   useEffect(() => {
     if (!modules.some(m => m.id === moduleId)) setModuleId(modules[0]?.id)
+  })
+
+  useEventListener('keydown', e => {
+    if (e.repeat) return
+    switch (e.code) {
+      case 'ArrowUp': return step(-1)
+      case 'ArrowDown': return step(1)
+    }
   })
 
   const errorCard = (() => {
