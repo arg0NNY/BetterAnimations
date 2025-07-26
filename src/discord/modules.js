@@ -191,3 +191,5 @@ export const useIsVisibleKeyed = getWithKey(Filters.byStrings('isIntersecting', 
 export const useRootElementContextKeyed = getWithKey(Filters.byStrings('useRootElementContext'))
 export const GuildIcon = Webpack.getModule(m => Filters.byKeys('badgeStrokeColor', 'animate')(m?.defaultProps), { searchExports: true })
 export const GuildStore = Webpack.getStore('GuildStore')
+export const Timestamp = Webpack.getModule(m => Filters.byStrings('timestamp', 'timestampTooltip')(m?.type), { searchExports: true })
+export const humanize = Webpack.getByKeys('humanize', 'filesize')

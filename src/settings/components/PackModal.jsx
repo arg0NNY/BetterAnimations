@@ -1,4 +1,14 @@
-import { Button, ModalRoot, ModalSize, SingleSelect, Spinner, Text } from '@discord/modules'
+import {
+  Button,
+  humanize,
+  ModalRoot,
+  ModalSize,
+  SingleSelect,
+  Spinner,
+  Text,
+  Timestamp,
+  Tooltip
+} from '@discord/modules'
 import { css } from '@style'
 import PackContent, { PackContentLocation } from '@/settings/components/PackContent'
 import { ErrorBoundary } from '@error/boundary'
@@ -115,6 +125,63 @@ function useLoadedPack (pack, isRemote) {
   return isRemote ? remoteData : { pack, loading: false, error: null }
 }
 
+function PackMeta ({ pack }) {
+  const meta = []
+
+  if (pack.createdAt) meta.push(
+    <Timestamp
+      timestamp={pack.createdAt}
+      timestampFormat="[Published] L"
+    />
+  )
+  if (pack.updatedAt) meta.push(
+    <Timestamp
+      timestamp={pack.updatedAt}
+      timestampFormat="[Updated] L"
+    />
+  )
+
+  const size = pack.size ?? pack.installed?.size
+  if (size) meta.push(
+    humanize.filesize(size)
+  )
+
+  if (pack.installed) {
+    const modules = Core.getModulesUsingPack(pack.installed)
+    meta.push(
+      <Tooltip
+        text={modules.map(m => m.name).join(', ')}
+        shouldShow={modules.length > 0}
+      >
+        {props => (
+          <span {...props}>
+            {modules.length > 0 ? (
+              `Used in ${modules.length} ${modules.length > 1 ? 'modules' : 'module'}`
+            ) : (
+              'Not used in any modules'
+            )}
+          </span>
+        )}
+      </Tooltip>
+    )
+  }
+
+  return (
+    <Text
+      className="BA__packModalMeta"
+      variant="text-sm/medium"
+      color="text-muted"
+    >
+      {meta.map((item, index) => (
+        <>
+          {item}
+          {index < meta.length - 1 && ' • '}
+        </>
+      ))}
+    </Text>
+  )
+}
+
 function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose, ...props }) {
   const registry = usePackRegistry()
 
@@ -211,12 +278,7 @@ function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose,
                 )}
               </div>
               <div className="BA__packModalPreviewFooter">
-                <Text
-                  variant="text-sm/medium"
-                  color="text-muted"
-                >
-                  Published 25/07/2025 • Updated 25/07/2025 • Used in 2 modules
-                </Text>
+                <PackMeta pack={pack} />
               </div>
             </div>
           </>
@@ -273,6 +335,9 @@ css
 .BA__packModalPreviewError,
 .BA__packModalPreviewSpinner {
     aspect-ratio: 16 / 9;
+}
+.BA__packModalMeta > * {
+    margin: 0 !important;
 }
 
 .BA__packPreviewContent {
