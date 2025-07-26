@@ -4,7 +4,7 @@ import PackContent, { PackContentLocation } from '@/settings/components/PackCont
 import { ErrorBoundary } from '@error/boundary'
 import usePackRegistry from '@/hooks/usePackRegistry'
 import PackManager from '@/modules/PackManager'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Core from '@/modules/Core'
 import AnimationPreview from '@/settings/components/AnimationPreview'
 import XIcon from '@/settings/components/icons/XIcon'
@@ -13,6 +13,7 @@ import ChevronSmallRightIcon from '@/settings/components/icons/ChevronSmallRight
 import ErrorCard from '@/error/components/ErrorCard'
 import { IconBrandTypes } from '@/components/icons/IconBrand'
 import useEventListener from '@/hooks/useEventListener'
+import Data from '@/modules/Data'
 
 function ModuleLabel ({ module }) {
   const parent = Core.getParentModule(module)
@@ -123,12 +124,17 @@ function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose,
   const modules = Core.getAllModules(true)
     .filter(module => !loadedPack || loadedPack.partial || loadedPack.animations?.some(a => module.isSupportedBy(a)))
 
-  const [moduleId, setModuleId] = useState(modules[0]?.id)
+  const [moduleId, setModuleId] = useState(Data.preferences.module ?? modules[0]?.id)
   const moduleIndex = modules.findIndex(m => m.id === moduleId)
   const module = modules[moduleIndex]
+
+  const selectModule = useCallback(moduleId => {
+    setModuleId(moduleId)
+    Data.preferences.module = moduleId
+  }, [setModuleId])
   const step = step => {
     const module = modules.at((moduleIndex + step) % modules.length)
-    if (module) setModuleId(module.id)
+    if (module) selectModule(module.id)
   }
 
   const options = modules.map(module => ({ module, value: module.id, label: module.name }))
@@ -177,7 +183,7 @@ function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose,
                   className="BA__packModalPreviewSelect"
                   options={options}
                   value={moduleId}
-                  onChange={setModuleId}
+                  onChange={selectModule}
                   isDisabled={loading || errorCard}
                   renderOptionLabel={({ module }) => <ModuleLabel module={module} />}
                   renderOptionValue={([option]) => option && <ModuleLabel module={option.module} />}

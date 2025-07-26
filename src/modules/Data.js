@@ -101,7 +101,8 @@ const Data = new class Data {
       settingsMode: new DataField('settingsMode', SettingsMode.Simple),
       whitelist: new DataSetField('whitelist'),
       catalog: new DataObjectField('catalog'),
-      library: new DataObjectField('library')
+      library: new DataObjectField('library'),
+      preferences: new DataObjectField('preferences')
     }
 
     return new Proxy(this, {
