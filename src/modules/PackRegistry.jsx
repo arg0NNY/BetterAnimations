@@ -209,6 +209,9 @@ export default new class PackRegistry {
       this.verifier.verifyAll([pack])
       this.checkForUpdates({ updateRegistry: false })
     }
+    this.onPackUnloaded = pack => {
+      this.verifier.temporaryWhitelist.delete(pack.filename)
+    }
   }
 
   isPending (filename = this.mainFilename) {
@@ -411,9 +414,11 @@ export default new class PackRegistry {
 
   listenPackEvents () {
     Emitter.on(Events.PackLoaded, this.onPackLoaded)
+    Emitter.on(Events.PackUnloaded, this.onPackUnloaded)
   }
   unlistenPackEvents () {
     Emitter.off(Events.PackLoaded, this.onPackLoaded)
+    Emitter.off(Events.PackUnloaded, this.onPackUnloaded)
   }
 
   shutdown () {
