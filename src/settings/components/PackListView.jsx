@@ -10,12 +10,12 @@ import { ContextMenu } from '@/BdApi'
 export const defaultSortOptions = [
   {
     value: 'name',
-    label: 'Name',
+    label: 'By name',
     compare: (a, b) => a.name.localeCompare(b.name)
   },
   {
     value: 'author',
-    label: 'Author',
+    label: 'By author',
     compare: (a, b) => a.author.localeCompare(b.author)
   }
 ]
@@ -103,7 +103,7 @@ function PackListView ({
           align="right"
           renderPopout={props => (
             <ContextMenu.Menu {...props}>
-              <ContextMenu.Group label="Sort by">
+              <ContextMenu.Group label="Sort">
                 {sortOptions.map(option => (
                   <ContextMenu.RadioItem
                     key={option.value}

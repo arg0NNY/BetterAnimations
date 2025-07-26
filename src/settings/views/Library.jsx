@@ -16,7 +16,7 @@ import { useData } from '@/modules/Data'
 const sortOptions = [
   {
     value: 'usage',
-    label: 'Usage',
+    label: 'By usage',
     compare: (a, b) => Core.getModulesUsingPack(b).length - Core.getModulesUsingPack(a).length
   },
   ...defaultSortOptions

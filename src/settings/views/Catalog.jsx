@@ -13,17 +13,17 @@ import { useData } from '@/modules/Data'
 const sortOptions = [
   {
     value: 'newest',
-    label: 'Newest',
+    label: 'Newest first',
     compare: (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   },
   {
     value: 'oldest',
-    label: 'Oldest',
+    label: 'Oldest first',
     compare: (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
   },
   {
     value: 'official',
-    label: 'Official',
+    label: 'Official first',
     compare: (a, b) => b.official - a.official
   },
   ...defaultSortOptions
