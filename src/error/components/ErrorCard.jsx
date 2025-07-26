@@ -3,11 +3,11 @@ import classNames from 'classnames'
 import IconBrand, { IconBrandTypes } from '@/components/icons/IconBrand'
 import { Text } from '@discord/modules'
 
-function ErrorCard ({ text, actions, className, ...props }) {
+function ErrorCard ({ text, actions, className, iconType = IconBrandTypes.ERROR, ...props }) {
   return (
     <div {...props} className={classNames('BA__errorCard', className)}>
       <IconBrand
-        type={IconBrandTypes.ERROR}
+        type={iconType}
         size="xl"
       />
       <Text variant="text-md/bold">{text}</Text>

@@ -11,6 +11,8 @@ import XIcon from '@/settings/components/icons/XIcon'
 import ChevronSmallLeftIcon from '@/settings/components/icons/ChevronSmallLeftIcon'
 import ChevronSmallRightIcon from '@/settings/components/icons/ChevronSmallRightIcon'
 import ErrorCard from '@/error/components/ErrorCard'
+import { IconBrandTypes } from '@/components/icons/IconBrand'
+
 
 function ModuleLabel ({ module }) {
   const parent = Core.getParentModule(module)
@@ -105,6 +107,8 @@ function useLoadedPack (pack, isRemote) {
 }
 
 function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose, ...props }) {
+  const registry = usePackRegistry()
+
   const pack = usePack({ filename, location, onClose })
   const { pack: loadedPack, loading, error } = useLoadedPack(pack, location === PackContentLocation.CATALOG)
 
@@ -118,6 +122,15 @@ function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose,
   useEffect(() => {
     if (!modules.some(m => m.id === moduleId)) setModuleId(modules[0]?.id)
   })
+
+  const errorCard = (() => {
+    if (pack?.partial) return { text: 'Pack did not load properly. Preview is unavailable.' }
+    if (error || !loadedPack) return { text: 'Failed to load the preview.' }
+    if (!registry.verifier.check(pack)) return { iconType: IconBrandTypes.WARNING, text: 'Preview is not available for unverified packs.' }
+    if (!modules.length) return { iconType: IconBrandTypes.WARNING, text: 'This pack does not support any animation modules.' }
+    if (!module) return { iconType: IconBrandTypes.WARNING, text: 'Module not found.' }
+    return null
+  })()
 
   return (
     <ModalRoot
@@ -143,7 +156,7 @@ function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose,
                   options={options}
                   value={moduleId}
                   onChange={setModuleId}
-                  isDisabled={loading || pack.partial || error}
+                  isDisabled={loading || errorCard}
                   renderOptionLabel={({ module }) => <ModuleLabel module={module} />}
                   renderOptionValue={([option]) => option && <ModuleLabel module={option.module} />}
                 />
@@ -156,16 +169,12 @@ function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose,
               <div className="BA__packModalPreviewContent">
                 {loading ? (
                   <Spinner className="BA__packModalPreviewSpinner" />
-                ) : pack.partial || error ? (
+                ) : errorCard ? (
                   <ErrorCard
                     className="BA__packModalPreviewError"
-                    text={(
-                      pack.partial
-                        ? 'Pack did not load properly. Preview is unavailable.'
-                        : 'Failed to load the preview.'
-                    )}
+                    {...errorCard}
                   />
-                ) : loadedPack && (
+                ) : (
                   <PackPreview
                     key={moduleId}
                     module={module}

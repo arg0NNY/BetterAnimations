@@ -83,6 +83,7 @@ function PackVerificationBadge ({ pack, size = 'sm', popoutType = 'popout' }) {
     <Popout
       targetElementRef={iconRef}
       shouldShow={shouldShow}
+      onRequestClose={() => setShouldShow(false)}
       position="right"
       align="center"
       spacing={0}
