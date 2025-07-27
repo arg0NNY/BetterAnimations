@@ -54,14 +54,14 @@ function DirectionAxisControl ({ animation, value, onChange, reverse, onReverseC
     <div className="BA__directionAxisControl">
       <ButtonGroup
         className="BA__directionAxisControlSelect"
-        size={ButtonGroup.Sizes.MEDIUM}
+        size="lg"
         options={options}
         selected={value}
         onChange={onChange}
       />
       <ButtonGroup
         className="BA__directionAxisControlReverse"
-        size={ButtonGroup.Sizes.MEDIUM}
+        size="lg"
         multiple={true}
         options={[{
           children: <RepeatIcon color="currentColor" />,
@@ -88,7 +88,7 @@ function DirectionAnchorControl ({ value, onChange }) {
   return (
     <ButtonGroup
       className={DiscordClasses.Margins.marginTop8}
-      size={ButtonGroup.Sizes.MEDIUM}
+      size="lg"
       options={options}
       selected={value}
       onChange={onChange}

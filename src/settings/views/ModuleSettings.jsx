@@ -95,8 +95,7 @@ css
     left: 0;
     width: 100%;
     height: 1px;
-    background: currentColor;
-    opacity: .2;
+    background: var(--border-normal);
 }
 .BA__moduleSettingsSectionTitle > span {
     position: relative;

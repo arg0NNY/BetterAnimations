@@ -72,12 +72,12 @@ css
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 8px;
-    min-height: 28px;
+    min-height: 36px;
 }
 
 .BA__animationCardControlsGroup {
     display: flex;
     gap: 8px;
+    padding-left: 10px;
 }`
 `AnimationCardControls`

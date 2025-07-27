@@ -187,7 +187,7 @@ css
 `.BA__moduleSettingsHeader {
     margin-bottom: 32px;
     display: flex;
-    gap: 16px;
+    gap: 20px;
 }
     
 .BA__moduleSettingsHeader .BA__animationCardWrapper {

@@ -2,17 +2,16 @@ import { Clickable, Tooltip } from '@discord/modules'
 import { css } from '@style'
 import classNames from 'classnames'
 
-const Sizes = {
-  SMALL: 'small',
-  MEDIUM: 'medium'
-}
-
-function ButtonGroupItem ({ children, tooltip, selected, disabled, onClick }) {
+function ButtonGroupItem ({ children, tooltip, selected, disabled, className, onClick }) {
   const button = props => (
     <Clickable
       {...props}
       tag="button"
-      className={`BA__buttonGroupItem ${selected ? 'BA__buttonGroupItem--selected' : ''} ${disabled ? 'BA__buttonGroupItem--disabled' : ''}`}
+      className={classNames({
+        'BA__buttonGroupItem': true,
+        'BA__buttonGroupItem--selected': selected,
+        'BA__buttonGroupItem--disabled': disabled
+      }, className)}
       onClick={onClick}
     >
       {children}
@@ -28,7 +27,7 @@ function ButtonGroupItem ({ children, tooltip, selected, disabled, onClick }) {
   )
 }
 
-function ButtonGroup ({ options, multiple = false, selected, onChange, className, size = Sizes.SMALL }) {
+function ButtonGroup ({ options, multiple = false, selected, onChange, className, itemClassName, size = 'sm' }) {
   return (
     <div
       className={classNames(
@@ -44,6 +43,7 @@ function ButtonGroup ({ options, multiple = false, selected, onChange, className
         <ButtonGroupItem
           {...option}
           key={option.value}
+          className={classNames(itemClassName, option.className)}
           selected={multiple ? option.selected : selected === option.value}
           onClick={multiple ? option.onClick : () => selected !== option.value && onChange(option.value)}
           children={option.children ?? option.label}
@@ -52,8 +52,6 @@ function ButtonGroup ({ options, multiple = false, selected, onChange, className
     </div>
   )
 }
-
-ButtonGroup.Sizes = Sizes
 
 export default ButtonGroup
 
@@ -102,11 +100,19 @@ css
     border-right-width: 1px;
 }
 
-.BA__buttonGroup--medium {
+.BA__buttonGroup--md {
+    --ba--button-group-border-radius: 8px;
+    height: 36px;
+}
+.BA__buttonGroup--md > .BA__buttonGroupItem {
+    padding: 0 12px;
+}
+
+.BA__buttonGroup--lg {
     --ba--button-group-border-radius: 8px;
     height: 42px;
 }
-.BA__buttonGroup--medium > .BA__buttonGroupItem {
+.BA__buttonGroup--lg > .BA__buttonGroupItem {
     padding: 0 12px;
 }
 

@@ -65,7 +65,7 @@ function AnimationPreview ({
           'BA__animationPreviewTitle',
           { 'BA__animationPreviewTitle--hidden': isActive }
         )}>
-          <Text variant="heading-sm/medium" lineClamp={2} color="always-white">{title}</Text>
+          <Text variant="heading-md/semibold" lineClamp={2} color="always-white">{title}</Text>
         </div>
       )}
     </div>
@@ -96,18 +96,13 @@ css
 .BA__animationPreviewTitle {
     position: absolute;
     inset: 0;
-    padding: 8px;
-    background: rgba(255, 255, 255, .05);
+    padding: 12px;
+    background: rgba(0, 0, 0, .1);
     backdrop-filter: blur(15px);
     transition: .4s;
 }
 .BA__animationPreviewTitle--hidden {
     opacity: 0;
     backdrop-filter: blur(0);
-}
-
-.BA__animationCard--expanded .BA__animationPreviewContainer {
-    border-radius: 3px;
-    box-shadow: 0 0 0 .5px var(--border-faint);
 }`
 `AnimationPreview`
