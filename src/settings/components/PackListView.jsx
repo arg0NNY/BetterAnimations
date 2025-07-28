@@ -6,6 +6,7 @@ import NoPacksPlaceholder from '@/settings/components/NoPacksPlaceholder'
 import ErrorCard from '@/error/components/ErrorCard'
 import ArrowSmallUpDownIcon from '@/settings/components/icons/ArrowSmallUpDownIcon'
 import { ContextMenu } from '@/BdApi'
+import usePagination from '@/settings/hooks/usePagination'
 
 export const defaultSortOptions = [
   {
@@ -60,17 +61,11 @@ function PackListView ({
     )
     .sort(selectedSort?.compare ?? (() => 0))
 
-  const [page, setPage] = useState(1)
-  const offset = (page - 1) * pageSize
-  const items = filteredItems.slice(offset, offset + pageSize)
-
-  useEffect(
-    () => setPage(1),
+  const { page, setPage, offset, items } = usePagination(
+    filteredItems,
+    pageSize,
     [trimmedQuery, pending]
   )
-  useEffect(() => {
-    if (items.length === 0 && page > 1) setPage(1)
-  }, [items.length, page])
 
   return (
     <div className="BA__packListView">

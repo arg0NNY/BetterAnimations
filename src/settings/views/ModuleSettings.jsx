@@ -1,16 +1,19 @@
-import { Text } from '@discord/modules'
+import { Paginator, SingleSelect, Text } from '@discord/modules'
 import PackAccordion from '@/settings/components/PackAccordion'
 import PackManager from '@/modules/PackManager'
 import useModule from '@/hooks/useModule'
 import { css } from '@style'
 import ModuleSettingsHeader from '@/settings/components/ModuleSettingsHeader'
 import ModuleContext from '@/settings/context/ModuleContext'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { PREINSTALLED_PACK_SLUG } from '@packs'
 import AnimationList from '@/settings/components/AnimationList'
 import NoPacksPlaceholder from '@/settings/components/NoPacksPlaceholder'
+import usePagination from '@/settings/hooks/usePagination'
+import { useData } from '@/modules/Data'
 
-function ModuleSettings ({ moduleId, refToScroller }) {
+function ModuleSettings ({ moduleId, refToScroller, pageSize = 15 }) {
+  const [preferences] = useData('preferences')
   const module = useModule(moduleId, true)
 
   const onSelect = useCallback((type, pack, animation) => {
@@ -25,7 +28,43 @@ function ModuleSettings ({ moduleId, refToScroller }) {
   const preinstalledAnimations = preinstalledPack?.animations.filter(a => module.isSupportedBy(a)) ?? []
 
   const packs = PackManager.getAllPacks()
-    .filter(p => p.partial || p.animations.some(a => module.isSupportedBy(a)))
+    .filter(p => p.animations.some(a => module.isSupportedBy(a)))
+
+  const [packSlug, setPackSlug] = useState(null)
+  const pack = packs.find(pack => pack.slug === packSlug)
+  const selectPack = useCallback(packSlug => {
+    setPackSlug(packSlug)
+    preferences.pack = packSlug
+  }, [setPackSlug, preferences])
+
+  useEffect(() => {
+    if (!pack) setPackSlug(
+      packs.find(pack => pack.slug === selected.enter.packSlug)?.slug
+      ?? packs.find(pack => pack.slug === preferences.pack)?.slug
+      ?? packs[0]?.slug
+      ?? null
+    )
+  }, [!pack])
+
+  const animations = pack?.animations.filter(animation => module.isSupportedBy(animation)) ?? []
+
+  const { page, setPage, items } = usePagination(
+    animations,
+    pageSize,
+    [packSlug]
+  )
+
+  useEffect(() => {
+    if (!pack) return
+
+    const indexes = Object.values(selected).map(
+      ({ packSlug, animationKey }) => packSlug === pack.slug
+        ? animations.findIndex(animation => animation.key === animationKey)
+        : -1
+    ).filter(i => i !== -1)
+
+    if (indexes.length) setPage(Math.min(...indexes.map(i => Math.floor(i / pageSize) + 1)))
+  }, [packSlug])
 
   return (
     <ModuleContext value={module}>
@@ -59,13 +98,36 @@ function ModuleSettings ({ moduleId, refToScroller }) {
           <span>PACKS</span>
         </Text>
         {!!packs.length ? (
-          <PackAccordion
-            module={module}
-            packs={packs}
-            selected={selected}
-            onSelect={onSelect}
-            refToScroller={refToScroller}
-          />
+          <>
+            <SingleSelect
+              className="BA__moduleSettingsPackSelect"
+              options={packs.map(pack => ({ value: pack.slug, label: pack.name }))}
+              value={packSlug}
+              onChange={selectPack}
+            />
+            {pack && (
+              <div
+                key={pack.slug}
+                className="BA__moduleSettingsPack"
+              >
+                <AnimationList
+                  module={module}
+                  pack={pack}
+                  animations={items}
+                  selected={selected}
+                  onSelect={onSelect}
+                  refToScroller={refToScroller}
+                />
+                <Paginator
+                  pageSize={pageSize}
+                  totalCount={animations.length}
+                  maxVisiblePages={5}
+                  currentPage={page}
+                  onPageChange={setPage}
+                />
+              </div>
+            )}
+          </>
         ) : (
           <NoPacksPlaceholder />
         )}
@@ -101,5 +163,9 @@ css
     position: relative;
     background: var(--background-base-low);
     padding: 0 8px;
+}
+
+.BA__moduleSettingsPackSelect {
+    margin-bottom: 16px;
 }`
 `ModuleSettings`

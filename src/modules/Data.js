@@ -160,7 +160,8 @@ const data = new Data([
     new DataField('sort')
   ]),
   new DataObjectField('preferences', [
-    new DataField('module')
+    new DataField('module'),
+    new DataField('pack')
   ])
 ])
 
