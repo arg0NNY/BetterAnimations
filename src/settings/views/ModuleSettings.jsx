@@ -11,6 +11,7 @@ import AnimationList from '@/settings/components/AnimationList'
 import NoPacksPlaceholder from '@/settings/components/NoPacksPlaceholder'
 import usePagination from '@/settings/hooks/usePagination'
 import { useData } from '@/modules/Data'
+import PackSelect from '@/settings/components/PackSelect'
 
 function ModuleSettings ({ moduleId, refToScroller, pageSize = 15 }) {
   const [preferences] = useData('preferences')
@@ -32,14 +33,16 @@ function ModuleSettings ({ moduleId, refToScroller, pageSize = 15 }) {
 
   const [packSlug, setPackSlug] = useState(null)
   const pack = packs.find(pack => pack.slug === packSlug)
-  const selectPack = useCallback(packSlug => {
-    setPackSlug(packSlug)
-    preferences.pack = packSlug
+
+  const selectPack = useCallback(pack => {
+    setPackSlug(pack.slug)
+    preferences.pack = pack.slug
   }, [setPackSlug, preferences])
+  const isPackActive = pack => Object.values(selected).some(data => data.pack?.slug === pack.slug)
 
   useEffect(() => {
     if (!pack) setPackSlug(
-      packs.find(pack => pack.slug === selected.enter.packSlug)?.slug
+      packs.find(pack => pack.slug === selected.enter.pack?.slug)?.slug
       ?? packs.find(pack => pack.slug === preferences.pack)?.slug
       ?? packs[0]?.slug
       ?? null
@@ -99,11 +102,12 @@ function ModuleSettings ({ moduleId, refToScroller, pageSize = 15 }) {
         </Text>
         {!!packs.length ? (
           <>
-            <SingleSelect
+            <PackSelect
               className="BA__moduleSettingsPackSelect"
-              options={packs.map(pack => ({ value: pack.slug, label: pack.name }))}
-              value={packSlug}
-              onChange={selectPack}
+              packs={packs}
+              selected={packSlug}
+              onSelect={selectPack}
+              isActive={isPackActive}
             />
             {pack && (
               <div
@@ -166,6 +170,6 @@ css
 }
 
 .BA__moduleSettingsPackSelect {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }`
 `ModuleSettings`

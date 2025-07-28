@@ -1,27 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
-import { Button, Paginator, Popout, SearchBar, Spinner, Text } from '@discord/modules'
+import { Button, Paginator, SearchBar, Spinner, Text } from '@discord/modules'
 import PackCard from '@/settings/components/PackCard'
 import { css } from '@style'
 import NoPacksPlaceholder from '@/settings/components/NoPacksPlaceholder'
 import ErrorCard from '@/error/components/ErrorCard'
-import ArrowSmallUpDownIcon from '@/settings/components/icons/ArrowSmallUpDownIcon'
-import { ContextMenu } from '@/BdApi'
 import usePagination from '@/settings/hooks/usePagination'
-
-export const defaultSortOptions = [
-  {
-    value: 'name',
-    label: 'By name',
-    compare: (a, b) => a.name.localeCompare(b.name)
-  },
-  {
-    value: 'author',
-    label: 'By author',
-    compare: (a, b) => a.author.localeCompare(b.author)
-  }
-]
-
-export const defaultSearchableFields = ['name', 'author', 'description']
+import SortSelect from '@/settings/components/SortSelect'
+import usePackSearch from '@/settings/hooks/usePackSearch'
 
 function PackListView ({
   title,
@@ -31,40 +15,34 @@ function PackListView ({
   location,
   empty = <NoPacksPlaceholder />,
   actions,
-  sortOptions = defaultSortOptions,
-  searchableFields = defaultSearchableFields,
+  sortOptions,
+  searchableFields,
   pageSize = 6,
   adjective = 'available',
   data,
   leading,
   trailing
 }) {
-  const sortButtonRef = useRef()
-
-  const [query, setQuery] = useState('')
-  const trimmedQuery = query.trim()
-
-  const [sort, setSort] = useState(data?.sort ?? sortOptions[0].value)
-  const selectedSort = sortOptions.find(o => o.value === sort)
-
-  useEffect(() => {
-    if (data) data.sort = sort
-  }, [sort])
-
-  const filteredItems = allItems
-    .filter(
-      item => !trimmedQuery
-        || searchableFields.some(
-          field => typeof item[field] === 'string'
-            && item[field].toLowerCase().includes(trimmedQuery.toLowerCase())
-        )
-    )
-    .sort(selectedSort?.compare ?? (() => 0))
+  const {
+    items: filteredItems,
+    query,
+    setQuery,
+    sort,
+    setSort,
+    sortOptions: displayedSortOptions
+  } = usePackSearch(allItems, {
+    searchableFields,
+    sort: {
+      options: sortOptions,
+      preference: data?.sort,
+      setPreference: value => data && (data.sort = value)
+    }
+  })
 
   const { page, setPage, offset, items } = usePagination(
     filteredItems,
     pageSize,
-    [trimmedQuery, pending]
+    [query, pending]
   )
 
   return (
@@ -92,38 +70,11 @@ function PackListView ({
             {actions}
           </div>
         )}
-        <Popout
-          targetElementRef={sortButtonRef}
-          position="bottom"
-          align="right"
-          renderPopout={props => (
-            <ContextMenu.Menu {...props}>
-              <ContextMenu.Group label="Sort">
-                {sortOptions.map(option => (
-                  <ContextMenu.RadioItem
-                    key={option.value}
-                    id={`sort-${option.value}`}
-                    group="sort"
-                    label={option.label}
-                    checked={option.value === sort}
-                    action={() => setSort(option.value)}
-                  />
-                ))}
-              </ContextMenu.Group>
-            </ContextMenu.Menu>
-          )}
-        >
-          {props => (
-            <Button
-              {...props}
-              ref={sortButtonRef}
-              variant="secondary"
-              rounded={true}
-              icon={ArrowSmallUpDownIcon}
-              text={selectedSort?.label ?? 'Sort'}
-            />
-          )}
-        </Popout>
+        <SortSelect
+          options={displayedSortOptions}
+          value={sort}
+          onChange={setSort}
+        />
       </div>
       {pending ? (
         <Spinner className="BA__packListViewSpinner" />

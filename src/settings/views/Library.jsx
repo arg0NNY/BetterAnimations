@@ -1,5 +1,5 @@
 import usePackRegistry from '@/hooks/usePackRegistry'
-import PackListView, { defaultSortOptions } from '@/settings/components/PackListView'
+import PackListView from '@/settings/components/PackListView'
 import PackManager from '@/modules/PackManager'
 import { PackContentLocation } from '@/settings/components/PackContent'
 import { Alert, AlertTypes, Button, Tooltip } from '@discord/modules'
@@ -12,8 +12,9 @@ import Core from '@/modules/Core'
 import FolderIcon from '@/settings/components/icons/FolderIcon'
 import { path } from '@/modules/Node'
 import { useData } from '@/modules/Data'
+import { defaultSortOptions } from '@/settings/hooks/usePackSearch'
 
-const sortOptions = [
+export const librarySortOptions = [
   {
     value: 'usage',
     label: 'By usage',
@@ -30,7 +31,7 @@ function Library () {
     <PackListView
       title="Library"
       items={PackManager.getAllPacks(true)}
-      sortOptions={sortOptions}
+      sortOptions={librarySortOptions}
       data={data}
       adjective="installed"
       empty={(

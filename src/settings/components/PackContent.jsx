@@ -41,6 +41,7 @@ import { isInviteInvalid } from '@discord/utils'
 import { UI } from '@/BdApi'
 import Core from '@/modules/Core'
 import PackHeader from '@/settings/components/PackHeader'
+import PackSplash from '@/settings/components/PackSplash'
 
 export const PackContentLocation  = {
   CATALOG: 0,
@@ -319,31 +320,10 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
         pack={pack}
         location={location}
       />
-      <div className="BA__packSplash">
-        <img
-          className="BA__packSplashImage"
-          src={registry.getThumbnailSrc(pack)}
-          alt={pack.name}
-          loading="lazy"
-          draggable="false"
-        />
-        {size === 'sm' && (
-          <Tooltip text={pack.author}>
-            {props => (
-              <div
-                {...props}
-                className="BA__packSplashAuthor"
-              >
-                <img
-                  className="BA__packAuthorAvatar"
-                  src={authorAvatarSrc}
-                  alt={pack.author}
-                />
-              </div>
-            )}
-          </Tooltip>
-        )}
-      </div>
+      <PackSplash
+        pack={pack}
+        showAuthor={size === 'sm'}
+      />
       <div className="BA__packContentContainer">
         <PackHeader
           pack={pack}
@@ -488,26 +468,6 @@ css
     top: 12px;
     right: 12px;
     z-index: 10;
-}
-.BA__packSplash {
-    background: linear-gradient(180deg, rgba(15, 16, 17, 0), rgba(15, 16, 17, .4));
-    aspect-ratio: 16 / 9;
-    position: relative;
-}
-.BA__packSplashImage {
-    position: absolute;
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-.BA__packSplashAuthor {
-    position: absolute;
-    right: 20px;
-    bottom: -16px;
-    z-index: 2;
-    border-radius: 50%;
-    box-shadow: 0 0 0 5px currentColor;
 }
 .BA__packContentContainer {
     display: flex;

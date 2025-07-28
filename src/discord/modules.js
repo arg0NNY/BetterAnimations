@@ -193,3 +193,21 @@ export const GuildIcon = Webpack.getModule(m => Filters.byKeys('badgeStrokeColor
 export const GuildStore = Webpack.getStore('GuildStore')
 export const Timestamp = Webpack.getModule(m => Filters.byStrings('timestamp', 'timestampTooltip')(m?.type), { searchExports: true })
 export const humanize = Webpack.getByKeys('humanize', 'filesize')
+export const useListNavigator = Webpack.getByStrings('focusLastVisibleItem', '"focus"')
+export const {
+  useListItem,
+  useListContainerProps,
+  ListNavigatorProvider
+} = Webpack.getMangled(Filters.bySource('NO_LIST', 'listitem'), {
+  useListItem: Filters.byStrings('"listitem"'),
+  useListContainerProps: Filters.byStrings('"list"', 'useContext'),
+  ListNavigatorProvider: Filters.byStrings('containerProps', '.Provider')
+})
+export const ListNavigatorContainer = ({ children }) => children(useListContainerProps())
+export const {
+  useFocusLock,
+  FocusLock
+} = Webpack.getMangled(Filters.bySource('disableReturnRef', '"app-mount"'), {
+  useFocusLock: Filters.byStrings('disableReturnRef'),
+  FocusLock: Filters.byStrings('children', 'containerRef')
+})

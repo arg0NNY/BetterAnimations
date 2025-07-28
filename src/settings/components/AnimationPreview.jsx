@@ -65,7 +65,7 @@ function AnimationPreview ({
           'BA__animationPreviewTitle',
           { 'BA__animationPreviewTitle--hidden': isActive }
         )}>
-          <Text variant="heading-md/semibold" lineClamp={2} color="always-white">{title}</Text>
+          <Text variant="heading-sm/semibold" lineClamp={2} color="always-white">{title}</Text>
         </div>
       )}
     </div>

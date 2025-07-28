@@ -1,6 +1,6 @@
 import CreateUpsellBanner from '@/settings/components/CreateUpsellBanner'
 import { css } from '@style'
-import PackListView, { defaultSortOptions } from '@/settings/components/PackListView'
+import PackListView from '@/settings/components/PackListView'
 import { Alert, AlertTypes, Button, handleClick, Tooltip } from '@discord/modules'
 import RefreshIcon from '@/settings/components/icons/RefreshIcon'
 import usePackRegistry from '@/hooks/usePackRegistry'
@@ -10,8 +10,9 @@ import Messages from '@shared/messages'
 import GitHubIcon from '@/settings/components/icons/GitHubIcon'
 import { useData } from '@/modules/Data'
 import { useEffect } from 'react'
+import { defaultSortOptions } from '@/settings/hooks/usePackSearch'
 
-const sortOptions = [
+export const catalogSortOptions = [
   {
     value: 'newest',
     label: 'Newest first',
@@ -45,7 +46,7 @@ function Catalog () {
     <PackListView
       title="Catalog"
       items={registry.items}
-      sortOptions={sortOptions}
+      sortOptions={catalogSortOptions}
       data={data}
       pending={registry.isPending()}
       error={registry.isFatal && 'Failed to load packs. Please try again later.'}
