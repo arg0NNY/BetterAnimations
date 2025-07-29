@@ -22,7 +22,6 @@ export default class AddonManager {
   constructor () {
     this.timeCache = {}
     this.addonList = []
-    this.state = {}
     this.toastQueue = []
   }
 
@@ -49,19 +48,6 @@ export default class AddonManager {
 
   // Subclasses should overload this and modify the addon object as needed to fully load it
   initializeAddon () {}
-
-  startAddon () {}
-  stopAddon () {}
-
-  loadState() {
-    const saved = Data[`${this.prefix}s`]
-    if (!saved) return
-    Object.assign(this.state, saved)
-  }
-
-  saveState() {
-    Data[`${this.prefix}s`] = this.state
-  }
 
   toast (content, event = 'loaded') {
     this.toastQueue.push({ content, event })
@@ -200,15 +186,11 @@ export default class AddonManager {
     Logger.log(this.name, `${addon.name} v${addon.version} was loaded.`)
 
     this.emit('loaded', addon)
-
-    if (this.state[addon.id] !== false) this.state[addon.id] = true
-    return this.startAddon(addon)
   }
 
   unloadAddon (idOrFileOrAddon, shouldToast = true, isReload = false) {
     const addon = typeof (idOrFileOrAddon) == 'string' ? this.addonList.find(c => c.id == idOrFileOrAddon || c.filename == idOrFileOrAddon) : idOrFileOrAddon
     if (!addon) return false
-    if (this.state[addon.id]) this.stopAddon(addon)
 
     this.addonList.splice(this.addonList.indexOf(addon), 1)
     this.emit('unloaded', addon)
@@ -234,39 +216,8 @@ export default class AddonManager {
     return true
   }
 
-  isEnabled (idOrFile) {
-    const addon = this.addonList.find(c => c.id == idOrFile || c.filename == idOrFile)
-    if (!addon || addon.partial) return false
-    return this.state[addon.id]
-  }
-
   getAddon (idOrFile) {
     return this.addonList.find(c => c.id == idOrFile || c.filename == idOrFile)
-  }
-
-  enableAddon (idOrAddon) {
-    const addon = typeof (idOrAddon) == 'string' ? this.addonList.find(p => p.id == idOrAddon) : idOrAddon
-    if (!addon || addon.partial) return
-    if (this.state[addon.id]) return
-    this.state[addon.id] = true
-    this.emit('enabled', addon)
-    this.startAddon(addon)
-    this.saveState()
-  }
-
-  disableAddon (idOrAddon) {
-    const addon = typeof (idOrAddon) == 'string' ? this.addonList.find(p => p.id == idOrAddon) : idOrAddon
-    if (!addon || addon.partial) return
-    if (!this.state[addon.id]) return
-    this.state[addon.id] = false
-    this.emit('disabled', addon)
-    this.stopAddon(addon)
-    this.saveState()
-  }
-
-  toggleAddon (id) {
-    if (this.state[id]) this.disableAddon(id)
-    else this.enableAddon(id)
   }
 
   loadNewAddons () {
@@ -283,7 +234,6 @@ export default class AddonManager {
   }
 
   loadAllAddons () {
-    this.loadState()
     const errors = []
     const files = fs.readdirSync(this.addonFolder)
 
@@ -314,7 +264,6 @@ export default class AddonManager {
       if (addon instanceof AddonError) errors.push(addon)
     }
 
-    this.saveState()
     this.watchAddons()
     return errors
   }

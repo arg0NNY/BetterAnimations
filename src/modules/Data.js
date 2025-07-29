@@ -144,11 +144,13 @@ class Data {
 
 const data = new Data([
   new DataField('configVersion'),
-  new DataField('packs'),
-  new DataObjectField('prompts'),
-  new DataObjectField('dismissibles'),
   new DataField('settings'),
   new DataField('settingsMode', SettingsMode.Simple),
+  new DataObjectField('preferences', [
+    new DataField('module'),
+    new DataField('pack'),
+    new DataField('sort')
+  ]),
   new DataObjectField('catalog', [
     new DataField('visited', false),
     new DataSetField('known'),
@@ -159,11 +161,8 @@ const data = new Data([
     new DataSetField('whitelist'),
     new DataField('sort')
   ]),
-  new DataObjectField('preferences', [
-    new DataField('module'),
-    new DataField('pack'),
-    new DataField('sort')
-  ])
+  new DataObjectField('prompts'),
+  new DataObjectField('dismissibles')
 ])
 
 export function useData (fieldName) {

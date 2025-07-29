@@ -23,10 +23,6 @@ export default new class PackManager extends AddonManager {
   updatePackList () {return this.updateList()}
   loadAllPacks () {return this.loadAllAddons()}
 
-  enablePack (idOrAddon) {return this.enableAddon(idOrAddon)}
-  disablePack (idOrAddon) {return this.disableAddon(idOrAddon)}
-  togglePack (id) {return this.toggleAddon(id)}
-
   unloadPack (idOrFileOrAddon) {return this.unloadAddon(idOrFileOrAddon)}
   loadPack (filename) {return this.loadAddon(filename)}
   reloadPack (idOrFileOrAddon) {return this.reloadAddon(idOrFileOrAddon)}

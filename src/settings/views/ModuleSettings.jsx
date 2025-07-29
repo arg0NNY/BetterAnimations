@@ -1,5 +1,4 @@
-import { Paginator, SingleSelect, Text } from '@discord/modules'
-import PackAccordion from '@/settings/components/PackAccordion'
+import { Paginator, Text } from '@discord/modules'
 import PackManager from '@/modules/PackManager'
 import useModule from '@/hooks/useModule'
 import { css } from '@style'
