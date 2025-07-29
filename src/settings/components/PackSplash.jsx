@@ -2,16 +2,17 @@ import usePackRegistry from '@/hooks/usePackRegistry'
 import { Tooltip } from '@discord/modules'
 import classNames from 'classnames'
 import { css } from '@style'
+import thumbnailPlaceholder from '@/assets/placeholders/thumbnail.png'
 
 function PackSplash ({ pack, showAuthor = false, className }) {
   const registry = usePackRegistry()
 
-  // TODO: Handle image load error
   return (
     <div className={classNames('BA__packSplash', className)}>
       <img
         className="BA__packSplashImage"
         src={registry.getThumbnailSrc(pack)}
+        onError={event => event.currentTarget.src = thumbnailPlaceholder}
         alt={pack.name}
         loading="lazy"
         draggable="false"
