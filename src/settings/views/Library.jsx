@@ -13,12 +13,24 @@ import FolderIcon from '@/settings/components/icons/FolderIcon'
 import { path } from '@/modules/Node'
 import { useData } from '@/modules/Data'
 import { defaultSortOptions } from '@/settings/hooks/usePackSearch'
+import PackRegistry from '@/modules/PackRegistry'
+
+const usageCompare = (a, b) => Core.getModulesUsingPack(b).length - Core.getModulesUsingPack(a).length
 
 export const librarySortOptions = [
   {
+    value: 'default',
+    label: 'Default',
+    compare: (a, b) => {
+      const [hasUpdateA, hasUpdateB] = [a, b].map(pack => PackRegistry.hasUpdate(pack))
+      if (hasUpdateA !== hasUpdateB) return hasUpdateA ? -1 : 1
+      return usageCompare(a, b)
+    }
+  },
+  {
     value: 'usage',
     label: 'By usage',
-    compare: (a, b) => Core.getModulesUsingPack(b).length - Core.getModulesUsingPack(a).length
+    compare: usageCompare
   },
   ...defaultSortOptions
 ]
@@ -47,7 +59,7 @@ function Library () {
               onClick={() => registry.verifier.showModal()}
             />
           )}
-          {registry.getOutdatedPacks().length > 0 && (
+          {registry.hasOutdatedPacks() && (
             <Button
               icon={DownloadIcon}
               text="Update all"

@@ -25,7 +25,8 @@ import { librarySortOptions } from '@/settings/views/Library'
 import usePackSearch from '@/settings/hooks/usePackSearch'
 import { useData } from '@/modules/Data'
 
-export const packSelectSortOptions = librarySortOptions.filter(option => option.value !== 'author')
+export const packSelectSortOptions = librarySortOptions
+  .filter(option => ['usage', 'name'].includes(option.value))
 
 function scrollIntoView (el) {
   if (typeof el === 'string') el = document.querySelector(el)
