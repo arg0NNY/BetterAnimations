@@ -2,7 +2,7 @@ import AddonManager from '@/modules/AddonManager'
 import { path } from '@/modules/Node'
 import { Plugins } from '@/BdApi'
 import AddonError from '@error/structs/AddonError'
-import PackSchema from '@animation/schemas/PackSchema'
+import PackSchema, { PackFallbackSchema } from '@animation/schemas/PackSchema'
 import meta from '@/meta'
 import ErrorManager from '@error/manager'
 import { formatZodError } from '@utils/zod'
@@ -39,6 +39,15 @@ export default new class PackManager extends AddonManager {
       Object.assign(addon, PackSchema.parse(addon))
     }
     catch (e) {
+      Object.assign(
+        addon,
+        PackFallbackSchema({
+          name: addon.slug,
+          ...PackRegistry.getPack(addon.filename),
+          version: '0.0.0'
+        }).parse(addon)
+      )
+
       return new AddonError(
         this.prefix,
         addon,

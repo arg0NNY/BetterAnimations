@@ -411,7 +411,7 @@ export default new class PackRegistry {
     const publishedPack = this.getPack(pack.filename)
     if (!publishedPack) return avatarPlaceholder
 
-    const author = this.getAuthor(publishedPack.author)
+    const author = this.getAuthor(pack.author)
     if (!author) return avatarPlaceholder
 
     return `https://avatars.githubusercontent.com/u/${author.github.id}?s=60&v=4`
