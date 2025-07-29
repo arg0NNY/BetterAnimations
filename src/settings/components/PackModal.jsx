@@ -88,6 +88,7 @@ function PackPreview ({ pack, module }) {
           <Text
             className="BA__packPreviewTitle"
             variant="heading-lg/semibold"
+            lineClamp={1}
           >
             {animation.name}
           </Text>
