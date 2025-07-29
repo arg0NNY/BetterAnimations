@@ -2,9 +2,9 @@ import { css } from '@style'
 import PackPicture from '@/settings/components/PackPicture'
 import { Button, Text } from '@discord/modules'
 import SettingsSection from '@enums/SettingsSection'
-import ShopIcon from '@/settings/components/icons/ShopIcon'
+import ShopIcon from '@/components/icons/ShopIcon'
 import { useSection } from '@/settings/stores/SettingsStore'
-import LibraryIcon from '@/settings/components/icons/LibraryIcon'
+import LibraryIcon from '@/components/icons/LibraryIcon'
 
 function NoPacksPlaceholder ({
   title = 'Install Animation Packs',

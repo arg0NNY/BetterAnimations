@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import { Button, ButtonGroup, Text, Tooltip } from '@discord/modules'
-import RedoIcon from '@/settings/components/icons/RedoIcon'
+import RedoIcon from '@/components/icons/RedoIcon'
 import { css } from '@style'
 
 function VerificationIssueSelection ({ variant, icon: Icon, label, onUndo, size = 'sm', disabled = false, ...props }) {

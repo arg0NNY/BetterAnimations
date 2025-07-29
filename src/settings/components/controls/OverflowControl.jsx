@@ -1,6 +1,6 @@
 import { Checkbox, Text, Tooltip } from '@discord/modules'
 import IconButton from '@/settings/components/IconButton'
-import RedoIcon from '@/settings/components/icons/RedoIcon'
+import RedoIcon from '@/components/icons/RedoIcon'
 import { css } from '@style'
 import Documentation from '@shared/documentation'
 import Hint from '@/settings/components/Hint'

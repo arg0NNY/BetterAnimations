@@ -5,10 +5,10 @@ import ModuleContext from '@/settings/context/ModuleContext'
 import ModuleType from '@enums/ModuleType'
 import { css } from '@style'
 import Messages from '@shared/messages'
-import DoorEnterIcon from '@/settings/components/icons/DoorEnterIcon'
-import DoorExitIcon from '@/settings/components/icons/DoorExitIcon'
+import DoorEnterIcon from '@/components/icons/DoorEnterIcon'
+import DoorExitIcon from '@/components/icons/DoorExitIcon'
 import { useCallback, use, useMemo, useState } from 'react'
-import CheckIcon from '@/settings/components/icons/CheckIcon'
+import CheckIcon from '@/components/icons/CheckIcon'
 
 function useToggleHint () {
   const [hintShown, setHintShown] = useState(false)

@@ -2,7 +2,7 @@ import { Button, handleClick, Text } from '@discord/modules'
 import { css } from '@style'
 import Documentation from '@shared/documentation'
 import PackPicture from '@/settings/components/PackPicture'
-import BookIcon from '@/settings/components/icons/BookIcon'
+import BookIcon from '@/components/icons/BookIcon'
 import classNames from 'classnames'
 
 function CreateUpsellBanner ({ className }) {

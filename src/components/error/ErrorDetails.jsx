@@ -21,7 +21,7 @@ import ErrorDetailsActions from '@/components/error/ErrorDetailsActions'
 import { useMemo } from 'react'
 import { attempt, ErrorBoundary } from '@error/boundary'
 import { isInviteInvalid } from '@discord/utils'
-import JSONIcon from '@/settings/components/icons/JSONIcon'
+import JSONIcon from '@/components/icons/JSONIcon'
 
 function ErrorDetails ({ error, open = false }) {
   const icon = useMemo(() => {

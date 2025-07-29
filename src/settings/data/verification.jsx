@@ -1,8 +1,8 @@
-import VerifiedCheckIcon from '@/settings/components/icons/VerifiedCheckIcon'
+import VerifiedCheckIcon from '@/components/icons/VerifiedCheckIcon'
 import { Alert, AlertTypes, colors, Tooltip } from '@discord/modules'
-import DangerIcon from '@/settings/components/icons/DangerIcon'
-import TrashIcon from '@/settings/components/icons/TrashIcon'
-import DownloadIcon from '@/settings/components/icons/DownloadIcon'
+import DangerIcon from '@/components/icons/DangerIcon'
+import TrashIcon from '@/components/icons/TrashIcon'
+import DownloadIcon from '@/components/icons/DownloadIcon'
 import config from '@config'
 
 export const VerificationStatus = {

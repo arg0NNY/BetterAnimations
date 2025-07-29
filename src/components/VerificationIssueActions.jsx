@@ -9,7 +9,7 @@ import { isDismissed } from '@/hooks/useDismissible'
 import { Button, ButtonGroup, ModalActions, ModalSize, Popout, Text } from '@discord/modules'
 import DismissibleModal from '@/components/DismissibleModal'
 import { ContextMenu } from '@/BdApi'
-import MoreIcon from '@/settings/components/icons/MoreIcon'
+import MoreIcon from '@/components/icons/MoreIcon'
 
 export function useResolveMethods (pack) {
   const registry = usePackRegistry()

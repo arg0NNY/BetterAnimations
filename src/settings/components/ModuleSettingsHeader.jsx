@@ -16,7 +16,7 @@ import {
 import DiscordClasses from '@discord/classes'
 import SectionContext from '@/settings/context/SectionContext'
 import Messages from '@shared/messages'
-import ArrowSmallRightIcon from '@/settings/components/icons/ArrowSmallRightIcon'
+import ArrowSmallRightIcon from '@/components/icons/ArrowSmallRightIcon'
 import { use, useMemo } from 'react'
 import DismissibleAlert from '@/settings/components/DismissibleAlert'
 import useDismissible from '@/hooks/useDismissible'

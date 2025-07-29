@@ -1,6 +1,6 @@
 import { ContextMenu } from '@/BdApi'
 import { Button, Popout } from '@discord/modules'
-import ArrowSmallUpDownIcon from '@/settings/components/icons/ArrowSmallUpDownIcon'
+import ArrowSmallUpDownIcon from '@/components/icons/ArrowSmallUpDownIcon'
 import { useRef } from 'react'
 
 function SortSelect ({ options, value, onChange }) {
