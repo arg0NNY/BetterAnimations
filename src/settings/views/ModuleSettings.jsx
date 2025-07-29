@@ -6,11 +6,11 @@ import ModuleSettingsHeader from '@/settings/components/ModuleSettingsHeader'
 import ModuleContext from '@/settings/context/ModuleContext'
 import { useCallback, useEffect, useState } from 'react'
 import { PREINSTALLED_PACK_SLUG } from '@packs'
-import AnimationList from '@/settings/components/AnimationList'
+import AnimationList from '@/settings/components/animation/AnimationList'
 import NoPacksPlaceholder from '@/settings/components/NoPacksPlaceholder'
 import usePagination from '@/settings/hooks/usePagination'
 import { useData } from '@/modules/Data'
-import PackSelect from '@/settings/components/PackSelect'
+import PackSelect from '@/settings/components/pack/PackSelect'
 
 function ModuleSettings ({ moduleId, refToScroller, pageSize = 15 }) {
   const [preferences] = useData('preferences')

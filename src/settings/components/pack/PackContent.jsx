@@ -40,8 +40,8 @@ import Skeleton from '@/settings/components/Skeleton'
 import { isInviteInvalid } from '@discord/utils'
 import { UI } from '@/BdApi'
 import Core from '@/modules/Core'
-import PackHeader from '@/settings/components/PackHeader'
-import PackSplash from '@/settings/components/PackSplash'
+import PackHeader from '@/settings/components/pack/PackHeader'
+import PackSplash from '@/settings/components/pack/PackSplash'
 
 export const PackContentLocation  = {
   CATALOG: 0,

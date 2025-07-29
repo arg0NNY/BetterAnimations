@@ -1,5 +1,5 @@
 import { Button, Paginator, SearchBar, Spinner, Text } from '@discord/modules'
-import PackCard from '@/settings/components/PackCard'
+import PackCard from '@/settings/components/pack/PackCard'
 import { css } from '@style'
 import NoPacksPlaceholder from '@/settings/components/NoPacksPlaceholder'
 import ErrorCard from '@/error/components/ErrorCard'

@@ -1,5 +1,5 @@
 import { css } from '@style'
-import AnimationCard from '@/settings/components/AnimationCard'
+import AnimationCard from '@/settings/components/animation/AnimationCard'
 import Config from '@/modules/Config'
 import AnimationType from '@enums/AnimationType'
 import useAnimationSettings from '@/settings/hooks/useAnimationSettings'

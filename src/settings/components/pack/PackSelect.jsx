@@ -1,4 +1,4 @@
-import PackHeader from '@/settings/components/PackHeader'
+import PackHeader from '@/settings/components/pack/PackHeader'
 import {
   Clickable,
   colors,
@@ -15,7 +15,7 @@ import classNames from 'classnames'
 import { css } from '@style'
 import { useCallback, useId, useLayoutEffect, useRef, useState } from 'react'
 import useElementBounding from '@/hooks/useElementBounding'
-import PackSplash from '@/settings/components/PackSplash'
+import PackSplash from '@/settings/components/pack/PackSplash'
 import DiscordClasses from '@discord/classes'
 import ChevronSmallDownIcon from '@/components/icons/ChevronSmallDownIcon'
 import ChevronSmallUpIcon from '@/components/icons/ChevronSmallUpIcon'

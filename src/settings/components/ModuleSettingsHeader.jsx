@@ -2,7 +2,7 @@ import { css } from '@style'
 import useAnimationSettings from '@/settings/hooks/useAnimationSettings'
 import AnimationType from '@enums/AnimationType'
 import Config from '@/modules/Config'
-import AnimationCard from '@/settings/components/AnimationCard'
+import AnimationCard from '@/settings/components/animation/AnimationCard'
 import Core from '@/modules/Core'
 import {
   AlertTypes,

@@ -1,6 +1,6 @@
 import { css } from '@style'
 import { Text } from '@discord/modules'
-import PackVerificationBadge from '@/settings/components/PackVerificationBadge'
+import PackVerificationBadge from '@/settings/components/pack/PackVerificationBadge'
 
 function PackHeader ({ pack, icon, popoutType, size = 'sm' }) {
   return (

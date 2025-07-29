@@ -14,7 +14,7 @@ import { sanitize } from '@utils/text'
 import BookIcon from '@/components/icons/BookIcon'
 import Documentation from '@shared/documentation'
 import { AnimeTransitionContext } from '@components/AnimeTransition'
-import PackPicture from '@/settings/components/PackPicture'
+import PackPicture from '@/settings/components/pack/PackPicture'
 import usePackRegistry from '@/hooks/usePackRegistry'
 import { useData } from '@/modules/Data'
 

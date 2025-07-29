@@ -6,7 +6,7 @@ import Preview, { PREVIEW_WIDTH } from '@preview'
 import Core from '@/modules/Core'
 import { moduleEffect } from '@/hooks/useModule'
 import classNames from 'classnames'
-import { useMovable } from '@/settings/components/AnimationCard'
+import { useMovable } from '@/settings/components/animation/AnimationCard'
 import useResizeObserver from '@/hooks/useResizeObserver'
 import { AnimeTransitionContext } from '@components/AnimeTransition'
 

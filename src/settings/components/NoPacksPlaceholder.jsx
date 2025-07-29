@@ -1,5 +1,5 @@
 import { css } from '@style'
-import PackPicture from '@/settings/components/PackPicture'
+import PackPicture from '@/settings/components/pack/PackPicture'
 import { Button, Text } from '@discord/modules'
 import SettingsSection from '@enums/SettingsSection'
 import ShopIcon from '@/components/icons/ShopIcon'

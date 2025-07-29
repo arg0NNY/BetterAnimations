@@ -1,5 +1,5 @@
 import IconButton from '@/settings/components/IconButton'
-import AnimationToggleControl from '@/settings/components/AnimationToggleControl'
+import AnimationToggleControl from '@/settings/components/animation/AnimationToggleControl'
 import { css } from '@style'
 import { stop } from '@/settings/utils/eventModifiers'
 import SettingsIcon from '@/components/icons/SettingsIcon'
@@ -7,7 +7,7 @@ import CollapseListIcon from '@/components/icons/CollapseListIcon'
 import ErrorManager from '@error/manager'
 import { colors } from '@discord/modules'
 import CircleWarningIcon from '@/components/icons/CircleWarningIcon'
-import { useMovable } from '@/settings/components/AnimationCard'
+import { useMovable } from '@/settings/components/animation/AnimationCard'
 
 function AnimationCardControls ({
   hasSettings,
