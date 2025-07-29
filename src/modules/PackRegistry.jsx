@@ -348,14 +348,19 @@ export default new class PackRegistry {
     return PackManager.getAllPacks(true)
       .filter(pack => this.hasUpdate(pack))
   }
-  showUpdatesNotice (updatesCount = this.getUpdatesCount(), onClick = () => Settings.openSettingsModal(SettingsSection.Library)) {
+  hasOutdatedPacks () {
+    return PackManager.getAllPacks(true)
+      .some(pack => this.hasUpdate(pack))
+  }
+  showUpdatesNotice (updatesCount = this.getUpdatesCount()) {
     this._closeNotice?.()
     this._closeNotice = Notices.info(`${meta.name} has found updates for ${updatesCount} of your packs!`, {
       buttons: [{
         label: 'View Library',
         onClick: () => {
           this._closeNotice?.()
-          onClick()
+          Data.library.sort = 'default'
+          Settings.openSettingsModal(SettingsSection.Library)
         }
       }]
     })

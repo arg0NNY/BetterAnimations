@@ -19,10 +19,12 @@ import { useMemo } from 'react'
 import CircleWarningIcon from '@/settings/components/icons/CircleWarningIcon'
 import { colors } from '@discord/modules'
 import LibraryIcon from '@/settings/components/icons/LibraryIcon'
+import DownloadIcon from '@/settings/components/icons/DownloadIcon'
 
 export function useSections () {
   const registry = usePackRegistry()
   const hasIssues = registry.verifier.hasIssues()
+  const hasOutdatedPacks = registry.hasOutdatedPacks()
 
   return useMemo(() => {
     const notice = {
@@ -55,7 +57,9 @@ export function useSections () {
         label: 'Library',
         icon: hasIssues
           ? <CircleWarningIcon size="xs" color={colors.STATUS_DANGER} />
-          : <LibraryIcon size="xs" color="currentColor" />,
+          : hasOutdatedPacks
+            ? <DownloadIcon size="xs" color="var(--brand-400)" />
+            : <LibraryIcon size="xs" color="currentColor" />,
         element: ErrorBoundary.wrap(Library)
       },
       {
@@ -85,5 +89,5 @@ export function useSections () {
         notice
       }
     ]
-  }, [hasIssues])
+  }, [hasIssues, hasOutdatedPacks])
 }
