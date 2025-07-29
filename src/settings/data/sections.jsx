@@ -8,7 +8,6 @@ import SpineIcon from '@/settings/components/icons/SpineIcon'
 import SettingsSection from '@enums/SettingsSection'
 import HomeIcon from '@/settings/components/icons/HomeIcon'
 import ShopIcon from '@/settings/components/icons/ShopIcon'
-import BookCheckIcon from '@/components/icons/BookCheckIcon'
 import Home from '@/settings/views/Home'
 import Catalog from '@/settings/views/Catalog'
 import Library from '@/settings/views/Library'
@@ -19,6 +18,7 @@ import usePackRegistry from '@/hooks/usePackRegistry'
 import { useMemo } from 'react'
 import CircleWarningIcon from '@/settings/components/icons/CircleWarningIcon'
 import { colors } from '@discord/modules'
+import LibraryIcon from '@/settings/components/icons/LibraryIcon'
 
 export function useSections () {
   const registry = usePackRegistry()
@@ -55,7 +55,7 @@ export function useSections () {
         label: 'Library',
         icon: hasIssues
           ? <CircleWarningIcon size="xs" color={colors.STATUS_DANGER} />
-          : <BookCheckIcon size="xs" color="currentColor" />,
+          : <LibraryIcon size="xs" color="currentColor" />,
         element: ErrorBoundary.wrap(Library)
       },
       {

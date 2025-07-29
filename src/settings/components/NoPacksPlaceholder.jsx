@@ -4,7 +4,7 @@ import { Button, Text } from '@discord/modules'
 import SettingsSection from '@enums/SettingsSection'
 import ShopIcon from '@/settings/components/icons/ShopIcon'
 import { useSection } from '@/settings/stores/SettingsStore'
-import BookCheckIcon from '@/components/icons/BookCheckIcon'
+import LibraryIcon from '@/settings/components/icons/LibraryIcon'
 
 function NoPacksPlaceholder ({
   title = 'Install Animation Packs',
@@ -50,7 +50,7 @@ function NoPacksPlaceholder ({
                   return (
                     <Button
                       variant="secondary"
-                      icon={BookCheckIcon}
+                      icon={LibraryIcon}
                       text="Library"
                       onClick={() => setSection(SettingsSection.Library)}
                     />
