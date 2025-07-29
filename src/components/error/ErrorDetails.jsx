@@ -21,12 +21,12 @@ import ErrorDetailsActions from '@/components/error/ErrorDetailsActions'
 import { useMemo } from 'react'
 import { attempt, ErrorBoundary } from '@error/boundary'
 import { isInviteInvalid } from '@discord/utils'
-import LibraryIcon from '@/settings/components/icons/LibraryIcon'
+import JSONIcon from '@/settings/components/icons/JSONIcon'
 
 function ErrorDetails ({ error, open = false }) {
   const icon = useMemo(() => {
     if (error instanceof AnimationError || error instanceof AddonError)
-      return <LibraryIcon size="md" />
+      return <JSONIcon size="md" />
     return <IconBrand size="lg" color={colors.INTERACTIVE_NORMAL} />
   }, [error])
 
