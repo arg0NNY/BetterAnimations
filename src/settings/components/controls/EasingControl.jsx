@@ -60,7 +60,6 @@ function EasingValueSlider ({ options, value, onChange, ...props }) {
         onSubmit={prevent(onSubmit)}
       >
         <TextInput
-          size={TextInput.Sizes.MINI}
           value={draftValue}
           onChange={setDraftValue}
           onBlur={onSubmit}

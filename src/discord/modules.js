@@ -162,7 +162,7 @@ export const InviteEmbed = Webpack.getByStrings('Invite Button Embed', 'getInvit
 export const InviteStates = Webpack.getModule(Filters.byKeys('APP_NOT_OPENED', 'RESOLVING'), { searchExports: true })
 export const InviteStore = Webpack.getStore('InviteStore')
 export const InviteActions = Webpack.getByKeys('resolveInvite', 'createInvite')
-export const TextInput = Webpack.getModule(m => Filters.byKeys('maxLength', 'type')(m?.defaultProps), { searchExports: true })
+export const TextInput = Webpack.getModule(Filters.byStrings('inputWrapper', 'prefixElement'), { searchExports: true })
 export const AppPanels = Webpack.getModule(m => Filters.byStrings('panels', 'ACCOUNT_PANEL')(m?.type), { searchExports: true })
 export const { ImpressionNames } = Webpack.getByKeys('ImpressionNames')
 export const GuildChannelRouteParams = Webpack.getModule(m => Filters.byStrings('escapeRegExp')(m?.guildId), { searchExports: true })
