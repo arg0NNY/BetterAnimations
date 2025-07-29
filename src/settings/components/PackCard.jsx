@@ -1,6 +1,6 @@
 import PackContent, { PackContentLocation } from '@/settings/components/PackContent'
 import { css } from '@style'
-import { ModalActions, useIsVisibleKeyed } from '@discord/modules'
+import { Clickable, ModalActions, useIsVisibleKeyed } from '@discord/modules'
 import PackModal from '@/settings/components/PackModal'
 import { unkeyed } from '@/utils/webpack'
 import PackRegistry from '@/modules/PackRegistry'
@@ -23,8 +23,9 @@ function PackCard ({ pack, location = PackContentLocation.CATALOG }) {
   const cardRef = unkeyed(useIsVisibleKeyed)(onIntersection, .5)
 
   return (
-    <div
-      ref={cardRef}
+    <Clickable
+      tag="div"
+      innerRef={cardRef}
       className="BA__packCard"
       onClick={onClick}
     >
@@ -34,7 +35,7 @@ function PackCard ({ pack, location = PackContentLocation.CATALOG }) {
         location={location}
         size="sm"
       />
-    </div>
+    </Clickable>
   )
 }
 
