@@ -130,6 +130,7 @@ function PackSelectPopout ({ selectRef, packs, selected, onSelect, isActive, upd
     setSort,
     sortOptions
   } = usePackSearch(packs, {
+    searchableFields: ['name', 'description'],
     sort: {
       options: packSelectSortOptions,
       preference: preferences.sort,
