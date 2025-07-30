@@ -299,7 +299,7 @@ css
     border-bottom: 1px solid var(--border-subtle);
 }
 .BA__packSelectPopoutScroller {
-    overflow: hidden scroll;
+    overflow: hidden auto;
 }
 
 .BA__packSelectOption {
