@@ -204,10 +204,11 @@ export default new class PackRegistry {
     this._authors = this.cache?.authors ?? []
 
     this._closeNotice = null
+    this._schedulerCallbackId = null
 
     this.onPackLoaded = pack => {
       this.verifier.verifyAll([pack])
-      this.checkForUpdates({ updateRegistry: false })
+      this.scheduleCheckForUpdates({ updateRegistry: false })
     }
     this.onPackUnloaded = pack => {
       this.verifier.temporaryWhitelist.delete(pack.filename)
@@ -388,6 +389,10 @@ export default new class PackRegistry {
     if (useToasts) return Toasts.show(`Found updates for ${updatesCount} of your packs!`)
 
     this.showUpdatesNotice(updatesCount)
+  }
+  scheduleCheckForUpdates (options) {
+    cancelIdleCallback(this._schedulerCallbackId)
+    this._schedulerCallbackId = requestIdleCallback(() => this.checkForUpdates(options))
   }
   async updateAll () {
     const packs = this.getOutdatedPacks()
