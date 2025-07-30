@@ -414,7 +414,7 @@ export default new class PackRegistry {
     const author = this.getAuthor(pack.author)
     if (!author) return avatarPlaceholder
 
-    return `https://avatars.githubusercontent.com/u/${author.github.id}?s=60&v=4`
+    return `https://avatars.githubusercontent.com/u/${author.githubId}?s=60&v=4`
   }
 
   isUnknown (pack) {
