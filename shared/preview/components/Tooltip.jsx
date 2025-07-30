@@ -58,23 +58,27 @@ css
     --arrow-left: 50%;
     --arrow-translate: -50% 0;
     --arrow-translate-inner: 0 -10px;
+    transform-origin: 50% 100%;
 }
 .BAP__tooltip--bottom {
     --arrow-bottom: 100%;
     --arrow-left: 50%;
     --arrow-translate: -50% 0;
     --arrow-translate-inner: 0 10px;
+    transform-origin: 50% 0;
 }
 .BAP__tooltip--left {
     --arrow-left: 100%;
     --arrow-top: 50%;
     --arrow-translate: 0 -50%;
     --arrow-translate-inner: -10px 0;
+    transform-origin: 100% 50%;
 }
 .BAP__tooltip--right {
     --arrow-right: 100%;
     --arrow-top: 50%;
     --arrow-translate: 0 -50%;
     --arrow-translate-inner: 10px 0;
+    transform-origin: 0 50%;
 }`
 `Preview: Tooltip`
