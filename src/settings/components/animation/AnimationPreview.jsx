@@ -1,6 +1,6 @@
 import { use, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { css } from '@style'
-import { ChannelSectionStore, Text, useStateFromStores } from '@discord/modules'
+import { ChannelSectionStore, getThemeClass, Text, useStateFromStores } from '@discord/modules'
 import ModuleContext from '@/settings/context/ModuleContext'
 import Preview, { PREVIEW_WIDTH } from '@preview'
 import Core from '@/modules/Core'
@@ -49,7 +49,10 @@ function AnimationPreview ({
       {...useMovable('preview')}
     >
       <Preview
-        className="BA__animationPreview"
+        className={classNames(
+          getThemeClass('darker'),
+          'BA__animationPreview'
+        )}
         style={{ scale }}
         key={module.id}
         id={module.id}

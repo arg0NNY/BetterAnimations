@@ -211,3 +211,4 @@ export const {
   useFocusLock: Filters.byStrings('disableReturnRef'),
   FocusLock: Filters.byStrings('children', 'containerRef')
 })
+export const getThemeClass = Webpack.getModule(Filters.byStrings('" theme-"'), { searchExports: true })
