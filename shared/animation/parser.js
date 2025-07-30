@@ -243,7 +243,7 @@ export function parse (data = null, context, options = {}) {
     raf(() => instances.forEach(
       after && context.intersectWith?.accordion && !context.intersectWith.accordion.completed
         ? i => i.complete()
-        : i => i.play()
+        : i => i.resume()
     ))
   }
 

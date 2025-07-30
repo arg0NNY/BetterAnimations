@@ -223,8 +223,7 @@ export default class Module {
           Position.Top,
           Position.Bottom,
           Position.Left,
-          Position.Right,
-          Position.Center
+          Position.Right
         ].every(v => animation.settings[setting].includes(v))
       case Setting.Direction:
         switch (type) {

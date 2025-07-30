@@ -135,6 +135,7 @@ Alongside the layout change, it also adds the following styles:
 ```css
 .standardSidebarView__23e6b > .contentRegion__23e6b {
     isolation: isolate;
+    z-index: 2; /* Allow overflowing the sidebar */
 }
 .contentRegion__23e6b > .contentRegion__23e6b {
     height: 100%;

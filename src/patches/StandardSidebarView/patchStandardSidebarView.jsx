@@ -72,6 +72,7 @@ StandardSidebarViewKeyed.then(() =>
 css
 `${DiscordSelectors.StandardSidebarView.standardSidebarView} > ${DiscordSelectors.StandardSidebarView.contentRegion} {
     isolation: isolate;
+    z-index: 2; /* Allow overflowing the sidebar */
 }
 ${DiscordSelectors.StandardSidebarView.contentRegion} > ${DiscordSelectors.StandardSidebarView.contentRegion} {
     height: 100%;
