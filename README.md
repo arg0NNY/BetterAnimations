@@ -40,7 +40,7 @@ Visit the Usage and Animation Authoring documentation at
 - [x] ~~Integrate `ErrorBoundary` for better error safety~~
 - [x] ~~Integrate Emoji/Sticker/GIF Panel to [_Popouts_](https://docs.betteranimations.net/usage/modules#popouts)~~
 - [x] ~~General Settings~~
-- [ ] Catalog & Library
+- [x] ~~Catalog & Library~~
 - [ ] Pack Changelogs
 - [ ] [BetterAnimations V1](https://github.com/arg0NNY/DiscordPlugins/tree/fa45fb514aa7a8febe4ddd143a08ff1c9f124fe0/BetterAnimations) Settings Migrator
 
