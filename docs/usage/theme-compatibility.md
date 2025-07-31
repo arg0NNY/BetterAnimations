@@ -33,7 +33,7 @@ When this Module is enabled, it wraps the `content` element with two additional 
 <div class="base_c48ade" data-fullscreen="false">
   <div class="bar_c38106 theme-dark theme-darker images-dark"><!-- ... --></div>
   <div class="BA__content"> <!-- [!code ++] -->
-    <div data-ba-container class="BA__content"> <!-- [!code ++] -->
+    <div data-ba-container="servers" class="BA__content"> <!-- [!code ++] -->
       <div class="content_c48ade">
         <div data-collapsed="false" class="sidebar_c48ade theme-dark theme-darker images-dark"><!-- ... --></div>
         <div class="page_c48ade" data-collapsed="false"><!-- ... --></div>
@@ -55,7 +55,7 @@ from the `sidebar` element to the `base` element:
   <div class="bar_c38106 theme-dark theme-darker images-dark"><!-- ... --></div>
   <nav class="wrapper_ef3116 guilds_c48ade theme-dark theme-darker images-dark" aria-label="Servers sidebar"><!-- ... --></nav> <!-- [!code ++] -->
   <div class="BA__content">
-    <div data-ba-container class="BA__content">
+    <div data-ba-container="servers" class="BA__content">
       <div class="content_c48ade">
         <div data-collapsed="false" class="sidebar_c48ade theme-dark theme-darker images-dark">
           <nav class="wrapper_ef3116 guilds_c48ade theme-dark theme-darker images-dark" aria-label="Servers sidebar"><!-- ... --></nav> <!-- [!code --] -->
@@ -106,7 +106,7 @@ When this Module is enabled, it wraps the `page` element with two additional con
   <div class="content_c48ade">
     <div data-collapsed="false" class="sidebar_c48ade theme-dark theme-darker images-dark"><!-- ... --></div>
     <div class="BA__page"> <!-- [!code ++] -->
-      <div data-ba-container class="BA__page"> <!-- [!code ++] -->
+      <div data-ba-container="channels" class="BA__page"> <!-- [!code ++] -->
         <div class="page_c48ade" data-collapsed="false"><!-- ... --></div>
       </div> <!-- [!code ++] -->
     </div> <!-- [!code ++] -->
@@ -124,7 +124,7 @@ When this Module is enabled, it wraps the `contentRegion` element with two addit
 <div class="standardSidebarView__23e6b">
   <div class="sidebarRegion__23e6b theme-dark theme-darker images-dark"><!-- ... --></div>
   <div class="contentRegion__23e6b"> <!-- [!code ++] -->
-    <div data-ba-container class="contentRegion__23e6b"> <!-- [!code ++] -->
+    <div data-ba-container="settings" class="contentRegion__23e6b"> <!-- [!code ++] -->
       <div class="contentRegion__23e6b"><!-- ... --></div>
     </div> <!-- [!code ++] -->
   </div> <!-- [!code ++] -->
@@ -156,12 +156,12 @@ Alongside the layout change, it also adds the following styles:
 When this Module is enabled, it wraps each `layer` element with an additional container:
 ```html
 <div class="layers__960e4 layers__160d8">
-  <div data-ba-container class="BA__layerContainer"> <!-- [!code ++] -->
+  <div data-ba-container="layers" class="BA__layerContainer"> <!-- [!code ++] -->
     <div class="layer__960e4 baseLayer__960e4 BA__layer--hidden">
       <div class="container_c48ade"><!-- ... --></div>
     </div>
   </div> <!-- [!code ++] -->
-  <div data-ba-container class="BA__layerContainer"> <!-- [!code ++] -->
+  <div data-ba-container="layers" class="BA__layerContainer"> <!-- [!code ++] -->
     <div class="layer__960e4">
       <div class="standardSidebarView__23e6b"><!-- ... --></div>
     </div>
@@ -287,7 +287,36 @@ This Module doesn't introduce any permanent layout changes.
 - **Key:** `modals`
 - **Class:** `BA__module_modals`
 
-This Module doesn't introduce any permanent layout changes.
+When this Module is enabled, it wraps the `container` element of Mana modals with an additional container,
+that copies all the classes of the element:
+```html
+<div class="layerContainer_da8173">
+  <div class="layer_bc663c">
+    <div id=":r2i7:" role="dialog" aria-labelledby="heading-:r2i7:" tabindex="-1" aria-modal="true">
+      <div class="outerContainer__53cea fullScreenOnMobile__53cea">
+        <div data-ba-container="modals" class="BA__manaModalContainer container__53cea size-md__53cea padding-size-sm__53cea"> <!-- [!code ++] -->
+          <div data-mana-component="modal" class="container__53cea size-md__53cea padding-size-sm__53cea"><!-- ... --></div>
+        </div> <!-- [!code ++] -->
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+Alongside the layout change, it also adds the following styles:
+```css
+.BA__manaModalContainer {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+}
+
+.container__53cea {
+    min-height: 0;
+}
+```
 
 ### [Backdrop](./modules#modals-backdrop) {#modals-backdrop}
 
@@ -299,7 +328,7 @@ from which it deletes the original styles:
 ```html
 <div class="layerContainer_da8173">
   <div class="backdrop__78332 withLayer__78332" style="background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(0px);"></div> <!-- [!code --] -->
-  <div class="backdrop__78332 withLayer__78332" data-ba-container> <!-- [!code ++:3] -->
+  <div class="backdrop__78332 withLayer__78332" data-ba-container="modalsBackdrop"> <!-- [!code ++:3] -->
     <div class="BA__backdrop"></div>
   </div>
 </div>
@@ -314,7 +343,7 @@ When this Module is enabled, it wraps the root sidebar element with an additiona
 ```html
 <div class="content_f75fb0">
   <main class="chatContent_f75fb0"><!-- ... --></main>
-  <div data-ba-container class="BA__sidebar"> <!-- [!code ++] -->
+  <div data-ba-container="membersSidebar" class="BA__sidebar"> <!-- [!code ++] -->
     <div class="container_c8ffbb">
       <aside class="membersWrap_c8ffbb hiddenMembers_c8ffbb"><!-- ... --></aside>
     </div>
@@ -327,7 +356,7 @@ for which it applies the same change:
 ```html
 <div class="content_f75fb0">
   <main class="chatContent_f75fb0"><!-- ... --></main>
-  <div data-ba-container class="BA__sidebar"> <!-- [!code ++] -->
+  <div data-ba-container="membersSidebar" class="BA__sidebar"> <!-- [!code ++] -->
     <section class="searchResultsWrap_a9e706" aria-label="Search Results"><!-- ... --></section>
   </div> <!-- [!code ++] -->
 </div>
@@ -343,8 +372,8 @@ When this Module is enabled, it wraps the `chatLayerWrapper` and other sidebar h
 <div class="page_c48ade" data-collapsed="false">
   <div style="width: 100%; height: 100%; display: flex;">
     <div data-has-border="true" class="chat_f75fb0 threadSidebarOpen_f75fb0"><!-- ... --></div>
-    <div data-ba-container class="BA__sidebar"> <!-- [!code ++:3] -->
-      <div data-ba-container class="BA__sidebar">
+    <div data-ba-container="threadSidebar" class="BA__sidebar"> <!-- [!code ++:3] -->
+      <div data-ba-container="threadSidebarSwitch" class="BA__sidebar">
         <div class="BA__sidebar">
           <div style="min-width: 458px;"></div>
           <div class="chatLayerWrapper__01ae2"><!-- ... --></div>
@@ -361,7 +390,7 @@ for any non-chat sidebars it only adds one container:
 <div class="page_c48ade" data-collapsed="false">
   <div style="width: 100%; height: 100%; display: flex;">
     <div data-has-border="true" class="chat_f75fb0 threadSidebarOpen_f75fb0"><!-- ... --></div>
-    <div data-ba-container class="BA__sidebar"> <!-- [!code ++] -->
+    <div data-ba-container="threadSidebar" class="BA__sidebar"> <!-- [!code ++] -->
       <div class="guildSidebar_f75fb0" style="width: 480px;">
         <div class="sidebarContainer__656be"><!-- ... --></div>
       </div>

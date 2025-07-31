@@ -9,14 +9,14 @@ import DirectionAutoType from '@enums/DirectionAutoType'
 import directionAnchorOptions from '@data/directionAnchorOptions'
 import DiscordClasses from '@discord/classes'
 import ButtonGroup from '@/settings/components/ButtonGroup'
-import HorizontalIcon from '@/settings/components/icons/HorizontalIcon'
-import VerticalIcon from '@/settings/components/icons/VerticalIcon'
-import DepthIcon from '@/settings/components/icons/DepthIcon'
-import RepeatIcon from '@/settings/components/icons/RepeatIcon'
+import HorizontalIcon from '@/components/icons/HorizontalIcon'
+import VerticalIcon from '@/components/icons/VerticalIcon'
+import DepthIcon from '@/components/icons/DepthIcon'
+import RepeatIcon from '@/components/icons/RepeatIcon'
 import Axis from '@enums/Axis'
 import { css } from '@style'
-import ArrowLeftToLineIcon from '@/settings/components/icons/ArrowLeftToLineIcon'
-import ArrowRightFromLineIcon from '@/settings/components/icons/ArrowRightFromLineIcon'
+import ArrowLeftToLineIcon from '@/components/icons/ArrowLeftToLineIcon'
+import ArrowRightFromLineIcon from '@/components/icons/ArrowRightFromLineIcon'
 import SettingControl from '@/settings/components/controls/SettingControl'
 import Documentation from '@shared/documentation'
 
@@ -54,14 +54,14 @@ function DirectionAxisControl ({ animation, value, onChange, reverse, onReverseC
     <div className="BA__directionAxisControl">
       <ButtonGroup
         className="BA__directionAxisControlSelect"
-        size={ButtonGroup.Sizes.MEDIUM}
+        size="lg"
         options={options}
         selected={value}
         onChange={onChange}
       />
       <ButtonGroup
         className="BA__directionAxisControlReverse"
-        size={ButtonGroup.Sizes.MEDIUM}
+        size="lg"
         multiple={true}
         options={[{
           children: <RepeatIcon color="currentColor" />,
@@ -88,7 +88,7 @@ function DirectionAnchorControl ({ value, onChange }) {
   return (
     <ButtonGroup
       className={DiscordClasses.Margins.marginTop8}
-      size={ButtonGroup.Sizes.MEDIUM}
+      size="lg"
       options={options}
       selected={value}
       onChange={onChange}

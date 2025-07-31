@@ -43,6 +43,7 @@ import DispatchController from '@/modules/DispatchController'
 import LazyLoader from '@/modules/LazyLoader'
 import { applyOptimizationPatches } from '@/patches/optimizations'
 import patchRootElementContext from '@/patches/AppView/patchRootElementContext'
+import Data from '@/modules/Data'
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -65,7 +66,8 @@ if (import.meta.env.MODE === 'development')
     anime,
     Utils,
     Documentation,
-    DispatchController
+    DispatchController,
+    Data
   }
 
 export default function (meta) {
@@ -78,8 +80,8 @@ export default function (meta) {
       Config.initialize()
       Mouse.initialize()
       Style.initialize()
-      PackManager.initialize()
       PackRegistry.initialize()
+      PackManager.initialize()
       AnimationStore.initialize()
       Core.initialize()
       DispatchController.initialize()
@@ -147,11 +149,5 @@ export default function (meta) {
 css
 `#app-mount {
     overflow: clip;
-}
-
-.BA__buttonContents {
-    display: flex;
-    align-items: center;
-    gap: 4px;
 }`
 `General`

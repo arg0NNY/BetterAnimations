@@ -3,6 +3,7 @@ import findInReactTree from '@/utils/findInReactTree'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import Core from '@/modules/Core'
+import classNames from 'classnames'
 
 function patchModalItem (component) {
   injectModule(component, ModuleKey.Modals)
@@ -11,7 +12,12 @@ function patchModalItem (component) {
     if (!module.isEnabled()) return
 
     const container = findInReactTree(value, m => m?.type === 'div')
-    if (container) container.props.ref = self.props.layerRef
+    if (!container) return
+
+    container.props.ref = self.props.layerRef
+    container.props.className = classNames(container.props.className, {
+      'BA__modal--hidden': self.props.hidden
+    })
   })
 }
 

@@ -142,7 +142,7 @@ export default class Module {
       packSlug: pack?.slug ?? null,
       animationKey: animation?.key ?? null,
       id: [pack?.slug, animation?.key].filter(Boolean).join('/') || null,
-      pack,
+      pack: animation && pack,
       animation,
       path,
       meta,

@@ -1,14 +1,21 @@
 import { css } from '@style'
-import PackPicture from '@/settings/components/PackPicture'
-import { Button, handleClick, Text } from '@discord/modules'
+import PackPicture from '@/settings/components/pack/PackPicture'
+import { Button, Text } from '@discord/modules'
 import SettingsSection from '@enums/SettingsSection'
-import ShopIcon from '@/settings/components/icons/ShopIcon'
-import Documentation from '@shared/documentation'
-import BookIcon from '@/settings/components/icons/BookIcon'
-import ExternalLinkIcon from '@/settings/components/icons/ExternalLinkIcon'
+import ShopIcon from '@/components/icons/ShopIcon'
 import { useSection } from '@/settings/stores/SettingsStore'
+import LibraryIcon from '@/components/icons/LibraryIcon'
 
-function NoPacksPlaceholder () {
+function NoPacksPlaceholder ({
+  title = 'Install Animation Packs',
+  description = (
+    <>
+      Expand your animation library with collections
+      of&nbsp;community-made animations
+    </>
+  ),
+  actions = ['catalog', 'library']
+}) {
   const [section, setSection] = useSection()
 
   return (
@@ -19,33 +26,40 @@ function NoPacksPlaceholder () {
           className="BA__noPacksTitle"
           variant="heading-xl/bold"
         >
-          Install Animation Packs
+          {title}
         </Text>
         <Text
           className="BA__noPacksDescription"
           variant="text-md/normal"
         >
-          Expand your animation library with collections
-          of&nbsp;community-made animations
+          {description}
         </Text>
-        <div class="BA__noPacksActions">
-          <Button
-            innerClassName="BA__buttonContents"
-            onClick={() => setSection(SettingsSection.Catalog)}
-          >
-            <ShopIcon size="sm" color="currentColor" />
-            Catalog
-          </Button>
-          <Button
-            color={Button.Colors.PRIMARY}
-            innerClassName="BA__buttonContents"
-            onClick={() => handleClick({ href: Documentation.packDirectoryUrl })}
-          >
-            <BookIcon size="sm" color="currentColor" />
-            Pack Directory
-            <ExternalLinkIcon size="sm" color="currentColor" />
-          </Button>
-        </div>
+        {actions && (
+          <div className="BA__noPacksActions">
+            {actions.map(action => {
+              switch (action) {
+                case 'catalog':
+                  return (
+                    <Button
+                      icon={ShopIcon}
+                      text="Catalog"
+                      onClick={() => setSection(SettingsSection.Catalog)}
+                    />
+                  )
+                case 'library':
+                  return (
+                    <Button
+                      variant="secondary"
+                      icon={LibraryIcon}
+                      text="Library"
+                      onClick={() => setSection(SettingsSection.Library)}
+                    />
+                  )
+                default: return action
+              }
+            })}
+          </div>
+        )}
       </div>
     </div>
   )

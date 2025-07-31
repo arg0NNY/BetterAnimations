@@ -7,6 +7,9 @@ import Events from '@/modules/Emitter'
 import { parse } from 'json-source-map'
 import { formatAddonParseError } from '@utils/json'
 
+import { VerificationStatus } from '@/settings/data/verification'
+import { getFileHash } from '@utils/hash'
+
 const stripBOM = function (fileContent) {
   if (fileContent.charCodeAt(0) === 0xFEFF) {
     fileContent = fileContent.slice(1)
@@ -19,7 +22,6 @@ export default class AddonManager {
   constructor () {
     this.timeCache = {}
     this.addonList = []
-    this.state = {}
     this.toastQueue = []
   }
 
@@ -46,19 +48,6 @@ export default class AddonManager {
 
   // Subclasses should overload this and modify the addon object as needed to fully load it
   initializeAddon () {}
-
-  startAddon () {}
-  stopAddon () {}
-
-  loadState() {
-    const saved = Data[`${this.prefix}s`]
-    if (!saved) return
-    Object.assign(this.state, saved)
-  }
-
-  saveState() {
-    Data[`${this.prefix}s`] = this.state
-  }
 
   toast (content, event = 'loaded') {
     this.toastQueue.push({ content, event })
@@ -145,12 +134,16 @@ export default class AddonManager {
     addon.slug = slug
     addon.id = slug
     addon.name = addon.name ?? slug
+    addon.author = addon.author ?? 'Unknown'
+    addon.version = addon.version ?? '0.0.0'
     addon.filename = path.basename(filename)
     addon.added = stats.atimeMs
     addon.modified = stats.mtimeMs
     addon.size = stats.size
     addon.fileContent = fileContent.split(/\r?\n|\r|\n/g)
+    addon.hash = getFileHash(fileContent)
     addon.installed = addon
+    addon.verificationStatus = VerificationStatus.UNKNOWN
 
     if (this.forbiddenSlugs.includes(slug))
       throw new AddonError(this.prefix, addon, `Forbidden ${this.prefix} slug: '${slug}'`)
@@ -189,27 +182,21 @@ export default class AddonManager {
       return error
     }
 
-    const message = `${addon.name} v${addon.version} was loaded.`
-    if (shouldToast) this.toast(message, 'loaded')
-    Logger.log(this.name, message)
+    if (shouldToast) this.toast(<><b>{addon.name}</b> was loaded.</>, 'loaded')
+    Logger.log(this.name, `${addon.name} v${addon.version} was loaded.`)
 
     this.emit('loaded', addon)
-
-    if (this.state[addon.id] !== false) this.state[addon.id] = true
-    return this.startAddon(addon)
   }
 
   unloadAddon (idOrFileOrAddon, shouldToast = true, isReload = false) {
     const addon = typeof (idOrFileOrAddon) == 'string' ? this.addonList.find(c => c.id == idOrFileOrAddon || c.filename == idOrFileOrAddon) : idOrFileOrAddon
     if (!addon) return false
-    if (this.state[addon.id]) this.stopAddon(addon)
 
     this.addonList.splice(this.addonList.indexOf(addon), 1)
     this.emit('unloaded', addon)
 
-    const message = `${addon.name} was unloaded.`
-    if (shouldToast) this.toast(message, 'unloaded')
-    Logger.log(this.name, message)
+    if (shouldToast) this.toast(<><b>{addon.name}</b> was unloaded.</>, 'unloaded')
+    Logger.log(this.name, `${addon.name} was unloaded.`)
 
     return true
   }
@@ -219,7 +206,7 @@ export default class AddonManager {
     const didUnload = this.unloadAddon(addon, false, true)
     if (addon && !didUnload) return didUnload
     const error = this.loadAddon(addon ? addon.filename : idOrFileOrAddon, false)
-    if (!error && shouldToast) this.toast(`${addon.name} was reloaded.`, 'reloaded')
+    if (!error && shouldToast) this.toast(<><b>{addon.name}</b> was reloaded.</>, 'reloaded')
     return error
   }
 
@@ -229,39 +216,8 @@ export default class AddonManager {
     return true
   }
 
-  isEnabled (idOrFile) {
-    const addon = this.addonList.find(c => c.id == idOrFile || c.filename == idOrFile)
-    if (!addon || addon.partial) return false
-    return this.state[addon.id]
-  }
-
   getAddon (idOrFile) {
     return this.addonList.find(c => c.id == idOrFile || c.filename == idOrFile)
-  }
-
-  enableAddon (idOrAddon) {
-    const addon = typeof (idOrAddon) == 'string' ? this.addonList.find(p => p.id == idOrAddon) : idOrAddon
-    if (!addon || addon.partial) return
-    if (this.state[addon.id]) return
-    this.state[addon.id] = true
-    this.emit('enabled', addon)
-    this.startAddon(addon)
-    this.saveState()
-  }
-
-  disableAddon (idOrAddon) {
-    const addon = typeof (idOrAddon) == 'string' ? this.addonList.find(p => p.id == idOrAddon) : idOrAddon
-    if (!addon || addon.partial) return
-    if (!this.state[addon.id]) return
-    this.state[addon.id] = false
-    this.emit('disabled', addon)
-    this.stopAddon(addon)
-    this.saveState()
-  }
-
-  toggleAddon (id) {
-    if (this.state[id]) this.disableAddon(id)
-    else this.enableAddon(id)
   }
 
   loadNewAddons () {
@@ -278,7 +234,6 @@ export default class AddonManager {
   }
 
   loadAllAddons () {
-    this.loadState()
     const errors = []
     const files = fs.readdirSync(this.addonFolder)
 
@@ -309,7 +264,6 @@ export default class AddonManager {
       if (addon instanceof AddonError) errors.push(addon)
     }
 
-    this.saveState()
     this.watchAddons()
     return errors
   }
@@ -324,13 +278,10 @@ export default class AddonManager {
     Logger.info(this.name, 'Shutdown.')
   }
 
-  deleteAddon (idOrFileOrAddon) {
-    const addon = typeof (idOrFileOrAddon) == 'string' ? this.addonList.find(c => c.id == idOrFileOrAddon || c.filename == idOrFileOrAddon) : idOrFileOrAddon
-    return fs.unlinkSync(path.resolve(this.addonFolder, addon.filename))
+  deleteAddon (filename) {
+    return fs.unlinkSync(path.resolve(this.addonFolder, filename))
   }
-
-  saveAddon (idOrFileOrAddon, content) {
-    const addon = typeof (idOrFileOrAddon) == 'string' ? this.addonList.find(c => c.id == idOrFileOrAddon || c.filename == idOrFileOrAddon) : idOrFileOrAddon
-    return fs.writeFileSync(path.resolve(this.addonFolder, addon.filename), content)
+  saveAddon (filename, content) {
+    return fs.writeFileSync(path.resolve(this.addonFolder, filename), content)
   }
 }

@@ -23,6 +23,7 @@ function Modal ({ children, ...props }) {
       <FloatingLayer className="BAP__modalLayer">
         <AnimeContainer
           ref={containerRef}
+          id={ModuleKey.Modals}
           container={{ className: 'BAP__modalContainer' }}
         >
           <div className="BAP__modal">

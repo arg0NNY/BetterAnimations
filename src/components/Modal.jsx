@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonGroup,
   Heading,
   ModalContent,
   ModalFooter,
@@ -14,15 +15,24 @@ import meta from '@/meta'
 function Modal ({
   title,
   children,
+  footerLeading,
   onClose,
   confirmText = 'Close',
-  confirmButtonColor = Button.Colors.PRIMARY,
+  confirmButtonVariant = 'secondary',
   cancelText,
   onConfirm,
   onCancel,
   loading = false,
+  disabled = loading,
   ...props
 }) {
+  const onCallback = callback => () => {
+    let shouldClose = true
+    const preventClose = () => shouldClose = false
+    callback?.(preventClose)
+    if (shouldClose) onClose?.()
+  }
+
   return (
     <ModalRoot
       className="BA__modal"
@@ -53,31 +63,29 @@ function Modal ({
         {children}
       </ModalContent>
       <ModalFooter>
-        <Button
-          type="submit"
-          color={confirmButtonColor}
-          submitting={loading}
-          onClick={() => {
-            onConfirm?.()
-            onClose()
-          }}
+        <ButtonGroup
+          className="BA__modalButtonGroup"
+          direction="horizontal-reverse"
         >
-          {confirmText}
-        </Button>
-        {cancelText ? (
           <Button
-            type="button"
-            look={Button.Looks.LINK}
-            color={Button.Colors.PRIMARY}
-            disabled={loading}
-            onClick={() => {
-              onCancel?.()
-              onClose()
-            }}
-          >
-            {cancelText}
-          </Button>
-        ) : null}
+            type="submit"
+            variant={confirmButtonVariant}
+            text={confirmText}
+            loading={loading}
+            disabled={disabled}
+            onClick={onCallback(onConfirm)}
+          />
+          {cancelText ? (
+            <Button
+              type="button"
+              variant="secondary"
+              text={cancelText}
+              disabled={loading}
+              onClick={onCallback(onCancel)}
+            />
+          ) : null}
+        </ButtonGroup>
+        {footerLeading}
       </ModalFooter>
     </ModalRoot>
   )
@@ -96,5 +104,9 @@ css
 
 .BA__modalContent {
     padding-bottom: 20px;
+}
+
+.BA__modalButtonGroup {
+    width: auto;
 }`
 `Modal`

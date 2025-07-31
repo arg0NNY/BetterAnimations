@@ -1,13 +1,13 @@
 import IconButton from '@/settings/components/IconButton'
-import AnimationToggleControl from '@/settings/components/AnimationToggleControl'
+import AnimationToggleControl from '@/settings/components/animation/AnimationToggleControl'
 import { css } from '@style'
 import { stop } from '@/settings/utils/eventModifiers'
-import SettingsIcon from '@/settings/components/icons/SettingsIcon'
-import CollapseListIcon from '@/settings/components/icons/CollapseListIcon'
+import SettingsIcon from '@/components/icons/SettingsIcon'
+import CollapseListIcon from '@/components/icons/CollapseListIcon'
 import ErrorManager from '@error/manager'
 import { colors } from '@discord/modules'
-import CircleWarningIcon from '@/settings/components/icons/CircleWarningIcon'
-import { useMovable } from '@/settings/components/AnimationCard'
+import CircleWarningIcon from '@/components/icons/CircleWarningIcon'
+import { useMovable } from '@/settings/components/animation/AnimationCard'
 
 function AnimationCardControls ({
   hasSettings,
@@ -72,12 +72,12 @@ css
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 8px;
-    min-height: 28px;
+    min-height: 36px;
 }
 
 .BA__animationCardControlsGroup {
     display: flex;
     gap: 8px;
+    padding-left: 10px;
 }`
 `AnimationCardControls`

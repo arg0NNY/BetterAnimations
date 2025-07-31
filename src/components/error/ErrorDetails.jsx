@@ -4,9 +4,9 @@ import Divider from '@/components/Divider'
 import {
   Alert,
   AlertTypes,
+  colors,
   FormTitle,
   InviteEmbed,
-  InviteStates,
   InviteStore,
   Parser,
   Text,
@@ -17,16 +17,17 @@ import DiscordClasses from '@discord/classes'
 import InternalError from '@error/structs/InternalError'
 import AddonError from '@error/structs/AddonError'
 import AnimationError from '@error/structs/AnimationError'
-import BookCheckIcon from '@/components/icons/BookCheckIcon'
 import ErrorDetailsActions from '@/components/error/ErrorDetailsActions'
 import { useMemo } from 'react'
 import { attempt, ErrorBoundary } from '@error/boundary'
+import { isInviteInvalid } from '@discord/utils'
+import JSONIcon from '@/components/icons/JSONIcon'
 
 function ErrorDetails ({ error, open = false }) {
   const icon = useMemo(() => {
     if (error instanceof AnimationError || error instanceof AddonError)
-      return <BookCheckIcon size="md" />
-    return <IconBrand size="lg" />
+      return <JSONIcon size="md" />
+    return <IconBrand size="lg" color={colors.INTERACTIVE_NORMAL} />
   }, [error])
 
   const title = useMemo(() => {
@@ -56,11 +57,7 @@ function ErrorDetails ({ error, open = false }) {
     return error.pack?.invite
   }, [error])
 
-  const invite = useStateFromStores([InviteStore], () => (
-    ![InviteStates.EXPIRED, InviteStates.BANNED, InviteStates.ERROR].includes(InviteStore.getInvite(code)?.state)
-      ? code
-      : null
-  ))
+  const invite = useStateFromStores([InviteStore], () => isInviteInvalid(InviteStore.getInvite(code)) ? null : code)
 
   const alert = useMemo(() => {
     if (invite) return 'Go to the Support Server to get help with this error:'

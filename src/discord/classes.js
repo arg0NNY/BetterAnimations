@@ -16,7 +16,8 @@ export const _Classes = {
   Layer: Webpack.getByKeys('layer', 'layerContainer'),
   Toast: Webpack.getByKeys('toast', 'icon'),
   Scroller: Webpack.getByKeys('thin', 'disableScrollAnchor'),
-  Select: Webpack.getByKeys('select', 'measurement')
+  Select: Webpack.getByKeys('select', 'measurement'),
+  ManaModal: Webpack.getByKeys('actionBar', 'headerTrailing')
 }
 
 const DiscordClasses = new Proxy(_Classes, {

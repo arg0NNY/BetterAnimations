@@ -43,6 +43,7 @@ function patchExpressionPicker () {
         <ErrorBoundary module={module} fallback={children[contentWrapperIndex]}>
           <AnimeContainer
             ref={props.__containerRef}
+            id={ModuleKey.Popouts}
             container={{ className: 'BA__expressionPickerContainer' }}
           >
             {children[contentWrapperIndex]}

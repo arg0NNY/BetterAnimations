@@ -46,55 +46,51 @@ function useActions (error) {
   if (error instanceof InternalError) {
     actions.push(
       <Button
-        size={Button.Sizes.SMALL}
+        size="sm"
+        text="Check for updates"
         onClick={() => {
           UserSettingsModal.open('updates')
           Settings.closeSettingsModal()
           ModalActions.closeAllModals()
         }}
-      >
-        Check for updates
-      </Button>
+      />
     )
 
     if (setting) actions.push(
       <Button
-        size={Button.Sizes.SMALL}
-        color={Button.Colors.PRIMARY}
+        variant="secondary"
+        size="sm"
+        text={`${setting.value ? 'Disable' : 'Disabled'} ${setting.name}`}
         disabled={!setting.value}
         onClick={() => {
           setting.setValue(false)
           Config.save()
         }}
-      >
-        {setting.value ? 'Disable' : 'Disabled'} {setting.name}
-      </Button>
+      />
     )
   }
   else if (module && !Settings.isSettingsModalOpen()) actions.push(
     <Button
-      size={Button.Sizes.SMALL}
+      size="sm"
+      text="Go to Settings"
       onClick={() => {
         Settings.openSettingsModal(module.id)
         ModalActions.closeAllModals()
       }}
-    >
-      Go to Settings
-    </Button>
+    />
   )
 
   if (module) actions.push(
     <Button
-      size={Button.Sizes.SMALL}
-      color={Button.Colors.PRIMARY}
+      variant="secondary"
+      size="sm"
+      text={`${module.isEnabled() ? 'Disable' : 'Disabled'} ${error.module.name} animations`}
       disabled={!module.isEnabled()}
       onClick={() => {
         module.setIsEnabled(false)
         Config.save()
       }}
-    >
-      {module.isEnabled() ? 'Disable' : 'Disabled'} {error.module.name} animations
-    </Button>
+    />
   )
 
   return actions

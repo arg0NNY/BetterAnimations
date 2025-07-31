@@ -40,15 +40,7 @@ A string representing a URL to author's socials.
 
 ### `donate` <Badge type="info" text="optional" />
 
-A string representing a URL to author's donation service.
-
-### `patreon` <Badge type="info" text="optional" />
-
-A string representing a URL to author's Patreon.
-
-### `website` <Badge type="info" text="optional" />
-
-A string representing a URL to author's website.
+A string representing a URL to the author's donation service.
 
 ### `snippets` <Badge type="info" text="optional" />
 

@@ -2,12 +2,13 @@ import AddonManager from '@/modules/AddonManager'
 import { path } from '@/modules/Node'
 import { Plugins } from '@/BdApi'
 import AddonError from '@error/structs/AddonError'
-import PackSchema from '@animation/schemas/PackSchema'
+import PackSchema, { PackFallbackSchema } from '@animation/schemas/PackSchema'
 import meta from '@/meta'
 import ErrorManager from '@error/manager'
 import { formatZodError } from '@utils/zod'
 import internalPacks, { internalPackSlugs } from '@packs'
 import Documentation from '@shared/documentation'
+import PackRegistry from '@/modules/PackRegistry'
 
 export default new class PackManager extends AddonManager {
   get name () {return 'PackManager'}
@@ -21,10 +22,6 @@ export default new class PackManager extends AddonManager {
   /* Aliases */
   updatePackList () {return this.updateList()}
   loadAllPacks () {return this.loadAllAddons()}
-
-  enablePack (idOrAddon) {return this.enableAddon(idOrAddon)}
-  disablePack (idOrAddon) {return this.disableAddon(idOrAddon)}
-  togglePack (id) {return this.toggleAddon(id)}
 
   unloadPack (idOrFileOrAddon) {return this.unloadAddon(idOrFileOrAddon)}
   loadPack (filename) {return this.loadAddon(filename)}
@@ -42,6 +39,15 @@ export default new class PackManager extends AddonManager {
       Object.assign(addon, PackSchema.parse(addon))
     }
     catch (e) {
+      Object.assign(
+        addon,
+        PackFallbackSchema({
+          name: addon.slug,
+          ...PackRegistry.getPack(addon.filename),
+          version: '0.0.0'
+        }).parse(addon)
+      )
+
       return new AddonError(
         this.prefix,
         addon,
@@ -50,23 +56,23 @@ export default new class PackManager extends AddonManager {
     }
   }
 
-  getAllPacks (includePartial = false) {
-    return this.addonList.filter(p => includePartial || !p.partial)
-      .sort((a, b) => {
-        if (a.partial !== b.partial) return a.partial ? 1 : -1
-        return a.name.localeCompare(b.name)
-      })
+  isRestricted (pack) {
+    return pack.partial || !PackRegistry.verifier.check(pack)
   }
-  _getPack (predicate, includePartial = false) {
+  getAllPacks (includeRestricted = false) {
+    return this.addonList.filter(p => includeRestricted || !this.isRestricted(p))
+      .sort((a, b) => a.name.localeCompare(b.name))
+  }
+  _getPack (predicate, includeRestricted = false) {
     return this.addonList.find(
-      p => (includePartial || !p.partial) && predicate(p)
+      p => (includeRestricted || !this.isRestricted(p)) && predicate(p)
     )
   }
-  getPack (slug, includePartial = false) {
+  getPack (slug, includeRestricted = false) {
     if (internalPackSlugs.includes(slug)) return internalPacks[slug]
-    return this._getPack(p => p.slug === slug, includePartial)
+    return this._getPack(p => p.slug === slug, includeRestricted)
   }
-  getPackByFile (filename, includePartial = false) {
-    return this._getPack(p => p.filename === filename, includePartial)
+  getPackByFile (filename, includeRestricted = false) {
+    return this._getPack(p => p.filename === filename, includeRestricted)
   }
 }

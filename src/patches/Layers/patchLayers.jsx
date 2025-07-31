@@ -12,6 +12,9 @@ import { css } from '@style'
 import Mouse from '@shared/mouse'
 import classNames from 'classnames'
 import { ErrorBoundary } from '@error/boundary'
+import usePrevious from '@/hooks/usePrevious'
+import { useEffect } from 'react'
+import useTransitionCustomCondition from '@/hooks/useTransitionCustomCondition'
 
 export let LayersComponent = null
 
@@ -41,10 +44,12 @@ function Layer ({ baseLayer, hidden, children }) {
 }
 
 function LayerTransition ({ layer, ...props }) {
+  const isShown = useTransitionCustomCondition(layer.props.mode === 'SHOWN', props)
+
   return (
     <AnimeTransition
       {...props}
-      in={layer.props.mode === 'SHOWN' && props.in}
+      in={isShown}
       container={{ className: 'BA__layerContainer' }}
       defaultLayoutStyles={false}
       mountOnEnter={false}

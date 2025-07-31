@@ -1,6 +1,6 @@
 import { Webpack } from '@/BdApi'
 import { createElement } from 'react'
-import { getWithKey, getMangled, UnkeyedComponent } from '@/utils/webpack'
+import { getWithKey, getMangled, UnkeyedComponent, unkeyed } from '@/utils/webpack'
 const { Filters } = Webpack
 
 export const ModalActions = Webpack.getMangled(Filters.bySource('POPOUT', 'OVERLAY', 'modalKey'), {
@@ -50,6 +50,11 @@ export const ModalTransitionState = Webpack.getModule(Filters.byKeys('ENTERED', 
 export const ReferencePositionLayer = Webpack.getModule(Filters.byPrototypeKeys('getHorizontalAlignmentStyle', 'nudgeLeftAlignment'), { searchExports: true })
 export const SearchableSelect = Webpack.getModule(m => Filters.byStrings('searchable', 'select')(m?.render), { searchExports: true })
 export const { Anchor } = Webpack.getByKeys('Anchor')
+export const TextBadge = Webpack.getModule(Filters.byStrings('textBadge', 'STATUS_DANGER'), { searchExports: true })
+export const SearchBar = Webpack.getModule(m => Filters.byKeys('isLoading', 'size')(m?.defaultProps) && Filters.byPrototypeKeys('blur', 'focus')(m), { searchExports: true })
+export const Paginator = Webpack.getModule(Filters.byStrings('pageControlContainer', 'endButtonInner'), { searchExports: true })
+export const Spinner = Webpack.getModule(m => Filters.byKeys('WANDERING_CUBES')(m?.Type), { searchExports: true })
+export const Popout = Webpack.getModule(m => Filters.byKeys('Animation')(m) && Filters.byStrings('renderPopout')(m?.prototype?.render), { searchExports: true })
 
 export const Dispatcher = Webpack.getByKeys('dispatch', 'subscribe')
 export const AppViewKeyed = getWithKey(Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'))
@@ -137,22 +142,26 @@ export const { Alert, AlertTypes } = getMangled(Filters.byStrings('messageType',
 })
 export const UserSettingsModal = Webpack.getByKeys('open', 'setSection', 'updateAccount')
 export const { colors } = Webpack.getByKeys('colors', 'modules')
-export const { ModalRoot, ModalSize, ModalHeader, ModalFooter, ModalContent } = Webpack.getMangled(
+export const { ModalRoot, ModalSize, ModalHeader, ModalFooter, ModalContent, ModalCloseButton } = Webpack.getMangled(
   Filters.bySource('MODAL', 'rootWithShadow'),
   {
     ModalRoot: Filters.byStrings('MODAL', 'rootWithShadow'),
     ModalSize: Filters.byKeys('MEDIUM', 'LARGE'),
     ModalHeader: Filters.byStrings('headerIdIsManaged', 'HORIZONTAL'),
     ModalFooter: Filters.byStrings('footerSeparator'),
-    ModalContent: Filters.byStrings('content', 'scrollbarType')
+    ModalContent: Filters.byStrings('content', 'scrollbarType'),
+    ModalCloseButton: Filters.byStrings('closeIcon')
   }
 )
-export const Button = Webpack.getModule(Filters.byKeys('Link', 'Sizes'), { searchExports: true })
+export const Button = Webpack.getModule(Filters.byStrings('button', 'hasText', 'expressiveWrapper'), { searchExports: true })
+export const TextButton = Webpack.getModule(Filters.byStrings('textButton', 'textVariant'), { searchExports: true })
+export const ButtonGroup = Webpack.getModule(Filters.byStrings('fullWidth', 'wrap', '"horizontal"'), { searchExports: true })
 export const Flex = Webpack.getByKeys('Direction', 'Justify', 'Child')
 export const Parser = Webpack.getByKeys('defaultRules', 'parse').defaultRules
 export const InviteEmbed = Webpack.getByStrings('Invite Button Embed', 'getInvite')
 export const InviteStates = Webpack.getModule(Filters.byKeys('APP_NOT_OPENED', 'RESOLVING'), { searchExports: true })
 export const InviteStore = Webpack.getStore('InviteStore')
+export const InviteActions = Webpack.getByKeys('resolveInvite', 'createInvite')
 export const TextInput = Webpack.getModule(Filters.byStrings('inputWrapper', 'prefixElement'), { searchExports: true })
 export const AppPanels = Webpack.getModule(m => Filters.byStrings('panels', 'ACCOUNT_PANEL')(m?.type), { searchExports: true })
 export const { ImpressionNames } = Webpack.getByKeys('ImpressionNames')
@@ -180,3 +189,30 @@ export const GatewaySocket = Webpack.getModule(m => m?.dispatcher?.scheduler, { 
 export const EmojiKeyed = getWithKey(Filters.byStrings('emojiId', 'emojiName', 'animated', 'shouldAnimate'))
 export const useIsVisibleKeyed = getWithKey(Filters.byStrings('isIntersecting', 'arguments.length'))
 export const useRootElementContextKeyed = getWithKey(Filters.byStrings('useRootElementContext'))
+export const GuildIcon = Webpack.getModule(m => Filters.byKeys('badgeStrokeColor', 'animate')(m?.defaultProps), { searchExports: true })
+export const GuildStore = Webpack.getStore('GuildStore')
+export const Timestamp = Webpack.getModule(m => Filters.byStrings('timestamp', 'timestampTooltip')(m?.type), { searchExports: true })
+export const humanize = Webpack.getByKeys('humanize', 'filesize')
+export const useListNavigator = Webpack.getByStrings('focusLastVisibleItem', '"focus"')
+export const {
+  useListItem,
+  useListContainerProps,
+  ListNavigatorProvider
+} = Webpack.getMangled(Filters.bySource('NO_LIST', 'listitem'), {
+  useListItem: Filters.byStrings('"listitem"'),
+  useListContainerProps: Filters.byStrings('"list"', 'useContext'),
+  ListNavigatorProvider: Filters.byStrings('containerProps', '.Provider')
+})
+export const ListNavigatorContainer = ({ children }) => children(useListContainerProps())
+export const {
+  useFocusLock,
+  FocusLock
+} = Webpack.getMangled(Filters.bySource('disableReturnRef', '"app-mount"'), {
+  useFocusLock: Filters.byStrings('disableReturnRef'),
+  FocusLock: Filters.byStrings('children', 'containerRef')
+})
+export const getThemeClass = Webpack.getModule(Filters.byStrings('" theme-"'), { searchExports: true })
+export const Mana = {
+  ModalRootKeyed: getWithKey(Filters.byStrings('MODAL', '"padding-size-"')),
+  get ModalRoot () { return unkeyed(this.ModalRootKeyed) }
+}

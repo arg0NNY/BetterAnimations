@@ -1,16 +1,14 @@
-import useUpdate from '@/hooks/useUpdate'
 import PackRegistry from '@/modules/PackRegistry'
-import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
-import { useEffect } from 'react'
+import useEmitterEffect from '@/hooks/useEmitterEffect'
 
 export function usePackRegistry () {
-  const update = useUpdate()
-
-  useEffect(() => {
-    Emitter.on(Events.PackRegistryUpdated, update)
-    return () => Emitter.off(Events.PackRegistryUpdated, update)
-  })
+  useEmitterEffect([
+    Events.PackLoaded,
+    Events.PackUnloaded,
+    Events.PackUpdated,
+    Events.PackRegistryUpdated
+  ])
 
   return PackRegistry
 }

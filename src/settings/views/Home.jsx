@@ -1,19 +1,22 @@
 import IconBrand from '@/components/icons/IconBrand'
-import { Button, handleClick, Text } from '@discord/modules'
+import { Button, handleClick, Text, Tooltip } from '@discord/modules'
 import meta from '@/meta'
 import { css } from '@style'
-import ShopIcon from '@/settings/components/icons/ShopIcon'
-import ExternalLinkIcon from '@/settings/components/icons/ExternalLinkIcon'
-import CircleDollarSignIcon from '@/settings/components/icons/CircleDollarSignIcon'
+import ShopIcon from '@/components/icons/ShopIcon'
+import ExternalLinkIcon from '@/components/icons/ExternalLinkIcon'
+import CircleDollarSignIcon from '@/components/icons/CircleDollarSignIcon'
 import { useSection } from '@/settings/stores/SettingsStore'
 import SettingsSection from '@enums/SettingsSection'
 import IconAuthor from '@/components/icons/IconAuthor'
 import SpotlightAnimation from '@/settings/components/SpotlightAnimation'
 import { use, useMemo } from 'react'
 import { sanitize } from '@utils/text'
-import BookIcon from '@/settings/components/icons/BookIcon'
+import BookIcon from '@/components/icons/BookIcon'
 import Documentation from '@shared/documentation'
 import { AnimeTransitionContext } from '@components/AnimeTransition'
+import PackPicture from '@/settings/components/pack/PackPicture'
+import usePackRegistry from '@/hooks/usePackRegistry'
+import { useData } from '@/modules/Data'
 
 const madeByPhrases = [
   'Made by',
@@ -30,6 +33,41 @@ const madeByPhrases = [
   'Established by'
 ]
 
+function CatalogPromoTooltip ({ packs, displayLimit = 3, children, ...props }) {
+  const nodes = packs.length <= displayLimit
+    ? packs
+    : packs.slice(0, displayLimit - 1).concat(packs.length - displayLimit + 1)
+
+  return (
+    <Tooltip
+      shouldShow={packs.length > 0}
+      tooltipClassName="BA__catalogPromoTooltip"
+      position="bottom"
+      color={Tooltip.Colors.BRAND}
+      spacing={12}
+      allowOverflow
+      text={() => (
+        <div className="BA__catalogPromoTooltipContent">
+          <PackPicture />
+          <div>
+            {`Check out the newly available ${packs.length > 1 ? 'packs' : 'pack'}: `}
+            {nodes.map((node, index) => (
+              <>
+                {typeof node === 'number' ? `${node} others` : <b>{node.name}</b>}
+                {[', ', ' and ', ''][Math.max(0, index - nodes.length + 3)]}
+              </>
+            ))}
+            !
+          </div>
+        </div>
+      )}
+      {...props}
+    >
+      {children}
+    </Tooltip>
+  )
+}
+
 function Home () {
   const [section, setSection] = useSection()
 
@@ -39,6 +77,11 @@ function Home () {
   )
 
   const { isEnterActive } = use(AnimeTransitionContext)
+
+  const [{ visited: visitedCatalog }] = useData('catalog')
+  const registry = usePackRegistry()
+  const unknownPacks = registry.getUnknownPacks()
+  const highlightCatalog = !visitedCatalog || unknownPacks.length > 0
 
   return (
     <div className="BA__home">
@@ -68,22 +111,23 @@ function Home () {
           {sanitize(meta.description)}
         </Text>
         <div className="BA__homeHeadingActions">
+          <CatalogPromoTooltip packs={unknownPacks}>
+            {props => (
+              <Button
+                {...props}
+                variant={highlightCatalog ? 'expressive' : 'primary'}
+                icon={ShopIcon}
+                text="Catalog"
+                onClick={() => setSection(SettingsSection.Catalog)}
+              />
+            )}
+          </CatalogPromoTooltip>
           <Button
-            innerClassName="BA__buttonContents"
-            onClick={() => setSection(SettingsSection.Catalog)}
-          >
-            <ShopIcon size="sm" color="currentColor" />
-            Catalog
-          </Button>
-          <Button
-            color={Button.Colors.PRIMARY}
-            innerClassName="BA__buttonContents"
+            variant="secondary"
+            icon={BookIcon}
+            text="Documentation"
             onClick={() => handleClick({ href: Documentation.homeUrl })}
-          >
-            <BookIcon size="sm" color="currentColor" />
-            Documentation
-            <ExternalLinkIcon size="sm" color="currentColor" />
-          </Button>
+          />
         </div>
       </div>
       <div className="BA__homeAuthorSection">
@@ -105,22 +149,21 @@ function Home () {
         </div>
         <div className="BA__homeAuthorActions">
           <Button
-            color={Button.Colors.GREEN}
-            innerClassName="BA__buttonContents"
+            variant="active"
+            icon={CircleDollarSignIcon}
+            text="Support the author"
+            fullWidth
             onClick={() => handleClick({ href: meta.donate })}
-          >
-            <CircleDollarSignIcon size="sm" color="currentColor" />
-            Support the author
-          </Button>
+          />
           <Button
-            size={Button.Sizes.SMALL}
-            color={Button.Colors.PRIMARY}
-            innerClassName="BA__buttonContents"
+            size="sm"
+            variant="secondary"
+            icon={ExternalLinkIcon}
+            iconPosition="end"
+            text={`Plugins made by ${meta.author}`}
+            fullWidth
             onClick={() => handleClick({ href: meta.authorLink })}
-          >
-            Plugins made by {meta.author}
-            <ExternalLinkIcon size="xs" color="currentColor" />
-          </Button>
+          />
         </div>
       </div>
       <div className="BA__homeSystemInfo">
@@ -202,5 +245,21 @@ css
     bottom: 16px;
     display: flex;
     align-items: center;
+}
+
+.BA__catalogPromoTooltip {
+    max-width: 100%;
+}
+.BA__catalogPromoTooltipContent {
+    width: 230px;
+    position: relative;
+    padding: 10px 0 12px 80px;
+}
+.BA__catalogPromoTooltipContent svg {
+    position: absolute;
+    left: -62px;
+    top: calc(50% + 6px);
+    transform: translateY(-50%);
+    height: 123px;
 }`
 `Home`

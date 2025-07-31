@@ -1,12 +1,13 @@
 import { Button, handleClick, Text } from '@discord/modules'
 import { css } from '@style'
 import Documentation from '@shared/documentation'
-import PackPicture from '@/settings/components/PackPicture'
-import BookIcon from '@/settings/components/icons/BookIcon'
+import PackPicture from '@/settings/components/pack/PackPicture'
+import BookIcon from '@/components/icons/BookIcon'
+import classNames from 'classnames'
 
-function CreateUpsellBanner () {
+function CreateUpsellBanner ({ className }) {
   return (
-    <div className="BA__createUpsellBanner">
+    <div className={classNames('BA__createUpsellBanner', className)}>
       <div class="BA__createUpsellArtContainer">
         <PackPicture className="BA__createUpsellArt" />
       </div>
@@ -28,13 +29,11 @@ function CreateUpsellBanner () {
       </div>
       <Button
         className="BA__createUpsellButton"
-        innerClassName="BA__buttonContents"
-        color={Button.Colors.BRAND_INVERTED}
+        variant="overlay-primary"
+        icon={BookIcon}
+        text="Documentation"
         onClick={() => handleClick({ href: Documentation.createUrl })}
-      >
-        <BookIcon size="sm" color="currentColor" />
-        Documentation
-      </Button>
+      />
     </div>
   )
 }
@@ -46,7 +45,7 @@ css
     align-items: center;
     background: linear-gradient(187deg, #5865F2, #2F379F);
     background-size: cover;
-    border-radius: var(--radius-sm);
+    border-radius: 16px;
     flex-direction: row;
     padding-right: 24px;
 }

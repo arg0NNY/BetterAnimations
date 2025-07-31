@@ -1,12 +1,12 @@
 import { use, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { css } from '@style'
-import { ChannelSectionStore, Text, useStateFromStores } from '@discord/modules'
+import { ChannelSectionStore, getThemeClass, Text, useStateFromStores } from '@discord/modules'
 import ModuleContext from '@/settings/context/ModuleContext'
 import Preview, { PREVIEW_WIDTH } from '@preview'
 import Core from '@/modules/Core'
 import { moduleEffect } from '@/hooks/useModule'
 import classNames from 'classnames'
-import { useMovable } from '@/settings/components/AnimationCard'
+import { useMovable } from '@/settings/components/animation/AnimationCard'
 import useResizeObserver from '@/hooks/useResizeObserver'
 import { AnimeTransitionContext } from '@components/AnimeTransition'
 
@@ -14,9 +14,14 @@ export function getPreviewHeight (width) {
   return width * 9 / 16
 }
 
-function AnimationPreview ({ pack, animation, title = animation?.name, active = false }) {
-  const module = use(ModuleContext)
-
+function AnimationPreview ({
+  module = use(ModuleContext),
+  pack,
+  animation,
+  title = animation?.name,
+  active = false,
+  className
+}) {
   const { isActive: hasActiveAnimation } = use(AnimeTransitionContext)
   const isActive = active && !hasActiveAnimation
 
@@ -40,11 +45,14 @@ function AnimationPreview ({ pack, animation, title = animation?.name, active = 
   return (
     <div
       ref={containerRef}
-      className="BA__animationPreviewContainer"
+      className={classNames('BA__animationPreviewContainer', className)}
       {...useMovable('preview')}
     >
       <Preview
-        className="BA__animationPreview"
+        className={classNames(
+          getThemeClass('darker'),
+          'BA__animationPreview'
+        )}
         style={{ scale }}
         key={module.id}
         id={module.id}
@@ -60,7 +68,7 @@ function AnimationPreview ({ pack, animation, title = animation?.name, active = 
           'BA__animationPreviewTitle',
           { 'BA__animationPreviewTitle--hidden': isActive }
         )}>
-          <Text variant="heading-sm/medium" lineClamp={2} color="always-white">{title}</Text>
+          <Text variant="heading-sm/semibold" lineClamp={2} color="always-white">{title}</Text>
         </div>
       )}
     </div>
@@ -91,18 +99,13 @@ css
 .BA__animationPreviewTitle {
     position: absolute;
     inset: 0;
-    padding: 8px;
-    background: rgba(255, 255, 255, .05);
+    padding: 12px;
+    background: rgba(0, 0, 0, .1);
     backdrop-filter: blur(15px);
     transition: .4s;
 }
 .BA__animationPreviewTitle--hidden {
     opacity: 0;
     backdrop-filter: blur(0);
-}
-
-.BA__animationCard--expanded .BA__animationPreviewContainer {
-    border-radius: 3px;
-    box-shadow: 0 0 0 .5px var(--border-faint);
 }`
 `AnimationPreview`

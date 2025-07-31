@@ -30,7 +30,11 @@ function patchChatSidebar () {
 
     return (
       <ErrorBoundary fallback={<original {...props} />}>
-        <AnimeContainer ref={props.ref} container={{ className: 'BA__sidebar' }}>
+        <AnimeContainer
+          ref={props.ref}
+          id={ModuleKey.ThreadSidebarSwitch}
+          container={{ className: 'BA__sidebar' }}
+        >
           <div className="BA__sidebar">{value}</div>
         </AnimeContainer>
       </ErrorBoundary>

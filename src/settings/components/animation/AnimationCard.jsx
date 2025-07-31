@@ -1,13 +1,13 @@
 import { css } from '@style'
-import AnimationPreview, { getPreviewHeight } from '@/settings/components/AnimationPreview'
-import AnimationCardControls from '@/settings/components/AnimationCardControls'
+import AnimationPreview, { getPreviewHeight } from '@/settings/components/animation/AnimationPreview'
+import AnimationCardControls from '@/settings/components/animation/AnimationCardControls'
 import useEventListener from '@/hooks/useEventListener'
 import useHover from '@/hooks/useHover'
 import useWindowSize from '@/hooks/useWindowSize'
 import { Clickable, CSSTransition, Timeout, TransitionGroup } from '@discord/modules'
-import AnimationSettings from '@/settings/components/AnimationSettings'
+import AnimationSettings from '@/settings/components/animation/AnimationSettings'
 import DiscordClasses from '@discord/classes'
-import useDismissible from '@/settings/hooks/useDismissible'
+import useDismissible from '@/hooks/useDismissible'
 import useElementBounding from '@/hooks/useElementBounding'
 import { createContext, use, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import HintTooltip from '@/settings/components/HintTooltip'
@@ -17,7 +17,7 @@ import { useIsAnimationExpanded } from '@/settings/stores/SettingsStore'
 import useConfig from '@/hooks/useConfig'
 
 export function getCardHeight (width) {
-  return getPreviewHeight(width - 16) + 52
+  return getPreviewHeight(width) + 36
 }
 
 const CARD_WIDE_WIDTH = 320
@@ -252,6 +252,7 @@ function AnimationCard ({
             >
               <div class="BA__animationCardBg" {...useMovable('bg')} />
               <AnimationPreview
+                className="BA__animationCardPreview"
                 pack={pack}
                 animation={animation}
                 title={name}
@@ -338,7 +339,6 @@ css
 .BA__animationCard {
     position: absolute;
     width: 100%;
-    padding: 8px;
     cursor: pointer;
     z-index: 10;
     transition: transform .4s, z-index .4s step-end;
@@ -355,6 +355,11 @@ css
 }
 .BA__animationCard:hover .BA__animationCardBg {
     background-color: var(--background-base-lower);
+}
+.BA__animationCardPreview {
+    border-radius: 8px 8px 0 0;
+    box-shadow: none;
+    background: var(--background-base-lowest);
 }
 
 .BA__animationCard--wide .BA__animationCardPositioner,
@@ -374,6 +379,9 @@ css
     border-radius: 4px;
     box-shadow: 0 0 0 .5px var(--border-subtle);
 }
+.BA__animationCard--expanded .BA__animationPreviewContainer {
+    border-radius: 4px 4px 0 0;
+}
 
 .BA__animationCard--active .BA__animationCardBg {
     box-shadow: 0 0 0 2.5px var(--brand-500);
@@ -392,9 +400,9 @@ css
     transition: transform .4s, translate .4s;
 }
 .BA__animationCardPopout {
-    background-color: var(--background-base-low);
-    border: 1px solid var(--border-subtle);
-    border-radius: 5px;
+    background-color: var(--background-base-lowest);
+    box-shadow: 0 0 0 1px var(--border-subtle);
+    border-radius: 8px;
     overflow: hidden;
     flex: 1;
     display: flex;
@@ -412,7 +420,7 @@ css
     left: 0;
     right: 0;
     height: 20px;
-    background-color: var(--background-base-low);
+    background-color: var(--background-base-lowest);
     z-index: 110;
 }
 

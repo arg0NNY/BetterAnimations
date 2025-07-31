@@ -6,7 +6,7 @@ import Core from '@/modules/Core'
 import { useEffect } from 'react'
 
 export function moduleEffectFull (id, callback) {
-  const events = [Events.PackLoaded, Events.PackUnloaded, Events.PackEnabled, Events.PackDisabled, Events.SettingsChanged]
+  const events = [Events.PackLoaded, Events.PackUnloaded, Events.PackEnabled, Events.PackDisabled, Events.PackUpdated, Events.SettingsChanged]
   const moduleEvents = [Events.ModuleToggled, Events.ModuleSettingsChanged]
   const ifSameId = moduleId => moduleId === id && callback()
 

@@ -5,6 +5,7 @@ export default Enum({
   PackUnloaded: 'pack-unloaded',
   PackEnabled: 'pack-enabled',
   PackDisabled: 'pack-disabled',
+  PackUpdated: 'pack-updated',
   ModuleToggled: 'module-toggled',
   ModuleSettingsChanged: 'module-settings-changed',
   SettingsChanged: 'settings-changed',
@@ -13,5 +14,6 @@ export default Enum({
   PackRegistryUpdated: 'pack-registry-updated',
   SettingsModeChanged: 'settings-mode-changed',
   DismissibleUpdated: 'dismissible-updated',
-  ErrorOccurred: 'error-occurred'
+  ErrorOccurred: 'error-occurred',
+  DataFieldUpdated: 'data-field-updated'
 })

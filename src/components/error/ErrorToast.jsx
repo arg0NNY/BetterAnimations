@@ -1,8 +1,9 @@
 import Toast, { ToastTypes } from '@/components/Toast'
-import { Button } from '@discord/modules'
+import { Button, TextButton } from '@discord/modules'
 import useEmitterEffect from '@/hooks/useEmitterEffect'
 import Events from '@enums/Events'
 import ErrorManager from '@error/manager'
+import { css } from '@style'
 
 function ErrorToast ({ onView }) {
   useEmitterEffect(Events.ErrorOccurred)
@@ -14,15 +15,23 @@ function ErrorToast ({ onView }) {
 
   return (
     <Toast type={ToastTypes.ERROR} text={text}>
-      <Button
-        look={Button.Looks.LINK}
-        size={Button.Sizes.SMALL}
-        onClick={onView}
-      >
-        View
-      </Button>
+      <div class="BA__errorToastButton">
+        <TextButton
+          className="BA__errorToastButton"
+          text="View"
+          onClick={onView}
+        />
+      </div>
     </Toast>
   )
 }
 
 export default ErrorToast
+
+css
+`.BA__errorToastButton {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+}`
+`ErrorToast`

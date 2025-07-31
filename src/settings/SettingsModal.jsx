@@ -7,14 +7,15 @@ import {
   ThemeStore,
   useStateFromStores
 } from '@discord/modules'
-import { getSections } from '@/settings/data/sections'
+import { useSections } from '@/settings/data/sections'
 import meta from '@/meta'
 import SectionContext from '@/settings/context/SectionContext'
 import { css } from '@style'
 import { useSection } from '@/settings/stores/SettingsStore'
 import DiscordSelectors from '@discord/selectors'
-import { useCallback, useMemo, Suspense, lazy } from 'react'
+import { useCallback, useMemo, Suspense, lazy, useEffect } from 'react'
 import { ErrorBoundary } from '@error/boundary'
+import PackRegistry from '@/modules/PackRegistry'
 
 const StandardSidebarViewComponent = lazy(async () => ({ default: await StandardSidebarViewWrapper }))
 
@@ -23,7 +24,7 @@ function SettingsModal () {
   const sidebarTheme = useStateFromStores([ThemeStore], () => ThemeStore.darkSidebar ? Constants.Themes.DARK : undefined)
 
   const title = `${meta.name} Settings`
-  const sections = useMemo(getSections, [])
+  const sections = useSections()
   const [section, setSection] = useSection()
 
   const onClose = useCallback(() => LayerActions.popLayer(), [])
@@ -32,14 +33,15 @@ function SettingsModal () {
     <>
       {actions}
       <Button
-        size={Button.Sizes.SMALL}
-        color={Button.Colors.PRIMARY}
+        variant="secondary"
+        size="sm"
+        text="Close Settings"
         onClick={onClose}
-      >
-        Close Settings
-      </Button>
+      />
     </>
   )
+
+  useEffect(() => () => PackRegistry.storage.clear(), [])
 
   return (
     <ErrorBoundary style={{ margin: 'auto' }} actions={actions}>

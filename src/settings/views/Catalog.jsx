@@ -1,34 +1,102 @@
-import WIP from '@/settings/components/WIP'
 import CreateUpsellBanner from '@/settings/components/CreateUpsellBanner'
 import { css } from '@style'
-import { StandardSidebarViewKeyed } from '@discord/modules'
-import DiscordSelectors from '@discord/selectors'
+import PackListView from '@/settings/components/pack/PackListView'
+import { Alert, AlertTypes, Button, handleClick, Tooltip } from '@discord/modules'
+import RefreshIcon from '@/components/icons/RefreshIcon'
+import usePackRegistry from '@/hooks/usePackRegistry'
+import { PackContentLocation } from '@/settings/components/pack/PackContent'
+import NoPacksPlaceholder from '@/settings/components/NoPacksPlaceholder'
+import Messages from '@shared/messages'
+import GitHubIcon from '@/components/icons/GitHubIcon'
+import { useData } from '@/modules/Data'
+import { useEffect } from 'react'
+import { defaultSortOptions } from '@/settings/hooks/usePackSearch'
+
+export const catalogSortOptions = [
+  {
+    value: 'newest',
+    label: 'Newest first',
+    compare: (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  },
+  {
+    value: 'oldest',
+    label: 'Oldest first',
+    compare: (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+  },
+  {
+    value: 'official',
+    label: 'Official first',
+    compare: (a, b) => b.official - a.official
+  },
+  ...defaultSortOptions
+]
 
 function Catalog () {
+  const registry = usePackRegistry()
+  const [data] = useData('catalog')
+
+  useEffect(() => {
+    if (data.visited) return
+
+    registry.items.forEach(item => registry.markAsKnown(item))
+    data.visited = true
+  }, [])
+
   return (
-    <div className="BA__catalog">
-      <CreateUpsellBanner />
-      <WIP name="Catalog" />
-    </div>
+    <PackListView
+      title="Catalog"
+      items={registry.items}
+      sortOptions={catalogSortOptions}
+      data={data}
+      pending={registry.isPending()}
+      error={registry.isFatal && 'Failed to load packs. Please try again later.'}
+      empty={(
+        <NoPacksPlaceholder
+          title="No packs at the time"
+          description="Please come back later"
+          actions={false}
+        />
+      )}
+      location={PackContentLocation.CATALOG}
+      actions={(
+        <>
+          <Tooltip text="View on GitHub">
+            {props => (
+              <Button
+                {...props}
+                variant="icon-only"
+                icon={GitHubIcon}
+                onClick={() => handleClick({ href: registry.baseUrl })}
+              />
+            )}
+          </Tooltip>
+          <Tooltip text="Refresh">
+            {props => (
+              <Button
+                {...props}
+                variant="icon-only"
+                icon={RefreshIcon}
+                onClick={() => registry.updateRegistry()}
+                disabled={registry.isPending()}
+              />
+            )}
+          </Tooltip>
+        </>
+      )}
+      leading={registry.hasError && (
+        <Alert messageType={AlertTypes.ERROR}>{Messages.CATALOG_OUT_OF_DATE}</Alert>
+      )}
+      trailing={(
+        <CreateUpsellBanner className="BA__catalogBanner" />
+      )}
+    />
   )
 }
 
 export default Catalog
 
-StandardSidebarViewKeyed.then(() =>
 css
-`${DiscordSelectors.StandardSidebarView.contentColumn}:has(> .BA__catalog) {
-    display: flex;
-    align-items: stretch;
-}
-
-.BA__catalog {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-.BA__catalog .BA__wip {
-    margin: auto 0;
+` .BA__catalogBanner {
+    margin-top: 52px;
 }`
 `Catalog`
-)

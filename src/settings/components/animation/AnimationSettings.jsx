@@ -10,7 +10,7 @@ import { Switch, Text, Tooltip } from '@discord/modules'
 import IconButton from '@/settings/components/IconButton'
 import AnimationSettingContainer from '@enums/AnimationSettingContainer'
 import { createElement } from 'react'
-import RedoIcon from '@/settings/components/icons/RedoIcon'
+import RedoIcon from '@/components/icons/RedoIcon'
 import classNames from 'classnames'
 
 function SettingList ({ children, className = 'BA__animationSettingsList' }) {
@@ -134,9 +134,9 @@ css
 }
 
 .BA__animationSettingsItem {
-    background-color: var(--background-base-low);
-    box-shadow: 0 -16px 0 var(--background-base-low),
-                0 16px 0 var(--background-base-low);
+    background-color: var(--background-base-lowest);
+    box-shadow: 0 -16px 0 var(--background-base-lowest),
+                0 16px 0 var(--background-base-lowest);
 }
 
 .BA__animationSettingsHeaderGroup {
@@ -156,7 +156,7 @@ css
     left: -20px;
     right: -20px;
     bottom: -16px;
-    background-color: var(--background-base-low);
+    background-color: var(--background-base-lowest);
     z-index: -2;
 }
 .BA__animationSettingsHeader {
@@ -165,8 +165,8 @@ css
     align-items: center;
     gap: 16px;
     padding-bottom: 4px;
-    box-shadow: 0 -20px 0 var(--background-base-low),
-                0 16px 0 var(--background-base-low);
+    box-shadow: 0 -20px 0 var(--background-base-lowest),
+                0 16px 0 var(--background-base-lowest);
     min-width: 0;
 }
 .BA__animationSettingsHeading {

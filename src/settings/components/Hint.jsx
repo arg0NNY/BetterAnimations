@@ -1,5 +1,5 @@
 import IconButton from '@/settings/components/IconButton'
-import CircleQuestionIcon from '@/settings/components/icons/CircleQuestionIcon'
+import CircleQuestionIcon from '@/components/icons/CircleQuestionIcon'
 import { handleClick } from '@discord/modules'
 import useConfig from '@/hooks/useConfig'
 

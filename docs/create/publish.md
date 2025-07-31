@@ -4,11 +4,12 @@ When you're ready to share your pack with the community, you can publish it to t
 
 ## Publishing
 
-::: tip 🚧 WORK IN PROGRESS
-[Catalog & Library](/usage/packs#catalog-library) are currently under active development and are not available yet.
-
-Share your packs with others to the [`#packs`](https://discord.com/channels/947007182552064050/1371848189963010139) channel of the Discord Beta Community while in Closed Beta.
-:::
+To publish your pack to the Catalog:
+1. Make sure that your pack follows the [Guidelines](#guidelines).
+2. Create a [GitHub](https://github.com) repo for your pack or upload it to your existing one.
+3. Reach out to me with the link through one of the socials:
+   - **Discord**: Find me by username `arg0nny`, or join the [Support Server](https://discord.gg/M8DBtcZjXD) and DM me from there.
+   - **Telegram**: [@arg0NNY](https://t.me/arg0nny)
 
 ## Guidelines
 

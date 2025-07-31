@@ -10,17 +10,18 @@ export const SnippetSchema = z.strictObject({
   value: PrepareInjectableSchema
 })
 
-const PackSchema = z.object({
+const BasePackSchemaShape = {
   name: z.string().trim().min(1),
   author: z.string().trim().min(1),
   version: z.string().regex(regex.semver, 'Should match semver format'),
   description: z.string().min(1).optional(),
   invite: z.string().optional(),
   authorLink: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),
-  donate: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),
-  patreon: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),
-  website: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),
+  donate: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional()
+}
 
+const PackSchema = z.object({
+  ...BasePackSchemaShape,
   snippets: SnippetSchema.array().optional(),
   animations: AnimationSchema.array()
     .superRefine((animations, ctx) => {
@@ -37,5 +38,29 @@ const PackSchema = z.object({
         })
     })
 })
+
+export const PackFallbackSchema = ({
+  name = 'Invalid name',
+  author = 'Unknown',
+  version = '0.0.0',
+  ...rest
+}) => {
+  const fallbackValues = {
+    name,
+    author,
+    version,
+    ...rest
+  }
+
+  return z.object(
+    Object.fromEntries(
+      Object.entries(BasePackSchemaShape)
+        .map(([key, schema]) => [
+          key,
+          schema.catch(fallbackValues[key])
+        ])
+    )
+  )
+}
 
 export default PackSchema

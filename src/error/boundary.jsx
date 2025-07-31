@@ -39,7 +39,7 @@ export class ErrorBoundary extends Component {
       { module: this.props.module }
     )
     this.setState({ error: internalError })
-    ErrorManager.registerInternalError(internalError)
+    ErrorManager.registerError(internalError, this.props.silent === true)
   }
 
   render () {
@@ -47,6 +47,7 @@ export class ErrorBoundary extends Component {
       noop,
       fallback,
       children,
+      text = 'An error occurred.',
       actions = e => e,
       module,
       ...props
@@ -58,21 +59,18 @@ export class ErrorBoundary extends Component {
 
     const _actions = (
       <Button
-        size={Button.Sizes.SMALL}
+        size="sm"
+        text="View"
         onClick={() => ErrorManager.showModal([this.state.error])}
-      >
-        View
-      </Button>
+      />
     )
 
     return (
-      <ErrorCard {...props} actions={actions(_actions)}>
-        <IconBrand
-          type={IconBrandTypes.ERROR}
-          size="xl"
-        />
-        <Text variant="text-md/bold">An error occurred.</Text>
-      </ErrorCard>
+      <ErrorCard
+        {...props}
+        text={text}
+        actions={actions?.(_actions)}
+      />
     )
   }
 }

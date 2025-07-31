@@ -1,5 +1,5 @@
 import { Alert } from '@discord/modules'
-import XIcon from '@/settings/components/icons/XIcon'
+import XIcon from '@/components/icons/XIcon'
 import IconButton from '@/settings/components/IconButton'
 import { css } from '@style'
 
