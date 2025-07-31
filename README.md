@@ -1,5 +1,5 @@
 > [!WARNING]
-> This project is currently in Closed Beta.
+> This project is currently in Open Beta.
 > 
 > Join the [Support Server](https://discord.gg/jgfy25t47r) to participate.
 
