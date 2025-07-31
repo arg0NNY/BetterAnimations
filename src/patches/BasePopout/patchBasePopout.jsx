@@ -10,11 +10,10 @@ import { useRef } from 'react'
 import findInReactTree from '@/utils/findInReactTree'
 import { MainWindowOnly } from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
-import AnimationStore from '@animation/store'
 import Core from '@/modules/Core'
 
 function shouldShow (self, props = self.props, state = self.state) {
-  return state.__isSafe !== false && (!state.isLoading || state.shouldShowLoadingState) && self.shouldShowPopout(props, state)
+  return (!state.isLoading || state.shouldShowLoadingState) && self.shouldShowPopout(props, state)
 }
 
 function PopoutLayer ({ ref, children, ...props }) {
@@ -38,15 +37,6 @@ function PopoutLayer ({ ref, children, ...props }) {
 
 function patchBasePopout () {
   injectModule(BasePopout, ModuleKey.Popouts)
-
-  Patcher.after(ModuleKey.Popouts, BasePopout.prototype, 'componentDidMount', self => {
-    self.__unwatchStore = AnimationStore.watch((_, isSafe) => {
-      if (self.state.__isSafe !== isSafe) self.setState({ __isSafe: isSafe })
-    })
-  })
-  Patcher.after(ModuleKey.Popouts, BasePopout.prototype, 'componentWillUnmount', self => {
-    self.__unwatchStore?.()
-  })
 
   Patcher.after(ModuleKey.Popouts, BasePopout.prototype, 'componentDidUpdate', (self, [props, state]) => {
     // Guarantee up-to-date position before the animation executes

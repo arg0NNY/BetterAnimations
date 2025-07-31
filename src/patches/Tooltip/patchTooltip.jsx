@@ -4,11 +4,10 @@ import AnimeTransition from '@components/AnimeTransition'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import Core from '@/modules/Core'
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import { MainWindowOnly } from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
-import AnimationStore from '@animation/store'
-import { useIsSafe } from '@/hooks/useAnimationStore'
+import { useSafeBoolean } from '@/hooks/useAnimationStore'
 
 function TooltipTransition (props) {
   const { module, isVisible, onAnimationRest, ...rest } = props
@@ -33,11 +32,11 @@ function TooltipTransition (props) {
   const layer = TooltipLayer(rest)
   layer.props.ref = layerRef
 
-  const isSafe = useIsSafe()
+  const safeIsVisible = useSafeBoolean(isVisible)
 
   return (
     <AnimeTransition
-      in={isVisible && isSafe}
+      in={safeIsVisible}
       layerRef={layerRef}
       module={module}
       auto={auto}

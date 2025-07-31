@@ -1,6 +1,8 @@
 import WIP from '@/settings/components/WIP'
 import CreateUpsellBanner from '@/settings/components/CreateUpsellBanner'
 import { css } from '@style'
+import { StandardSidebarViewKeyed } from '@discord/modules'
+import DiscordSelectors from '@discord/selectors'
 
 function Catalog () {
   return (
@@ -13,8 +15,9 @@ function Catalog () {
 
 export default Catalog
 
+StandardSidebarViewKeyed.then(() =>
 css
-`:has(> .BA__catalog) {
+`${DiscordSelectors.StandardSidebarView.contentColumn}:has(> .BA__catalog) {
     display: flex;
     align-items: stretch;
 }
@@ -28,3 +31,4 @@ css
     margin: auto 0;
 }`
 `Catalog`
+)

@@ -101,15 +101,18 @@ export class AnimationStore {
     this._watchers.push(callback)
     return () => this._watchers = this._watchers.filter(c => c !== callback)
   }
+  onceSafe (callback) {
+    const unwatch = this.watch((animations, isSafe) => {
+      if (!isSafe) return
+      unwatch()
+      callback()
+    })
+    return unwatch
+  }
   untilSafe () {
     return new Promise(resolve => {
       if (this.isSafe) return resolve()
-
-      const unwatch = this.watch((animations, isSafe) => {
-        if (!isSafe) return
-        unwatch()
-        resolve()
-      })
+      this.onceSafe(resolve)
     })
   }
 

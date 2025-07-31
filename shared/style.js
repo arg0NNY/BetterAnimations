@@ -8,6 +8,7 @@ export class Style {
   constructor () {
     this.initialized = false
     this.styles = []
+    this._raf = null
   }
 
   initialize () {
@@ -41,6 +42,13 @@ export class Style {
     this.injectStyle()
     Logger.log(this.name, 'Styles updated.')
   }
+  scheduleUpdate () {
+    if (this._raf) return
+    this._raf = requestAnimationFrame(() => {
+      this._raf = null
+      this.updateStyle()
+    })
+  }
 
   registerStyle (description, style) {
     const index = this.styles.findIndex(s => s.description === description)
@@ -49,7 +57,7 @@ export class Style {
       Logger.warn(this.name, `Style "${description}" has been overridden.`)
     }
     else this.styles.push({ description, style })
-    this.updateStyle()
+    this.scheduleUpdate()
   }
 
   injectStyle () {
