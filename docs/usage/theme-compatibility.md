@@ -287,7 +287,7 @@ This Module doesn't introduce any permanent layout changes.
 - **Key:** `modals`
 - **Class:** `BA__module_modals`
 
-When this Module is enabled, it wraps the `container` element of Mana modals with an additional container,
+When this Module is enabled, it wraps the `container` element of Mana (new) modals with an additional container,
 that copies all the classes of the element:
 ```html
 <div class="layerContainer_da8173">
@@ -302,6 +302,9 @@ that copies all the classes of the element:
   </div>
 </div>
 ```
+
+> [!IMPORTANT]
+> This change applies for Mana (new) modals only, Void (old) modals are unaffected.
 
 Alongside the layout change, it also adds the following styles:
 ```css
