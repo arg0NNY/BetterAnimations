@@ -1,6 +1,6 @@
 import { Webpack } from '@/BdApi'
 import { createElement } from 'react'
-import { getWithKey, getMangled, UnkeyedComponent } from '@/utils/webpack'
+import { getWithKey, getMangled, UnkeyedComponent, unkeyed } from '@/utils/webpack'
 const { Filters } = Webpack
 
 export const ModalActions = Webpack.getMangled(Filters.bySource('POPOUT', 'OVERLAY', 'modalKey'), {
@@ -212,3 +212,7 @@ export const {
   FocusLock: Filters.byStrings('children', 'containerRef')
 })
 export const getThemeClass = Webpack.getModule(Filters.byStrings('" theme-"'), { searchExports: true })
+export const Mana = {
+  ModalRootKeyed: getWithKey(Filters.byStrings('MODAL', '"padding-size-"')),
+  get ModalRoot () { return unkeyed(this.ModalRootKeyed) }
+}

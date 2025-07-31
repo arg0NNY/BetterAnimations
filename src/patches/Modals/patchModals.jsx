@@ -13,11 +13,15 @@ import { cloneElement, useMemo, useRef } from 'react'
 import useWindow from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
 import useTransitionCustomCondition from '@/hooks/useTransitionCustomCondition'
+import patchManaModalRoot from '@/patches/Modals/patchManaModalRoot'
 
 function Modal ({ modal, ...props }) {
   const layerRef = useRef()
   const containerRef = useMemo(() => ({
-    get current () { return directChild(layerRef.current) }
+    get current () {
+      return layerRef.current?.querySelector(`[data-ba-container="${ModuleKey.Modals}"]`)
+        ?? directChild(layerRef.current)
+    }
   }), [layerRef])
 
   const isShown = useTransitionCustomCondition(modal.props.isVisible, props)
@@ -68,6 +72,7 @@ function patchModals () {
   })
 
   patchModalBackdrop()
+  patchManaModalRoot()
 }
 
 export default patchModals

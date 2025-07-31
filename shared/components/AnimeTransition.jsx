@@ -77,7 +77,7 @@ class AnimeTransition extends Component {
   onAnimate (type, fn) {
     return () => {
       const container = this.nodeRef.current
-      container?.setAttribute('data-ba-container', '')
+      container?.setAttribute('data-ba-container', this.props.module.id)
       if (this.props.defaultLayoutStyles === false) container?.setAttribute('data-ba-default-layout-styles', 'false')
 
       this.instance.current = this.store.requestAnimation({
@@ -166,7 +166,11 @@ class AnimeTransition extends Component {
 
       return this.provideContext(
         state,
-        <AnimeContainer container={children && container} ref={this.containerRef}>
+        <AnimeContainer
+          ref={this.containerRef}
+          id={module.id}
+          container={children && container}
+        >
           <Freeze freeze={freeze && props.in === false} nodeRef={this.nodeRef}>
             {_children}
           </Freeze>
