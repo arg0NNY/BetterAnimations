@@ -1327,7 +1327,7 @@
                 "className": "overlay__path",
                 "vectorEffect": "non-scaling-stroke",
                 "d": "M 0 0 h 0 c 0 50 0 50 0 100 H 0 V 0 Z",
-                "fill": "var(--bg-base-tertiary)"
+                "fill": "var(--background-base-lowest)"
               }
             }
           ]
