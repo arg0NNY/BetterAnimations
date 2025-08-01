@@ -835,6 +835,7 @@ or [`scale`](https://developer.mozilla.org/en-US/docs/Web/CSS/scale) properties.
 
 Useful for leveraging [hardware acceleration](https://animejs.com/documentation/web-animation-api/hardware-accelerated-animations)
 for [WAAPI](/create/anime#waapi) animations while maintaining the ability to work with individual axes separately.
+See [Hardware acceleration](/create/anime#hardware-acceleration) to learn more.
 
 ### Parameters {#vector-parameters}
 
@@ -851,13 +852,13 @@ If a property or a value of a specific keyframe is omitted, a default value `0` 
 
 A string representing a unit to append for each **numerical** value passed in <InjectRef inject="vector" parameter="values" />.
 
-`px` by default.
+`px` by default. Pass `null` to leave the values as-is.
 
 ### Returns {#vector-returns}
 
 A string representing an `x y z` vector.
 
-If some properties in <InjectRef inject="vector" parameter="values" /> have more than one value (keyframe) —
+If some properties in <InjectRef inject="vector" parameter="values" /> have more than one value (keyframe) specified —
 an array of such strings for each keyframe.
 
 ### Example usage {#vector-example}
@@ -897,6 +898,78 @@ an array of such strings for each keyframe.
 [
   "20px 0 90px",
   "60px 0 0"
+]
+```
+
+:::
+
+## `rotate`
+
+Turns an individual rotation value or a sequence of [keyframes](https://animejs.com/documentation/animation/keyframes)
+for individual rotate value into a single `axis angle` string or a sequence of `axis angle` strings
+that can be passed directly to [`rotate`](https://developer.mozilla.org/en-US/docs/Web/CSS/rotate) property.
+
+Useful for leveraging [hardware acceleration](https://animejs.com/documentation/web-animation-api/hardware-accelerated-animations)
+for [WAAPI](/create/anime#waapi) animations. See [Hardware acceleration](/create/anime#hardware-acceleration) to learn more.
+
+### Parameters {#rotate-parameters}
+
+#### `axis` {#rotate-parameters-axis}
+
+Any of: `"x"`, `"y"`, `"z"`.
+
+#### `angle` {#rotate-parameters-angle}
+
+A string or a number, representing the rotation value,
+or an array of strings or numbers, representing the rotation values for each keyframe.
+
+#### `unit` <Badge type="info" text="optional" /> {#rotate-parameters-unit}
+
+A string representing a unit to append for each **numerical** value passed in <InjectRef inject="rotate" parameter="angle" />.
+
+`deg` by default. Pass `null` to leave the values as-is.
+
+### Returns {#rotate-returns}
+
+A string representing an [`axis angle`](https://developer.mozilla.org/en-US/docs/Web/CSS/rotate#x_y_or_z_axis_name_plus_angle_value)
+CSS `rotate` value.
+
+If <InjectRef inject="rotate" parameter="angle" /> have more than one value (keyframe) specified —
+an array of such strings for each keyframe.
+
+### Example usage {#rotate-example}
+
+::: code-group
+
+```json [Definition]
+{
+  "inject": "rotate",
+  "axis": "y",
+  "angle": 3.14,
+  "unit": "rad"
+}
+```
+
+```json [Output]
+"y 3.14rad"
+```
+
+:::
+
+::: code-group
+
+```json [Definition]
+{
+  "inject": "rotate",
+  "axis": "x",
+  "angle": [-90, 0]
+}
+```
+
+```json [Output]
+[
+  "x -90deg",
+  "x 0"
 ]
 ```
 

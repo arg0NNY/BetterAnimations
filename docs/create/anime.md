@@ -129,6 +129,71 @@ waapi.animate(element, {
 })
 ```
 
+### Hardware acceleration
+
+When building WAAPI animations, make sure to use [hardware-accelerated](https://animejs.com/documentation/web-animation-api/hardware-accelerated-animations)
+properties whenever possible. Note that [individual CSS transforms](https://animejs.com/documentation/web-animation-api/improvements-to-the-web-animation-api/individual-css-transforms)
+cannot be hardware-accelerated.
+
+_BetterAnimations_ provides injects <InjectRef inject="vector" /> and <InjectRef inject="rotate" /> to make it easy for you
+to leverage hardware-accelerated properties ([`translate`](https://developer.mozilla.org/en-US/docs/Web/CSS/translate),
+[`scale`](https://developer.mozilla.org/en-US/docs/Web/CSS/scale), [`rotate`](https://developer.mozilla.org/en-US/docs/Web/CSS/rotate), etc.)
+while maintaining the ability to work with individual values separately.
+
+::: code-group
+
+```json [Not hardware-accelerated]
+{
+  "anime": {
+    "duration": 200,
+    "ease": "inOutSine",
+    "x": [20, 0],
+    "y": [-50, 0],
+    "rotateX": [-90, 0]
+  }
+}
+```
+
+```json [Hardware-accelerated]
+{
+  "anime": {
+    "duration": 200,
+    "ease": "inOutSine",
+    "translate": [
+      "20px -50px",
+      "0 0"
+    ],
+    "rotate": [
+      "x -90deg",
+      "x 0"
+    ]
+  }
+}
+```
+
+```json [Hardware-accelerated using injects]
+{
+  "anime": {
+    "duration": 200,
+    "ease": "inOutSine",
+    "translate": {
+      "inject": "vector",
+      "values": {
+        "x": [20, 0],
+        "y": [-50, 0]
+      }
+    },
+    "rotate": {
+      "inject": "rotate",
+      "axis": "x",
+      "angle": [-90, 0]
+    }
+  }
+}
+```
+
+:::
+
 ## Timer
 
 To create a [`Timer`](https://animejs.com/documentation/timer) specify a type `timer`:
