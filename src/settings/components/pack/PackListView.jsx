@@ -57,7 +57,7 @@ function PackListView ({
         <SearchBar
           className="BA__packListViewSearchBar"
           placeholder="Search"
-          size={SearchBar.Sizes.MEDIUM}
+          size="md"
           query={query}
           onChange={setQuery}
           onClear={() => setQuery('')}

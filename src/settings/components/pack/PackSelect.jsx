@@ -151,7 +151,7 @@ function PackSelectPopout ({ selectRef, packs, selected, onSelect, isActive, upd
           <SearchBar
             className="BA__packSelectPopoutSearchBar"
             placeholder="Search"
-            size={SearchBar.Sizes.MEDIUM}
+            size="md"
             query={query}
             onChange={setQuery}
             onClear={() => setQuery('')}
