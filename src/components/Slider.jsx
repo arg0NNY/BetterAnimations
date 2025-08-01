@@ -1,5 +1,5 @@
 import { Slider as DiscordSlider, Tooltip } from '@discord/modules'
-import Patcher from '@/modules/Patcher'
+import { TinyPatcher } from '@/modules/Patcher'
 import findInReactTree from '@/utils/findInReactTree'
 
 class Slider extends DiscordSlider {
@@ -17,7 +17,7 @@ class Slider extends DiscordSlider {
     const { forceShowBubble = false, onValueRender } = this.props
     const value = super.render()
     if (forceShowBubble) {
-      Patcher.after(value.props, 'children', (self, args, value) => {
+      TinyPatcher.after(value.props, 'children', (self, args, value) => {
         const tooltip = findInReactTree(value, m => m?.type === Tooltip)
         if (!tooltip) return
 

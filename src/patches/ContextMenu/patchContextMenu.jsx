@@ -1,4 +1,4 @@
-import Patcher from '@/modules/Patcher'
+import Patcher, { TinyPatcher } from '@/modules/Patcher'
 import { ContextMenuKeyed, TransitionGroup } from '@discord/modules'
 import AnimeTransition from '@components/AnimeTransition'
 import patchContextSubmenu from '@/patches/ContextMenu/patchContextSubmenu'
@@ -38,7 +38,7 @@ function patchContextMenu () {
                 )
 
                 if (value)
-                  Patcher.after(value, 'type', (self, [props], value) => {
+                  TinyPatcher.after(value, 'type', (self, [props], value) => {
                     value.props.onPositionChange = props.onPositionChange ?? (() => {})
                     props.setLayerRef?.(value.props.ref)
                   })

@@ -1,5 +1,5 @@
 import ensureOnce from '@utils/ensureOnce'
-import Patcher from '@/modules/Patcher'
+import Patcher, { TinyPatcher } from '@/modules/Patcher'
 import { ChannelItemKeyed, StageVoiceChannelItemKeyed, VoiceChannelItemKeyed } from '@discord/modules'
 import { createRef } from 'react'
 import findInReactTree from '@/utils/findInReactTree'
@@ -20,7 +20,7 @@ function patchChannelItem () {
             self.__containerRef = container.props.ref
             break
           case 'function':
-            Patcher.after(container.props, 'ref', (_, [ref]) => self.__containerRef.current = ref)
+            TinyPatcher.after(container.props, 'ref', (_, [ref]) => self.__containerRef.current = ref)
             break
           default: container.props.ref = self.__containerRef
         }

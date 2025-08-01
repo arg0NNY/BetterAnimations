@@ -22,7 +22,6 @@ import { saveMeta } from '@/meta'
 import Style, { css } from '@style'
 import DiscordClasses from '@discord/classes'
 import Core from '@/modules/Core'
-import patchChatSearchSidebar from '@/patches/ChatSearchSidebar/patchChatSearchSidebar'
 import patchReferencePositionLayer from '@/patches/ReferencePositionLayer/patchReferencePositionLayer'
 import patchSelect from '@/patches/Select/patchSelect'
 import Mouse from '@shared/mouse'
@@ -103,7 +102,6 @@ export default function (meta) {
       patchLayers()
       patchListThin()
       patchGuildChannelList()
-      patchChatSearchSidebar()
       patchReferencePositionLayer()
       patchSelect()
       patchChannelTextArea()
