@@ -22,30 +22,33 @@
         "negativeValue": -5
       },
       "value": {
-        "inject": "type",
-        "enter": {
-          "inject": "isIntersected",
-          "true": {
-            "inject": "direction",
-            "upwards": { "y": 0 },
-            "downwards": { "y": 0 },
-            "leftwards": { "x": 0 },
-            "rightwards": { "x": 0 }
+        "inject": "vector",
+        "values": {
+          "inject": "type",
+          "enter": {
+            "inject": "isIntersected",
+            "true": {
+              "inject": "direction",
+              "upwards": { "y": 0 },
+              "downwards": { "y": 0 },
+              "leftwards": { "x": 0 },
+              "rightwards": { "x": 0 }
+            },
+            "false": {
+              "inject": "direction",
+              "upwards": { "y": [{ "inject": "snippet.params", "name": "value" }, 0] },
+              "downwards": { "y": [{ "inject": "snippet.params", "name": "negativeValue" }, 0] },
+              "leftwards": { "x": [{ "inject": "snippet.params", "name": "value" }, 0] },
+              "rightwards": { "x": [{ "inject": "snippet.params", "name": "negativeValue" }, 0] }
+            }
           },
-          "false": {
+          "exit": {
             "inject": "direction",
-            "upwards": { "y": [{ "inject": "snippet.params", "name": "value" }, 0] },
-            "downwards": { "y": [{ "inject": "snippet.params", "name": "negativeValue" }, 0] },
-            "leftwards": { "x": [{ "inject": "snippet.params", "name": "value" }, 0] },
-            "rightwards": { "x": [{ "inject": "snippet.params", "name": "negativeValue" }, 0] }
+            "upwards": { "y": { "inject": "snippet.params", "name": "negativeValue" } },
+            "downwards": { "y": { "inject": "snippet.params", "name": "value" } },
+            "leftwards": { "x": { "inject": "snippet.params", "name": "negativeValue" } },
+            "rightwards": { "x": { "inject": "snippet.params", "name": "value" } }
           }
-        },
-        "exit": {
-          "inject": "direction",
-          "upwards": { "y": { "inject": "snippet.params", "name": "negativeValue" } },
-          "downwards": { "y": { "inject": "snippet.params", "name": "value" } },
-          "leftwards": { "x": { "inject": "snippet.params", "name": "negativeValue" } },
-          "rightwards": { "x": { "inject": "snippet.params", "name": "value" } }
         }
       }
     },
@@ -232,16 +235,13 @@
           "type": "waapi",
           "targets": { "inject": "element" },
           "parameters": {
-            "inject": "assign",
-            "target": {
-              "duration": { "inject": "duration" },
-              "ease": { "inject": "easing" },
-              "opacity": {
-                "inject": "snippet",
-                "key": "opacity"
-              }
+            "duration": { "inject": "duration" },
+            "ease": { "inject": "easing" },
+            "opacity": {
+              "inject": "snippet",
+              "key": "opacity"
             },
-            "source": {
+            "translate": {
               "inject": "snippet",
               "key": "directionalTranslate",
               "params": {
@@ -310,12 +310,9 @@
           "type": "waapi",
           "targets": { "inject": "element" },
           "parameters": {
-            "inject": "assign",
-            "target": {
-              "duration": { "inject": "duration" },
-              "ease": { "inject": "easing" }
-            },
-            "source": {
+            "duration": { "inject": "duration" },
+            "ease": { "inject": "easing" },
+            "translate": {
               "inject": "snippet",
               "key": "directionalTranslate",
               "params": {
@@ -500,30 +497,36 @@
           "type": "waapi",
           "targets": { "inject": "element" },
           "parameters": {
-            "inject": "assign",
-            "target": {
-              "duration": { "inject": "duration" },
-              "ease": { "inject": "easing" }
-            },
-            "source": {
+            "duration": { "inject": "duration" },
+            "ease": { "inject": "easing" },
+            "scale": {
               "inject": "type",
               "enter": {
                 "inject": "isIntersected",
-                "true": {
-                  "x": 0,
-                  "y": 0,
-                  "scale": 1
-                },
-                "false": {
-                  "x": [{ "inject": "var.get", "name": "x" }, 0],
-                  "y": [{ "inject": "var.get", "name": "y" }, 0],
-                  "scale": [0, 1]
-                }
+                "true": 1,
+                "false": [0, 1]
               },
-              "exit": {
-                "x": { "inject": "var.get", "name": "x" },
-                "y": { "inject": "var.get", "name": "y" },
-                "scale": 0
+              "exit": 0
+            },
+            "translate": {
+              "inject": "vector",
+              "values": {
+                "inject": "type",
+                "enter": {
+                  "inject": "isIntersected",
+                  "true": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "false": {
+                    "x": [{ "inject": "var.get", "name": "x" }, 0],
+                    "y": [{ "inject": "var.get", "name": "y" }, 0]
+                  }
+                },
+                "exit": {
+                  "x": { "inject": "var.get", "name": "x" },
+                  "y": { "inject": "var.get", "name": "y" }
+                }
               }
             }
           }
@@ -696,14 +699,14 @@
               "enter": {
                 "inject": "isIntersected",
                 "true": 0,
-                "false": {
-                  "from": {
+                "false": [
+                  {
                     "inject": "direction",
                     "forwards": -90,
                     "backwards": 90
                   },
-                  "to": 0
-                }
+                  0
+                ]
               },
               "exit": {
                 "inject": "direction",
@@ -747,23 +750,20 @@
           "type": "waapi",
           "targets": { "inject": "element" },
           "parameters": {
-            "inject": "assign",
-            "target": {
-              "duration": { "inject": "duration" },
-              "ease": { "inject": "easing" },
-              "opacity": {
-                "inject": "snippet",
-                "key": "opacity"
-              }
+            "duration": { "inject": "duration" },
+            "ease": { "inject": "easing" },
+            "opacity": {
+              "inject": "snippet",
+              "key": "opacity"
             },
-            "source": {
-              "inject": "variant",
-              "horizontal": {
-                "rotateX": { "inject": "var.get", "name": "rotate" }
+            "rotate": {
+              "inject": "rotate",
+              "axis": {
+                "inject": "variant",
+                "horizontal": "x",
+                "vertical": "y"
               },
-              "vertical": {
-                "rotateY": { "inject": "var.get", "name": "rotate" }
-              }
+              "angle": { "inject": "var.get", "name": "rotate" }
             }
           }
         }
@@ -892,12 +892,9 @@
           "type": "waapi",
           "targets": { "inject": "element" },
           "parameters": {
-            "inject": "assign",
-            "target": {
-              "duration": { "inject": "duration" },
-              "ease": { "inject": "easing" }
-            },
-            "source": {
+            "duration": { "inject": "duration" },
+            "ease": { "inject": "easing" },
+            "translate": {
               "inject": "snippet",
               "key": "directionalTranslate",
               "params": {
@@ -1218,10 +1215,10 @@
               "enter": {
                 "inject": "isIntersected",
                 "true": "0%",
-                "false": {
-                  "from": { "inject": "var.get", "name": "translate" },
-                  "to": "0%"
-                }
+                "false": [
+                  { "inject": "var.get", "name": "translate" },
+                  "0%"
+                ]
               },
               "exit": { "inject": "var.get", "name": "translate" }
             }
@@ -1281,7 +1278,12 @@
               "value": { "inject": "var.get", "name": "isSwitchExit" },
               "then": {},
               "else": {
-                "x": { "inject": "var.get", "name": "translateParameters" }
+                "translate": {
+                  "inject": "vector",
+                  "values": {
+                    "x": { "inject": "var.get", "name": "translateParameters" }
+                  }
+                }
               }
             }
           }

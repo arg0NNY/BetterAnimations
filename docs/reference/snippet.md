@@ -33,30 +33,33 @@ _Injectable_ Snippet contents. See [Injects](/create/injects).
     "negativeValue": -5
   },
   "value": {
-    "inject": "type",
-    "enter": {
-      "inject": "isIntersected",
-      "true": {
-        "inject": "direction",
-        "upwards": { "y": 0 },
-        "downwards": { "y": 0 },
-        "leftwards": { "x": 0 },
-        "rightwards": { "x": 0 }
+    "inject": "vector",
+    "values": {
+      "inject": "type",
+      "enter": {
+        "inject": "isIntersected",
+        "true": {
+          "inject": "direction",
+          "upwards": { "y": 0 },
+          "downwards": { "y": 0 },
+          "leftwards": { "x": 0 },
+          "rightwards": { "x": 0 }
+        },
+        "false": {
+          "inject": "direction",
+          "upwards": { "y": [{ "inject": "snippet.params", "name": "value" }, 0] },
+          "downwards": { "y": [{ "inject": "snippet.params", "name": "negativeValue" }, 0] },
+          "leftwards": { "x": [{ "inject": "snippet.params", "name": "value" }, 0] },
+          "rightwards": { "x": [{ "inject": "snippet.params", "name": "negativeValue" }, 0] }
+        }
       },
-      "false": {
+      "exit": {
         "inject": "direction",
-        "upwards": { "y": [{ "inject": "snippet.params", "name": "value" }, 0] },
-        "downwards": { "y": [{ "inject": "snippet.params", "name": "negativeValue" }, 0] },
-        "leftwards": { "x": [{ "inject": "snippet.params", "name": "value" }, 0] },
-        "rightwards": { "x": [{ "inject": "snippet.params", "name": "negativeValue" }, 0] }
+        "upwards": { "y": { "inject": "snippet.params", "name": "negativeValue" } },
+        "downwards": { "y": { "inject": "snippet.params", "name": "value" } },
+        "leftwards": { "x": { "inject": "snippet.params", "name": "negativeValue" } },
+        "rightwards": { "x": { "inject": "snippet.params", "name": "value" } }
       }
-    },
-    "exit": {
-      "inject": "direction",
-      "upwards": { "y": { "inject": "snippet.params", "name": "negativeValue" } },
-      "downwards": { "y": { "inject": "snippet.params", "name": "value" } },
-      "leftwards": { "x": { "inject": "snippet.params", "name": "negativeValue" } },
-      "rightwards": { "x": { "inject": "snippet.params", "name": "value" } }
     }
   }
 }

@@ -43,6 +43,8 @@ export default Enum({
   Switch: 'switch',
   Load: 'load',
   Raw: 'raw',
+  Vector: 'vector',
+  Rotate: 'rotate',
   MathAbs: 'math.abs',
   MathAcos: 'math.acos',
   MathAcosh: 'math.acosh',
