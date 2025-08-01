@@ -16,7 +16,7 @@
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
   <a href="https://discord.gg/M8DBtcZjXD">Support Server</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://donationalerts.com/r/arg0nny">Donate</a>
+  <a href="https://boosty.to/arg0nny/donate">Donate</a>
 </p>
 
 ## Installation
