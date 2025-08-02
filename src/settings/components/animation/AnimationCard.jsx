@@ -4,7 +4,7 @@ import AnimationCardControls from '@/settings/components/animation/AnimationCard
 import useEventListener from '@/hooks/useEventListener'
 import useHover from '@/hooks/useHover'
 import useWindowSize from '@/hooks/useWindowSize'
-import { Clickable, CSSTransition, Timeout, TransitionGroup } from '@discord/modules'
+import { Clickable, CSSTransition, Timeout, TransitionGroup, useIsVisible } from '@discord/modules'
 import AnimationSettings from '@/settings/components/animation/AnimationSettings'
 import DiscordClasses from '@discord/classes'
 import useDismissible from '@/hooks/useDismissible'
@@ -153,7 +153,6 @@ function AnimationCard ({
   errors
 }) {
   const positionerRef = useRef()
-  const cardRef = useRef()
 
   const settingsPopoutRef = useRef()
   const accordionsPopoutRef = useRef()
@@ -164,6 +163,9 @@ function AnimationCard ({
 
   const [expanded, setExpanded] = useState(null)
   const close = useCallback(() => setExpanded(null), [setExpanded])
+
+  const [isHeaderVisible, setIsHeaderVisible] = useState(false)
+  const cardRef = useIsVisible(isVisible => header && setIsHeaderVisible(isVisible), .5)
 
   const isAnimationExpanded = useIsAnimationExpanded(header ? null : !!expanded)
 
@@ -256,7 +258,7 @@ function AnimationCard ({
                 pack={pack}
                 animation={animation}
                 title={name}
-                active={(header && !isAnimationExpanded) || isQuickPreview || !!expanded}
+                active={(header && isHeaderVisible && !isAnimationExpanded) || isQuickPreview || !!expanded}
               />
               <AnimationCardControls
                 enter={enter}

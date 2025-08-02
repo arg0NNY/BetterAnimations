@@ -188,6 +188,7 @@ export const ProfileEffectsKeyed = getWithKey(Filters.byStrings('profileEffectCo
 export const GatewaySocket = Webpack.getModule(m => m?.dispatcher?.scheduler, { searchExports: true })
 export const EmojiKeyed = getWithKey(Filters.byStrings('emojiId', 'emojiName', 'animated', 'shouldAnimate'))
 export const useIsVisibleKeyed = getWithKey(Filters.byStrings('isIntersecting', 'arguments.length'))
+export const useIsVisible = (...args) => unkeyed(useIsVisibleKeyed)(...args)
 export const useRootElementContextKeyed = getWithKey(Filters.byStrings('useRootElementContext'))
 export const GuildIcon = Webpack.getModule(m => Filters.byKeys('badgeStrokeColor', 'animate')(m?.defaultProps), { searchExports: true })
 export const GuildStore = Webpack.getStore('GuildStore')
