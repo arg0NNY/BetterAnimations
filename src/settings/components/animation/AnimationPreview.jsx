@@ -1,4 +1,4 @@
-import { use, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { use, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { css } from '@style'
 import { ChannelSectionStore, getThemeClass, Text, useStateFromStores } from '@discord/modules'
 import ModuleContext from '@/settings/context/ModuleContext'
@@ -42,6 +42,10 @@ function AnimationPreview ({
 
   const { isMembersOpen: memberListShown = true } = useStateFromStores([ChannelSectionStore], () => ChannelSectionStore.getState())
 
+  const modules = useMemo(() => Core.getAllModules(true), [])
+  const style = useMemo(() => ({ scale }), [scale])
+  const preferences = useMemo(() => ({ memberListShown }), [memberListShown])
+
   return (
     <div
       ref={containerRef}
@@ -53,15 +57,15 @@ function AnimationPreview ({
           getThemeClass('darker'),
           'BA__animationPreview'
         )}
-        style={{ scale }}
+        style={style}
         key={module.id}
         id={module.id}
-        modules={Core.getAllModules(true)}
+        modules={modules}
         placeholder={!isActive}
         pack={pack}
         animation={animation}
         dataKey={dataKey}
-        preferences={{ memberListShown }}
+        preferences={preferences}
       />
       {title && (
         <div className={classNames(
