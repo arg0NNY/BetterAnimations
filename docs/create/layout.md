@@ -278,11 +278,13 @@ have a limited set of injects that are allowed for use inside them:
 - <InjectRef inject="mouse" />
 - <InjectRef inject="raw" />
 - <InjectRef inject="rect" />
+- <InjectRef inject="rotate" />
 - <InjectRef inject="string.template" />
 - <InjectRef inject="switch" />
 - <InjectRef inject="type" />
 - <InjectRef inject="undefined" />
 - <InjectRef inject="var.get" />
+- <InjectRef inject="vector" />
 - <InjectRef inject="window" />
 - <InjectRef inject="assign" />
 - <InjectRef inject="includes" />
