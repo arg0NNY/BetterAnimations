@@ -49,7 +49,7 @@ function useAnimationCardExpand ({ expanded, positionerRef, cardRef, popoutRef, 
   }
 
   const getScrollerNode = useCallback(() => refToScroller.current?.getScrollerNode(), [refToScroller])
-  useEventListener('scroll', positioner.update, getScrollerNode)
+  useEventListener('scroll', () => expanded && positioner.update(), getScrollerNode)
 
   const popout = useElementBounding(popoutRef)
 
