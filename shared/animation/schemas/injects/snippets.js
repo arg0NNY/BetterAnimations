@@ -1,10 +1,10 @@
 import { z } from 'zod'
 import { InjectSchema, InjectWithMeta } from '@animation/schemas/utils'
 import Inject from '@enums/Inject'
-import InjectableSchema from '@animation/schemas/InjectableSchema'
 import ParseStage from '@enums/ParseStage'
 import AnimationError from '@error/structs/AnimationError'
 import { formatZodError } from '@utils/zod'
+import { parseInjectable } from '@animation/injectable/parse'
 
 export const SnippetInjectSchema = (context, env) => InjectSchema(Inject.Snippet).extend({
   key: z.enum(context.pack.snippets?.map(s => s.key) ?? []),
@@ -36,13 +36,12 @@ export const SnippetInjectSchema = (context, env) => InjectSchema(Inject.Snippet
 
   const path = ['snippets', snippetIndex, 'value']
   try {
-    const value = InjectableSchema(context, {
+    const value = parseInjectable(snippet.value, context, {
       ...snippetEnv,
       stage: ParseStage.Initialize
-    }).parse(snippet.value, { path })
+    }, { path })
 
-    return InjectableSchema(context, snippetEnv)
-      .parse(value, { path })
+    return parseInjectable(value, context, snippetEnv, { path })
   }
   catch (error) {
     throw error instanceof AnimationError ? error : new AnimationError(

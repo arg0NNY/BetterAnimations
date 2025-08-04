@@ -1,12 +1,21 @@
 import ParseStage from '@enums/ParseStage'
 import { z } from 'zod'
-import InjectableSchema from '@animation/schemas/InjectableSchema'
 import AnimationError from '@error/structs/AnimationError'
 import { formatZodError } from '@utils/zod'
 import Documentation from '@shared/documentation'
+import { parseInjectable } from '@animation/injectable/parse'
 
 const ParsableSchema = (stage, schema) => (context, env) =>
-  (![ParseStage.Initialize, stage].includes(env.stage) ? z.any() : InjectableSchema(context, env))
+  (
+    ![ParseStage.Initialize, stage].includes(env.stage)
+      ? z.any()
+      : z.any().transform((value, ctx) => parseInjectable(
+        value,
+        context,
+        env,
+        { path: ctx.path }
+      ))
+  )
     .transform((value, ctx) => {
       try {
         return (

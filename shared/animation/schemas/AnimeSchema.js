@@ -6,7 +6,7 @@ import TrustedFunctionSchema from '@animation/schemas/TrustedFunctionSchema'
 import { clearSourceMapDeep, SourceMappedObjectSchema } from '@animation/sourceMap'
 import { ParametersSchema, TargetsSchema } from '@animation/schemas/utils'
 import { intersect } from '@utils/anime'
-import { storeInjectable } from '@animation/schemas/SanitizeInjectableSchema'
+import { storeInjectable } from '@animation/injectable/utils'
 
 const AnimeBaseSchema = (type, isDefault = false) => SourceMappedObjectSchema.extend({
   type: isDefault ? z.literal(type).optional() : z.literal(type)
