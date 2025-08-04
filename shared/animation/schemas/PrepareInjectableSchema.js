@@ -2,14 +2,11 @@ import { z } from 'zod'
 import { Literal } from '@utils/schemas'
 import { forbiddenKeys } from '@animation/keys'
 import { storeSourceMap } from '@animation/sourceMap'
+import deepMap from '@animation/deepMap'
 
 const PrepareInjectableSchema = z.lazy(
-  () => z.union([
-    Literal,
-    z.array(PrepareInjectableSchema),
-    z.record(PrepareInjectableSchema)
-  ]).transform(
-    (value, ctx) => {
+  () => z.any().transform(
+    (value, ctx) => deepMap(value, (value, { path }) => {
       if (typeof value !== 'object' || value === null) return value
 
       if (
@@ -18,7 +15,7 @@ const PrepareInjectableSchema = z.lazy(
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: `Forbidden key: '${key}'`,
-            path: [key],
+            path: path.concat(key),
             params: { pointAt: 'key' }
           })
           return true
@@ -26,7 +23,7 @@ const PrepareInjectableSchema = z.lazy(
       ) return z.NEVER
 
       return storeSourceMap(value, ctx.path)
-    }
+    })
   )
 )
 
