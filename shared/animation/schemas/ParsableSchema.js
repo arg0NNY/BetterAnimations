@@ -1,7 +1,7 @@
 import ParseStage from '@enums/ParseStage'
 import { z } from 'zod'
 import AnimationError from '@error/structs/AnimationError'
-import { formatZodError } from '@utils/zod'
+import { formatZodError } from '@animation/zod'
 import Documentation from '@shared/documentation'
 import { parseInjectable } from '@animation/injectable/parse'
 

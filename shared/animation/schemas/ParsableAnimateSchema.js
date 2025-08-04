@@ -10,7 +10,7 @@ import { clearSourceMapDeep, SourceMappedObjectSchema, SourceMapSchema } from '@
 import TrustedFunctionSchema from '@animation/schemas/TrustedFunctionSchema'
 import ParsableSchema from '@animation/schemas/ParsableSchema'
 import AnimeSchema from '@animation/schemas/AnimeSchema'
-import { zodTransformErrorBoundary } from '@utils/zod'
+import { zodTransformErrorBoundary } from '@animation/zod'
 import { layoutDependentInjects, safeInjects } from '@animation/schemas/injects'
 
 export function buildPreLayoutEnv (env) {

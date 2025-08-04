@@ -8,7 +8,7 @@ import {
 import { stagger, svg, utils } from 'animejs'
 import { z } from 'zod'
 import Inject from '@enums/Inject'
-import { zodTransformErrorBoundary } from '@utils/zod'
+import { zodTransformErrorBoundary } from '@animation/zod'
 import { zodErrorBoundary } from '@animation/utils'
 import { clearSourceMapDeep } from '@animation/sourceMap'
 
