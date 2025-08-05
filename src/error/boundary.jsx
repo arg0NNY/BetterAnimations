@@ -6,7 +6,7 @@ import { Button, Text } from '@discord/modules'
 import IconBrand, { IconBrandTypes } from '@/components/icons/IconBrand'
 import Core from '@/modules/Core'
 
-export function errorBoundary (callback, fallback = () => undefined, options = {}) {
+export function errorBoundary (callback, fallback = () => {}, options = {}) {
   return (...args) => {
     try {
       return callback(...args)

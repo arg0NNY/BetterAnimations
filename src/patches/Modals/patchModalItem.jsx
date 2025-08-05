@@ -7,7 +7,7 @@ import classNames from 'classnames'
 
 function patchModalItem (component) {
   injectModule(component, ModuleKey.Modals)
-  Patcher.after(ModuleKey.Modals, component.prototype, 'render', (self, args, value) => {
+  Patcher.after(ModuleKey.Modals, component?.prototype, 'render', (self, args, value) => {
     const module = Core.getModule(ModuleKey.Modals)
     if (!module.isEnabled()) return
 

@@ -58,11 +58,16 @@ class PatcherWrapper {
       ...rest
     }
 
-    return attempt(() => this._basePatcher[type](
-      moduleToPatch,
-      functionName,
-      errorBoundary(callback, fallback, errorOptions)
-    ), errorOptions)
+    return attempt(() => {
+      if (typeof moduleToPatch !== 'object' || typeof functionName !== 'string')
+        throw new Error('Module received by Patcher is unresolved or invalid')
+
+      return this._basePatcher[type](
+        moduleToPatch,
+        functionName,
+        errorBoundary(callback, fallback, errorOptions)
+      )
+    }, () => {}, errorOptions)
   }
 
   before (moduleId, moduleToPatch, functionName, callback, options) {

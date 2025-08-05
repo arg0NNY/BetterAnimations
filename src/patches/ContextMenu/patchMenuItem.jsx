@@ -11,7 +11,7 @@ function patchMenuItem () {
    * This patch intercepts Discord's rAF call and executes the callback synchronously instead.
    */
   Patcher.after(...MenuItemKeyed, (self, [props], value) => {
-    if (!value.props.onClick) return
+    if (!value?.props?.onClick) return
 
     TinyPatcher.before(value.props, 'onClick', (self, [event]) => {
       Object.defineProperty(event.nativeEvent, 'view', {

@@ -38,7 +38,7 @@ function PopoutLayer ({ ref, children, ...props }) {
 function patchBasePopout () {
   injectModule(BasePopout, ModuleKey.Popouts)
 
-  Patcher.after(ModuleKey.Popouts, BasePopout.prototype, 'componentDidUpdate', (self, [props, state]) => {
+  Patcher.after(ModuleKey.Popouts, BasePopout?.prototype, 'componentDidUpdate', (self, [props, state]) => {
     // Guarantee up-to-date position before the animation executes
     // because `ResizeObserver` implemented by `BasePopout` may trigger its callback after `requestAnimationFrame`
     // and there will be no way to catch it without waiting for the next frame
@@ -48,7 +48,7 @@ function patchBasePopout () {
       })
   })
 
-  Patcher.after(ModuleKey.Popouts, BasePopout.prototype, 'renderLayer', (self, args, value) => {
+  Patcher.after(ModuleKey.Popouts, BasePopout?.prototype, 'renderLayer', (self, args, value) => {
     const module = Core.getModule(ModuleKey.Popouts)
     if (!module.isEnabled()) return
 

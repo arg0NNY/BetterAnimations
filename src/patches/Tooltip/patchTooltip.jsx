@@ -50,9 +50,9 @@ function TooltipTransition (props) {
 }
 
 function patchTooltip () {
-  Tooltip.defaultProps.delay = 0
+  if (Tooltip) Tooltip.defaultProps.delay = 0
   injectModule(Tooltip, ModuleKey.Tooltips)
-  Patcher.after(ModuleKey.Tooltips, Tooltip.prototype, 'renderTooltip', (self, args, value) => {
+  Patcher.after(ModuleKey.Tooltips, Tooltip?.prototype, 'renderTooltip', (self, args, value) => {
     const module = Core.getModule(ModuleKey.Tooltips)
     if (!module.isEnabled()) return
 

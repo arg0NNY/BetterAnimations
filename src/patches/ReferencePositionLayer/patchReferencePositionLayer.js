@@ -4,7 +4,7 @@ import { css } from '@style'
 import DiscordSelectors from '@discord/selectors'
 
 function patchReferencePositionLayer () {
-  Patcher.after(ReferencePositionLayer.prototype, 'componentDidMount', (self) => {
+  Patcher.after(ReferencePositionLayer?.prototype, 'componentDidMount', (self) => {
     queueMicrotask(
       () => self.props.onPositionChange?.call(self.props, self.calculateState().position)
     )

@@ -26,7 +26,7 @@ function patchVoiceChannelView () {
 
     once(() => {
       injectModule(channelView.type, ModuleKey.ThreadSidebar)
-      Patcher.after(ModuleKey.ThreadSidebar, channelView.type.prototype, 'render', (self, args, value) => {
+      Patcher.after(ModuleKey.ThreadSidebar, channelView.type?.prototype, 'render', (self, args, value) => {
         const module = Core.getModule(ModuleKey.ThreadSidebar)
         if (!module.isEnabled()) return
 

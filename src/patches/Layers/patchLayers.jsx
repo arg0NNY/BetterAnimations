@@ -120,10 +120,10 @@ function patchLayers () {
   Patcher.after(ModuleKey.Layers, ...LayersKeyed, (self, args, value) => {
     once(
       () => {
-        LayersComponent = value.type
+        LayersComponent = value?.type
         const layerStore = new LayerStore()
-        injectModule(value.type, ModuleKey.Layers)
-        Patcher.after(ModuleKey.Layers, value.type.prototype, 'renderLayers', (self, args, value) => {
+        injectModule(value?.type, ModuleKey.Layers)
+        Patcher.after(ModuleKey.Layers, value?.type?.prototype, 'renderLayers', (self, args, value) => {
           const module = Core.getModule(ModuleKey.Layers)
           if (!module.isEnabled()) return
 

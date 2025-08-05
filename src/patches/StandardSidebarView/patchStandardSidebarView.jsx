@@ -13,7 +13,7 @@ import useWindow from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
 
 async function patchStandardSidebarView () {
-  Patcher.after((await StandardSidebarViewWrapper).prototype, 'render', (self, args, value) => {
+  Patcher.after((await StandardSidebarViewWrapper)?.prototype, 'render', (self, args, value) => {
     const view = findInReactTree(value, m => m?.props?.content && m?.props?.sidebar)
     if (!view) return
 

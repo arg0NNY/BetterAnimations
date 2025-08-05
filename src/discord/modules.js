@@ -646,7 +646,7 @@ export const Router = mangled(RouterModule, {
   useLocation: Filters.byRegex(/return \w+\(\w+\)\.location/),
   useParams: Filters.byStrings('.match', '.params')
 })
-export const TransitionGroupContext = new Transition({ children: createElement('div') }).render().type
+export const TransitionGroupContext = Transition && new Transition({ children: createElement('div') }).render().type
 export const ContextMenuKeyed = keyed(ContextMenuModule, Filters.byStrings('getContextMenu', 'isOpen'))
 export const MenuSubmenuItemKeyed = keyed(MenuSubmenuItemModule, Filters.byStrings('subMenuClassName', 'submenuPaddingContainer'))
 export const MenuSubmenuListItemKeyed = keyed(MenuSubmenuListItemModule, Filters.byStrings('menuSubmenuProps', 'listClassName', 'submenuPaddingContainer'))
