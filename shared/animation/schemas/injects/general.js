@@ -19,7 +19,8 @@ import {
   clearSourceMap,
   clearSourceMapDeep,
   getSourcePath,
-  SELF_KEY
+  SELF_KEY,
+  SourceMappedObjectSchema
 } from '@animation/sourceMap'
 import { restrictForbiddenKeys } from '@animation/keys'
 import TrustedFunctionSchema from '@animation/schemas/TrustedFunctionSchema'
@@ -249,3 +250,51 @@ export const RawInjectBaseSchema = InjectSchema(Inject.Raw).extend({
   value: z.any()
 })
 export const RawInjectSchema = RawInjectBaseSchema.transform(({ value }) => value)
+
+const ValueSchema = ArrayOrSingleSchema(z.union([z.number(), z.string()]))
+  .optional()
+  .default(0)
+  .transform(value => [].concat(value))
+
+export const VectorInjectSchema = InjectSchema(Inject.Vector).extend({
+  values: SourceMappedObjectSchema.extend({
+    x: ValueSchema,
+    y: ValueSchema,
+    z: ValueSchema
+  }).strict(),
+  unit: z.union([z.string(), z.null()])
+    .optional().default('px')
+}).transform(({ values: { x, y, z }, unit }) => {
+  const amount = Math.max(1, ...[x, y, z].map(v => v.length))
+  const keyframes = Array(amount).fill(null).map(
+    (_, i) => [x, y, z].map(values => {
+      const value = values[i] ?? 0
+      return typeof value === 'number' && value !== 0
+        ? value + (unit ?? '')
+        : String(value)
+    }).join(' ')
+  )
+  return amount === 1 ? keyframes[0] : keyframes
+})
+
+export const RotateInjectSchema = InjectSchema(Inject.Rotate).extend({
+  axis: z.union([
+    z.literal('x'),
+    z.literal('y'),
+    z.literal('z')
+  ]),
+  angle: ValueSchema,
+  unit: z.union([z.string(), z.null()])
+    .optional().default('deg')
+}).transform(({ axis, angle, unit }) => {
+  if (!angle.length) return axis + ' 0'
+
+  const keyframes = angle.map(
+    value => axis + ' ' + (
+      typeof value === 'number' && value !== 0
+        ? value + (unit ?? '')
+        : String(value)
+    )
+  )
+  return keyframes.length === 1 ? keyframes[0] : keyframes
+})

@@ -825,3 +825,152 @@ The value specified in <InjectRef inject="raw" parameter="value" />.
   "value": { "inject": "element" }
 }
 ```
+
+## `vector`
+
+Turns individual vector values (x, y, z) or sequences of [keyframes](https://animejs.com/documentation/animation/keyframes)
+for individual vector value into a single `x y z` string or a sequence of `x y z` strings
+that can be passed directly to [`translate`](https://developer.mozilla.org/en-US/docs/Web/CSS/translate)
+or [`scale`](https://developer.mozilla.org/en-US/docs/Web/CSS/scale) properties.
+
+Useful for leveraging [hardware acceleration](https://animejs.com/documentation/web-animation-api/hardware-accelerated-animations)
+for [WAAPI](/create/anime#waapi) animations while maintaining the ability to work with individual axes separately.
+See [Hardware acceleration](/create/anime#hardware-acceleration) to learn more.
+
+### Parameters {#vector-parameters}
+
+#### `values` {#vector-parameters-values}
+
+An object containing the following properties: `x`, `y`, `z`.
+
+Each property can accept a string or a number, representing the value of the vector,
+or an array of strings or numbers, representing the values of the vector for each keyframe.
+
+If a property or a value of a specific keyframe is omitted, a default value `0` is used.
+
+#### `unit` <Badge type="info" text="optional" /> {#vector-parameters-unit}
+
+A string representing a unit to append for each **numerical** value passed in <InjectRef inject="vector" parameter="values" />.
+
+`px` by default. Pass `null` to leave the values as-is.
+
+### Returns {#vector-returns}
+
+A string representing an `x y z` vector.
+
+If some properties in <InjectRef inject="vector" parameter="values" /> have more than one value (keyframe) specified —
+an array of such strings for each keyframe.
+
+### Example usage {#vector-example}
+
+::: code-group
+
+```json [Definition]
+{
+  "inject": "vector",
+  "values": {
+    "x": 10,
+    "y": 20,
+    "z": 30
+  }
+}
+```
+
+```json [Output]
+"10px 20px 30px"
+```
+
+:::
+
+::: code-group
+
+```json [Definition]
+{
+  "inject": "vector",
+  "values": {
+    "x": [20, 60],
+    "z": [90, 0]
+  }
+}
+```
+
+```json [Output]
+[
+  "20px 0 90px",
+  "60px 0 0"
+]
+```
+
+:::
+
+## `rotate`
+
+Turns an individual rotation value or a sequence of [keyframes](https://animejs.com/documentation/animation/keyframes)
+for individual rotate value into a single `axis angle` string or a sequence of `axis angle` strings
+that can be passed directly to [`rotate`](https://developer.mozilla.org/en-US/docs/Web/CSS/rotate) property.
+
+Useful for leveraging [hardware acceleration](https://animejs.com/documentation/web-animation-api/hardware-accelerated-animations)
+for [WAAPI](/create/anime#waapi) animations. See [Hardware acceleration](/create/anime#hardware-acceleration) to learn more.
+
+### Parameters {#rotate-parameters}
+
+#### `axis` {#rotate-parameters-axis}
+
+Any of: `"x"`, `"y"`, `"z"`.
+
+#### `angle` {#rotate-parameters-angle}
+
+A string or a number, representing the rotation value,
+or an array of strings or numbers, representing the rotation values for each keyframe.
+
+#### `unit` <Badge type="info" text="optional" /> {#rotate-parameters-unit}
+
+A string representing a unit to append for each **numerical** value passed in <InjectRef inject="rotate" parameter="angle" />.
+
+`deg` by default. Pass `null` to leave the values as-is.
+
+### Returns {#rotate-returns}
+
+A string representing an [`axis angle`](https://developer.mozilla.org/en-US/docs/Web/CSS/rotate#x_y_or_z_axis_name_plus_angle_value)
+CSS `rotate` value.
+
+If <InjectRef inject="rotate" parameter="angle" /> have more than one value (keyframe) specified —
+an array of such strings for each keyframe.
+
+### Example usage {#rotate-example}
+
+::: code-group
+
+```json [Definition]
+{
+  "inject": "rotate",
+  "axis": "y",
+  "angle": 3.14,
+  "unit": "rad"
+}
+```
+
+```json [Output]
+"y 3.14rad"
+```
+
+:::
+
+::: code-group
+
+```json [Definition]
+{
+  "inject": "rotate",
+  "axis": "x",
+  "angle": [-90, 0]
+}
+```
+
+```json [Output]
+[
+  "x -90deg",
+  "x 0"
+]
+```
+
+:::
