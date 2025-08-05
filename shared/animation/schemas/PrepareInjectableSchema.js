@@ -22,7 +22,7 @@ const PrepareInjectableSchema = z.lazy(
         }).some(Boolean)
       ) return z.NEVER
 
-      return storeSourceMap(value, ctx.path)
+      return storeSourceMap(value, ctx.path.concat(path))
     })
   )
 )
