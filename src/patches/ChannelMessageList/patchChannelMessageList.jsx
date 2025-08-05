@@ -20,7 +20,7 @@ function patchChannelMessageList () {
 
   Patcher.after(ChannelMessageList, 'type', (self, args, value) => {
     once(() =>
-      Patcher.after(ModuleKey.Messages, findInReactTree(value.props.children, m => m?.props?.messages).type, 'type', (self, [{ channel }], value) => {
+      Patcher.after(ModuleKey.Messages, findInReactTree(value?.props?.children, m => m?.props?.messages)?.type, 'type', (self, [{ channel }], value) => {
         const hasLayers = useStateFromStores([LayerStore], () => LayerStore.hasLayers())
         const { toEnter, toExit } = useStateFromStores([MessageStackStore], () => MessageStackStore.getMessagesAwaitingTransition())
         const { isMainWindow } = useWindow()

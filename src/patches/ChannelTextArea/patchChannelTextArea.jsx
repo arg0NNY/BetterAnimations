@@ -35,7 +35,7 @@ function patchChannelTextAreaButtons () {
 }
 
 function patchChannelTextArea () {
-  Patcher.after(ModuleKey.Popouts, ChannelTextArea.type, 'render', (self, args, value) => {
+  Patcher.after(ModuleKey.Popouts, ChannelTextArea?.type, 'render', (self, args, value) => {
     const { autoRef, setPosition } = useAutoPosition(Position.Top, { align: Position.Right })
 
     const buttonRefs = useRef({})

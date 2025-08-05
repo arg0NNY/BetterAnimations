@@ -9,7 +9,7 @@ function patchChannelItem () {
 
   const callback = key => (self, args, value) => {
     once(
-      () => Patcher.after(value.type.DecoratedComponent.prototype, 'render', (self, args, value) => {
+      () => Patcher.after(value?.type?.DecoratedComponent?.prototype, 'render', (self, args, value) => {
         if (!self.__containerRef) self.__containerRef = createRef()
 
         const container = findInReactTree(value, m => m?.type === 'li')

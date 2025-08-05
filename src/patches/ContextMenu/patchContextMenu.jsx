@@ -18,11 +18,11 @@ function patchContextMenu () {
 
   Patcher.after(ModuleKey.ContextMenu, ...ContextMenuKeyed, (self, args, value) => {
     once(() => {
-      injectModule(value.type, ModuleKey.ContextMenu)
-      Patcher.after(ModuleKey.ContextMenu, value.type.prototype, 'componentDidMount', self => {
+      injectModule(value?.type, ModuleKey.ContextMenu)
+      Patcher.after(ModuleKey.ContextMenu, value?.type?.prototype, 'componentDidMount', self => {
         self.__anchor = mouse?.getAnchor()
       })
-      Patcher.after(ModuleKey.ContextMenu, value.type.prototype, 'render', (self, args, value) => {
+      Patcher.after(ModuleKey.ContextMenu, value?.type?.prototype, 'render', (self, args, value) => {
         const module = Core.getModule(ModuleKey.ContextMenu)
         if (!module.isEnabled()) return
 

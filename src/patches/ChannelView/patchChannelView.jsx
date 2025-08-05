@@ -20,7 +20,7 @@ function patchChannelView () {
   const once = ensureOnce()
 
   Patcher.after(ChannelView, 'type', (self, args, value) => {
-    TinyPatcher.after(value.type, 'render', (self, args, value) => {
+    TinyPatcher.after(value?.type, 'render', (self, args, value) => {
       const guildChannel = findInReactTree(value, m => 'guild' in (m?.props ?? {}))
       if (!guildChannel) return
 
@@ -30,7 +30,7 @@ function patchChannelView () {
           ModuleKey.ThreadSidebar,
           ModuleKey.ThreadSidebarSwitch
         ])
-        Patcher.after(ModuleKey.MembersSidebar, guildChannel.type.prototype, 'renderSidebar', (self, args, value) => {
+        Patcher.after(ModuleKey.MembersSidebar, guildChannel.type?.prototype, 'renderSidebar', (self, args, value) => {
           const module = Core.getModule(ModuleKey.MembersSidebar)
           if (!module.isEnabled()) return value
 
@@ -51,7 +51,7 @@ function patchChannelView () {
             </ErrorBoundary>
           )
         })
-        Patcher.after(guildChannel.type.prototype, 'renderThreadSidebar', (self, args, value) => {
+        Patcher.after(guildChannel.type?.prototype, 'renderThreadSidebar', (self, args, value) => {
           const module = Core.getModule(ModuleKey.ThreadSidebar)
           const switchModule = Core.getModule(ModuleKey.ThreadSidebarSwitch)
           if (!module.isEnabled() && !switchModule.isEnabled()) return
