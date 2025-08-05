@@ -1,4 +1,4 @@
-import Patcher from '@/modules/Patcher'
+import Patcher, { TinyPatcher } from '@/modules/Patcher'
 import { ChannelView } from '@discord/modules'
 import ensureOnce from '@utils/ensureOnce'
 import AnimeTransition from '@components/AnimeTransition'
@@ -20,7 +20,7 @@ function patchChannelView () {
   const once = ensureOnce()
 
   Patcher.after(ChannelView, 'type', (self, args, value) => {
-    Patcher.after(value.type, 'render', (self, args, value) => {
+    TinyPatcher.after(value.type, 'render', (self, args, value) => {
       const guildChannel = findInReactTree(value, m => 'guild' in (m?.props ?? {}))
       if (!guildChannel) return
 
