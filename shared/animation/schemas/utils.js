@@ -1,7 +1,8 @@
 import { z } from 'zod'
-import { ArrayOrSingleSchema, Defined, DOMElementSchema, formatValuesList } from '@utils/schemas'
-import { clearSourceMap, SourceMappedObjectSchema } from '@animation/sourceMap'
-import { InjectableDefaultBaseSchema } from '@animation/schemas/InjectableBaseSchema'
+import { ArrayOrSingleSchema, Defined, DOMElementSchema, formatValuesList, Literal } from '@utils/schemas'
+import { clearSourceMap, SourceMappedObjectSchema, SourceMapSchema } from '@animation/sourceMap'
+import { LazyInjectSchema } from '@animation/schemas/injects/lazy'
+import TrustedFunctionSchema from '@animation/schemas/TrustedFunctionSchema'
 
 export const InjectSchema = type => SourceMappedObjectSchema.extend({
   inject: z.literal(type)
@@ -110,15 +111,21 @@ export function ElementSchema (inject, element = null, allowDirect = true) {
     )
 }
 
+export const ValidateInjectableDeepSchema = z.lazy(
+  () => z.union([
+    Literal,
+    z.symbol(),
+    DOMElementSchema,
+    SourceMapSchema,
+    LazyInjectSchema,
+    TrustedFunctionSchema,
+    z.array(ValidateInjectableDeepSchema),
+    z.record(ValidateInjectableDeepSchema)
+  ])
+)
+
 export const ParametersSchema = z.record(z.string(), z.any())
-  .superRefine((value, ctx) => {
-    const { success } = InjectableDefaultBaseSchema.safeParse(value)
-    if (!success) ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'Illegal value',
-      params: { received: value }
-    })
-  })
+  .pipe(ValidateInjectableDeepSchema)
 
 export const TargetSchema = (context, multiple = false) => z.union([
   z.string(),

@@ -114,7 +114,8 @@ export const [
   RootElementContextModule,
   ListNavigatorModule,
   FocusLockModule,
-  ManaModalRootModule
+  ManaModalRootModule,
+  BasePopoverModule
 ] = Webpack.getBulk(
   // Text
   {
@@ -607,6 +608,10 @@ export const [
   // ManaModalRootModule
   {
     filter: Filters.bySource('MODAL', '"padding-size-"')
+  },
+  // BasePopoverModule
+  {
+    filter: Filters.bySource('popoverGradientWrapper', 'spacing')
   }
 )
 
@@ -706,6 +711,7 @@ export const Mana = {
   ModalRootKeyed: keyed(ManaModalRootModule, Filters.byStrings('MODAL', '"padding-size-"')),
   get ModalRoot () { return unkeyed(this.ModalRootKeyed) }
 }
+export const BasePopoverKeyed = keyed(BasePopoverModule, Filters.byStrings('popoverGradientWrapper', 'spacing'))
 
 export const StandardSidebarViewWrapper = Webpack.waitForModule(Filters.byPrototypeKeys('getPredicateSections', 'renderSidebar'))
 export const StandardSidebarViewModule = Webpack.waitForModule(Filters.bySource('standardSidebarView', 'section'))

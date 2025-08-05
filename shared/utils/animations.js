@@ -1,6 +1,6 @@
 import { omit, pick } from '@utils/object'
 import cloneDeep from 'lodash-es/cloneDeep'
-import { sanitizeInjectable } from '@animation/schemas/SanitizeInjectableSchema'
+import { sanitizeInjectable } from '@animation/injectable/utils'
 
 export function sanitizeContext (context) {
   const ctx = omit(context, [

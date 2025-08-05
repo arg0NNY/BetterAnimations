@@ -64,7 +64,9 @@ export const safeInjects = [
   Inject.IsIntersected,
   Inject.If,
   Inject.Switch,
-  Inject.Raw
+  Inject.Raw,
+  Inject.Vector,
+  Inject.Rotate
 ]
 
 export const layoutDependentInjects = [

@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { InjectSchema, InjectWithMeta } from '@animation/schemas/utils'
 import Inject from '@enums/Inject'
 import { ArrayOrSingleSchema } from '@utils/schemas'
-import { zodTransformErrorBoundary } from '@utils/zod'
+import { zodTransformErrorBoundary } from '@animation/zod'
 import evaluate from '@emmetio/math-expression'
 
 export const MathInjectSchema = InjectSchema(Inject.Math).extend({
