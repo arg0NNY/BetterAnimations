@@ -1,4 +1,4 @@
-import Patcher from '@/modules/Patcher'
+import Patcher, { TinyPatcher } from '@/modules/Patcher'
 import { ExpressionPicker, useExpressionPickerStoreKeyed } from '@discord/modules'
 import findInReactTree, { byClassName } from '@/utils/findInReactTree'
 import { css } from '@style'
@@ -31,7 +31,7 @@ function patchExpressionPicker () {
 
     positionLayer.props.onPositionChange = props.onPositionChange
 
-    Patcher.after(ModuleKey.Popouts, positionLayer.props, 'children', (self, args, value) => {
+    TinyPatcher.after(ModuleKey.Popouts, positionLayer.props, 'children', (self, args, value) => {
       const drawerSizingWrapper = findInReactTree(value, byClassName('drawerSizingWrapper'))
       if (!drawerSizingWrapper) return
 
