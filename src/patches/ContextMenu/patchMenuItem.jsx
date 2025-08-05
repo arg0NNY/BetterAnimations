@@ -1,4 +1,4 @@
-import Patcher from '@/modules/Patcher'
+import Patcher, { TinyPatcher } from '@/modules/Patcher'
 import { MenuItemKeyed } from '@discord/modules'
 
 function patchMenuItem () {
@@ -13,7 +13,7 @@ function patchMenuItem () {
   Patcher.after(...MenuItemKeyed, (self, [props], value) => {
     if (!value.props.onClick) return
 
-    Patcher.before(value.props, 'onClick', (self, [event]) => {
+    TinyPatcher.before(value.props, 'onClick', (self, [event]) => {
       Object.defineProperty(event.nativeEvent, 'view', {
         value: new Proxy(event.nativeEvent.view, {
           get (target, prop) {

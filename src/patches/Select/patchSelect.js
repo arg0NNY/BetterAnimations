@@ -1,4 +1,4 @@
-import Patcher from '@/modules/Patcher'
+import Patcher, { TinyPatcher } from '@/modules/Patcher'
 import { SearchableSelect, SelectKeyed, SingleSelectKeyed } from '@discord/modules'
 import Position from '@enums/Position'
 import findInReactTree from '@/utils/findInReactTree'
@@ -15,7 +15,7 @@ function createPatcher () {
 
     popout.align = Position.Center
 
-    Patcher.after(popout, 'renderPopout', (self, args, value) => {
+    TinyPatcher.after(popout, 'renderPopout', (self, args, value) => {
       // Patching like this to avoid infinite updates
       if (!patchedPopout) {
         const { type: original } = value
@@ -43,7 +43,7 @@ function patchSelect () {
 
   Patcher.after(...SelectKeyed, patcher)
   Patcher.after(...SingleSelectKeyed, (...[,, value]) => {
-    Patcher.after(value, 'type', patcher)
+    TinyPatcher.after(value, 'type', patcher)
   })
 
   Patcher.after(SearchableSelect, 'render', createPatcher())
