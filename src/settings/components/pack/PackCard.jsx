@@ -1,8 +1,7 @@
 import PackContent, { PackContentLocation } from '@/settings/components/pack/PackContent'
 import { css } from '@style'
-import { Clickable, ModalActions, useIsVisibleKeyed } from '@discord/modules'
+import { Clickable, ModalActions, useIsVisible } from '@discord/modules'
 import PackModal from '@/settings/components/pack/PackModal'
-import { unkeyed } from '@/utils/webpack'
 import PackRegistry from '@/modules/PackRegistry'
 import { useCallback } from 'react'
 
@@ -20,7 +19,7 @@ function PackCard ({ pack, location = PackContentLocation.CATALOG }) {
       PackRegistry.markAsKnown(pack)
   }, [pack, location])
 
-  const cardRef = unkeyed(useIsVisibleKeyed)(onIntersection, .5)
+  const cardRef = useIsVisible(onIntersection, .5)
 
   return (
     <Clickable
