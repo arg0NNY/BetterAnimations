@@ -43,6 +43,7 @@ import LazyLoader from '@/modules/LazyLoader'
 import { applyOptimizationPatches } from '@/patches/optimizations'
 import patchRootElementContext from '@/patches/AppView/patchRootElementContext'
 import Data from '@/modules/Data'
+import patchBasePopover from '@/patches/BasePopover/patchBasePopover'
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -94,6 +95,7 @@ export default function (meta) {
       patchContextMenu()
       patchMenuItem()
       patchBasePopout()
+      patchBasePopover()
       patchTooltip()
       patchChannelMessageList()
       patchChannelView()

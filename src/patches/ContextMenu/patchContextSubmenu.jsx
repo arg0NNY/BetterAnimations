@@ -1,7 +1,7 @@
 import Patcher from '@/modules/Patcher'
 import {
   appLayerContext,
-  Layer,
+  AppLayer,
   MenuSubmenuItemKeyed,
   MenuSubmenuListItemKeyed,
   Timeout
@@ -49,12 +49,12 @@ function patchContextSubmenu () {
         autoRef={autoRef}
         anchor={value.props.ref}
       >
-        <Layer layerContext={appLayerContext}>
+        <AppLayer layerContext={appLayerContext}>
           {cloneElement(children[i], {
             onPositionChange: setPosition,
             ref: layerRef
           })}
-        </Layer>
+        </AppLayer>
       </AnimeTransition>
     )
 

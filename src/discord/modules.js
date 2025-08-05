@@ -1,219 +1,723 @@
 import { Webpack } from '@/BdApi'
 import { createElement } from 'react'
-import { getWithKey, getMangled, UnkeyedComponent, unkeyed } from '@/utils/webpack'
+import { unkeyedFn, unkeyed, mangled, keyed, lazyKeyed } from '@/utils/webpack'
 const { Filters } = Webpack
 
-export const ModalActions = Webpack.getMangled(Filters.bySource('POPOUT', 'OVERLAY', 'modalKey'), {
+export const [
+  Text,
+  Heading,
+  ModalBackdrop,
+  Clickable,
+  Switch,
+  Checkbox,
+  FormTitle,
+  FormTitleTags,
+  FormText,
+  FormSection,
+  Breadcrumbs,
+  RadioGroup,
+  FormSwitch,
+  FormItem,
+  Slider,
+  ReferencePositionLayer,
+  SearchableSelect,
+  TextBadge,
+  SearchBar,
+  Paginator,
+  Spinner,
+  Popout,
+  Routes,
+  StaticChannelRoute,
+  useStateFromStores,
+  BasePopout,
+  SpringTransitionPhases,
+  Button,
+  TextButton,
+  ButtonGroup,
+  InviteStates,
+  TextInput,
+  AppPanels,
+  GuildActionRow,
+  Message,
+  ChannelTextArea,
+  ExpressionPicker,
+  ChannelTextAreaButtons,
+  ChannelAppLauncher,
+  AppLauncherPopup,
+  GuildIcon,
+  Timestamp,
+  getThemeClass,
+  CSSTransition,
+  TransitionGroup,
+  ChannelMessageList,
+  ChannelView,
+  MessageDivider,
+  GuildChannelRouteParams,
+  handleClick,
+  Timeout,
+  GatewaySocket,
+  { Anchor } = {},
+  Dispatcher,
+  Transition,
+  Flux,
+  App,
+  Flex,
+  { defaultRules: Parser } = {},
+  InviteEmbed,
+  InviteActions,
+  { ImpressionNames } = {},
+  { colors } = {},
+  humanize,
+  useListNavigator,
+  ThemeStore,
+  ChannelStore,
+  SortedGuildStore,
+  PrivateChannelSortStore,
+  LayerStore,
+  InviteStore,
+  SelectedGuildStore,
+  SelectedChannelStore,
+  GuildStore,
+  ModalActionsModule,
+  TooltipModule,
+  ListRawModule,
+  ToastStoreModule,
+  ToastModule,
+  AppViewModule,
+  RouterModule,
+  ContextMenuModule,
+  MenuSubmenuItemModule,
+  MenuSubmenuListItemModule,
+  PopoutCSSAnimatorModule,
+  AppLayerModule,
+  ModalsModule,
+  LayersModule,
+  GuildChannelListModule,
+  ChannelSectionStore,
+  ChatSidebarModule,
+  VoiceChannelViewModule,
+  CallChatSidebarModule,
+  SelectModule,
+  LayerActionsModule,
+  AlertModule,
+  UserSettingsModal,
+  ModalModule,
+  MenuItemModule,
+  ChannelItemModule,
+  VoiceChannelItemModule,
+  StageVoiceChannelItemModule,
+  AppContextModule,
+  ExpressionPickerStoreModule,
+  ProfileEffectsModule,
+  EmojiModule,
+  UseIsVisibleModule,
+  RootElementContextModule,
+  ListNavigatorModule,
+  FocusLockModule,
+  ManaModalRootModule,
+  BasePopoverModule
+] = Webpack.getBulk(
+  // Text
+  {
+    filter: m => Filters.byStrings('WebkitLineClamp', 'data-text-variant')(m?.render),
+    searchExports: true
+  },
+  // Heading
+  {
+    filter: m => Filters.byStrings('variant', 'data-excessive-heading-level')(m?.render),
+    searchExports: true
+  },
+  // ModalBackdrop
+  {
+    filter: m => Filters.byStrings('backdrop', 'BG_BACKDROP_NO_OPACITY')(m?.render),
+    searchExports: true
+  },
+  // Clickable
+  {
+    filter: Filters.byPrototypeKeys('renderInner', 'renderNonInteractive'),
+    searchExports: true
+  },
+  // Switch
+  {
+    filter: Filters.byStrings('checkbox', 'animated.rect'),
+    searchExports: true
+  },
+  // Checkbox
+  {
+    filter: m => Filters.byKeys('BOX', 'ROUND')(m?.Shapes),
+    searchExports: true
+  },
+  // FormTitle
+  {
+    filter: Filters.byStrings('defaultMargin', 'errorMessage'),
+    searchExports: true
+  },
+  // FormTitleTags
+  {
+    filter: Filters.byKeys('H1', 'LABEL', 'LEGEND'),
+    searchExports: true
+  },
+  // FormText
+  {
+    filter: m => Filters.byKeys('DESCRIPTION', 'ERROR')(m?.Types),
+    searchExports: true
+  },
+  // FormSection
+  {
+    filter: m => Filters.byStrings('titleId', 'sectionTitle')(m?.render),
+    searchExports: true
+  },
+  // Breadcrumbs
+  {
+    filter: m => Filters.byStrings('renderBreadcrumb')(m?.prototype?.render),
+    searchExports: true
+  },
+  // RadioGroup
+  {
+    filter: m => Filters.byKeys('NOT_SET', 'NONE')(m?.Sizes),
+    searchExports: true
+  },
+  // FormSwitch
+  {
+    filter: Filters.byStrings('labelRow', 'checked'),
+    searchExports: true
+  },
+  // FormItem
+  {
+    filter: m => Filters.byStrings('titleId', 'errorId', 'setIsFocused')(m?.render),
+    searchExports: true
+  },
+  // Slider
+  {
+    filter: m => Filters.byKeys('stickToMarkers', 'initialValue')(m?.defaultProps),
+    searchExports: true
+  },
+  // ReferencePositionLayer
+  {
+    filter: Filters.byPrototypeKeys('getHorizontalAlignmentStyle', 'nudgeLeftAlignment'),
+    searchExports: true
+  },
+  // SearchableSelect
+  {
+    filter: m => Filters.byStrings('searchable', 'select')(m?.render),
+    searchExports: true
+  },
+  // TextBadge
+  {
+    filter: Filters.byStrings('textBadge', 'STATUS_DANGER'),
+    searchExports: true
+  },
+  // SearchBar
+  {
+    filter: m => Filters.byKeys('isLoading', 'size')(m?.defaultProps) && Filters.byPrototypeKeys('blur', 'focus')(m),
+    searchExports: true
+  },
+  // Paginator
+  {
+    filter: Filters.byStrings('pageControlContainer', 'endButtonInner'),
+    searchExports: true
+  },
+  // Spinner
+  {
+    filter: m => Filters.byKeys('WANDERING_CUBES')(m?.Type),
+    searchExports: true
+  },
+  // Popout
+  {
+    filter: m => Filters.byKeys('Animation')(m) && Filters.byStrings('renderPopout')(m?.prototype?.render),
+    searchExports: true
+  },
+  // Routes
+  {
+    filter: Filters.byKeys('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'),
+    searchExports: true
+  },
+  // StaticChannelRoute
+  {
+    filter: Filters.byKeys('ROLE_SUBSCRIPTIONS', 'CHANNEL_BROWSER'),
+    searchExports: true
+  },
+  // useStateFromStores
+  {
+    filter: Filters.byStrings('useStateFromStores'),
+    searchExports: true
+  },
+  // BasePopout
+  {
+    filter: m => m?.defaultProps?.loadingComponent,
+    searchExports: true
+  },
+  // SpringTransitionPhases
+  {
+    filter: Filters.byKeys('ENTER', 'LEAVE'),
+    searchExports: true
+  },
+  // Button
+  {
+    filter: Filters.byStrings('button', 'hasText', 'expressiveWrapper'),
+    searchExports: true
+  },
+  // TextButton
+  {
+    filter: Filters.byStrings('textButton', 'textVariant'),
+    searchExports: true
+  },
+  // ButtonGroup
+  {
+    filter: Filters.byStrings('fullWidth', 'wrap', '"horizontal"'),
+    searchExports: true
+  },
+  // InviteStates
+  {
+    filter: Filters.byKeys('APP_NOT_OPENED', 'RESOLVING'),
+    searchExports: true
+  },
+  // TextInput
+  {
+    filter: Filters.byStrings('inputWrapper', 'prefixElement'),
+    searchExports: true
+  },
+  // AppPanels
+  {
+    filter: m => Filters.byStrings('panels', 'ACCOUNT_PANEL')(m?.type),
+    searchExports: true
+  },
+  // GuildActionRow
+  {
+    filter: Filters.byKeys('GUILD_ROLE_SUBSCRIPTIONS', 'CHANNELS_AND_ROLES'),
+    searchExports: true
+  },
+  // Message
+  {
+    filter: m => Filters.byStrings('must not be a thread starter message')(m?.type),
+    searchExports: true
+  },
+  // ChannelTextArea
+  {
+    filter: m => Filters.byStrings('channelTextArea', 'markdown')(m?.type?.render)
+  },
+  // ExpressionPicker
+  {
+    filter: m => Filters.byStrings('EXPRESSION_PICKER', 'positionContainer')(m?.type),
+    searchExports: true
+  },
+  // ChannelTextAreaButtons
+  {
+    filter: m => Filters.byStrings('buttons', 'sticker', 'gif')(m?.type),
+    searchExports: true
+  },
+  // ChannelAppLauncher
+  {
+    filter: m => Filters.byStrings('channelAppLauncher')(m?.type),
+    searchExports: true
+  },
+  // AppLauncherPopup
+  {
+    filter: m => Filters.byStrings('positionLayer', '"positionTargetRef"')(m?.type),
+    searchExports: true
+  },
+  // GuildIcon
+  {
+    filter: m => Filters.byKeys('badgeStrokeColor', 'animate')(m?.defaultProps),
+    searchExports: true
+  },
+  // Timestamp
+  {
+    filter: m => Filters.byStrings('timestamp', 'timestampTooltip')(m?.type),
+    searchExports: true
+  },
+  // getThemeClass
+  {
+    filter: Filters.byStrings('" theme-"'),
+    searchExports: true
+  },
+  // CSSTransition
+  {
+    filter: m => m?.defaultProps?.classNames === ''
+  },
+  // TransitionGroup
+  {
+    filter: m => Filters.byPrototypeKeys('handleExited')(m) && !m.childContextTypes,
+    searchExports: true
+  },
+  // ChannelMessageList
+  {
+    filter: m => Filters.byStrings('channel', 'messageDisplayCompact')(m?.type)
+  },
+  // ChannelView
+  {
+    filter: m => Filters.byStrings('providedChannel')(m?.type)
+  },
+  // MessageDivider
+  {
+    filter: m => Filters.byStrings('divider', 'unreadPill')(m?.render)
+  },
+  // GuildChannelRouteParams
+  {
+    filter: m => Filters.byStrings('escapeRegExp')(m?.guildId),
+    searchExports: true
+  },
+  // handleClick
+  {
+    filter: Filters.byStrings('sanitizeUrl', 'shouldConfirm'),
+    searchExports: true
+  },
+  // Timeout
+  {
+    filter: m => Filters.byPrototypeKeys('isStarted', 'start', 'stop')(m) && Filters.byStrings('setTimeout')(m),
+    searchExports: true
+  },
+  // GatewaySocket
+  {
+    filter: m => m?.dispatcher?.scheduler,
+    searchExports: true
+  },
+  // Anchor
+  {
+    filter: Filters.byKeys('Anchor')
+  },
+  // Dispatcher
+  {
+    filter: Filters.byKeys('dispatch', 'subscribe')
+  },
+  // Transition
+  {
+    filter: Filters.byKeys('ENTERING', 'EXITING', 'contextType')
+  },
+  // Flux
+  {
+    filter: Filters.byKeys('Store', 'connectStores')
+  },
+  // App
+  {
+    filter: Filters.byKeys('setEnableHardwareAcceleration', 'releaseChannel')
+  },
+  // Flex
+  {
+    filter: Filters.byKeys('Direction', 'Justify', 'Child')
+  },
+  // Parser
+  {
+    filter: Filters.byKeys('defaultRules', 'parse')
+  },
+  // InviteEmbed
+  {
+    filter: Filters.byStrings('Invite Button Embed', 'getInvite')
+  },
+  // InviteActions
+  {
+    filter: Filters.byKeys('resolveInvite', 'createInvite')
+  },
+  // ImpressionNames
+  {
+    filter: Filters.byKeys('ImpressionNames')
+  },
+  // colors
+  {
+    filter: Filters.byKeys('colors', 'modules')
+  },
+  // humanize
+  {
+    filter: Filters.byKeys('humanize', 'filesize')
+  },
+  // useListNavigator
+  {
+    filter: Filters.byStrings('focusLastVisibleItem', '"focus"')
+  },
+  // ThemeStore
+  {
+    filter: Filters.byStoreName('ThemeStore')
+  },
+  // ChannelStore
+  {
+    filter: Filters.byStoreName('ChannelStore')
+  },
+  // SortedGuildStore
+  {
+    filter: Filters.byStoreName('SortedGuildStore')
+  },
+  // PrivateChannelSortStore
+  {
+    filter: Filters.byStoreName('PrivateChannelSortStore')
+  },
+  // LayerStore
+  {
+    filter: Filters.byStoreName('LayerStore')
+  },
+  // InviteStore
+  {
+    filter: Filters.byStoreName('InviteStore')
+  },
+  // SelectedGuildStore
+  {
+    filter: Filters.byStoreName('SelectedGuildStore')
+  },
+  // SelectedChannelStore
+  {
+    filter: Filters.byStoreName('SelectedChannelStore')
+  },
+  // GuildStore
+  {
+    filter: Filters.byStoreName('GuildStore')
+  },
+  // ModalActionsModule
+  {
+    filter: Filters.bySource('POPOUT', 'OVERLAY', 'modalKey')
+  },
+  // TooltipModule
+  {
+    filter: Filters.bySource('renderTooltip', 'tooltipPointer')
+  },
+  // ListRawModule
+  {
+    filter: Filters.bySource('thin', 'none', 'fade', 'ResizeObserver'),
+    raw: true
+  },
+  // ToastStoreModule
+  {
+    filter: Filters.bySource('currentToast', 'queuedToasts')
+  },
+  // ToastModule
+  {
+    filter: Filters.bySource('toast', 'FAILURE', 'STATUS_DANGER')
+  },
+  // AppViewModule
+  {
+    filter: Filters.bySource('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY', 'data-fullscreen')
+  },
+  // RouterModule
+  {
+    filter: Filters.bySource('props.computedMatch', 'isExact')
+  },
+  // ContextMenuModule
+  {
+    filter: Filters.bySource('getContextMenu', 'renderWindow')
+  },
+  // MenuSubmenuItemModule
+  {
+    filter: Filters.bySource('subMenuClassName', 'submenuPaddingContainer')
+  },
+  // MenuSubmenuListItemModule
+  {
+    filter: Filters.bySource('menuSubmenuProps', 'listClassName', 'submenuPaddingContainer')
+  },
+  // PopoutCSSAnimatorModule
+  {
+    filter: Filters.bySource('animatorTop', 'TRANSLATE')
+  },
+  // AppLayerModule
+  {
+    filter: Filters.bySource('layerContext', '"App"')
+  },
+  // ModalsModule
+  {
+    filter: Filters.bySource('modalKey', '"layer-"')
+  },
+  // LayersModule
+  {
+    filter: Filters.bySource('getLayers', 'hasFullScreenLayer')
+  },
+  // GuildChannelListModule
+  {
+    filter: Filters.bySource('GUILD_CHANNEL_LIST', 'favorites-channel-list')
+  },
+  // ChannelSectionStore
+  {
+    filter: Filters.byStoreName('ChannelSectionStore')
+  },
+  // ChatSidebarModule
+  {
+    filter: Filters.bySource('sidebarType', 'postSidebarWidth')
+  },
+  // VoiceChannelViewModule
+  {
+    filter: Filters.bySource('shouldUseVoiceEffectsActionBar')
+  },
+  // CallChatSidebarModule
+  {
+    filter: Filters.bySource('CallChatSidebar', 'chatInputType')
+  },
+  // SelectModule
+  {
+    filter: Filters.bySource('select', 'newValues')
+  },
+  // LayerActionsModule
+  {
+    filter: Filters.bySource('"LAYER_PUSH"', '"LAYER_POP_ALL"')
+  },
+  // AlertModule
+  {
+    filter: Filters.bySource('messageType', 'iconDiv')
+  },
+  // UserSettingsModal
+  {
+    filter: Filters.byKeys('open', 'setSection', 'updateAccount')
+  },
+  // ModalModule
+  {
+    filter: Filters.bySource('MODAL', 'rootWithShadow')
+  },
+  // MenuItemModule
+  {
+    filter: Filters.bySource('dontCloseOnActionIfHoldingShiftKey', 'data-menu-item')
+  },
+  // ChannelItemModule
+  {
+    filter: Filters.bySource('shouldIndicateNewChannel', 'MANAGE_CHANNELS')
+  },
+  // VoiceChannelItemModule
+  {
+    filter: Filters.bySource('isFavoriteSuggestion', 'PLAYING', 'MANAGE_CHANNELS')
+  },
+  // StageVoiceChannelItemModule
+  {
+    filter: Filters.bySource('getStageInstanceByChannel', 'isFavoriteSuggestion', 'MANAGE_CHANNELS')
+  },
+  // AppContextModule
+  {
+    filter: Filters.bySource('renderWindow', 'ownerDocument.defaultView')
+  },
+  // ExpressionPickerStoreModule
+  {
+    filter: Filters.bySource('expression-picker-last-active-view')
+  },
+  // ProfileEffectsModule
+  {
+    filter: Filters.bySource('profileEffectConfig', 'useReducedMotion')
+  },
+  // EmojiModule
+  {
+    filter: Filters.bySource('"Unknown Src for Emoji"')
+  },
+  // UseIsVisibleModule
+  {
+    filter: Filters.bySource('isIntersecting', 'threshold:1')
+  },
+  // RootElementContextModule
+  {
+    filter: Filters.bySource('useRootElementContext', 'createContext')
+  },
+  // ListNavigatorModule
+  {
+    filter: Filters.bySource('NO_LIST', 'listitem')
+  },
+  // FocusLockModule
+  {
+    filter: Filters.bySource('disableReturnRef', '"app-mount"')
+  },
+  // ManaModalRootModule
+  {
+    filter: Filters.bySource('MODAL', '"padding-size-"')
+  },
+  // BasePopoverModule
+  {
+    filter: Filters.bySource('popoverGradientWrapper', 'spacing')
+  }
+)
+
+export const ModalActions = mangled(ModalActionsModule, {
   openModal: Filters.byStrings('onCloseRequest', 'onCloseCallback', 'backdropStyle'),
   closeModal: Filters.byStrings('onCloseCallback()', 'filter'),
   closeAllModals: Filters.byRegex(/for\(let \w+ of \w+\[\w+]\)\w+\(\w+\.key,\w+\)/)
 })
-export const Text = Webpack.getModule(m => Filters.byStrings('WebkitLineClamp', 'data-text-variant')(m?.render), { searchExports: true })
-export const Heading = Webpack.getModule(m => Filters.byStrings('variant', 'data-excessive-heading-level')(m?.render), { searchExports: true })
-export const { ConfirmModal } = Webpack.getByKeys('ConfirmModal')
-export const { Tooltip, TooltipLayer } = Webpack.getMangled(Filters.byPrototypeKeys('renderTooltip'), {
+export const { Tooltip, TooltipLayer } = mangled(TooltipModule, {
   Tooltip: Filters.byPrototypeKeys('renderTooltip'),
   TooltipLayer: Filters.byStrings('tooltipPointer')
-}, { searchExports: true, raw: true })
-export const ModalBackdrop = Webpack.getModule(m => Filters.byStrings('backdrop', 'BG_BACKDROP_NO_OPACITY')(m?.render), { searchExports: true })
+})
 export const ListThin = (() => {
-  const { id, exports } = Webpack.getModule(Filters.bySource('thin', 'none', 'fade', 'ResizeObserver'), { raw: true })
+  if (!ListRawModule) return
+  const { id, exports } = ListRawModule
   const source = Webpack.modules[id].toString()
   return exports[
     source.match(new RegExp(`(\\w+):\\(\\)=>${source.match(/let (\w+)=/)[1]}`))[1]
   ]
 })()
-export const ToastPosition = Webpack.getModule(Filters.byKeys('MESSAGE', 'SUCCESS', 'FAILURE'), { searchExports: true })
-export const { showToast, popToast, useToastStore } = Webpack.getMangled(Filters.bySource('currentToast', 'queuedToasts'), {
+export const { showToast, popToast, useToastStore } = mangled(ToastStoreModule, {
   showToast: Filters.byRegex(/queuedToasts:\[...\w+\.queuedToasts,\w+\]/),
   popToast: Filters.byStrings('currentToast:null'),
   useToastStore: Filters.byKeys('setState')
 })
-export const popToastKeyed = [...Webpack.getWithKey(Filters.byStrings('currentToast:null'))]
-export const { Toast, createToast } = Webpack.getMangled(Filters.bySource('toast', 'FAILURE', 'STATUS_DANGER'), {
+export const popToastKeyed = keyed(ToastStoreModule, Filters.byStrings('currentToast:null'))
+export const { Toast, createToast } = mangled(ToastModule, {
   Toast: Filters.byKeys('type'),
   createToast: Filters.byStrings('type', 'position')
 })
-export const Clickable = Webpack.getModule(Filters.byPrototypeKeys('renderInner', 'renderNonInteractive'), { searchExports: true })
-export const Switch = Webpack.getModule(Filters.byStrings('checkbox', 'animated.rect'), { searchExports: true })
-export const Checkbox = Webpack.getModule(m => Filters.byKeys('BOX', 'ROUND')(m?.Shapes), { searchExports: true })
-export const FormTitle = Webpack.getModule(Filters.byStrings('defaultMargin', 'errorMessage'), { searchExports: true })
-export const FormTitleTags = Webpack.getModule(Filters.byKeys('H1', 'LABEL', 'LEGEND'), { searchExports: true })
-export const FormText = Webpack.getModule(m => Filters.byKeys('DESCRIPTION', 'ERROR')(m?.Types), { searchExports: true })
-export const FormSection = Webpack.getModule(m => Filters.byStrings('titleId', 'sectionTitle')(m?.render), { searchExports: true })
-export const Breadcrumbs = Webpack.getModule(m => Filters.byStrings('renderBreadcrumb')(m?.prototype?.render), { searchExports: true })
-export const RadioGroup = Webpack.getModule(m => Filters.byKeys('NOT_SET', 'NONE')(m?.Sizes), { searchExports: true })
-export const FormSwitch = Webpack.getModule(Filters.byStrings('labelRow', 'checked'), { searchExports: true })
-export const FormItem = Webpack.getModule(m => Filters.byStrings('titleId', 'errorId', 'setIsFocused')(m?.render), { searchExports: true })
-export const Slider = Webpack.getModule(m => Filters.byKeys('stickToMarkers', 'initialValue')(m?.defaultProps), { searchExports: true })
-export const ModalTransitionState = Webpack.getModule(Filters.byKeys('ENTERED', 'EXITED', 'HIDDEN'), { searchExports: true })
-export const ReferencePositionLayer = Webpack.getModule(Filters.byPrototypeKeys('getHorizontalAlignmentStyle', 'nudgeLeftAlignment'), { searchExports: true })
-export const SearchableSelect = Webpack.getModule(m => Filters.byStrings('searchable', 'select')(m?.render), { searchExports: true })
-export const { Anchor } = Webpack.getByKeys('Anchor')
-export const TextBadge = Webpack.getModule(Filters.byStrings('textBadge', 'STATUS_DANGER'), { searchExports: true })
-export const SearchBar = Webpack.getModule(m => Filters.byKeys('isLoading', 'size')(m?.defaultProps) && Filters.byPrototypeKeys('blur', 'focus')(m), { searchExports: true })
-export const Paginator = Webpack.getModule(Filters.byStrings('pageControlContainer', 'endButtonInner'), { searchExports: true })
-export const Spinner = Webpack.getModule(m => Filters.byKeys('WANDERING_CUBES')(m?.Type), { searchExports: true })
-export const Popout = Webpack.getModule(m => Filters.byKeys('Animation')(m) && Filters.byStrings('renderPopout')(m?.prototype?.render), { searchExports: true })
-
-export const Dispatcher = Webpack.getByKeys('dispatch', 'subscribe')
-export const AppViewKeyed = getWithKey(Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'))
-export const Router = Object.assign(
-  Webpack.getMangled(m => m?.computeRootMatch, {
-    Router: m => m?.computeRootMatch,
-    Route: m => Filters.byStrings('props.computedMatch', 'props.path')(m?.prototype?.render),
-    Switch: m => Filters.byStrings('props.location', 'cloneElement')(m?.prototype?.render),
-    matchPath: Filters.byStrings('strict', 'isExact'),
-    useLocation: Filters.byRegex(/return \w+\(\w+\)\.location/),
-    useParams: Filters.byStrings('.match', '.params')
-  }, { searchExports: true, raw: true }),
-  {
-    Link: Webpack.getModule(m => Filters.byStrings('createHref', 'navigate')(m?.render), { searchExports: true })
-  }
-)
-export const Transition = Webpack.getByKeys('ENTERING', 'EXITING', 'contextType')
-export const CSSTransition = Webpack.getModule(m => m?.defaultProps?.classNames === '')
-export const TransitionGroup = Webpack.getModule(m => Filters.byPrototypeKeys('handleExited')(m) && !m.childContextTypes, { searchExports: true })
+export const AppViewKeyed = keyed(AppViewModule, Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'))
+export const Router = mangled(RouterModule, {
+  Router: m => m?.computeRootMatch,
+  Route: m => Filters.byStrings('props.computedMatch', 'props.path')(m?.prototype?.render),
+  Switch: m => Filters.byStrings('props.location', 'cloneElement')(m?.prototype?.render),
+  matchPath: Filters.byStrings('strict', 'isExact'),
+  useLocation: Filters.byRegex(/return \w+\(\w+\)\.location/),
+  useParams: Filters.byStrings('.match', '.params')
+})
 export const TransitionGroupContext = new Transition({ children: createElement('div') }).render().type
-export const Routes = Webpack.getModule(Filters.byKeys('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'), { searchExports: true })
-export const Constants = {
-  DEFAULT_MESSAGE_REQUEST_SIDEBAR_WIDTH: 650,
-  Routes,
-  Themes: Webpack.getByKeys('DARK', 'LIGHT')
-}
-export const StaticChannelRoute = Webpack.getModule(Filters.byKeys('ROLE_SUBSCRIPTIONS', 'CHANNEL_BROWSER'), { searchExports: true })
-export const ContextMenuKeyed = getWithKey(Filters.byStrings('getContextMenu', 'isOpen'))
-export const Flux = Webpack.getByKeys('Store', 'connectStores')
-export const useStateFromStores = Webpack.getModule(Filters.byStrings('useStateFromStores'), { searchExports: true })
-export const MenuSubmenuItemKeyed = getWithKey(Filters.byStrings('subMenuClassName', 'submenuPaddingContainer'))
-export const MenuSubmenuListItemKeyed = getWithKey(Filters.byStrings('menuSubmenuProps', 'listClassName', 'submenuPaddingContainer'))
-export const { updateTheme } = Webpack.getByKeys('updateTheme')
-export const ThemeStore = Webpack.getStore('ThemeStore')
-export const BasePopout = Webpack.getModule(m => m?.defaultProps?.loadingComponent, { searchExports: true })
-export const PopoutCSSAnimatorKeyed = getWithKey(m => Filters.byKeys('TRANSLATE', 'SCALE')(m?.Types))
-export const SpringTransitionPhases = Webpack.getModule(Filters.byKeys('ENTER', 'LEAVE'), { searchExports: true })
-export const { Layer, appLayerContext } = getMangled(Filters.byDisplayName('AppLayer'), {
-  Layer: Filters.byDisplayName('AppLayer'),
+export const ContextMenuKeyed = keyed(ContextMenuModule, Filters.byStrings('getContextMenu', 'isOpen'))
+export const MenuSubmenuItemKeyed = keyed(MenuSubmenuItemModule, Filters.byStrings('subMenuClassName', 'submenuPaddingContainer'))
+export const MenuSubmenuListItemKeyed = keyed(MenuSubmenuListItemModule, Filters.byStrings('menuSubmenuProps', 'listClassName', 'submenuPaddingContainer'))
+export const PopoutCSSAnimatorKeyed = keyed(PopoutCSSAnimatorModule, m => Filters.byKeys('TRANSLATE', 'SCALE')(m?.Types))
+export const { AppLayer, appLayerContext } = mangled(AppLayerModule, {
+  AppLayer: Filters.byDisplayName('AppLayer'),
   appLayerContext: m => m?.Provider
 })
-export const ChannelMessageList = Webpack.getModule(m => Filters.byStrings('channel', 'messageDisplayCompact')(m?.type))
-export const ChannelView = Webpack.getModule(m => Filters.byStrings('providedChannel')(m?.type))
-export const StandardSidebarViewWrapper = Webpack.waitForModule(Filters.byPrototypeKeys('getPredicateSections', 'renderSidebar'))
-export const StandardSidebarViewKeyed = getWithKey(Filters.byStrings('standardSidebarView', 'section'), { lazy: true })
-export const ModalsKeyed = getWithKey(Filters.byStrings('modalKey', '"layer-"'))
-export const LayersKeyed = getWithKey(Filters.byStrings('hasFullScreenLayer'))
-export const ChannelStore = Webpack.getStore('ChannelStore')
-export const { Easing } = Webpack.getByKeys('Easing')
-export const SortedGuildStore = Webpack.getStore('SortedGuildStore')
-export const { GuildChannelList } = getMangled(Filters.byStrings('favorites-channel-list'), { GuildChannelList: Filters.byStrings('getGuild', 'guildId') }, { withKeys: true })
-export const GuildActionRow = Webpack.getModule(Filters.byKeys('GUILD_ROLE_SUBSCRIPTIONS', 'CHANNELS_AND_ROLES'), { searchExports: true })
-export const PrivateChannelSortStore = Webpack.getStore('PrivateChannelSortStore')
-export const { ChannelSectionStore, MESSAGE_REQUESTS_BASE_CHANNEL_ID } = getMangled(Filters.byStoreName('ChannelSectionStore'), {
-  ChannelSectionStore: Filters.byStoreName('ChannelSectionStore'),
-  MESSAGE_REQUESTS_BASE_CHANNEL_ID: m => typeof m === 'string'
-})
-export const ChatSidebarKeyed = getWithKey(Filters.byStrings('sidebarType', 'postSidebarWidth'))
-export const ChatSidebarType = Webpack.getModule(Filters.byKeys('MessageRequestSidebar', 'ThreadSidebar'), { searchExports: true })
-export const VoiceChannelViewKeyed = getWithKey(Filters.byStrings('shouldUseVoiceEffectsActionBar'))
-export const CallChatSidebarKeyed = getWithKey(Filters.byStrings('CallChatSidebar'))
-export const MessageRequestSidebar = Webpack.getByStrings('isMessageRequest', 'closeChannelSidebar')
-export const SidebarType = Webpack.getModule(Filters.byKeys('VIEW_MESSAGE_REQUEST', 'VIEW_THREAD'), { searchExports: true })
-export const useMessageRequestSidebarStateKeyed = getWithKey(Filters.byStrings('getSidebarState', 'VIEW_MESSAGE_REQUEST'))
-export const App = Webpack.getByKeys('setEnableHardwareAcceleration', 'releaseChannel')
-export const Message = Webpack.getModule(m => Filters.byStrings('must not be a thread starter message')(m?.type), { searchExports: true })
-export const MessageDivider = Webpack.getModule(m => Filters.byStrings('divider', 'unreadPill')(m?.render))
-export const ChatSearchSidebarKeyed = getWithKey(Filters.byStrings('SearchResults', 'searchId'))
-export const { Select: SelectKeyed, SingleSelect: SingleSelectKeyed } = getMangled(Filters.byStrings('listbox', 'renderPopout', 'closeOnSelect'), {
-  Select: Filters.byStrings('listbox', 'renderPopout', 'closeOnSelect'),
-  SingleSelect: m => Filters.byStrings('value', 'onChange')(m) && !Filters.byStrings('isSelected')(m)
-}, { withKeys: true })
-export const SingleSelect = UnkeyedComponent(SingleSelectKeyed)
-export const MembersModViewSidebarKeyed = getWithKey(Filters.byStrings('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'), { lazy: true })
-export const LayerActions = getMangled(Filters.byStrings('LAYER_PUSH', 'component'), {
+export const ModalsKeyed = keyed(ModalsModule, Filters.byStrings('modalKey', '"layer-"'))
+export const LayersKeyed = keyed(LayersModule, Filters.byStrings('hasFullScreenLayer'))
+export const GuildChannelListKeyed = keyed(GuildChannelListModule, Filters.byStrings('getGuild', 'guildId'))
+export const ChatSidebarKeyed = keyed(ChatSidebarModule, Filters.byStrings('sidebarType', 'postSidebarWidth'))
+export const VoiceChannelViewKeyed = keyed(VoiceChannelViewModule, Filters.byStrings('shouldUseVoiceEffectsActionBar'))
+export const CallChatSidebarKeyed = keyed(CallChatSidebarModule, Filters.byStrings('CallChatSidebar', 'chatInputType'))
+export const SelectKeyed = keyed(SelectModule, Filters.byStrings('listbox', 'renderPopout', 'closeOnSelect'))
+export const SingleSelectKeyed = keyed(SelectModule, m => Filters.byStrings('value', 'onChange')(m) && !Filters.byStrings('isSelected')(m))
+export const SingleSelect = unkeyedFn(SingleSelectKeyed)
+export const LayerActions = mangled(LayerActionsModule, {
   pushLayer: Filters.byStrings('"LAYER_PUSH"'),
   popLayer: Filters.byStrings('"LAYER_POP"'),
   popAllLayers: Filters.byStrings('"LAYER_POP_ALL"')
 })
-export const LayerStore = Webpack.getStore('LayerStore')
-export const SettingsNotice = Webpack.waitForModule(Filters.byStrings('resetButton', 'EMPHASIZE_NOTICE'))
-export const { Alert, AlertTypes } = getMangled(Filters.byStrings('messageType', 'iconDiv'), {
+export const { Alert, AlertTypes } = mangled(AlertModule, {
   Alert: Filters.byStrings('messageType', 'iconDiv'),
   AlertTypes: Filters.byKeys('WARNING', 'ERROR')
 })
-export const UserSettingsModal = Webpack.getByKeys('open', 'setSection', 'updateAccount')
-export const { colors } = Webpack.getByKeys('colors', 'modules')
-export const { ModalRoot, ModalSize, ModalHeader, ModalFooter, ModalContent, ModalCloseButton } = Webpack.getMangled(
-  Filters.bySource('MODAL', 'rootWithShadow'),
-  {
-    ModalRoot: Filters.byStrings('MODAL', 'rootWithShadow'),
-    ModalSize: Filters.byKeys('MEDIUM', 'LARGE'),
-    ModalHeader: Filters.byStrings('headerIdIsManaged', 'HORIZONTAL'),
-    ModalFooter: Filters.byStrings('footerSeparator'),
-    ModalContent: Filters.byStrings('content', 'scrollbarType'),
-    ModalCloseButton: Filters.byStrings('closeIcon')
-  }
-)
-export const Button = Webpack.getModule(Filters.byStrings('button', 'hasText', 'expressiveWrapper'), { searchExports: true })
-export const TextButton = Webpack.getModule(Filters.byStrings('textButton', 'textVariant'), { searchExports: true })
-export const ButtonGroup = Webpack.getModule(Filters.byStrings('fullWidth', 'wrap', '"horizontal"'), { searchExports: true })
-export const Flex = Webpack.getByKeys('Direction', 'Justify', 'Child')
-export const Parser = Webpack.getByKeys('defaultRules', 'parse').defaultRules
-export const InviteEmbed = Webpack.getByStrings('Invite Button Embed', 'getInvite')
-export const InviteStates = Webpack.getModule(Filters.byKeys('APP_NOT_OPENED', 'RESOLVING'), { searchExports: true })
-export const InviteStore = Webpack.getStore('InviteStore')
-export const InviteActions = Webpack.getByKeys('resolveInvite', 'createInvite')
-export const TextInput = Webpack.getModule(Filters.byStrings('inputWrapper', 'prefixElement'), { searchExports: true })
-export const AppPanels = Webpack.getModule(m => Filters.byStrings('panels', 'ACCOUNT_PANEL')(m?.type), { searchExports: true })
-export const { ImpressionNames } = Webpack.getByKeys('ImpressionNames')
-export const GuildChannelRouteParams = Webpack.getModule(m => Filters.byStrings('escapeRegExp')(m?.guildId), { searchExports: true })
-export const handleClick = Webpack.getModule(Filters.byStrings('sanitizeUrl', 'shouldConfirm'), { searchExports: true })
-export const MenuItemKeyed = getWithKey(Filters.byStrings('dontCloseOnActionIfHoldingShiftKey', 'data-menu-item'))
-export const ChannelItemKeyed = getWithKey(Filters.byStrings('shouldIndicateNewChannel', 'MANAGE_CHANNELS'))
-export const VoiceChannelItemKeyed = getWithKey(Filters.byStrings('PLAYING', 'MANAGE_CHANNELS'))
-export const StageVoiceChannelItemKeyed = getWithKey(Filters.byStrings('getStageInstanceByChannel', 'MANAGE_CHANNELS'))
-export const { AppContext } = Webpack.getMangled(Filters.bySource('renderWindow', 'ownerDocument.defaultView'), { AppContext: m => m?.Provider })
-export const Timeout = Webpack.getModule(m => Filters.byPrototypeKeys('isStarted', 'start', 'stop')(m) && Filters.byStrings('setTimeout')(m), { searchExports: true })
-export const ChannelTextArea = Webpack.getModule(m => Filters.byStrings('channelTextArea', 'markdown')(m?.type?.render))
-export const ExpressionPicker = Webpack.getModule(m => Filters.byStrings('EXPRESSION_PICKER', 'positionContainer')(m?.type), { searchExports: true })
-export const { useExpressionPickerStore: useExpressionPickerStoreKeyed } = getMangled(Webpack.getBySource('expression-picker-last-active-view'), {
-  useExpressionPickerStore: Filters.byKeys('getState', 'setState')
-}, { withKeys: true })
-export const ChannelTextAreaButtons = Webpack.getModule(m => Filters.byStrings('buttons', 'sticker', 'gif')(m?.type), { searchExports: true })
-export const ChannelAppLauncher = Webpack.getModule(m => Filters.byStrings('channelAppLauncher')(m?.type), { searchExports: true })
-export const AppLauncherPopup = Webpack.getModule(m => Filters.byStrings('positionLayer', '"positionTargetRef"')(m?.type), { searchExports: true })
-export const generateUserSettingsSectionsKeyed = getWithKey(Filters.byStrings('ACCOUNT_PROFILE', 'CUSTOM', 'section'), { lazy: true })
-export const SelectedGuildStore = Webpack.getStore('SelectedGuildStore')
-export const SelectedChannelStore = Webpack.getStore('SelectedChannelStore')
-export const ProfileEffectsKeyed = getWithKey(Filters.byStrings('profileEffectConfig', 'useReducedMotion'))
-export const GatewaySocket = Webpack.getModule(m => m?.dispatcher?.scheduler, { searchExports: true })
-export const EmojiKeyed = getWithKey(Filters.byStrings('emojiId', 'emojiName', 'animated', 'shouldAnimate'))
-export const useIsVisibleKeyed = getWithKey(Filters.byStrings('isIntersecting', 'arguments.length'))
-export const useIsVisible = (...args) => unkeyed(useIsVisibleKeyed)(...args)
-export const useRootElementContextKeyed = getWithKey(Filters.byStrings('useRootElementContext'))
-export const GuildIcon = Webpack.getModule(m => Filters.byKeys('badgeStrokeColor', 'animate')(m?.defaultProps), { searchExports: true })
-export const GuildStore = Webpack.getStore('GuildStore')
-export const Timestamp = Webpack.getModule(m => Filters.byStrings('timestamp', 'timestampTooltip')(m?.type), { searchExports: true })
-export const humanize = Webpack.getByKeys('humanize', 'filesize')
-export const useListNavigator = Webpack.getByStrings('focusLastVisibleItem', '"focus"')
-export const {
-  useListItem,
-  useListContainerProps,
-  ListNavigatorProvider
-} = Webpack.getMangled(Filters.bySource('NO_LIST', 'listitem'), {
+export const { ModalRoot, ModalSize, ModalHeader, ModalFooter, ModalContent, ModalCloseButton } = mangled(ModalModule, {
+  ModalRoot: Filters.byStrings('MODAL', 'rootWithShadow'),
+  ModalSize: Filters.byKeys('MEDIUM', 'LARGE'),
+  ModalHeader: Filters.byStrings('headerIdIsManaged', 'HORIZONTAL'),
+  ModalFooter: Filters.byStrings('footerSeparator'),
+  ModalContent: Filters.byStrings('content', 'scrollbarType'),
+  ModalCloseButton: Filters.byStrings('closeIcon')
+})
+export const MenuItemKeyed = keyed(MenuItemModule, Filters.byStrings('dontCloseOnActionIfHoldingShiftKey', 'data-menu-item'))
+export const ChannelItemKeyed = keyed(ChannelItemModule, Filters.byStrings('shouldIndicateNewChannel', 'MANAGE_CHANNELS'))
+export const VoiceChannelItemKeyed = keyed(VoiceChannelItemModule, Filters.byStrings('PLAYING', 'MANAGE_CHANNELS'))
+export const StageVoiceChannelItemKeyed = keyed(StageVoiceChannelItemModule, Filters.byStrings('getStageInstanceByChannel', 'MANAGE_CHANNELS'))
+export const { AppContext } = mangled(AppContextModule, { AppContext: m => m?.Provider })
+export const useExpressionPickerStoreKeyed = keyed(ExpressionPickerStoreModule, Filters.byKeys('getState', 'setState'))
+export const ProfileEffectsKeyed = keyed(ProfileEffectsModule, Filters.byStrings('profileEffectConfig', 'useReducedMotion'))
+export const EmojiKeyed = keyed(EmojiModule, Filters.byStrings('emojiId', 'emojiName', 'animated', 'shouldAnimate'))
+export const useIsVisibleKeyed = keyed(UseIsVisibleModule, Filters.byStrings('isIntersecting', 'arguments.length'))
+export const useIsVisible = unkeyedFn(useIsVisibleKeyed)
+export const useRootElementContextKeyed = keyed(RootElementContextModule, Filters.byStrings('useRootElementContext'))
+export const { useListItem, useListContainerProps, ListNavigatorProvider } = mangled(ListNavigatorModule, {
   useListItem: Filters.byStrings('"listitem"'),
   useListContainerProps: Filters.byStrings('"list"', 'useContext'),
   ListNavigatorProvider: Filters.byStrings('containerProps', '.Provider')
 })
 export const ListNavigatorContainer = ({ children }) => children(useListContainerProps())
-export const {
-  useFocusLock,
-  FocusLock
-} = Webpack.getMangled(Filters.bySource('disableReturnRef', '"app-mount"'), {
+export const { useFocusLock, FocusLock } = mangled(FocusLockModule, {
   useFocusLock: Filters.byStrings('disableReturnRef'),
   FocusLock: Filters.byStrings('children', 'containerRef')
 })
-export const getThemeClass = Webpack.getModule(Filters.byStrings('" theme-"'), { searchExports: true })
 export const Mana = {
-  ModalRootKeyed: getWithKey(Filters.byStrings('MODAL', '"padding-size-"')),
+  ModalRootKeyed: keyed(ManaModalRootModule, Filters.byStrings('MODAL', '"padding-size-"')),
   get ModalRoot () { return unkeyed(this.ModalRootKeyed) }
 }
+export const BasePopoverKeyed = keyed(BasePopoverModule, Filters.byStrings('popoverGradientWrapper', 'spacing'))
+
+export const StandardSidebarViewWrapper = Webpack.waitForModule(Filters.byPrototypeKeys('getPredicateSections', 'renderSidebar'))
+export const StandardSidebarViewModule = Webpack.waitForModule(Filters.bySource('standardSidebarView', 'section'))
+export const StandardSidebarViewKeyed = lazyKeyed(StandardSidebarViewModule, Filters.byStrings('standardSidebarView', 'section'))
+export const SettingsNotice = Webpack.waitForModule(Filters.byStrings('resetButton', 'EMPHASIZE_NOTICE'))
+export const MembersModViewSidebarModule = Webpack.waitForModule(Filters.bySource('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))
+export const MembersModViewSidebarKeyed = lazyKeyed(MembersModViewSidebarModule, Filters.byStrings('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))
+export const GenerateUserSettingsSectionsModule = Webpack.waitForModule(Filters.bySource('ACCOUNT_PROFILE', 'CUSTOM', '"logout"'))
+export const generateUserSettingsSectionsKeyed = lazyKeyed(GenerateUserSettingsSectionsModule, Filters.byStrings('ACCOUNT_PROFILE', 'CUSTOM', '"logout"'))

@@ -1,6 +1,5 @@
 import {
   Button,
-  Constants,
   LayerActions,
   StandardSidebarViewKeyed,
   StandardSidebarViewWrapper,
@@ -13,7 +12,7 @@ import SectionContext from '@/settings/context/SectionContext'
 import { css } from '@style'
 import { useSection } from '@/settings/stores/SettingsStore'
 import DiscordSelectors from '@discord/selectors'
-import { useCallback, useMemo, Suspense, lazy, useEffect } from 'react'
+import { useCallback, Suspense, lazy, useEffect } from 'react'
 import { ErrorBoundary } from '@error/boundary'
 import PackRegistry from '@/modules/PackRegistry'
 
@@ -21,7 +20,6 @@ const StandardSidebarViewComponent = lazy(async () => ({ default: await Standard
 
 function SettingsModal () {
   const theme = useStateFromStores([ThemeStore], () => ThemeStore.theme)
-  const sidebarTheme = useStateFromStores([ThemeStore], () => ThemeStore.darkSidebar ? Constants.Themes.DARK : undefined)
 
   const title = `${meta.name} Settings`
   const sections = useSections()
@@ -51,7 +49,7 @@ function SettingsModal () {
             <StandardSidebarViewComponent
               title={title}
               theme={theme}
-              sidebarTheme={sidebarTheme}
+              sidebarTheme={theme}
               sections={sections}
               section={section}
               onSetSection={setSection}
