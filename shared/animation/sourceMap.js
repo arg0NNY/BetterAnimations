@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { getPath, omit, pick } from '@utils/object'
-import ObjectDeepSchema from '@animation/schemas/ObjectDeepSchema'
+import deepMap from '@animation/deepMap'
 
 export const SOURCE_MAP_KEY = '__sourceMap'
 export const IS_SOURCE_MAP_KEY = '__isSourceMap'
@@ -61,19 +61,12 @@ export function clearSourceMap (value) {
   return value
 }
 
-const ClearSourceMapDeepSchema = z.lazy(
-  () => ObjectDeepSchema(ClearSourceMapDeepSchema)
-    .transform(value => {
-      if (isSourceMap(value)) return value
-      clearSourceMap(value)
-      return value
-    })
-)
-
 export function clearSourceMapDeep (value) {
-  const { success, data } = ClearSourceMapDeepSchema.safeParse(value)
-  if (!success) throw new Error('Illegal value')
-  return data
+  return deepMap(value, value => {
+    if (isSourceMap(value)) return value
+    clearSourceMap(value)
+    return value
+  })
 }
 
 export function sourceMappedObjectKeys (value) {

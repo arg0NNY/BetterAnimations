@@ -4,7 +4,7 @@ import { toPath, visualizeAddonPath } from '@utils/json'
 import { getPath } from '@utils/object'
 import objectInspect from 'object-inspect'
 import { toSourcePath } from '@animation/sourceMap'
-import { sanitizeInjectable } from '@animation/schemas/SanitizeInjectableSchema'
+import { sanitizeInjectable } from '@animation/injectable/utils'
 
 function stripInject (path) {
   return path[path.length - 1] === 'inject'

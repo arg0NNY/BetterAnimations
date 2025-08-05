@@ -13,8 +13,8 @@ import AnimationType from '@enums/AnimationType'
 import ModuleKey from '@enums/ModuleKey'
 import ModuleType from '@enums/ModuleType'
 import { getPath, parsePath } from '@utils/json'
-import { zodTransformErrorBoundary } from '@utils/zod'
-import Debug from '@logger/debug'
+import { zodTransformErrorBoundary } from '@animation/zod'
+import Debug from '@animation/debug'
 import {
   clearSourceMap,
   clearSourceMapDeep,
