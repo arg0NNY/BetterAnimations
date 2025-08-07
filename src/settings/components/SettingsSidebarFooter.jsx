@@ -9,6 +9,8 @@ import meta from '@/meta'
 import DiscordSelectors from '@discord/selectors'
 import { useMemo } from 'react'
 import { UI } from '@/BdApi'
+import BookIcon from '@/components/icons/BookIcon'
+import Documentation from '@shared/documentation'
 
 function tryGetBDVersion () {
   for (const node of document.querySelectorAll(`${DiscordSelectors.StandardSidebarView.sidebar} .bd-text-muted`)) {
@@ -44,6 +46,13 @@ function SocialLinks () {
         onClick={() => handleClick({ href: 'https://betterdiscord.app/plugin/BetterAnimations' })}
       >
         <BetterDiscordIcon size="sm" color="currentColor" />
+      </IconButton>
+      <IconButton
+        tooltip="Documentation"
+        onClick={() => handleClick({ href: Documentation.homeUrl })}
+        style={{ margin: '0 -2px' }}
+      >
+        <BookIcon size="sm" color="currentColor" />
       </IconButton>
     </div>
   )
