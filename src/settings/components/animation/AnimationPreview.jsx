@@ -1,6 +1,6 @@
 import { use, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { css } from '@style'
-import { ChannelSectionStore, getThemeClass, Text, useStateFromStores } from '@discord/modules'
+import { ChannelSectionStore, colors, getThemeClass, Text, useStateFromStores } from '@discord/modules'
 import ModuleContext from '@/settings/context/ModuleContext'
 import Preview, { PREVIEW_WIDTH } from '@preview'
 import Core from '@/modules/Core'
@@ -9,13 +9,13 @@ import classNames from 'classnames'
 import { useMovable } from '@/settings/components/animation/AnimationCard'
 import useResizeObserver from '@/hooks/useResizeObserver'
 import { AnimeTransitionContext } from '@components/AnimeTransition'
-import IconBrand, { IconBrandTypes } from '@/components/icons/IconBrand'
 import Logger from '@logger'
 import IconButton from '@/settings/components/IconButton'
 import EyeIcon from '@/components/icons/EyeIcon'
 import RefreshIcon from '@/components/icons/RefreshIcon'
 import { stop } from '@/settings/utils/eventModifiers'
 import ErrorManager from '@error/manager'
+import CircleWarningIcon from '@/components/icons/CircleWarningIcon'
 
 export function getPreviewHeight (width) {
   return width * 9 / 16
@@ -90,12 +90,7 @@ function AnimationPreview ({
       )}>
         {error ? (
           <div className="BA__animationPreviewError">
-            <IconBrand
-              type={IconBrandTypes.ERROR}
-              size="custom"
-              width={38}
-              height={38}
-            />
+            <CircleWarningIcon size="lg" color={colors.STATUS_DANGER} />
             <Text variant="text-sm/bold">An error occurred.</Text>
             <div className="BA__animationPreviewErrorActions">
               <IconButton
