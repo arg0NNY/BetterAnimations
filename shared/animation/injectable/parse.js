@@ -103,9 +103,8 @@ export function parseInjectable (value, context, env = {}, { path = [] } = {}) {
               value.inject,
               (context, env) => (...args) => {
                 const path = getSourcePath(value, SELF_KEY)
-                if (path)
-                  Debug.animation(context.animation, context.type)
-                    .lazyInjectCall(value.inject, path, args, context)
+                const groupEnd = path && Debug.animation(context.animation, context.type)
+                  .lazyInjectCall(value.inject, path, args, context)
 
                 try {
                   return parseInjectable(value, context, {
@@ -115,6 +114,7 @@ export function parseInjectable (value, context, env = {}, { path = [] } = {}) {
                   }, { path: ctx.path })
                 }
                 catch (error) {
+                  groupEnd?.()
                   context.onError(
                     error instanceof AnimationError ? error : new AnimationError(
                       context.animation,
@@ -123,6 +123,9 @@ export function parseInjectable (value, context, env = {}, { path = [] } = {}) {
                     )
                   )
                   context.instance.cancel(true)
+                }
+                finally {
+                  groupEnd?.()
                 }
               }
             )

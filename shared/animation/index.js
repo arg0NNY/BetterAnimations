@@ -122,7 +122,7 @@ export default class Animation {
 
   cancel (dueToError = false, provideCallback = false) {
     if (this.cancelled) {
-      if (dueToError) return this.callback()
+      if (dueToError) return this.callback?.()
       if (provideCallback) {
         this.destroy(dueToError)
         return this.callback
