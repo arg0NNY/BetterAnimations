@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  animejs:
+    hash: cbf1d31c1a02fb39ef44407633414233d9eb86199e9a470cfdc26e2cceea9b3a
+    path: patches/animejs.patch
+
 importers:
 
   .:
@@ -13,7 +18,7 @@ importers:
         version: 1.0.5
       animejs:
         specifier: ^4.1.2
-        version: 4.1.2
+        version: 4.1.2(patch_hash=cbf1d31c1a02fb39ef44407633414233d9eb86199e9a470cfdc26e2cceea9b3a)
       deepmerge:
         specifier: ^4.3.1
         version: 4.3.1
@@ -2270,7 +2275,7 @@ snapshots:
       '@algolia/requester-fetch': 5.23.4
       '@algolia/requester-node-http': 5.23.4
 
-  animejs@4.1.2: {}
+  animejs@4.1.2(patch_hash=cbf1d31c1a02fb39ef44407633414233d9eb86199e9a470cfdc26e2cceea9b3a): {}
 
   birpc@2.3.0: {}
 
