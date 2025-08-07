@@ -1,4 +1,5 @@
 import BaseError from '@error/structs/BaseError'
+import Validator from '@discord/validator'
 
 export default class InternalError extends BaseError {
   static Category = {
@@ -9,7 +10,12 @@ export default class InternalError extends BaseError {
   }
 
   constructor (message, { category, ...options } = {}) {
-    super(message, options)
+    const meta = []
+
+    if (Validator.issues.has('DiscordModules'))
+      meta.push(`${Validator.name}: ${Validator.buildMessage('DiscordModules')}`)
+
+    super(message, options, meta)
     this.category = category ?? InternalError.Category.GENERAL
   }
 

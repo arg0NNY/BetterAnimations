@@ -7,6 +7,10 @@ import InternalError from '@error/structs/InternalError'
 class Validator {
   get name() { return 'Validator' }
 
+  constructor () {
+    this.issues = new Map()
+  }
+
   shouldSkip (module) {
     return module instanceof DiscordModules.Flux.Store
       || module === (DiscordModules.GatewaySocket ?? {})
@@ -25,22 +29,30 @@ class Validator {
     return issues
   }
 
+  buildMessage (name, issues = this.issues.get(name) ?? []) {
+    return `Found ${issues.length} issue${issues.length > 1 ? 's' : ''} in ${name}:\n`
+      + issues.map(([key, value]) => `  • ${key}: ${value}`).join('\n')
+  }
+
   validateModules (name, modules) {
     Logger.info(this.name, `Validating ${name}...`)
+
     const issues = this.collectIssues(modules)
+
     if (!issues.length) {
       Logger.info(this.name, `No issues found in ${name}.`)
       return true
     }
 
-    const message = `Found ${issues.length} issue${issues.length > 1 ? 's' : ''} in ${name}:\n`
-      + issues.map(([key, value]) => `  • ${key}: ${value}`).join('\n')
+    this.issues.set(name, issues)
+    const message = this.buildMessage(name, issues)
 
     if (import.meta.env.MODE === 'development') {
       ErrorManager.registerInternalError(
         new InternalError(`${this.name}: ${message}`)
       )
     } else Logger.warn(this.name, message)
+
     return false
   }
 
