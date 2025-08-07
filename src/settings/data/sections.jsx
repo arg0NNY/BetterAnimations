@@ -20,6 +20,7 @@ import CircleWarningIcon from '@/components/icons/CircleWarningIcon'
 import { colors } from '@discord/modules'
 import LibraryIcon from '@/components/icons/LibraryIcon'
 import DownloadIcon from '@/components/icons/DownloadIcon'
+import SettingsSidebarFooter from '@/settings/components/SettingsSidebarFooter'
 
 export function useSections () {
   const registry = usePackRegistry()
@@ -35,7 +36,7 @@ export function useSections () {
     return [
       {
         section: 'CUSTOM',
-        element: ErrorBoundary.wrap(SettingsSidebarHeader)
+        element: ErrorBoundary.wrap(SettingsSidebarHeader, { noop: true })
       },
       {
         section: SettingsSection.Home,
@@ -67,7 +68,7 @@ export function useSections () {
       },
       {
         section: 'CUSTOM',
-        element: ErrorBoundary.wrap(ModeSwitch)
+        element: ErrorBoundary.wrap(ModeSwitch, { noop: true })
       },
       ...Core.getAllModules(true).map(module => ({
         section: module.id,
@@ -87,6 +88,13 @@ export function useSections () {
         icon: <SettingsIcon size="xs" color="currentColor" />,
         element: ErrorBoundary.wrap(GeneralSettings),
         notice
+      },
+      {
+        section: 'DIVIDER'
+      },
+      {
+        section: 'CUSTOM',
+        element: ErrorBoundary.wrap(SettingsSidebarFooter, { noop: true })
       }
     ]
   }, [hasIssues, hasOutdatedPacks])

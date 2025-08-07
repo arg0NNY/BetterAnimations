@@ -115,7 +115,8 @@ export const [
   ListNavigatorModule,
   FocusLockModule,
   ManaModalRootModule,
-  BasePopoverModule
+  BasePopoverModule,
+  CopiableField
 ] = Webpack.getBulk(
   // Text
   {
@@ -612,6 +613,11 @@ export const [
   // BasePopoverModule
   {
     filter: Filters.bySource('popoverGradientWrapper', 'spacing')
+  },
+  // CopiableField
+  {
+    filter: Filters.byStrings('copyValue', 'TEXT_COPIED'),
+    searchExports: true
   }
 )
 
