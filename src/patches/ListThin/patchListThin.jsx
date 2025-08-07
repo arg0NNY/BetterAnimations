@@ -13,20 +13,22 @@ import { cloneElement, Fragment, useMemo, useRef } from 'react'
 import patchChannelItem from '@/patches/ListThin/patchChannelItem'
 import useWindow from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
+import patchChannelThreadList from '@/patches/ListThin/patchChannelThreadList'
 
 function ListItem ({ children, ...props }) {
-  const draggableRef = useRef()
-  children.props.ref = draggableRef
+  const itemRef = useRef()
+  children.props.ref = itemRef
 
   const containerRef = useMemo(() => ({
     get current () {
+      if (itemRef.current instanceof HTMLElement) return itemRef.current
       return Utils.findInTree(
-        draggableRef.current,
+        itemRef.current,
         m => m?.__containerRef,
         { walkable: ['decoratedRef', 'current'] }
       )?.__containerRef.current
     }
-  }), [draggableRef])
+  }), [itemRef])
 
   return (
     <AnimeTransition
@@ -104,6 +106,7 @@ function patchListThin () {
   })
 
   patchChannelItem()
+  patchChannelThreadList()
 }
 
 export default patchListThin

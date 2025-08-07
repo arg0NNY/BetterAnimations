@@ -115,7 +115,8 @@ export const [
   ListNavigatorModule,
   FocusLockModule,
   ManaModalRootModule,
-  BasePopoverModule
+  BasePopoverModule,
+  ChannelThreadList
 ] = Webpack.getBulk(
   // Text
   {
@@ -612,6 +613,11 @@ export const [
   // BasePopoverModule
   {
     filter: Filters.bySource('popoverGradientWrapper', 'spacing')
+  },
+  // ChannelThreadList
+  {
+    filter: m => Filters.byStrings('sortedThreadIds', 'spineBorder')(m?.type),
+    searchExports: true
   }
 )
 
