@@ -133,7 +133,6 @@ export default class Module {
         formatZodError(err, { pack, data, context, received: false, docs: Documentation.getDefinitionUrl(Documentation.Definition.Animate) }),
         { module: this, pack, type, context }
       )
-      ErrorManager.registerAnimationError(error)
     }
 
     if (animation) debug.initializeEnd(animate, context)
@@ -162,6 +161,8 @@ export default class Module {
       enter: this.initializeAnimation(AnimationType.Enter),
       exit: this.initializeAnimation(AnimationType.Exit)
     }
+
+    Object.values(this.animations).forEach(({ error }) => error && ErrorManager.registerAnimationError(error))
 
     return this
   }

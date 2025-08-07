@@ -6,7 +6,7 @@ import { getRef } from '@utils/react'
 import { getCenter, getRect } from '@utils/position'
 
 function PreviewTransition ({ module, anchor, ...props }) {
-  const { store, id, data, viewportRef } = use(PreviewContext)
+  const { store, id, data, viewportRef, onError } = use(PreviewContext)
 
   const [mouseCoords, setMouseCoords] = useState()
   const mouse = useMouse(mouseCoords)
@@ -28,6 +28,7 @@ function PreviewTransition ({ module, anchor, ...props }) {
       anchor={anchor}
       onEntering={onStart}
       onExiting={onStart}
+      onError={onError}
       {...props}
     />
   )

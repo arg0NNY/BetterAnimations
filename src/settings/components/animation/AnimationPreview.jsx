@@ -9,6 +9,13 @@ import classNames from 'classnames'
 import { useMovable } from '@/settings/components/animation/AnimationCard'
 import useResizeObserver from '@/hooks/useResizeObserver'
 import { AnimeTransitionContext } from '@components/AnimeTransition'
+import IconBrand, { IconBrandTypes } from '@/components/icons/IconBrand'
+import Logger from '@logger'
+import IconButton from '@/settings/components/IconButton'
+import EyeIcon from '@/components/icons/EyeIcon'
+import RefreshIcon from '@/components/icons/RefreshIcon'
+import { stop } from '@/settings/utils/eventModifiers'
+import ErrorManager from '@error/manager'
 
 export function getPreviewHeight (width) {
   return width * 9 / 16
@@ -40,6 +47,15 @@ function AnimationPreview ({
   useResizeObserver(containerRef, onUpdate)
   useLayoutEffect(onUpdate, [])
 
+  const [error, setError] = useState(null)
+  useEffect(() => {
+    if (!isActive) setError(null)
+  }, [isActive])
+  const onError = useCallback(error => {
+    setError(error)
+    Logger.error('AnimationPreview', error)
+  }, [setError])
+
   const { isMembersOpen: memberListShown = true } = useStateFromStores([ChannelSectionStore], () => ChannelSectionStore.getState())
 
   const modules = useMemo(() => Core.getAllModules(true), [])
@@ -61,20 +77,45 @@ function AnimationPreview ({
         key={module.id}
         id={module.id}
         modules={modules}
-        placeholder={!isActive}
+        placeholder={!isActive || error != null}
         pack={pack}
         animation={animation}
         dataKey={dataKey}
         preferences={preferences}
+        onError={onError}
       />
-      {title && (
-        <div className={classNames(
-          'BA__animationPreviewTitle',
-          { 'BA__animationPreviewTitle--hidden': isActive }
-        )}>
+      <div className={classNames(
+        'BA__animationPreviewOverlay',
+        { 'BA__animationPreviewOverlay--hidden': (isActive || !title) && !error }
+      )}>
+        {error ? (
+          <div className="BA__animationPreviewError">
+            <IconBrand
+              type={IconBrandTypes.ERROR}
+              size="custom"
+              width={38}
+              height={38}
+            />
+            <Text variant="text-sm/bold">An error occurred.</Text>
+            <div className="BA__animationPreviewErrorActions">
+              <IconButton
+                tooltip="View"
+                onClick={stop(() => ErrorManager.showModal([error]))}
+              >
+                <EyeIcon size="sm" color="currentColor" />
+              </IconButton>
+              <IconButton
+                tooltip="Try again"
+                onClick={stop(() => setError(null))}
+              >
+                <RefreshIcon size="xs" color="currentColor" />
+              </IconButton>
+            </div>
+          </div>
+        ) : title ? (
           <Text variant="heading-sm/semibold" lineClamp={2} color="always-white">{title}</Text>
-        </div>
-      )}
+        ) : null}
+      </div>
     </div>
   )
 }
@@ -100,16 +141,33 @@ css
     left: 50%;
     translate: -50% -50%;
 }
-.BA__animationPreviewTitle {
+.BA__animationPreviewOverlay {
     position: absolute;
     inset: 0;
     padding: 12px;
     background: rgba(0, 0, 0, .1);
     backdrop-filter: blur(15px);
     transition: .4s;
+    display: flex;
+    flex-direction: column;
 }
-.BA__animationPreviewTitle--hidden {
+.BA__animationPreviewOverlay--hidden {
     opacity: 0;
     backdrop-filter: blur(0);
+}
+.BA__animationPreviewError {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+}
+.BA__animationPreviewErrorActions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
 }`
 `AnimationPreview`
