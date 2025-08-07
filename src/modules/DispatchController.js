@@ -52,7 +52,7 @@ class DispatchController {
       if (import.meta.env.VITE_DISPATCH_CONTROLLER_DEBUG === 'true') this._debugEvent(event)
       if (!this.shouldIntercept(event)) return
 
-      Logger.log(this.name, `Intercepted and queued ${event.type}.`)
+      Logger.debug(this.name, `Intercepted and queued ${event.type}.`)
       this.queue.push(event)
       return true // Block event
     }
@@ -78,7 +78,7 @@ class DispatchController {
   }
 
   _debugEvent (event) {
-    Logger.log(this.name, `Event fired:`, event)
+    Logger.debug(this.name, `Event fired:`, event)
     console.time(event.type)
     requestAnimationFrame(() => console.timeEnd(event.type))
   }
@@ -103,7 +103,7 @@ class DispatchController {
   flushQueue () {
     if (!this.queue.length) return
 
-    Logger.log(this.name, `Flushing ${this.queue.length} event${this.queue.length > 1 ? 's' : ''}:`, this.queue)
+    Logger.debug(this.name, `Flushing ${this.queue.length} event${this.queue.length > 1 ? 's' : ''}:`, this.queue)
     Flux.Emitter.batched(() => {
       this.queue.forEach(event => Dispatcher.dispatch(event))
       this.queue = []
@@ -127,7 +127,7 @@ class DispatchController {
 
     this.isEmitterPaused = true
 
-    Logger.log(this.name, 'Emitter paused. Safely flushing queue...')
+    Logger.debug(this.name, 'Emitter paused. Safely flushing queue...')
     this.flushQueue()
   }
   resumeEmitter () {
@@ -135,7 +135,7 @@ class DispatchController {
 
     this.isEmitterPaused = false
 
-    Logger.log(this.name, 'Emitter resumed. Emitting changes...')
+    Logger.debug(this.name, 'Emitter resumed. Emitting changes...')
     Flux.Emitter.emit()
   }
 
