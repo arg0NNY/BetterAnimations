@@ -115,7 +115,8 @@ export const [
   ListNavigatorModule,
   FocusLockModule,
   ManaModalRootModule,
-  BasePopoverModule
+  BasePopoverModule,
+  matchSorter
 ] = Webpack.getBulk(
   // Text
   {
@@ -612,6 +613,11 @@ export const [
   // BasePopoverModule
   {
     filter: Filters.bySource('popoverGradientWrapper', 'spacing')
+  },
+  // matchSorter
+  {
+    filter: m => Filters.byKeys('MATCHES', 'STARTS_WITH')(m?.rankings),
+    searchExports: true
   }
 )
 
