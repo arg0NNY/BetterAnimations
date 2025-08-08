@@ -4,10 +4,11 @@ import AnimeTransition from '@components/AnimeTransition'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import Core from '@/modules/Core'
-import { useRef } from 'react'
+import { cloneElement, useRef } from 'react'
 import { MainWindowOnly } from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
 import { useSafeBoolean } from '@/hooks/useAnimationStore'
+import useAutoPosition from '@/hooks/useAutoPosition'
 
 function TooltipTransition (props) {
   const { module, isVisible, onAnimationRest, ...rest } = props
@@ -23,14 +24,10 @@ function TooltipTransition (props) {
     }
   )
 
-  const auto = {
-    position: props.position,
-    align: props.align
-  }
-
   const layerRef = useRef()
+  const { autoRef, setPosition } = useAutoPosition(props.position, { align: props.align })
+
   const layer = TooltipLayer(rest)
-  layer.props.ref = layerRef
 
   const safeIsVisible = useSafeBoolean(isVisible)
 
@@ -39,12 +36,15 @@ function TooltipTransition (props) {
       in={safeIsVisible}
       layerRef={layerRef}
       module={module}
-      auto={auto}
+      autoRef={autoRef}
       onEntered={onRest(true)}
       onExited={onRest(false)}
       anchor={props.targetElementRef}
     >
-      {layer}
+      {cloneElement(layer, {
+        ref: layerRef,
+        onPositionChange: setPosition
+      })}
     </AnimeTransition>
   )
 }
