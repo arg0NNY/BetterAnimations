@@ -1,5 +1,5 @@
 import AddonManager from '@/modules/AddonManager'
-import { path } from '@/modules/Node'
+import path from 'path'
 import { Plugins } from '@/BdApi'
 import AddonError from '@error/structs/AddonError'
 import PackSchema, { PackFallbackSchema } from '@animation/schemas/PackSchema'

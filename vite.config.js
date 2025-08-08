@@ -67,16 +67,19 @@ export default defineConfig({
     },
     minify: false,
     rollupOptions: {
-      external: ['react', 'react-dom', 'classnames'],
+      external: ['react', 'react-dom', 'classnames', 'fs', 'path', 'events'],
       output: {
         globals: {
           react: 'BdApi.React',
           'react-dom': 'BdApi.ReactDOM',
-          classnames: 'BdApi.Utils.className'
+          classnames: 'BdApi.Utils.className',
+          fs: 'require("fs")',
+          path: 'require("path")',
+          events: 'require("events")'
         }
       },
       onwarn (warning, warn) {
-        if (warning.code === 'MODULE_LEVEL_DIRECTIVE') return
+        if (warning.code === 'MISSING_NODE_BUILTINS') return
         warn(warning)
       }
     }
