@@ -410,7 +410,6 @@ export default new class PackRegistry {
   getThumbnailSrc (pack) {
     return pack.thumbnailSrc
       ?? this.getPack(pack.filename)?.thumbnailSrc
-      ?? thumbnailPlaceholder
   }
   getAuthorAvatarSrc (pack) {
     const publishedPack = this.getPack(pack.filename)

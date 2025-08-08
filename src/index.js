@@ -44,6 +44,7 @@ import { applyOptimizationPatches } from '@/patches/optimizations'
 import patchRootElementContext from '@/patches/AppView/patchRootElementContext'
 import Data from '@/modules/Data'
 import patchBasePopover from '@/patches/BasePopover/patchBasePopover'
+import Changelog from '@/modules/Changelog'
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -67,7 +68,8 @@ if (import.meta.env.MODE === 'development')
     Utils,
     Documentation,
     DispatchController,
-    Data
+    Data,
+    Changelog
   }
 
 export default function (meta) {
@@ -80,6 +82,7 @@ export default function (meta) {
       Config.initialize()
       Mouse.initialize()
       Style.initialize()
+      Changelog.initialize()
       PackRegistry.initialize()
       PackManager.initialize()
       AnimationStore.initialize()
@@ -122,6 +125,7 @@ export default function (meta) {
       Style.shutdown()
       Config.shutdown()
       ErrorManager.shutdown()
+      Changelog.shutdown()
       PackRegistry.shutdown()
       PackManager.shutdown()
       AnimationStore.shutdown()

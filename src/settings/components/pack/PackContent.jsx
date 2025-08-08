@@ -257,6 +257,27 @@ function PackBadge ({ pack, location }) {
   return null
 }
 
+export function PackMeta ({ pack, onShowSource = () => PackManager.showInFolder(pack.filename) }) {
+  return (
+    <div className="BA__packMeta">
+      <IconButton
+        tooltip="Source"
+        onClick={stop(onShowSource)}
+      >
+        <JSONIcon size="sm" color="currentColor" />
+      </IconButton>
+      {pack.invite && (
+        <IconButton
+          tooltip="Support Server"
+          onClick={stop(() => UI.showInviteModal(pack.invite))}
+        >
+          <CircleQuestionIcon size="sm" color="currentColor" />
+        </IconButton>
+      )}
+    </div>
+  )
+}
+
 function PackContent ({ pack, className, size = 'sm', location = PackContentLocation.CATALOG }) {
   const registry = usePackRegistry()
 
@@ -265,9 +286,7 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
 
   const showSource = useCallback(() => {
     if (location === PackContentLocation.CATALOG) handleClick({ href: registry.getSourceURL(pack.filename) })
-    else DiscordNative.fileManager.showItemInFolder(
-      path.resolve(PackManager.addonFolder, pack.filename)
-    )
+    else PackManager.showInFolder(pack.filename)
   }, [pack, location])
 
   const uninstall = useCallback(() => {
@@ -396,22 +415,10 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
               />
             </>
           ) : (
-            <div className="BA__packMeta">
-              <IconButton
-                tooltip="Source"
-                onClick={stop(showSource)}
-              >
-                <JSONIcon size="sm" color="currentColor" />
-              </IconButton>
-              {pack.invite && (
-                <IconButton
-                  tooltip="Support Server"
-                  onClick={stop(() => UI.showInviteModal(pack.invite))}
-                >
-                  <CircleQuestionIcon size="sm" color="currentColor" />
-                </IconButton>
-              )}
-            </div>
+            <PackMeta
+              pack={pack}
+              onShowSource={showSource}
+            />
           )}
           <div class="BA__packActions">
             {pack.partial && (

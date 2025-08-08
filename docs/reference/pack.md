@@ -24,7 +24,15 @@ A string representing the version of the pack in [SemVer](https://semver.org/) f
 
 ### `description` <Badge type="info" text="optional" />
 
-A non-empty string representing the description of a pack. Displayed in [Catalog & Library](/usage/packs#catalog-library).
+A non-empty string representing the description of a pack.
+
+### `changelog` <Badge type="info" text="optional" />
+
+Displays changelog modal when the pack updates to the current [`version`](#version).
+
+Accepts an `options` object passed to [`BdApi.UI.showChangelogModal()`](https://docs.betterdiscord.app/api/ui#showchangelogmodal).
+`title` and `subtitle` are managed automatically and will be ignored if specified.
+If the pack is published to the Catalog, `banner` will default to the pack's published thumbnail URL.
 
 ### `invite` <Badge type="info" text="optional" />
 
