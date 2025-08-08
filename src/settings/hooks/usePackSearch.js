@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { matchSorter } from '@discord/modules'
 
 export const defaultSortOptions = [
   {
@@ -36,15 +37,11 @@ function usePackSearch (
     setSortPreference?.(sort)
   }, [sort])
 
-  const items = allItems
-    .filter(
-      item => !trimmedQuery
-        || searchableFields.some(
-          field => typeof item[field] === 'string'
-            && item[field].toLowerCase().includes(trimmedQuery.toLowerCase())
-        )
-    )
-    .sort(selectedSort?.compare ?? (() => 0))
+  const items = matchSorter(
+    allItems,
+    trimmedQuery,
+    { keys: searchableFields }
+  ).sort(selectedSort?.compare ?? (() => 0))
 
   return {
     items,

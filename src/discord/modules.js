@@ -116,7 +116,8 @@ export const [
   FocusLockModule,
   ManaModalRootModule,
   BasePopoverModule,
-  ChannelThreadList
+  ChannelThreadList,
+  matchSorter
 ] = Webpack.getBulk(
   // Text
   {
@@ -617,6 +618,11 @@ export const [
   // ChannelThreadList
   {
     filter: m => Filters.byStrings('sortedThreadIds', 'spineBorder')(m?.type),
+    searchExports: true
+  },
+  // matchSorter
+  {
+    filter: m => Filters.byKeys('MATCHES', 'STARTS_WITH')(m?.rankings),
     searchExports: true
   }
 )
