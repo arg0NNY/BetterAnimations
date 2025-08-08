@@ -70,15 +70,15 @@ export default patchStandardSidebarView
 
 StandardSidebarViewKeyed.then(() =>
 css
-`${DiscordSelectors.StandardSidebarView.standardSidebarView} > ${DiscordSelectors.StandardSidebarView.contentRegion} {
+`${DiscordSelectors.StandardSidebarView.contentRegion}:has(> ${DiscordSelectors.StandardSidebarView.contentRegion}[data-ba-container]) {
     isolation: isolate;
     z-index: 2; /* Allow overflowing the sidebar */
 }
-${DiscordSelectors.StandardSidebarView.contentRegion} > ${DiscordSelectors.StandardSidebarView.contentRegion} {
-    height: 100%;
-}
 ${DiscordSelectors.StandardSidebarView.contentRegion}[data-ba-container] {
     background: none;
+}
+${DiscordSelectors.StandardSidebarView.contentRegion} > ${DiscordSelectors.StandardSidebarView.contentRegion} {
+    height: 100%;
 }
 
 .platform-win ${DiscordSelectors.StandardSidebarView.contentRegionScroller} {

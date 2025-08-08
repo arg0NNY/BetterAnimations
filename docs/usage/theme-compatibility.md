@@ -133,15 +133,15 @@ When this Module is enabled, it wraps the `contentRegion` element with two addit
 
 Alongside the layout change, it also adds the following styles:
 ```css
-.standardSidebarView__23e6b > .contentRegion__23e6b {
+.contentRegion__23e6b:has(> .contentRegion__23e6b[data-ba-container]) {
     isolation: isolate;
     z-index: 2; /* Allow overflowing the sidebar */
 }
-.contentRegion__23e6b > .contentRegion__23e6b {
-    height: 100%;
-}
 .contentRegion__23e6b[data-ba-container] {
     background: none;
+}
+.contentRegion__23e6b > .contentRegion__23e6b {
+    height: 100%;
 }
 .platform-win .contentRegionScroller__23e6b {
     height: calc(100% - var(--custom-app-top-bar-height));
