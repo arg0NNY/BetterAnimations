@@ -76,12 +76,11 @@ export function buildWrapper (data, context) {
 }
 
 export function parse (data = null, context, options = {}) {
-  context = context ?? {}
   const debug = context.animation ? Debug.animation(context.animation, context.type) : null
 
   const _parseStage = (stage, data, schema, path = []) => {
     path = context.path.concat(path)
-    debug?.parseStart(stage, data, context)
+    const groupEnd = debug?.parseStart(stage, data, context)
     try {
       data = data ? schema(context, { stage })
         .parse(data, { path }) : {}
@@ -90,7 +89,8 @@ export function parse (data = null, context, options = {}) {
       return data
     }
     catch (error) {
-      ErrorManager.registerAnimationError(
+      groupEnd?.()
+      context.onError(
         error instanceof AnimationError ? error : new AnimationError(
           context.animation,
           formatZodError(error, { pack: context.pack, data, context, path, docs: Documentation.getDefinitionUrl(Documentation.Definition.Animate) }),
@@ -99,6 +99,9 @@ export function parse (data = null, context, options = {}) {
       )
       context.instance.cancel(true)
       return null
+    }
+    finally {
+      groupEnd?.()
     }
   }
 
@@ -115,7 +118,7 @@ export function parse (data = null, context, options = {}) {
 
   const extend = (data, path = [], _depth = 1) => {
     if (_depth > 10) {
-      ErrorManager.registerAnimationError(
+      context.onError(
         new AnimationError(
           context.animation,
           'Maximum extend depth exceeded',

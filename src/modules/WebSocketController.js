@@ -15,11 +15,11 @@ class WebSocketController {
   }
 
   getOriginalMessageHandler () {
-    const handler = GatewaySocket.webSocket.onmessage
+    const handler = GatewaySocket.webSocket?.onmessage
     return handler === this.interceptor ? this._messageHandler : handler
   }
   setMessageHandler (handler) {
-    GatewaySocket.webSocket.onmessage = handler
+    if (GatewaySocket.webSocket) GatewaySocket.webSocket.onmessage = handler
   }
 
   get messageHandler () {
@@ -29,7 +29,7 @@ class WebSocketController {
   flushQueue () {
     if (!this.queue.length || !this.messageHandler) return
 
-    Logger.log(this.name, `Flushing ${this.queue.length} message${this.queue.length > 1 ? 's' : ''}.`)
+    Logger.debug(this.name, `Flushing ${this.queue.length} message${this.queue.length > 1 ? 's' : ''}.`)
     Flux.Emitter.batched(() => {
       this.queue.forEach(message => this.messageHandler(message))
       this.queue = []
@@ -37,20 +37,20 @@ class WebSocketController {
   }
 
   pauseMessages () {
-    if (this.isPaused) return
+    if (this.isPaused || !GatewaySocket.webSocket) return
 
     this._messageHandler = this.getOriginalMessageHandler()
     this.setMessageHandler(this.interceptor)
     this.isPaused = true
-    Logger.log(this.name, 'Messages paused.')
+    Logger.debug(this.name, 'Messages paused.')
   }
   resumeMessages (flush = true) {
-    if (!this.isPaused) return
+    if (!this.isPaused || !GatewaySocket.webSocket) return
 
     this.setMessageHandler(this.messageHandler)
     this._messageHandler = null
     this.isPaused = false
-    Logger.log(this.name, 'Messages resumed.')
+    Logger.debug(this.name, 'Messages resumed.')
 
     if (flush) this.flushQueue()
   }

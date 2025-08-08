@@ -120,23 +120,27 @@ export default class Module {
     const debug = Debug.animation(animation, type)
     const data = animation?.[type] ?? animation?.animate
 
-    if (animation) debug.initializeStart(data, context)
-
     let animate, error
-    try {
-      animate = animation && ParsableExtendableAnimateSchema(context, { stage: ParseStage.Initialize })
-        .parse(data, { path })
-    }
-    catch (err) {
-      error = err instanceof AnimationError ? err : new AnimationError(
-        animation,
-        formatZodError(err, { pack, data, context, received: false, docs: Documentation.getDefinitionUrl(Documentation.Definition.Animate) }),
-        { module: this, pack, type, context }
-      )
-      ErrorManager.registerAnimationError(error)
-    }
 
-    if (animation) debug.initializeEnd(animate, context)
+    if (animation) {
+      const groupEnd = debug.initializeStart(data, context)
+      try {
+        animate = ParsableExtendableAnimateSchema(context, { stage: ParseStage.Initialize })
+          .parse(data, { path })
+
+        debug.initializeEnd(animate, context)
+      }
+      catch (err) {
+        error = err instanceof AnimationError ? err : new AnimationError(
+          animation,
+          formatZodError(err, { pack, data, context, received: false, docs: Documentation.getDefinitionUrl(Documentation.Definition.Animate) }),
+          { module: this, pack, type, context }
+        )
+      }
+      finally {
+        groupEnd?.()
+      }
+    }
 
     return {
       packSlug: pack?.slug ?? null,
@@ -162,6 +166,8 @@ export default class Module {
       enter: this.initializeAnimation(AnimationType.Enter),
       exit: this.initializeAnimation(AnimationType.Exit)
     }
+
+    Object.values(this.animations).forEach(({ error }) => error && ErrorManager.registerAnimationError(error))
 
     return this
   }

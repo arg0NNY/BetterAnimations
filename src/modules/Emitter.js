@@ -1,4 +1,4 @@
-import { events as EventEmitter } from '@/modules/Node'
+import EventEmitter from 'events'
 
 export default new class Emitter extends EventEmitter {
   dispatch (eventName, ...args) {

@@ -39,6 +39,8 @@ export default class Debug {
   _log (message, ...data) { return this.__log('log', message, ...data) }
   _warn (message, ...data) { return this.__log('warn', message, ...data) }
   _error (message, ...data) { return this.__log('error', message, ...data) }
+  _groupCollapsed (message, ...data) { return this.__log('groupCollapsed', message, ...data) }
+  _groupEnd () { return Logger.groupEnd() }
 
   _system (event, message = null, meta = {}, type = 'log') {
     return this[`_${type}`](
@@ -110,7 +112,14 @@ export default class Debug {
   lazyInjectCall (name, path, args, context) {
     if (!this.isEnabled) return
 
-    return this._inject(
+    this._system(
+      'Lazy inject call',
+      `'${name}' at "${toPath(path)}"`,
+      {},
+      'groupCollapsed'
+    )
+
+    this._inject(
       'Lazy inject called',
       name, path, context,
       {
@@ -118,26 +127,32 @@ export default class Debug {
         arguments: args
       }
     )
+
+    return () => this._groupEnd()
   }
 
   initializeStart (received, context) {
     if (!this.isEnabled) return
 
-    return this._system(
-      'Initializing started',
+    this._system('Initialize', null, {}, 'groupCollapsed')
+
+    this._system(
+      'Initialize started',
       null,
       {
         context: snapshotContext(context),
         received: sanitizeInjectable(received)
       }
     )
+
+    return () => this._groupEnd()
   }
 
   initializeEnd (result, context) {
     if (!this.isEnabled) return
 
     return this._system(
-      'Initializing completed',
+      'Initialize completed',
       null,
       {
         context: snapshotContext(context),
@@ -149,7 +164,9 @@ export default class Debug {
   parseStart (stage, received, context) {
     if (!this.isEnabled) return
 
-    return this._system(
+    this._system('Parsing stage', stage, {}, 'groupCollapsed')
+
+    this._system(
       'Parsing started',
       stage,
       {
@@ -157,6 +174,8 @@ export default class Debug {
         received: sanitizeInjectable(received)
       }
     )
+
+    return () => this._groupEnd()
   }
 
   parseEnd (stage, result, context) {
