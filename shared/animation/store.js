@@ -1,6 +1,7 @@
 import Animation from '@animation'
 import ModuleType from '@enums/ModuleType'
 import Logger from '@logger'
+import { engine } from 'animejs'
 
 export class AnimationStore {
   get name () { return 'AnimationStore' }
@@ -16,8 +17,14 @@ export class AnimationStore {
     this._watchers = []
 
     this.onDocumentVisibilityChange = () => {
-      if (document.hidden) this.cancelAllAnimations()
-      else this.trigger()
+      if (document.hidden) {
+        engine.pause()
+        this.cancelAllAnimations()
+      }
+      else {
+        engine.resume()
+        this.trigger()
+      }
     }
   }
 
