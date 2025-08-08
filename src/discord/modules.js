@@ -117,7 +117,8 @@ export const [
   ManaModalRootModule,
   BasePopoverModule,
   ChannelThreadList,
-  matchSorter
+  matchSorter,
+  CopiableField
 ] = Webpack.getBulk(
   // Text
   {
@@ -623,6 +624,11 @@ export const [
   // matchSorter
   {
     filter: m => Filters.byKeys('MATCHES', 'STARTS_WITH')(m?.rankings),
+    searchExports: true
+  },
+  // CopiableField
+  {
+    filter: Filters.byStrings('copyValue', 'TEXT_COPIED'),
     searchExports: true
   }
 )

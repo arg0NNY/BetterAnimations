@@ -7,7 +7,7 @@ function GitHubIcon ({ size, width, height, color = colors.INTERACTIVE_NORMAL })
       {...useIconSize(size, { width, height })}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
-      viewBox="0 0 24 24"
+      viewBox="-1 -1 26 26"
     >
       <path
         fill={typeof color === 'string' ? color : color.css}

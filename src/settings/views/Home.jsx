@@ -166,14 +166,6 @@ function Home () {
           />
         </div>
       </div>
-      <div className="BA__homeSystemInfo">
-        <Text
-          variant="text-sm/medium"
-          color="text-muted"
-        >
-          v{meta.version} {import.meta.env.MODE === 'development' ? '(Dev Bundle)' : ''}
-        </Text>
-      </div>
     </div>
   )
 }
@@ -236,15 +228,6 @@ css
     gap: 8px;
     margin-top: 28px;
     width: 250px;
-}
-
-.BA__homeSystemInfo {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 16px;
-    display: flex;
-    align-items: center;
 }
 
 .BA__catalogPromoTooltip {
