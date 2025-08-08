@@ -115,7 +115,7 @@ export function parseInjectable (value, context, env = {}, { path = [] } = {}) {
                   }, { path: ctx.path })
                 }
                 catch (error) {
-                  ErrorManager.registerAnimationError(
+                  context.onError(
                     error instanceof AnimationError ? error : new AnimationError(
                       context.animation,
                       formatZodError(error, { pack: context.pack, data: value, context, path: ctx.path, sourceMap: { useSelf: true } }),

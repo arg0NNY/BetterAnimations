@@ -6,7 +6,7 @@ import AnimationError from '@error/structs/AnimationError'
 import { getRef } from '@utils/react'
 
 export default class Animation {
-  constructor (store, { module, data, type, container, element, viewport, window, mouse, anchor, auto, doneCallbackRef }) {
+  constructor (store, { module, data, type, container, element, viewport, window, mouse, anchor, auto, doneCallbackRef, onError }) {
     this.store = store
 
     this.module = module
@@ -20,6 +20,7 @@ export default class Animation {
     this.anchor = anchor
     this.auto = auto
     this.doneCallbackRef = doneCallbackRef
+    this.onError = onError ?? ErrorManager.registerAnimationError
 
     this.context = null
 
@@ -85,7 +86,8 @@ export default class Animation {
           anchor,
           anchorRect: isElement(anchor) ? getRect(anchor, this.viewport) : anchor,
           intersectWith,
-          isIntersected: !!intersectWith
+          isIntersected: !!intersectWith,
+          onError: this.onError
         }
       )
       this.context = context
@@ -163,8 +165,8 @@ export default class Animation {
 
   ensureTimeLimit (limit = this.computeTimeLimit()) {
     this.timeout = this.window.setTimeout(() => {
-      const { animation, module, pack, type } = this.context
-      ErrorManager.registerAnimationError(
+      const { animation, module, pack, type, onError } = this.context
+      onError(
         new AnimationError(
           animation,
           `Animation exceeded the execution time limit (${(limit / 1000).toFixed(1)}s)`,

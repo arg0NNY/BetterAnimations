@@ -8,6 +8,7 @@ import AnimeContainer from '@components/AnimeContainer'
 import { Component, createContext, createRef } from 'react'
 import { directChild } from '@utils/transition'
 import mouse from '@shared/mouse'
+import ErrorManager from '@error/manager'
 
 const getRef = ref => typeof ref === 'function' ? ref() : ref.current
 const injectContainerRefFn = (children, ref) => {
@@ -91,7 +92,8 @@ class AnimeTransition extends Component {
         mouse: this.mouse,
         anchor: this.props.anchor,
         auto: this.props.autoRef ?? { current: this.props.auto },
-        doneCallbackRef: this.doneCallback
+        doneCallbackRef: this.doneCallback,
+        onError: this.props.onError ?? ErrorManager.registerAnimationError
       })
 
       fn?.()
