@@ -4,6 +4,7 @@ import Events from '@enums/Events'
 import useUpdate from '@/hooks/useUpdate'
 import { useCallback, useEffect } from 'react'
 import SettingsMode from '@enums/SettingsMode'
+import { version } from '@package'
 
 class DataField {
   constructor (name, defaultValue) {
@@ -144,6 +145,10 @@ class Data {
 
 const data = new Data([
   new DataField('configVersion'),
+  new DataObjectField('currentVersionInfo', [
+    new DataField('version', version),
+    new DataField('hasShownChangelog', false)
+  ]),
   new DataField('settings'),
   new DataField('settingsMode', SettingsMode.Simple),
   new DataObjectField('preferences', [

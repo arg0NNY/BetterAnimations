@@ -90,13 +90,22 @@ class ExternalPackConfig extends PackConfig {
   load () {
     this.current = this.read()
   }
-  save () {
-    if (!this.hasUnsavedChanges()) return
-    fs.writeFileSync(this.filePath, JSON.stringify(this.current, null, 4), 'utf8')
+  save (data = this.current) {
+    if (!this.hasUnsavedChanges(data)) return
+    fs.writeFileSync(this.filePath, JSON.stringify(data, null, 4), 'utf8')
   }
 
-  hasUnsavedChanges () {
-    return !isEqual(this.current, this.read())
+  hasUnsavedChanges (data = this.current) {
+    return !isEqual(data, this.read())
+  }
+
+  loadData (name) {
+    return this.current[name]
+  }
+  saveData (name, value) {
+    value = structuredClone(value)
+    this.current[name] = value
+    this.save({ ...this.read(), [name]: value })
   }
 }
 

@@ -15,6 +15,7 @@ const BasePackSchemaShape = {
   author: z.string().trim().min(1),
   version: z.string().regex(regex.semver, 'Should match semver format'),
   description: z.string().min(1).optional(),
+  changelog: z.record(z.string(), z.any()).optional(),
   invite: z.string().optional(),
   authorLink: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional(),
   donate: z.string().regex(regex.url, Messages.SHOULD_BE_VALID_URL).optional()

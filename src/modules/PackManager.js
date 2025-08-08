@@ -75,4 +75,10 @@ export default new class PackManager extends AddonManager {
   getPackByFile (filename, includeRestricted = false) {
     return this._getPack(p => p.filename === filename, includeRestricted)
   }
+
+  showInFolder (filename) {
+    DiscordNative.fileManager.showItemInFolder(
+      path.resolve(this.addonFolder, filename)
+    )
+  }
 }

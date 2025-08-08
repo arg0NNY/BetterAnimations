@@ -11,7 +11,7 @@ function PackSplash ({ pack, showAuthor = false, className }) {
     <div className={classNames('BA__packSplash', className)}>
       <img
         className="BA__packSplashImage"
-        src={registry.getThumbnailSrc(pack)}
+        src={registry.getThumbnailSrc(pack) ?? thumbnailPlaceholder}
         onError={event => event.currentTarget.src = thumbnailPlaceholder}
         alt={pack.name}
         loading="lazy"
