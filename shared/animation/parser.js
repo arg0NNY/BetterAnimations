@@ -80,7 +80,7 @@ export function parse (data = null, context, options = {}) {
 
   const _parseStage = (stage, data, schema, path = []) => {
     path = context.path.concat(path)
-    debug?.parseStart(stage, data, context)
+    const groupEnd = debug?.parseStart(stage, data, context)
     try {
       data = data ? schema(context, { stage })
         .parse(data, { path }) : {}
@@ -89,6 +89,7 @@ export function parse (data = null, context, options = {}) {
       return data
     }
     catch (error) {
+      groupEnd?.()
       context.onError(
         error instanceof AnimationError ? error : new AnimationError(
           context.animation,
@@ -98,6 +99,9 @@ export function parse (data = null, context, options = {}) {
       )
       context.instance.cancel(true)
       return null
+    }
+    finally {
+      groupEnd?.()
     }
   }
 
