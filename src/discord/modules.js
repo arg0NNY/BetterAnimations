@@ -116,6 +116,8 @@ export const [
   FocusLockModule,
   ManaModalRootModule,
   BasePopoverModule,
+  ChannelThreadList,
+  matchSorter,
   CopiableField
 ] = Webpack.getBulk(
   // Text
@@ -614,6 +616,16 @@ export const [
   {
     filter: Filters.bySource('popoverGradientWrapper', 'spacing')
   },
+  // ChannelThreadList
+  {
+    filter: m => Filters.byStrings('sortedThreadIds', 'spineBorder')(m?.type),
+    searchExports: true
+  },
+  // matchSorter
+  {
+    filter: m => Filters.byKeys('MATCHES', 'STARTS_WITH')(m?.rankings),
+    searchExports: true
+  },
   // CopiableField
   {
     filter: Filters.byStrings('copyValue', 'TEXT_COPIED'),
@@ -669,7 +681,7 @@ export const { AppLayer, appLayerContext } = mangled(AppLayerModule, {
 export const ModalsKeyed = keyed(ModalsModule, Filters.byStrings('modalKey', '"layer-"'))
 export const LayersKeyed = keyed(LayersModule, Filters.byStrings('hasFullScreenLayer'))
 export const GuildChannelListKeyed = keyed(GuildChannelListModule, Filters.byStrings('getGuild', 'guildId'))
-export const ChatSidebarKeyed = keyed(ChatSidebarModule, Filters.byStrings('sidebarType', 'postSidebarWidth'))
+export const ChatSidebarKeyed = keyed(ChatSidebarModule, Filters.byStrings('chatLayerWrapper'))
 export const VoiceChannelViewKeyed = keyed(VoiceChannelViewModule, Filters.byStrings('shouldUseVoiceEffectsActionBar'))
 export const CallChatSidebarKeyed = keyed(CallChatSidebarModule, Filters.byStrings('CallChatSidebar', 'chatInputType'))
 export const SelectKeyed = keyed(SelectModule, Filters.byStrings('listbox', 'renderPopout', 'closeOnSelect'))

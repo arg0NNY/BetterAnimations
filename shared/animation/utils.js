@@ -27,7 +27,7 @@ export function executeWithZod (value, fn, context, options = {}) {
       .parse(value, { path })
   }
   catch (error) {
-    ErrorManager.registerAnimationError(
+    context.onError(
       new AnimationError(
         context.animation,
         formatZodError(error, { pack: context.pack, data: value, context, path }),

@@ -1,0 +1,34 @@
+diff --git a/lib/anime.esm.js b/lib/anime.esm.js
+index c5cff7eae4d17535bb4110347e933b9759bc8472..eea73bad59b506d716464ec6357bff96f2c03e08 100644
+--- a/lib/anime.esm.js
++++ b/lib/anime.esm.js
+@@ -627,10 +627,10 @@ const globals = {
+ 
+ const globalVersions = { version: '4.1.2', engine: null };
+ 
+-if (isBrowser) {
+-  if (!win.AnimeJS) win.AnimeJS = [];
+-  win.AnimeJS.push(globalVersions);
+-}
++// if (isBrowser) {
++//   if (!win.AnimeJS) win.AnimeJS = [];
++//   win.AnimeJS.push(globalVersions);
++// }
+ 
+ // Strings
+ 
+@@ -1503,10 +1503,10 @@ const engine = /*#__PURE__*/(() => {
+   const engine = new Engine(now());
+   if (isBrowser) {
+     globalVersions.engine = engine;
+-    doc.addEventListener('visibilitychange', () => {
+-      if (!engine.pauseOnDocumentHidden) return;
+-      doc.hidden ? engine.pause() : engine.resume();
+-    });
++    // doc.addEventListener('visibilitychange', () => {
++    //   if (!engine.pauseOnDocumentHidden) return;
++    //   doc.hidden ? engine.pause() : engine.resume();
++    // });
+   }
+   return engine;
+ })();

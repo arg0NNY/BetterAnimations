@@ -16,6 +16,7 @@ import Modals from '@preview/components/floating/Modals'
 import mainPlaceholder from '@preview/assets/placeholders/main.png'
 import settingsPlaceholder from '@preview/assets/placeholders/settings.png'
 import threadSidebarSwitchPlaceholder from '@preview/assets/placeholders/threadSidebarSwitch.png'
+import ErrorManager from '@error/manager'
 
 export const PREVIEW_WIDTH = 1280
 export const PREVIEW_HEIGHT = 720
@@ -34,7 +35,8 @@ function Preview ({
   viewportRef = useRef(),
   preferences = {
     memberListShown: true
-  }
+  },
+  onError = ErrorManager.registerAnimationError
 }) {
   const store = useMemo(() => new AnimationStore, [])
 
@@ -50,7 +52,11 @@ function Preview ({
       setData(null)
       return
     }
-    setData(module.initializeAnimations(pack, animation))
+
+    const data = module.initializeAnimations(pack, animation)
+    const error = data.enter.error || data.exit.error
+    if (error) onError(error)
+    setData(data)
   }, [placeholder, module, pack, animation, dataKey])
 
   const placeholderRef = useRef()
@@ -99,6 +105,7 @@ function Preview ({
     animation,
     data,
     viewportRef,
+    onError,
     serverListIconRefs,
     userPanelActionRefs,
     channelHeaderItemRefs,

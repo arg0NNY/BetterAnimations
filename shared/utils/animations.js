@@ -13,7 +13,8 @@ export function sanitizeContext (context) {
     'intersectWith',
     'window',
     'document',
-    'mouse'
+    'mouse',
+    'onError'
   ])
   if (context.module) ctx.module = pick(context.module, ['id', 'name'])
   if ('vars' in context) ctx.vars = sanitizeInjectable(context.vars)
