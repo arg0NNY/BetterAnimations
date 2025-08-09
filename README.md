@@ -3,7 +3,7 @@
 > 
 > Join the [Support Server](https://discord.gg/jgfy25t47r) to participate.
 
-![BetterAnimations](./assets/img/cover.png)
+![BetterAnimations](./assets/cover.webp)
 
 <h3 align="center">Discord Animations Client Mod & Framework</h3>
 <p align="center">Bring your Discord app to life — tweak, create, animate. A BetterDiscord plugin.</p>
