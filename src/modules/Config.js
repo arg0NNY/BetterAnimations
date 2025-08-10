@@ -9,7 +9,6 @@ import PackManager from '@/modules/PackManager'
 import Logger from '@logger'
 import isEqual from 'lodash-es/isEqual'
 import { internalPackSlugs } from '@packs'
-import cloneDeep from 'lodash-es/cloneDeep'
 
 class PackConfig {
   get name () { return `PackConfig: ${this.slug}` }
@@ -71,6 +70,7 @@ class ExternalPackConfig extends PackConfig {
 
   constructor (slug) {
     super(slug)
+    this.read()
     this.load()
   }
 
@@ -82,22 +82,27 @@ class ExternalPackConfig extends PackConfig {
         catch { return {} }
       })()
     )
-    if (config.configVersion === CONFIG_VERSION) return config
+    if (config.configVersion === CONFIG_VERSION) {
+      this.stored = config
+      return
+    }
 
     // TODO: Trigger pack config migrator
     Logger.warn(this.name, `Config version is outdated, falling back to defaults.`)
-    return cloneDeep(this.defaults)
+    this.stored = structuredClone(this.defaults)
   }
   load () {
-    this.current = this.read()
+    this.current = structuredClone(this.stored)
   }
   save (data = this.current) {
     if (!this.hasUnsavedChanges(data)) return
+
     fs.writeFileSync(this.filePath, JSON.stringify(data, null, 4), 'utf8')
+    this.stored = structuredClone(data)
   }
 
   hasUnsavedChanges (data = this.current) {
-    return !isEqual(data, this.read())
+    return !isEqual(data, this.stored)
   }
 
   loadData (name) {
@@ -106,7 +111,7 @@ class ExternalPackConfig extends PackConfig {
   saveData (name, value) {
     value = structuredClone(value)
     this.current[name] = value
-    this.save({ ...this.read(), [name]: value })
+    this.save({ ...this.stored, [name]: value })
   }
 }
 
@@ -116,6 +121,7 @@ export default new class Config {
   get defaults () { return configDefaults }
 
   constructor () {
+    this.stored = {}
     this.current = {}
     this.internalPacks = new Map(
       internalPackSlugs.map(slug => [slug, new InternalPackConfig(this, slug)])
@@ -127,6 +133,7 @@ export default new class Config {
   }
 
   initialize () {
+    this.read()
     this.load()
     this.listenPackEvents()
 
@@ -141,14 +148,17 @@ export default new class Config {
   }
   read () {
     const configVersion = this.getConfigVersion()
-    if (configVersion === CONFIG_VERSION) return deepmerge(this.defaults, Data[this.dataKey] ?? {})
+    if (configVersion === CONFIG_VERSION) {
+      this.stored = deepmerge(this.defaults, Data[this.dataKey] ?? {})
+      return
+    }
 
     // TODO: Trigger config migrator
     Logger.warn(this.name, 'Config version is outdated, falling back to defaults.')
-    return cloneDeep(this.defaults)
+    this.stored = structuredClone(this.defaults)
   }
   load () {
-    this.current = this.read()
+    this.current = structuredClone(this.stored)
     this.externalPacks.forEach(pack => pack.load())
     Emitter.emit(Events.SettingsLoaded)
     Emitter.emit(Events.SettingsChanged)
@@ -156,12 +166,13 @@ export default new class Config {
   save () {
     if (!this.hasUnsavedChanges()) return
     Data[this.dataKey] = this.current
+    this.stored = structuredClone(this.current)
     this.externalPacks.forEach(pack => pack.save())
     Emitter.emit(Events.SettingsSaved)
   }
 
   hasUnsavedChanges () {
-    return !isEqual(this.current, this.read())
+    return !isEqual(this.current, this.stored)
       || Array.from(this.externalPacks.values()).some(pack => pack.hasUnsavedChanges())
   }
 
