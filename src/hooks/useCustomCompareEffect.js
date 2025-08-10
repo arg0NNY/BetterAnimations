@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef } from 'react'
-import useUpdate from '@/hooks/useUpdate'
+import useUpdate from '@shared/hooks/useUpdate'
 import Logger from '@logger'
 
 function useCustomCompareEffect (effect, deps, depsEqual) {

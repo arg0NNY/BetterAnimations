@@ -3,24 +3,61 @@ import deepmerge from 'deepmerge'
 import Data from '@/modules/Data'
 import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
-import fs from 'fs'
-import path from 'path'
-import PackManager from '@/modules/PackManager'
 import Logger from '@logger'
 import isEqual from 'lodash-es/isEqual'
 import { internalPackSlugs } from '@packs'
+import PackData from '@/modules/PackData'
 
-class PackConfig {
+class BaseConfig {
+  get name () { return 'BaseConfig' }
+
+  constructor (data, defaults) {
+    this.data = data
+    this.defaults = defaults
+    this.stored = {}
+    this.current = {}
+  }
+
+  getConfigVersion () {
+    const configVersion = this.data.configVersion
+    if (configVersion != null) return configVersion // If the config version is set, use it
+    if (this.data.settings != null) return 1 // If the config version is not set, but the settings are, this is a legacy V1 config
+    return this.data.configVersion = CONFIG_VERSION // Otherwise, set the config version to the latest version
+  }
+  read () {
+    const configVersion = this.getConfigVersion()
+    if (configVersion === CONFIG_VERSION) {
+      this.stored = deepmerge(this.defaults, this.data.settings ?? {})
+      return
+    }
+
+    // TODO: Trigger config migrator
+    Logger.warn(this.name, `Config version is outdated, falling back to defaults.`)
+    this.stored = structuredClone(this.defaults)
+  }
+  load () {
+    this.current = structuredClone(this.stored)
+  }
+  save () {
+    this.data.settings = this.current
+    this.data.configVersion = CONFIG_VERSION
+    this.stored = structuredClone(this.current)
+  }
+  hasUnsavedChanges () {
+    return !isEqual(this.current, this.stored)
+  }
+}
+
+
+class PackConfig extends BaseConfig {
   get name () { return `PackConfig: ${this.slug}` }
 
   constructor (slug) {
-    this.slug = slug
-  }
+    super(PackData.pack(slug), packConfigDefaults)
 
-  reset () {
-    this.current = {}
-    this.save()
-    Emitter.emit(Events.SettingsChanged)
+    this.slug = slug
+    this.read()
+    this.load()
   }
 
   createAnimationConfigEntry (key, moduleKey) {
@@ -46,161 +83,59 @@ class PackConfig {
   }
 }
 
-class InternalPackConfig extends PackConfig {
-  constructor (config, slug) {
-    super(slug)
-    this.config = config
-  }
-
-  get current () {
-    return this.config.current.packs[this.slug]
-  }
-  set current (value) {
-    this.config.current.packs[this.slug] = value
-  }
-
-  save () {
-    return this.config.save()
-  }
-}
-
-class ExternalPackConfig extends PackConfig {
-  get filePath () { return path.resolve(PackManager.addonFolder, `${this.slug}.config.json`) }
-  get defaults () { return packConfigDefaults }
-
-  constructor (slug) {
-    super(slug)
-    this.read()
-    this.load()
-  }
-
-  read () {
-    const config = deepmerge(
-      this.defaults,
-      (() => {
-        try { return fs.existsSync(this.filePath) ? JSON.parse(fs.readFileSync(this.filePath, 'utf8')) : {} }
-        catch { return {} }
-      })()
-    )
-    if (config.configVersion === CONFIG_VERSION) {
-      this.stored = config
-      return
-    }
-
-    // TODO: Trigger pack config migrator
-    Logger.warn(this.name, `Config version is outdated, falling back to defaults.`)
-    this.stored = structuredClone(this.defaults)
-  }
-  load () {
-    this.current = structuredClone(this.stored)
-  }
-  save (data = this.current) {
-    if (!this.hasUnsavedChanges(data)) return
-
-    fs.writeFileSync(this.filePath, JSON.stringify(data, null, 4), 'utf8')
-    this.stored = structuredClone(data)
-  }
-
-  hasUnsavedChanges (data = this.current) {
-    return !isEqual(data, this.stored)
-  }
-
-  loadData (name) {
-    return this.current[name]
-  }
-  saveData (name, value) {
-    value = structuredClone(value)
-    this.current[name] = value
-    this.save({ ...this.stored, [name]: value })
-  }
-}
-
-export default new class Config {
+export default new class Config extends BaseConfig {
   get name () { return 'Config' }
-  get dataKey () { return 'settings' }
-  get defaults () { return configDefaults }
 
   constructor () {
-    this.stored = {}
-    this.current = {}
-    this.internalPacks = new Map(
-      internalPackSlugs.map(slug => [slug, new InternalPackConfig(this, slug)])
-    )
-    this.externalPacks = new Map()
+    super(Data, configDefaults)
 
-    this.onPackLoaded = this.onPackLoaded.bind(this)
-    this.onPackUnloaded = this.onPackUnloaded.bind(this)
+    this.packs = new Map()
+
+    this.onPackLoaded = pack => {
+      if (pack.partial) return
+      this.packs.set(pack.slug, new PackConfig(pack.slug))
+    }
+    this.onPackUnloaded = pack => this.packs.delete(pack.slug)
   }
 
   initialize () {
-    this.read()
-    this.load()
-    this.listenPackEvents()
+    super.read()
+    super.load()
 
-    Logger.info('Config', 'Initialized.')
+    internalPackSlugs.forEach(slug => this.packs.set(slug, new PackConfig(slug)))
+
+    Emitter.on(Events.PackLoaded, this.onPackLoaded)
+    Emitter.on(Events.PackUnloaded, this.onPackUnloaded)
+
+    Logger.info(this.name, 'Initialized.')
   }
 
-  getConfigVersion () {
-    const configVersion = Data.configVersion
-    if (configVersion != null) return configVersion // If the config version is set, use it
-    if (Data[this.dataKey] != null) return 1 // If the config version is not set, but the settings are, this is a legacy V1 config
-    return Data.configVersion = CONFIG_VERSION // Otherwise, set the config version to the latest version
-  }
-  read () {
-    const configVersion = this.getConfigVersion()
-    if (configVersion === CONFIG_VERSION) {
-      this.stored = deepmerge(this.defaults, Data[this.dataKey] ?? {})
-      return
-    }
-
-    // TODO: Trigger config migrator
-    Logger.warn(this.name, 'Config version is outdated, falling back to defaults.')
-    this.stored = structuredClone(this.defaults)
-  }
   load () {
-    this.current = structuredClone(this.stored)
-    this.externalPacks.forEach(pack => pack.load())
+    super.load()
+    this.packs.forEach(pack => pack.load())
     Emitter.emit(Events.SettingsLoaded)
     Emitter.emit(Events.SettingsChanged)
   }
   save () {
-    if (!this.hasUnsavedChanges()) return
-    Data[this.dataKey] = this.current
-    this.stored = structuredClone(this.current)
-    this.externalPacks.forEach(pack => pack.save())
+    super.save()
+    this.packs.forEach(pack => pack.save())
     Emitter.emit(Events.SettingsSaved)
   }
 
   hasUnsavedChanges () {
-    return !isEqual(this.current, this.stored)
-      || Array.from(this.externalPacks.values()).some(pack => pack.hasUnsavedChanges())
-  }
-
-  listenPackEvents () {
-    Emitter.on(Events.PackLoaded, this.onPackLoaded)
-    Emitter.on(Events.PackUnloaded, this.onPackUnloaded)
-  }
-  onPackLoaded (pack) {
-    if (pack.partial) return
-    this.externalPacks.set(pack.slug, new ExternalPackConfig(pack.slug))
-  }
-  onPackUnloaded (pack) {
-    this.externalPacks.delete(pack.slug)
-  }
-  unlistenPackEvents () {
-    Emitter.off(Events.PackLoaded, this.onPackLoaded)
-    Emitter.off(Events.PackUnloaded, this.onPackUnloaded)
+    return super.hasUnsavedChanges()
+      || Array.from(this.packs.values()).some(pack => pack.hasUnsavedChanges())
   }
 
   pack (slug) {
-    return internalPackSlugs.includes(slug)
-      ? (this.internalPacks.get(slug) ?? new InternalPackConfig(this, slug))
-      : (this.externalPacks.get(slug) ?? new ExternalPackConfig(slug))
+    return this.packs.get(slug) ?? new PackConfig(slug)
   }
 
   shutdown () {
-    this.unlistenPackEvents()
-    this.externalPacks.clear()
+    Emitter.off(Events.PackLoaded, this.onPackLoaded)
+    Emitter.off(Events.PackUnloaded, this.onPackUnloaded)
+
+    this.packs.clear()
 
     Logger.info('Config', 'Shutdown.')
   }

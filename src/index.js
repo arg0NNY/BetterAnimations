@@ -45,6 +45,7 @@ import patchRootElementContext from '@/patches/AppView/patchRootElementContext'
 import Data from '@/modules/Data'
 import patchBasePopover from '@/patches/BasePopover/patchBasePopover'
 import Changelog from '@/modules/Changelog'
+import PackData from '@/modules/PackData'
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -69,6 +70,7 @@ if (import.meta.env.MODE === 'development')
     Documentation,
     DispatchController,
     Data,
+    PackData,
     Changelog
   }
 
@@ -79,6 +81,7 @@ export default function (meta) {
     start () {
       Logger.info('Startup', 'Initializing modules...')
       ErrorManager.initialize()
+      PackData.initialize()
       Config.initialize()
       Mouse.initialize()
       Style.initialize()
@@ -124,6 +127,7 @@ export default function (meta) {
       Mouse.shutdown()
       Style.shutdown()
       Config.shutdown()
+      PackData.shutdown()
       ErrorManager.shutdown()
       Changelog.shutdown()
       PackRegistry.shutdown()

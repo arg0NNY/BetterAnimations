@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import useUpdate from '@/hooks/useUpdate'
+import useUpdate from '@shared/hooks/useUpdate'
 import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
 import Core from '@/modules/Core'
