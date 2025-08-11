@@ -22,7 +22,7 @@ class BaseConfig {
     const configVersion = this.data.configVersion
     if (configVersion != null) return configVersion // If the config version is set, use it
     if (this.data.settings != null) return 1 // If the config version is not set, but the settings are, this is a legacy V1 config
-    return this.data.configVersion = CONFIG_VERSION // Otherwise, set the config version to the latest version
+    return CONFIG_VERSION // There is no config, fallback to the latest version
   }
   read () {
     const configVersion = this.getConfigVersion()
@@ -39,8 +39,8 @@ class BaseConfig {
     this.current = structuredClone(this.stored)
   }
   save () {
-    this.data.settings = this.current
     this.data.configVersion = CONFIG_VERSION
+    this.data.settings = this.current
     this.stored = structuredClone(this.current)
   }
   hasUnsavedChanges () {
@@ -137,6 +137,6 @@ export default new class Config extends BaseConfig {
 
     this.packs.clear()
 
-    Logger.info('Config', 'Shutdown.')
+    Logger.info(this.name, 'Shutdown.')
   }
 }
