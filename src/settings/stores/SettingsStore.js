@@ -22,7 +22,8 @@ const SettingsStore = new class SettingsStore extends Flux.Store {
       Events.ModuleToggled,
       Events.ModuleSettingsChanged,
       Events.SettingsChanged,
-      Events.SettingsSaved
+      Events.SettingsSaved,
+      Events.MigratorUpdated
     ].forEach(event => Emitter.on(event, this.emitChange.bind(this)))
   }
 
@@ -39,7 +40,7 @@ const SettingsStore = new class SettingsStore extends Flux.Store {
 
   // Used by StandardSidebarView
   showNotice () {
-    return Config.hasUnsavedChanges()
+    return !Config.migrator.isActive && Config.hasUnsavedChanges()
   }
 }(Dispatcher, {
   [DispatcherEvents.SET_SETTINGS_SECTION]: handleSetSection,

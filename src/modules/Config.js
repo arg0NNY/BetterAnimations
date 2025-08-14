@@ -7,6 +7,8 @@ import Logger from '@logger'
 import isEqual from 'lodash-es/isEqual'
 import { internalPackSlugs } from '@packs'
 import PackData from '@/modules/PackData'
+import Migrator from '@/modules/Migrator'
+import migrations from '@/migrations'
 
 class BaseConfig {
   get name () { return 'BaseConfig' }
@@ -18,22 +20,24 @@ class BaseConfig {
     this.current = {}
   }
 
-  getConfigVersion () {
+  get configVersion () {
     const configVersion = this.data.configVersion
     if (configVersion != null) return configVersion // If the config version is set, use it
     if (this.data.settings != null) return 1 // If the config version is not set, but the settings are, this is a legacy V1 config
     return CONFIG_VERSION // There is no config, fallback to the latest version
   }
+  get isOutdated () {
+    return this.configVersion < CONFIG_VERSION
+  }
+
   read () {
-    const configVersion = this.getConfigVersion()
-    if (configVersion === CONFIG_VERSION) {
-      this.stored = deepmerge(this.defaults, this.data.settings ?? {})
+    if (this.isOutdated) {
+      Logger.warn(this.name, `Config version is outdated, falling back to defaults.`)
+      this.stored = structuredClone(this.defaults)
       return
     }
 
-    // TODO: Trigger config migrator
-    Logger.warn(this.name, `Config version is outdated, falling back to defaults.`)
-    this.stored = structuredClone(this.defaults)
+    this.stored = deepmerge(this.defaults, this.data.settings ?? {})
   }
   load () {
     this.current = structuredClone(this.stored)
@@ -46,8 +50,12 @@ class BaseConfig {
   hasUnsavedChanges () {
     return !isEqual(this.current, this.stored)
   }
-}
 
+  reset () {
+    this.current = structuredClone(this.defaults)
+    this.save()
+  }
+}
 
 class PackConfig extends BaseConfig {
   get name () { return `PackConfig: ${this.slug}` }
@@ -89,11 +97,15 @@ export default new class Config extends BaseConfig {
   constructor () {
     super(Data, configDefaults)
 
+    this.migrator = new Migrator(this, migrations)
     this.packs = new Map()
 
     this.onPackLoaded = pack => {
       if (pack.partial) return
-      this.packs.set(pack.slug, new PackConfig(pack.slug))
+
+      const config = new PackConfig(pack.slug)
+      this.packs.set(pack.slug, config)
+      this.migrator.validate([config])
     }
     this.onPackUnloaded = pack => this.packs.delete(pack.slug)
   }
@@ -106,6 +118,8 @@ export default new class Config extends BaseConfig {
 
     Emitter.on(Events.PackLoaded, this.onPackLoaded)
     Emitter.on(Events.PackUnloaded, this.onPackUnloaded)
+
+    this.migrator.validate()
 
     Logger.info(this.name, 'Initialized.')
   }
@@ -132,6 +146,8 @@ export default new class Config extends BaseConfig {
   }
 
   shutdown () {
+    this.migrator.abort()
+
     Emitter.off(Events.PackLoaded, this.onPackLoaded)
     Emitter.off(Events.PackUnloaded, this.onPackUnloaded)
 
