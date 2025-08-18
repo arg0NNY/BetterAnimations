@@ -40,7 +40,7 @@ class Migrator {
   }
 
   get configs () {
-    return [this.config, ...this.config.packs.values()]
+    return this.config.getAll()
   }
   hasOutdatedConfigs (configs = this.configs) {
     return configs.some(config => config.isOutdated)
@@ -176,12 +176,7 @@ class Migrator {
       throw new Error('Found incomplete mutations')
     }
 
-    // TODO: Move to `Config`
-    for (const mutation of mutations) {
-      const config = mutation.slug ? this.config.pack(mutation.slug) : this.config
-      config.current = mutation.data
-      config.save()
-    }
+    this.config.applyMutations(mutations)
   }
 
   async migrate (confirmed = false) {

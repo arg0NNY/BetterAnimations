@@ -145,6 +145,17 @@ export default new class Config extends BaseConfig {
     return this.packs.get(slug) ?? new PackConfig(slug)
   }
 
+  getAll () {
+    return [this, ...this.packs.values()]
+  }
+  applyMutations (mutations) {
+    for (const mutation of mutations) {
+      const config = mutation.slug ? this.pack(mutation.slug) : this
+      config.current = mutation.data
+      config.save()
+    }
+  }
+
   shutdown () {
     this.migrator.abort()
 
