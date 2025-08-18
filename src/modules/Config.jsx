@@ -9,6 +9,9 @@ import { internalPackSlugs } from '@packs'
 import PackData from '@/modules/PackData'
 import Migrator from '@/modules/Migrator'
 import migrations from '@/migrations'
+import InlineList from '@/components/InlineList'
+import { Fragment } from 'react'
+import PackManager from '@/modules/PackManager'
 
 class BaseConfig {
   get name () { return 'BaseConfig' }
@@ -147,6 +150,49 @@ export default new class Config extends BaseConfig {
 
   getAll () {
     return [this, ...this.packs.values()]
+  }
+  buildMigrationPromptMessage (configs) {
+    const { internals = [], packs = [] } = Object.groupBy(
+      configs,
+      config => !config.slug || internalPackSlugs.includes(config.slug)
+        ? 'internals'
+        : 'packs'
+    )
+    const packNames = packs.map(pack => PackManager.getPack(pack.slug, true)?.name ?? pack.slug)
+
+    const parts = []
+    if (packNames.length) parts.push(
+      <>
+        {packNames.length > 1 ? 'packs ' : 'pack '}
+        <InlineList
+          items={packNames}
+          limit={Infinity}
+        />
+      </>
+    )
+    if (internals.length && parts.length) parts.unshift('the plugin')
+
+    return (
+      <>
+        <p>
+          {'The version of your saved '}
+          {parts.length > 1 ? 'configurations ' : 'configuration '}
+          {parts.length > 0 && (
+            <>
+              {'for '}
+              <InlineList
+                items={parts}
+                limit={Infinity}
+                itemTag={Fragment}
+              />
+            </>
+          )}
+          {parts.length > 1 ? ' are ' : ' is '}
+          {'outdated and cannot be used with the current version of the plugin.'}
+        </p>
+        <p>Would you like to migrate your settings to the latest version?</p>
+      </>
+    )
   }
   applyMutations (mutations) {
     for (const mutation of mutations) {

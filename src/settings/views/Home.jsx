@@ -19,6 +19,7 @@ import usePackRegistry from '@/hooks/usePackRegistry'
 import { useData } from '@/modules/Data'
 import Config from '@/modules/Config'
 import { MigratorAlert } from '@/components/Migrator'
+import InlineList from '@/components/InlineList'
 
 const madeByPhrases = [
   'Made by',
@@ -36,10 +37,6 @@ const madeByPhrases = [
 ]
 
 function CatalogPromoTooltip ({ packs, displayLimit = 3, children, ...props }) {
-  const nodes = packs.length <= displayLimit
-    ? packs
-    : packs.slice(0, displayLimit - 1).concat(packs.length - displayLimit + 1)
-
   return (
     <Tooltip
       shouldShow={packs.length > 0}
@@ -53,12 +50,7 @@ function CatalogPromoTooltip ({ packs, displayLimit = 3, children, ...props }) {
           <PackPicture />
           <div>
             {`Check out the newly available ${packs.length > 1 ? 'packs' : 'pack'}: `}
-            {nodes.map((node, index) => (
-              <>
-                {typeof node === 'number' ? `${node} others` : <b>{node.name}</b>}
-                {[', ', ' and ', ''][Math.max(0, index - nodes.length + 3)]}
-              </>
-            ))}
+            <InlineList items={packs.map(pack => pack.name)} />
             !
           </div>
         </div>

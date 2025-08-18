@@ -9,6 +9,7 @@ import { ModalActions, Text } from '@discord/modules'
 import useEmitterEffect from '@/hooks/useEmitterEffect'
 import { MigratorModal } from '@/components/Migrator'
 import Modal from '@/components/Modal'
+import Messages from '@shared/messages'
 
 const AbortSymbol = Symbol('Abort')
 
@@ -42,6 +43,9 @@ class Migrator {
   get configs () {
     return this.config.getAll()
   }
+  getOutdatedConfigs (configs = this.configs) {
+    return configs.filter(config => config.isOutdated)
+  }
   hasOutdatedConfigs (configs = this.configs) {
     return configs.some(config => config.isOutdated)
   }
@@ -53,15 +57,8 @@ class Migrator {
     return configs.reduce((minVersion, config) => Math.min(minVersion, config.configVersion), latestVersion)
   }
 
-  buildPromptMessage (configs = this.configs) {
-    // TODO: Build message
-
-    return (
-      <>
-        <p>The version of your saved configuration is outdated and cannot be used with the current version of the plugin.</p>
-        <p>Would you like to migrate your settings to the latest version?</p>
-      </>
-    )
+  buildPromptMessage (configs = this.getOutdatedConfigs()) {
+    return this.config.buildMigrationPromptMessage(configs)
   }
 
   useEffect () {
@@ -261,6 +258,7 @@ class Migrator {
     ModalActions.openModal(props => (
       <Modal
         {...props}
+        title={Messages.SETTINGS_MIGRATOR}
         confirmText="Confirm cancellation"
         confirmButtonVariant="critical-primary"
         cancelText="Back to migration"
