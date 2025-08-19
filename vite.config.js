@@ -2,20 +2,33 @@ import { defineConfig } from 'vite'
 import path from 'path'
 import fs from 'fs'
 import banner from 'vite-plugin-banner'
-import pkg from './package.json'
-import pluginConfig from './config.json'
 import omit from 'lodash-es/omit'
+import { version } from './package.json'
+import config from './config.json'
+import changelog from './changelog.json'
 
-pluginConfig.version = pkg.version
+config.version = version
 
-const meta = (() => {
-  const lines = ['/**']
-  for (const key in pluginConfig) {
-    lines.push(` * @${key} ${pluginConfig[key]}`)
+function buildBannerConfig () {
+  const bannerConfig = {
+    info: {
+      name: config.name,
+      version,
+      description: config.description
+    }
   }
-  lines.push(' */')
-  return lines.join('\n')
-})()
+  if (changelog[version]?.changes) bannerConfig.changelog = changelog[version].changes
+  return bannerConfig
+}
+
+const bannerContent = `/**
+${Object.keys(config).map(key => ` * @${key} ${config[key]}`).join('\n')}
+ */
+
+/* ### CONFIG START ### */
+const config = ${JSON.stringify(buildBannerConfig(), null, 2)}
+/* ### CONFIG END ### */
+`
 
 function copyToBDPlugin() {
   return {
@@ -28,13 +41,13 @@ function copyToBDPlugin() {
         return path.join(process.env.HOME, '.config')
       })()
       const bdFolder = path.join(userConfig, 'BetterDiscord')
-      const outputFile = path.join(__dirname, 'dist', `${pluginConfig.name}.plugin.js`)
+      const outputFile = path.join(__dirname, 'dist', `${config.name}.plugin.js`)
       if (!fs.existsSync(path.join(bdFolder, 'plugins')))
         fs.mkdirSync(path.join(bdFolder, 'plugins'), { recursive: true })
 
       if (!fs.existsSync(outputFile)) return
 
-      fs.copyFileSync(outputFile, path.join(bdFolder, 'plugins', `${pluginConfig.name}.plugin.js`))
+      fs.copyFileSync(outputFile, path.join(bdFolder, 'plugins', `${config.name}.plugin.js`))
       console.log('\x1b[32m%s\x1b[34m%s\x1b[32m%s\x1b[0m', '✓ copied to ', 'BetterDiscord', ' folder')
     }
   }
@@ -62,8 +75,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.js'),
-      name: pluginConfig.name,
-      fileName: () => `${pluginConfig.name}.plugin.js`,
+      name: config.name,
+      fileName: () => `${config.name}.plugin.js`,
       formats: ['iife']
     },
     minify: false,
@@ -101,7 +114,7 @@ export default defineConfig({
     }
   },
   plugins: [
-    banner(meta),
+    banner(bannerContent),
     copyToBDPlugin()
   ],
   esbuild: {
