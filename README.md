@@ -42,7 +42,7 @@ Visit the Usage and Animation Authoring documentation at
 - [x] ~~General Settings~~
 - [x] ~~Catalog & Library~~
 - [x] ~~Pack Changelogs~~
-- [ ] [BetterAnimations V1](https://github.com/arg0NNY/DiscordPlugins/tree/fa45fb514aa7a8febe4ddd143a08ff1c9f124fe0/BetterAnimations) Settings Migrator
+- [x] ~~[BetterAnimations V1](https://github.com/arg0NNY/DiscordPlugins/tree/fa45fb514aa7a8febe4ddd143a08ff1c9f124fe0/BetterAnimations) Settings Migrator~~
 
 ### Stable
 
