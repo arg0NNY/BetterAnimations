@@ -1,1 +1,19 @@
-{}
+{
+  "2.0.0": {
+    "banner": "https://github.com/arg0NNY/BetterAnimations/raw/refs/heads/main/assets/V2.webp",
+    "blurb": "Larger, faster, and rebuilt from the ground up. **BetterAnimations 2.0** is here, transforming your Discord experience with a new generation of silky-smooth, deeply integrated animations.",
+    "changes": [
+      {
+        "type": "added",
+        "title": "What's New in 2.0",
+        "items": [
+          "\uD83C\uDFAD **Expanded Animation Library** — experience motion across Discord like never before. This release introduces 10 new animation modules, bringing the total to 14. Animate everything from Servers and Messages to the Thread Sidebar and Modals.",
+          "⚙\uFE0F **Native-Level Integration** — animations are now woven directly into Discord's core UI. This creates a more reliable, rigid, and natural-feeling experience that truly belongs.",
+          "\uD83D\uDE80 **Unmatched Performance** — enjoy buttery-smooth animations that make Discord feel snappier and more responsive than ever.",
+          "\uD83C\uDFA8 **Ultimate Customization** — take full control with a completely redesigned Settings Panel. Fine-tune every detail of your animations or craft entirely new ones from scratch.",
+          "\uD83C\uDF10 **Client Mod & Framework** — expand your library with community-made animations or build and share your own through the official Catalog."
+        ]
+      }
+    ]
+  }
+}
