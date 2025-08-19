@@ -33,7 +33,6 @@ export function shouldSwitchContent (next, prev) {
     || nextOrPrev(l => l.pathname.startsWith(Routes.GUILD_MEMBER_VERIFICATION_FOR_HUB('')))
     || nextOrPrev(l => matchExact(l.pathname, Routes.GUILD_BOOSTING_MARKETING(GuildChannelRouteParams.guildId())))
     || nextOrPrev(l => matchExact(l.pathname, Routes.COLLECTIBLES_SHOP_FULLSCREEN))
-    || nextOrPrev(l => matchExact(l.pathname, Routes.GUILD_DISCOVERY))
     || nextOrPrev(l => l?.params?.channelId === StaticChannelRoute.GUILD_ONBOARDING, nextChannel, prevChannel)
   ) return true
 
