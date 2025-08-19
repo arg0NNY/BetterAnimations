@@ -1,0 +1,215 @@
+import { CONFIG_VERSION, configDefaults, packConfigDefaults } from '@data/config'
+import deepmerge from 'deepmerge'
+import Data from '@/modules/Data'
+import Emitter from '@/modules/Emitter'
+import Events from '@enums/Events'
+import Logger from '@logger'
+import isEqual from 'lodash-es/isEqual'
+import { internalPackSlugs } from '@packs'
+import PackData from '@/modules/PackData'
+import Migrator from '@/modules/Migrator'
+import migrations from '@/migrations'
+import InlineList from '@/components/InlineList'
+import { Fragment } from 'react'
+import PackManager from '@/modules/PackManager'
+
+class BaseConfig {
+  get name () { return 'BaseConfig' }
+
+  constructor (data, defaults) {
+    this.data = data
+    this.defaults = defaults
+    this.stored = {}
+    this.current = {}
+  }
+
+  get configVersion () {
+    const configVersion = this.data.configVersion
+    if (configVersion != null) return configVersion // If the config version is set, use it
+    if (this.data.settings != null) return 1 // If the config version is not set, but the settings are, this is a legacy V1 config
+    return CONFIG_VERSION // There is no config, fallback to the latest version
+  }
+  get isOutdated () {
+    return this.configVersion < CONFIG_VERSION
+  }
+
+  read () {
+    if (this.isOutdated) {
+      Logger.warn(this.name, `Config version is outdated, falling back to defaults.`)
+      this.stored = structuredClone(this.defaults)
+      return
+    }
+
+    this.stored = deepmerge(this.defaults, this.data.settings ?? {})
+  }
+  load () {
+    this.current = structuredClone(this.stored)
+  }
+  save () {
+    this.data.configVersion = CONFIG_VERSION
+    this.data.settings = this.current
+    this.stored = structuredClone(this.current)
+  }
+  hasUnsavedChanges () {
+    return !isEqual(this.current, this.stored)
+  }
+
+  reset () {
+    this.current = structuredClone(this.defaults)
+    this.save()
+  }
+}
+
+class PackConfig extends BaseConfig {
+  get name () { return `PackConfig: ${this.slug}` }
+
+  constructor (slug) {
+    super(PackData.pack(slug), packConfigDefaults)
+
+    this.slug = slug
+    this.read()
+    this.load()
+  }
+
+  createAnimationConfigEntry (key, moduleKey) {
+    return {
+      animation: key,
+      module: moduleKey
+    }
+  }
+  getAnimationConfigEntry (key, moduleKey, createIfMissing = false) {
+    const entry = this.current.entries.find(({ animation, module }) => animation === key && module === moduleKey)
+    if (entry || !createIfMissing) return entry
+
+    const newEntry = this.createAnimationConfigEntry(key, moduleKey)
+    this.current.entries.push(newEntry)
+    return newEntry
+  }
+  getAnimationConfig (key, moduleKey, type) {
+    return this.getAnimationConfigEntry(key, moduleKey)?.[type] ?? {}
+  }
+  setAnimationConfig (key, moduleKey, type, value) {
+    this.getAnimationConfigEntry(key, moduleKey, true)[type] = value
+    Emitter.emit(Events.ModuleSettingsChanged, moduleKey)
+  }
+}
+
+export default new class Config extends BaseConfig {
+  get name () { return 'Config' }
+
+  constructor () {
+    super(Data, configDefaults)
+
+    this.migrator = new Migrator(this, migrations)
+    this.packs = new Map()
+
+    this.onPackLoaded = pack => {
+      if (pack.partial) return
+
+      const config = new PackConfig(pack.slug)
+      this.packs.set(pack.slug, config)
+      this.migrator.validate([config])
+    }
+    this.onPackUnloaded = pack => this.packs.delete(pack.slug)
+  }
+
+  initialize () {
+    super.read()
+    super.load()
+
+    internalPackSlugs.forEach(slug => this.packs.set(slug, new PackConfig(slug)))
+
+    Emitter.on(Events.PackLoaded, this.onPackLoaded)
+    Emitter.on(Events.PackUnloaded, this.onPackUnloaded)
+
+    this.migrator.validate()
+
+    Logger.info(this.name, 'Initialized.')
+  }
+
+  load () {
+    super.load()
+    this.packs.forEach(pack => pack.load())
+    Emitter.emit(Events.SettingsLoaded)
+    Emitter.emit(Events.SettingsChanged)
+  }
+  save () {
+    super.save()
+    this.packs.forEach(pack => pack.save())
+    Emitter.emit(Events.SettingsSaved)
+  }
+
+  hasUnsavedChanges () {
+    return super.hasUnsavedChanges()
+      || Array.from(this.packs.values()).some(pack => pack.hasUnsavedChanges())
+  }
+
+  pack (slug) {
+    return this.packs.get(slug) ?? new PackConfig(slug)
+  }
+
+  getAll () {
+    return [this, ...this.packs.values()]
+  }
+  buildMigrationPromptMessage (configs) {
+    const { internals = [], packs = [] } = Object.groupBy(
+      configs,
+      config => !config.slug || internalPackSlugs.includes(config.slug)
+        ? 'internals'
+        : 'packs'
+    )
+    const packNames = packs.map(pack => PackManager.getPack(pack.slug, true)?.name ?? pack.slug)
+
+    const parts = []
+    if (packNames.length) parts.push(
+      <>
+        {packNames.length > 1 ? 'packs ' : 'pack '}
+        <InlineList
+          items={packNames}
+          limit={Infinity}
+        />
+      </>
+    )
+    if (internals.length && parts.length) parts.unshift('the plugin')
+
+    return (
+      <>
+        <p>
+          {'The version of your saved '}
+          {parts.length > 1 ? 'configurations ' : 'configuration '}
+          {parts.length > 0 && (
+            <>
+              {'for '}
+              <InlineList
+                items={parts}
+                limit={Infinity}
+                itemTag={Fragment}
+              />
+            </>
+          )}
+          {parts.length > 1 ? ' are ' : ' is '}
+          {'outdated and cannot be used with the current version of the plugin.'}
+        </p>
+        <p>Would you like to migrate your settings to the latest version?</p>
+      </>
+    )
+  }
+  applyMutations (mutations) {
+    for (const mutation of mutations) {
+      const config = mutation.slug ? this.pack(mutation.slug) : this
+      config.current = mutation.data
+      config.save()
+    }
+  }
+
+  shutdown () {
+    this.migrator.abort()
+
+    Emitter.off(Events.PackLoaded, this.onPackLoaded)
+    Emitter.off(Events.PackUnloaded, this.onPackUnloaded)
+
+    this.packs.clear()
+
+    Logger.info(this.name, 'Shutdown.')
+  }
+}

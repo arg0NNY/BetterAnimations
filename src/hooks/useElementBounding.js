@@ -1,5 +1,5 @@
 import useResizeObserver from '@/hooks/useResizeObserver'
-import useUpdate from '@/hooks/useUpdate'
+import useUpdate from '@shared/hooks/useUpdate'
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import { getTargetElement } from '@utils/domTarget'
 

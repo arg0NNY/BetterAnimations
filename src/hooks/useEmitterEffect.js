@@ -1,4 +1,4 @@
-import useUpdate from '@/hooks/useUpdate'
+import useUpdate from '@shared/hooks/useUpdate'
 import Emitter from '@/modules/Emitter'
 import { useCallback, useEffect, useRef } from 'react'
 

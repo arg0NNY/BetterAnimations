@@ -265,27 +265,27 @@ export default new class PackRegistry {
     return `${this.baseUrl}/raw/${filename}`
   }
 
-  async fetch (filename, parse = true) {
-    const response = await Net.fetch(`${this.getSourceURL(filename)}?${Date.now()}`)
+  async fetch (filename, parse = true, options = {}) {
+    const response = await Net.fetch(`${this.getSourceURL(filename)}?${Date.now()}`, options)
     if (!response.ok) throw response
     return parse ? response.json() : response.text()
   }
-  async load (filename, parse = true) {
+  async load (filename, parse, options) {
     this._pending.add(filename)
     this.onChange()
     try {
-      return await this.fetch(filename, parse)
+      return await this.fetch(filename, parse, options)
     }
     finally {
       this._pending.delete(filename)
       this.onChange()
     }
   }
-  async updateRegistry () {
+  async updateRegistry (options) {
     this.error = null
     Logger.info(this.name, 'Updating registry...')
     try {
-      const data = await this.load(this.mainFilename)
+      const data = await this.load(this.mainFilename, options)
       this.cache = data
       this.items = data.items
       this.authors = data.authors
@@ -303,9 +303,9 @@ export default new class PackRegistry {
       this.verifier.verifyAll()
     }
   }
-  async install (filename, action = 'install') {
+  async install (filename, options = {}, action = 'install') {
     try {
-      PackManager.saveAddon(filename, await this.load(filename, false))
+      PackManager.saveAddon(filename, await this.load(filename, false, options))
       return true
     }
     catch (error) {
@@ -314,11 +314,11 @@ export default new class PackRegistry {
       return false
     }
   }
-  update (filename) {
-    return this.install(filename, 'update')
+  update (filename, options) {
+    return this.install(filename, 'update', options)
   }
-  reinstall (filename) {
-    return this.install(filename, 'reinstall')
+  reinstall (filename, options) {
+    return this.install(filename, 'reinstall', options)
   }
   delete (filename) {
     try {

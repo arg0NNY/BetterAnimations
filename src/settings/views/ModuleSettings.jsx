@@ -11,6 +11,8 @@ import NoPacksPlaceholder from '@/settings/components/NoPacksPlaceholder'
 import usePagination from '@/settings/hooks/usePagination'
 import { useData } from '@/modules/Data'
 import PackSelect from '@/settings/components/pack/PackSelect'
+import { MigratorContainer } from '@/components/Migrator'
+import Config from '@/modules/Config'
 
 function ModuleSettings ({ moduleId, refToScroller, pageSize = 15 }) {
   const [preferences] = useData('preferences')
@@ -69,73 +71,78 @@ function ModuleSettings ({ moduleId, refToScroller, pageSize = 15 }) {
   }, [packSlug])
 
   return (
-    <ModuleContext value={module}>
-      <div key={moduleId} className="BA__moduleSettings">
-        <ModuleSettingsHeader
-          module={module}
-          enabled={module.isEnabled()}
-          setEnabled={setIsEnabled}
-          selected={selected}
-          onSelect={onSelect}
-          refToScroller={refToScroller}
-        />
+    <MigratorContainer
+      migrator={Config.migrator}
+      className="BA__moduleSettingsContainer"
+    >
+      <ModuleContext value={module}>
+        <div key={moduleId} className="BA__moduleSettings">
+          <ModuleSettingsHeader
+            module={module}
+            enabled={module.isEnabled()}
+            setEnabled={setIsEnabled}
+            selected={selected}
+            onSelect={onSelect}
+            refToScroller={refToScroller}
+          />
 
-        {preinstalledAnimations.length ? (
-          <>
-            <Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
-              <span>ANIMATIONS</span>
-            </Text>
-            <AnimationList
-              module={module}
-              pack={preinstalledPack}
-              animations={preinstalledAnimations}
-              selected={selected}
-              onSelect={onSelect}
-              refToScroller={refToScroller}
-            />
-          </>
-        ) : null}
+          {preinstalledAnimations.length ? (
+            <>
+              <Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
+                <span>ANIMATIONS</span>
+              </Text>
+              <AnimationList
+                module={module}
+                pack={preinstalledPack}
+                animations={preinstalledAnimations}
+                selected={selected}
+                onSelect={onSelect}
+                refToScroller={refToScroller}
+              />
+            </>
+          ) : null}
 
-        <Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
-          <span>PACKS</span>
-        </Text>
-        {!!packs.length ? (
-          <>
-            <PackSelect
-              className="BA__moduleSettingsPackSelect"
-              packs={packs}
-              selected={packSlug}
-              onSelect={selectPack}
-              isActive={isPackActive}
-            />
-            {pack && (
-              <div
-                key={pack.slug}
-                className="BA__moduleSettingsPack"
-              >
-                <AnimationList
-                  module={module}
-                  pack={pack}
-                  animations={items}
-                  selected={selected}
-                  onSelect={onSelect}
-                  refToScroller={refToScroller}
-                />
-                <Paginator
-                  pageSize={pageSize}
-                  totalCount={animations.length}
-                  maxVisiblePages={5}
-                  currentPage={page}
-                  onPageChange={setPage}
-                />
-              </div>
-            )}
-          </>
-        ) : (
-          <NoPacksPlaceholder />
-        )}
-      </div>
-    </ModuleContext>
+          <Text variant="heading-sm/semibold" className="BA__moduleSettingsSectionTitle">
+            <span>PACKS</span>
+          </Text>
+          {!!packs.length ? (
+            <>
+              <PackSelect
+                className="BA__moduleSettingsPackSelect"
+                packs={packs}
+                selected={packSlug}
+                onSelect={selectPack}
+                isActive={isPackActive}
+              />
+              {pack && (
+                <div
+                  key={pack.slug}
+                  className="BA__moduleSettingsPack"
+                >
+                  <AnimationList
+                    module={module}
+                    pack={pack}
+                    animations={items}
+                    selected={selected}
+                    onSelect={onSelect}
+                    refToScroller={refToScroller}
+                  />
+                  <Paginator
+                    pageSize={pageSize}
+                    totalCount={animations.length}
+                    maxVisiblePages={5}
+                    currentPage={page}
+                    onPageChange={setPage}
+                  />
+                </div>
+              )}
+            </>
+          ) : (
+            <NoPacksPlaceholder />
+          )}
+        </div>
+      </ModuleContext>
+    </MigratorContainer>
   )
 }
 

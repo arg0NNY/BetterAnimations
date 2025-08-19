@@ -16,5 +16,5 @@ export default Enum({
   SettingsModeChanged: 'settings-mode-changed',
   DismissibleUpdated: 'dismissible-updated',
   ErrorOccurred: 'error-occurred',
-  DataFieldUpdated: 'data-field-updated'
+  MigratorUpdated: 'migrator-updated'
 })

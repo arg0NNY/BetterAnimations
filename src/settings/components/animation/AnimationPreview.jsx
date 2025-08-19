@@ -128,13 +128,20 @@ css
     display: flex;
     align-items: center;
     box-shadow: 0 0 0 1px var(--border-faint);
-    transition: border-radius .4s, box-shadow .4s;
+    transition: border-radius .4s, box-shadow .4s, transform .4s;
 }
 .BA__animationPreview {
     position: absolute;
     top: 50%;
     left: 50%;
     translate: -50% -50%;
+}
+.BA__animationPreview::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 80px 0 rgba(0,0,0,.5);
+    z-index: 10;
 }
 .BA__animationPreviewOverlay {
     position: absolute;

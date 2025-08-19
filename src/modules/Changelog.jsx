@@ -14,9 +14,9 @@ import changelog from '@changelog'
 import Data from '@/modules/Data'
 import { version } from '@package'
 import regex from '@utils/regex'
-import Config from '@/modules/Config'
 import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
+import PackData from '@/modules/PackData'
 
 function parseVersion (version) {
   const data = version.match(regex.semver)
@@ -165,12 +165,11 @@ class Changelog {
   showPackModalIfNeeded (pack) {
     if (pack.partial) return
 
-    const config = Config.pack(pack.slug)
-    const currentVersion = config.loadData('currentVersion')
-    if (currentVersion === pack.version) return
+    const data = PackData.pack(pack.slug)
+    if (data.currentVersion === pack.version) return
 
-    if (currentVersion) this.showPackModal(pack)
-    config.saveData('currentVersion', pack.version)
+    if (data.currentVersion) this.showPackModal(pack)
+    data.currentVersion = pack.version
   }
 }
 

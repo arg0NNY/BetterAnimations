@@ -482,7 +482,7 @@ export const [
   },
   // ToastModule
   {
-    filter: Filters.bySource('toast', 'FAILURE', 'STATUS_DANGER')
+    filter: Filters.bySource('toast', 'position', 'STATUS_DANGER')
   },
   // AppViewModule
   {
