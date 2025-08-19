@@ -136,6 +136,13 @@ css
     left: 50%;
     translate: -50% -50%;
 }
+.BA__animationPreview::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 80px 0 rgba(0,0,0,.5);
+    z-index: 10;
+}
 .BA__animationPreviewOverlay {
     position: absolute;
     inset: 0;
