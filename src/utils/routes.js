@@ -8,7 +8,6 @@ export function guildActionRowToChannelRoute (guildActionRow) {
     [GuildActionRow.GUILD_SCHEDULED_EVENTS]: StaticChannelRoute.GUILD_SCHEDULED_EVENTS,
     [GuildActionRow.GUILD_ROLE_SUBSCRIPTIONS]: StaticChannelRoute.ROLE_SUBSCRIPTIONS,
     [GuildActionRow.GUILD_SHOP]: StaticChannelRoute.GUILD_SHOP,
-    [GuildActionRow.GUILD_MEMBER_APPLICATIONS]: StaticChannelRoute.MEMBER_APPLICATIONS,
     [GuildActionRow.CHANNELS_AND_ROLES]: [StaticChannelRoute.CHANNEL_BROWSER, StaticChannelRoute.CUSTOMIZE_COMMUNITY],
     [GuildActionRow.GUILD_MOD_DASH_MEMBER_SAFETY]: StaticChannelRoute.MEMBER_SAFETY,
     [GuildActionRow.GUILD_BOOSTS]: StaticChannelRoute.GUILD_BOOSTS
