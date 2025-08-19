@@ -45,6 +45,7 @@ import patchRootElementContext from '@/patches/AppView/patchRootElementContext'
 import Data from '@/modules/Data'
 import patchBasePopover from '@/patches/BasePopover/patchBasePopover'
 import Changelog from '@/modules/Changelog'
+import Events from '@enums/Events'
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -119,6 +120,8 @@ export default function (meta) {
       Logger.info('Startup', 'Finished.')
     },
     stop () {
+      Emitter.emit(Events.PluginDisabled)
+
       Logger.info('Shutdown', 'Shutting down modules...')
       Core.shutdown()
       Mouse.shutdown()

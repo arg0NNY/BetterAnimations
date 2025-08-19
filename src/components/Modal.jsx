@@ -11,6 +11,9 @@ import {
 import IconBrand from '@/components/icons/IconBrand'
 import { css } from '@style'
 import meta from '@/meta'
+import { ErrorBoundary } from '@error/boundary'
+import useEmitterEffect from '@/hooks/useEmitterEffect'
+import Events from '@enums/Events'
 
 function Modal ({
   title,
@@ -26,6 +29,8 @@ function Modal ({
   disabled = loading,
   ...props
 }) {
+  useEmitterEffect(Events.PluginDisabled, onClose)
+
   const onCallback = callback => () => {
     let shouldClose = true
     const preventClose = () => shouldClose = false
@@ -38,55 +43,57 @@ function Modal ({
       className="BA__modal"
       {...props}
     >
-      <ModalHeader separator={false}>
-        <Tooltip
-          text={meta.name}
-          shouldShow={!!title}
-          position="bottom"
-          align="left"
-        >
-          {props => (
-            <IconBrand
-              {...props}
-              className="BA__modalIcon"
-              size="custom"
-              width={36}
-              height={36}
-            />
-          )}
-        </Tooltip>
-        <Heading variant="heading-lg/semibold">
-          {title ?? meta.name}
-        </Heading>
-      </ModalHeader>
-      <ModalContent className="BA__modalContent">
-        {children}
-      </ModalContent>
-      <ModalFooter>
-        <ButtonGroup
-          className="BA__modalButtonGroup"
-          direction="horizontal-reverse"
-        >
-          <Button
-            type="submit"
-            variant={confirmButtonVariant}
-            text={confirmText}
-            loading={loading}
-            disabled={disabled}
-            onClick={onCallback(onConfirm)}
-          />
-          {cancelText ? (
+      <ErrorBoundary>
+        <ModalHeader separator={false}>
+          <Tooltip
+            text={meta.name}
+            shouldShow={!!title}
+            position="bottom"
+            align="left"
+          >
+            {props => (
+              <IconBrand
+                {...props}
+                className="BA__modalIcon"
+                size="custom"
+                width={36}
+                height={36}
+              />
+            )}
+          </Tooltip>
+          <Heading variant="heading-lg/semibold">
+            {title ?? meta.name}
+          </Heading>
+        </ModalHeader>
+        <ModalContent className="BA__modalContent">
+          {children}
+        </ModalContent>
+        <ModalFooter>
+          <ButtonGroup
+            className="BA__modalButtonGroup"
+            direction="horizontal-reverse"
+          >
             <Button
-              type="button"
-              variant="secondary"
-              text={cancelText}
-              disabled={loading}
-              onClick={onCallback(onCancel)}
+              type="submit"
+              variant={confirmButtonVariant}
+              text={confirmText}
+              loading={loading}
+              disabled={disabled}
+              onClick={onCallback(onConfirm)}
             />
-          ) : null}
-        </ButtonGroup>
-        {footerLeading}
-      </ModalFooter>
+            {cancelText ? (
+              <Button
+                type="button"
+                variant="secondary"
+                text={cancelText}
+                disabled={loading}
+                onClick={onCallback(onCancel)}
+              />
+            ) : null}
+          </ButtonGroup>
+          {footerLeading}
+        </ModalFooter>
+      </ErrorBoundary>
     </ModalRoot>
   )
 }
