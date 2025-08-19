@@ -7,7 +7,6 @@ import Emitter from '@/modules/Emitter'
 import Logger from '@logger'
 import ModuleKey from '@enums/ModuleKey'
 import ServerModuleControls from '@/components/ServerModuleControls'
-import Messages from '@shared/messages'
 import meta from '@/meta'
 import { Anchor } from '@discord/modules'
 
@@ -40,8 +39,7 @@ const moduleOptions = {
         Supports auto-direction for&nbsp;applicable animations determined by&nbsp;the&nbsp;order of&nbsp;elements in&nbsp;the&nbsp;server list.
       </>
     ),
-    controls: ServerModuleControls,
-    alert: Messages.HEAVY_MODULE_ALERT
+    controls: ServerModuleControls
   },
   [ModuleKey.Channels]: {
     description: () => (
@@ -49,8 +47,7 @@ const moduleOptions = {
         Animates the&nbsp;transitions when switching between channels and other pages sharing the&nbsp;same sidebar.
         Supports auto-direction for&nbsp;applicable animations determined by&nbsp;the&nbsp;order of&nbsp;elements in&nbsp;the&nbsp;sidebar.
       </>
-    ),
-    alert: Messages.HEAVY_MODULE_ALERT
+    )
   },
   [ModuleKey.Settings]: {
     description: () => (

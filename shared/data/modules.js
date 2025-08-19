@@ -65,37 +65,19 @@ const modules = [
     }
   },
   {
-    id: ModuleKey.Settings,
-    name: 'Settings',
+    id: ModuleKey.Messages,
+    name: 'Messages',
     meta: {
-      type: ModuleType.Switch,
-      settings: {
-        supportsAuto: {
-          [Setting.Position]: PositionAutoType.Precise,
-          [Setting.Direction]: DirectionAutoType.Alternate
-        },
+      accordion: {
+        create: buildAccordionGenerator(AccordionType.MarginBottom, { hideElement: true }),
         defaults: {
-          [Setting.DirectionAxis]: Axis.Y,
-          [Setting.Overflow]: false
+          [Setting.Duration]: 200,
+          [Setting.Easing]: {
+            type: EasingType.Ease,
+            bezier: EasingBezier.InOut,
+            style: EasingStyle.Quad
+          }
         }
-      }
-    }
-  },
-  {
-    id: ModuleKey.Layers,
-    name: 'Layers',
-    meta: {
-      type: ModuleType.Switch,
-      settings: {
-        supportsAuto: {
-          [Setting.Position]: [PositionAutoType.Precise, { preservable: true, preserveLabel: 'Preserve for individual layers' }],
-          [Setting.Direction]: DirectionAutoType.Alternate
-        },
-        defaults: {
-          [Setting.DirectionAxis]: Axis.Z,
-          [Setting.Overflow]: false
-        },
-        hideOverflow: true
       }
     }
   },
@@ -140,8 +122,8 @@ const modules = [
     }
   },
   {
-    id: ModuleKey.Messages,
-    name: 'Messages',
+    id: ModuleKey.ChannelList,
+    name: 'Channel List',
     meta: {
       accordion: {
         create: buildAccordionGenerator(AccordionType.MarginBottom, { hideElement: true }),
@@ -157,18 +139,36 @@ const modules = [
     }
   },
   {
-    id: ModuleKey.ChannelList,
-    name: 'Channel List',
+    id: ModuleKey.Layers,
+    name: 'Layers',
     meta: {
-      accordion: {
-        create: buildAccordionGenerator(AccordionType.MarginBottom, { hideElement: true }),
+      type: ModuleType.Switch,
+      settings: {
+        supportsAuto: {
+          [Setting.Position]: [PositionAutoType.Precise, { preservable: true, preserveLabel: 'Preserve for individual layers' }],
+          [Setting.Direction]: DirectionAutoType.Alternate
+        },
         defaults: {
-          [Setting.Duration]: 200,
-          [Setting.Easing]: {
-            type: EasingType.Ease,
-            bezier: EasingBezier.InOut,
-            style: EasingStyle.Quad
-          }
+          [Setting.DirectionAxis]: Axis.Z,
+          [Setting.Overflow]: false
+        },
+        hideOverflow: true
+      }
+    }
+  },
+  {
+    id: ModuleKey.Settings,
+    name: 'Settings',
+    meta: {
+      type: ModuleType.Switch,
+      settings: {
+        supportsAuto: {
+          [Setting.Position]: PositionAutoType.Precise,
+          [Setting.Direction]: DirectionAutoType.Alternate
+        },
+        defaults: {
+          [Setting.DirectionAxis]: Axis.Y,
+          [Setting.Overflow]: false
         }
       }
     }

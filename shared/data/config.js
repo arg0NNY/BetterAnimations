@@ -11,26 +11,26 @@ export const packConfigDefaults = {
 export const configDefaults = {
   modules: {
     [ModuleKey.Servers]: {
-      enabled: false,
+      enabled: true,
       enhanceLayout: true,
       enter: {
-        packSlug: null,
-        animationKey: null
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'slide'
       },
       exit: {
-        packSlug: null,
-        animationKey: null
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'slide'
       }
     },
     [ModuleKey.Channels]: {
-      enabled: false,
+      enabled: true,
       enter: {
-        packSlug: null,
-        animationKey: null
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'slip'
       },
       exit: {
-        packSlug: null,
-        animationKey: null
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'slip'
       }
     },
     [ModuleKey.Settings]: {
@@ -48,22 +48,22 @@ export const configDefaults = {
       enabled: true,
       enter: {
         packSlug: PREINSTALLED_PACK_SLUG,
-        animationKey: 'circleScale'
+        animationKey: 'scale'
       },
       exit: {
         packSlug: PREINSTALLED_PACK_SLUG,
-        animationKey: 'circleScale'
+        animationKey: 'scale'
       }
     },
     [ModuleKey.Tooltips]: {
       enabled: true,
       enter: {
         packSlug: PREINSTALLED_PACK_SLUG,
-        animationKey: 'scale'
+        animationKey: 'slip'
       },
       exit: {
         packSlug: PREINSTALLED_PACK_SLUG,
-        animationKey: 'scale'
+        animationKey: 'slip'
       }
     },
     [ModuleKey.Popouts]: {
@@ -125,11 +125,11 @@ export const configDefaults = {
       enabled: true,
       enter: {
         packSlug: PREINSTALLED_PACK_SLUG,
-        animationKey: 'backdropBlur'
+        animationKey: 'backdropSolid'
       },
       exit: {
         packSlug: PREINSTALLED_PACK_SLUG,
-        animationKey: 'backdropBlur'
+        animationKey: 'backdropSolid'
       }
     },
     [ModuleKey.MembersSidebar]: {
@@ -155,14 +155,14 @@ export const configDefaults = {
       }
     },
     [ModuleKey.ThreadSidebarSwitch]: {
-      enabled: false,
+      enabled: true,
       enter: {
-        packSlug: null,
-        animationKey: null
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'fade'
       },
       exit: {
-        packSlug: null,
-        animationKey: null
+        packSlug: PREINSTALLED_PACK_SLUG,
+        animationKey: 'fade'
       }
     }
   },
