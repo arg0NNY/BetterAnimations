@@ -358,7 +358,7 @@ css
 .BA__animationCard:hover .BA__animationCardBg {
     background-color: var(--background-base-lower);
 }
-.BA__animationCardPreview {
+.BA__animationPreviewContainer.BA__animationCardPreview {
     border-radius: 8px 8px 0 0;
     box-shadow: none;
     background: var(--background-base-lowest);

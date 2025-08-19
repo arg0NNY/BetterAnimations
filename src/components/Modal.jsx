@@ -16,6 +16,7 @@ function Modal ({
   title,
   children,
   footerLeading,
+  footer,
   onClose,
   confirmText = 'Close',
   confirmButtonVariant = 'secondary',
@@ -63,28 +64,30 @@ function Modal ({
         {children}
       </ModalContent>
       <ModalFooter>
-        <ButtonGroup
-          className="BA__modalButtonGroup"
-          direction="horizontal-reverse"
-        >
-          <Button
-            type="submit"
-            variant={confirmButtonVariant}
-            text={confirmText}
-            loading={loading}
-            disabled={disabled}
-            onClick={onCallback(onConfirm)}
-          />
-          {cancelText ? (
+        {footer ?? (
+          <ButtonGroup
+            className="BA__modalButtonGroup"
+            direction="horizontal-reverse"
+          >
             <Button
-              type="button"
-              variant="secondary"
-              text={cancelText}
-              disabled={loading}
-              onClick={onCallback(onCancel)}
+              type="submit"
+              variant={confirmButtonVariant}
+              text={confirmText}
+              loading={loading}
+              disabled={disabled}
+              onClick={onCallback(onConfirm)}
             />
-          ) : null}
-        </ButtonGroup>
+            {cancelText ? (
+              <Button
+                type="button"
+                variant="secondary"
+                text={cancelText}
+                disabled={loading}
+                onClick={onCallback(onCancel)}
+              />
+            ) : null}
+          </ButtonGroup>
+        )}
         {footerLeading}
       </ModalFooter>
     </ModalRoot>

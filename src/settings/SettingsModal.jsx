@@ -76,7 +76,7 @@ css
     z-index: 200;
 }
 
-${DiscordSelectors.StandardSidebarView.contentColumnDefault}:has(> .BA__moduleSettings) {
+${DiscordSelectors.StandardSidebarView.contentColumnDefault}:has(> .BA__moduleSettingsContainer) {
     position: static;
 }
 

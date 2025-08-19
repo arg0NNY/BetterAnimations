@@ -17,6 +17,9 @@ import { AnimeTransitionContext } from '@components/AnimeTransition'
 import PackPicture from '@/settings/components/pack/PackPicture'
 import usePackRegistry from '@/hooks/usePackRegistry'
 import { useData } from '@/modules/Data'
+import Config from '@/modules/Config'
+import { MigratorAlert } from '@/components/Migrator'
+import InlineList from '@/components/InlineList'
 
 const madeByPhrases = [
   'Made by',
@@ -34,10 +37,6 @@ const madeByPhrases = [
 ]
 
 function CatalogPromoTooltip ({ packs, displayLimit = 3, children, ...props }) {
-  const nodes = packs.length <= displayLimit
-    ? packs
-    : packs.slice(0, displayLimit - 1).concat(packs.length - displayLimit + 1)
-
   return (
     <Tooltip
       shouldShow={packs.length > 0}
@@ -51,12 +50,7 @@ function CatalogPromoTooltip ({ packs, displayLimit = 3, children, ...props }) {
           <PackPicture />
           <div>
             {`Check out the newly available ${packs.length > 1 ? 'packs' : 'pack'}: `}
-            {nodes.map((node, index) => (
-              <>
-                {typeof node === 'number' ? `${node} others` : <b>{node.name}</b>}
-                {[', ', ' and ', ''][Math.max(0, index - nodes.length + 3)]}
-              </>
-            ))}
+            <InlineList items={packs.map(pack => pack.name)} />
             !
           </div>
         </div>
@@ -83,87 +77,92 @@ function Home () {
   const unknownPacks = registry.getUnknownPacks()
   const highlightCatalog = !visitedCatalog || unknownPacks.length > 0
 
+  const { isActive: isMigratorActive } = Config.migrator.use()
+
   return (
-    <div className="BA__home">
-      <div className="BA__homeHeading">
-        {!isEnterActive && (
-          <SpotlightAnimation className="BA__homeSpotlightAnimation" />
-        )}
-        <IconBrand
-          size="custom"
-          width={120}
-          height={120}
-          className="BA__homeIcon"
-        />
-        <Text
-          className="BA__homeTitle"
-          variant="heading-xxl/bold"
-          tag="h3"
-          color="header-primary"
-        >
-          {meta.name}
-        </Text>
-        <Text
-          className="BA__homeDescription"
-          variant="text-md/normal"
-          color="header-primary"
-        >
-          {sanitize(meta.description)}
-        </Text>
-        <div className="BA__homeHeadingActions">
-          <CatalogPromoTooltip packs={unknownPacks}>
-            {props => (
-              <Button
-                {...props}
-                variant={highlightCatalog ? 'expressive' : 'primary'}
-                icon={ShopIcon}
-                text="Catalog"
-                onClick={() => setSection(SettingsSection.Catalog)}
-              />
-            )}
-          </CatalogPromoTooltip>
-          <Button
-            variant="secondary"
-            icon={BookIcon}
-            text="Documentation"
-            onClick={() => handleClick({ href: Documentation.homeUrl })}
-          />
-        </div>
-      </div>
-      <div className="BA__homeAuthorSection">
-        <Text
-          className="BA__homeAuthorLabel"
-          variant="text-sm/normal"
-          color="text-muted"
-        >
-          {madeBy}
-        </Text>
-        <div className="BA__homeAuthor">
-          <IconAuthor
-            className="BA__homeAuthorAvatar"
+    <div className="BA__homeContainer">
+      {isMigratorActive && <MigratorAlert migrator={Config.migrator} />}
+      <div className="BA__home">
+        <div className="BA__homeHeading">
+          {!isEnterActive && (
+            <SpotlightAnimation className="BA__homeSpotlightAnimation" />
+          )}
+          <IconBrand
             size="custom"
-            width={36}
-            height={36}
+            width={120}
+            height={120}
+            className="BA__homeIcon"
           />
-          <Text variant="text-lg/medium">{meta.author}</Text>
+          <Text
+            className="BA__homeTitle"
+            variant="heading-xxl/bold"
+            tag="h3"
+            color="header-primary"
+          >
+            {meta.name}
+          </Text>
+          <Text
+            className="BA__homeDescription"
+            variant="text-md/normal"
+            color="header-primary"
+          >
+            {sanitize(meta.description)}
+          </Text>
+          <div className="BA__homeHeadingActions">
+            <CatalogPromoTooltip packs={unknownPacks}>
+              {props => (
+                <Button
+                  {...props}
+                  variant={highlightCatalog ? 'expressive' : 'primary'}
+                  icon={ShopIcon}
+                  text="Catalog"
+                  onClick={() => setSection(SettingsSection.Catalog)}
+                />
+              )}
+            </CatalogPromoTooltip>
+            <Button
+              variant="secondary"
+              icon={BookIcon}
+              text="Documentation"
+              onClick={() => handleClick({ href: Documentation.homeUrl })}
+            />
+          </div>
         </div>
-        <div className="BA__homeAuthorActions">
-          <Button
-            variant="active"
-            icon={CircleDollarSignIcon}
-            text="Support the author"
-            fullWidth
-            onClick={() => handleClick({ href: meta.donate })}
-          />
-          <Button
-            size="sm"
-            variant="secondary"
-            icon={ExternalLinkIcon}
-            iconPosition="end"
-            text={`Plugins made by ${meta.author}`}
-            fullWidth
-            onClick={() => handleClick({ href: meta.authorLink })}
-          />
+        <div className="BA__homeAuthorSection">
+          <Text
+            className="BA__homeAuthorLabel"
+            variant="text-sm/normal"
+            color="text-muted"
+          >
+            {madeBy}
+          </Text>
+          <div className="BA__homeAuthor">
+            <IconAuthor
+              className="BA__homeAuthorAvatar"
+              size="custom"
+              width={36}
+              height={36}
+            />
+            <Text variant="text-lg/medium">{meta.author}</Text>
+          </div>
+          <div className="BA__homeAuthorActions">
+            <Button
+              variant="active"
+              icon={CircleDollarSignIcon}
+              text="Support the author"
+              fullWidth
+              onClick={() => handleClick({ href: meta.donate })}
+            />
+            <Button
+              size="sm"
+              variant="secondary"
+              icon={ExternalLinkIcon}
+              iconPosition="end"
+              text={`Plugins made by ${meta.author}`}
+              fullWidth
+              onClick={() => handleClick({ href: meta.authorLink })}
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -173,15 +172,20 @@ function Home () {
 export default Home
 
 css
-`.BA__home {
+`.BA__homeContainer {
     position: absolute;
     inset: 0;
     padding: 60px 40px 40px;
     display: flex;
     flex-direction: column;
+}
+.BA__home {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: stretch;
     text-align: center;
+    flex: 1;
 }
 
 .BA__homeHeading {

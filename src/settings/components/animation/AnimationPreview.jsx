@@ -128,7 +128,7 @@ css
     display: flex;
     align-items: center;
     box-shadow: 0 0 0 1px var(--border-faint);
-    transition: border-radius .4s, box-shadow .4s;
+    transition: border-radius .4s, box-shadow .4s, transform .4s;
 }
 .BA__animationPreview {
     position: absolute;
