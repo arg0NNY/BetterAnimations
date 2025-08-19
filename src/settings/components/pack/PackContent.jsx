@@ -420,7 +420,7 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
               onShowSource={showSource}
             />
           )}
-          <div class="BA__packActions">
+          <div className="BA__packActions">
             {pack.partial && (
               <IconButton
                 tooltip="An error occurred"

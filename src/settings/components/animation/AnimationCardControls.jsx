@@ -53,7 +53,7 @@ function AnimationCardControls ({
           </IconButton>
         )}
       </div>
-      <div class="BA__animationCardControlsToggle" {...useMovable('toggle')}>
+      <div className="BA__animationCardControlsToggle" {...useMovable('toggle')}>
         <AnimationToggleControl
           enter={enter}
           exit={exit}

@@ -252,7 +252,7 @@ function AnimationCard ({
               onContextMenu={() => expandSettings?.(true)}
               onMouseLeave={() => setForceOpenSettingsTooltip(false)}
             >
-              <div class="BA__animationCardBg" {...useMovable('bg')} />
+              <div className="BA__animationCardBg" {...useMovable('bg')} />
               <AnimationPreview
                 className="BA__animationCardPreview"
                 pack={pack}

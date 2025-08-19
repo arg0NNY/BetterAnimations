@@ -15,7 +15,7 @@ function ErrorToast ({ onView }) {
 
   return (
     <Toast type={ToastTypes.ERROR} text={text}>
-      <div class="BA__errorToastButton">
+      <div className="BA__errorToastButton">
         <TextButton
           className="BA__errorToastButton"
           text="View"

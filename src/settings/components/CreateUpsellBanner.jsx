@@ -8,10 +8,10 @@ import classNames from 'classnames'
 function CreateUpsellBanner ({ className }) {
   return (
     <div className={classNames('BA__createUpsellBanner', className)}>
-      <div class="BA__createUpsellArtContainer">
+      <div className="BA__createUpsellArtContainer">
         <PackPicture className="BA__createUpsellArt" />
       </div>
-      <div class="BA__mainColumn">
+      <div className="BA__mainColumn">
         <Text
           tag="h3"
           variant="heading-lg/extrabold"

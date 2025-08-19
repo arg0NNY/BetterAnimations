@@ -21,7 +21,7 @@ function NoPacksPlaceholder ({
   return (
     <div className="BA__noPacks">
       <PackPicture className="BA__noPacksPicture" />
-      <div class="BA__noPacksContent">
+      <div className="BA__noPacksContent">
         <Text
           className="BA__noPacksTitle"
           variant="heading-xl/bold"
