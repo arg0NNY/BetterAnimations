@@ -12,8 +12,6 @@ import { css } from '@style'
 import Mouse from '@shared/mouse'
 import classNames from 'classnames'
 import { ErrorBoundary } from '@error/boundary'
-import usePrevious from '@/hooks/usePrevious'
-import { useEffect } from 'react'
 import useTransitionCustomCondition from '@/hooks/useTransitionCustomCondition'
 
 export let LayersComponent = null

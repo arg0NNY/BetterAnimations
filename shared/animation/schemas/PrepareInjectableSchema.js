@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import { Literal } from '@utils/schemas'
 import { forbiddenKeys } from '@animation/keys'
 import { storeSourceMap } from '@animation/sourceMap'
 import deepMap from '@animation/deepMap'

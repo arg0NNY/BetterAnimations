@@ -1,4 +1,4 @@
-import { Divider, Flex, Icon, Text } from '@preview/components'
+import { Flex, Icon, Text } from '@preview/components'
 
 function SystemBar () {
   return (

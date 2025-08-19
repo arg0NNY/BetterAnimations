@@ -7,11 +7,9 @@ import ParseStage from '@enums/ParseStage'
 import { z } from 'zod'
 import { formatValuesList } from '@utils/schemas'
 import Debug from '@animation/debug'
-import ErrorManager from '@error/manager'
 import AnimationError from '@error/structs/AnimationError'
 import { formatZodError } from '@animation/zod'
 import Documentation from '@shared/documentation'
-import isElement from 'lodash-es/isElement'
 import Inject from '@enums/Inject'
 
 export function assertInjectType (type) {

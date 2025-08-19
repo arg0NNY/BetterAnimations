@@ -1,4 +1,4 @@
-import { Block, Flex, Text } from '@preview/components'
+import { Flex, Text } from '@preview/components'
 import XIcon from '@preview/components/icons/XIcon'
 import { css } from '@style'
 

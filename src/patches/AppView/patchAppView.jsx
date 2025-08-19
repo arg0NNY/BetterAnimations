@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { AppPanels, AppViewKeyed, ImpressionNames, Router, Routes, TransitionGroup } from '@discord/modules'
+import { AppPanels, AppViewKeyed, ImpressionNames, Router, TransitionGroup } from '@discord/modules'
 import findInReactTree, { byClassName } from '@/utils/findInReactTree'
 import AnimeTransition from '@components/AnimeTransition'
 import useLocationKey from '@/hooks/useLocationKey'

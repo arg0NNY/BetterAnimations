@@ -11,7 +11,6 @@ import Logger from '@logger'
 import Config from '@/modules/Config'
 import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
-import ModuleType from '@enums/ModuleType'
 import isEqual from 'lodash-es/isEqual'
 import WebSocketController from '@/modules/WebSocketController'
 

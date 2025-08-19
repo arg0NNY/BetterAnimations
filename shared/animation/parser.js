@@ -1,7 +1,5 @@
-import AnimationType from '@enums/AnimationType'
 import ParsableAnimateSchema from '@animation/schemas/ParsableAnimateSchema'
 import ParseStage from '@enums/ParseStage'
-import ErrorManager from '@error/manager'
 import AnimationError from '@error/structs/AnimationError'
 import { formatZodError } from '@animation/zod'
 import { buildCSS } from '@animation/utils'

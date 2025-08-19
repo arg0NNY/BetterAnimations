@@ -2,8 +2,7 @@ import { Component } from 'react'
 import ErrorManager from '@error/manager'
 import InternalError from '@error/structs/InternalError'
 import ErrorCard from './components/ErrorCard'
-import { Button, Text } from '@discord/modules'
-import IconBrand, { IconBrandTypes } from '@/components/icons/IconBrand'
+import { Button } from '@discord/modules'
 import Core from '@/modules/Core'
 
 export function errorBoundary (callback, fallback = () => {}, options = {}) {
