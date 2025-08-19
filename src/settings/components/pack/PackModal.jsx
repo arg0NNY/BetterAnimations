@@ -24,6 +24,8 @@ import ErrorCard from '@/error/components/ErrorCard'
 import { IconBrandTypes } from '@/components/icons/IconBrand'
 import useEventListener from '@/hooks/useEventListener'
 import Data from '@/modules/Data'
+import useEmitterEffect from '@/hooks/useEmitterEffect'
+import Events from '@enums/Events'
 
 function ModuleLabel ({ module }) {
   const parent = Core.getParentModule(module)
@@ -184,6 +186,8 @@ function PackMeta ({ pack }) {
 }
 
 function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose, ...props }) {
+  useEmitterEffect(Events.PluginDisabled, onClose)
+
   const registry = usePackRegistry()
 
   const pack = usePack({ filename, location, onClose })
@@ -233,6 +237,7 @@ function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose,
       {...props}
       className="BA__packModal"
       size={ModalSize.DYNAMIC}
+      onClose={onClose}
     >
       <ErrorBoundary>
         {pack && (
