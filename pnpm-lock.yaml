@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   animejs:
-    hash: cbf1d31c1a02fb39ef44407633414233d9eb86199e9a470cfdc26e2cceea9b3a
+    hash: 2c6e2f521976bafe3de48e382ccaae9fe7f6178c2a0dc2b693c332bd3881dbff
     path: patches/animejs.patch
 
 importers:
@@ -18,7 +18,7 @@ importers:
         version: 1.0.5
       animejs:
         specifier: ^4.1.3
-        version: 4.1.3(patch_hash=cbf1d31c1a02fb39ef44407633414233d9eb86199e9a470cfdc26e2cceea9b3a)
+        version: 4.1.3(patch_hash=2c6e2f521976bafe3de48e382ccaae9fe7f6178c2a0dc2b693c332bd3881dbff)
       deepmerge:
         specifier: ^4.3.1
         version: 4.3.1
@@ -2300,7 +2300,7 @@ snapshots:
       '@algolia/requester-fetch': 5.23.4
       '@algolia/requester-node-http': 5.23.4
 
-  animejs@4.1.3(patch_hash=cbf1d31c1a02fb39ef44407633414233d9eb86199e9a470cfdc26e2cceea9b3a): {}
+  animejs@4.1.3(patch_hash=2c6e2f521976bafe3de48e382ccaae9fe7f6178c2a0dc2b693c332bd3881dbff): {}
 
   birpc@2.3.0: {}
 

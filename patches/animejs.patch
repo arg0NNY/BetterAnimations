@@ -1,10 +1,10 @@
 diff --git a/lib/anime.esm.js b/lib/anime.esm.js
-index c5cff7eae4d17535bb4110347e933b9759bc8472..eea73bad59b506d716464ec6357bff96f2c03e08 100644
+index f257c7f3a2e96db8d2ad92b0a4e5a8ec9fb4a349..3476f93bfe1c44cd0d0ce09407302bc5a5e2d5d4 100644
 --- a/lib/anime.esm.js
 +++ b/lib/anime.esm.js
-@@ -627,10 +627,10 @@ const globals = {
+@@ -762,10 +762,10 @@ const globals = {
  
- const globalVersions = { version: '4.1.2', engine: null };
+ const globalVersions = { version: '4.1.3', engine: null };
  
 -if (isBrowser) {
 -  if (!win.AnimeJS) win.AnimeJS = [];
@@ -17,7 +17,7 @@ index c5cff7eae4d17535bb4110347e933b9759bc8472..eea73bad59b506d716464ec6357bff96
  
  // Strings
  
-@@ -1503,10 +1503,10 @@ const engine = /*#__PURE__*/(() => {
+@@ -1641,10 +1641,10 @@ const engine = /*#__PURE__*/(() => {
    const engine = new Engine(now());
    if (isBrowser) {
      globalVersions.engine = engine;
