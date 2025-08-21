@@ -326,12 +326,11 @@ Alongside the layout change, it also adds the following styles:
 - **Key:** `modalsBackdrop`
 - **Class:** `BA__module_modalsBackdrop`
 
-When this Module is enabled, it adds an element inside the original `backdrop` element,
-from which it deletes the original styles:
+When this Module is enabled, it completely replaces the original `scrim` element with a custom one:
 ```html
 <div class="layerContainer_da8173">
-  <div class="backdrop__78332 withLayer__78332" style="background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(0px);"></div> <!-- [!code --] -->
-  <div class="backdrop__78332 withLayer__78332" data-ba-container="modalsBackdrop"> <!-- [!code ++:3] -->
+  <div role="none" class="scrim_d9cec8" style="opacity: 1;"></div> <!-- [!code --] -->
+  <div data-ba-container="modalsBackdrop" class="BA__backdropContainer"> <!-- [!code ++:3] -->
     <div class="BA__backdrop"></div>
   </div>
 </div>

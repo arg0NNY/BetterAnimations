@@ -6,7 +6,7 @@ const { Filters } = Webpack
 export const [
   Text,
   Heading,
-  ModalBackdrop,
+  ModalScrimModule,
   Clickable,
   Switch,
   Checkbox,
@@ -130,10 +130,9 @@ export const [
     filter: m => Filters.byStrings('variant', 'data-excessive-heading-level')(m?.render),
     searchExports: true
   },
-  // ModalBackdrop
+  // ModalScrimModule
   {
-    filter: m => Filters.byStrings('backdrop', 'BG_BACKDROP_NO_OPACITY')(m?.render),
-    searchExports: true
+    filter: Filters.bySource('scrim', '"lightbox"')
   },
   // Clickable
   {
@@ -633,8 +632,9 @@ export const [
   }
 )
 
+export const ModalScrim = Object.values(ModalScrimModule ?? {}).find(m => m?.render)
 export const ModalActions = mangled(ModalActionsModule, {
-  openModal: Filters.byStrings('onCloseRequest', 'onCloseCallback', 'backdropStyle'),
+  openModal: Filters.byStrings('onCloseRequest', 'onCloseCallback', 'stackingBehavior'),
   closeModal: Filters.byStrings('onCloseCallback()', 'filter'),
   closeAllModals: Filters.byRegex(/for\(let \w+ of \w+\[\w+]\)\w+\(\w+\.key,\w+\)/)
 })

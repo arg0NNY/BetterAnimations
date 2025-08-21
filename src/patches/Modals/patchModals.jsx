@@ -2,7 +2,6 @@ import Patcher from '@/modules/Patcher'
 import { ModalsKeyed, Transition, TransitionGroup } from '@discord/modules'
 import AnimeTransition from '@components/AnimeTransition'
 import patchModalItem from '@/patches/Modals/patchModalItem'
-import patchModalBackdrop from '@/patches/Modals/patchModalBackdrop'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import ensureOnce from '@utils/ensureOnce'
@@ -14,6 +13,7 @@ import useWindow from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
 import useTransitionCustomCondition from '@/hooks/useTransitionCustomCondition'
 import patchManaModalRoot from '@/patches/Modals/patchManaModalRoot'
+import patchModalScrim from '@/patches/Modals/patchModalScrim'
 
 function Modal ({ modal, ...props }) {
   const layerRef = useRef()
@@ -71,7 +71,7 @@ function patchModals () {
     )
   })
 
-  patchModalBackdrop()
+  patchModalScrim()
   patchManaModalRoot()
 }
 
@@ -81,23 +81,12 @@ css
 `${DiscordSelectors.Modal.root}, .bd-modal-root {
     isolation: isolate;
 }
-${DiscordSelectors.Layer.layerContainer} + ${DiscordSelectors.Layer.layerContainer} ${DiscordSelectors.ModalBackdrop.backdrop} {
-    display: none;
-}
 ${DiscordSelectors.Modal.focusLock}:has(> [class*="carouselModal"]) {
     position: absolute !important;
     inset: 0;
 }
-
 .BA__modal--hidden {
     visibility: hidden;
     pointer-events: none;
-}
-
-.BA__backdrop {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-color: rgba(0, 0, 0, 0.7);
 }`
 `Modals`
