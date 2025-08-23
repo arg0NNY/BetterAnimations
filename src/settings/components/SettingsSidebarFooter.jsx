@@ -1,26 +1,15 @@
 import { css } from '@style'
 import { Clickable, CopiableField, Text } from '@discord/modules'
 import meta from '@/meta'
-import DiscordSelectors from '@discord/selectors'
 import { useMemo } from 'react'
 import SocialLinks from '@/components/SocialLinks'
-
-function tryGetBDVersion () {
-  for (const node of document.querySelectorAll(`${DiscordSelectors.StandardSidebarView.sidebar} .bd-text-muted`)) {
-    const [, version] = node.innerText.match(/^BetterDiscord (\S+)$/) ?? []
-    if (version) return version
-  }
-  return null
-}
+import { bdVersion } from '@/BdApi'
 
 function SystemInfo () {
-  const data = useMemo(() => {
-    const bdVersion = tryGetBDVersion()
-    return [
-      `${meta.name} ${meta.version}` + (import.meta.env.MODE === 'development' ? ' (Dev Bundle)' : ''),
-      bdVersion && `BetterDiscord ${bdVersion}`
-    ].filter(Boolean)
-  }, [])
+  const data = useMemo(() => [
+    `${meta.name} ${meta.version}` + (import.meta.env.MODE === 'development' ? ' (Dev Bundle)' : ''),
+    `BetterDiscord ${bdVersion}`
+  ], [])
 
   return (
     <CopiableField

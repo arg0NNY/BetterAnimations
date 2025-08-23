@@ -11,7 +11,8 @@ export const {
   Plugins,
   UI,
   Net,
-  ContextMenu
+  ContextMenu,
+  version: bdVersion
 } = bdApi
 
 export default bdApi
