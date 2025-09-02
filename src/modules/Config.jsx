@@ -200,6 +200,7 @@ export default new class Config extends BaseConfig {
       config.current = mutation.data
       config.save()
     }
+    Emitter.emit(Events.SettingsChanged)
   }
 
   shutdown () {
