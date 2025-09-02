@@ -636,7 +636,7 @@ export const ModalScrim = Object.values(ModalScrimModule ?? {}).find(m => m?.ren
 export const ModalActions = mangled(ModalActionsModule, {
   openModal: Filters.byStrings('onCloseRequest', 'onCloseCallback', 'stackingBehavior'),
   closeModal: Filters.byStrings('onCloseCallback()', 'filter'),
-  closeAllModals: Filters.byRegex(/for\(let \w+ of \w+\[\w+]\)\w+\(\w+\.key,\w+\)/)
+  closeAllModals: Filters.byStrings('.getState();for')
 })
 export const { Tooltip, TooltipLayer } = mangled(TooltipModule, {
   Tooltip: Filters.byPrototypeKeys('renderTooltip'),
@@ -651,7 +651,7 @@ export const ListThin = (() => {
   ]
 })()
 export const { showToast, popToast, useToastStore } = mangled(ToastStoreModule, {
-  showToast: Filters.byRegex(/queuedToasts:\[...\w+\.queuedToasts,\w+\]/),
+  showToast: Filters.byStrings('.currentToast?'),
   popToast: Filters.byStrings('currentToast:null'),
   useToastStore: Filters.byKeys('setState')
 })
@@ -666,7 +666,7 @@ export const Router = mangled(RouterModule, {
   Route: m => Filters.byStrings('props.computedMatch', 'props.path')(m?.prototype?.render),
   Switch: m => Filters.byStrings('props.location', 'cloneElement')(m?.prototype?.render),
   matchPath: Filters.byStrings('strict', 'isExact'),
-  useLocation: Filters.byRegex(/return \w+\(\w+\)\.location/),
+  useLocation: Filters.byStrings(').location'),
   useParams: Filters.byStrings('.match', '.params')
 })
 export const TransitionGroupContext = Transition && new Transition({ children: createElement('div') }).render().type
