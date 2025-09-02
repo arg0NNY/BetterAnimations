@@ -325,8 +325,9 @@ css
 }
 .BA__packModalPreviewHeader {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
+    gap: 8px;
     margin-bottom: 8px;
 }
 .BA__packModalPreviewSelect {
