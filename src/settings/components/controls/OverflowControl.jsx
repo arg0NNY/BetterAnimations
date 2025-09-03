@@ -1,4 +1,4 @@
-import { Checkbox, Text, Tooltip } from '@discord/modules'
+import { Checkbox, CheckboxTypes, Text, Tooltip } from '@discord/modules'
 import IconButton from '@/settings/components/IconButton'
 import RedoIcon from '@/components/icons/RedoIcon'
 import { css } from '@style'
@@ -11,7 +11,7 @@ function OverflowControl ({ value, onChange, forced = false, onReset }) {
       <Checkbox
         value={value}
         onChange={(_, value) => onChange(value)}
-        type={Checkbox.Types.INVERTED}
+        type={CheckboxTypes.INVERTED}
         disabled={forced}
       >
         <Text variant="text-sm/normal">Enable overflow</Text>

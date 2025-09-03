@@ -9,7 +9,7 @@ export const [
   ModalScrimModule,
   Clickable,
   Switch,
-  Checkbox,
+  CheckboxModule,
   FormTitle,
   FormTitleTags,
   FormText,
@@ -144,10 +144,9 @@ export const [
     filter: Filters.byStrings('checkbox', 'animated.rect'),
     searchExports: true
   },
-  // Checkbox
+  // CheckboxModule
   {
-    filter: m => Filters.byKeys('BOX', 'ROUND')(m?.Shapes),
-    searchExports: true
+    filter: Filters.bySource('Checkbox:', 'is not a valid hex color')
   },
   // FormTitle
   {
@@ -633,6 +632,10 @@ export const [
 )
 
 export const ModalScrim = Object.values(ModalScrimModule ?? {}).find(m => m?.render)
+export const { Checkbox, CheckboxTypes } = mangled(CheckboxModule, {
+  Checkbox: Filters.byStrings('checkboxWrapper'),
+  CheckboxTypes: Filters.byKeys('INVERTED')
+})
 export const ModalActions = mangled(ModalActionsModule, {
   openModal: Filters.byStrings('onCloseRequest', 'onCloseCallback', 'stackingBehavior'),
   closeModal: Filters.byStrings('onCloseCallback()', 'filter'),

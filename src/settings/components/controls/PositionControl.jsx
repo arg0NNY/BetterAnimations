@@ -1,7 +1,7 @@
 import positions from '@data/positions'
 import Auto from '@enums/Auto'
 import AnimationSetting from '@enums/AnimationSetting'
-import { Checkbox, SingleSelect, Text } from '@discord/modules'
+import { Checkbox, CheckboxTypes, SingleSelect, Text } from '@discord/modules'
 import SettingControl from '@/settings/components/controls/SettingControl'
 import Position from '@enums/Position'
 import PositionAutoType from '@enums/PositionAutoType'
@@ -14,7 +14,7 @@ function PositionPreserveControl ({ value, onChange, label = 'Preserve' }) {
       className={DiscordClasses.Margins.marginTop8}
       value={value}
       onChange={(_, value) => onChange(value)}
-      type={Checkbox.Types.INVERTED}
+      type={CheckboxTypes.INVERTED}
     >
       <Text variant="text-sm/normal">{label}</Text>
     </Checkbox>
