@@ -1,8 +1,3 @@
-> [!WARNING]
-> This project is currently in Open Beta.
-> 
-> Join the [Support Server](https://discord.gg/jgfy25t47r) to participate.
-
 ![BetterAnimations](./assets/cover.webp)
 
 <h3 align="center">Discord Animations Client Mod & Framework</h3>
@@ -21,9 +16,10 @@
 
 ## Installation
 
-Install [BetterDiscord](https://betterdiscord.app/) and download the latest release of _BetterAnimations_ from [Releases](https://github.com/arg0NNY/BetterAnimations/releases).
+Install [BetterDiscord](https://betterdiscord.app/) and download _BetterAnimations_ using the builtin Plugin Store.
 
-See [Installing Addons](https://docs.betterdiscord.app/users/guides/installing-addons) for more info.
+Alternatively, you can download it manually using the official [BetterDiscord Store](https://betterdiscord.app/plugin/BetterAnimations)
+or from the [Releases](https://github.com/arg0NNY/BetterAnimations/releases) page. See [Installing Addons](https://docs.betterdiscord.app/users/guides/installing-addons) for more info.
 
 ## Documentation
 
