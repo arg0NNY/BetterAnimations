@@ -28,7 +28,7 @@ export default new class ErrorManager extends BaseErrorManager {
   }
 
   isToastActive () {
-    return useToastStore.getState().currentToast?.type === ErrorManagerToastSymbol
+    return useToastStore.getState().currentToastMap.get('APP')?.type === ErrorManagerToastSymbol
   }
 
   clear () {
@@ -36,7 +36,7 @@ export default new class ErrorManager extends BaseErrorManager {
     this.errorsOverload = false
     clearTimeout(this.timeout)
     this.timeout = null
-    if (this.isToastActive()) popToast(true)
+    if (this.isToastActive()) popToast('APP', true)
   }
 
   shouldSuppress (error) {
@@ -73,10 +73,13 @@ export default new class ErrorManager extends BaseErrorManager {
   showToast () {
     useToastStore.setState(state => ({
       ...state,
-      currentToast: createToast(null, ErrorManagerToastSymbol, {
-        component: <ErrorToast onView={this.onView.bind(this)} />,
-        duration: 0
-      })
+      currentToastMap: new Map([
+        ...state.currentToastMap,
+        ['APP', createToast(null, ErrorManagerToastSymbol, {
+          component: <ErrorToast onView={this.onView.bind(this)} />,
+          duration: 0
+        })]
+      ])
     }))
   }
 
