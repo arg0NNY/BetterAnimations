@@ -653,12 +653,12 @@ export const ListThin = (() => {
     source.match(new RegExp(`(\\w+):\\(\\)=>${source.match(/let (\w+)=/)[1]}`))[1]
   ]
 })()
-export const { showToast, popToast, useToastStore } = mangled(ToastStoreModule, {
-  showToast: Filters.byStrings('.currentToast?'),
-  popToast: Filters.byStrings('currentToast:null'),
+export const { showToast, useToastStore } = mangled(ToastStoreModule, {
+  showToast: Filters.byStrings('currentToastMap.has'),
   useToastStore: Filters.byKeys('setState')
 })
-export const popToastKeyed = keyed(ToastStoreModule, Filters.byStrings('currentToast:null'))
+export const popToastKeyed = keyed(ToastStoreModule, Filters.byStrings('.delete'))
+export const popToast = unkeyedFn(popToastKeyed)
 export const { Toast, createToast } = mangled(ToastModule, {
   Toast: Filters.byKeys('type'),
   createToast: Filters.byStrings('type', 'position')
