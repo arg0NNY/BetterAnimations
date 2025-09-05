@@ -31,6 +31,7 @@ const Documentation = new class Documentation {
   get packDirectoryUrl () { return `${this.baseUrl}/usage/pack-directory` }
   get enhanceLayoutUrl () { return `${this.baseUrl}/usage/modules#enhance-layout` }
   get accordionUrl () { return `${this.baseUrl}/usage/basics#expand-collapse-animations` }
+  get themeCompatibilityUrl () { return `${this.baseUrl}/usage/theme-compatibility` }
 
   getDefinitionUrl (definition) {
     return `${this.referenceBaseUrl}/${definition.toLowerCase()}`

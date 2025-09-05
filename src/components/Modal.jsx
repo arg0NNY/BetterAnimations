@@ -69,33 +69,35 @@ function Modal ({
         <ModalContent className="BA__modalContent">
           {children}
         </ModalContent>
-        <ModalFooter>
-          {footer ?? (
-            <ButtonGroup
-              className="BA__modalButtonGroup"
-              direction="horizontal-reverse"
-            >
-              <Button
-                type="submit"
-                variant={confirmButtonVariant}
-                text={confirmText}
-                loading={loading}
-                disabled={disabled}
-                onClick={onCallback(onConfirm)}
-              />
-              {cancelText ? (
+        {footer !== false && (
+          <ModalFooter>
+            {footer ?? (
+              <ButtonGroup
+                className="BA__modalButtonGroup"
+                direction="horizontal-reverse"
+              >
                 <Button
-                  type="button"
-                  variant="secondary"
-                  text={cancelText}
-                  disabled={loading}
-                  onClick={onCallback(onCancel)}
+                  type="submit"
+                  variant={confirmButtonVariant}
+                  text={confirmText}
+                  loading={loading}
+                  disabled={disabled}
+                  onClick={onCallback(onConfirm)}
                 />
-              ) : null}
-            </ButtonGroup>
-          )}
-          {footerLeading}
-        </ModalFooter>
+                {cancelText ? (
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    text={cancelText}
+                    disabled={loading}
+                    onClick={onCallback(onCancel)}
+                  />
+                ) : null}
+              </ButtonGroup>
+            )}
+            {footerLeading}
+          </ModalFooter>
+        )}
       </ErrorBoundary>
     </ModalRoot>
   )

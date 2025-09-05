@@ -12,6 +12,7 @@ export const {
   UI,
   Net,
   ContextMenu,
+  Themes,
   version: bdVersion
 } = bdApi
 
