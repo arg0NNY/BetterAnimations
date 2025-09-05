@@ -229,7 +229,7 @@ export const [
   },
   // Spinner
   {
-    filter: m => Filters.byKeys('WANDERING_CUBES')(m?.Type),
+    filter: Filters.byStrings('spinner', '"wanderingCubes"'),
     searchExports: true
   },
   // Popout
