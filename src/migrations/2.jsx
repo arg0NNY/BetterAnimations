@@ -1,6 +1,6 @@
 import { configDefaults, packConfigDefaults } from '@data/config'
 import PackManager from '@/modules/PackManager'
-import { ModalActions, Text, TextButton } from '@discord/modules'
+import { openModal, Text, TextButton } from '@discord/modules'
 import Modal from '@/components/Modal'
 import PackModal from '@/settings/components/pack/PackModal'
 import { PackContentLocation } from '@/settings/components/pack/PackContent'
@@ -263,7 +263,7 @@ function generateMutations (config) {
 
 function promptDownload () {
   return new Promise(resolve => {
-    const showPackModal = () => ModalActions.openModal(props => (
+    const showPackModal = () => openModal(props => (
       <PackModal
         {...props}
         filename={slug + PackManager.extension}
@@ -271,7 +271,7 @@ function promptDownload () {
       />
     ), { onCloseCallback: () => PackRegistry.storage.clear() })
 
-    ModalActions.openModal(props => (
+    openModal(props => (
       <Modal
         {...props}
         title={Messages.SETTINGS_MIGRATOR}

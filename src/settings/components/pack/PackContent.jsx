@@ -1,5 +1,5 @@
 import {
-  Button,
+  Button, closeAllModals,
   colors,
   GuildIcon,
   GuildStore,
@@ -7,8 +7,8 @@ import {
   InviteActions,
   InviteStates,
   InviteStore,
-  LayerActions,
-  ModalActions,
+  openModal,
+  popAllLayers,
   Text,
   TextBadge,
   Tooltip,
@@ -186,8 +186,8 @@ function PackInvite ({ code }) {
 
   const join = useCallback(() => {
     if (guild) {
-      ModalActions.closeAllModals()
-      LayerActions.popAllLayers()
+      closeAllModals()
+      popAllLayers()
     }
     UI.showInviteModal(code)
   }, [code, guild])
@@ -293,7 +293,7 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
 
     const affectedModules = Core.getModulesUsingPack(pack)
 
-    ModalActions.openModal(props => (
+    openModal(props => (
       <Modal
         {...props}
         title="Uninstall Pack"

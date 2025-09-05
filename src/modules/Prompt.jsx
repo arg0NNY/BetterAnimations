@@ -1,4 +1,4 @@
-import { App, Heading, ModalActions, Text } from '@discord/modules'
+import { App, Heading, openModal, Text } from '@discord/modules'
 import DiscordClasses from '@discord/classes'
 import Enum from '@shared/enum'
 import Data from '@/modules/Data'
@@ -42,7 +42,7 @@ export default new class Prompt {
   }
   promptHardwareAcceleration () {
     return new Promise(resolve =>
-      ModalActions.openModal(props => (
+      openModal(props => (
         <Modal
           {...props}
           cancelText="Cancel"

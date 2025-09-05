@@ -1,6 +1,6 @@
 import { ErrorManager as BaseErrorManager } from '@shared/error/manager'
 import Logger from '@logger'
-import { createToast, ModalActions, popToast, useToastStore } from '@discord/modules'
+import { createToast, openModal, popToast, useToastStore } from '@discord/modules'
 import ErrorModal from '@/components/error/ErrorModal'
 import ErrorToast from '@/components/error/ErrorToast'
 import Emitter from '@/modules/Emitter'
@@ -86,7 +86,7 @@ export default new class ErrorManager extends BaseErrorManager {
   showModal (errors = this.errors) {
     if (!errors?.length) return
 
-    ModalActions.openModal(props => (
+    openModal(props => (
       <ErrorModal
         errors={errors}
         {...props}
