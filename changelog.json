@@ -15,5 +15,23 @@
         ]
       }
     ]
+  },
+  "2.0.1": {
+    "changes": [
+      {
+        "type": "added",
+        "title": "What's new",
+        "items": [
+          "Enhance layout: Added alert when conflict with the custom theme is detected."
+        ]
+      },
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "General Settings: Updated to work in the latest release of Discord."
+        ]
+      }
+    ]
   }
 }
