@@ -20,6 +20,7 @@ import useWindow from '@/hooks/useWindow'
 import classNames from 'classnames'
 import { ErrorBoundary } from '@error/boundary'
 import { forceAppUpdate } from '@/utils/forceUpdate'
+import patchAppPanels from '@/patches/AppView/patchAppPanels'
 
 export let guildChannelPath = []
 
@@ -155,6 +156,8 @@ function patchAppView () {
 
     content.props.children[sidebarIndex] = renderedSidebar
   })
+
+  patchAppPanels()
 }
 
 export default patchAppView

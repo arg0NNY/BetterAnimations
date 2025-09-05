@@ -636,10 +636,12 @@ export const { Checkbox, CheckboxTypes } = mangled(CheckboxModule, {
   Checkbox: Filters.byStrings('checkboxWrapper'),
   CheckboxTypes: Filters.byKeys('INVERTED')
 })
-export const ModalActions = mangled(ModalActionsModule, {
+export const { useModalsStore, useIsModalAtTop, ...ModalActions } = mangled(ModalActionsModule, {
   openModal: Filters.byStrings('onCloseRequest', 'onCloseCallback', 'stackingBehavior'),
   closeModal: Filters.byStrings('onCloseCallback()', 'filter'),
-  closeAllModals: Filters.byStrings('.getState();for')
+  closeAllModals: Filters.byStrings('.getState();for'),
+  useModalsStore: Filters.byKeys('setState'),
+  useIsModalAtTop: Filters.byStrings('popout:', '.at(-1)')
 })
 export const { Tooltip, TooltipLayer } = mangled(TooltipModule, {
   Tooltip: Filters.byPrototypeKeys('renderTooltip'),

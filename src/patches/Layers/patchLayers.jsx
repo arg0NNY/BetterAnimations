@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { LayersKeyed, Transition, TransitionGroup } from '@discord/modules'
+import { LayersKeyed, Transition, TransitionGroup, useIsModalAtTop } from '@discord/modules'
 import ensureOnce from '@utils/ensureOnce'
 import AnimeTransition from '@components/AnimeTransition'
 import { passAuto } from '@utils/transition'
@@ -13,6 +13,7 @@ import Mouse from '@shared/mouse'
 import classNames from 'classnames'
 import { ErrorBoundary } from '@error/boundary'
 import useTransitionCustomCondition from '@/hooks/useTransitionCustomCondition'
+import { UserPanelMisplacedAlertModal } from '@/patches/AppView/patchAppPanels'
 
 export let LayersComponent = null
 
@@ -26,13 +27,16 @@ function getWindowCenterAnchor () {
 }
 
 function Layer ({ baseLayer, hidden, children }) {
+  const isUserPanelMisplacedAlertModalShown = useIsModalAtTop(UserPanelMisplacedAlertModal.key)
+
   return (
     <div
       className={classNames(
         DiscordClasses.Layers.layer,
         {
           [DiscordClasses.Layers.baseLayer]: baseLayer,
-          'BA__layer--hidden': hidden
+          'BA__layer--hidden': hidden,
+          'BA__layer--containNone': baseLayer && isUserPanelMisplacedAlertModalShown
         }
       )}
     >
@@ -168,5 +172,8 @@ ${DiscordSelectors.Layers.layer} {
 .BA__layer--hidden {
     visibility: hidden;
     pointer-events: none;
+}
+.BA__layer--containNone {
+    contain: none;
 }`
 `Layers`

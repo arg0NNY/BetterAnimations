@@ -2,6 +2,18 @@
 outline: deep
 ---
 
+<script setup>
+import { ref, computed } from 'vue' 
+
+const copied = ref(false)
+const label = computed(() => copied.value ? 'Link Copied!' : 'Copy Link')
+function copyLink (event) {
+  event.preventDefault()
+  navigator.clipboard.writeText(location.origin + location.pathname)
+  copied.value = true
+}
+</script>
+
 # Compatibility: For theme developers
 
 Most of the [Modules](./modules) of _BetterAnimations_ introduce changes into Discord's layout
@@ -9,6 +21,14 @@ to set up the animation flow, which may interfere with the custom styles of your
 
 This section describes in detail what layout changes each of the [Modules](./modules) introduces so that you can
 make your theme compatible with _BetterAnimations_.
+
+::: warning ⚠ FOR NON-THEME DEVELOPERS
+
+If you want a certain theme to be compatible with _BetterAnimations_, you should reach out to its developer
+with such a request. Make sure to provide a link to this page so that they can make the necessary adjustments.
+<a href="javascript:void(0)" @click="copyLink">{{ label }}</a>
+
+:::
 
 ## Detecting Enabled Modules
 
