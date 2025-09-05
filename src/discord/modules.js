@@ -78,7 +78,7 @@ export const [
   SelectedGuildStore,
   SelectedChannelStore,
   GuildStore,
-  { useModalsStore, useIsModalAtTop, ...ModalActions },
+  { openModal, closeModal, closeAllModals, useModalsStore, useIsModalAtTop },
   { Tooltip, TooltipLayer },
   ListRawModule,
   ToastStoreModule,

@@ -5,7 +5,7 @@ import {
   Button,
   ButtonGroup,
   handleClick,
-  ModalActions,
+  openModal,
   Text,
   useIsModalAtTop
 } from '@discord/modules'
@@ -106,7 +106,7 @@ function patchAppPanels () {
       const theme = Themes.getAll().find(theme => Themes.isEnabled(theme.id) && !isDismissed(getDismissibleKey(theme)))
       if (!theme) return
 
-      ModalActions.openModal(props => (
+      openModal(props => (
         <UserPanelMisplacedAlertModal
           {...props}
           theme={theme}
