@@ -120,6 +120,10 @@ export default defineConfig({
     [
       'meta',
       { property: 'og:image', content: `${hostname}/cover.png` }
+    ],
+    [
+      'meta',
+      { name: 'algolia-site-verification', content: '2C019BD912F04923' }
     ]
   ],
   markdown: {
