@@ -1,5 +1,7 @@
 import { defineConfig } from 'vitepress'
 
+const hostname = 'https://docs.betteranimations.net'
+
 const usageSections = [
   {
     text: 'Customization',
@@ -114,13 +116,17 @@ export default defineConfig({
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-KHK6N7HPPN');`
+    ],
+    [
+      'meta',
+      { property: 'og:image', content: `${hostname}/cover.png` }
     ]
   ],
   markdown: {
     headers: true
   },
   sitemap: {
-    hostname: 'https://docs.betteranimations.net'
+    hostname
   },
 
   themeConfig: {
