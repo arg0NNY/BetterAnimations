@@ -120,10 +120,6 @@ export default defineConfig({
     [
       'meta',
       { property: 'og:image', content: `${hostname}/cover.png` }
-    ],
-    [
-      'meta',
-      { name: 'algolia-site-verification', content: '2C019BD912F04923' }
     ]
   ],
   markdown: {
@@ -141,7 +137,7 @@ export default defineConfig({
       options: {
         appId: 'SYC7MQDY1L',
         apiKey: '8fd57b0ea8ddfd445a2b35c592a3fbd5',
-        indexName: 'betteranimations'
+        indexName: 'BetterAnimations Documentation'
       }
     },
 
