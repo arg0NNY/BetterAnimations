@@ -98,7 +98,7 @@ export const [
   VoiceChannelViewModule,
   CallChatSidebarModule,
   SelectModule,
-  LayerActions,
+  { pushLayer, popLayer, popAllLayers },
   { Alert, AlertTypes },
   UserSettingsModal,
   { ModalRoot, ModalSize, ModalHeader, ModalFooter, ModalContent, ModalCloseButton },
