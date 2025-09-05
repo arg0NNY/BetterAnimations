@@ -100,7 +100,7 @@ function patchAppPanels () {
       if (isCooldown) return
 
       const { x, y, width } = event.currentTarget.getBoundingClientRect()
-      const isValid = y >= window.innerHeight / 2 && x + width <= window.innerWidth / 2 && false // Is within the bottom left quarter of the window
+      const isValid = y >= window.innerHeight / 2 && x + width <= window.innerWidth / 2 // Is within the bottom left quarter of the window
       if (isValid) return
 
       const theme = Themes.getAll().find(theme => Themes.isEnabled(theme.id) && !isDismissed(getDismissibleKey(theme)))
