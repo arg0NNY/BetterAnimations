@@ -133,7 +133,12 @@ export default defineConfig({
     logo: '/logo.svg',
 
     search: {
-      provider: 'local'
+      provider: 'algolia',
+      options: {
+        appId: 'SYC7MQDY1L',
+        apiKey: '8fd57b0ea8ddfd445a2b35c592a3fbd5',
+        indexName: 'betteranimations'
+      }
     },
 
     nav: [
