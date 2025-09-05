@@ -8,9 +8,15 @@ Packs are collections of Animations.
 
 ## Catalog & Library
 
-::: tip 🚧 WORK IN PROGRESS
-Catalog & Library are currently under active development and are not available yet.
-:::
+**Catalog & Library** allow you to browse, install and manage official and verified community-made packs
+right within the plugin settings.
+
+![Catalog](../assets/img/catalog.png)
+
+To install a pack, click on the <img src="../assets/img/catalog-install.png" style="display: inline; vertical-align: bottom" /> button
+in the pack card. After the pack is installed, its animations will be available for selection at the bottom of the module settings.
+
+![Installed pack in the Module Settings](../assets/img/module-settings-pack.png)
 
 > [!TIP]
 > To learn how to manually manage the packs, see [Pack Directory](./pack-directory).
