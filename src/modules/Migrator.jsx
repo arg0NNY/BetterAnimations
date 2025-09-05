@@ -5,7 +5,7 @@ import Logger from '@logger'
 import Toasts from '@/modules/Toasts'
 import ErrorManager from '@error/manager'
 import InternalError from '@error/structs/InternalError'
-import { ModalActions, Text } from '@discord/modules'
+import { openModal, Text } from '@discord/modules'
 import useEmitterEffect from '@/hooks/useEmitterEffect'
 import { MigratorModal } from '@/components/Migrator'
 import Modal from '@/components/Modal'
@@ -147,7 +147,7 @@ class Migrator {
   }
 
   prompt () {
-    ModalActions.openModal(props => (
+    openModal(props => (
       <MigratorModal
         {...props}
         migrator={this}
@@ -255,7 +255,7 @@ class Migrator {
     }
   }
   promptCancel () {
-    ModalActions.openModal(props => (
+    openModal(props => (
       <Modal
         {...props}
         title={Messages.SETTINGS_MIGRATOR}

@@ -14,7 +14,7 @@ import patchGuildChannelList from '@/patches/GuildChannelList/patchGuildChannelL
 import PackManager from '@/modules/PackManager'
 import Logger from '@logger'
 import Settings from '@/settings'
-import { ModalActions } from '@discord/modules'
+import { closeAllModals } from '@discord/modules'
 import Config from '@/modules/Config'
 import Prompt from '@/modules/Prompt'
 import PackRegistry from '@/modules/PackRegistry'
@@ -150,7 +150,7 @@ export default function (meta) {
     },
     getSettingsPanel () {
       queueMicrotask(() => {
-        ModalActions.closeAllModals()
+        closeAllModals()
         Settings.openSettingsModal()
       })
     }

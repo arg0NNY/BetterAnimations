@@ -6,7 +6,7 @@ import {
   VerificationStatus
 } from '@/settings/data/verification'
 import { isDismissed } from '@/hooks/useDismissible'
-import { Button, ButtonGroup, ModalActions, ModalSize, Popout, Text } from '@discord/modules'
+import { Button, ButtonGroup, ModalSize, openModal, Popout, Text } from '@discord/modules'
 import DismissibleModal from '@/components/DismissibleModal'
 import { ContextMenu } from '@/BdApi'
 import MoreIcon from '@/components/icons/MoreIcon'
@@ -59,7 +59,7 @@ function VerificationIssueActions ({ pack, onSelect, size = 'sm', disabled = fal
 
     if (!method.confirmation || isDismissed(dismissibleName)) return onSelect(method)
 
-    ModalActions.openModal(props => (
+    openModal(props => (
       <DismissibleModal
         {...props}
         name={dismissibleName}
