@@ -132,6 +132,8 @@ export default patchAppPanels
 css
 `.BA__appPanelsHighlight {
     z-index: 10000 !important;
+}
+.BA__appPanelsHighlight > * {
     pointer-events: none !important;
 }`
 `AppPanels`
