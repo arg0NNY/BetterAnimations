@@ -7,8 +7,8 @@ import {
   InviteActions,
   InviteStates,
   InviteStore,
-  LayerActions,
   openModal,
+  popAllLayers,
   Text,
   TextBadge,
   Tooltip,
@@ -187,7 +187,7 @@ function PackInvite ({ code }) {
   const join = useCallback(() => {
     if (guild) {
       closeAllModals()
-      LayerActions.popAllLayers()
+      popAllLayers()
     }
     UI.showInviteModal(code)
   }, [code, guild])
