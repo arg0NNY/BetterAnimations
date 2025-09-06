@@ -1,7 +1,7 @@
 import { UI } from '@/BdApi'
 import meta from '@/meta'
 import IconBrand from '@/components/icons/IconBrand'
-import { Button, closeAllModals, openModal, Text, Tooltip } from '@discord/modules'
+import { Button, ModalActions, Text, Tooltip } from '@discord/modules'
 import { css } from '@style'
 import SocialLinks from '@/components/SocialLinks'
 import ArrowSmallRightIcon from '@/components/icons/ArrowSmallRightIcon'
@@ -106,7 +106,7 @@ class Changelog {
             iconPosition="end"
             text="Go to Settings"
             onClick={() => {
-              closeAllModals()
+              ModalActions.closeAllModals()
               Settings.openSettingsModal()
             }}
           />
@@ -130,7 +130,7 @@ class Changelog {
   showPackModal (pack) {
     if (!pack.changelog) return
 
-    const showPackModal = () => openModal(props => (
+    const showPackModal = () => ModalActions.openModal(props => (
       <PackModal
         {...props}
         filename={pack.filename}

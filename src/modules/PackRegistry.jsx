@@ -10,7 +10,7 @@ import meta from '@/meta'
 import SettingsSection from '@enums/SettingsSection'
 import regex from '@utils/regex'
 import avatarPlaceholder from '@/assets/placeholders/avatar.png'
-import { openModal } from '@discord/modules'
+import { ModalActions } from '@discord/modules'
 import VerificationIssuesModal from '@/components/VerificationIssuesModal'
 import { VerificationIssueResolveMethod, VerificationStatus } from '@/settings/data/verification'
 import Data from '@/modules/Data'
@@ -94,7 +94,7 @@ class PackVerifier {
   showModal () {
     if (!this.hasIssues()) return
 
-    openModal(
+    ModalActions.openModal(
       props => <VerificationIssuesModal {...props} />,
       { modalKey: 'BA__verificationIssuesModal' }
     )

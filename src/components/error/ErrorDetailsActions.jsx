@@ -1,4 +1,4 @@
-import { Button, closeAllModals, FormTitle, UserSettingsModal } from '@discord/modules'
+import { Button, FormTitle, ModalActions, UserSettingsModal } from '@discord/modules'
 import { css } from '@style'
 import useModule from '@/hooks/useModule'
 import Config from '@/modules/Config'
@@ -51,7 +51,7 @@ function useActions (error) {
         onClick={() => {
           UserSettingsModal.open('updates')
           Settings.closeSettingsModal()
-          closeAllModals()
+          ModalActions.closeAllModals()
         }}
       />
     )
@@ -75,7 +75,7 @@ function useActions (error) {
       text="Go to Settings"
       onClick={() => {
         Settings.openSettingsModal(module.id)
-        closeAllModals()
+        ModalActions.closeAllModals()
       }}
     />
   )
