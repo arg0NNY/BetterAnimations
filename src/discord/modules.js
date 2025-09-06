@@ -15,7 +15,7 @@ export const [
   FormText,
   FormSection,
   Breadcrumbs,
-  RadioGroup,
+  RadioGroupModule,
   FormSwitch,
   FormItem,
   Slider,
@@ -173,10 +173,9 @@ export const [
     filter: m => Filters.byStrings('renderBreadcrumb')(m?.prototype?.render),
     searchExports: true
   },
-  // RadioGroup
+  // RadioGroupModule
   {
-    filter: m => Filters.byKeys('NOT_SET', 'NONE')(m?.Sizes),
-    searchExports: true
+    filter: Filters.bySource('"radiogroup"', 'getFocusableElements')
   },
   // FormSwitch
   {
@@ -631,6 +630,9 @@ export const [
   }
 )
 
+export const { RadioGroup } = mangled(RadioGroupModule, {
+  RadioGroup: Filters.byStrings('container', 'labelledBy')
+})
 export const ModalScrim = Object.values(ModalScrimModule ?? {}).find(m => m?.render)
 export const { Checkbox, CheckboxTypes } = mangled(CheckboxModule, {
   Checkbox: Filters.byStrings('checkboxWrapper'),
