@@ -1,6 +1,6 @@
 import {
   Button,
-  popLayer,
+  LayerActions,
   StandardSidebarViewKeyed,
   StandardSidebarViewWrapper,
   ThemeStore,
@@ -25,7 +25,7 @@ function SettingsModal () {
   const sections = useSections()
   const [section, setSection] = useSection()
 
-  const onClose = useCallback(() => popLayer(), [])
+  const onClose = useCallback(() => LayerActions.popLayer(), [])
 
   const actions = actions => (
     <>

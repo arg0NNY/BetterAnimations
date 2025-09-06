@@ -1,12 +1,12 @@
 import PackContent, { PackContentLocation } from '@/settings/components/pack/PackContent'
 import { css } from '@style'
-import { Clickable, openModal, useIsVisible } from '@discord/modules'
+import { Clickable, ModalActions, useIsVisible } from '@discord/modules'
 import PackModal from '@/settings/components/pack/PackModal'
 import PackRegistry from '@/modules/PackRegistry'
 import { useCallback } from 'react'
 
 function PackCard ({ pack, location = PackContentLocation.CATALOG }) {
-  const onClick = () => openModal(props => (
+  const onClick = () => ModalActions.openModal(props => (
     <PackModal
       {...props}
       filename={pack.filename}

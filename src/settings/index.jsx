@@ -1,4 +1,4 @@
-import { LayerStore, popLayer, pushLayer, UserSettingsModal } from '@discord/modules'
+import { LayerActions, LayerStore, UserSettingsModal } from '@discord/modules'
 import SettingsModal from '@/settings/SettingsModal'
 import SettingsSection from '@enums/SettingsSection'
 import { setSection } from '@/settings/stores/SettingsStore'
@@ -18,12 +18,12 @@ export default new class Settings {
     setSection(section)
     const component = () => <SettingsModal />
     component.__BA_isSettingsModal = true
-    pushLayer(component)
+    LayerActions.pushLayer(component)
   }
 
   closeSettingsModal () {
     if (this.isSettingsModalOpen())
-      popLayer()
+      LayerActions.popLayer()
   }
 
 }
