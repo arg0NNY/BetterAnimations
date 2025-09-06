@@ -33,5 +33,16 @@
         ]
       }
     ]
+  },
+  "2.0.2": {
+    "changes": [
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Fixed the plugin failing to load."
+        ]
+      }
+    ]
   }
 }
