@@ -209,7 +209,7 @@ export const [
   },
   // SearchBar
   {
-    filter: m => Filters.byKeys('isLoading', 'size')(m?.defaultProps) && Filters.byPrototypeKeys('blur', 'focus')(m),
+    filter: Filters.byStrings('query', '"aria-label":', 'clearable:null'),
     searchExports: true
   },
   // Paginator

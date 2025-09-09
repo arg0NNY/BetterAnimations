@@ -54,15 +54,17 @@ function PackListView ({
         >
           {title}
         </Text>
-        <SearchBar
-          className="BA__packListViewSearchBar"
-          placeholder="Search"
-          size="md"
-          query={query}
-          onChange={setQuery}
-          onClear={() => setQuery('')}
-          autoFocus={true}
-        />
+        <div className="BA__packListViewSearchBar">
+          <SearchBar
+            className="BA__packListViewSearchBar"
+            placeholder="Search"
+            size="md"
+            query={query}
+            onChange={setQuery}
+            onClear={() => setQuery('')}
+            autoFocus={true}
+          />
+        </div>
       </div>
       <div className="BA__packListViewActionBar">
         {actions && (
@@ -161,7 +163,7 @@ css
     margin-bottom: 16px;
 }
 .BA__packListViewSearchBar {
-    max-width: 260px;
+    flex-basis: 260px;
 }
 .BA__packListViewActionBar {
     display: flex;
