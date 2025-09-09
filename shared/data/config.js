@@ -92,11 +92,11 @@ export const configDefaults = {
       enabled: true,
       enter: {
         packSlug: PREINSTALLED_PACK_SLUG,
-        animationKey: 'fade'
+        animationKey: 'slip'
       },
       exit: {
         packSlug: PREINSTALLED_PACK_SLUG,
-        animationKey: 'fade'
+        animationKey: 'slip'
       }
     },
     [ModuleKey.ChannelList]: {
