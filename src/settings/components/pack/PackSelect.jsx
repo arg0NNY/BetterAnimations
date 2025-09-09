@@ -149,7 +149,6 @@ function PackSelectPopout ({ selectRef, packs, selected, onSelect, isActive, upd
       >
         <div className="BA__packSelectPopoutHeader">
           <SearchBar
-            className="BA__packSelectPopoutSearchBar"
             placeholder="Search"
             size="md"
             query={query}
