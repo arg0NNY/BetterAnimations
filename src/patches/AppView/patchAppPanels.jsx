@@ -43,7 +43,7 @@ export function UserPanelMisplacedAlertModal ({ theme, setEnhanceLayout, onClose
     >
       <Text variant="text-md/normal">
         <p>
-          User Panel appears to be misplaced.
+          User Panel appears to be out of place.
         </p>
         <p>
           This may be due to the <Anchor onClick={() => handleClick({ href: Documentation.enhanceLayoutUrl })}><b>Enhance layout</b></Anchor> option
