@@ -6,6 +6,7 @@ import ErrorCard from '@/error/components/ErrorCard'
 import usePagination from '@/settings/hooks/usePagination'
 import SortSelect from '@/settings/components/SortSelect'
 import usePackSearch from '@/settings/hooks/usePackSearch'
+import { ErrorBoundary } from '@error/boundary'
 
 function PackListView ({
   title,
@@ -54,17 +55,19 @@ function PackListView ({
         >
           {title}
         </Text>
-        <div className="BA__packListViewSearchBar">
-          <SearchBar
-            className="BA__packListViewSearchBar"
-            placeholder="Search"
-            size="md"
-            query={query}
-            onChange={setQuery}
-            onClear={() => setQuery('')}
-            autoFocus={true}
-          />
-        </div>
+        <ErrorBoundary noop>
+          <div className="BA__packListViewSearchBar">
+            <SearchBar
+              className="BA__packListViewSearchBar"
+              placeholder="Search"
+              size="md"
+              query={query}
+              onChange={setQuery}
+              onClear={() => setQuery('')}
+              autoFocus={true}
+            />
+          </div>
+        </ErrorBoundary>
       </div>
       <div className="BA__packListViewActionBar">
         {actions && (

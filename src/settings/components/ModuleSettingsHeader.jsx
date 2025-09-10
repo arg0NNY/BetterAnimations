@@ -9,6 +9,7 @@ import {
   Breadcrumbs,
   Clickable,
   FormText,
+  FormTextTypes,
   FormTitle,
   Switch,
   Tooltip
@@ -153,7 +154,7 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
             </Tooltip>
           </div>
           {module.description && (
-            <FormText type={FormText.Types.DESCRIPTION} className={DiscordClasses.Margins.marginTop8}>
+            <FormText type={FormTextTypes.DESCRIPTION} className={DiscordClasses.Margins.marginTop8}>
               {typeof module.description === 'function' ? module.description(setSection) : module.description}
             </FormText>
           )}

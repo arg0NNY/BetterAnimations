@@ -24,6 +24,7 @@ import SortSelect from '@/settings/components/SortSelect'
 import { librarySortOptions } from '@/settings/views/Library'
 import usePackSearch from '@/settings/hooks/usePackSearch'
 import { useData } from '@/modules/Data'
+import { ErrorBoundary } from '@error/boundary'
 
 export const packSelectSortOptions = librarySortOptions
   .filter(option => ['usage', 'name'].includes(option.value))
@@ -147,21 +148,23 @@ function PackSelectPopout ({ selectRef, packs, selected, onSelect, isActive, upd
         style={{ width }}
         onKeyDown={navigator.containerProps.onKeyDown}
       >
-        <div className="BA__packSelectPopoutHeader">
-          <SearchBar
-            placeholder="Search"
-            size="md"
-            query={query}
-            onChange={setQuery}
-            onClear={() => setQuery('')}
-            autoFocus={true}
-          />
-          <SortSelect
-            options={sortOptions}
-            value={sort}
-            onChange={setSort}
-          />
-        </div>
+        <ErrorBoundary noop>
+          <div className="BA__packSelectPopoutHeader">
+            <SearchBar
+              placeholder="Search"
+              size="md"
+              query={query}
+              onChange={setQuery}
+              onClear={() => setQuery('')}
+              autoFocus={true}
+            />
+            <SortSelect
+              options={sortOptions}
+              value={sort}
+              onChange={setSort}
+            />
+          </div>
+        </ErrorBoundary>
         <ListNavigatorContainer>
           {({ ref, ...props }) => (
             <div

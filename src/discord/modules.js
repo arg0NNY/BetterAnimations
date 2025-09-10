@@ -10,9 +10,8 @@ export const [
   Clickable,
   Switch,
   CheckboxModule,
-  FormTitle,
-  FormTitleTags,
-  FormText,
+  FormTitleModule,
+  FormTextModule,
   FormSection,
   Breadcrumbs,
   RadioGroupModule,
@@ -148,20 +147,13 @@ export const [
   {
     filter: Filters.bySource('Checkbox:', 'is not a valid hex color')
   },
-  // FormTitle
+  // FormTitleModule
   {
-    filter: Filters.byStrings('defaultMargin', 'errorMessage'),
-    searchExports: true
+    filter: Filters.bySource('defaultMargin', 'errorMessage', 'H4')
   },
-  // FormTitleTags
+  // FormTextModule
   {
-    filter: Filters.byKeys('H1', 'LABEL', 'LEGEND'),
-    searchExports: true
-  },
-  // FormText
-  {
-    filter: m => Filters.byKeys('DESCRIPTION', 'ERROR')(m?.Types),
-    searchExports: true
+    filter: Filters.bySource('"description"', '"modeDefault"')
   },
   // FormSection
   {
@@ -630,8 +622,16 @@ export const [
   }
 )
 
+export const { FormTitle, FormTitleTags } = mangled(FormTitleModule, {
+  FormTitle: Filters.byStrings('errorMessage'),
+  FormTitleTags: Filters.byKeys('H1', 'H2')
+})
+export const { FormText, FormTextTypes } = mangled(FormTextModule, {
+  FormText: Filters.byStrings('variant', 'text'),
+  FormTextTypes: Filters.byKeys('DESCRIPTION')
+})
 export const { RadioGroup } = mangled(RadioGroupModule, {
-  RadioGroup: Filters.byStrings('container', 'labelledBy')
+  RadioGroup: Filters.byStrings('label', 'description')
 })
 export const ModalScrim = Object.values(ModalScrimModule ?? {}).find(m => m?.render)
 export const { Checkbox, CheckboxTypes } = mangled(CheckboxModule, {
