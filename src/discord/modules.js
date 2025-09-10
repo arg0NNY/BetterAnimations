@@ -10,8 +10,7 @@ export const [
   Clickable,
   Switch,
   CheckboxModule,
-  FormTitle,
-  FormTitleTags,
+  FormTitleModule,
   FormTextModule,
   FormSection,
   Breadcrumbs,
@@ -148,15 +147,9 @@ export const [
   {
     filter: Filters.bySource('Checkbox:', 'is not a valid hex color')
   },
-  // FormTitle
+  // FormTitleModule
   {
-    filter: Filters.byStrings('defaultMargin', 'errorMessage'),
-    searchExports: true
-  },
-  // FormTitleTags
-  {
-    filter: Filters.byKeys('H1', 'LABEL', 'LEGEND'),
-    searchExports: true
+    filter: Filters.bySource('defaultMargin', 'errorMessage', 'H4')
   },
   // FormTextModule
   {
@@ -629,6 +622,10 @@ export const [
   }
 )
 
+export const { FormTitle, FormTitleTags } = mangled(FormTitleModule, {
+  FormTitle: Filters.byStrings('errorMessage'),
+  FormTitleTags: Filters.byKeys('H1', 'H2')
+})
 export const { FormText, FormTextTypes } = mangled(FormTextModule, {
   FormText: Filters.byStrings('variant', 'text'),
   FormTextTypes: Filters.byKeys('DESCRIPTION')
