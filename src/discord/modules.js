@@ -631,7 +631,7 @@ export const { FormText, FormTextTypes } = mangled(FormTextModule, {
   FormTextTypes: Filters.byKeys('DESCRIPTION')
 })
 export const { RadioGroup } = mangled(RadioGroupModule, {
-  RadioGroup: Filters.byStrings('container', 'labelledBy')
+  RadioGroup: Filters.byStrings('label', 'description')
 })
 export const ModalScrim = Object.values(ModalScrimModule ?? {}).find(m => m?.render)
 export const { Checkbox, CheckboxTypes } = mangled(CheckboxModule, {
