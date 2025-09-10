@@ -12,7 +12,7 @@ export const [
   CheckboxModule,
   FormTitle,
   FormTitleTags,
-  FormText,
+  FormTextModule,
   FormSection,
   Breadcrumbs,
   RadioGroupModule,
@@ -158,10 +158,9 @@ export const [
     filter: Filters.byKeys('H1', 'LABEL', 'LEGEND'),
     searchExports: true
   },
-  // FormText
+  // FormTextModule
   {
-    filter: m => Filters.byKeys('DESCRIPTION', 'ERROR')(m?.Types),
-    searchExports: true
+    filter: Filters.bySource('"description"', '"modeDefault"')
   },
   // FormSection
   {
@@ -630,6 +629,10 @@ export const [
   }
 )
 
+export const { FormText, FormTextTypes } = mangled(FormTextModule, {
+  FormText: Filters.byStrings('variant', 'text'),
+  FormTextTypes: Filters.byKeys('DESCRIPTION')
+})
 export const { RadioGroup } = mangled(RadioGroupModule, {
   RadioGroup: Filters.byStrings('container', 'labelledBy')
 })
