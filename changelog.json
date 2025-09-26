@@ -66,5 +66,17 @@
         ]
       }
     ]
+  },
+  "2.0.5": {
+    "changes": [
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Channels: Fixed the animation direction being incorrectly determined for the Quests page.",
+          "Updated to work in the latest release of Discord."
+        ]
+      }
+    ]
   }
 }
