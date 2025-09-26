@@ -595,7 +595,7 @@ export const [
   },
   // FocusLockModule
   {
-    filter: Filters.bySource('disableReturnRef', '"app-mount"')
+    filter: Filters.bySource('disableReturnRef', 'containerRef')
   },
   // ManaModalRootModule
   {
