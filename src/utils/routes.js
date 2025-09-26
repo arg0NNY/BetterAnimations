@@ -10,7 +10,8 @@ export function guildActionRowToChannelRoute (guildActionRow) {
     [GuildActionRow.GUILD_SHOP]: StaticChannelRoute.GUILD_SHOP,
     [GuildActionRow.CHANNELS_AND_ROLES]: [StaticChannelRoute.CHANNEL_BROWSER, StaticChannelRoute.CUSTOMIZE_COMMUNITY],
     [GuildActionRow.GUILD_MOD_DASH_MEMBER_SAFETY]: StaticChannelRoute.MEMBER_SAFETY,
-    [GuildActionRow.GUILD_BOOSTS]: StaticChannelRoute.GUILD_BOOSTS
+    [GuildActionRow.GUILD_BOOSTS]: StaticChannelRoute.GUILD_BOOSTS,
+    [GuildActionRow.PORTKEY]: StaticChannelRoute.PORTKEY
   }[guildActionRow] ?? guildActionRow
 }
 
@@ -23,5 +24,6 @@ export function getStaticDMRouteIndex (pathname) {
     p => p.startsWith(Routes.APPLICATION_STORE),
     p => p.startsWith(Routes.COLLECTIBLES_SHOP),
     p => p.startsWith(Routes.FAMILY_CENTER),
+    p => p.startsWith(Routes.QUEST_HOME_V2),
   ].findIndex(c => c(pathname ?? ''))
 }
