@@ -78,5 +78,16 @@
         ]
       }
     ]
+  },
+  "2.0.6": {
+    "changes": [
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Modals Backdrop: Updated to work in the latest release of Discord."
+        ]
+      }
+    ]
   }
 }
