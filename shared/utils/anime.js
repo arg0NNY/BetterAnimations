@@ -12,6 +12,7 @@ export function mergeInlineStyles (instances) {
   )
 }
 
+// TODO: Find an alternative way to transfer the inline styles, as they are no longer exposed starting from animejs 4.2.0
 export function intersect (instance, withInstances = null) {
   if (!instance) return instance
   if (withInstances) instance._inlineStyles = mergeInlineStyles(withInstances)
