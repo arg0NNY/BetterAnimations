@@ -633,7 +633,7 @@ export const { FormText, FormTextTypes } = mangled(FormTextModule, {
 export const { RadioGroup } = mangled(RadioGroupModule, {
   RadioGroup: Filters.byStrings('label', 'description')
 })
-export const ModalScrim = Object.values(ModalScrimModule ?? {}).find(m => m?.render)
+export const ModalScrimKeyed = keyed(ModalScrimModule, Filters.byStrings('scrim', 'isVisible'))
 export const { Checkbox, CheckboxTypes } = mangled(CheckboxModule, {
   Checkbox: Filters.byStrings('checkboxWrapper'),
   CheckboxTypes: Filters.byKeys('INVERTED')

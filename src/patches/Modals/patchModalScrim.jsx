@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { ModalScrim } from '@discord/modules'
+import { ModalScrimKeyed } from '@discord/modules'
 import { css } from '@style'
 import AnimeTransition from '@components/AnimeTransition'
 import classNames from 'classnames'
@@ -31,7 +31,7 @@ function ModalBackdrop ({ isVisible, onClick, disabled = false, disablePointerEv
 }
 
 function patchModalScrim () {
-  Patcher.after(ModuleKey.ModalsBackdrop, ModalScrim, 'render', (self, [props], value) => {
+  Patcher.after(ModuleKey.ModalsBackdrop, ...ModalScrimKeyed, (self, [props], value) => {
     const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.ModalsBackdrop)
     if (!isMainWindow || !module.isEnabled()) return
