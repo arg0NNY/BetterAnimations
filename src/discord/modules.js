@@ -114,7 +114,9 @@ export const [
   matchSorter,
   CopiableField,
   SidebarActions,
-  SidebarType
+  SidebarType,
+  ManaTooltipLayer,
+  ManaUseTooltipTransitionModule
 ] = Webpack.getBulk(
   // Text
   {
@@ -603,6 +605,15 @@ export const [
   {
     filter: Filters.byKeys('VIEW_THREAD', 'VIEW_MOD_REPORT'),
     searchExports: true
+  },
+  // ManaTooltipLayer
+  {
+    filter: Filters.byStrings('tooltipContent', 'richTooltip'),
+    searchExports: true
+  },
+  // ManaUseTooltipTransitionModule
+  {
+    filter: Filters.bySource('onExitComplete', '"tooltip"')
   }
 )
 
@@ -710,7 +721,9 @@ export const { useFocusLock, FocusLock } = mangled(FocusLockModule, {
 })
 export const Mana = {
   ModalRootKeyed: keyed(ManaModalRootModule, Filters.byStrings('MODAL', '"padding-size-"')),
-  get ModalRoot () { return unkeyed(this.ModalRootKeyed) }
+  get ModalRoot () { return unkeyed(this.ModalRootKeyed) },
+  TooltipLayer: ManaTooltipLayer,
+  useTooltipTransitionKeyed: keyed(ManaUseTooltipTransitionModule, Filters.byStrings('onExitComplete', '"tooltip"'))
 }
 export const BasePopoverKeyed = keyed(BasePopoverModule, Filters.byStrings('popoverGradientWrapper', 'spacing'))
 
