@@ -89,5 +89,16 @@
         ]
       }
     ]
+  },
+  "2.0.7": {
+    "changes": [
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Settings: Updated to work in the latest release of Discord."
+        ]
+      }
+    ]
   }
 }
