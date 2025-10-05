@@ -1,4 +1,4 @@
-import { FormItem, FormTitle } from '@discord/modules'
+import { Text } from '@discord/modules'
 import { css } from '@style'
 import IconButton from '@/settings/components/IconButton'
 import RedoIcon from '@/components/icons/RedoIcon'
@@ -7,8 +7,12 @@ import Hint from '@/settings/components/Hint'
 
 function SettingControl ({ label, doc, onReset, children }) {
   return (
-    <FormItem className="BA__settingControl">
-      <FormTitle tag="h5" className="BA__settingControlHeader">
+    <div className="BA__settingControl">
+      <Text
+        className="BA__settingControlHeader"
+        variant="text-md/semibold"
+        color="header-primary"
+      >
         <span>{label}</span>
         {doc && (
           <Hint href={Documentation.getSettingUrl(doc)} />
@@ -22,9 +26,9 @@ function SettingControl ({ label, doc, onReset, children }) {
             <RedoIcon size="xs" color="currentColor" />
           </IconButton>
         )}
-      </FormTitle>
+      </Text>
       {children}
-    </FormItem>
+    </div>
   )
 }
 
@@ -35,6 +39,7 @@ css
     display: flex;
     align-items: center;
     gap: 4px;
+    margin-bottom: 8px;
 }
 .BA__settingControlReset {
     margin-left: auto;

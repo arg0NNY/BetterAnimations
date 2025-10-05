@@ -11,12 +11,9 @@ export const [
   Switch,
   CheckboxModule,
   FormTitleModule,
-  FormTextModule,
   FormSection,
   Breadcrumbs,
   RadioGroupModule,
-  FormSwitch,
-  FormItem,
   Slider,
   ReferencePositionLayer,
   SearchableSelect,
@@ -151,10 +148,6 @@ export const [
   {
     filter: Filters.bySource('defaultMargin', 'errorMessage', 'H4')
   },
-  // FormTextModule
-  {
-    filter: Filters.bySource('"description"', '"modeDefault"')
-  },
   // FormSection
   {
     filter: m => Filters.byStrings('titleId', 'sectionTitle')(m?.render),
@@ -168,16 +161,6 @@ export const [
   // RadioGroupModule
   {
     filter: Filters.bySource('"radiogroup"', 'getFocusableElements')
-  },
-  // FormSwitch
-  {
-    filter: Filters.byStrings('labelRow', 'checked'),
-    searchExports: true
-  },
-  // FormItem
-  {
-    filter: m => Filters.byStrings('titleId', 'errorId', 'setIsFocused')(m?.render),
-    searchExports: true
   },
   // Slider
   {
@@ -625,10 +608,6 @@ export const [
 export const { FormTitle, FormTitleTags } = mangled(FormTitleModule, {
   FormTitle: Filters.byStrings('errorMessage'),
   FormTitleTags: Filters.byKeys('H1', 'H2')
-})
-export const { FormText, FormTextTypes } = mangled(FormTextModule, {
-  FormText: Filters.byStrings('variant', 'text'),
-  FormTextTypes: Filters.byKeys('DESCRIPTION')
 })
 export const { RadioGroup } = mangled(RadioGroupModule, {
   RadioGroup: Filters.byStrings('label', 'description')

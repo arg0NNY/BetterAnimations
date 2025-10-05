@@ -8,10 +8,8 @@ import {
   AlertTypes,
   Breadcrumbs,
   Clickable,
-  FormText,
-  FormTextTypes,
   FormTitle,
-  Switch,
+  Text,
   Tooltip
 } from '@discord/modules'
 import DiscordClasses from '@discord/classes'
@@ -23,6 +21,7 @@ import DismissibleAlert from '@/settings/components/DismissibleAlert'
 import useDismissible from '@/hooks/useDismissible'
 import Documentation from '@shared/documentation'
 import Hint from '@/settings/components/Hint'
+import SwitchIndicator from '@/components/SwitchIndicator'
 
 function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect, ...props }) {
   const { setSection } = use(SectionContext)
@@ -33,8 +32,6 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
     id: m.id,
     label: m.name
   }))
-
-  const toggleSwitch = <Switch checked={enabled} onChange={setEnabled} />
 
   const handleSetSettings = (pack, animation, type) => value => Config.pack(pack.slug).setAnimationConfig(animation.key, module.id, type, value)
 
@@ -150,13 +147,20 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
               onBreadcrumbClick={({ id }) => setSection(id)}
             />
             <Tooltip text={`${enabled ? 'Disable' : 'Enable'} ${module.name} animations`} hideOnClick={false}>
-              {props => <div {...props}>{toggleSwitch}</div>}
+              {props => (
+                <div {...props}>
+                  <SwitchIndicator checked={enabled} onChange={setEnabled} />
+                </div>
+              )}
             </Tooltip>
           </div>
           {module.description && (
-            <FormText type={FormTextTypes.DESCRIPTION} className={DiscordClasses.Margins.marginTop8}>
+            <Text
+              className={DiscordClasses.Margins.marginTop8}
+              variant="text-sm/normal"
+            >
               {typeof module.description === 'function' ? module.description(setSection) : module.description}
-            </FormText>
+            </Text>
           )}
           {module.controls && (
             <div className={DiscordClasses.Margins.marginTop8}>
