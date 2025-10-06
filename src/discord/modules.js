@@ -298,7 +298,7 @@ export const [
   },
   // Timestamp
   {
-    filter: m => Filters.byStrings('timestamp', 'timestampTooltip')(m?.type),
+    filter: m => Filters.byStrings('timestamp', 'timestampInline')(m?.type),
     searchExports: true
   },
   // getThemeClass

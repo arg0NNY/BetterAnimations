@@ -284,7 +284,9 @@ function PackModal ({ filename, location = PackContentLocation.CATALOG, onClose,
                 )}
               </div>
               <div className="BA__packModalPreviewFooter">
-                <PackMeta pack={pack} />
+                <ErrorBoundary noop>
+                  <PackMeta pack={pack} />
+                </ErrorBoundary>
               </div>
             </div>
           </>
