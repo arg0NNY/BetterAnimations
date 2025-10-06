@@ -100,5 +100,16 @@
         ]
       }
     ]
+  },
+  "2.0.8": {
+    "changes": [
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Catalog & Library: Updated to work in the latest release of Discord."
+        ]
+      }
+    ]
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "betteranimations",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "Discord Animations Client Mod & Framework",
   "type": "module",
   "main": "src/index.js",
