@@ -8,7 +8,6 @@ import {
   AlertTypes,
   Breadcrumbs,
   Clickable,
-  FormTitle,
   Text,
   Tooltip
 } from '@discord/modules'
@@ -139,10 +138,12 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
               breadcrumbs={breadcrumbs}
               activeId={module.id}
               renderCustomBreadcrumb={({ label }, active) => (
-                <FormTitle
-                  tag="h1"
+                <Text
+                  variant="heading-lg/semibold"
                   className={`BA__moduleSettingsBreadcrumb ${active ? 'BA__moduleSettingsBreadcrumb--active' : ''}`}
-                >{label}</FormTitle>
+                >
+                  {label}
+                </Text>
               )}
               onBreadcrumbClick={({ id }) => setSection(id)}
             />
@@ -170,14 +171,14 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
 
           {childModules.map(m => (
             <Clickable tag="div" onClick={() => setSection(m.id)}>
-              <FormTitle
+              <Text
                 key={m.id}
-                tag="label"
+                variant="text-md/normal"
                 className="BA__moduleSettingsLink"
               >
                 {m.name} animations
                 <ArrowSmallRightIcon size="xs" />
-              </FormTitle>
+              </Text>
             </Clickable>
           ))}
         </div>
@@ -211,7 +212,6 @@ css
 }
 
 .BA__moduleSettingsBreadcrumb {
-    margin-bottom: 0;
     color: var(--header-muted);
 }
 .BA__moduleSettingsBreadcrumb:not(.BA__moduleSettingsBreadcrumb--active) {

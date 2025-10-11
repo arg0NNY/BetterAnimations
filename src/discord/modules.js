@@ -10,13 +10,11 @@ export const [
   Clickable,
   Switch,
   CheckboxModule,
-  FormTitleModule,
-  FormSection,
+  FieldSet,
   Breadcrumbs,
   RadioGroupModule,
   Slider,
   ReferencePositionLayer,
-  SearchableSelect,
   TextBadge,
   SearchBar,
   Paginator,
@@ -144,13 +142,9 @@ export const [
   {
     filter: Filters.bySource('Checkbox:', 'is not a valid hex color')
   },
-  // FormTitleModule
+  // FieldSet
   {
-    filter: Filters.bySource('defaultMargin', 'errorMessage', 'H4')
-  },
-  // FormSection
-  {
-    filter: m => Filters.byStrings('titleId', 'sectionTitle')(m?.render),
+    filter: Filters.byStrings('.fieldset', '"legend"'),
     searchExports: true
   },
   // Breadcrumbs
@@ -170,11 +164,6 @@ export const [
   // ReferencePositionLayer
   {
     filter: Filters.byPrototypeKeys('getHorizontalAlignmentStyle', 'nudgeLeftAlignment'),
-    searchExports: true
-  },
-  // SearchableSelect
-  {
-    filter: m => Filters.byStrings('searchable', 'select')(m?.render),
     searchExports: true
   },
   // TextBadge
@@ -605,10 +594,6 @@ export const [
   }
 )
 
-export const { FormTitle, FormTitleTags } = mangled(FormTitleModule, {
-  FormTitle: Filters.byStrings('errorMessage'),
-  FormTitleTags: Filters.byKeys('H1', 'H2')
-})
 export const { RadioGroup } = mangled(RadioGroupModule, {
   RadioGroup: Filters.byStrings('label', 'description')
 })
@@ -670,9 +655,9 @@ export const GuildChannelListKeyed = keyed(GuildChannelListModule, Filters.byStr
 export const ChatSidebarKeyed = keyed(ChatSidebarModule, Filters.byStrings('chatLayerWrapper'))
 export const VoiceChannelViewKeyed = keyed(VoiceChannelViewModule, Filters.byStrings('shouldUseVoiceEffectsActionBar'))
 export const CallChatSidebarKeyed = keyed(CallChatSidebarModule, Filters.byStrings('CallChatSidebar', 'chatInputType'))
-export const SelectKeyed = keyed(SelectModule, Filters.byStrings('listbox', 'renderPopout', 'closeOnSelect'))
-export const SingleSelectKeyed = keyed(SelectModule, m => Filters.byStrings('value', 'onChange')(m) && !Filters.byStrings('isSelected')(m))
-export const SingleSelect = unkeyedFn(SingleSelectKeyed)
+export const { SingleSelect } = mangled(SelectModule, {
+  SingleSelect: m => Filters.byStrings('value', 'onChange')(m) && !Filters.byStrings('isSelected')(m)
+})
 export const LayerActions = mangled(LayerActionsModule, {
   pushLayer: Filters.byStrings('"LAYER_PUSH"'),
   popLayer: Filters.byStrings('"LAYER_POP"'),

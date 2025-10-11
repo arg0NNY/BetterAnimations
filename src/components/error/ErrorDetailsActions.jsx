@@ -1,4 +1,4 @@
-import { Button, FormTitle, ModalActions, UserSettingsModal } from '@discord/modules'
+import { Button, ModalActions, Text, UserSettingsModal } from '@discord/modules'
 import { css } from '@style'
 import useModule from '@/hooks/useModule'
 import Config from '@/modules/Config'
@@ -8,6 +8,7 @@ import InternalError from '@error/structs/InternalError'
 import { memo } from 'react'
 import useConfig from '@/hooks/useConfig'
 import Messages from '@shared/messages'
+import DiscordClasses from '@discord/classes'
 
 function useSetting (error) {
   const { config, onChange } = useConfig()
@@ -103,7 +104,13 @@ function ErrorDetailsActions ({ error, className }) {
 
   return (
     <>
-      <FormTitle>Suggested actions</FormTitle>
+      <Text
+        className={DiscordClasses.Margins.marginBottom8}
+        variant="heading-md/medium"
+        color="header-primary"
+      >
+        Suggested actions
+      </Text>
       <div className={classNames('BA__errorDetailsActions', className)}>
         {actions}
       </div>

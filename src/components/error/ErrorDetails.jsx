@@ -5,7 +5,6 @@ import {
   Alert,
   AlertTypes,
   colors,
-  FormTitle,
   InviteEmbed,
   InviteStore,
   Parser,
@@ -108,7 +107,13 @@ function ErrorDetails ({ error, open = false }) {
           error={error}
         />
 
-        <FormTitle>Error</FormTitle>
+        <Text
+          className={DiscordClasses.Margins.marginBottom8}
+          variant="heading-md/medium"
+          color="header-primary"
+        >
+          Error
+        </Text>
         <div className="BA__errorDetailsStack">
           {codeBlock}
         </div>

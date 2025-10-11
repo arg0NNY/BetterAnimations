@@ -1,10 +1,14 @@
 import { css } from '@style'
 import classNames from 'classnames'
 
-function Divider ({ className, ...props }) {
+function Divider ({ className, gap, ...props }) {
   return (
     <div
       className={classNames('BA__divider', className)}
+      style={{
+        marginTop: gap,
+        marginBottom: gap
+      }}
       {...props}
     />
   )

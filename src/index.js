@@ -23,7 +23,6 @@ import Style, { css } from '@style'
 import DiscordClasses from '@discord/classes'
 import Core from '@/modules/Core'
 import patchReferencePositionLayer from '@/patches/ReferencePositionLayer/patchReferencePositionLayer'
-import patchSelect from '@/patches/Select/patchSelect'
 import Mouse from '@shared/mouse'
 import AnimationStore from '@animation/store'
 import Emitter from '@/modules/Emitter'
@@ -112,7 +111,6 @@ export default function (meta) {
       patchListThin()
       patchGuildChannelList()
       patchReferencePositionLayer()
-      patchSelect()
       patchChannelTextArea()
       patchPopToast()
       patchRootElementContext()
