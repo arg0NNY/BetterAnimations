@@ -55,7 +55,7 @@ export const [
   Transition,
   Flux,
   App,
-  Flex,
+  Stack,
   { defaultRules: Parser } = {},
   InviteEmbed,
   InviteActions,
@@ -356,9 +356,10 @@ export const [
   {
     filter: Filters.byKeys('setEnableHardwareAcceleration', 'releaseChannel')
   },
-  // Flex
+  // Stack
   {
-    filter: Filters.byKeys('Direction', 'Justify', 'Child')
+    filter: m => Filters.byStrings('stack', 'data-justify')(m?.render),
+    searchExports: true
   },
   // Parser
   {

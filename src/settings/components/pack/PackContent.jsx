@@ -9,6 +9,7 @@ import {
   InviteStore,
   LayerActions,
   ModalActions,
+  Stack,
   Text,
   TextBadge,
   Tooltip,
@@ -302,26 +303,28 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
         cancelText="Cancel"
         onConfirm={() => registry.delete(pack.filename)}
       >
-        <Text variant="text-md/normal">
-          Are you sure you want to delete pack <b>{pack.name}</b>?
-          {isPublished ? (
-            ' It can always be reinstalled from the Catalog.'
-          ) : (
-            ' It is not published in the Catalog, so it cannot be reinstalled.'
-          )}
-        </Text>
-        {affectedModules.length > 0 && (
-          <Text variant="text-md/normal" className={DiscordClasses.Margins.marginTop8}>
-            {'Animations of this pack are currently applied for: '}
-            {affectedModules.map((module, i, { length }) => (
-              <>
-                <b>{module.name}</b>
-                {i < length - 1 ? ', ' : '.'}
-              </>
-            ))}
-            {' They will be automatically deselected.'}
+        <Stack gap={8}>
+          <Text variant="text-md/normal">
+            Are you sure you want to delete pack <b>{pack.name}</b>?
+            {isPublished ? (
+              ' It can always be reinstalled from the Catalog.'
+            ) : (
+              ' It is not published in the Catalog, so it cannot be reinstalled.'
+            )}
           </Text>
-        )}
+          {affectedModules.length > 0 && (
+            <Text variant="text-md/normal">
+              {'Animations of this pack are currently applied for: '}
+              {affectedModules.map((module, i, { length }) => (
+                <>
+                  <b>{module.name}</b>
+                  {i < length - 1 ? ', ' : '.'}
+                </>
+              ))}
+              {' They will be automatically deselected.'}
+            </Text>
+          )}
+        </Stack>
       </Modal>
     ))
   }, [pack])

@@ -1,5 +1,4 @@
-import { Checkbox, Flex, Text } from '@discord/modules'
-import DiscordClasses from '@discord/classes'
+import { Checkbox, Stack, Text } from '@discord/modules'
 import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
 import Documentation from '@shared/documentation'
@@ -14,13 +13,10 @@ function ServerModuleControls ({ module }) {
         Emitter.emit(Events.ModuleSettingsChanged, module.id)
       }}
     >
-      <Flex>
+      <Stack direction="horizontal" gap={8}>
         <Text variant="text-sm/normal">Enhance layout</Text>
-        <Hint
-          className={DiscordClasses.Margins.marginLeft8}
-          href={Documentation.enhanceLayoutUrl}
-        />
-      </Flex>
+        <Hint href={Documentation.enhanceLayoutUrl} />
+      </Stack>
     </Checkbox>
   )
 }

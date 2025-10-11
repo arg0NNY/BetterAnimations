@@ -6,7 +6,6 @@ export const _Classes = {
   Modal: Webpack.getByKeys('root', 'rootWithShadow'),
   ModalBackdrop: Webpack.getByKeys('backdrop', 'withLayer'),
   Layers: Webpack.getByKeys('layer', 'baseLayer'),
-  Margins: Webpack.getByKeys('marginTop20', 'marginLeft8'),
   AppMount: Webpack.getByKeys('appMount'),
   AppView: Webpack.getByKeys('base', 'content'),
   ChannelView: Webpack.getByKeys('chat', 'chatContent'),

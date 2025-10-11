@@ -1,4 +1,4 @@
-import { Button, ModalActions, Text, UserSettingsModal } from '@discord/modules'
+import { Button, ModalActions, Stack, Text, UserSettingsModal } from '@discord/modules'
 import { css } from '@style'
 import useModule from '@/hooks/useModule'
 import Config from '@/modules/Config'
@@ -8,7 +8,6 @@ import InternalError from '@error/structs/InternalError'
 import { memo } from 'react'
 import useConfig from '@/hooks/useConfig'
 import Messages from '@shared/messages'
-import DiscordClasses from '@discord/classes'
 
 function useSetting (error) {
   const { config, onChange } = useConfig()
@@ -103,9 +102,8 @@ function ErrorDetailsActions ({ error, className }) {
   if (!actions.length) return null
 
   return (
-    <>
+    <Stack gap={8}>
       <Text
-        className={DiscordClasses.Margins.marginBottom8}
         variant="heading-md/medium"
         color="header-primary"
       >
@@ -114,7 +112,7 @@ function ErrorDetailsActions ({ error, className }) {
       <div className={classNames('BA__errorDetailsActions', className)}>
         {actions}
       </div>
-    </>
+    </Stack>
   )
 }
 

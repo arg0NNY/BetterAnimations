@@ -7,7 +7,6 @@ import { SingleSelect } from '@discord/modules'
 import Direction from '@enums/Direction'
 import DirectionAutoType from '@enums/DirectionAutoType'
 import directionAnchorOptions from '@data/directionAnchorOptions'
-import DiscordClasses from '@discord/classes'
 import ButtonGroup from '@/settings/components/ButtonGroup'
 import HorizontalIcon from '@/components/icons/HorizontalIcon'
 import VerticalIcon from '@/components/icons/VerticalIcon'
@@ -87,7 +86,6 @@ function DirectionAnchorControl ({ value, onChange }) {
 
   return (
     <ButtonGroup
-      className={DiscordClasses.Margins.marginTop8}
       size="lg"
       options={options}
       selected={value}
@@ -143,7 +141,6 @@ css
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-top: 8px;
 }
 .BA__directionAxisControlSelect {
     flex-grow: 1;

@@ -5,13 +5,11 @@ import { Checkbox, CheckboxTypes, SingleSelect, Text } from '@discord/modules'
 import SettingControl from '@/settings/components/controls/SettingControl'
 import Position from '@enums/Position'
 import PositionAutoType from '@enums/PositionAutoType'
-import DiscordClasses from '@discord/classes'
 import Documentation from '@shared/documentation'
 
 function PositionPreserveControl ({ value, onChange, label = 'Preserve' }) {
   return (
     <Checkbox
-      className={DiscordClasses.Margins.marginTop8}
       value={value}
       onChange={(_, value) => onChange(value)}
       type={CheckboxTypes.INVERTED}

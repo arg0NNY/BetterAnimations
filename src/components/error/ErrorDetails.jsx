@@ -8,11 +8,11 @@ import {
   InviteEmbed,
   InviteStore,
   Parser,
+  Stack,
   Text,
   useStateFromStores
 } from '@discord/modules'
 import meta from '@/meta'
-import DiscordClasses from '@discord/classes'
 import InternalError from '@error/structs/InternalError'
 import AddonError from '@error/structs/AddonError'
 import AnimationError from '@error/structs/AnimationError'
@@ -101,44 +101,40 @@ function ErrorDetails ({ error, open = false }) {
       </summary>
       <div className="BA__errorDetailsBody">
         <Divider />
+        <Stack gap={20}>
+          <ErrorDetailsActions error={error} />
 
-        <ErrorDetailsActions
-          className={DiscordClasses.Margins.marginBottom20}
-          error={error}
-        />
-
-        <Text
-          className={DiscordClasses.Margins.marginBottom8}
-          variant="heading-md/medium"
-          color="header-primary"
-        >
-          Error
-        </Text>
-        <div className="BA__errorDetailsStack">
-          {codeBlock}
-        </div>
-
-        <ErrorBoundary noop>
-          {alert ? (
-            <Alert
-              messageType={AlertTypes.INFO}
-              className={DiscordClasses.Margins.marginTop20}
+          <Stack gap={8}>
+            <Text
+              variant="heading-md/medium"
+              color="header-primary"
             >
-              <div>{alert}</div>
-              {invite ? (
-                <div className="BA__errorDetailsInvite">
-                  <InviteEmbed
-                    code={invite}
-                    message={{
-                      author: { username: error.pack?.author }
-                    }}
-                    getAcceptInviteContext={() => ({})}
-                  />
-                </div>
-              ) : null}
-            </Alert>
-          ) : null}
-        </ErrorBoundary>
+              Error
+            </Text>
+            <div className="BA__errorDetailsStack">
+              {codeBlock}
+            </div>
+          </Stack>
+
+          <ErrorBoundary noop>
+            {alert ? (
+              <Alert messageType={AlertTypes.INFO}>
+                <div>{alert}</div>
+                {invite ? (
+                  <div className="BA__errorDetailsInvite">
+                    <InviteEmbed
+                      code={invite}
+                      message={{
+                        author: { username: error.pack?.author }
+                      }}
+                      getAcceptInviteContext={() => ({})}
+                    />
+                  </div>
+                ) : null}
+              </Alert>
+            ) : null}
+          </ErrorBoundary>
+        </Stack>
       </div>
     </details>
   )

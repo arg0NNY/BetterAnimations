@@ -191,7 +191,6 @@ css
     display: flex;
     align-items: center;
     gap: 16px;
-    margin-top: 8px;
 }
 .BA__easingFieldLabel {
     text-transform: uppercase;

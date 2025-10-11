@@ -1,5 +1,4 @@
-import { App, Heading, ModalActions, Text } from '@discord/modules'
-import DiscordClasses from '@discord/classes'
+import { App, Heading, ModalActions, Stack, Text } from '@discord/modules'
 import Enum from '@shared/enum'
 import Data from '@/modules/Data'
 import Modal from '@/components/Modal'
@@ -54,8 +53,10 @@ export default new class Prompt {
             App.setEnableHardwareAcceleration(true)
           }}
         >
-          <Heading variant="heading-md/semibold" className={DiscordClasses.Margins.marginBottom8}>HARDWARE ACCELERATION IS DISABLED</Heading>
-          <Text variant="text-sm/normal">The animations might be choppy, turn the Hardware Acceleration on to drastically improve the performance. Discord will quit and re-launch.</Text>
+          <Stack gap={8}>
+            <Heading variant="heading-md/semibold">HARDWARE ACCELERATION IS DISABLED</Heading>
+            <Text variant="text-sm/normal">The animations might be choppy, turn the Hardware Acceleration on to drastically improve the performance. Discord will quit and re-launch.</Text>
+          </Stack>
         </Modal>
       ))
     )

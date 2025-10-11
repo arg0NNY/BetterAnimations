@@ -8,10 +8,10 @@ import {
   AlertTypes,
   Breadcrumbs,
   Clickable,
+  Stack,
   Text,
   Tooltip
 } from '@discord/modules'
-import DiscordClasses from '@discord/classes'
 import SectionContext from '@/settings/context/SectionContext'
 import Messages from '@shared/messages'
 import ArrowSmallRightIcon from '@/components/icons/ArrowSmallRightIcon'
@@ -109,11 +109,10 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
   const [alertDismissed, setAlertDismissed] = useDismissible(`moduleAlert:${module.id}`)
 
   return (
-    <>
+    <Stack gap={8}>
       {module.alert && !alertDismissed && (
         <DismissibleAlert
           messageType={AlertTypes.WARNING}
-          className={DiscordClasses.Margins.marginBottom8}
           onDismiss={() => setAlertDismissed(true)}
         >
           {module.alert}
@@ -156,15 +155,12 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
             </Tooltip>
           </div>
           {module.description && (
-            <Text
-              className={DiscordClasses.Margins.marginTop8}
-              variant="text-sm/normal"
-            >
+            <Text variant="text-sm/normal">
               {typeof module.description === 'function' ? module.description(setSection) : module.description}
             </Text>
           )}
           {module.controls && (
-            <div className={DiscordClasses.Margins.marginTop8}>
+            <div>
               {module.controls({ module })}
             </div>
           )}
@@ -183,7 +179,7 @@ function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect
           ))}
         </div>
       </div>
-    </>
+    </Stack>
   )
 }
 
@@ -191,7 +187,6 @@ export default ModuleSettingsHeader
 
 css
 `.BA__moduleSettingsHeader {
-    margin-bottom: 32px;
     display: flex;
     gap: 20px;
 }
@@ -201,6 +196,9 @@ css
 }
 
 .BA__moduleSettingsHeading {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     padding: 12px 0;
     flex-grow: 1;
 }
@@ -227,7 +225,7 @@ css
     align-items: center;
     gap: 2px;
     color: var(--header-secondary);
-    margin-top: 16px;
+    margin-top: 8px;
     cursor: pointer;
 }
 .BA__moduleSettingsLink:hover {

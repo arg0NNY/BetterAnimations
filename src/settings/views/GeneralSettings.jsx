@@ -4,7 +4,6 @@ import {
   Text,
   FieldSet
 } from '@discord/modules'
-import Classes from '@discord/classes'
 import useConfig from '@/hooks/useConfig'
 import meta from '@/meta'
 import SuppressErrors from '@enums/SuppressErrors'
@@ -30,7 +29,6 @@ function GeneralSettings () {
         </Text>
         <FieldSet label="Appearance">
           <Switch
-            className={Classes.Margins.marginBottom20}
             label="Quick Preview"
             description="Play the animation preview when hovering over an animation card. Disable to play it only when an animation card is expanded."
             checked={config.general.quickPreview}
@@ -40,7 +38,6 @@ function GeneralSettings () {
             }}
           />
           <Switch
-            className={Classes.Margins.marginBottom20}
             label="Disable Hints"
             description={`Hide reference links to ${meta.name} documentation in the module settings, animation settings, etc.`}
             checked={config.general.disableHints}
@@ -72,7 +69,6 @@ function GeneralSettings () {
         <Divider />
         <FieldSet label="Optimizations">
           <Switch
-            className={Classes.Margins.marginBottom20}
             label={Messages.PRIORITIZE_ANIMATION_SMOOTHNESS}
             description="Delay resource-intensive operations until after animations finish to avoid most of the stuttering that occurs while they are running."
             checked={config.general.prioritizeAnimationSmoothness}
@@ -82,7 +78,6 @@ function GeneralSettings () {
             }}
           />
           <Switch
-            className={Classes.Margins.marginBottom20}
             label="Preload Layers"
             description="Load full-screen pages (User Settings, Server Settings, Channel Settings, etc.) in advance to prevent them from interrupting the animations when opened."
             checked={config.general.preloadLayers}
@@ -92,7 +87,6 @@ function GeneralSettings () {
             }}
           />
           <Switch
-            className={Classes.Margins.marginBottom20}
             label={Messages.CACHE_USER_SETTINGS_SECTIONS}
             description="Significantly improves performance when opening User Settings."
             checked={config.general.cacheUserSettingsSections}

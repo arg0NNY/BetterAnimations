@@ -1,8 +1,7 @@
 import Modal from '@/components/Modal'
 import Messages from '@shared/messages'
-import { Alert, AlertTypes, Button, ButtonGroup, Text } from '@discord/modules'
+import { Alert, AlertTypes, Button, ButtonGroup, Stack, Text } from '@discord/modules'
 import { useEffect } from 'react'
-import DiscordClasses from '@discord/classes'
 import { css } from '@style'
 import classNames from 'classnames'
 
@@ -47,15 +46,14 @@ export function MigratorAlert ({ migrator, ...props }) {
       {...props}
       messageType={AlertTypes.WARNING}
     >
-      {message}
-      <ButtonGroup
-        className={DiscordClasses.Margins.marginTop8}
-        size="sm"
-      >
-        {actions.map(props => (
-          <Button {...props} size="sm" />
-        ))}
-      </ButtonGroup>
+      <Stack gap={8}>
+        {message}
+        <ButtonGroup size="sm">
+          {actions.map(props => (
+            <Button {...props} size="sm" />
+          ))}
+        </ButtonGroup>
+      </Stack>
     </Alert>
   )
 }

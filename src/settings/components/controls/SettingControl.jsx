@@ -35,11 +35,15 @@ function SettingControl ({ label, doc, onReset, children }) {
 export default SettingControl
 
 css
-`.BA__settingControlHeader {
+`.BA__settingControl {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.BA__settingControlHeader {
     display: flex;
     align-items: center;
     gap: 4px;
-    margin-bottom: 8px;
 }
 .BA__settingControlReset {
     margin-left: auto;
