@@ -612,7 +612,7 @@ export const { useModalsStore, useIsModalAtTop, ...ModalActions } = mangled(Moda
 })
 export const { Tooltip, TooltipLayer } = mangled(TooltipModule, {
   Tooltip: Filters.byPrototypeKeys('renderTooltip'),
-  TooltipLayer: Filters.byStrings('tooltipPointer')
+  TooltipLayer: Filters.byStrings('tooltipPointerBg')
 })
 export const ListThin = (() => {
   if (!ListRawModule) return
