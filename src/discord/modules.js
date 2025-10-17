@@ -112,7 +112,8 @@ export const [
   BasePopoverModule,
   ChannelThreadList,
   matchSorter,
-  CopiableField
+  CopiableField,
+  SidebarActions
 ] = Webpack.getBulk(
   // Text
   {
@@ -592,6 +593,10 @@ export const [
   {
     filter: Filters.byStrings('copyValue', 'TEXT_COPIED'),
     searchExports: true
+  },
+  // SidebarActions
+  {
+    filter: Filters.byKeys('setSelectedSearchContext')
   }
 )
 

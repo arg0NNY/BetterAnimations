@@ -15,6 +15,7 @@ import findInReactTree from '@/utils/findInReactTree'
 import patchVoiceChannelView from '@/patches/ChannelView/patchVoiceChannelView'
 import { MainWindowOnly } from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
+import patchSidebarActions from '@/patches/ChannelView/patchSidebarActions'
 
 function patchChannelView () {
   const once = ensureOnce()
@@ -79,6 +80,7 @@ function patchChannelView () {
   patchChatSidebar()
   patchVoiceChannelView()
   patchMembersModViewSidebar()
+  patchSidebarActions()
 }
 
 export default patchChannelView
