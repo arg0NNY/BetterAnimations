@@ -18,10 +18,12 @@ class Slider extends DiscordSlider {
     const value = super.render()
     if (forceShowBubble) {
       TinyPatcher.after(value.props, 'children', (self, args, value) => {
-        const tooltip = findInReactTree(value, m => m?.type === Tooltip)
-        if (!tooltip) return
+        TinyPatcher.after(value.props, 'children', (self, args, value) => {
+          const tooltip = findInReactTree(value, m => m?.type === Tooltip)
+          if (!tooltip) return
 
-        tooltip.props.text = onValueRender(this.state.value)
+          tooltip.props.text = onValueRender(this.state.value)
+        })
       })
     }
     return value
