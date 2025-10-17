@@ -113,7 +113,7 @@ function patchAppView () {
 
     const routes = findInReactTree(page, m => m?.type === Router.Switch)?.props.children
 
-    const guildChannelRoute = routes?.find(r => r?.props?.impressionName === ImpressionNames.GUILD_CHANNEL)
+    const guildChannelRoute = routes?.find(r => r?.props?.impressionName === ImpressionNames.GUILD_CHANNEL && Array.isArray(r.props.path))
     if (guildChannelRoute) guildChannelPath = guildChannelRoute.props.path
 
     // Enhance layout

@@ -8,16 +8,18 @@ export function guildActionRowToChannelRoute (guildActionRow) {
     [GuildActionRow.GUILD_SCHEDULED_EVENTS]: StaticChannelRoute.GUILD_SCHEDULED_EVENTS,
     [GuildActionRow.GUILD_ROLE_SUBSCRIPTIONS]: StaticChannelRoute.ROLE_SUBSCRIPTIONS,
     [GuildActionRow.GUILD_SHOP]: StaticChannelRoute.GUILD_SHOP,
+    [GuildActionRow.GUILD_GAME_SHOP]: StaticChannelRoute.GAME_SHOP,
     [GuildActionRow.CHANNELS_AND_ROLES]: [StaticChannelRoute.CHANNEL_BROWSER, StaticChannelRoute.CUSTOMIZE_COMMUNITY],
     [GuildActionRow.GUILD_MOD_DASH_MEMBER_SAFETY]: StaticChannelRoute.MEMBER_SAFETY,
     [GuildActionRow.GUILD_BOOSTS]: StaticChannelRoute.GUILD_BOOSTS,
-    [GuildActionRow.PORTKEY]: StaticChannelRoute.PORTKEY
+    [GuildActionRow.GAME_SERVERS]: StaticChannelRoute.GAME_SERVERS
   }[guildActionRow] ?? guildActionRow
 }
 
 export function getStaticDMRouteIndex (pathname) {
   // Keep up-to-date with the internal `Webpack.getByStrings('hasLibraryApplication', 'getCurrentPath')`
   return [
+    p => p === Routes.ME_ACTIVITY,
     p => p === Routes.FRIENDS,
     p => p.startsWith(Routes.APPLICATION_LIBRARY),
     p => p.startsWith(Routes.MESSAGE_REQUESTS),
