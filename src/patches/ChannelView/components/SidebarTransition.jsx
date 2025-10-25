@@ -1,19 +1,38 @@
 import SwitchTransition from '@/components/SwitchTransition'
 import AnimeTransition from '@components/AnimeTransition'
 import SwitchSidebarTransition from '@/patches/ChannelView/components/SwitchSidebarTransition'
+import { pick } from '@utils/object'
+import { SidebarType } from '@discord/modules'
 
-function SidebarTransition ({ module, switchModule, state, injectContainerRef, children }) {
-  const key = state?.type ?? 'none'
+function buildSwitchKey (state) {
+  return JSON.stringify(
+    state?.type === SidebarType.VIEW_MOD_REPORT
+      ? {
+          ...state,
+          details: pick(state.details, ['userId'])
+        }
+      : state
+  )
+}
 
+function SidebarTransition ({
+  module,
+  switchModule,
+  state,
+  transitionKey = state?.type ?? 'none',
+  switchTransitionKey = buildSwitchKey(state),
+  injectContainerRef,
+  children
+}) {
   return (
     <SwitchTransition>
       <AnimeTransition
-        key={key}
+        key={transitionKey}
         container={{ className: 'BA__sidebar' }}
         module={module}
       >
         <SwitchSidebarTransition
-          state={state}
+          transitionKey={switchTransitionKey}
           module={switchModule}
           injectContainerRef={injectContainerRef}
         >

@@ -113,7 +113,8 @@ export const [
   ChannelThreadList,
   matchSorter,
   CopiableField,
-  SidebarActions
+  SidebarActions,
+  SidebarType
 ] = Webpack.getBulk(
   // Text
   {
@@ -597,6 +598,11 @@ export const [
   // SidebarActions
   {
     filter: Filters.byKeys('setSelectedSearchContext')
+  },
+  // SidebarType
+  {
+    filter: Filters.byKeys('VIEW_THREAD', 'VIEW_MOD_REPORT'),
+    searchExports: true
   }
 )
 

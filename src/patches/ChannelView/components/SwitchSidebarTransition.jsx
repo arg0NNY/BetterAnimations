@@ -1,13 +1,15 @@
 import { TransitionGroup } from '@discord/modules'
 import AnimeTransition from '@components/AnimeTransition'
 
-function SwitchSidebarTransition ({ state, injectContainerRef = true, ...props }) {
-  const key = JSON.stringify(state)
-
+function SwitchSidebarTransition ({
+  transitionKey,
+  injectContainerRef = true,
+  ...props
+}) {
   return (
     <TransitionGroup component={null}>
       <AnimeTransition
-        key={key}
+        key={transitionKey}
         injectContainerRef={injectContainerRef}
         {...props}
       />
