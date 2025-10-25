@@ -135,5 +135,17 @@
         ]
       }
     ]
+  },
+  "2.0.11": {
+    "changes": [
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Thread Sidebar: Fixed the animations misfiring while navigating the Mod View.",
+          "Updated to work in the latest release of Discord."
+        ]
+      }
+    ]
   }
 }
