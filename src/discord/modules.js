@@ -428,7 +428,7 @@ export const [
   },
   // ModalActionsModule
   {
-    filter: Filters.bySource('POPOUT', 'OVERLAY', 'modalKey')
+    filter: Filters.bySource('.modalKey?')
   },
   // TooltipModule
   {
