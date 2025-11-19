@@ -1,4 +1,4 @@
-import { Button, ModalActions, Stack, Text, UserSettingsModal } from '@discord/modules'
+import { Button, ModalActions, Stack, Text, UserSettings } from '@discord/modules'
 import { css } from '@style'
 import useModule from '@/hooks/useModule'
 import Config from '@/modules/Config'
@@ -48,11 +48,7 @@ function useActions (error) {
       <Button
         size="sm"
         text="Check for updates"
-        onClick={() => {
-          UserSettingsModal.open('updates')
-          Settings.closeSettingsModal()
-          ModalActions.closeAllModals()
-        }}
+        onClick={() => UserSettings.openUserSettings('betterdiscord_updates_panel')}
       />
     )
 
@@ -75,7 +71,7 @@ function useActions (error) {
       text="Go to Settings"
       onClick={() => {
         Settings.openSettingsModal(module.id)
-        ModalActions.closeAllModals()
+        ModalActions.closeAllModals() // TODO: Remove after migrating settings to modal
       }}
     />
   )

@@ -148,7 +148,7 @@ export default function (meta) {
     },
     getSettingsPanel () {
       queueMicrotask(() => {
-        ModalActions.closeAllModals()
+        ModalActions.closeAllModals() // TODO: Close only last modal after migrating settings to modal
         Settings.openSettingsModal()
       })
     }
