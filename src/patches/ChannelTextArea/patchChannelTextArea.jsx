@@ -15,7 +15,7 @@ import useAutoPosition from '@/hooks/useAutoPosition'
 import Position from '@enums/Position'
 import { cloneElement, useCallback, useRef } from 'react'
 import { unkeyed } from '@/utils/webpack'
-import patchChannelAppLauncher from '@/patches/ChannelTextArea/patchChannelAppLauncher'
+import patchAppLauncherPopup from '@/patches/ChannelTextArea/patchAppLauncherPopup'
 import { ErrorBoundary } from '@error/boundary'
 
 function patchChannelTextAreaButtons () {
@@ -34,56 +34,105 @@ function patchChannelTextAreaButtons () {
   })
 }
 
+function useButtonRefs (value) {
+  const buttonRefs = useRef({})
+
+  const { isMainWindow } = useWindow()
+  const module = useModule(ModuleKey.Popouts)
+  if (!isMainWindow || !module.isEnabled()) return buttonRefs
+
+  const buttons = findInReactTree(value, m => m?.type === ChannelTextAreaButtons)
+  if (buttons) buttons.props.buttonRefs = buttonRefs
+
+  return buttonRefs
+}
+
+function useExpressionPicker (value, buttonRefs) {
+  const { autoRef, setPosition } = useAutoPosition(Position.Top, { align: Position.Right })
+  const anchorRef = useCallback(() => {
+    const { activeView, lastActiveView } = unkeyed(useExpressionPickerStoreKeyed).getState()
+    return buttonRefs.current[activeView ?? lastActiveView]
+      ?? buttonRefs.current['emoji']
+  }, [buttonRefs])
+
+  const { isMainWindow } = useWindow()
+  const module = useModule(ModuleKey.Popouts)
+  if (!isMainWindow || !module.isEnabled()) return
+
+  const wrapper = findInReactTree(value, m => Array.isArray(m?.children))
+  if (!wrapper) return
+
+  const { children } = wrapper
+  const expressionPickerIndex = children.length - 1 // Can't query because it will be unmounted if closed
+  const injectContainerRef = (children, ref) => {
+    if (children?.props) children.props.__containerRef = ref
+  }
+
+  children[expressionPickerIndex] = (
+    <ErrorBoundary module={module} fallback={children[expressionPickerIndex]}>
+      <TransitionGroup component={null}>
+        {children[expressionPickerIndex] && (
+          <AnimeTransition
+            module={module}
+            injectContainerRef={injectContainerRef}
+            autoRef={autoRef}
+            anchor={anchorRef}
+          >
+            {cloneElement(children[expressionPickerIndex], {
+              onPositionChange: setPosition
+            })}
+          </AnimeTransition>
+        )}
+      </TransitionGroup>
+    </ErrorBoundary>
+  )
+}
+
+function useAppLauncherPopup (value, buttonRefs) {
+  const layerRef = useRef()
+  const { autoRef, setPosition } = useAutoPosition(Position.Top, { align: Position.Right })
+
+  const { isMainWindow } = useWindow()
+  const module = useModule(ModuleKey.Popouts)
+  if (!isMainWindow || !module.isEnabled()) return
+
+  const inner = findInReactTree(value, byClassName('inner'))
+  if (!inner) return
+
+  const { children } = inner.props
+  const popupIndex = 0 // Can't query because it will be unmounted if closed
+
+  children[popupIndex] = (
+    <ErrorBoundary module={module} fallback={children[popupIndex]}>
+      <TransitionGroup component={null}>
+        {children[popupIndex] && (
+          <AnimeTransition
+            module={module}
+            layerRef={layerRef}
+            autoRef={autoRef}
+            anchor={() => buttonRefs.current['appLauncher'] ?? children[popupIndex].props?.positionTargetRef}
+          >
+            {cloneElement(children[popupIndex], {
+              layerRef,
+              onPositionChange: setPosition
+            })}
+          </AnimeTransition>
+        )}
+      </TransitionGroup>
+    </ErrorBoundary>
+  )
+}
+
 function patchChannelTextArea () {
   Patcher.after(ModuleKey.Popouts, ChannelTextArea?.type, 'render', (self, args, value) => {
-    const { autoRef, setPosition } = useAutoPosition(Position.Top, { align: Position.Right })
-
-    const buttonRefs = useRef({})
-    const anchorRef = useCallback(() => {
-      const { activeView, lastActiveView } = unkeyed(useExpressionPickerStoreKeyed).getState()
-      return buttonRefs.current[activeView ?? lastActiveView]
-        ?? buttonRefs.current['emoji']
-    }, [buttonRefs])
-
-    const { isMainWindow } = useWindow()
-    const module = useModule(ModuleKey.Popouts)
-    if (!isMainWindow || !module.isEnabled()) return
-
-    const buttons = findInReactTree(value, m => m?.type === ChannelTextAreaButtons)
-    if (buttons) buttons.props.buttonRefs = buttonRefs
-
-    const wrapper = findInReactTree(value, m => Array.isArray(m?.children))
-    if (!wrapper) return
-
-    const { children } = wrapper
-    const expressionPickerIndex = children.length - 1 // Can't query because it will be unmounted if closed
-    const injectContainerRef = (children, ref) => {
-      if (children?.props) children.props.__containerRef = ref
-    }
-
-    children[expressionPickerIndex] = (
-      <ErrorBoundary module={module} fallback={children[expressionPickerIndex]}>
-        <TransitionGroup component={null}>
-          {children[expressionPickerIndex] && (
-            <AnimeTransition
-              module={module}
-              injectContainerRef={injectContainerRef}
-              autoRef={autoRef}
-              anchor={anchorRef}
-            >
-              {cloneElement(children[expressionPickerIndex], {
-                onPositionChange: setPosition
-              })}
-            </AnimeTransition>
-          )}
-        </TransitionGroup>
-      </ErrorBoundary>
-    )
+    const buttonRefs = useButtonRefs(value)
+    useExpressionPicker(value, buttonRefs)
+    useAppLauncherPopup(value, buttonRefs)
   })
 
   patchChannelTextAreaButtons()
   patchExpressionPicker()
-  patchChannelAppLauncher()
+  patchAppLauncherPopup()
 }
 
 export default patchChannelTextArea

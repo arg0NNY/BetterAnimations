@@ -36,7 +36,6 @@ export const [
   ChannelTextArea,
   ExpressionPicker,
   ChannelTextAreaButtons,
-  ChannelAppLauncher,
   AppLauncherPopup,
   GuildIcon,
   Timestamp,
@@ -270,11 +269,6 @@ export const [
   // ChannelTextAreaButtons
   {
     filter: m => Filters.byStrings('buttons', 'sticker', 'gif')(m?.type),
-    searchExports: true
-  },
-  // ChannelAppLauncher
-  {
-    filter: m => Filters.byStrings('channelAppLauncher')(m?.type),
     searchExports: true
   },
   // AppLauncherPopup
