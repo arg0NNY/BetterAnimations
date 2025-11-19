@@ -9,6 +9,7 @@ import { MainWindowOnly } from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
 import { useSafeBoolean } from '@/hooks/useAnimationStore'
 import useAutoPosition from '@/hooks/useAutoPosition'
+import patchManaTooltip from '@/patches/Tooltip/patchManaTooltip'
 
 function TooltipTransition (props) {
   const { module, isVisible, onAnimationRest, ...rest } = props
@@ -72,6 +73,8 @@ function patchTooltip () {
       </ErrorBoundary>
     )
   })
+
+  patchManaTooltip()
 }
 
 export default patchTooltip
