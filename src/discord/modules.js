@@ -114,7 +114,8 @@ export const [
   matchSorter,
   CopiableField,
   SidebarActions,
-  SidebarType
+  SidebarType,
+  ManaLayerModalModule
 ] = Webpack.getBulk(
   // Text
   {
@@ -603,6 +604,10 @@ export const [
   {
     filter: Filters.byKeys('VIEW_THREAD', 'VIEW_MOD_REPORT'),
     searchExports: true
+  },
+  // ManaLayerModalModule
+  {
+    filter: Filters.bySource('MODAL', 'modalContent', 'modalContentInner')
   }
 )
 
@@ -710,7 +715,8 @@ export const { useFocusLock, FocusLock } = mangled(FocusLockModule, {
 })
 export const Mana = {
   ModalRootKeyed: keyed(ManaModalRootModule, Filters.byStrings('MODAL', '"padding-size-"')),
-  get ModalRoot () { return unkeyed(this.ModalRootKeyed) }
+  get ModalRoot () { return unkeyed(this.ModalRootKeyed) },
+  LayerModalKeyed: keyed(ManaLayerModalModule, Filters.byStrings('MODAL', 'modalContent', 'modalContentInner'))
 }
 export const BasePopoverKeyed = keyed(BasePopoverModule, Filters.byStrings('popoverGradientWrapper', 'spacing'))
 
