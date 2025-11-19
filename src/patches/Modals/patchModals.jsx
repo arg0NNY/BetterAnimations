@@ -88,5 +88,8 @@ ${DiscordSelectors.Modal.focusLock}:has(> [class*="carouselModal"]) {
 .BA__modal--hidden {
     visibility: hidden;
     pointer-events: none;
+}
+${DiscordSelectors.Modals.inactive} {
+    z-index: -1;
 }`
 `Modals`
