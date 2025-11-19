@@ -115,7 +115,8 @@ export const [
   SidebarActions,
   SidebarType,
   ManaTooltipLayer,
-  ManaUseTooltipTransitionModule
+  ManaUseTooltipTransitionModule,
+  ManaLayerModalModule
 ] = Webpack.getBulk(
   // Text
   {
@@ -608,6 +609,10 @@ export const [
   // ManaUseTooltipTransitionModule
   {
     filter: Filters.bySource('onExitComplete', '"tooltip"')
+  },
+  // ManaLayerModalModule
+  {
+    filter: Filters.bySource('MODAL', 'modalContent', 'modalContentInner')
   }
 )
 
@@ -717,7 +722,8 @@ export const Mana = {
   ModalRootKeyed: keyed(ManaModalRootModule, Filters.byStrings('MODAL', '"padding-size-"')),
   get ModalRoot () { return unkeyed(this.ModalRootKeyed) },
   TooltipLayer: ManaTooltipLayer,
-  useTooltipTransitionKeyed: keyed(ManaUseTooltipTransitionModule, Filters.byStrings('onExitComplete', '"tooltip"'))
+  useTooltipTransitionKeyed: keyed(ManaUseTooltipTransitionModule, Filters.byStrings('onExitComplete', '"tooltip"')),
+  LayerModalKeyed: keyed(ManaLayerModalModule, Filters.byStrings('MODAL', 'modalContent', 'modalContentInner'))
 }
 export const BasePopoverKeyed = keyed(BasePopoverModule, Filters.byStrings('popoverGradientWrapper', 'spacing'))
 

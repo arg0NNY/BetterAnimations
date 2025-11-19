@@ -12,7 +12,7 @@ import { cloneElement, useMemo, useRef } from 'react'
 import useWindow from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
 import useTransitionCustomCondition from '@/hooks/useTransitionCustomCondition'
-import patchManaModalRoot from '@/patches/Modals/patchManaModalRoot'
+import patchManaModals from '@/patches/Modals/patchManaModals'
 import patchModalScrim from '@/patches/Modals/patchModalScrim'
 
 function Modal ({ modal, ...props }) {
@@ -72,7 +72,7 @@ function patchModals () {
   })
 
   patchModalScrim()
-  patchManaModalRoot()
+  patchManaModals()
 }
 
 export default patchModals
@@ -88,5 +88,8 @@ ${DiscordSelectors.Modal.focusLock}:has(> [class*="carouselModal"]) {
 .BA__modal--hidden {
     visibility: hidden;
     pointer-events: none;
+}
+${DiscordSelectors.Modals.inactive} {
+    z-index: -1;
 }`
 `Modals`
