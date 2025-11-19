@@ -3,6 +3,7 @@ import { generateUserSettingsSectionsKeyed } from '@discord/modules'
 import Config from '@/modules/Config'
 import InternalError from '@error/structs/InternalError'
 
+// TODO: Remove this optimization
 async function patchGenerateUserSettingsSections () {
   const cached = {
     params: null,

@@ -106,7 +106,7 @@ class Changelog {
             iconPosition="end"
             text="Go to Settings"
             onClick={() => {
-              ModalActions.closeAllModals()
+              ModalActions.closeAllModals() // TODO: Remove after migrating settings to modal
               Settings.openSettingsModal()
             }}
           />

@@ -93,7 +93,7 @@ export const [
   SelectModule,
   LayerActionsModule,
   AlertModule,
-  UserSettingsModal,
+  UserSettings,
   ModalModule,
   MenuItemModule,
   ChannelItemModule,
@@ -513,9 +513,9 @@ export const [
   {
     filter: Filters.bySource('messageType', 'iconDiv')
   },
-  // UserSettingsModal
+  // UserSettings
   {
-    filter: Filters.byKeys('open', 'setSection', 'updateAccount')
+    filter: Filters.byKeys('openUserSettings', 'openUserSettingsFromParsedUrl')
   },
   // ModalModule
   {
