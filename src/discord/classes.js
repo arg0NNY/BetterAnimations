@@ -3,6 +3,7 @@ import { Webpack } from '@/BdApi'
 export const _Classes = {
   ChatSidebar: Webpack.getByKeys('chatLayerWrapper', 'chatTarget'),
   StandardSidebarView: () => Webpack.getByKeys('standardSidebarView', 'contentRegion'),
+  SettingsSidebar: () => Webpack.getByKeys('sidebar', 'section', 'nav'),
   Modal: Webpack.getByKeys('root', 'rootWithShadow'),
   ModalBackdrop: Webpack.getByKeys('backdrop', 'withLayer'),
   Layers: Webpack.getByKeys('layer', 'baseLayer'),

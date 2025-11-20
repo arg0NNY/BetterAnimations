@@ -139,7 +139,19 @@ When this Module is enabled, it wraps the `page` element with two additional con
 - **Key:** `settings`
 - **Class:** `BA__module_settings`
 
-When this Module is enabled, it wraps the `contentRegion` element with two additional containers:
+When this Module is enabled, it wraps the `content` element of the Settings Modal with two additional containers:
+```html
+<div class="container_abd9a8">
+  <div class="sidebar__409aa theme-dark theme-darker images-dark"><!-- ... --></div>
+  <div class="BA__settingsContent"> <!-- [!code ++] -->
+    <div data-ba-container="settings" class="BA__settingsContent"> <!-- [!code ++] -->
+      <div class="content_e9e3ed"><!-- ... --></div>
+    </div> <!-- [!code ++] -->
+  </div> <!-- [!code ++] -->
+</div>
+```
+
+For the legacy settings (`standardSidebarView`), it wraps the `contentRegion` element with two additional containers:
 ```html
 <div class="standardSidebarView__23e6b">
   <div class="sidebarRegion__23e6b theme-dark theme-darker images-dark"><!-- ... --></div>

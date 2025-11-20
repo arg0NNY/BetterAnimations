@@ -722,3 +722,5 @@ export const MembersModViewSidebarModule = Webpack.waitForModule(Filters.bySourc
 export const MembersModViewSidebarKeyed = lazyKeyed(MembersModViewSidebarModule, Filters.byStrings('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))
 export const GenerateUserSettingsSectionsModule = Webpack.waitForModule(Filters.bySource('ACCOUNT_PROFILE', 'CUSTOM', '"logout"'))
 export const generateUserSettingsSectionsKeyed = lazyKeyed(GenerateUserSettingsSectionsModule, Filters.byStrings('ACCOUNT_PROFILE', 'CUSTOM', '"logout"'))
+export const SettingsContent = Webpack.waitForModule(m => Filters.byStrings('useTitle', 'contentBody')(m?.type))
+export const SettingsNodeType = { ROOT: 0, SECTION: 1, SIDEBAR_ITEM: 2, PANEL: 3, PANE: 4 }
