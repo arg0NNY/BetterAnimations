@@ -46,6 +46,7 @@ import patchBasePopover from '@/patches/BasePopover/patchBasePopover'
 import Changelog from '@/modules/Changelog'
 import PackData from '@/modules/PackData'
 import Events from '@enums/Events'
+import patchSettingsContent from '@/patches/Settings/patchSettingsContent'
 
 if (import.meta.env.MODE === 'development')
   window.BetterAnimations = {
@@ -106,6 +107,7 @@ export default function (meta) {
       patchChannelMessageList()
       patchChannelView()
       patchStandardSidebarView()
+      patchSettingsContent()
       patchModals()
       patchLayers()
       patchListThin()
