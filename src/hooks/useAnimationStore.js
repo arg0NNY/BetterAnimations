@@ -1,5 +1,5 @@
 import AnimationStore from '@animation/store'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 
 function useAnimationStore (store = AnimationStore) {
   const [animations, setAnimations] = useState([])
@@ -12,7 +12,7 @@ function useAnimationStore (store = AnimationStore) {
 export function useSafeBoolean (value, store = AnimationStore) {
   const [safeValue, setSafeValue] = useState(value)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (store.isSafe) return setSafeValue(value)
 
     setSafeValue(false)
