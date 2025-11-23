@@ -147,5 +147,28 @@
         ]
       }
     ]
+  },
+  "2.1.0": {
+    "changes": [
+      {
+        "type": "added",
+        "title": "What's new",
+        "items": [
+          "Tooltips: Integrated the new Mana Discord Tooltips.",
+          "Settings: Integrated the new Discord User Settings Modal.",
+          "Modals: Added support for the Discord Layer Modals.",
+          "Plugin Settings: Optimized for the new Discord User Settings Modal. Legacy User Settings will no longer be opened when accessing the plugin settings."
+        ]
+      },
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Popouts: Updated Apps & Commands integration to work in the latest release of Discord.",
+          "Modals: Inactive modals are now correctly dimmed.",
+          "Tooltips: Fixed the occasional misfiring of exit animation when rapidly hovering over tooltips."
+        ]
+      }
+    ]
   }
 }
