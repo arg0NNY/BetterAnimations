@@ -119,7 +119,7 @@ export default function (meta) {
       applyOptimizationPatches()
 
       Logger.info('Startup', 'Forcing app update...')
-      forceAppUpdate()
+      queueMicrotask(() => forceAppUpdate())
       Logger.info('Startup', 'Finished.')
     },
     stop () {
