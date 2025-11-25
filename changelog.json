@@ -170,5 +170,16 @@
         ]
       }
     ]
+  },
+  "2.1.1": {
+    "changes": [
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Updated to work in the latest release of Discord."
+        ]
+      }
+    ]
   }
 }
