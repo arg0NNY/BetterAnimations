@@ -555,7 +555,7 @@ export const [
   },
   // UseIsVisibleModule
   {
-    filter: Filters.bySource('isIntersecting', 'threshold:1')
+    filter: Filters.bySource('isIntersecting', 'new Map([[1,{threshold:1}]])')
   },
   // RootElementContextModule
   {
