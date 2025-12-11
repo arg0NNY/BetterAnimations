@@ -246,12 +246,12 @@ function PackSelect ({ packs, selected, onSelect, className, isActive }) {
             {isShown ? (
               <ChevronSmallUpIcon
                 size="md"
-                color={colors.INTERACTIVE_NORMAL}
+                color={colors.INTERACTIVE_ICON_DEFAULT}
               />
             ) : (
               <ChevronSmallDownIcon
                 size="md"
-                color={colors.INTERACTIVE_NORMAL}
+                color={colors.INTERACTIVE_ICON_DEFAULT}
               />
             )}
           </div>

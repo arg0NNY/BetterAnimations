@@ -70,21 +70,22 @@ css
     align-items: center;
     justify-content: center;
     gap: 4px;
-    background-color: var(--input-background);
+    background-color: var(--input-background-default);
     border-style: solid;
     border-color: var(--input-border-default);
     border-top-width: 1px;
     border-bottom-width: 1px;
-    color: var(--interactive-normal);
+    color: var(--text-subtle);
     flex: 1;
     transition: background-color .1s, border-color .1s, color .1s;
 }
 .BA__buttonGroupItem:hover {
-    background-color: var(--background-modifier-hover);
-    border-color: var(--input-border-default-hover);
+    background-color: var(--background-mod-subtle);
+    border-color: var(--input-border-hover);
+    color: var(--text-strong);
 }
 .BA__buttonGroupItem.BA__buttonGroupItem--disabled {
-    color: var(--interactive-muted);
+    color: var(--text-muted);
     cursor: not-allowed;
 }    
 

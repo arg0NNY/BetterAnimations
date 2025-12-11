@@ -1,7 +1,7 @@
 import useIconSize from '@/hooks/useIconSize'
 import { colors } from '@discord/modules'
 
-function ShopIcon ({ size, width, height, color = colors.INTERACTIVE_NORMAL }) {
+function ShopIcon ({ size, width, height, color = colors.INTERACTIVE_ICON_DEFAULT }) {
   return (
     <svg
       {...useIconSize(size, { width, height })}

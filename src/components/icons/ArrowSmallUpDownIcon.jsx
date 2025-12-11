@@ -1,7 +1,7 @@
 import useIconSize from '@/hooks/useIconSize'
 import { colors } from '@discord/modules'
 
-function ArrowSmallUpDownIcon ({ size, width, height, color = colors.INTERACTIVE_NORMAL }) {
+function ArrowSmallUpDownIcon ({ size, width, height, color = colors.INTERACTIVE_ICON_DEFAULT }) {
   return (
     <svg
       {...useIconSize(size, { width, height })}

@@ -26,7 +26,7 @@ function ErrorDetails ({ error, open = false }) {
   const icon = useMemo(() => {
     if (error instanceof AnimationError || error instanceof AddonError)
       return <JSONIcon size="md" />
-    return <IconBrand size="lg" color={colors.INTERACTIVE_NORMAL} />
+    return <IconBrand size="lg" color={colors.INTERACTIVE_ICON_DEFAULT} />
   }, [error])
 
   const title = useMemo(() => {
@@ -89,7 +89,7 @@ function ErrorDetails ({ error, open = false }) {
             </svg>
             <Text
               variant="text-xs/normal"
-              color="header-secondary"
+              color="text-subtle"
             >
               {hint}
             </Text>
@@ -177,12 +177,12 @@ css
 }
 
 .BA__errorDetailsIcon svg {
-    fill: var(--interactive-normal);
+    fill: var(--interactive-icon-default);
 }
 
 .BA__errorDetailsExpander {
     transform: rotate(-90deg);
-    color: var(--interactive-normal);
+    color: var(--interactive-icon-default);
     transition: transform 0.2s ease;
 }
 
@@ -218,7 +218,7 @@ css
 
 .BA__errorDetailsHeadingIcon {
     margin-right: 4px;
-    color: var(--interactive-normal);
+    color: var(--interactive-icon-default);
 }
 
 .BA__errorDetailsStack code {

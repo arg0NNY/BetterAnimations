@@ -1,7 +1,7 @@
 import useIconSize from '@/hooks/useIconSize'
 import { colors } from '@discord/modules'
 
-function DoorExitIcon ({ size, width, height, color = colors.INTERACTIVE_NORMAL }) {
+function DoorExitIcon ({ size, width, height, color = colors.INTERACTIVE_ICON_DEFAULT }) {
   return (
     <svg
       {...useIconSize(size, { width, height })}

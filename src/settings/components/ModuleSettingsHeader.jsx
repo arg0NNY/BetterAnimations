@@ -224,7 +224,7 @@ css
     display: flex;
     align-items: center;
     gap: 2px;
-    color: var(--header-secondary);
+    color: var(--text-subtle);
     margin-top: 8px;
     cursor: pointer;
 }

@@ -37,18 +37,18 @@ export default IconButton
 css
 `.BA__iconButton {
     display: block;
-    color: var(--interactive-normal);
+    color: var(--interactive-icon-default);
     background: none;
     border: none;
     padding: 0;
     cursor: pointer;
 }
 .BA__iconButton:hover {
-    color: var(--interactive-hover);
+    color: var(--interactive-icon-hover);
 }
 .BA__iconButton:active,
 .BA__iconButton--active {
-    color: var(--interactive-active);
+    color: var(--interactive-icon-active);
 }
 .BA__iconButton:disabled {
     color: var(--interactive-muted);

@@ -156,7 +156,7 @@ css
 .BA__moduleSettingsSectionTitle {
     margin-top: 32px;
     margin-bottom: 16px;
-    color: var(--header-secondary);
+    color: var(--text-subtle);
     text-align: center;
     position: relative;
 }
