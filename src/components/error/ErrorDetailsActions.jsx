@@ -103,7 +103,7 @@ function ErrorDetailsActions ({ error, className }) {
         variant="heading-md/medium"
         color="header-primary"
       >
-        Suggested actions
+        Suggested Actions
       </Text>
       <div className={classNames('BA__errorDetailsActions', className)}>
         {actions}
