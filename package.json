@@ -17,6 +17,7 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^4.7.0",
     "classnames": "^2.5.1",
+    "electron": "^36.9.5",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-transition-group": "^4.4.5",

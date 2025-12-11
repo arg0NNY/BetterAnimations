@@ -14,6 +14,7 @@ import path from 'path'
 import { useData } from '@/modules/Data'
 import { defaultSortOptions } from '@/settings/hooks/usePackSearch'
 import PackRegistry from '@/modules/PackRegistry'
+import electron from 'electron'
 
 const usageCompare = (a, b) => Core.getModulesUsingPack(b).length - Core.getModulesUsingPack(a).length
 
@@ -74,9 +75,7 @@ function Library () {
                 {...props}
                 variant="icon-only"
                 icon={FolderIcon}
-                onClick={() => DiscordNative.fileManager.showItemInFolder(
-                  path.resolve(PackManager.addonFolder, PackManager.addonList[0]?.filename ?? './')
-                )}
+                onClick={() => electron.shell.openPath(PackManager.addonFolder)}
               />
             )}
           </Tooltip>

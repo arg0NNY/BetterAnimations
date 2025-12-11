@@ -81,7 +81,15 @@ export default defineConfig({
     },
     minify: false,
     rollupOptions: {
-      external: ['react', 'react-dom', 'classnames', 'fs', 'path', 'events'],
+      external: [
+        'react',
+        'react-dom',
+        'classnames',
+        'fs',
+        'path',
+        'events',
+        'electron'
+      ],
       output: {
         globals: {
           react: 'BdApi.React',
@@ -89,7 +97,8 @@ export default defineConfig({
           classnames: 'BdApi.Utils.className',
           fs: 'require("fs")',
           path: 'require("path")',
-          events: 'require("events")'
+          events: 'require("events")',
+          electron: 'require("electron")'
         }
       },
       onwarn (warning, warn) {

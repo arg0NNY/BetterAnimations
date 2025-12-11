@@ -9,6 +9,7 @@ import { formatZodError } from '@animation/zod'
 import internalPacks, { internalPackSlugs } from '@packs'
 import Documentation from '@shared/documentation'
 import PackRegistry from '@/modules/PackRegistry'
+import electron from 'electron'
 
 export default new class PackManager extends AddonManager {
   get name () {return 'PackManager'}
@@ -77,7 +78,7 @@ export default new class PackManager extends AddonManager {
   }
 
   showInFolder (filename) {
-    DiscordNative.fileManager.showItemInFolder(
+    electron.shell.showItemInFolder(
       path.resolve(this.addonFolder, filename)
     )
   }
