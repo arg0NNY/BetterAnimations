@@ -11,7 +11,7 @@ function ExternalLinkIcon ({ size, width, height, color = colors.INTERACTIVE_ICO
     >
       <path
         fill="none"
-        stroke={typeof color === 'string' ? color : color.css}
+        stroke={typeof color === 'string' ? color : color?.css}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"

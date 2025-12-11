@@ -11,7 +11,7 @@ function HorizontalIcon ({ size, width, height, color = colors.INTERACTIVE_ICON_
     >
       <path
         fill="none"
-        stroke={typeof color === 'string' ? color : color.css}
+        stroke={typeof color === 'string' ? color : color?.css}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"

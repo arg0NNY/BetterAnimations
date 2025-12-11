@@ -11,7 +11,7 @@ function ArrowLeftToLineIcon ({ size, width, height, color = colors.INTERACTIVE_
     >
       <path
         fill="none"
-        stroke={typeof color === 'string' ? color : color.css}
+        stroke={typeof color === 'string' ? color : color?.css}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"

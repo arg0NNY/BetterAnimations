@@ -11,7 +11,7 @@ function ArrowRightFromLineIcon ({ size, width, height, color = colors.INTERACTI
     >
       <path
         fill="none"
-        stroke={typeof color === 'string' ? color : color.css}
+        stroke={typeof color === 'string' ? color : color?.css}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"
