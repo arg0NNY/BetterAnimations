@@ -192,5 +192,16 @@
         ]
       }
     ]
+  },
+  "2.1.3": {
+    "changes": [
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Minor style fixes."
+        ]
+      }
+    ]
   }
 }
