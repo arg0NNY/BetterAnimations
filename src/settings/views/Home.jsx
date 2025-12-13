@@ -97,14 +97,14 @@ function Home () {
             className="BA__homeTitle"
             variant="heading-xxl/bold"
             tag="h3"
-            color="header-primary"
+            color="text-strong"
           >
             {meta.name}
           </Text>
           <Text
             className="BA__homeDescription"
             variant="text-md/normal"
-            color="header-primary"
+            color="text-strong"
           >
             {sanitize(meta.description)}
           </Text>

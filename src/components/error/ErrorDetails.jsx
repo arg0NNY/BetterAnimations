@@ -107,7 +107,7 @@ function ErrorDetails ({ error, open = false }) {
           <Stack gap={8}>
             <Text
               variant="heading-md/medium"
-              color="header-primary"
+              color="text-strong"
             >
               Error
             </Text>

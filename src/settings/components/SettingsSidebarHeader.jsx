@@ -43,7 +43,7 @@ css
     position: absolute;
     top: 26px;
     left: 41px;
-    color: var(--header-primary);
+    color: var(--text-strong);
 }
 
 .BA__settingsSidebarHeader--hidden {

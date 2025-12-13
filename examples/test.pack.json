@@ -877,7 +877,7 @@
         },
         "css": {
           "div": {
-            "color": "var(--header-primary)",
+            "color": "var(--text-strong)",
             "inset": 0,
             "display": "flex",
             "justify-content": "center",

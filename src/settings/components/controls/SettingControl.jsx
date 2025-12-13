@@ -11,7 +11,7 @@ function SettingControl ({ label, doc, onReset, children }) {
       <Text
         className="BA__settingControlHeader"
         variant="text-md/semibold"
-        color="header-primary"
+        color="text-strong"
       >
         <span>{label}</span>
         {doc && (

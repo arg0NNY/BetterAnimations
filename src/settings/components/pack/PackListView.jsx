@@ -51,7 +51,7 @@ function PackListView ({
       <div className="BA__packListViewHeader">
         <Text
           variant="heading-xl/semibold"
-          color="header-primary"
+          color="text-strong"
         >
           {title}
         </Text>

@@ -67,7 +67,7 @@ function AnimationSettingsHeader ({ headers }) {
               <Text
                 tag="span"
                 variant="heading-md/normal"
-                color="header-muted"
+                color="text-muted"
               >{subtitle}</Text>
             )}
             {headerAfter}

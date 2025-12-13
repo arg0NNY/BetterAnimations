@@ -19,7 +19,7 @@ function Toast ({ children, text, type = ToastTypes.INFO }) {
       />
       {text && (
         <Text
-          color="header-primary"
+          color="text-strong"
           variant="text-md/normal"
         >
           {text}

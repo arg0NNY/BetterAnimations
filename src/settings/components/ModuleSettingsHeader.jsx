@@ -210,14 +210,14 @@ css
 }
 
 .BA__moduleSettingsBreadcrumb {
-    color: var(--header-muted);
+    color: var(--text-muted);
 }
 .BA__moduleSettingsBreadcrumb:not(.BA__moduleSettingsBreadcrumb--active) {
     cursor: pointer;
 }
 .BA__moduleSettingsBreadcrumb:hover,
 .BA__moduleSettingsBreadcrumb.BA__moduleSettingsBreadcrumb--active {
-    color: var(--header-primary);
+    color: var(--text-strong);
 }
 
 .BA__moduleSettingsLink {

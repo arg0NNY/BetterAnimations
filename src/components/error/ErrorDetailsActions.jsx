@@ -101,7 +101,7 @@ function ErrorDetailsActions ({ error, className }) {
     <Stack gap={8}>
       <Text
         variant="heading-md/medium"
-        color="header-primary"
+        color="text-strong"
       >
         Suggested Actions
       </Text>

@@ -23,7 +23,7 @@ function GeneralSettings () {
       <div className="BA__generalSettings">
         <Text
           variant="heading-xl/semibold"
-          color="header-primary"
+          color="text-strong"
         >
           General Settings
         </Text>
