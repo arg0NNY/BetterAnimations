@@ -9,7 +9,7 @@ To publish your pack to the Catalog:
 2. Create a [GitHub](https://github.com) repo for your pack or upload it to your existing one.
 3. Reach out to me with the link through one of the socials:
    - **Discord**: Find me by username `arg0nny`, or join the [Support Server](https://discord.gg/M8DBtcZjXD) and DM me from there.
-   - **Telegram**: [@arg0NNY](https://t.me/arg0nny)
+   - **Telegram**: [@okdevme](https://t.me/okdevme)
 
 ## Guidelines
 
