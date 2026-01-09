@@ -203,5 +203,17 @@
         ]
       }
     ]
+  },
+  "2.1.4": {
+    "changes": [
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Servers: Updated to work in the latest release of Discord.",
+          "Minor style fixes."
+        ]
+      }
+    ]
   }
 }
