@@ -9,6 +9,7 @@ import { getSortedGuildChannelIds, getSortedGuildTreeIds } from '@/utils/guilds'
 import { getStaticDMRouteIndex } from '@/utils/routes'
 import { currentGuildChannels } from '@/patches/GuildChannelList/patchGuildChannelList'
 import { guildChannelPath } from '@/patches/AppView/patchAppView'
+import { errorBoundary } from '@error/boundary'
 
 function matchExact (pathname, path) {
   return Router.matchPath(pathname, { path, exact: true })
@@ -25,7 +26,10 @@ function matchChannelRoutes (...locations) {
 export function shouldSwitchContent (next, prev) {
   const [nextChannel, prevChannel] = matchChannelRoutes(next, prev)
 
-  const nextOrPrev = (fn, n = next, p = prev) => fn(n) + fn(p)
+  const nextOrPrev = errorBoundary(
+    (fn, n = next, p = prev) => fn(n) + fn(p),
+    () => 0
+  )
   if (
     nextOrPrev(l => l.pathname.startsWith(Routes.GLOBAL_DISCOVERY)) === 1 // Only if one of the routes is in Discovery
     // Keep up-to-date: list everything that hides the sidebar (`hideChannelList` in AppView)

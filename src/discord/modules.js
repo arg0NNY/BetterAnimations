@@ -317,7 +317,7 @@ export const [
   },
   // GuildChannelRouteParams
   {
-    filter: m => Filters.byStrings('escapeRegExp')(m?.guildId),
+    filter: m => Filters.byStrings('"|\\\\d+"')(m?.guildId),
     searchExports: true
   },
   // handleClick
