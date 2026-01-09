@@ -52,7 +52,7 @@ function EasingValueSlider ({ options, value, onChange, ...props }) {
         onValueRender={value => value.toFixed(fractionDigits)}
         value={value}
         initialValue={value}
-        onValueChange={value => onChange(Number(value.toFixed(fractionDigits)))}
+        asValueChanges={value => onChange(Number(value.toFixed(fractionDigits)))}
         {...props}
       />
       <form
