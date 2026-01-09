@@ -102,8 +102,8 @@ function GeneralSettings () {
             label="Switch Cooldown Duration"
             description={(
               <>
-                Disable the toast notification for occurring errors.
-                When an error is suppressed, it can only be seen via&nbsp;the&nbsp;Console.
+                If switch animations overlap, they cancel each other and trigger a cooldown
+                preventing new switch animations from playing for a period of time.
               </>
             )}
             from={100}
