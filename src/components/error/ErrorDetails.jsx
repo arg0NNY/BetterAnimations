@@ -236,7 +236,7 @@ css
     position: relative;
 }
 
-.BA__errorDetailsStack pre [class^="codeActions"] {
+.BA__errorDetailsStack pre [class*="codeActions"] {
     position: absolute;
     display: none;
     right: 4px;
@@ -244,11 +244,11 @@ css
     color: var(--text-default);
 }
 
-.BA__errorDetailsStack pre:hover [class^="codeActions"] {
+.BA__errorDetailsStack pre:hover [class*="codeActions"] {
     display: block;
 }
 
-.BA__errorDetailsStack pre [class^="codeActions"] > div {
+.BA__errorDetailsStack pre [class*="codeActions"] > div {
     cursor: pointer;
 }
 

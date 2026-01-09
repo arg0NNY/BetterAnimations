@@ -431,7 +431,7 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
                 <CircleWarningIcon
                   size="md"
                   color={colors.STATUS_DANGER}
-                  secondaryColor="var(--white-400)"
+                  secondaryColor="#FFFFFF"
                 />
               </IconButton>
             )}

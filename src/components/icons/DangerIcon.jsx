@@ -1,7 +1,7 @@
 import useIconSize from '@/hooks/useIconSize'
 import { colors } from '@discord/modules'
 
-function DangerIcon ({ size, width, height, color = colors.STATUS_DANGER, secondaryColor = 'var(--white-400)', ...props }) {
+function DangerIcon ({ size, width, height, color = colors.STATUS_DANGER, secondaryColor = '#FFFFFF', ...props }) {
   return (
     <svg
       {...props}

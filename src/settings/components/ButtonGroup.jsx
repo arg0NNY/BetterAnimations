@@ -122,7 +122,7 @@ css
 .BA__buttonGroupItem.BA__buttonGroupItem--selected {
     background-color: var(--brand-500);
     border-color: var(--brand-500);
-    color: var(--white-500);
+    color: #FFFFFF;
 }
 .BA__buttonGroup.BA__buttonGroup--single .BA__buttonGroupItem.BA__buttonGroupItem--selected {
     cursor: default;

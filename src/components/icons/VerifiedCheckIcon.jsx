@@ -1,6 +1,6 @@
 import useIconSize from '@/hooks/useIconSize'
 
-function VerifiedCheckIcon ({ size, width, height, color = 'var(--green-360)', secondaryColor = 'var(--white-400)', ...props }) {
+function VerifiedCheckIcon ({ size, width, height, color = 'var(--green-360)', secondaryColor = '#FFFFFF', ...props }) {
   return (
     <svg
       {...props}

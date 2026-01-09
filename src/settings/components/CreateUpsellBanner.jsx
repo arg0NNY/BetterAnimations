@@ -56,7 +56,7 @@ css
 }
 
 .BA__mainColumn {
-    color: var(--white-100);
+    color: #FFFFFF;
     flex: 1;
     flex-direction: column;
     margin: auto 0;
