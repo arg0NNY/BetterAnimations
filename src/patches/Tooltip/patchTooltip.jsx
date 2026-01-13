@@ -1,5 +1,5 @@
 import Patcher from '@/modules/Patcher'
-import { SpringTransitionPhases, Tooltip, TooltipLayer } from '@discord/modules'
+import { SpringTransitionPhases, Tooltip } from '@discord/modules'
 import AnimeTransition from '@components/AnimeTransition'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
@@ -10,6 +10,10 @@ import { ErrorBoundary } from '@error/boundary'
 import { useSafeBoolean } from '@/hooks/useAnimationStore'
 import useAutoPosition from '@/hooks/useAutoPosition'
 import patchManaTooltip from '@/patches/Tooltip/patchManaTooltip'
+import { ReactUtils } from '@/BdApi'
+import findInReactTree from '@/utils/findInReactTree'
+
+let TooltipLayer = null
 
 function TooltipTransition (props) {
   const { module, isVisible, onAnimationRest, ...rest } = props
@@ -28,6 +32,7 @@ function TooltipTransition (props) {
   const layerRef = useRef()
   const { autoRef, setPosition } = useAutoPosition(props.position, { align: props.align })
 
+  if (!TooltipLayer) throw new Error('Unable to resolve TooltipLayer')
   const layer = TooltipLayer(rest)
 
   const safeIsVisible = useSafeBoolean(isVisible)
@@ -56,6 +61,12 @@ function patchTooltip () {
   Patcher.after(ModuleKey.Tooltips, Tooltip?.prototype, 'renderTooltip', (self, args, value) => {
     const module = Core.getModule(ModuleKey.Tooltips)
     if (!module.isEnabled()) return
+
+    if (!TooltipLayer) {
+      const rendered = ReactUtils.wrapInHooks(value.type)({ ...value.props, isVisible: true })
+      const tooltipLayer = findInReactTree(rendered, m => m?.key === 'tooltip')
+      TooltipLayer = tooltipLayer?.type
+    }
 
     const { text } = self.props
 

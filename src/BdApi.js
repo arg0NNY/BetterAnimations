@@ -6,6 +6,7 @@ export const {
   Patcher: BDPatcher,
   Webpack,
   Utils,
+  ReactUtils,
   DOM,
   Data: BDData,
   Plugins,
