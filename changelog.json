@@ -215,5 +215,16 @@
         ]
       }
     ]
+  },
+  "2.1.5": {
+    "changes": [
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Tooltips: Updated to work in the latest release of Discord."
+        ]
+      }
+    ]
   }
 }
