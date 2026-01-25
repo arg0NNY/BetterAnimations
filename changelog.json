@@ -226,5 +226,16 @@
         ]
       }
     ]
+  },
+  "2.1.6": {
+    "changes": [
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Updated to work in the latest release of Discord."
+        ]
+      }
+    ]
   }
 }
