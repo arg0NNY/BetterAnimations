@@ -1,5 +1,5 @@
 import patchExpressionPicker from '@/patches/ChannelTextArea/patchExpressionPicker'
-import Patcher from '@/modules/Patcher'
+import Patcher, { TinyPatcher } from '@/modules/Patcher'
 import {
   ChannelTextArea,
   ChannelTextAreaButtons,
@@ -15,7 +15,6 @@ import useAutoPosition from '@/hooks/useAutoPosition'
 import Position from '@enums/Position'
 import { cloneElement, useCallback, useRef } from 'react'
 import { unkeyed } from '@/utils/webpack'
-import patchAppLauncherPopup from '@/patches/ChannelTextArea/patchAppLauncherPopup'
 import { ErrorBoundary } from '@error/boundary'
 
 function patchChannelTextAreaButtons () {
@@ -102,6 +101,15 @@ function useAppLauncherPopup (value, buttonRefs) {
   const { children } = inner.props
   const popupIndex = 0 // Can't query because it will be unmounted if closed
 
+  if (children[popupIndex]) {
+    TinyPatcher.after(ModuleKey.Popouts, children[popupIndex].type, 'type', (self, [props], value) => {
+      const positionLayer = findInReactTree(value, byClassName('positionLayer'))
+      if (!positionLayer) return
+      positionLayer.props.ref = props.layerRef
+      positionLayer.props.onPositionChange = props.onPositionChange
+    })
+  }
+
   children[popupIndex] = (
     <ErrorBoundary module={module} fallback={children[popupIndex]}>
       <TransitionGroup component={null}>
@@ -132,7 +140,6 @@ function patchChannelTextArea () {
 
   patchChannelTextAreaButtons()
   patchExpressionPicker()
-  patchAppLauncherPopup()
 }
 
 export default patchChannelTextArea

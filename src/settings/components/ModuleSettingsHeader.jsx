@@ -9,6 +9,7 @@ import {
   Breadcrumbs,
   Clickable,
   Stack,
+  SwitchIndicator,
   Text,
   Tooltip
 } from '@discord/modules'
@@ -20,7 +21,6 @@ import DismissibleAlert from '@/settings/components/DismissibleAlert'
 import useDismissible from '@/hooks/useDismissible'
 import Documentation from '@shared/documentation'
 import Hint from '@/settings/components/Hint'
-import SwitchIndicator from '@/components/SwitchIndicator'
 
 function ModuleSettingsHeader ({ module, enabled, setEnabled, selected, onSelect, ...props }) {
   const { setSection } = use(SectionContext)

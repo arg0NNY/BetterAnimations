@@ -6,13 +6,12 @@ import PositionControl from '@/settings/components/controls/PositionControl'
 import DirectionControl from '@/settings/components/controls/DirectionControl'
 import OverflowControl from '@/settings/components/controls/OverflowControl'
 import { css } from '@style'
-import { Text, Tooltip } from '@discord/modules'
+import { SwitchIndicator, Text, Tooltip } from '@discord/modules'
 import IconButton from '@/settings/components/IconButton'
 import AnimationSettingContainer from '@enums/AnimationSettingContainer'
 import { createElement } from 'react'
 import RedoIcon from '@/components/icons/RedoIcon'
 import classNames from 'classnames'
-import SwitchIndicator from '@/components/SwitchIndicator'
 
 function SettingList ({ children, className = 'BA__animationSettingsList' }) {
   return (

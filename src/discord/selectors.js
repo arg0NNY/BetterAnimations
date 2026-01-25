@@ -2,9 +2,10 @@ import DiscordClasses from '@discord/classes'
 
 const DiscordSelectors = new Proxy(DiscordClasses, {
   get (obj, prop) {
-    return obj[prop] && new Proxy(obj[prop], {
-      get (obj, prop) {
-        return obj[prop]?.split(' ').filter(i => !!i).map(c => '.'+c).join('')
+    const module = obj[prop]
+    return module && new Proxy({}, {
+      get (_, prop) {
+        return module[prop]?.split(' ').filter(i => !!i).map(c => '.'+c).join('')
       }
     })
   }

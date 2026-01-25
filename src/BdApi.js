@@ -10,6 +10,7 @@ export const {
   DOM,
   Data: BDData,
   Plugins,
+  Hooks,
   UI,
   Net,
   ContextMenu,

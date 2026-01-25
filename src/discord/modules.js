@@ -1,4 +1,4 @@
-import { Webpack } from '@/BdApi'
+import { Hooks, Webpack } from '@/BdApi'
 import { createElement } from 'react'
 import { unkeyedFn, unkeyed, mangled, keyed, lazyKeyed } from '@/utils/webpack'
 const { Filters } = Webpack
@@ -9,20 +9,20 @@ export const [
   ModalScrimModule,
   Clickable,
   Switch,
+  SwitchIndicator,
   CheckboxModule,
   FieldSet,
   Breadcrumbs,
   RadioGroupModule,
   Slider,
   ReferencePositionLayer,
-  TextBadge,
+  BadgeModule,
   SearchBar,
   Paginator,
   Spinner,
   Popout,
   Routes,
   StaticChannelRoute,
-  useStateFromStores,
   BasePopout,
   SpringTransitionPhases,
   Button,
@@ -36,7 +36,6 @@ export const [
   ChannelTextArea,
   ExpressionPicker,
   ChannelTextAreaButtons,
-  AppLauncherPopup,
   GuildIcon,
   Timestamp,
   getThemeClass,
@@ -73,7 +72,6 @@ export const [
   GuildStore,
   ModalActionsModule,
   TooltipModule,
-  ListRawModule,
   ToastStoreModule,
   ToastModule,
   AppViewModule,
@@ -139,7 +137,11 @@ export const [
   },
   // Switch
   {
-    filter: Filters.byStrings('checkbox', 'animated.rect'),
+    filter: Filters.byStrings('checked', '.controlId')
+  },
+  // SwitchIndicator
+  {
+    filter: Filters.byStrings('checked', 'SWITCH_BACKGROUND_DEFAULT'),
     searchExports: true
   },
   // CheckboxModule
@@ -148,7 +150,7 @@ export const [
   },
   // FieldSet
   {
-    filter: Filters.byStrings('.fieldset', '"legend"'),
+    filter: Filters.byStrings('"fieldset"', '"legend"'),
     searchExports: true
   },
   // Breadcrumbs
@@ -170,10 +172,9 @@ export const [
     filter: Filters.byPrototypeKeys('getHorizontalAlignmentStyle', 'nudgeLeftAlignment'),
     searchExports: true
   },
-  // TextBadge
+  // BadgeModule
   {
-    filter: Filters.byStrings('textBadge', 'STATUS_DANGER'),
-    searchExports: true
+    filter: Filters.bySource('"eyebrow"', 'EARLY_ACCESS')
   },
   // SearchBar
   {
@@ -182,7 +183,7 @@ export const [
   },
   // Paginator
   {
-    filter: Filters.byStrings('pageControlContainer', 'endButtonInner'),
+    filter: Filters.byStrings('disablePaginationGap', 'hasMultiplePages'),
     searchExports: true
   },
   // Spinner
@@ -203,11 +204,6 @@ export const [
   // StaticChannelRoute
   {
     filter: Filters.byKeys('ROLE_SUBSCRIPTIONS', 'CHANNEL_BROWSER'),
-    searchExports: true
-  },
-  // useStateFromStores
-  {
-    filter: Filters.byStrings('useStateFromStores'),
     searchExports: true
   },
   // BasePopout
@@ -242,7 +238,7 @@ export const [
   },
   // TextInput
   {
-    filter: Filters.byStrings('inputWrapper', 'prefixElement'),
+    filter: Filters.byStrings('"input"', 'prefixElement'),
     searchExports: true
   },
   // AppPanels
@@ -262,7 +258,7 @@ export const [
   },
   // ChannelTextArea
   {
-    filter: m => Filters.byStrings('channelTextArea', 'markdown')(m?.type?.render)
+    filter: m => Filters.byStrings('CHANNEL_TEXT_AREA', 'markdown')(m?.type?.render)
   },
   // ExpressionPicker
   {
@@ -271,12 +267,7 @@ export const [
   },
   // ChannelTextAreaButtons
   {
-    filter: m => Filters.byStrings('buttons', 'sticker', 'gif')(m?.type),
-    searchExports: true
-  },
-  // AppLauncherPopup
-  {
-    filter: m => Filters.byStrings('positionLayer', '"positionTargetRef"')(m?.type),
+    filter: m => Filters.byStrings('appLauncher', 'sticker', 'gif')(m?.type),
     searchExports: true
   },
   // GuildIcon
@@ -286,7 +277,7 @@ export const [
   },
   // Timestamp
   {
-    filter: m => Filters.byStrings('timestamp', 'timestampInline')(m?.type),
+    filter: m => Filters.byStrings('timestampFormat', '"LLLL"')(m?.type),
     searchExports: true
   },
   // getThemeClass
@@ -313,7 +304,7 @@ export const [
   },
   // MessageDivider
   {
-    filter: m => Filters.byStrings('divider', 'unreadPill')(m?.render)
+    filter: m => Filters.byStrings('"span"', 'isUnread')(m?.render)
   },
   // GuildChannelRouteParams
   {
@@ -341,7 +332,8 @@ export const [
   },
   // Dispatcher
   {
-    filter: Filters.byKeys('dispatch', 'subscribe')
+    filter: Filters.byKeys('dispatch', 'subscribe'),
+    searchExports: true
   },
   // Transition
   {
@@ -357,7 +349,7 @@ export const [
   },
   // Stack
   {
-    filter: m => Filters.byStrings('stack', 'data-justify')(m?.render),
+    filter: m => Filters.byStrings('data-direction', 'data-justify')(m?.render),
     searchExports: true
   },
   // Parser
@@ -432,18 +424,13 @@ export const [
   {
     filter: Filters.bySource('renderTooltip', 'tooltipPointer')
   },
-  // ListRawModule
-  {
-    filter: Filters.bySource('thin', 'none', 'fade', 'ResizeObserver'),
-    raw: true
-  },
   // ToastStoreModule
   {
     filter: Filters.bySource('currentToast', 'queuedToasts')
   },
   // ToastModule
   {
-    filter: Filters.bySource('toast', 'position', 'STATUS_DANGER')
+    filter: Filters.bySource('message', 'position', 'STATUS_POSITIVE')
   },
   // AppViewModule
   {
@@ -467,7 +454,7 @@ export const [
   },
   // PopoutCSSAnimatorModule
   {
-    filter: Filters.bySource('animatorTop', 'TRANSLATE')
+    filter: Filters.bySource('data-popout-animating', 'TRANSLATE')
   },
   // AppLayerModule
   {
@@ -511,7 +498,7 @@ export const [
   },
   // AlertModule
   {
-    filter: Filters.bySource('messageType', 'iconDiv')
+    filter: Filters.bySource('messageType', '"warn"')
   },
   // UserSettings
   {
@@ -519,7 +506,7 @@ export const [
   },
   // ModalModule
   {
-    filter: Filters.bySource('MODAL', 'rootWithShadow')
+    filter: Filters.bySource('MODAL_ROOT_LEGACY', 'headerId')
   },
   // MenuItemModule
   {
@@ -579,7 +566,7 @@ export const [
   },
   // ChannelThreadList
   {
-    filter: m => Filters.byStrings('sortedThreadIds', 'spineBorder')(m?.type),
+    filter: m => Filters.byStrings('sortedThreadIds', '"group"')(m?.type),
     searchExports: true
   },
   // matchSorter
@@ -603,7 +590,7 @@ export const [
   },
   // ManaTooltipLayer
   {
-    filter: Filters.byStrings('tooltipContent', 'richTooltip'),
+    filter: Filters.byStrings('"tooltip"', 'isRichTooltip'),
     searchExports: true
   },
   // ManaUseTooltipTransitionModule
@@ -612,16 +599,19 @@ export const [
   },
   // ManaLayerModalModule
   {
-    filter: Filters.bySource('MODAL', 'modalContent', 'modalContentInner')
+    filter: Filters.bySource('MODAL', 'headingId', 'theme')
   }
 )
 
 export const { RadioGroup } = mangled(RadioGroupModule, {
   RadioGroup: Filters.byStrings('label', 'description')
 })
+export const { Badge } = mangled(BadgeModule, {
+  Badge: Filters.byStrings('"eyebrow"')
+})
 export const ModalScrimKeyed = keyed(ModalScrimModule, Filters.byStrings('scrim', 'isVisible'))
 export const { Checkbox, CheckboxTypes } = mangled(CheckboxModule, {
-  Checkbox: Filters.byStrings('checkboxWrapper'),
+  Checkbox: Filters.byStrings('innerClassName'),
   CheckboxTypes: Filters.byKeys('INVERTED')
 })
 export const { useModalsStore, useIsModalAtTop, ...ModalActions } = mangled(ModalActionsModule, {
@@ -635,8 +625,8 @@ export const { Tooltip } = mangled(TooltipModule, {
   Tooltip: Filters.byPrototypeKeys('renderTooltip')
 })
 export const ListThin = (() => {
-  if (!ListRawModule) return
-  const { id, exports } = ListRawModule
+  const id = 475825
+  const exports = Webpack.getById(id)
   const source = Webpack.modules[id].toString()
   return exports[
     source.match(new RegExp(`(\\w+):\\(\\)=>${source.match(/let (\w+)=/)[1]}`))[1]
@@ -673,7 +663,7 @@ export const { AppLayer, appLayerContext } = mangled(AppLayerModule, {
 export const ModalsKeyed = keyed(ModalsModule, Filters.byStrings('modalKey', '"layer-"'))
 export const LayersKeyed = keyed(LayersModule, Filters.byStrings('hasFullScreenLayer'))
 export const GuildChannelListKeyed = keyed(GuildChannelListModule, Filters.byStrings('getGuild', 'guildId'))
-export const ChatSidebarKeyed = keyed(ChatSidebarModule, Filters.byStrings('chatLayerWrapper'))
+export const ChatSidebarKeyed = keyed(ChatSidebarModule, Filters.byStrings('postSidebarWidth'))
 export const VoiceChannelViewKeyed = keyed(VoiceChannelViewModule, Filters.byStrings('shouldUseVoiceEffectsActionBar'))
 export const CallChatSidebarKeyed = keyed(CallChatSidebarModule, Filters.byStrings('CallChatSidebar', 'chatInputType'))
 export const { SingleSelect } = mangled(SelectModule, {
@@ -685,16 +675,15 @@ export const LayerActions = mangled(LayerActionsModule, {
   popAllLayers: Filters.byStrings('"LAYER_POP_ALL"')
 })
 export const { Alert, AlertTypes } = mangled(AlertModule, {
-  Alert: Filters.byStrings('messageType', 'iconDiv'),
+  Alert: Filters.byStrings('messageType'),
   AlertTypes: Filters.byKeys('WARNING', 'ERROR')
 })
-export const { ModalRoot, ModalSize, ModalHeader, ModalFooter, ModalContent, ModalCloseButton } = mangled(ModalModule, {
-  ModalRoot: Filters.byStrings('MODAL', 'rootWithShadow'),
+export const { ModalRoot, ModalSize, ModalHeader, ModalFooter, ModalContent } = mangled(ModalModule, {
+  ModalRoot: Filters.byStrings('MODAL_ROOT_LEGACY'),
   ModalSize: Filters.byKeys('MEDIUM', 'LARGE'),
   ModalHeader: Filters.byStrings('headerIdIsManaged', 'HORIZONTAL'),
-  ModalFooter: Filters.byStrings('footerSeparator'),
-  ModalContent: Filters.byStrings('content', 'scrollbarType'),
-  ModalCloseButton: Filters.byStrings('closeIcon')
+  ModalFooter: Filters.byStrings('separator', 'HORIZONTAL_REVERSE'),
+  ModalContent: Filters.byStrings('scrollbarType')
 })
 export const MenuItemKeyed = keyed(MenuItemModule, Filters.byStrings('dontCloseOnActionIfHoldingShiftKey', 'data-menu-item'))
 export const ChannelItemKeyed = keyed(ChannelItemModule, Filters.byStrings('shouldIndicateNewChannel', 'MANAGE_CHANNELS'))
@@ -722,17 +711,18 @@ export const Mana = {
   get ModalRoot () { return unkeyed(this.ModalRootKeyed) },
   TooltipLayer: ManaTooltipLayer,
   useTooltipTransitionKeyed: keyed(ManaUseTooltipTransitionModule, Filters.byStrings('onExitComplete', '"tooltip"')),
-  LayerModalKeyed: keyed(ManaLayerModalModule, Filters.byStrings('MODAL', 'modalContent', 'modalContentInner'))
+  LayerModalKeyed: keyed(ManaLayerModalModule, Filters.byStrings('MODAL', 'headingId', 'theme'))
 }
 export const BasePopoverKeyed = keyed(BasePopoverModule, Filters.byStrings('popoverGradientWrapper', 'spacing'))
+export const useStateFromStores = Hooks.useStateFromStores
 
 export const StandardSidebarViewWrapper = Webpack.waitForModule(Filters.byPrototypeKeys('getPredicateSections', 'renderSidebar'))
 export const StandardSidebarViewModule = Webpack.waitForModule(Filters.bySource('standardSidebarView', 'section'))
 export const StandardSidebarViewKeyed = lazyKeyed(StandardSidebarViewModule, Filters.byStrings('standardSidebarView', 'section'))
-export const SettingsNotice = Webpack.waitForModule(Filters.byStrings('resetButton', 'EMPHASIZE_NOTICE'))
+export const SettingsNotice = Webpack.waitForModule(Filters.byStrings('onSaveText', 'EMPHASIZE_NOTICE'))
 export const MembersModViewSidebarModule = Webpack.waitForModule(Filters.bySource('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))
 export const MembersModViewSidebarKeyed = lazyKeyed(MembersModViewSidebarModule, Filters.byStrings('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))
 export const GenerateUserSettingsSectionsModule = Webpack.waitForModule(Filters.bySource('ACCOUNT_PROFILE', 'CUSTOM', '"logout"'))
 export const generateUserSettingsSectionsKeyed = lazyKeyed(GenerateUserSettingsSectionsModule, Filters.byStrings('ACCOUNT_PROFILE', 'CUSTOM', '"logout"'))
-export const SettingsContent = Webpack.waitForModule(m => Filters.byStrings('useTitle', 'contentBody')(m?.type))
+export const SettingsContent = Webpack.waitForModule(m => Filters.byStrings('useTitle', '"showNavigationMobile"')(m?.type))
 export const SettingsNodeType = { ROOT: 0, SECTION: 1, SIDEBAR_ITEM: 2, PANEL: 3, PANE: 4 }

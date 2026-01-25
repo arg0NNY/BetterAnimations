@@ -11,7 +11,7 @@ import {
   ModalActions,
   Stack,
   Text,
-  TextBadge,
+  Badge,
   Tooltip,
   useStateFromStores
 } from '@discord/modules'
@@ -240,18 +240,15 @@ function PackBadge ({ pack, location }) {
   const isUnknown = useMemo(() => registry.isUnknown(pack), [])
 
   if (pack.installed && registry.hasUpdate(pack.installed)) return (
-    <TextBadge
-      className="BA__packBadge"
-      text="Update available"
-      color="var(--bg-brand)"
-    />
+    <div className="BA__packBadge">
+      <Badge type={{ text: 'Update available' }} />
+    </div>
   )
 
   if (location === PackContentLocation.CATALOG && isUnknown) return (
-    <TextBadge
-      className="BA__packBadge"
-      text="New"
-    />
+    <div className="BA__packBadge">
+      <Badge type="new" />
+    </div>
   )
 
   return null
