@@ -9,7 +9,6 @@ import patchChannelView from '@/patches/ChannelView/patchChannelView'
 import patchStandardSidebarView from '@/patches/StandardSidebarView/patchStandardSidebarView'
 import patchModals from '@/patches/Modals/patchModals'
 import patchLayers from '@/patches/Layers/patchLayers'
-import patchListThin from '@/patches/ListThin/patchListThin'
 import patchGuildChannelList from '@/patches/GuildChannelList/patchGuildChannelList'
 import PackManager from '@/modules/PackManager'
 import Logger from '@logger'
@@ -110,7 +109,6 @@ export default function (meta) {
       patchSettingsContent()
       patchModals()
       patchLayers()
-      patchListThin()
       patchGuildChannelList()
       patchReferencePositionLayer()
       patchChannelTextArea()

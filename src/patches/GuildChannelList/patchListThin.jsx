@@ -1,19 +1,19 @@
 import Patcher from '@/modules/Patcher'
 import { Utils } from '@/BdApi'
-import { ListThin, TransitionGroup, useStateFromStores } from '@discord/modules'
+import { TransitionGroup, useStateFromStores } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@components/AnimeTransition'
-import ChannelStackStore from '@/patches/ListThin/ChannelStackStore'
+import ChannelStackStore from '@/patches/GuildChannelList/ChannelStackStore'
 import PassThrough from '@/components/PassThrough'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import { css } from '@style'
 import DiscordSelectors from '@discord/selectors'
 import { cloneElement, Fragment, useMemo, useRef } from 'react'
-import patchChannelItem from '@/patches/ListThin/patchChannelItem'
+import patchChannelItem from '@/patches/GuildChannelList/patchChannelItem'
 import useWindow from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
-import patchChannelThreadList from '@/patches/ListThin/patchChannelThreadList'
+import patchChannelThreadList from '@/patches/GuildChannelList/patchChannelThreadList'
 
 function ListItem ({ children, ...props }) {
   const itemRef = useRef()
@@ -40,7 +40,7 @@ function ListItem ({ children, ...props }) {
   )
 }
 
-function patchListThin () {
+function patchListThin (ListThin) {
   Patcher.after(ModuleKey.ChannelList, ListThin, 'render', (self, [props], value) => {
     const isChannelList = props.id?.includes('channels')
     const channelsToAnimate = isChannelList && useStateFromStores([ChannelStackStore], () => ChannelStackStore.getChannelsAwaitingTransition())

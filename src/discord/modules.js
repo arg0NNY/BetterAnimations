@@ -1,4 +1,4 @@
-import { Hooks, Webpack } from '@/BdApi'
+import { Webpack } from '@/BdApi'
 import { createElement } from 'react'
 import { unkeyedFn, unkeyed, mangled, keyed, lazyKeyed } from '@/utils/webpack'
 const { Filters } = Webpack
@@ -624,14 +624,6 @@ export const { useModalsStore, useIsModalAtTop, ...ModalActions } = mangled(Moda
 export const { Tooltip } = mangled(TooltipModule, {
   Tooltip: Filters.byPrototypeKeys('renderTooltip')
 })
-export const ListThin = (() => {
-  const id = 475825
-  const exports = Webpack.getById(id)
-  const source = Webpack.modules[id].toString()
-  return exports[
-    source.match(new RegExp(`(\\w+):\\(\\)=>${source.match(/let (\w+)=/)[1]}`))[1]
-  ]
-})()
 export const { showToast, useToastStore } = mangled(ToastStoreModule, {
   showToast: Filters.byStrings('currentToastMap.has'),
   useToastStore: Filters.byKeys('setState')
@@ -714,7 +706,7 @@ export const Mana = {
   LayerModalKeyed: keyed(ManaLayerModalModule, Filters.byStrings('MODAL', 'headingId', 'theme'))
 }
 export const BasePopoverKeyed = keyed(BasePopoverModule, Filters.byStrings('popoverGradientWrapper', 'spacing'))
-export const useStateFromStores = Hooks.useStateFromStores
+export const useStateFromStores = Webpack.getModule(Webpack.Filters.byStrings('useStateFromStores'), { searchExports: true })
 
 export const StandardSidebarViewWrapper = Webpack.waitForModule(Filters.byPrototypeKeys('getPredicateSections', 'renderSidebar'))
 export const StandardSidebarViewModule = Webpack.waitForModule(Filters.bySource('standardSidebarView', 'section'))
