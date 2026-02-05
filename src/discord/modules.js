@@ -282,7 +282,7 @@ export const [
   },
   // getThemeClass
   {
-    filter: Filters.byStrings('" theme-"'),
+    filter: Filters.byStrings('theme-', 'images-'),
     searchExports: true
   },
   // CSSTransition
@@ -308,7 +308,7 @@ export const [
   },
   // GuildChannelRouteParams
   {
-    filter: m => Filters.byStrings('"|\\\\d+"')(m?.guildId),
+    filter: m => Filters.byStrings('|\\\\d+')(m?.guildId),
     searchExports: true
   },
   // handleClick
@@ -462,7 +462,7 @@ export const [
   },
   // ModalsModule
   {
-    filter: Filters.bySource('modalKey', '"layer-"')
+    filter: Filters.bySource('modalKey', '"instant"')
   },
   // LayersModule
   {
@@ -558,7 +558,7 @@ export const [
   },
   // ManaModalRootModule
   {
-    filter: Filters.bySource('MODAL', '"padding-size-"')
+    filter: Filters.bySource('MODAL', 'padding-size-')
   },
   // BasePopoverModule
   {
@@ -652,7 +652,7 @@ export const { AppLayer, appLayerContext } = mangled(AppLayerModule, {
   AppLayer: Filters.byDisplayName('AppLayer'),
   appLayerContext: m => m?.Provider
 })
-export const ModalsKeyed = keyed(ModalsModule, Filters.byStrings('modalKey', '"layer-"'))
+export const ModalsKeyed = keyed(ModalsModule, Filters.byStrings('modalKey', '"instant"'))
 export const LayersKeyed = keyed(LayersModule, Filters.byStrings('hasFullScreenLayer'))
 export const GuildChannelListKeyed = keyed(GuildChannelListModule, Filters.byStrings('getGuild', 'guildId'))
 export const ChatSidebarKeyed = keyed(ChatSidebarModule, Filters.byStrings('postSidebarWidth'))
@@ -699,7 +699,7 @@ export const { useFocusLock, FocusLock } = mangled(FocusLockModule, {
   FocusLock: Filters.byStrings('children', 'containerRef')
 })
 export const Mana = {
-  ModalRootKeyed: keyed(ManaModalRootModule, Filters.byStrings('MODAL', '"padding-size-"')),
+  ModalRootKeyed: keyed(ManaModalRootModule, Filters.byStrings('MODAL', 'padding-size-')),
   get ModalRoot () { return unkeyed(this.ModalRootKeyed) },
   TooltipLayer: ManaTooltipLayer,
   useTooltipTransitionKeyed: keyed(ManaUseTooltipTransitionModule, Filters.byStrings('onExitComplete', '"tooltip"')),

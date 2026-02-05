@@ -18,7 +18,7 @@ export async function lazyKeyed (modulePromise, filter) {
 }
 
 export function unkeyed (keyed) {
-  return keyed[0][keyed[1]]
+  return keyed?.[0]?.[keyed?.[1]]
 }
 
 export function unkeyedFn (keyedComponent) {
