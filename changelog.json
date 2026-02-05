@@ -237,5 +237,17 @@
         ]
       }
     ]
+  },
+  "2.1.7": {
+    "changes": [
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Updated to work in the latest release of Discord.",
+          "General Settings: Removed \"Cache Legacy User Settings Sections\"."
+        ]
+      }
+    ]
   }
 }
