@@ -79,19 +79,10 @@ function GeneralSettings () {
           />
           <Switch
             label="Preload Layers"
-            description="Load full-screen pages (Legacy User Settings, Server Settings, Channel Settings, etc.) in advance to prevent them from interrupting the animations when opened."
+            description="Load full-screen pages (Server Settings, Channel Settings, etc.) in advance to prevent them from interrupting the animations when opened."
             checked={config.general.preloadLayers}
             onChange={value => {
               config.general.preloadLayers = value
-              onChange()
-            }}
-          />
-          <Switch
-            label={Messages.CACHE_USER_SETTINGS_SECTIONS}
-            description="Significantly improves performance when opening Legacy User Settings."
-            checked={config.general.cacheUserSettingsSections}
-            onChange={value => {
-              config.general.cacheUserSettingsSections = value
               onChange()
             }}
           />

@@ -57,7 +57,7 @@ const moduleOptions = {
   [ModuleKey.Layers]: {
     description: () => (
       <>
-        Animates the&nbsp;transitions when switching between full-screen views of&nbsp;the&nbsp;Discord&nbsp;app, such as Legacy User&nbsp;Settings, Server&nbsp;Settings, {meta.name} Settings, etc.
+        Animates the&nbsp;transitions when switching between full-screen views of&nbsp;the&nbsp;Discord&nbsp;app, such as Server&nbsp;Settings, Channel&nbsp;Settings, {meta.name} Settings, etc.
       </>
     )
   },

@@ -24,15 +24,6 @@ function useSetting (error) {
           onChange()
         }
       }
-    case InternalError.Category.CACHE_USER_SETTINGS_SECTIONS:
-      return {
-        name: Messages.CACHE_USER_SETTINGS_SECTIONS,
-        value: config.general.cacheUserSettingsSections,
-        setValue: value => {
-          config.general.cacheUserSettingsSections = value
-          onChange()
-        }
-      }
     default: return null
   }
 }

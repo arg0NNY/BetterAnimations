@@ -5,8 +5,7 @@ export default class InternalError extends BaseError {
   static Category = {
     GENERAL: 0,
     MODULE: 1,
-    PRIORITIZE_ANIMATION_SMOOTHNESS: 2,
-    CACHE_USER_SETTINGS_SECTIONS: 3
+    PRIORITIZE_ANIMATION_SMOOTHNESS: 2
   }
 
   constructor (message, { category, ...options } = {}) {

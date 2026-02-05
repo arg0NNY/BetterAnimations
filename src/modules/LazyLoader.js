@@ -7,7 +7,6 @@ import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
 
 const LAYER_IDS = [
-  'USER_SETTINGS',
   'CHANNEL_SETTINGS',
   'GUILD_SETTINGS',
   'COLLECTIBLES_SHOP'
