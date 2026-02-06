@@ -394,7 +394,8 @@ export const [
   },
   // PrivateChannelSortStore
   {
-    filter: Filters.byStoreName('PrivateChannelSortStore')
+    filter: Filters.byStoreName('PrivateChannelSortStore'),
+    searchExports: true
   },
   // LayerStore
   {
