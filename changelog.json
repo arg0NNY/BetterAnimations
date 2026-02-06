@@ -249,5 +249,16 @@
         ]
       }
     ]
+  },
+  "2.1.8": {
+    "changes": [
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Updated to work in the latest release of Discord."
+        ]
+      }
+    ]
   }
 }
