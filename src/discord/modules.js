@@ -471,7 +471,7 @@ export const [
   },
   // GuildChannelListModule
   {
-    filter: Filters.bySource('GUILD_CHANNEL_LIST', 'favorites-channel-list')
+    filter: Filters.bySource('GUILD_CHANNEL_LIST', 'selectedChannel')
   },
   // ChannelSectionStore
   {
