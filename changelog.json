@@ -260,5 +260,17 @@
         ]
       }
     ]
+  },
+  "2.1.9": {
+    "changes": [
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Settings: Updated to work in the latest release of Discord.",
+          "Channel List: Updated to work in the latest release of Discord."
+        ]
+      }
+    ]
   }
 }
