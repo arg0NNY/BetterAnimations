@@ -113,8 +113,7 @@ export const [
   SidebarActions,
   SidebarType,
   ManaTooltipLayer,
-  ManaUseTooltipTransitionModule,
-  ManaLayerModalModule
+  ManaUseTooltipTransitionModule
 ] = Webpack.getBulk(
   // Text
   {
@@ -597,10 +596,6 @@ export const [
   // ManaUseTooltipTransitionModule
   {
     filter: Filters.bySource('onExitComplete', '"tooltip"')
-  },
-  // ManaLayerModalModule
-  {
-    filter: Filters.bySource('MODAL', 'headingId', 'theme')
   }
 )
 
@@ -703,8 +698,7 @@ export const Mana = {
   ModalRootKeyed: keyed(ManaModalRootModule, Filters.byStrings('MODAL', 'padding-size-')),
   get ModalRoot () { return unkeyed(this.ModalRootKeyed) },
   TooltipLayer: ManaTooltipLayer,
-  useTooltipTransitionKeyed: keyed(ManaUseTooltipTransitionModule, Filters.byStrings('onExitComplete', '"tooltip"')),
-  LayerModalKeyed: keyed(ManaLayerModalModule, Filters.byStrings('MODAL', 'headingId', 'theme'))
+  useTooltipTransitionKeyed: keyed(ManaUseTooltipTransitionModule, Filters.byStrings('onExitComplete', '"tooltip"'))
 }
 export const BasePopoverKeyed = keyed(BasePopoverModule, Filters.byStrings('popoverGradientWrapper', 'spacing'))
 export const useStateFromStores = Webpack.getModule(Webpack.Filters.byStrings('useStateFromStores'), { searchExports: true })
@@ -717,3 +711,5 @@ export const MembersModViewSidebarModule = Webpack.waitForModule(Filters.bySourc
 export const MembersModViewSidebarKeyed = lazyKeyed(MembersModViewSidebarModule, Filters.byStrings('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))
 export const SettingsContent = Webpack.waitForModule(m => Filters.byStrings('onClose', '"showNavigationMobile"')(m?.type))
 export const SettingsNodeType = { ROOT: 0, SECTION: 1, SIDEBAR_ITEM: 2, PANEL: 3, PANE: 4 }
+export const LayerModalModule = Webpack.waitForModule(Filters.bySource('MODAL', 'headingId', 'theme'))
+export const LayerModalKeyed = lazyKeyed(LayerModalModule, Filters.byStrings('MODAL', 'headingId', 'theme'))

@@ -1,7 +1,6 @@
 import Patcher, { TinyPatcher } from '@/modules/Patcher'
 import ModuleKey from '@enums/ModuleKey'
-import { Mana } from '@discord/modules'
-import Core from '@/modules/Core'
+import { LayerModalKeyed, Mana } from '@discord/modules'
 import findInReactTree, { byClassName } from '@/utils/findInReactTree'
 import DiscordClasses from '@discord/classes'
 import AnimeContainer from '@components/AnimeContainer'
@@ -31,7 +30,7 @@ function renderContainer (value) {
   ))
 }
 
-function patchManaModals () {
+async function patchManaModals () {
   Patcher.after(ModuleKey.Modals, ...Mana.ModalRootKeyed, (self, args, value) => {
     const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.Modals)
@@ -39,7 +38,7 @@ function patchManaModals () {
 
     renderContainer(value)
   })
-  Patcher.after(ModuleKey.Modals, ...Mana.LayerModalKeyed, (self, args, value) => {
+  Patcher.after(ModuleKey.Modals, ...await LayerModalKeyed, (self, args, value) => {
     const { isMainWindow } = useWindow()
     const module = useModule(ModuleKey.Modals)
     if (!isMainWindow || !module.isEnabled()) return
