@@ -3,7 +3,7 @@ import { ChannelMessageList, LayerStore, TransitionGroup, useStateFromStores } f
 import findInReactTree from '@/utils/findInReactTree'
 import AnimeTransition from '@components/AnimeTransition'
 import ensureOnce from '@utils/ensureOnce'
-import { getMessageKey } from '@/patches/ChannelMessageList/utils'
+import { findMessageInReactTree, getMessageKey } from '@/patches/ChannelMessageList/utils'
 import MessageStackStore from '@/patches/ChannelMessageList/MessageStackStore'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
@@ -50,14 +50,18 @@ function patchChannelMessageList () {
             >
               {
                 list.props.children[i].map((item, index, arr) => {
-                  const { message } = item.props
-                  if (message) item.key = getMessageKey(message)
+                  const message = findMessageInReactTree(item)
+                  if (message) item.key = getMessageKey(message.props.message)
 
                   return (
                     <AnimeTransition
                       key={item.key}
-                      injectContainerRef={true}
-                      enter={!hasLayers && toEnter.has(message ? item.key : getMessageKey(arr[index + 1]?.props?.message))}
+                      injectContainerRef={(children, ref) => {
+                        const message = findMessageInReactTree(children)
+                        if (message) message.props.ref = ref
+                        else children.props.ref = ref
+                      }}
+                      enter={!hasLayers && toEnter.has(message ? item.key : getMessageKey(arr[index + 1]))}
                       exit={false} // Managed in childFactory
                       module={module}
                     >
