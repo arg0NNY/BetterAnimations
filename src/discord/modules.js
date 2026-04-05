@@ -502,7 +502,7 @@ export const [
   },
   // UserSettings
   {
-    filter: Filters.byKeys('openUserSettings', 'openUserSettingsFromParsedUrl')
+    filter: Filters.byKeys('openUserSettings')
   },
   // ModalModule
   {
