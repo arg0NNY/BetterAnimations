@@ -7,7 +7,6 @@ import ModuleKey from '@enums/ModuleKey'
 import Core from '@/modules/Core'
 import DiscordClasses from '@discord/classes'
 import AnimeTransition from '@components/AnimeTransition'
-import { createRef, Fragment } from 'react'
 import { MainWindowOnly } from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
 
@@ -22,6 +21,7 @@ function patchVoiceChannelView () {
 
   Patcher.after(ModuleKey.ThreadSidebar, ...VoiceChannelViewKeyed, (self, args, value) => {
     const channelView = findInReactTree(value, m => m?.props?.channel)
+    // console.log(value, channelView)
     if (!channelView) return
 
     once(() => {
@@ -30,30 +30,22 @@ function patchVoiceChannelView () {
         const module = Core.getModule(ModuleKey.ThreadSidebar)
         if (!module.isEnabled()) return
 
-        if (!self.__containerRef) self.__containerRef = createRef()
-
         const chatWrapper = findInReactTree(value, byClassName(DiscordClasses.VoiceChannelView.channelChatWrapper))
         if (!chatWrapper) return
-
-        const fragment = findInReactTree(chatWrapper, m => m?.type === Fragment)
-        if (!fragment) return
-
-        const { children } = fragment.props
-        const callChatSidebarIndex = 0 // Can't find dynamically because it will be unmounted if the sidebar is closed
 
         return (
           <ErrorBoundary module={module} fallback={value}>
             <MainWindowOnly fallback={value}>
               {() => {
-                children[callChatSidebarIndex] = (
+                chatWrapper.props.children = (
                   <TransitionGroup component={null}>
                     {
-                      children[callChatSidebarIndex] &&
+                      chatWrapper.props.children &&
                       <AnimeTransition
                         injectContainerRef={true}
                         module={module}
                       >
-                        {children[callChatSidebarIndex]}
+                        {chatWrapper.props.children}
                       </AnimeTransition>
                     }
                   </TransitionGroup>

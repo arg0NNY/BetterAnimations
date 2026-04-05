@@ -482,7 +482,7 @@ export const [
   },
   // VoiceChannelViewModule
   {
-    filter: Filters.bySource('shouldUseVoiceEffectsActionBar')
+    filter: Filters.bySource('CHANNEL_CALL_POPOUT', 'renderExternalHeader')
   },
   // CallChatSidebarModule
   {
@@ -652,7 +652,7 @@ export const ModalsKeyed = keyed(ModalsModule, Filters.byStrings('modalKey', '"i
 export const LayersKeyed = keyed(LayersModule, Filters.byStrings('hasFullScreenLayer'))
 export const GuildChannelListKeyed = keyed(GuildChannelListModule, Filters.byStrings('getGuild', 'guildId'))
 export const ChatSidebarKeyed = keyed(ChatSidebarModule, Filters.byStrings('postSidebarWidth'))
-export const VoiceChannelViewKeyed = keyed(VoiceChannelViewModule, Filters.byStrings('shouldUseVoiceEffectsActionBar'))
+export const VoiceChannelViewKeyed = keyed(VoiceChannelViewModule, () => true)
 export const CallChatSidebarKeyed = keyed(CallChatSidebarModule, Filters.byStrings('CallChatSidebar', 'chatInputType'))
 export const { SingleSelect } = mangled(SelectModule, {
   SingleSelect: m => Filters.byStrings('value', 'onChange')(m) && !Filters.byStrings('isSelected')(m)
