@@ -284,5 +284,16 @@
         ]
       }
     ]
+  },
+  "2.1.11": {
+    "changes": [
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Thread Sidebar: Updated to work in the latest release of Discord."
+        ]
+      }
+    ]
   }
 }
