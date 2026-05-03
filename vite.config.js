@@ -26,10 +26,21 @@ ${Object.keys(config).map(key => ` * @${key} ${config[key]}`).join('\n')}
  */
 
 /* ### CONFIG START ### */
-const config = ${JSON.stringify(buildBannerConfig(), null, 2)}
+const config = ${JSON.stringify(buildBannerConfig(), null, 2)};
 /* ### CONFIG END ### */
 `
 
+function exportAsModuleExports() {
+  return {
+    name: 'export-as-module-exports',
+    generateBundle(_, bundle) {
+      for (const chunk of Object.values(bundle)) {
+        if (chunk.type !== 'chunk' || !chunk.fileName.endsWith('.plugin.js')) continue
+        chunk.code += `\nmodule.exports = ${config.name};\n`
+      }
+    }
+  }
+}
 function copyToBDPlugin() {
   return {
     name: 'copy-to-bd',
@@ -124,6 +135,7 @@ export default defineConfig({
   },
   plugins: [
     banner(bannerContent),
+    exportAsModuleExports(),
     copyToBDPlugin()
   ],
   esbuild: {
