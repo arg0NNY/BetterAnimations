@@ -1,7 +1,7 @@
 import { Transition, TransitionGroupContext } from '@discord/modules'
 import { cloneElement, Component, isValidElement } from 'react'
 
-const { ENTERED, ENTERING, EXITING } = Transition
+const { ENTERED, ENTERING, EXITING } = Transition ?? {}
 
 // https://github.com/reactjs/react-transition-group/blob/740b1dd0b4502dcb107a88261927b5069ac0b3af/src/SwitchTransition.js
 
