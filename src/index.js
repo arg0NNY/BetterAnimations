@@ -71,7 +71,8 @@ if (import.meta.env.MODE === 'development')
     DispatchController,
     Data,
     PackData,
-    Changelog
+    Changelog,
+    Validator
   }
 
 export default function (meta) {
