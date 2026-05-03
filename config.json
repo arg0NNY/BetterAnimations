@@ -6,5 +6,6 @@
   "invite": "M8DBtcZjXD",
   "donate": "https://boosty.to/arg0nny/donate",
   "website": "https://docs.betteranimations.net",
-  "source": "https://github.com/arg0NNY/BetterAnimations"
+  "source": "https://github.com/arg0NNY/BetterAnimations",
+  "runAt": "idle"
 }
