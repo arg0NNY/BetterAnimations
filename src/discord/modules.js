@@ -1,6 +1,5 @@
 import { Webpack } from '@/BdApi'
-import { createElement } from 'react'
-import { unkeyedFn, unkeyed, mangled, keyed, lazyKeyed } from '@/utils/webpack'
+import { unkeyedFn, unkeyed, keyed, lazyKeyed } from '@/utils/webpack'
 const { Filters } = Webpack
 
 export const [
@@ -10,13 +9,13 @@ export const [
   Clickable,
   Switch,
   SwitchIndicator,
-  CheckboxModule,
+  { Checkbox, CheckboxTypes },
   FieldSet,
   Breadcrumbs,
-  RadioGroupModule,
+  { RadioGroup },
   Slider,
   ReferencePositionLayer,
-  BadgeModule,
+  { Badge },
   SearchBar,
   // Paginator,
   Spinner,
@@ -68,39 +67,40 @@ export const [
   SelectedGuildStore,
   SelectedChannelStore,
   GuildStore,
-  ModalActionsModule,
-  TooltipModule,
+  { useModalsStore, useIsModalAtTop, ...ModalActions },
+  { Tooltip },
   ToastStoreModule,
-  ToastModule,
+  { showToast, useToastStore },
+  { Toast, createToast },
+  Router,
   AppViewRawModule,
-  RouterModule,
   ContextMenuModule,
   MenuSubmenuItemRawModule,
   MenuSubmenuListItemRawModule,
   PopoutCSSAnimatorRawModule,
-  AppLayerModule,
+  { AppLayer, appLayerContext },
   ModalsModule,
   LayersRawModule,
   GuildChannelListModule,
   ChannelSectionStore,
   ChatSidebarModule,
   { SingleSelect } = {},
-  LayerActionsModule,
-  AlertModule,
+  LayerActions,
+  { Alert, AlertTypes },
   UserSettings,
-  ModalModule,
+  { ModalRoot, ModalSize, ModalHeader, ModalFooter, ModalContent },
   MenuItemRawModule,
   ChannelItemRawModule,
   VoiceChannelItemRawModule,
   StageVoiceChannelItemRawModule,
-  AppContextModule,
+  { AppContext },
   ExpressionPickerStoreModule,
   ProfileEffectsModule,
   EmojiModule,
   UseIsVisibleModule,
   RootElementContextModule,
-  ListNavigatorModule,
-  FocusLockModule,
+  { useListItem, useListContainerProps, ListNavigatorProvider },
+  { useFocusLock, FocusLock },
   ManaModalRootModule,
   BasePopoverModule,
   ChannelThreadList,
@@ -141,7 +141,11 @@ export const [
   },
   // CheckboxModule
   {
-    filter: Filters.bySource('Checkbox:', 'is not a valid hex color')
+    filter: Filters.bySource('Checkbox:', 'is not a valid hex color'),
+    map: {
+      Checkbox: Filters.byStrings('innerClassName'),
+      CheckboxTypes: Filters.byKeys('INVERTED')
+    }
   },
   // FieldSet
   {
@@ -155,7 +159,10 @@ export const [
   },
   // RadioGroupModule
   {
-    filter: Filters.bySource('"radiogroup"', 'getFocusableElements')
+    filter: Filters.bySource('"radiogroup"', 'getFocusableElements'),
+    map: {
+      RadioGroup: Filters.byStrings('label', 'description')
+    }
   },
   // Slider
   {
@@ -169,7 +176,10 @@ export const [
   },
   // BadgeModule
   {
-    filter: Filters.bySource('"eyebrow"', 'EARLY_ACCESS')
+    filter: Filters.bySource('"eyebrow"', 'EARLY_ACCESS'),
+    map: {
+      Badge: Filters.byStrings('"eyebrow"')
+    }
   },
   // SearchBar
   {
@@ -412,28 +422,58 @@ export const [
   },
   // ModalActionsModule
   {
-    filter: Filters.bySource('.modalKey?')
+    filter: Filters.bySource('.modalKey?'),
+    map: {
+      openModal: Filters.byStrings('onCloseRequest', 'onCloseCallback', 'stackingBehavior'),
+      closeModal: Filters.byStrings('onCloseCallback()', 'filter'),
+      closeAllModals: Filters.byStrings('.getState();for'),
+      useModalsStore: Filters.byKeys('setState'),
+      useIsModalAtTop: Filters.byStrings('popout:', '.at(-1)')
+    }
   },
   // TooltipModule
   {
-    filter: Filters.bySource('renderTooltip', 'tooltipPointer')
+    filter: Filters.bySource('renderTooltip', 'tooltipPointer'),
+    map: {
+      Tooltip: Filters.byPrototypeKeys('renderTooltip')
+    }
   },
   // ToastStoreModule
   {
-    filter: Filters.bySource('currentToast', 'queuedToasts')
+    filter: Filters.bySource('currentToast', 'queuedToasts'),
+  },
+  // ToastStore
+  {
+    filter: Filters.bySource('currentToast', 'queuedToasts'),
+    map: {
+      showToast: Filters.byStrings('currentToastMap.has'),
+      useToastStore: Filters.byKeys('setState')
+    }
   },
   // ToastModule
   {
-    filter: Filters.bySource('message', '"data-type"', 'STATUS_POSITIVE', 'CLIP')
+    filter: Filters.bySource('message', '"data-type"', 'STATUS_POSITIVE', 'CLIP'),
+    map: {
+      Toast: Filters.byKeys('type'),
+      createToast: Filters.byStrings('type', 'position')
+    }
+  },
+  // RouterModule
+  {
+    filter: Filters.bySource('props.computedMatch', 'isExact'),
+    map: {
+      Router: m => m?.computeRootMatch,
+      Route: m => Filters.byStrings('props.computedMatch', 'props.path')(m?.prototype?.render),
+      Switch: m => Filters.byStrings('props.location', 'cloneElement')(m?.prototype?.render),
+      matchPath: Filters.byStrings('strict', 'isExact'),
+      useLocation: Filters.byStrings(').location'),
+      useParams: Filters.byStrings('.match', '.params')
+    }
   },
   // AppViewRawModule
   {
     filter: Filters.bySource('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY', 'data-fullscreen'),
     raw: true
-  },
-  // RouterModule
-  {
-    filter: Filters.bySource('props.computedMatch', 'isExact')
   },
   // ContextMenuModule
   {
@@ -456,7 +496,11 @@ export const [
   },
   // AppLayerModule
   {
-    filter: Filters.bySource('layerContext', '"App"')
+    filter: Filters.bySource('layerContext', '"App"'),
+    map: {
+      AppLayer: Filters.byDisplayName('AppLayer'),
+      appLayerContext: m => m?.Provider
+    }
   },
   // ModalsModule
   {
@@ -489,11 +533,20 @@ export const [
   },
   // LayerActionsModule
   {
-    filter: Filters.bySource('"LAYER_PUSH"', '"LAYER_POP_ALL"')
+    filter: Filters.bySource('"LAYER_PUSH"', '"LAYER_POP_ALL"'),
+    map: {
+      pushLayer: Filters.byStrings('"LAYER_PUSH"'),
+      popLayer: Filters.byStrings('"LAYER_POP"'),
+      popAllLayers: Filters.byStrings('"LAYER_POP_ALL"')
+    }
   },
   // AlertModule
   {
-    filter: Filters.bySource('messageType', '"warn"')
+    filter: Filters.bySource('messageType', '"warn"'),
+    map: {
+      Alert: Filters.byStrings('messageType'),
+      AlertTypes: Filters.byKeys('WARNING', 'ERROR')
+    }
   },
   // UserSettings
   {
@@ -501,7 +554,14 @@ export const [
   },
   // ModalModule
   {
-    filter: Filters.bySource('MODAL_ROOT_LEGACY', 'headerId')
+    filter: Filters.bySource('MODAL_ROOT_LEGACY', 'headerId'),
+    map: {
+      ModalRoot: Filters.byStrings('MODAL_ROOT_LEGACY'),
+      ModalSize: Filters.byKeys('MEDIUM', 'LARGE'),
+      ModalHeader: Filters.byStrings('headerIdIsManaged', 'HORIZONTAL'),
+      ModalFooter: Filters.byStrings('separator', 'HORIZONTAL_REVERSE'),
+      ModalContent: Filters.byStrings('scrollbarType')
+    }
   },
   // MenuItemRawModule
   {
@@ -525,7 +585,10 @@ export const [
   },
   // AppContextModule
   {
-    filter: Filters.bySource('renderWindow', 'ownerDocument.defaultView')
+    filter: Filters.bySource('renderWindow', 'ownerDocument.defaultView'),
+    map: {
+      AppContext: m => m?.Provider
+    }
   },
   // ExpressionPickerStoreModule
   {
@@ -549,11 +612,20 @@ export const [
   },
   // ListNavigatorModule
   {
-    filter: Filters.bySource('NO_LIST', 'listitem')
+    filter: Filters.bySource('NO_LIST', 'listitem'),
+    map: {
+      useListItem: Filters.byStrings('"listitem"'),
+      useListContainerProps: Filters.byStrings('"list"', 'useContext'),
+      ListNavigatorProvider: Filters.byStrings('containerProps', '.Provider')
+    }
   },
   // FocusLockModule
   {
-    filter: Filters.bySource('disableReturnRef', 'containerRef')
+    filter: Filters.bySource('disableReturnRef', 'containerRef'),
+    map: {
+      useFocusLock: Filters.byStrings('disableReturnRef'),
+      FocusLock: Filters.byStrings('children', 'containerRef')
+    }
   },
   // ManaModalRootModule
   {
@@ -598,96 +670,30 @@ export const [
   }
 )
 
-export const { RadioGroup } = mangled(RadioGroupModule, {
-  RadioGroup: Filters.byStrings('label', 'description')
-})
-export const { Badge } = mangled(BadgeModule, {
-  Badge: Filters.byStrings('"eyebrow"')
-})
 export const ModalScrimKeyed = keyed(ModalScrimModule, Filters.byStrings('scrim', 'isVisible'))
-export const { Checkbox, CheckboxTypes } = mangled(CheckboxModule, {
-  Checkbox: Filters.byStrings('innerClassName'),
-  CheckboxTypes: Filters.byKeys('INVERTED')
-})
-export const { useModalsStore, useIsModalAtTop, ...ModalActions } = mangled(ModalActionsModule, {
-  openModal: Filters.byStrings('onCloseRequest', 'onCloseCallback', 'stackingBehavior'),
-  closeModal: Filters.byStrings('onCloseCallback()', 'filter'),
-  closeAllModals: Filters.byStrings('.getState();for'),
-  useModalsStore: Filters.byKeys('setState'),
-  useIsModalAtTop: Filters.byStrings('popout:', '.at(-1)')
-})
-export const { Tooltip } = mangled(TooltipModule, {
-  Tooltip: Filters.byPrototypeKeys('renderTooltip')
-})
-export const { showToast, useToastStore } = mangled(ToastStoreModule, {
-  showToast: Filters.byStrings('currentToastMap.has'),
-  useToastStore: Filters.byKeys('setState')
-})
 export const popToastKeyed = keyed(ToastStoreModule, Filters.byStrings('.delete'))
 export const popToast = unkeyedFn(popToastKeyed)
-export const { Toast, createToast } = mangled(ToastModule, {
-  Toast: Filters.byKeys('type'),
-  createToast: Filters.byStrings('type', 'position')
-})
 export const AppViewKeyed = keyed(AppViewRawModule?.declarations, Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'))
-export const Router = mangled(RouterModule, {
-  Router: m => m?.computeRootMatch,
-  Route: m => Filters.byStrings('props.computedMatch', 'props.path')(m?.prototype?.render),
-  Switch: m => Filters.byStrings('props.location', 'cloneElement')(m?.prototype?.render),
-  matchPath: Filters.byStrings('strict', 'isExact'),
-  useLocation: Filters.byStrings(').location'),
-  useParams: Filters.byStrings('.match', '.params')
-})
 export const TransitionGroupContext = Transition?.contextType
 export const ContextMenuKeyed = keyed(ContextMenuModule, Filters.byStrings('getContextMenu', 'isOpen'))
 export const MenuSubmenuItemKeyed = keyed(MenuSubmenuItemRawModule?.declarations, Filters.byStrings('subMenuClassName', 'submenuPaddingContainer'))
 export const MenuSubmenuListItemKeyed = keyed(MenuSubmenuListItemRawModule?.declarations, Filters.byStrings('menuSubmenuProps', 'listClassName', 'submenuPaddingContainer'))
 export const PopoutCSSAnimatorKeyed = keyed(PopoutCSSAnimatorRawModule?.declarations, m => Filters.byKeys('TRANSLATE', 'SCALE')(m?.Types))
-export const { AppLayer, appLayerContext } = mangled(AppLayerModule, {
-  AppLayer: Filters.byDisplayName('AppLayer'),
-  appLayerContext: m => m?.Provider
-})
 export const ModalsKeyed = keyed(ModalsModule, Filters.byStrings('modalKey', '"instant"'))
 export const LayersKeyed = keyed(LayersRawModule?.declarations, Filters.byStrings('getLayers', 'hasFullScreenLayer'))
 export const GuildChannelListKeyed = keyed(GuildChannelListModule, Filters.byStrings('getGuild', 'guildId'))
 export const ChatSidebarKeyed = keyed(ChatSidebarModule, Filters.byStrings('postSidebarWidth'))
-export const LayerActions = mangled(LayerActionsModule, {
-  pushLayer: Filters.byStrings('"LAYER_PUSH"'),
-  popLayer: Filters.byStrings('"LAYER_POP"'),
-  popAllLayers: Filters.byStrings('"LAYER_POP_ALL"')
-})
-export const { Alert, AlertTypes } = mangled(AlertModule, {
-  Alert: Filters.byStrings('messageType'),
-  AlertTypes: Filters.byKeys('WARNING', 'ERROR')
-})
-export const { ModalRoot, ModalSize, ModalHeader, ModalFooter, ModalContent } = mangled(ModalModule, {
-  ModalRoot: Filters.byStrings('MODAL_ROOT_LEGACY'),
-  ModalSize: Filters.byKeys('MEDIUM', 'LARGE'),
-  ModalHeader: Filters.byStrings('headerIdIsManaged', 'HORIZONTAL'),
-  ModalFooter: Filters.byStrings('separator', 'HORIZONTAL_REVERSE'),
-  ModalContent: Filters.byStrings('scrollbarType')
-})
 export const MenuItemKeyed = keyed(MenuItemRawModule?.declarations, Filters.byStrings('dontCloseOnActionIfHoldingShiftKey', 'data-menu-item'))
 export const ChannelItemKeyed = keyed(ChannelItemRawModule?.declarations, Filters.byStrings('shouldIndicateNewChannel', 'MANAGE_CHANNELS'))
 export const VoiceChannelItemKeyed = keyed(VoiceChannelItemRawModule?.declarations, Filters.byStrings('PLAYING', 'MANAGE_CHANNELS'))
 export const StageVoiceChannelItemKeyed = keyed(StageVoiceChannelItemRawModule?.declarations, Filters.byStrings('getStageInstanceByChannel', 'MANAGE_CHANNELS'))
-export const { AppContext } = mangled(AppContextModule, { AppContext: m => m?.Provider })
 export const useExpressionPickerStoreKeyed = keyed(ExpressionPickerStoreModule, Filters.byKeys('getState', 'setState'))
 export const ProfileEffectsKeyed = keyed(ProfileEffectsModule, Filters.byStrings('profileEffect', 'animationType', 'useReducedMotion'))
 export const EmojiKeyed = keyed(EmojiModule, Filters.byStrings('emojiId', 'emojiName', 'animated', 'shouldAnimate'))
 export const useIsVisibleKeyed = keyed(UseIsVisibleModule, Filters.byStrings('isIntersecting', 'arguments.length'))
 export const useIsVisible = unkeyedFn(useIsVisibleKeyed)
 export const useRootElementContextKeyed = keyed(RootElementContextModule, Filters.byStrings('useRootElementContext'))
-export const { useListItem, useListContainerProps, ListNavigatorProvider } = mangled(ListNavigatorModule, {
-  useListItem: Filters.byStrings('"listitem"'),
-  useListContainerProps: Filters.byStrings('"list"', 'useContext'),
-  ListNavigatorProvider: Filters.byStrings('containerProps', '.Provider')
-})
 export const ListNavigatorContainer = ({ children }) => children(useListContainerProps())
-export const { useFocusLock, FocusLock } = mangled(FocusLockModule, {
-  useFocusLock: Filters.byStrings('disableReturnRef'),
-  FocusLock: Filters.byStrings('children', 'containerRef')
-})
 export const Mana = {
   ModalRootKeyed: keyed(ManaModalRootModule, Filters.byStrings('MODAL', 'padding-size-')),
   get ModalRoot () { return unkeyed(this.ModalRootKeyed) },
