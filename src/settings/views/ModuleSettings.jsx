@@ -1,4 +1,4 @@
-import { Paginator, Text } from '@discord/modules'
+import { /*Paginator,*/ Text } from '@discord/modules'
 import PackManager from '@/modules/PackManager'
 import useModule from '@/hooks/useModule'
 import { css } from '@style'
@@ -127,13 +127,13 @@ function ModuleSettings ({ moduleId, refToScroller, pageSize = 15 }) {
                     onSelect={onSelect}
                     refToScroller={refToScroller}
                   />
-                  <Paginator
+                  {/*<Paginator
                     pageSize={pageSize}
                     totalCount={animations.length}
                     maxVisiblePages={5}
                     currentPage={page}
                     onPageChange={setPage}
-                  />
+                  />*/}
                 </div>
               )}
             </>

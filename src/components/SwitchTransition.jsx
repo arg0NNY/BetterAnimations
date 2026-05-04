@@ -195,9 +195,9 @@ class SwitchTransition extends Component {
     }
 
     return (
-      <TransitionGroupContext value={{ isMounting: !this.appeared }}>
+      <TransitionGroupContext.Provider value={{ isMounting: !this.appeared }}>
         {component}
-      </TransitionGroupContext>
+      </TransitionGroupContext.Provider>
     )
   }
 }

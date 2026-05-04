@@ -18,7 +18,7 @@ export const [
   ReferencePositionLayer,
   BadgeModule,
   SearchBar,
-  Paginator,
+  // Paginator,
   Spinner,
   Popout,
   Routes,
@@ -39,8 +39,7 @@ export const [
   GuildIcon,
   Timestamp,
   getThemeClass,
-  CSSTransition,
-  TransitionGroup,
+  { Transition, CSSTransition, TransitionGroup } = {},
   ChannelMessageList,
   ChannelView,
   MessageDivider,
@@ -50,7 +49,6 @@ export const [
   GatewaySocket,
   { Anchor } = {},
   Dispatcher,
-  Transition,
   Flux,
   App,
   Stack,
@@ -74,29 +72,27 @@ export const [
   TooltipModule,
   ToastStoreModule,
   ToastModule,
-  AppViewModule,
+  AppViewRawModule,
   RouterModule,
   ContextMenuModule,
-  MenuSubmenuItemModule,
-  MenuSubmenuListItemModule,
-  PopoutCSSAnimatorModule,
+  MenuSubmenuItemRawModule,
+  MenuSubmenuListItemRawModule,
+  PopoutCSSAnimatorRawModule,
   AppLayerModule,
   ModalsModule,
-  LayersModule,
+  LayersRawModule,
   GuildChannelListModule,
   ChannelSectionStore,
   ChatSidebarModule,
-  VoiceChannelViewModule,
-  CallChatSidebarModule,
-  SelectModule,
+  { SingleSelect } = {},
   LayerActionsModule,
   AlertModule,
   UserSettings,
   ModalModule,
-  MenuItemModule,
-  ChannelItemModule,
-  VoiceChannelItemModule,
-  StageVoiceChannelItemModule,
+  MenuItemRawModule,
+  ChannelItemRawModule,
+  VoiceChannelItemRawModule,
+  StageVoiceChannelItemRawModule,
   AppContextModule,
   ExpressionPickerStoreModule,
   ProfileEffectsModule,
@@ -140,8 +136,8 @@ export const [
   },
   // SwitchIndicator
   {
-    filter: Filters.byStrings('checked', 'SWITCH_BACKGROUND_DEFAULT'),
-    searchExports: true
+    filter: Filters.bySource('checked', 'SWITCH_BACKGROUND_DEFAULT'),
+    declarationFilter: Filters.byStrings('checked', 'SWITCH_BACKGROUND_DEFAULT')
   },
   // CheckboxModule
   {
@@ -181,10 +177,10 @@ export const [
     searchExports: true
   },
   // Paginator
-  {
-    filter: Filters.byStrings('disablePaginationGap', 'hasMultiplePages'),
-    searchExports: true
-  },
+  // {
+  //   filter: Filters.byStrings('disablePaginationGap', 'hasMultiplePages'),
+  //   searchExports: true
+  // },
   // Spinner
   {
     filter: m => Filters.byKeys('WANDERING_CUBES')(m?.Type),
@@ -242,8 +238,8 @@ export const [
   },
   // AppPanels
   {
-    filter: m => Filters.byStrings('panels', 'ACCOUNT_PANEL')(m?.type),
-    searchExports: true
+    filter: Filters.bySource('panels', 'ACCOUNT_PANEL'),
+    declarationFilter: m => Filters.byStrings('panels', 'ACCOUNT_PANEL')(m?.type)
   },
   // GuildActionRow
   {
@@ -252,8 +248,8 @@ export const [
   },
   // Message
   {
-    filter: m => Filters.byStrings('must not be a thread starter message')(m?.type),
-    searchExports: true
+    filter: Filters.bySource('must not be a thread starter message'),
+    declarationFilter: m => Filters.byStrings('must not be a thread starter message')(m?.type)
   },
   // ChannelTextArea
   {
@@ -284,14 +280,15 @@ export const [
     filter: Filters.byStrings('theme-', 'images-'),
     searchExports: true
   },
-  // CSSTransition
+  // ReactTransitionGroup
   {
-    filter: m => m?.defaultProps?.classNames === ''
-  },
-  // TransitionGroup
-  {
-    filter: m => Filters.byPrototypeKeys('handleExited')(m) && !m.childContextTypes,
-    searchExports: true
+    filter: Filters.bySource('performEnter', 'setNextCallback'),
+    map: {
+      Transition: Filters.byKeys('ENTERING', 'EXITING'),
+      CSSTransition: Filters.byPrototypeKeys('addClass'),
+      TransitionGroup: Filters.byPrototypeKeys('handleExited')
+    },
+    mapDeclarations: true
   },
   // ChannelMessageList
   {
@@ -322,8 +319,8 @@ export const [
   },
   // GatewaySocket
   {
-    filter: m => m?.dispatcher?.scheduler,
-    searchExports: true
+    filter: Filters.bySource('[CONNECTED]', 'gateway'),
+    declarationFilter: m => m?.dispatcher?.scheduler
   },
   // Anchor
   {
@@ -333,10 +330,6 @@ export const [
   {
     filter: Filters.byKeys('dispatch', 'subscribe'),
     searchExports: true
-  },
-  // Transition
-  {
-    filter: Filters.byKeys('ENTERING', 'EXITING', 'contextType')
   },
   // Flux
   {
@@ -357,7 +350,8 @@ export const [
   },
   // InviteEmbed
   {
-    filter: Filters.byStrings('Invite Button Embed', 'getInvite')
+    filter: Filters.bySource('Invite Button Embed', 'getInvite'),
+    declarationFilter: Filters.byStrings('Invite Button Embed', 'getInvite')
   },
   // InviteActions
   {
@@ -430,11 +424,12 @@ export const [
   },
   // ToastModule
   {
-    filter: Filters.bySource('message', 'position', 'STATUS_POSITIVE')
+    filter: Filters.bySource('message', '"data-type"', 'STATUS_POSITIVE', 'CLIP')
   },
-  // AppViewModule
+  // AppViewRawModule
   {
-    filter: Filters.bySource('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY', 'data-fullscreen')
+    filter: Filters.bySource('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY', 'data-fullscreen'),
+    raw: true
   },
   // RouterModule
   {
@@ -444,17 +439,20 @@ export const [
   {
     filter: Filters.bySource('getContextMenu', 'renderWindow')
   },
-  // MenuSubmenuItemModule
+  // MenuSubmenuItemRawModule
   {
-    filter: Filters.bySource('subMenuClassName', 'submenuPaddingContainer')
+    filter: Filters.bySource('subMenuClassName', 'submenuPaddingContainer'),
+    raw: true
   },
-  // MenuSubmenuListItemModule
+  // MenuSubmenuListItemRawModule
   {
-    filter: Filters.bySource('menuSubmenuProps', 'listClassName', 'submenuPaddingContainer')
+    filter: Filters.bySource('menuSubmenuProps', 'listClassName', 'submenuPaddingContainer'),
+    raw: true
   },
-  // PopoutCSSAnimatorModule
+  // PopoutCSSAnimatorRawModule
   {
-    filter: Filters.bySource('data-popout-animating', 'TRANSLATE')
+    filter: Filters.bySource('data-popout-animating', 'TRANSLATE'),
+    raw: true
   },
   // AppLayerModule
   {
@@ -464,9 +462,10 @@ export const [
   {
     filter: Filters.bySource('modalKey', '"instant"')
   },
-  // LayersModule
+  // LayersRawModule
   {
-    filter: Filters.bySource('getLayers', 'hasFullScreenLayer')
+    filter: Filters.bySource('getLayers', 'hasFullScreenLayer'),
+    raw: true
   },
   // GuildChannelListModule
   {
@@ -480,17 +479,13 @@ export const [
   {
     filter: Filters.bySource('sidebarType', 'postSidebarWidth')
   },
-  // VoiceChannelViewModule
-  {
-    filter: Filters.bySource('CHANNEL_CALL_POPOUT', 'renderExternalHeader')
-  },
-  // CallChatSidebarModule
-  {
-    filter: Filters.bySource('CallChatSidebar', 'chatInputType')
-  },
   // SelectModule
+  // TODO: Migrate to Mana Select
   {
-    filter: Filters.bySource('select', 'newValues')
+    filter: Filters.bySource('select', 'newValues'),
+    map: {
+      SingleSelect: Filters.byStrings('"single"', 'clear:()=>')
+    }
   },
   // LayerActionsModule
   {
@@ -508,21 +503,25 @@ export const [
   {
     filter: Filters.bySource('MODAL_ROOT_LEGACY', 'headerId')
   },
-  // MenuItemModule
+  // MenuItemRawModule
   {
-    filter: Filters.bySource('dontCloseOnActionIfHoldingShiftKey', 'data-menu-item')
+    filter: Filters.bySource('dontCloseOnActionIfHoldingShiftKey', 'data-menu-item'),
+    raw: true
   },
-  // ChannelItemModule
+  // ChannelItemRawModule
   {
-    filter: Filters.bySource('shouldIndicateNewChannel', 'MANAGE_CHANNELS')
+    filter: Filters.bySource('shouldIndicateNewChannel', 'MANAGE_CHANNELS'),
+    raw: true
   },
-  // VoiceChannelItemModule
+  // VoiceChannelItemRawModule
   {
-    filter: Filters.bySource('isFavoriteSuggestion', 'PLAYING', 'MANAGE_CHANNELS')
+    filter: Filters.bySource('isFavoriteSuggestion', 'PLAYING', 'MANAGE_CHANNELS'),
+    raw: true
   },
-  // StageVoiceChannelItemModule
+  // StageVoiceChannelItemRawModule
   {
-    filter: Filters.bySource('getStageInstanceByChannel', 'isFavoriteSuggestion', 'MANAGE_CHANNELS')
+    filter: Filters.bySource('getStageInstanceByChannel', 'isFavoriteSuggestion', 'MANAGE_CHANNELS'),
+    raw: true
   },
   // AppContextModule
   {
@@ -534,7 +533,7 @@ export const [
   },
   // ProfileEffectsModule
   {
-    filter: Filters.bySource('profileEffectConfig', 'useReducedMotion')
+    filter: Filters.bySource('profileEffect', 'animationType', 'useReducedMotion')
   },
   // EmojiModule
   {
@@ -566,8 +565,8 @@ export const [
   },
   // ChannelThreadList
   {
-    filter: m => Filters.byStrings('sortedThreadIds', '"group"')(m?.type),
-    searchExports: true
+    filter: Filters.bySource('sortedThreadIds', '"group"'),
+    declarationFilter: m => Filters.byStrings('sortedThreadIds', '"group"')(m?.type)
   },
   // matchSorter
   {
@@ -630,7 +629,7 @@ export const { Toast, createToast } = mangled(ToastModule, {
   Toast: Filters.byKeys('type'),
   createToast: Filters.byStrings('type', 'position')
 })
-export const AppViewKeyed = keyed(AppViewModule, Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'))
+export const AppViewKeyed = keyed(AppViewRawModule?.declarations, Filters.byStrings('CHANNEL_THREAD_VIEW', 'GUILD_DISCOVERY'))
 export const Router = mangled(RouterModule, {
   Router: m => m?.computeRootMatch,
   Route: m => Filters.byStrings('props.computedMatch', 'props.path')(m?.prototype?.render),
@@ -639,24 +638,19 @@ export const Router = mangled(RouterModule, {
   useLocation: Filters.byStrings(').location'),
   useParams: Filters.byStrings('.match', '.params')
 })
-export const TransitionGroupContext = Transition && new Transition({ children: createElement('div') }).render().type
+export const TransitionGroupContext = Transition?.contextType
 export const ContextMenuKeyed = keyed(ContextMenuModule, Filters.byStrings('getContextMenu', 'isOpen'))
-export const MenuSubmenuItemKeyed = keyed(MenuSubmenuItemModule, Filters.byStrings('subMenuClassName', 'submenuPaddingContainer'))
-export const MenuSubmenuListItemKeyed = keyed(MenuSubmenuListItemModule, Filters.byStrings('menuSubmenuProps', 'listClassName', 'submenuPaddingContainer'))
-export const PopoutCSSAnimatorKeyed = keyed(PopoutCSSAnimatorModule, m => Filters.byKeys('TRANSLATE', 'SCALE')(m?.Types))
+export const MenuSubmenuItemKeyed = keyed(MenuSubmenuItemRawModule?.declarations, Filters.byStrings('subMenuClassName', 'submenuPaddingContainer'))
+export const MenuSubmenuListItemKeyed = keyed(MenuSubmenuListItemRawModule?.declarations, Filters.byStrings('menuSubmenuProps', 'listClassName', 'submenuPaddingContainer'))
+export const PopoutCSSAnimatorKeyed = keyed(PopoutCSSAnimatorRawModule?.declarations, m => Filters.byKeys('TRANSLATE', 'SCALE')(m?.Types))
 export const { AppLayer, appLayerContext } = mangled(AppLayerModule, {
   AppLayer: Filters.byDisplayName('AppLayer'),
   appLayerContext: m => m?.Provider
 })
 export const ModalsKeyed = keyed(ModalsModule, Filters.byStrings('modalKey', '"instant"'))
-export const LayersKeyed = keyed(LayersModule, Filters.byStrings('hasFullScreenLayer'))
+export const LayersKeyed = keyed(LayersRawModule?.declarations, Filters.byStrings('getLayers', 'hasFullScreenLayer'))
 export const GuildChannelListKeyed = keyed(GuildChannelListModule, Filters.byStrings('getGuild', 'guildId'))
 export const ChatSidebarKeyed = keyed(ChatSidebarModule, Filters.byStrings('postSidebarWidth'))
-export const VoiceChannelViewKeyed = keyed(VoiceChannelViewModule, () => true)
-export const CallChatSidebarKeyed = keyed(CallChatSidebarModule, Filters.byStrings('CallChatSidebar', 'chatInputType'))
-export const { SingleSelect } = mangled(SelectModule, {
-  SingleSelect: m => Filters.byStrings('value', 'onChange')(m) && !Filters.byStrings('isSelected')(m)
-})
 export const LayerActions = mangled(LayerActionsModule, {
   pushLayer: Filters.byStrings('"LAYER_PUSH"'),
   popLayer: Filters.byStrings('"LAYER_POP"'),
@@ -673,13 +667,13 @@ export const { ModalRoot, ModalSize, ModalHeader, ModalFooter, ModalContent } = 
   ModalFooter: Filters.byStrings('separator', 'HORIZONTAL_REVERSE'),
   ModalContent: Filters.byStrings('scrollbarType')
 })
-export const MenuItemKeyed = keyed(MenuItemModule, Filters.byStrings('dontCloseOnActionIfHoldingShiftKey', 'data-menu-item'))
-export const ChannelItemKeyed = keyed(ChannelItemModule, Filters.byStrings('shouldIndicateNewChannel', 'MANAGE_CHANNELS'))
-export const VoiceChannelItemKeyed = keyed(VoiceChannelItemModule, Filters.byStrings('PLAYING', 'MANAGE_CHANNELS'))
-export const StageVoiceChannelItemKeyed = keyed(StageVoiceChannelItemModule, Filters.byStrings('getStageInstanceByChannel', 'MANAGE_CHANNELS'))
+export const MenuItemKeyed = keyed(MenuItemRawModule?.declarations, Filters.byStrings('dontCloseOnActionIfHoldingShiftKey', 'data-menu-item'))
+export const ChannelItemKeyed = keyed(ChannelItemRawModule?.declarations, Filters.byStrings('shouldIndicateNewChannel', 'MANAGE_CHANNELS'))
+export const VoiceChannelItemKeyed = keyed(VoiceChannelItemRawModule?.declarations, Filters.byStrings('PLAYING', 'MANAGE_CHANNELS'))
+export const StageVoiceChannelItemKeyed = keyed(StageVoiceChannelItemRawModule?.declarations, Filters.byStrings('getStageInstanceByChannel', 'MANAGE_CHANNELS'))
 export const { AppContext } = mangled(AppContextModule, { AppContext: m => m?.Provider })
 export const useExpressionPickerStoreKeyed = keyed(ExpressionPickerStoreModule, Filters.byKeys('getState', 'setState'))
-export const ProfileEffectsKeyed = keyed(ProfileEffectsModule, Filters.byStrings('profileEffectConfig', 'useReducedMotion'))
+export const ProfileEffectsKeyed = keyed(ProfileEffectsModule, Filters.byStrings('profileEffect', 'animationType', 'useReducedMotion'))
 export const EmojiKeyed = keyed(EmojiModule, Filters.byStrings('emojiId', 'emojiName', 'animated', 'shouldAnimate'))
 export const useIsVisibleKeyed = keyed(UseIsVisibleModule, Filters.byStrings('isIntersecting', 'arguments.length'))
 export const useIsVisible = unkeyedFn(useIsVisibleKeyed)
@@ -707,9 +701,14 @@ export const StandardSidebarViewWrapper = Webpack.waitForModule(Filters.byProtot
 export const StandardSidebarViewModule = Webpack.waitForModule(Filters.bySource('standardSidebarView', 'section'))
 export const StandardSidebarViewKeyed = lazyKeyed(StandardSidebarViewModule, Filters.byStrings('standardSidebarView', 'section'))
 export const SettingsNotice = Webpack.waitForModule(Filters.byStrings('onSaveText', 'EMPHASIZE_NOTICE'))
-export const MembersModViewSidebarModule = Webpack.waitForModule(Filters.bySource('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))
-export const MembersModViewSidebarKeyed = lazyKeyed(MembersModViewSidebarModule, Filters.byStrings('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))
-export const SettingsContent = Webpack.waitForModule(m => Filters.byStrings('onClose', '"showNavigationMobile"')(m?.type))
+export const MembersModViewSidebarRawModule = Webpack.waitForModule(Filters.bySource('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'), { raw: true })
+export const MembersModViewSidebarKeyed = lazyKeyed(MembersModViewSidebarRawModule.then(m => m?.declarations), Filters.byStrings('MEMBER_SAFETY_PAGE', 'closeGuildSidebar'))
+export const SettingsContentRawModule = Webpack.waitForModule(Filters.bySource('onClose', '"showNavigationMobile"'), { raw: true })
+export const SettingsContent = SettingsContentRawModule.then(m => Object.values(m?.declarations ?? {}).find(m => Filters.byStrings('onClose', '"showNavigationMobile"')(m?.type)))
 export const SettingsNodeType = { ROOT: 0, SECTION: 1, SIDEBAR_ITEM: 2, PANEL: 3, PANE: 4 }
-export const LayerModalModule = Webpack.waitForModule(Filters.bySource('MODAL', 'headingId', 'theme'))
-export const LayerModalKeyed = lazyKeyed(LayerModalModule, Filters.byStrings('MODAL', 'headingId', 'theme'))
+export const LayerModalRawModule = Webpack.waitForModule(Filters.bySource('MODAL', 'headingId', 'theme', '"dialog"'), { raw: true })
+export const LayerModalKeyed = lazyKeyed(LayerModalRawModule.then(m => m?.declarations), Filters.byStrings('MODAL', 'headingId', 'theme', '"dialog"'))
+export const CallChatSidebarModule = Webpack.waitForModule(Filters.bySource('CallChatSidebar', 'chatInputType'))
+export const CallChatSidebarKeyed = lazyKeyed(CallChatSidebarModule, Filters.byStrings('CallChatSidebar', 'chatInputType'))
+export const VoiceChannelViewModule = Webpack.waitForModule(Filters.bySource('CHANNEL_CALL_POPOUT', 'renderExternalHeader'))
+export const VoiceChannelViewKeyed = lazyKeyed(VoiceChannelViewModule, Filters.byStrings('CHANNEL_CALL'))

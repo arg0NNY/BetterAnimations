@@ -159,10 +159,12 @@ export const verificationIssueResolveMethods = Object.fromEntries(
             <p>
               Only proceed if you know what you're doing or if you are the author of this pack.
             </p>
-            <Alert messageType={AlertTypes.WARNING}>
-              Note that if the contents of this pack change, {config.name} will not ask for confirmation
-              and will automatically grant full access to this pack if you choose to allow it all the time.
-            </Alert>
+            <p>
+              <Alert messageType={AlertTypes.WARNING}>
+                Note that if the contents of this pack change, {config.name} will not ask for confirmation
+                and will automatically grant full access to this pack if you choose to allow it all the time.
+              </Alert>
+            </p>
           </>
         ),
         confirmText: 'Allow all the time anyway'

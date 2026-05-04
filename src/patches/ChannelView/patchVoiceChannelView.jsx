@@ -5,37 +5,39 @@ import ensureOnce from '@utils/ensureOnce'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import Core from '@/modules/Core'
-import DiscordClasses from '@discord/classes'
 import AnimeTransition from '@components/AnimeTransition'
 import { MainWindowOnly } from '@/hooks/useWindow'
 import { ErrorBoundary } from '@error/boundary'
+import cloneDeep from 'lodash-es/cloneDeep'
 
-function patchCallChatSidebar () {
-  Patcher.after(ModuleKey.ThreadSidebar, ...CallChatSidebarKeyed, (self, [props], value) => {
+async function patchCallChatSidebar () {
+  Patcher.after(ModuleKey.ThreadSidebar, ...await CallChatSidebarKeyed, (self, [props], value) => {
     value.props.ref = props.ref
   })
 }
 
-function patchVoiceChannelView () {
-  const once = ensureOnce()
+async function patchVoiceChannelView () {
+  void patchCallChatSidebar()
 
-  Patcher.after(ModuleKey.ThreadSidebar, ...VoiceChannelViewKeyed, (self, args, value) => {
+  const once = ensureOnce()
+  Patcher.after(ModuleKey.ThreadSidebar, ...await VoiceChannelViewKeyed, (self, args, value) => {
     const channelView = findInReactTree(value, m => m?.props?.channel)
-    // console.log(value, channelView)
     if (!channelView) return
 
     once(() => {
       injectModule(channelView.type, ModuleKey.ThreadSidebar)
-      Patcher.after(ModuleKey.ThreadSidebar, channelView.type?.prototype, 'render', (self, args, value) => {
+      Patcher.after(ModuleKey.ThreadSidebar, channelView.type?.prototype, 'render', (self, args, originalValue) => {
         const module = Core.getModule(ModuleKey.ThreadSidebar)
         if (!module.isEnabled()) return
 
-        const chatWrapper = findInReactTree(value, byClassName(DiscordClasses.VoiceChannelView.channelChatWrapper))
+        const value = cloneDeep(originalValue)
+
+        const chatWrapper = findInReactTree(value, byClassName('channelChatWrapper'))
         if (!chatWrapper) return
 
         return (
-          <ErrorBoundary module={module} fallback={value}>
-            <MainWindowOnly fallback={value}>
+          <ErrorBoundary module={module} fallback={originalValue}>
+            <MainWindowOnly fallback={originalValue}>
               {() => {
                 chatWrapper.props.children = (
                   <TransitionGroup component={null}>
@@ -58,8 +60,6 @@ function patchVoiceChannelView () {
       })
     })
   })
-
-  patchCallChatSidebar()
 }
 
 export default patchVoiceChannelView

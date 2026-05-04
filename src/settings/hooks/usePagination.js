@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react'
 
 function usePagination (allItems, pageSize, dependencies = []) {
+  return {
+    page: 1,
+    setPage: () => {},
+    offset: 0,
+    items: allItems
+  }
+
   const [page, setPage] = useState(1)
   const offset = (page - 1) * pageSize
   const items = allItems.slice(offset, offset + pageSize)

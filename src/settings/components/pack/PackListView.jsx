@@ -1,4 +1,4 @@
-import { Button, Paginator, SearchBar, Spinner, Text } from '@discord/modules'
+import { Button, /*Paginator,*/ SearchBar, Spinner, Text } from '@discord/modules'
 import PackCard from '@/settings/components/pack/PackCard'
 import { css } from '@style'
 import NoPacksPlaceholder from '@/settings/components/NoPacksPlaceholder'
@@ -140,13 +140,13 @@ function PackListView ({
                   ]}
                 />
               )}
-              <Paginator
+              {/*<Paginator
                 pageSize={pageSize}
                 totalCount={filteredItems.length}
                 maxVisiblePages={5}
                 currentPage={page}
                 onPageChange={setPage}
-              />
+              />*/}
             </>
           ) : empty
         )
