@@ -11,6 +11,7 @@ import AnimationError from '@error/structs/AnimationError'
 import { UI } from '@/BdApi'
 import meta from '@/meta'
 import IconBrand from '@/components/icons/IconBrand'
+import { isDev } from '@/env'
 
 const ErrorManagerToastSymbol = Symbol('ErrorManagerToast')
 const ERROR_MANAGER_NOTIFICATION_ID = 'BA__errorManagerNotification'
@@ -33,7 +34,7 @@ export default new class ErrorManager extends BaseErrorManager {
   }
 
   shouldSuppress (error) {
-    if (error.silent && import.meta.env.MODE !== 'development') return true
+    if (error.silent && !isDev) return true
 
     switch (Config.current.general.suppressErrors) {
       case SuppressErrors.All: return true

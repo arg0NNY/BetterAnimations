@@ -1,6 +1,7 @@
 import BaseError from '@error/structs/BaseError'
 import objectInspect from 'object-inspect'
 import { sanitizeContext } from '@utils/animations'
+import { isDev } from '@/env'
 
 export default class AnimationError extends BaseError {
   constructor (animation, message, { type, context, stage, ...options } = {}) {
@@ -9,7 +10,7 @@ export default class AnimationError extends BaseError {
       `Type: ${type}`
     ]
 
-    if (import.meta.env.MODE === 'development' && stage)
+    if (isDev && stage)
       meta.push(`Stage: ${stage}`)
 
     if (context)

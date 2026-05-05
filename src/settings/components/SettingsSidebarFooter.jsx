@@ -4,10 +4,11 @@ import meta from '@/meta'
 import { useMemo } from 'react'
 import SocialLinks from '@/components/SocialLinks'
 import { bdVersion } from '@/BdApi'
+import { isDev } from '@/env'
 
 function SystemInfo () {
   const data = useMemo(() => [
-    `${meta.name} ${meta.version}` + (import.meta.env.MODE === 'development' ? ' (Dev Bundle)' : ''),
+    `${meta.name} ${meta.version}` + (isDev ? ' (Dev Bundle)' : ''),
     `BetterDiscord ${bdVersion}`
   ], [])
 

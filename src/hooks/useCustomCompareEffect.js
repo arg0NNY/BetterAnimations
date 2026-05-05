@@ -1,9 +1,10 @@
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import useUpdate from '@shared/hooks/useUpdate'
 import Logger from '@logger'
+import { isDev } from '@/env'
 
 function useCustomCompareEffect (effect, deps, depsEqual) {
-  if (import.meta.env.MODE === 'development') {
+  if (isDev) {
     if (!(Array.isArray(deps)) || !deps.length) {
       Logger.warn(
         'useCustomCompareEffect',

@@ -3,6 +3,7 @@ import { snapshotContext } from '@utils/animations'
 import { toPath, visualizeAddonPath } from '@utils/json'
 import { capitalize } from '@utils/text'
 import { sanitizeInjectable } from '@animation/injectable/utils'
+import { isDev } from '@/env'
 
 export default class Debug {
   constructor ({ animation, animationType }) {
@@ -18,7 +19,7 @@ export default class Debug {
     if (this.animation)
       return [true, this.animationType].includes(this.animation.debug)
 
-    return import.meta.env.MODE === 'development'
+    return isDev
   }
 
   __log (type, message, ...data) {

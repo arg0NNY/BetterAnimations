@@ -3,6 +3,7 @@ import { _Classes } from '@discord/classes'
 import Logger from '@logger'
 import ErrorManager from '@error/manager'
 import InternalError from '@error/structs/InternalError'
+import { isDev } from '@/env'
 
 class Validator {
   get name() { return 'Validator' }
@@ -47,7 +48,7 @@ class Validator {
     this.issues.set(name, issues)
     const message = this.buildMessage(name, issues)
 
-    if (import.meta.env.MODE === 'development') {
+    if (isDev) {
       ErrorManager.registerInternalError(
         new InternalError(`${this.name}: ${message}`)
       )

@@ -4,6 +4,7 @@ import { zodErrorBoundarySymbol } from '@animation/utils'
 import { JSAnimation, Timeline, Timer, WAAPIAnimation } from 'animejs'
 import Logger from '@logger'
 import deepMap, { baseStopPropagation } from '@animation/deepMap'
+import { isDev } from '@/env'
 
 export const injectableSymbol = Symbol('injectable')
 
@@ -54,7 +55,7 @@ export function sanitizeInjectable (injectable) {
       return value
     }, { stopPropagation })
   } catch (error) {
-    if (import.meta.env.MODE === 'development')
+    if (isDev)
       Logger.error('sanitizeInjectable', 'Failed to sanitize injectable:', error)
     return injectable
   }

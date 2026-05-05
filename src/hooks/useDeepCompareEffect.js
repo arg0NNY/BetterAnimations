@@ -1,9 +1,10 @@
 import isEqual from 'lodash-es/isEqual'
 import Logger from '@logger'
 import useCustomCompareEffect from '@/hooks/useCustomCompareEffect'
+import { isDev } from '@/env'
 
 function useDeepCompareEffect (effect, deps) {
-  if (import.meta.env.MODE === 'development') {
+  if (isDev) {
     if (!Array.isArray(deps) || !deps.length) {
       Logger.warn(
         'useDeepCompareEffect',

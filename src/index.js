@@ -46,8 +46,9 @@ import Changelog from '@/modules/Changelog'
 import PackData from '@/modules/PackData'
 import Events from '@enums/Events'
 import patchSettingsContent from '@/patches/Settings/patchSettingsContent'
+import { isDev } from '@/env'
 
-if (import.meta.env.MODE === 'development')
+if (isDev)
   window.BetterAnimations = {
     PackManager,
     Logger,
