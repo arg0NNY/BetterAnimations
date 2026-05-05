@@ -17,7 +17,7 @@ import {
 } from '@discord/modules'
 import IconButton from '@/settings/components/IconButton'
 import { css } from '@style'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import DownloadIcon from '@/components/icons/DownloadIcon'
 import TrashIcon from '@/components/icons/TrashIcon'
 import CheckIcon from '@/components/icons/CheckIcon'
@@ -328,7 +328,7 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
 
   return (
     <div
-      className={classNames(
+      className={clsx(
         'BA__packContent',
         `BA__packContent--${size}`,
         className
@@ -349,7 +349,7 @@ function PackContent ({ pack, className, size = 'sm', location = PackContentLoca
         />
         {pack.description && (
           <Text
-            className={classNames('BA__packDescription', DiscordClasses.Scroller.thin)}
+            className={clsx('BA__packDescription', DiscordClasses.Scroller.thin)}
             variant="text-sm/medium"
             color="text-muted"
             lineClamp={size === 'sm' && 2}

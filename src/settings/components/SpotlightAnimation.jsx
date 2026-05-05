@@ -1,6 +1,6 @@
 import { css } from '@style'
 import { memo, useCallback, useEffect, useState } from 'react'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 function toStyle (state) {
   const translate = Object.values(state.position).map(v => v + 'px').join(', ')
@@ -56,7 +56,7 @@ function SpotlightAnimation ({ count = 8, size = 400, areaSize = 200, speed = 50
 
   return (
     <div
-      className={classNames('BA__spotlightAnimation', className)}
+      className={clsx('BA__spotlightAnimation', className)}
       style={{
         width: areaSize + 'px',
         '--ba--spotlight-animation-size': size + 'px'

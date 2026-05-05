@@ -5,7 +5,7 @@ import findInReactTree, { byClassName } from '@/utils/findInReactTree'
 import DiscordClasses from '@discord/classes'
 import AnimeContainer from '@components/AnimeContainer'
 import { cloneElement } from 'react'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import { css } from '@style'
 import DiscordSelectors from '@discord/selectors'
 import useModule from '@/hooks/useModule'
@@ -19,7 +19,7 @@ function renderContainer (value) {
     <AnimeContainer
       id={ModuleKey.Modals}
       container={{
-        className: classNames(
+        className: clsx(
           'BA__manaModalContainer',
           container.props.className
         )

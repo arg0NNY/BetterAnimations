@@ -1,12 +1,12 @@
 import { css } from '@style'
 import Floating from '@preview/components/Floating'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import Position from '@enums/Position'
 
 function Tooltip ({ children, position = Position.Top, ...props }) {
   return (
     <Floating {...props}>
-      <div className={classNames(
+      <div className={clsx(
         'BAP__tooltip',
         `BAP__tooltip--${position}`
       )}>

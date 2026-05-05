@@ -3,7 +3,7 @@ import findInReactTree from '@/utils/findInReactTree'
 import { injectModule } from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
 import Core from '@/modules/Core'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 function patchModalItem (component) {
   injectModule(component, ModuleKey.Modals)
@@ -15,7 +15,7 @@ function patchModalItem (component) {
     if (!container) return
 
     container.props.ref = self.props.layerRef
-    container.props.className = classNames(container.props.className, {
+    container.props.className = clsx(container.props.className, {
       'BA__modal--hidden': self.props.hidden
     })
   })

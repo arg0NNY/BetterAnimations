@@ -1,6 +1,6 @@
 import { css } from '@style'
 import { Flex, Icon, Text } from '@preview/components'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import { use } from 'react'
 import PreviewContext from '@preview/context/PreviewContext'
 
@@ -17,7 +17,7 @@ function UserPanel ({ active = -1, actionRefs = use(PreviewContext).userPanelAct
             <div
               ref={ref => { actionRefs.current[i] = ref }}
               key={i}
-              className={classNames(
+              className={clsx(
                 'BAP__userPanelAction',
                 { 'BAP__userPanelAction--active': i === active }
               )}

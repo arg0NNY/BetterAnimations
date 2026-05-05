@@ -1,7 +1,7 @@
 import { css } from '@style'
 import { Flex, Icon, Text } from '@preview/components'
 import ChevronIcon from '@preview/components/icons/ChevronIcon'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import Channel from '@preview/components/main/Channel'
 import useModule from '@preview/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
@@ -26,7 +26,7 @@ function ChannelListItem ({ active = false, length }) {
 function ChannelListSection ({ active, length }) {
   return (
     <Flex
-      className={classNames({
+      className={clsx({
         'BAP__channelListSection': true,
         'BAP__channelListSection--active': active
       })}

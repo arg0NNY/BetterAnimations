@@ -21,7 +21,7 @@ import Events from '@enums/Events'
 import useDismissible, { isDismissed } from '@/hooks/useDismissible'
 import Config from '@/modules/Config'
 import { css } from '@style'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 function getDismissibleKey (theme) {
   return `userPanelMisplacedAlert:${theme.id}`
@@ -94,7 +94,7 @@ function patchAppPanels () {
     const module = useModule(ModuleKey.Servers, true)
     if (!isMainWindow || !module.isEnabled() || !module.settings.enhanceLayout) return
 
-    if (isModalShown) value.props.className = classNames(value.props.className, 'BA__appPanelsHighlight')
+    if (isModalShown) value.props.className = clsx(value.props.className, 'BA__appPanelsHighlight')
 
     value.props.onMouseEnter = event => {
       if (isCooldown) return

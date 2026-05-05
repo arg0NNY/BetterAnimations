@@ -11,7 +11,7 @@ import useDismissible from '@/hooks/useDismissible'
 import useElementBounding from '@/hooks/useElementBounding'
 import { createContext, use, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import HintTooltip from '@/settings/components/HintTooltip'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import { getRect } from '@utils/position'
 import { useIsAnimationExpanded } from '@/settings/stores/SettingsStore'
 import useConfig from '@/hooks/useConfig'
@@ -94,7 +94,7 @@ function useAnimationCardExpand ({ expanded, positionerRef, cardRef, popoutRef, 
     }))
     cardRef.current.style.removeProperty('width')
   }, [expanded])
-  
+
   return {
     update,
     positionerStyle: {
@@ -223,7 +223,7 @@ function AnimationCard ({
 
   return wrap(
     <div
-      className={classNames(
+      className={clsx(
         'BA__animationCardWrapper',
         {
           'BA__animationCard--expanded': expanded,

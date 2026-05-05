@@ -88,7 +88,7 @@ export default defineConfig({
       external: [
         'react',
         'react-dom',
-        'classnames',
+        'clsx',
         'fs',
         'path',
         'events',
@@ -112,7 +112,7 @@ export default defineConfig({
         globals: {
           react: 'BdApi.React',
           'react-dom': 'BdApi.ReactDOM',
-          classnames: 'BdApi.Utils.className',
+          clsx: 'BdApi.Utils.className',
           fs: 'require("fs")',
           path: 'require("path")',
           events: 'require("events")',

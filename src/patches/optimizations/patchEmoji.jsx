@@ -2,7 +2,7 @@ import Patcher from '@/modules/Patcher'
 import { use, useEffect, useMemo } from 'react'
 import { AnimeTransitionContext } from '@components/AnimeTransition'
 import { EmojiKeyed, Transition } from '@discord/modules'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import { css } from '@style'
 import useConfig from '@/hooks/useConfig'
 import InternalError from '@error/structs/InternalError'
@@ -39,7 +39,7 @@ function patchEmoji () {
       && (state === Transition.EXITED || isEmojiOverload(data.emoji, priority))
     ) return (
       <div
-        className={classNames('emoji', 'BA__emojiPlaceholder', className, {
+        className={clsx('emoji', 'BA__emojiPlaceholder', className, {
           jumboable: size === 'jumbo'
         })}
       />

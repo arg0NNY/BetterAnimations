@@ -10,7 +10,7 @@ import ModuleKey from '@enums/ModuleKey'
 import Core from '@/modules/Core'
 import { css } from '@style'
 import Mouse from '@shared/mouse'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import { ErrorBoundary } from '@error/boundary'
 import useTransitionCustomCondition from '@/hooks/useTransitionCustomCondition'
 import { UserPanelMisplacedAlertModal } from '@/patches/AppView/patchAppPanels'
@@ -31,7 +31,7 @@ function Layer ({ baseLayer, hidden, children }) {
 
   return (
     <div
-      className={classNames(
+      className={clsx(
         DiscordClasses.Layers.layer,
         {
           [DiscordClasses.Layers.baseLayer]: baseLayer,

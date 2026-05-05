@@ -2,7 +2,7 @@ import IconBrand, { IconBrandTypes } from '@/components/icons/IconBrand'
 import DiscordClasses from '@discord/classes'
 import { Text } from '@discord/modules'
 import { css } from '@style'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 export const ToastTypes = IconBrandTypes
 
@@ -11,7 +11,7 @@ function Toast ({ children, text, type = ToastTypes.INFO }) {
     <div className={DiscordClasses.Toast.toast}>
       <IconBrand
         type={type}
-        className={classNames({
+        className={clsx({
           [DiscordClasses.Toast.icon]: true,
           'BA__toastIcon': true,
           'BA__toastIconDefault': type === ToastTypes.DEFAULT

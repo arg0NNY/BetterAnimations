@@ -5,7 +5,7 @@ import ModuleContext from '@/settings/context/ModuleContext'
 import Preview, { PREVIEW_WIDTH } from '@preview'
 import Core from '@/modules/Core'
 import { moduleEffect } from '@/hooks/useModule'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import { useMovable } from '@/settings/components/animation/AnimationCard'
 import useResizeObserver from '@/hooks/useResizeObserver'
 import { AnimeTransitionContext } from '@components/AnimeTransition'
@@ -65,11 +65,11 @@ function AnimationPreview ({
   return (
     <div
       ref={containerRef}
-      className={classNames('BA__animationPreviewContainer', className)}
+      className={clsx('BA__animationPreviewContainer', className)}
       {...useMovable('preview')}
     >
       <Preview
-        className={classNames(
+        className={clsx(
           getThemeClass('darker'),
           'BA__animationPreview'
         )}
@@ -84,7 +84,7 @@ function AnimationPreview ({
         preferences={preferences}
         onError={onError}
       />
-      <div className={classNames(
+      <div className={clsx(
         'BA__animationPreviewOverlay',
         { 'BA__animationPreviewOverlay--hidden': (isActive || !title) && !error }
       )}>

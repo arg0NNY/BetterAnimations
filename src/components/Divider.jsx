@@ -1,10 +1,10 @@
 import { css } from '@style'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 function Divider ({ className, gap, ...props }) {
   return (
     <div
-      className={classNames('BA__divider', className)}
+      className={clsx('BA__divider', className)}
       style={{
         marginTop: gap,
         marginBottom: gap

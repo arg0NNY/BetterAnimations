@@ -1,10 +1,10 @@
 import { css } from '@style'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 function Skeleton ({ className, rounded = true, animated = true, width, height, style, ...props }) {
   return (
     <div
-      className={classNames({
+      className={clsx({
         'BA__skeleton': true,
         'BA__skeleton--rounded': rounded,
         'BA__skeleton--animated': animated

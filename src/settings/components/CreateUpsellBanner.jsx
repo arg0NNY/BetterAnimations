@@ -3,11 +3,11 @@ import { css } from '@style'
 import Documentation from '@shared/documentation'
 import PackPicture from '@/settings/components/pack/PackPicture'
 import BookIcon from '@/components/icons/BookIcon'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 function CreateUpsellBanner ({ className }) {
   return (
-    <div className={classNames('BA__createUpsellBanner', className)}>
+    <div className={clsx('BA__createUpsellBanner', className)}>
       <div className="BA__createUpsellArtContainer">
         <PackPicture className="BA__createUpsellArt" />
       </div>

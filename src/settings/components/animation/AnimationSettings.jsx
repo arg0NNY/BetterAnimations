@@ -11,7 +11,7 @@ import IconButton from '@/settings/components/IconButton'
 import AnimationSettingContainer from '@enums/AnimationSettingContainer'
 import { createElement } from 'react'
 import RedoIcon from '@/components/icons/RedoIcon'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 function SettingList ({ children, className = 'BA__animationSettingsList' }) {
   return (
@@ -26,7 +26,7 @@ function SettingList ({ children, className = 'BA__animationSettingsList' }) {
 
 function SettingGroup ({ children, className }) {
   return (
-    <SettingList className={classNames('BA__animationSettingsGroup', className)}>
+    <SettingList className={clsx('BA__animationSettingsGroup', className)}>
       {children}
     </SettingList>
   )

@@ -3,7 +3,7 @@ import Messages from '@shared/messages'
 import { Alert, AlertTypes, Button, ButtonGroup, Stack, Text } from '@discord/modules'
 import { useEffect } from 'react'
 import { css } from '@style'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 export function MigratorModal ({ migrator, ...props }) {
   const {
@@ -63,13 +63,13 @@ export function MigratorContainer ({ migrator, children, className, contentClass
 
   return (
     <div
-      className={classNames({
+      className={clsx({
         'BA__migratorContainer': true,
         'BA__migratorContainer--blocked': isActive
       }, className)}
     >
       {isActive && <MigratorAlert migrator={migrator} />}
-      <div className={classNames('BA__migratorContainerContent', contentClassName)}>
+      <div className={clsx('BA__migratorContainerContent', contentClassName)}>
         {children}
       </div>
     </div>

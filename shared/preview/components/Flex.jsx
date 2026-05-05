@@ -1,12 +1,12 @@
 import { css } from '@style'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import Block from './Block'
 
 function Flex ({ className, children, column, justify, align, wrap, center, gap, ...props }) {
   return (
     <Block
       {...props}
-      className={classNames('BAP__flex', className)}
+      className={clsx('BAP__flex', className)}
       style={{
         flexDirection: column && 'column',
         justifyContent: justify ?? (center && 'center'),

@@ -3,7 +3,7 @@ import { css } from '@style'
 import useModule from '@/hooks/useModule'
 import Config from '@/modules/Config'
 import Settings from '@/settings'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import InternalError from '@error/structs/InternalError'
 import { memo } from 'react'
 import useConfig from '@/hooks/useConfig'
@@ -96,7 +96,7 @@ function ErrorDetailsActions ({ error, className }) {
       >
         Suggested Actions
       </Text>
-      <div className={classNames('BA__errorDetailsActions', className)}>
+      <div className={clsx('BA__errorDetailsActions', className)}>
         {actions}
       </div>
     </Stack>

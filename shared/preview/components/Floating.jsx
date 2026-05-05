@@ -1,10 +1,10 @@
 import { css } from '@style'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 export function FloatingLayerContainer ({ className, children, ...props }) {
   return (
     <div
-      className={classNames('BAP__floatingLayerContainer', className)}
+      className={clsx('BAP__floatingLayerContainer', className)}
       {...props}
     >
       {children}
@@ -15,7 +15,7 @@ export function FloatingLayerContainer ({ className, children, ...props }) {
 export function FloatingLayer ({ className, children, ...props }) {
   return (
     <div
-      className={classNames('BAP__floatingLayer', className)}
+      className={clsx('BAP__floatingLayer', className)}
       {...props}
     >
       {children}
@@ -28,7 +28,7 @@ function Floating ({ ref, className, top, left, right, bottom, layer, children }
     <FloatingLayer {...layer}>
       <div
         ref={ref}
-        className={classNames('BAP__floating', className)}
+        className={clsx('BAP__floating', className)}
         style={{
           position: 'absolute',
           top,

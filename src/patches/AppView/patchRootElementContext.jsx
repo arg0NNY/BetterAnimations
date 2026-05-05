@@ -1,7 +1,7 @@
 import Patcher from '@/modules/Patcher'
 import { useRootElementContextKeyed } from '@discord/modules'
 import Core from '@/modules/Core'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import ModuleKey from '@enums/ModuleKey'
 
 /**
@@ -14,7 +14,7 @@ function patchRootElementContext () {
   Patcher.after(...useRootElementContextKeyed, (self, args, value) => {
     return {
       ...value,
-      className: classNames(
+      className: clsx(
         value.className,
         Core.getAllModules(true)
           .filter(m => {

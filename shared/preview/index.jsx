@@ -3,7 +3,7 @@ import Main from '@preview/views/Main'
 import PreviewContext from '@preview/context/PreviewContext'
 import { memo, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimationStore } from '@animation/store'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import { CSSTransition, TransitionGroup } from '@discord/modules'
 import Settings from '@preview/views/Settings'
 import Layers from '@preview/components/Layers'
@@ -126,7 +126,7 @@ function Preview ({
     <PreviewContext value={context}>
       <div
         ref={ref}
-        className={classNames(
+        className={clsx(
           'BAP__container',
           `BAP--${id}`,
           className

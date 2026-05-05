@@ -1,4 +1,4 @@
-import classNames from 'classnames'
+import clsx from 'clsx'
 import { Button, ButtonGroup, Text, Tooltip } from '@discord/modules'
 import RedoIcon from '@/components/icons/RedoIcon'
 import { css } from '@style'
@@ -10,7 +10,7 @@ function VerificationIssueSelection ({ variant, icon: Icon, label, onUndo, size 
       size={size}
     >
       <div
-        className={classNames([
+        className={clsx([
           'BA__verificationIssueSelection',
           `BA__verificationIssueSelection--${variant}`
         ])}

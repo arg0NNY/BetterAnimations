@@ -1,12 +1,12 @@
 import { css } from '@style'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import Block from '@preview/components/Block'
 
 function Rect ({ className, width, height, radius, color, ...props }) {
   return (
     <Block
       {...props}
-      className={classNames('BAP__rect', className)}
+      className={clsx('BAP__rect', className)}
       style={{
         width,
         height,

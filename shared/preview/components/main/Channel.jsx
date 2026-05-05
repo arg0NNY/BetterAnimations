@@ -10,7 +10,7 @@ import { use, useEffect, useMemo, useRef } from 'react'
 import { thread as threadData } from '@preview/data'
 import PreviewContext from '@preview/context/PreviewContext'
 import { TransitionGroup } from '@discord/modules'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 function ChannelHeader ({ name, description, items = [0, 0, 0, 1], itemRefs = useRef([]), search = true }) {
   return (
@@ -29,7 +29,7 @@ function ChannelHeader ({ name, description, items = [0, 0, 0, 1], itemRefs = us
           <div
             key={i}
             ref={ref => { itemRefs.current[i] = ref }}
-            className={classNames({
+            className={clsx({
               'BAP__channelHeaderItem': true,
               'BAP__channelHeaderItem--active': active
             })}
@@ -47,7 +47,7 @@ function MemberListItem ({ ref, active = false, length }) {
   return (
     <div
       ref={ref}
-      className={classNames({
+      className={clsx({
         'BAP__memberListItem': true,
         'BAP__memberListItem--active': active
       })}

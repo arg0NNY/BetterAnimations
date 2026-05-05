@@ -2,7 +2,7 @@ import { Divider, Flex, Icon } from '@preview/components'
 import { css } from '@style'
 import { use } from 'react'
 import PreviewContext from '@preview/context/PreviewContext'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 function ServerList ({ active = -1, hover = -1, iconRefs = use(PreviewContext).serverListIconRefs }) {
   return (
@@ -11,7 +11,7 @@ function ServerList ({ active = -1, hover = -1, iconRefs = use(PreviewContext).s
       <Divider length={32} />
       {Array(13).fill(null).map((_, i) => (
         <Flex key={i} center w="100%" relative>
-          <div className={classNames({
+          <div className={clsx({
             'BAP__serverPill': true,
             'BAP__serverPill--hover': i === hover,
             'BAP__serverPill--active': i === active

@@ -1,11 +1,11 @@
 import { css } from '@style'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import IconBrand, { IconBrandTypes } from '@/components/icons/IconBrand'
 import { Text } from '@discord/modules'
 
 function ErrorCard ({ text, actions, className, iconType = IconBrandTypes.ERROR, ...props }) {
   return (
-    <div {...props} className={classNames('BA__errorCard', className)}>
+    <div {...props} className={clsx('BA__errorCard', className)}>
       <IconBrand
         type={iconType}
         size="xl"

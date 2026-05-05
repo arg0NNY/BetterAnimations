@@ -17,7 +17,7 @@ import DiscordSelectors from '@discord/selectors'
 import { css } from '@style'
 import { Fragment, useEffect, useState } from 'react'
 import useWindow from '@/hooks/useWindow'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import { ErrorBoundary } from '@error/boundary'
 import { forceAppUpdate } from '@/utils/forceUpdate'
 import patchAppPanels from '@/patches/AppView/patchAppPanels'
@@ -119,7 +119,7 @@ function patchAppView () {
     // Enhance layout
     if (!isEnhancedLayout) return
 
-    base.props.className = classNames(base.props.className, 'BA__baseEnhancedLayout')
+    base.props.className = clsx(base.props.className, 'BA__baseEnhancedLayout')
 
     const sidebarIndex = content.props.children.findIndex(m => 'isSidebarOpen' in (m?.props ?? {}))
     if (sidebarIndex === -1) return

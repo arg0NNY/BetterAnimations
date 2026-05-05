@@ -1,6 +1,6 @@
 import usePackRegistry from '@/hooks/usePackRegistry'
 import { Tooltip } from '@discord/modules'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import { css } from '@style'
 import thumbnailPlaceholder from '@/assets/placeholders/thumbnail.png'
 
@@ -8,7 +8,7 @@ function PackSplash ({ pack, showAuthor = false, className }) {
   const registry = usePackRegistry()
 
   return (
-    <div className={classNames('BA__packSplash', className)}>
+    <div className={clsx('BA__packSplash', className)}>
       <img
         className="BA__packSplashImage"
         src={registry.getThumbnailSrc(pack) ?? thumbnailPlaceholder}

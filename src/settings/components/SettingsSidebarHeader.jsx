@@ -4,13 +4,13 @@ import { Text } from '@discord/modules'
 import { useSection } from '@/settings/stores/SettingsStore'
 import SettingsSection from '@enums/SettingsSection'
 import meta from '@/meta'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 function SettingsSidebarHeader () {
   const [section] = useSection()
 
   return (
-    <div className={classNames(
+    <div className={clsx(
       'BA__settingsSidebarHeader',
       {
         'BA__settingsSidebarHeader--hidden': section === SettingsSection.Home

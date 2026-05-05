@@ -6,13 +6,13 @@ import { Transition, TransitionGroup } from '@discord/modules'
 import { passAuto } from '@utils/transition'
 import PreviewTransition from '@preview/components/PreviewTransition'
 import { css } from '@style'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import Main from '@preview/views/Main'
 import Settings from '@preview/views/Settings'
 
 function Layer ({ baseLayer = false, hidden = false, children }) {
   return (
-    <div className={classNames(
+    <div className={clsx(
       'BAP__layer',
       {
         'BAP__baseLayer': baseLayer,

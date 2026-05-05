@@ -11,7 +11,7 @@ import {
   useListItem,
   useListNavigator
 } from '@discord/modules'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import { css } from '@style'
 import { useCallback, useId, useLayoutEffect, useRef, useState } from 'react'
 import useElementBounding from '@/hooks/useElementBounding'
@@ -68,7 +68,7 @@ function PackSelectOption ({ pack, selected = false, focused = false, active = f
   return (
     <Clickable
       {...props}
-      className={classNames({
+      className={clsx({
         'BA__packSelectOption': true,
         'BA__packSelectOption--focused': focused,
         'BA__packSelectOption--selected': selected
@@ -173,7 +173,7 @@ function PackSelectPopout ({ selectRef, packs, selected, onSelect, isActive, upd
                 ref.current = el
                 scrollerRef.current = el
               }}
-              className={classNames(
+              className={clsx(
                 'BA__packSelectPopoutScroller',
                 DiscordClasses.Scroller.thin
               )}
@@ -226,7 +226,7 @@ function PackSelect ({ packs, selected, onSelect, className, isActive }) {
         <Clickable
           {...props}
           innerRef={selectRef}
-          className={classNames('BA__packSelect', className)}
+          className={clsx('BA__packSelect', className)}
         >
           {selectedPack ? (
             <PackSelectContent

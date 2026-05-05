@@ -1,13 +1,13 @@
 import { Clickable, Tooltip } from '@discord/modules'
 import { css } from '@style'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 function ButtonGroupItem ({ children, tooltip, selected, disabled, className, onClick }) {
   const button = props => (
     <Clickable
       {...props}
       tag="button"
-      className={classNames({
+      className={clsx({
         'BA__buttonGroupItem': true,
         'BA__buttonGroupItem--selected': selected,
         'BA__buttonGroupItem--disabled': disabled
@@ -30,7 +30,7 @@ function ButtonGroupItem ({ children, tooltip, selected, disabled, className, on
 function ButtonGroup ({ options, multiple = false, selected, onChange, className, itemClassName, size = 'sm' }) {
   return (
     <div
-      className={classNames(
+      className={clsx(
         'BA__buttonGroup',
         `BA__buttonGroup--${size}`,
         {
@@ -43,7 +43,7 @@ function ButtonGroup ({ options, multiple = false, selected, onChange, className
         <ButtonGroupItem
           {...option}
           key={option.value}
-          className={classNames(itemClassName, option.className)}
+          className={clsx(itemClassName, option.className)}
           selected={multiple ? option.selected : selected === option.value}
           onClick={multiple ? option.onClick : () => selected !== option.value && onChange(option.value)}
           children={option.children ?? option.label}

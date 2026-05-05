@@ -2,7 +2,7 @@ import Patcher from '@/modules/Patcher'
 import { ModalScrimKeyed } from '@discord/modules'
 import { css } from '@style'
 import AnimeTransition from '@components/AnimeTransition'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import useWindow from '@/hooks/useWindow'
 import useModule from '@/hooks/useModule'
 import ModuleKey from '@enums/ModuleKey'
@@ -14,7 +14,7 @@ function ModalBackdrop ({ isVisible, onClick, disabled = false, disablePointerEv
       {...props}
       in={isVisible}
       container={{
-        className: classNames({
+        className: clsx({
           'BA__backdropContainer': true,
           'BA__backdropContainer--disablePointerEvents': disablePointerEvents
         })

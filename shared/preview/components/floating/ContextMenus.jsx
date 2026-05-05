@@ -9,7 +9,7 @@ import useStages from '@preview/hooks/useStages'
 import useMouse from '@preview/hooks/useMouse'
 import PreviewTransition from '@preview/components/PreviewTransition'
 import Position from '@enums/Position'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 const coords = { x: 36, y: 157 }
 const auto = {
@@ -52,7 +52,7 @@ function ContextMenuItem ({ type, length, active = false, ...props }) {
 
   return (
     <div
-      className={classNames({
+      className={clsx({
         'BAP__contextMenuItem': true,
         'BAP__contextMenuItem--active': active
       })}
