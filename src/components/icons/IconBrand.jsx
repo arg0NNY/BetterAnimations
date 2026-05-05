@@ -55,4 +55,6 @@ function IconBrand ({ type = IconBrandTypes.DEFAULT, size, width, height, color 
   )
 }
 
+IconBrand.Types = IconBrandTypes
+
 export default IconBrand

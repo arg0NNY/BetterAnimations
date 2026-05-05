@@ -5,7 +5,7 @@ import Events from '@enums/Events'
 import ErrorManager from '@error/manager'
 import { css } from '@style'
 
-function ErrorToast ({ onView }) {
+export function ErrorToastText () {
   useEmitterEffect(Events.ErrorOccurred)
 
   const count = ErrorManager.errors.length
@@ -14,7 +14,15 @@ function ErrorToast ({ onView }) {
     : 'An error occurred.'
 
   return (
-    <Toast type={ToastTypes.ERROR} text={text}>
+    <span>
+      {text}
+    </span>
+  )
+}
+
+function ErrorToast ({ onView }) {
+  return (
+    <Toast type={ToastTypes.ERROR} text={<ErrorToastText />}>
       <div className="BA__errorToastButton">
         <TextButton
           className="BA__errorToastButton"

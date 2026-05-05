@@ -1,5 +1,17 @@
 import { createToast, showToast } from '@discord/modules'
 import Toast, { ToastTypes } from '@/components/Toast'
+import { UI } from '@/BdApi'
+import meta from '@/meta'
+
+function toBDToastType (type) {
+  switch (type) {
+    case ToastTypes.SUCCESS: return 'success'
+    case ToastTypes.INFO: return 'info'
+    case ToastTypes.WARNING: return 'warning'
+    case ToastTypes.ERROR: return 'error'
+    default: return ''
+  }
+}
 
 export default class Toasts {
   static get Types () { return ToastTypes }
@@ -12,6 +24,14 @@ export default class Toasts {
 
   static show (content, options = {}) {
     const { type = Toasts.Types.DEFAULT, ...rest } = options
+
+    if (!showToast || !createToast) {
+      UI.showToast(`${meta.name}: ${content}`, {
+        type: toBDToastType(type),
+      })
+      return
+    }
+
     showToast(
       createToast(null, null, {
         component: <Toast type={type} text={content} />,

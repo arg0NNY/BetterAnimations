@@ -1,15 +1,19 @@
 import { ErrorManager as BaseErrorManager } from '@shared/error/manager'
 import Logger from '@logger'
-import { createToast, ModalActions, popToast, useToastStore } from '@discord/modules'
+import { createToast, ModalActions, popToast, useToastStore, ToastStoreModule } from '@discord/modules'
 import ErrorModal from '@/components/error/ErrorModal'
-import ErrorToast from '@/components/error/ErrorToast'
+import ErrorToast, { ErrorToastText } from '@/components/error/ErrorToast'
 import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
 import Config from '@/modules/Config'
 import SuppressErrors from '@enums/SuppressErrors'
 import AnimationError from '@error/structs/AnimationError'
+import { UI } from '@/BdApi'
+import meta from '@/meta'
+import IconBrand from '@/components/icons/IconBrand'
 
 const ErrorManagerToastSymbol = Symbol('ErrorManagerToast')
+const ERROR_MANAGER_NOTIFICATION_ID = 'BA__errorManagerNotification'
 
 export default new class ErrorManager extends BaseErrorManager {
   get timeoutDuration () { return 10000 }
@@ -20,6 +24,7 @@ export default new class ErrorManager extends BaseErrorManager {
     this.errors = []
     this.errorsOverload = false
     this.timeout = null
+    this.notification = null
   }
 
   initialize () {
@@ -27,19 +32,9 @@ export default new class ErrorManager extends BaseErrorManager {
     Logger.info(this.name, 'Initialized.')
   }
 
-  isToastActive () {
-    return useToastStore.getState().currentToastMap.get('APP')?.type === ErrorManagerToastSymbol
-  }
-
-  clear () {
-    this.errors = []
-    this.errorsOverload = false
-    clearTimeout(this.timeout)
-    this.timeout = null
-    if (this.isToastActive()) popToast('APP', true)
-  }
-
   shouldSuppress (error) {
+    if (error.silent && import.meta.env.MODE !== 'development') return true
+
     switch (Config.current.general.suppressErrors) {
       case SuppressErrors.All: return true
       case SuppressErrors.Animation: return error instanceof AnimationError
@@ -66,11 +61,32 @@ export default new class ErrorManager extends BaseErrorManager {
     this.timeout = setTimeout(this.clear.bind(this), this.timeoutDuration)
   }
 
+  get usingNotifications () {
+    return !createToast || !ToastStoreModule || !useToastStore || !popToast
+  }
+
   onView () {
     this.showModal()
     this.clear()
   }
   showToast () {
+    if (this.usingNotifications) {
+      this.notification = UI.showNotification({
+        id: ERROR_MANAGER_NOTIFICATION_ID,
+        type: 'error',
+        title: meta.name,
+        icon: () => <IconBrand type={IconBrand.Types.ERROR} />,
+        content: <ErrorToastText />,
+        duration: this.timeoutDuration,
+        actions: [{
+          label: 'View',
+          onClick: this.onView.bind(this)
+        }],
+        onClose: this.clear.bind(this)
+      })
+      return
+    }
+
     useToastStore.setState(state => ({
       ...state,
       currentToastMap: new Map([
@@ -81,6 +97,22 @@ export default new class ErrorManager extends BaseErrorManager {
         })]
       ])
     }))
+  }
+  closeToast () {
+    if (this.usingNotifications) return this.notification?.close()
+    if (this.isToastActive()) popToast('APP', true)
+  }
+  isToastActive () {
+    if (this.usingNotifications) return this.notification?.isVisible() ?? false
+    return useToastStore.getState().currentToastMap.get('APP')?.type === ErrorManagerToastSymbol
+  }
+
+  clear () {
+    this.errors = []
+    this.errorsOverload = false
+    clearTimeout(this.timeout)
+    this.timeout = null
+    this.closeToast()
   }
 
   showModal (errors = this.errors) {

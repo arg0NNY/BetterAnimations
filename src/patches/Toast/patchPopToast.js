@@ -6,7 +6,7 @@ function patchPopToast () {
   Patcher.instead(...popToastKeyed, (self, [key, force], original) => {
     if (key === 'APP' && force !== true && ErrorManager.isToastActive()) return
     return original(key)
-  })
+  }, { silent: true })
 }
 
 export default patchPopToast

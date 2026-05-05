@@ -4,7 +4,7 @@ import { version } from '@package'
 
 export default class BaseError extends Error {
   constructor (message, options = {}, additionalMeta = []) {
-    const { module, pack } = options
+    const { module, pack, silent = false } = options
 
     const meta = [
       `${config.name} ${version}`,
@@ -20,5 +20,6 @@ export default class BaseError extends Error {
     super(message + '\n\n' + indent(meta.filter(Boolean).join('\n'), 2) + '\n')
     this.module = module
     this.pack = pack
+    this.silent = silent
   }
 }
