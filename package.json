@@ -24,7 +24,7 @@
     "vite": "^8.0.10",
     "vite-plugin-banner": "^0.8.1",
     "vitepress": "^1.6.4",
-    "vue": "^3.5.27",
+    "vue": "^3.5.33",
     "vue3-lottie": "^3.3.1"
   },
   "dependencies": {
@@ -34,7 +34,7 @@
     "hast-util-sanitize": "^5.0.2",
     "hast-util-to-dom": "^4.0.1",
     "json-source-map": "^0.6.1",
-    "lodash-es": "^4.17.23",
+    "lodash-es": "^4.18.1",
     "object-inspect": "^1.13.4",
     "spelling": "^2.0.2",
     "use-sync-external-store": "^1.6.0",
