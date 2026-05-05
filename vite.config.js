@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig, esmExternalRequirePlugin } from 'vite'
 import path from 'path'
 import fs from 'fs'
 import banner from 'vite-plugin-banner'
@@ -83,15 +83,8 @@ export const aliases = {
 }
 
 export default defineConfig({
-  build: {
-    lib: {
-      entry: path.resolve(__dirname, 'src/index.js'),
-      name: config.name,
-      fileName: () => `${config.name}.plugin.js`,
-      formats: ['iife']
-    },
-    minify: false,
-    rollupOptions: {
+  plugins: [
+    esmExternalRequirePlugin({
       external: [
         'react',
         'react-dom',
@@ -99,8 +92,22 @@ export default defineConfig({
         'fs',
         'path',
         'events',
-        'electron'
+        'electron',
       ],
+    }),
+    banner(bannerContent),
+    exportAsModuleExports(),
+    copyToBDPlugin()
+  ],
+  build: {
+    lib: {
+      entry: path.resolve(__dirname, 'src/index.js'),
+      name: config.name,
+      fileName: () => `${config.name}.plugin.js`,
+      formats: ['iife'],
+    },
+    minify: false,
+    rolldownOptions: {
       output: {
         globals: {
           react: 'BdApi.React',
@@ -118,6 +125,13 @@ export default defineConfig({
       }
     }
   },
+  oxc: {
+    jsx: {
+      runtime: 'classic',
+      pragma: 'BdApi.React.createElement',
+      pragmaFrag: 'BdApi.React.Fragment'
+    }
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
@@ -133,13 +147,4 @@ export default defineConfig({
       ...omit(aliases, ['@discord', '@style'])
     }
   },
-  plugins: [
-    banner(bannerContent),
-    exportAsModuleExports(),
-    copyToBDPlugin()
-  ],
-  esbuild: {
-    jsxFactory: 'BdApi.React.createElement',
-    jsxFragment: 'BdApi.React.Fragment'
-  }
 })
