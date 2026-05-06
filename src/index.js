@@ -47,6 +47,7 @@ import PackData from '@/modules/PackData'
 import Events from '@enums/Events'
 import patchSettingsContent from '@/patches/Settings/patchSettingsContent'
 import { isDev } from '@/env'
+import patchFocusLock from '@/patches/FocusLock/patchFocusLock'
 
 if (isDev)
   window.BetterAnimations = {
@@ -116,6 +117,7 @@ export default function (meta) {
       patchChannelTextArea()
       patchPopToast()
       patchRootElementContext()
+      patchFocusLock()
       applyOptimizationPatches()
 
       Logger.info('Startup', 'Forcing app update...')

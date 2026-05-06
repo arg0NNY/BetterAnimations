@@ -100,6 +100,7 @@ export const [
   UseIsVisibleModule,
   RootElementContextModule,
   { useListItem, useListContainerProps, ListNavigatorProvider },
+  FocusLockRawModule,
   { useFocusLock, FocusLock },
   ManaModalRootModule,
   BasePopoverModule,
@@ -619,6 +620,11 @@ export const [
       ListNavigatorProvider: Filters.byStrings('containerProps', '.Provider')
     }
   },
+  // FocusLockRawModule
+  {
+    filter: Filters.bySource('disableReturnRef', 'containerRef'),
+    raw: true
+  },
   // FocusLockModule
   {
     filter: Filters.bySource('disableReturnRef', 'containerRef'),
@@ -702,6 +708,7 @@ export const Mana = {
 }
 export const BasePopoverKeyed = keyed(BasePopoverModule, Filters.byStrings('popoverGradientWrapper', 'spacing'))
 export const useStateFromStores = Webpack.getModule(Webpack.Filters.byStrings('useStateFromStores'), { searchExports: true })
+export const useFocusLockKeyed = keyed(FocusLockRawModule?.declarations, Filters.byStrings('disableReturnRef'))
 
 export const StandardSidebarViewWrapper = Webpack.waitForModule(Filters.byPrototypeKeys('getPredicateSections', 'renderSidebar'))
 export const StandardSidebarViewModule = Webpack.waitForModule(Filters.bySource('standardSidebarView', 'section'))
