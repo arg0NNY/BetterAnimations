@@ -75,6 +75,9 @@ css
     padding-right: 40px;
     z-index: 200;
 }
+.BA__settingsModal ${DiscordSelectors.StandardSidebarView.contentRegionScroller} {
+    position: static !important;
+}
 
 ${DiscordSelectors.StandardSidebarView.contentColumnDefault}:has(> .BA__moduleSettingsContainer) {
     position: static;
