@@ -1,5 +1,6 @@
-onlyBuiltDependencies:
-  - esbuild
+allowBuilds:
+  electron: true
+  esbuild: true
 
 patchedDependencies:
   animejs: patches/animejs.patch
