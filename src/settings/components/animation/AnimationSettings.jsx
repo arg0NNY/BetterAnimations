@@ -146,7 +146,7 @@ css
 .BA__animationSettingsHeaderGroup {
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 5;
     isolation: isolate;
 }
 .BA__animationSettingsHeaderGroup::before {

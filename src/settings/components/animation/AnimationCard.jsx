@@ -397,7 +397,7 @@ css
     top: 0;
     left: 40px;
     right: 40px;
-    z-index: 100;
+    z-index: 200;
     display: flex;
     transition: transform .4s, translate .4s;
 }
@@ -414,16 +414,6 @@ css
     overflow: hidden scroll;
     padding: 20px;
     padding-right: 12px;
-}
-.BA__animationCardPopoutScroller::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 20px;
-    background-color: var(--background-base-lowest);
-    z-index: 110;
 }
 
 .BA__fade-enter, .BA__fade-exit-active {
