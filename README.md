@@ -3,8 +3,8 @@
 <h3 align="center">Discord Animations Client Mod & Framework</h3>
 <p align="center">Bring your Discord app to life — tweak, create, animate. A BetterDiscord plugin.</p>
 <p align="center">
-    <img alt="Downloads" src="https://img.shields.io/badge/dynamic/json?color=brightgreen&label=downloads&query=downloads&url=https://api.betterdiscord.app/v2/store/BetterAnimations">
-    <img alt="Likes" src="https://img.shields.io/badge/dynamic/json?color=green&label=likes&query=likes&url=https://api.betterdiscord.app/v2/store/BetterAnimations">
+    <img alt="Downloads" src="https://img.shields.io/badge/dynamic/json?color=brightgreen&label=downloads&query=downloads&url=https://api.betterdiscord.app/v3/store/BetterAnimations">
+    <img alt="Likes" src="https://img.shields.io/badge/dynamic/json?color=green&label=likes&query=likes&url=https://api.betterdiscord.app/v3/store/BetterAnimations">
 </p>
 <p align="center">
   <a href="https://betterdiscord.app/plugin/BetterAnimations">BetterDiscord</a>
