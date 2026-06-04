@@ -43,7 +43,7 @@ Alternatively, you may pass strings `"enter"` or `"exit"` to enable Debug Mode f
 ## Logs
 
 Debug Mode logs are written to the Console. To view the Console, open the DevTools and switch to the `Console` tab.
-See [BetterDiscord Documentation](https://docs.betterdiscord.app/developers/devtools#chromium-devtools) for more info.
+See [BetterDiscord Documentation](https://docs.betterdiscord.app/plugins/introduction/devtools#chromium-devtools) for more info.
 
 **Types of logs:**
 - **Parsing started/completed** — Marks the start and end of parsing stages:

@@ -388,7 +388,7 @@ If used outside the [lazy inject](/create/injects#lazy-injects) — `undefined`.
 
 ## `debug` <Badge type="tip" text="lazy" />
 
-Debugs the specified <InjectRef inject="debug" parameter="data" /> into the Console. See [DevTools](https://docs.betterdiscord.app/developers/devtools#chromium-devtools).
+Debugs the specified <InjectRef inject="debug" parameter="data" /> into the Console. See [DevTools](https://docs.betterdiscord.app/plugins/introduction/devtools#chromium-devtools).
 
 > [!WARNING]
 > All the <InjectRef inject="debug" /> injects must be removed for all the Animations before [publishing your Pack to Catalog](/create/publish).

@@ -13,7 +13,7 @@ To publish your pack to the Catalog:
 
 ## Guidelines
 
-Applicable [BetterDiscord Guidelines](https://docs.betterdiscord.app/themes/introduction/guidelines) apply, along with the following:
+Applicable [BetterDiscord Guidelines](https://docs.betterdiscord.app/plugins/publishing/guidelines) apply, along with the following:
 1. Animations of the Pack must not negatively affect users (e.g. by breaking Discord's layout and styles).
 2. Packs and its Animations must not leverage any bugs or vulnerabilities of _BetterAnimations_.
 3. Animations of a Pack must clean up all changes/modifications made during the execution with an exception to Animations for [Modals -> Backdrop](/usage/modules#modals-backdrop).
