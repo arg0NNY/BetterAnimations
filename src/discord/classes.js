@@ -5,7 +5,6 @@ export const _Classes = {
   StandardSidebarView: () => Webpack.getByKeys('standardSidebarView', 'contentRegion'),
   SettingsSidebar: () => Webpack.getByKeys('sidebar', 'section', 'nav'),
   Modal: Webpack.getByKeys('root', 'rootWithShadow'),
-  ModalBackdrop: Webpack.getByKeys('backdrop', 'withLayer'),
   Layers: Webpack.getByKeys('layer', 'baseLayer'),
   AppMount: Webpack.getByKeys('appMount'),
   AppView: Webpack.getByKeys('base', 'content'),
