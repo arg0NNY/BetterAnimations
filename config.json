@@ -2,10 +2,10 @@
   "name": "BetterAnimations",
   "description": "\uD83C\uDF0A Discord Animations Client Mod & Framework",
   "author": "arg0NNY",
-  "authorLink": "https://github.com/arg0NNY/DiscordPlugins",
+  "authorLink": "https://github.com/okdevme/DiscordPlugins",
   "invite": "M8DBtcZjXD",
   "donate": "https://boosty.to/arg0nny/donate",
   "website": "https://docs.betteranimations.net",
-  "source": "https://github.com/arg0NNY/BetterAnimations",
+  "source": "https://github.com/okdevme/BetterAnimations",
   "runAt": "idle"
 }

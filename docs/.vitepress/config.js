@@ -163,7 +163,7 @@ export default defineConfig({
         ariaLabel: 'Donate'
       },
       { icon: 'discord', link: 'https://discord.gg/M8DBtcZjXD' },
-      { icon: 'github', link: 'https://github.com/arg0NNY/BetterAnimations' },
+      { icon: 'github', link: 'https://github.com/okdevme/BetterAnimations' },
       { icon: 'betterdiscord', link: 'https://betterdiscord.app/plugin/BetterAnimations' }
     ]
   }

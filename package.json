@@ -12,7 +12,7 @@
     "docs:preview": "vitepress preview docs",
     "demo:previews": "vite demo/previews"
   },
-  "author": "arg0NNY",
+  "author": "okdevme",
   "license": "MIT",
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.1",

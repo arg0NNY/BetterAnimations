@@ -19,7 +19,7 @@
 Install [BetterDiscord](https://betterdiscord.app/) and download _BetterAnimations_ using the builtin Plugin Store.
 
 Alternatively, you can download it manually using the official [BetterDiscord Store](https://betterdiscord.app/plugin/BetterAnimations)
-or from the [Releases](https://github.com/arg0NNY/BetterAnimations/releases) page. See [Installing Addons](https://docs.betterdiscord.app/users/guides/installing-addons) for more info.
+or from the [Releases](https://github.com/okdevme/BetterAnimations/releases) page. See [Installing Addons](https://docs.betterdiscord.app/users/guides/installing-addons) for more info.
 
 ## Documentation
 
@@ -38,7 +38,7 @@ Visit the Usage and Animation Authoring documentation at
 - [x] ~~General Settings~~
 - [x] ~~Catalog & Library~~
 - [x] ~~Pack Changelogs~~
-- [x] ~~[BetterAnimations V1](https://github.com/arg0NNY/DiscordPlugins/tree/fa45fb514aa7a8febe4ddd143a08ff1c9f124fe0/BetterAnimations) Settings Migrator~~
+- [x] ~~[BetterAnimations V1](https://github.com/okdevme/DiscordPlugins/tree/fa45fb514aa7a8febe4ddd143a08ff1c9f124fe0/BetterAnimations) Settings Migrator~~
 
 ### Stable
 
