@@ -48,6 +48,7 @@ import Events from '@enums/Events'
 import patchSettingsContent from '@/patches/Settings/patchSettingsContent'
 import { isDev } from '@/env'
 import patchFocusLock from '@/patches/FocusLock/patchFocusLock'
+import Notifications from '@/modules/Notifications'
 
 if (isDev)
   window.BetterAnimations = {
@@ -63,6 +64,7 @@ if (isDev)
     AnimationStore,
     Emitter,
     Notices,
+    Notifications,
     Toasts,
     ErrorManager,
     DiscordModules,

@@ -8,10 +8,8 @@ import Events from '@enums/Events'
 import Config from '@/modules/Config'
 import SuppressErrors from '@enums/SuppressErrors'
 import AnimationError from '@error/structs/AnimationError'
-import { UI } from '@/BdApi'
-import meta from '@/meta'
-import IconBrand from '@/components/icons/IconBrand'
 import { isDev } from '@/env'
+import Notifications from '@/modules/Notifications'
 
 const ErrorManagerToastSymbol = Symbol('ErrorManagerToast')
 const ERROR_MANAGER_NOTIFICATION_ID = 'BA__errorManagerNotification'
@@ -72,13 +70,10 @@ export default new class ErrorManager extends BaseErrorManager {
   }
   showToast () {
     if (this.usingNotifications) {
-      this.notification = UI.showNotification({
+      this.notification = Notifications.error({
         id: ERROR_MANAGER_NOTIFICATION_ID,
-        type: 'error',
-        title: meta.name,
-        icon: () => <IconBrand type={IconBrand.Types.ERROR} />,
         content: <ErrorToastText />,
-        duration: this.timeoutDuration,
+        duration: Infinity,
         actions: [{
           label: 'View',
           onClick: this.onView.bind(this)

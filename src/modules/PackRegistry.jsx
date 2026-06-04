@@ -4,9 +4,8 @@ import Toasts from '@/modules/Toasts'
 import Emitter from '@/modules/Emitter'
 import Events from '@enums/Events'
 import PackManager from '@/modules/PackManager'
-import Notices from '@/modules/Notices'
+import Notifications from '@/modules/Notifications'
 import Settings from '@/settings'
-import meta from '@/meta'
 import SettingsSection from '@enums/SettingsSection'
 import regex from '@utils/regex'
 import avatarPlaceholder from '@/assets/placeholders/avatar.png'
@@ -16,6 +15,7 @@ import { VerificationIssueResolveMethod, VerificationStatus } from '@/settings/d
 import Data from '@/modules/Data'
 import PackSchema from '@animation/schemas/PackSchema'
 import { useEffect, useState } from 'react'
+import { css } from '@style'
 
 class PackVerifier {
   constructor (registry) {
@@ -202,7 +202,7 @@ export default new class PackRegistry {
     this._items = this.cache?.items ?? []
     this._authors = this.cache?.authors ?? []
 
-    this._closeNotice = null
+    this._notification = null
     this._schedulerCallbackId = null
 
     this.onPackLoaded = pack => {
@@ -352,17 +352,44 @@ export default new class PackRegistry {
     return PackManager.getAllPacks(true)
       .some(pack => this.hasUpdate(pack))
   }
-  showUpdatesNotice (updatesCount = this.getUpdatesCount()) {
-    this._closeNotice?.()
-    this._closeNotice = Notices.info(`${meta.name} has found updates for ${updatesCount} of your packs!`, {
-      buttons: [{
-        label: 'View Library',
-        onClick: () => {
-          this._closeNotice?.()
-          Data.library.sort = 'default'
-          Settings.openSettingsModal(SettingsSection.Library)
+  showUpdatesNotification (outdatedPacks = this.getOutdatedPacks()) {
+    this._notification?.close()
+    this._notification = Notifications.info({
+      id: 'BA__updatesNotification',
+      content: (
+        <>
+          {outdatedPacks.length > 1
+            ? `${outdatedPacks.length} packs have updates!`
+            : 'One pack has an update!'}
+          <ul class="BA__updatesNotificationList">
+            {outdatedPacks.map(pack => {
+              const latest = this.getPack(pack.filename)
+              return (
+                <li>
+                  {pack.name}
+                  {latest && (
+                    <i> v{latest.version}</i>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+        </>
+      ),
+      duration: Infinity,
+      actions: [
+        {
+          label: 'Update All',
+          onClick: () => this.updateAll()
+        },
+        {
+          label: 'View Library',
+          onClick: () => {
+            Data.library.sort = 'default'
+            Settings.openSettingsModal(SettingsSection.Library)
+          }
         }
-      }]
+      ]
     })
   }
   async checkForUpdates (options = {}) {
@@ -377,7 +404,8 @@ export default new class PackRegistry {
       }
     }
 
-    const updatesCount = this.getOutdatedPacks().length
+    const outdatedPacks = this.getOutdatedPacks()
+    const updatesCount = outdatedPacks.length
     if (!updatesCount) {
       Logger.info(this.name, 'No updates found.')
       if (useToasts) Toasts.success('Everything is up to date!')
@@ -387,7 +415,7 @@ export default new class PackRegistry {
     Logger.info(this.name, `Found ${updatesCount} updates.`)
     if (useToasts) return Toasts.show(`Found updates for ${updatesCount} of your packs!`)
 
-    this.showUpdatesNotice(updatesCount)
+    this.showUpdatesNotification(outdatedPacks)
   }
   scheduleCheckForUpdates (options) {
     cancelIdleCallback(this._schedulerCallbackId)
@@ -402,7 +430,7 @@ export default new class PackRegistry {
 
     if (results.every(Boolean)) {
       Toasts.success('Everything is up to date!')
-      this._closeNotice?.()
+      this._notification?.close()
     }
   }
 
@@ -443,6 +471,13 @@ export default new class PackRegistry {
   shutdown () {
     this.unlistenPackEvents()
     this.storage.clear()
+    this._notification?.close()
     Logger.info(this.name, 'Shutdown.')
   }
 }
+
+css
+`.BA__updatesNotificationList {
+    margin-top: 8px;
+}`
+`PackRegistry`
