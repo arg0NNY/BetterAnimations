@@ -314,10 +314,10 @@ export default new class PackRegistry {
     }
   }
   update (filename, options) {
-    return this.install(filename, 'update', options)
+    return this.install(filename, options, 'update')
   }
   reinstall (filename, options) {
-    return this.install(filename, 'reinstall', options)
+    return this.install(filename, options, 'reinstall')
   }
   delete (filename) {
     try {
