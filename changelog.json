@@ -307,5 +307,17 @@
         ]
       }
     ]
+  },
+  "2.1.13": {
+    "changes": [
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Updated author GitHub username.",
+          "Polished the Pack Updater and ported it to BD notifications."
+        ]
+      }
+    ]
   }
 }
