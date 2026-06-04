@@ -36,10 +36,8 @@ function Catalog () {
   const [data] = useData('catalog')
 
   useEffect(() => {
-    if (data.visited) return
-
+    if (!data.visited) data.visited = true
     registry.items.forEach(item => registry.markAsKnown(item))
-    data.visited = true
   }, [])
 
   return (
