@@ -86,7 +86,7 @@ class AnimeTransition extends Component {
         data: this.props.data?.[type],
         type,
         container,
-        element: directChild(container),
+        element: this.props.element?.(container) ?? directChild(container),
         viewport: this.props.viewportRef?.current,
         window: window,
         mouse: this.mouse,

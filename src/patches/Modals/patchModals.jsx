@@ -31,6 +31,7 @@ function Modal ({ modal, ...props }) {
       {...props}
       in={isShown}
       containerRef={containerRef}
+      element={container => directChild(container, true)}
       enter={!modal.props.instant}
       exit={!modal.props.instant}
       mountOnEnter={false}
