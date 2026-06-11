@@ -319,5 +319,16 @@
         ]
       }
     ]
+  },
+  "2.1.14": {
+    "changes": [
+      {
+        "type": "fixed",
+        "title": "Fixes",
+        "items": [
+          "Modals: Updated to work in the latest release of Discord."
+        ]
+      }
+    ]
   }
 }
