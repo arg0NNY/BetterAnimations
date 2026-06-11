@@ -635,7 +635,7 @@ export const [
   },
   // ManaModalRootModule
   {
-    filter: Filters.bySource('MODAL', 'padding-size-')
+    filter: Filters.bySource('transitionState', 'padding-size-')
   },
   // BasePopoverModule
   {
@@ -701,7 +701,7 @@ export const useIsVisible = unkeyedFn(useIsVisibleKeyed)
 export const useRootElementContextKeyed = keyed(RootElementContextModule, Filters.byStrings('useRootElementContext'))
 export const ListNavigatorContainer = ({ children }) => children(useListContainerProps())
 export const Mana = {
-  ModalRootKeyed: keyed(ManaModalRootModule, Filters.byStrings('MODAL', 'padding-size-')),
+  ModalRootKeyed: keyed(ManaModalRootModule, Filters.byStrings('transitionState', 'padding-size-')),
   get ModalRoot () { return unkeyed(this.ModalRootKeyed) },
   TooltipLayer: ManaTooltipLayer,
   useTooltipTransitionKeyed: keyed(ManaUseTooltipTransitionModule, Filters.byStrings('onExitComplete', '"tooltip"'))
