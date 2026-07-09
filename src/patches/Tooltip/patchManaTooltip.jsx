@@ -10,6 +10,7 @@ import useModule from '@/hooks/useModule'
 import { useSafeBoolean } from '@/hooks/useAnimationStore'
 import { ErrorBoundary, moduleErrorBoundary } from '@error/boundary'
 
+// TODO: Use AnimeFloating
 function TooltipTransition ({ module, shouldShow, onExitComplete, onAnimationRest, ...props }) {
   const value = Mana.TooltipLayer({
     ...props,

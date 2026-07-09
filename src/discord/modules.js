@@ -110,7 +110,8 @@ export const [
   SidebarActions,
   SidebarType,
   ManaTooltipLayer,
-  ManaUseTooltipTransitionModule
+  ManaUseTooltipTransitionModule,
+  { Floating, toFloatingPlacement, toRPLPosition } = {}
 ] = Webpack.getBulk(
   // Text
   {
@@ -673,6 +674,15 @@ export const [
   // ManaUseTooltipTransitionModule
   {
     filter: Filters.bySource('onExitComplete', '"tooltip"')
+  },
+  // Floating
+  {
+    filter: Filters.bySource('data-popover-layer'),
+    map: {
+      Floating: Filters.byStrings('children'),
+      toFloatingPlacement: Filters.byStrings('window_center'),
+      toRPLPosition: Filters.byStrings('split("-")')
+    }
   }
 )
 
