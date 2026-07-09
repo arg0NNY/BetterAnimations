@@ -91,7 +91,7 @@ function AnimationPreview ({
         {error ? (
           <div className="BA__animationPreviewError">
             <CircleWarningIcon size="lg" color={colors.STATUS_DANGER} />
-            <Text variant="text-sm/bold">An error occurred.</Text>
+            <Text variant="text-sm/bold" color="white">An error occurred.</Text>
             <div className="BA__animationPreviewErrorActions">
               <IconButton
                 tooltip="View"
@@ -108,7 +108,7 @@ function AnimationPreview ({
             </div>
           </div>
         ) : title ? (
-          <Text variant="heading-sm/semibold" lineClamp={2} color="always-white">{title}</Text>
+          <Text variant="heading-sm/semibold" lineClamp={2} color="white">{title}</Text>
         ) : null}
       </div>
     </div>
