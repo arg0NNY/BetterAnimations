@@ -1,8 +1,8 @@
-import Patcher from '@/modules/Patcher'
+import Patcher, { TinyPatcher } from '@/modules/Patcher'
 import ModuleKey from '@enums/ModuleKey'
 import { Mana, SpringTransitionPhases } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
-import { useRef } from 'react'
+import { useId } from 'react'
 import AnimeTransition from '@components/AnimeTransition'
 import useAutoPosition from '@/hooks/useAutoPosition'
 import useWindow from '@/hooks/useWindow'
@@ -17,16 +17,18 @@ function TooltipTransition ({ module, shouldShow, onExitComplete, onAnimationRes
     isRendered: true
   })
 
-  const layer = findInReactTree(value, m => m?.props?.position)
-  if (!layer) throw new Error('Unable to find ReferencePositionLayer')
+  const layer = findInReactTree(value, m => m?.props?.placement)
+  if (!layer) throw new Error('Unable to find FloatingLayer')
 
-  const layerRef = useRef()
-  const { autoRef, setPosition } = useAutoPosition(null)
+  const id = useId()
+  layer.props.id = id
+  const containerRef = () => document.getElementById(id)
+
+  const { autoRef, setPosition } = useAutoPosition(props.position, { align: props.align })
   const safeShouldShow = useSafeBoolean(shouldShow)
 
-  Object.assign(layer.props, {
-    ref: layerRef,
-    onPositionChange: setPosition
+  TinyPatcher.before(ModuleKey.Tooltips, layer.props, 'renderLayer', (self, [{ placement }]) => {
+    setPosition(placement.split('-')[0])
   })
 
   const onRest = isVisible => () => {
@@ -46,10 +48,10 @@ function TooltipTransition ({ module, shouldShow, onExitComplete, onAnimationRes
   return (
     <AnimeTransition
       in={safeShouldShow}
-      layerRef={layerRef}
+      containerRef={containerRef}
       module={module}
       autoRef={autoRef}
-      anchor={layer.props.targetRef}
+      anchor={props.targetElement ?? props.targetElementRef}
       onEntered={onRest(true)}
       onExited={onRest(false)}
     >
@@ -75,7 +77,7 @@ function patchUseTooltipTransition () {
       if (!tooltipLayer) throw new Error('Unable to find TooltipLayer')
 
       Object.assign(tooltipLayer, (
-        <ErrorBoundary module={module} fallback={value}>
+        <ErrorBoundary module={module} fallback={render({}, shouldShow)}>
           <TooltipTransition
             {...tooltipLayer.props}
             module={module}
