@@ -38,7 +38,9 @@ export const [
   GuildIcon,
   Timestamp,
   getThemeClass,
-  { Transition, CSSTransition, TransitionGroup } = {},
+  { Transition } = {},
+  { CSSTransition } = {},
+  { TransitionGroup } = {},
   ChannelMessageList,
   ChannelView,
   MessageDivider,
@@ -293,11 +295,25 @@ export const [
     searchExports: true
   },
   // ReactTransitionGroup
+  // declared separately since they can become separate modules
+  // (TransitionGroup already did)
   {
     filter: Filters.bySource('performEnter', 'setNextCallback'),
     map: {
-      Transition: Filters.byKeys('ENTERING', 'EXITING'),
-      CSSTransition: Filters.byPrototypeKeys('addClass'),
+      Transition: Filters.byKeys('ENTERING', 'EXITING')
+    },
+    mapDeclarations: true
+  },
+  {
+    filter: Filters.bySource('"appear"', '"classNames"'),
+    map: {
+      CSSTransition: Filters.byPrototypeKeys('addClass')
+    },
+    mapDeclarations: true
+  },
+  {
+    filter: Filters.bySource('childFactory', 'handleExited'),
+    map: {
       TransitionGroup: Filters.byPrototypeKeys('handleExited')
     },
     mapDeclarations: true
