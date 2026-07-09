@@ -374,7 +374,7 @@ css
     pointer-events: all;
 }
 .BA__animationCard--expanded .BA__animationCard {
-    z-index: 105;
+    z-index: 205;
     transition: transform .4s, z-index .4s step-start;
 }
 .BA__animationCard--expanded .BA__animationCardBg {
