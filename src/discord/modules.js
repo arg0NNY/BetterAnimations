@@ -331,7 +331,7 @@ export const [
   },
   // GatewaySocket
   {
-    filter: Filters.bySource('[CONNECTED]', 'gateway'),
+    filter: Filters.bySource('"ConnectionStore"'),
     declarationFilter: m => m?.dispatcher?.scheduler
   },
   // Anchor
