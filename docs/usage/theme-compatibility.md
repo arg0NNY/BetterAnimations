@@ -241,35 +241,7 @@ This Module doesn't introduce any permanent layout changes.
 - **Key:** `contextMenu`
 - **Class:** `BA__module_contextMenu`
 
-When this Module is enabled, it moves submenus nested within the root menu outside it:
-```html
-<div class="layerContainer_da8173">
-  <div class="clickTrapContainer_da8173 trapClicks_da8173">
-    <div class="theme-dark theme-darker images-dark layer_da8173">
-      <div class="menu_c1e9c4 flexible_c1e9c4">
-        <!-- (Deeply nested) -->
-        <div class="clickTrapContainer_da8173"> <!-- [!code --:7] -->
-          <div class="theme-dark theme-darker images-dark layer_da8173">
-            <div class="submenuPaddingContainer_c1e9c4">
-              <div class="submenu_c1e9c4 menu_c1e9c4"><!-- ... --></div>
-            </div>
-          </div>
-        </div>
-        <!-- (Deeply nested) -->
-      </div>
-    </div>
-  </div>
-  <div class="clickTrapContainer_da8173"> <!-- [!code ++:7] -->
-    <div class="theme-dark theme-darker images-dark layer_da8173">
-      <div class="submenuPaddingContainer_c1e9c4">
-        <div class="submenu_c1e9c4 menu_c1e9c4"><!-- ... --></div>
-      </div>
-    </div>
-  </div>
-</div>
-```
-
-The same applies for deeply nested submenus (submenus inside other submenus).
+This Module doesn't introduce any permanent layout changes.
 
 ## [Messages](./modules#messages)
 

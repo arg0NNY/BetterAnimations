@@ -33,8 +33,9 @@ function toPositionAlign(placement) {
   }
 }
 
-function AnimeFloating({ module, transition, ...props }) {
-  const rootValue = Floating(props)
+function AnimeFloating({ in: _in = true, open, module, onExited, transition, ...props }) {
+  open = open && _in
+  const rootValue = Floating({ ...props, open })
   const floating = findInReactTree(rootValue, m => m?.props?.renderLayer)
 
   const anchorRef = useRef()
@@ -71,20 +72,21 @@ function AnimeFloating({ module, transition, ...props }) {
     ?? floating.props.reference
     ?? anchorRef
 
+  const childrenCache = useRef()
+  if (children) childrenCache.current = children
+
   value.props.children[1].props.children = (
-    <TransitionGroup component={null}>
-      {children && (
-        <AnimeTransition
-          module={module}
-          containerRef={containerRef}
-          anchor={anchor}
-          autoRef={autoRef}
-          {...transition}
-        >
-          {children}
-        </AnimeTransition>
-      )}
-    </TransitionGroup>
+    <AnimeTransition
+      in={!!children}
+      module={module}
+      containerRef={containerRef}
+      anchor={anchor}
+      autoRef={autoRef}
+      onExited={onExited}
+      {...transition}
+    >
+      {children || childrenCache.current}
+    </AnimeTransition>
   )
 
   Object.assign(floating, value)
