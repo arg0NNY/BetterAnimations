@@ -1,16 +1,13 @@
-import Patcher, { TinyPatcher } from '@/modules/Patcher'
+import Patcher from '@/modules/Patcher'
 import ModuleKey from '@enums/ModuleKey'
 import { Mana, SpringTransitionPhases } from '@discord/modules'
 import findInReactTree from '@/utils/findInReactTree'
-import { useId } from 'react'
-import AnimeTransition from '@components/AnimeTransition'
-import useAutoPosition from '@/hooks/useAutoPosition'
+import AnimeFloating from '@/components/AnimeFloating'
 import useWindow from '@/hooks/useWindow'
 import useModule from '@/hooks/useModule'
 import { useSafeBoolean } from '@/hooks/useAnimationStore'
 import { ErrorBoundary, moduleErrorBoundary } from '@error/boundary'
 
-// TODO: Use AnimeFloating
 function TooltipTransition ({ module, shouldShow, onExitComplete, onAnimationRest, ...props }) {
   const value = Mana.TooltipLayer({
     ...props,
@@ -18,19 +15,7 @@ function TooltipTransition ({ module, shouldShow, onExitComplete, onAnimationRes
     isRendered: true
   })
 
-  const layer = findInReactTree(value, m => m?.props?.placement)
-  if (!layer) throw new Error('Unable to find FloatingLayer')
-
-  const id = useId()
-  layer.props.id = id
-  const containerRef = () => document.getElementById(id)
-
-  const { autoRef, setPosition } = useAutoPosition(props.position, { align: props.align })
   const safeShouldShow = useSafeBoolean(shouldShow)
-
-  TinyPatcher.before(ModuleKey.Tooltips, layer.props, 'renderLayer', (self, [{ placement }]) => {
-    setPosition(placement.split('-')[0])
-  })
 
   const onRest = isVisible => () => {
     if (!isVisible) onExitComplete?.()
@@ -47,17 +32,13 @@ function TooltipTransition ({ module, shouldShow, onExitComplete, onAnimationRes
   }
 
   return (
-    <AnimeTransition
+    <AnimeFloating
+      {...value.props}
       in={safeShouldShow}
-      containerRef={containerRef}
       module={module}
-      autoRef={autoRef}
-      anchor={props.targetElement ?? props.targetElementRef}
       onEntered={onRest(true)}
       onExited={onRest(false)}
-    >
-      {value}
-    </AnimeTransition>
+    />
   )
 }
 
